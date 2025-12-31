@@ -10,7 +10,7 @@ export const tagProps = buildProps("tag", {
   /**
    * 主题类型
    */
-  type: { type: String, default: "primary", validator: (v: string) => ["primary", "success", "warning", "error", "info"].includes(v) },
+  type: { type: String, default: "primary", validator: (v: string) => ["primary", "success", "warning", "danger", "info"].includes(v) },
   /**
    * 标签的文字内容
    */

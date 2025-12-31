@@ -17,7 +17,7 @@ export const floatButtonProps = buildProps("floatButton", {
   type: {
     type: String,
     default: "primary",
-    validator: (v: string) => ["primary", "success", "warning", "error", "default"].includes(v),
+    validator: (v: string) => ["primary", "success", "warning", "danger", "default"].includes(v),
   },
   /**
    * 按钮尺寸

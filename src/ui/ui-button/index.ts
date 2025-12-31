@@ -2,7 +2,7 @@ import type Button from "./ui-button.vue"
 import type { PropType, ExtractPropTypes } from "vue"
 import { styleProp, truthProp, buildProps, numericProp, makeNumberProp, makeStringProp, makeNumericProp } from "../utils/props"
 
-export type ButtonType = "primary" | "success" | "warning" | "error" | "info" | "default"
+export type ButtonType = "primary" | "success" | "warning" | "danger" | "info" | "default"
 export type ButtonSize = "mini" | "small" | "normal" | "medium" | "large"
 export type ButtonFormType = "submit" | "reset"
 export type ButtonIconPosition = "left" | "right"

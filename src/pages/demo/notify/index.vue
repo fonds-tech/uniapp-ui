@@ -15,7 +15,7 @@
         <ui-button type="primary" @click="showPrimary">主要通知</ui-button>
         <ui-button type="success" @click="showSuccess">成功通知</ui-button>
         <ui-button type="warning" @click="showWarning">警告通知</ui-button>
-        <ui-button type="error" @click="showError">错误通知</ui-button>
+        <ui-button type="danger" @click="showDanger">危险通知</ui-button>
       </view>
     </view>
 
@@ -56,8 +56,8 @@ function showWarning() {
   notifyRef.value?.show({ message: "警告通知", type: "warning" })
 }
 
-function showError() {
-  notifyRef.value?.show({ message: "错误通知", type: "error" })
+function showDanger() {
+  notifyRef.value?.show({ message: "危险通知", type: "danger" })
 }
 
 function showCustom() {

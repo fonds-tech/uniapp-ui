@@ -6,7 +6,7 @@ const colorMap: Record<string, string> = {
   primary: "--ui-color-primary",
   success: "--ui-color-success",
   warning: "--ui-color-warning",
-  error: "--ui-color-error",
+  danger: "--ui-color-danger",
   info: "--ui-color-info",
 
   // 文本色彩

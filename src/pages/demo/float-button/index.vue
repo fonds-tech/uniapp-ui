@@ -13,7 +13,7 @@
         <ui-button type="primary" size="small" @click="currentType = 'primary'">Primary</ui-button>
         <ui-button type="success" size="small" @click="currentType = 'success'">Success</ui-button>
         <ui-button type="warning" size="small" @click="currentType = 'warning'">Warning</ui-button>
-        <ui-button type="error" size="small" @click="currentType = 'error'">Error</ui-button>
+        <ui-button type="danger" size="small" @click="currentType = 'danger'">Danger</ui-button>
       </view>
     </view>
 

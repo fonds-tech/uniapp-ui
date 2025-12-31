@@ -17,7 +17,7 @@ UiNotify 组件，属性与事件以源码注释为准。
 | 参数        | 说明             | 类型                           | 默认值    | 可选值                           |
 | ----------- | ---------------- | ------------------------------ | --------- | -------------------------------- |
 | show        | 是否显示         | boolean                        | false     | -                                |
-| type        | 自定义类名       | String as PropType<NotifyType> | "primary" | primary, success, warning, error |
+| type        | 通知类型         | String as PropType<NotifyType> | "primary" | primary, success, warning, danger |
 | content     | 展示内容         | string                         | ""        | -                                |
 | duration    | 展示时长，单位ms | string \| number               | "3000"    | -                                |
 | color       | 字体颜色         | string                         | ""        | -                                |

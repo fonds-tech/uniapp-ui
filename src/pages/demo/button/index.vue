@@ -7,7 +7,7 @@
         <ui-button type="primary">主要按钮</ui-button>
         <ui-button type="success">成功按钮</ui-button>
         <ui-button type="warning">警告按钮</ui-button>
-        <ui-button type="error">错误按钮</ui-button>
+        <ui-button type="danger">危险按钮</ui-button>
         <ui-button type="default">默认按钮</ui-button>
       </view>
     </view>

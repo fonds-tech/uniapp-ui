@@ -130,7 +130,7 @@ export default {
     background-color: #fff;
   }
 
-  @each $type in (primary, success, warning, error, info) {
+  @each $type in (primary, success, warning, danger, info) {
     &--#{$type} {
       color: #fff;
       border-color: var(--#{$type}-color);

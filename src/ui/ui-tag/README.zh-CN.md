@@ -17,7 +17,7 @@ UiTag 组件，属性与事件以源码注释为准。
 | 参数         | 说明             | 类型             | 默认值    | 可选值                                 |
 | ------------ | ---------------- | ---------------- | --------- | -------------------------------------- |
 | show         | 是否显示         | boolean          | true      | -                                      |
-| type         | 主题类型         | string           | "primary" | primary, success, warning, error, info |
+| type         | 主题类型         | string           | "primary" | primary, success, warning, danger, info |
 | text         | 标签的文字内容   | string           | ""        | -                                      |
 | textSize     | 标签的文字大小   | string \| number | ""        | -                                      |
 | textColor    | 标签的文字颜色   | string           | ""        | -                                      |

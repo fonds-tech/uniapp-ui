@@ -136,7 +136,7 @@ export default {
     align-items: center;
     border-radius: var(--ui-radius-round);
     justify-content: center;
-    background-color: var(--ui-color-error);
+    background-color: var(--ui-color-danger);
 
     &--absolute {
       top: 0;

@@ -342,12 +342,12 @@ export default {
     }
   }
 
-  &--error {
+  &--danger {
     color: var(--ui-color-background);
-    background: var(--ui-color-error);
+    background: var(--ui-color-danger);
 
     &.ui-button--plain {
-      color: var(--ui-color-error);
+      color: var(--ui-color-danger);
       border: var(--ui-border-width-thick) solid currentcolor;
       background-color: var(--ui-color-background);
 
@@ -357,7 +357,7 @@ export default {
     }
 
     &.ui-button--text {
-      color: var(--ui-color-error);
+      color: var(--ui-color-danger);
       border-width: 0;
       background-color: transparent;
     }

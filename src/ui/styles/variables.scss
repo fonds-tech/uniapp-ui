@@ -8,11 +8,11 @@
    * ======================================== */
 
   // 品牌色彩
-  --ui-color-primary: #ff4757; // 主色调 - 鲜艳红色
-  --ui-color-success: #2ed573; // 成功色 - 鲜艳绿色
-  --ui-color-warning: #ffa502; // 警告色 - 鲜艳橙色
-  --ui-color-error: #ff3838; // 错误色 - 鲜艳红色
-  --ui-color-info: #1e90ff; // 信息色 - 鲜艳蓝色
+  --ui-color-primary: #1989fa; // 主色调 - 品牌蓝
+  --ui-color-success: #07c160; // 成功色 - 微信绿
+  --ui-color-warning: #ff976a; // 警告色 - 橙色
+  --ui-color-danger: #ee0a24; // 危险色 - 红色
+  --ui-color-info: #1989fa; // 信息色 - 与主色一致
 
   // 文本色彩
   --ui-color-text-primary: #323233; // 主要文本 - 深灰
@@ -172,11 +172,11 @@
 
 // 暗色模式基础变量
 [data-theme="dark"] {
-  --ui-color-primary: #ff6b81; // 主色调 - 鲜艳红色（暗色适配）
-  --ui-color-success: #4ade80; // 成功色 - 鲜艳绿色（暗色适配）
-  --ui-color-warning: #ffb74d; // 警告色 - 鲜艳橙色（暗色适配）
-  --ui-color-error: #ff6b6b; // 错误色 - 鲜艳红色（暗色适配）
-  --ui-color-info: #4dabf7; // 信息色 - 鲜艳蓝色（暗色适配）
+  --ui-color-primary: #4da3ff; // 主色调 - 品牌蓝（暗色适配）
+  --ui-color-success: #34d399; // 成功色 - 绿色（暗色适配）
+  --ui-color-warning: #ffb088; // 警告色 - 橙色（暗色适配）
+  --ui-color-danger: #ff6b6b; // 危险色 - 红色（暗色适配）
+  --ui-color-info: #4da3ff; // 信息色 - 与主色一致（暗色适配）
 
   --ui-color-mask: rgba(0, 0, 0, 0.7);
 

@@ -8,7 +8,7 @@
         <ui-tag type="primary" text="主要" />
         <ui-tag type="success" text="成功" />
         <ui-tag type="warning" text="警告" />
-        <ui-tag type="error" text="错误" />
+        <ui-tag type="danger" text="危险" />
         <ui-tag type="info" text="信息" />
       </view>
     </view>
@@ -20,7 +20,7 @@
         <ui-tag type="primary" plain text="主要" />
         <ui-tag type="success" plain text="成功" />
         <ui-tag type="warning" plain text="警告" />
-        <ui-tag type="error" plain text="错误" />
+        <ui-tag type="danger" plain text="危险" />
         <ui-tag type="info" plain text="信息" />
       </view>
     </view>
@@ -52,7 +52,7 @@
       <view class="demo-block">
         <ui-tag type="primary" icon="star" text="收藏" />
         <ui-tag type="success" icon="check" text="已完成" />
-        <ui-tag type="error" icon="close" text="已删除" />
+        <ui-tag type="danger" icon="close" text="已删除" />
       </view>
     </view>
 
@@ -82,7 +82,7 @@
         <view class="api-row">
           <text class="api-cell">type</text>
           <text class="api-cell">主题类型</text>
-          <text class="api-cell">primary/success/warning/error/info</text>
+          <text class="api-cell">primary/success/warning/danger/info</text>
         </view>
         <view class="api-row">
           <text class="api-cell">plain</text>

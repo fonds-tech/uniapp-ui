@@ -90,11 +90,11 @@ export default {
 </script>
 
 <style lang="scss">
-$ui-float-button-error-color: #ee0c24;
+$ui-float-button-danger-color: var(--ui-color-danger, #ee0a24);
 $ui-float-button-default-color: #fff;
-$ui-float-button-primary-color: var(--ui-color-primary, #fd7441);
-$ui-float-button-success-color: #15c366;
-$ui-float-button-warning-color: #ffa51a;
+$ui-float-button-primary-color: var(--ui-color-primary, #1989fa);
+$ui-float-button-success-color: var(--ui-color-success, #07c160);
+$ui-float-button-warning-color: var(--ui-color-warning, #ff976a);
 
 .ui-float-button {
   display: flex;
@@ -134,9 +134,9 @@ $ui-float-button-warning-color: #ffa51a;
     background: $ui-float-button-warning-color;
   }
 
-  &--error {
+  &--danger {
     color: #fff;
-    background: $ui-float-button-error-color;
+    background: $ui-float-button-danger-color;
   }
 
   &--default {

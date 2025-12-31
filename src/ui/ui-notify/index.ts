@@ -13,7 +13,7 @@ export const notifyProps = buildProps("notify", {
   type: {
     type: String as PropType<NotifyType>,
     default: "primary",
-    validator: (t: string) => ["primary", "success", "warning", "error"].includes(t),
+    validator: (t: string) => ["primary", "success", "warning", "danger"].includes(t),
   },
   /**
    * 展示内容
@@ -80,6 +80,6 @@ export interface NotifyOptions {
   customClass?: string
   customStyle?: string | Record<string, any>
 }
-export type NotifyType = "primary" | "success" | "warning" | "error"
+export type NotifyType = "primary" | "success" | "warning" | "danger"
 export type NotifyProps = ExtractPropTypes<typeof notifyProps>
 export type NotifyInstance = InstanceType<typeof Notify>
