@@ -53,19 +53,19 @@
     <demo-section title="图标大小">
       <demo-block :cols="4" :gap="24">
         <view class="icon-item">
-          <ui-icon name="heart" size="32rpx" />
+          <ui-icon name="like" size="32rpx" />
           <text class="icon-label">32rpx</text>
         </view>
         <view class="icon-item">
-          <ui-icon name="heart" size="48rpx" />
+          <ui-icon name="like" size="48rpx" />
           <text class="icon-label">48rpx</text>
         </view>
         <view class="icon-item">
-          <ui-icon name="heart" size="64rpx" />
+          <ui-icon name="like" size="64rpx" />
           <text class="icon-label">64rpx</text>
         </view>
         <view class="icon-item">
-          <ui-icon name="heart" size="80rpx" />
+          <ui-icon name="like" size="80rpx" />
           <text class="icon-label">80rpx</text>
         </view>
       </demo-block>
@@ -96,9 +96,9 @@ const commonIcons = [
   "minus",
   "search",
   "star",
-  "heart",
-  "home",
-  "user",
+  "like",
+  "home-o",
+  "user-o",
   "setting",
   "phone",
   "location",
@@ -107,9 +107,8 @@ const commonIcons = [
   "delete",
   "edit",
   "eye",
-  "eye-off",
+  "closed-eye",
   "lock",
-  "unlock",
 ]
 </script>
 

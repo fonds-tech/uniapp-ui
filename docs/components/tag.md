@@ -9,7 +9,7 @@
 <ui-tag type="primary" text="主要" />
 <ui-tag type="success" text="成功" />
 <ui-tag type="warning" text="警告" />
-<ui-tag type="error" text="错误" />
+<ui-tag type="danger" text="危险" />
 <ui-tag type="info" text="信息" />
 ```
 
@@ -68,7 +68,7 @@ const show = ref(true)
 | 属性名        | 说明       | 类型                                             | 默认值    |
 | ------------- | ---------- | ------------------------------------------------ | --------- |
 | text          | 标签内容   | `string`                                         | -         |
-| type          | 类型       | `primary \| success \| warning \| error \| info` | `primary` |
+| type          | 类型       | `primary \| success \| warning \| danger \| info` | `primary` |
 | plain         | 是否镂空   | `boolean`                                        | `false`   |
 | round         | 是否圆角   | `boolean`                                        | `false`   |
 | closeable     | 是否可关闭 | `boolean`                                        | `false`   |

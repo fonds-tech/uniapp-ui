@@ -72,3 +72,47 @@ function showDuration() {
 }
 </script>
 ```
+
+## Props
+
+| 参数 | 说明 | 类型 | 默认值 |
+| --- | --- | --- | --- |
+| show | 是否显示 | `boolean` | `false` |
+| type | 类型 | `primary \| success \| warning \| danger` | `primary` |
+| content | 展示内容 | `string` | - |
+| duration | 展示时长(ms) | `string \| number` | `3000` |
+| color | 字体颜色 | `string` | - |
+| font-size | 字体大小 | `string \| number` | - |
+| font-weight | 字体粗细 | `string` | - |
+| background | 背景颜色 | `string` | - |
+| z-index | 层级 | `string \| number` | `2000` |
+| offset-top | 距离顶部偏移 | `string \| number` | - |
+| custom-class | 自定义类名 | `string` | - |
+| custom-style | 自定义样式 | `string \| object` | - |
+
+## Methods
+
+| 方法名 | 说明 | 参数 |
+| --- | --- | --- |
+| show | 显示通知 | `options: NotifyOptions` |
+| hide | 关闭通知 | - |
+
+## NotifyOptions
+
+| 参数 | 说明 | 类型 |
+| --- | --- | --- |
+| message | 通知内容 | `string` |
+| type | 通知类型 | `primary \| success \| warning \| danger` |
+| duration | 展示时长(ms) | `number` |
+| color | 字体颜色 | `string` |
+| background | 背景颜色 | `string` |
+
+## Events
+
+| 事件名 | 说明 | 回调参数 |
+| --- | --- | --- |
+| click | 点击通知时触发 | - |
+| open | 打开时触发 | - |
+| opened | 打开动画结束时触发 | - |
+| close | 关闭时触发 | - |
+| closed | 关闭动画结束时触发 | - |

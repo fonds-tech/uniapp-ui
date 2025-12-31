@@ -75,11 +75,11 @@ function initSystemTheme() {
 
 /**
  * 生成单个颜色的 CSS 变量
- * @param name 变量名称（如 primary、text-primary）
+ * @param name 变量名称（如 primary、text-main）
  * @param color 颜色值
  */
 function generateColorVars(name: string, color: string): Record<string, string> {
-  // 将名称转换为 CSS 变量名格式，例如 text-primary -> --ui-color-text-primary
+  // 将名称转换为 CSS 变量名格式，例如 text-main -> --ui-color-text-main
   const cssVarName = `--ui-color-${name}`
   const vars: Record<string, string> = {
     [cssVarName]: color,
@@ -159,6 +159,7 @@ export default {
 <style scoped lang="scss">
 .ui-config-provider {
   width: 100%;
+  color: var(--ui-color-text-main);
   display: flex;
   position: relative;
   flex-direction: column;

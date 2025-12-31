@@ -75,3 +75,19 @@ function randomValue() {
   <ui-number-roll :value="88888.88" thousands-sep="," :decimal-places="2" :trim-zero="false" :font-size="56" color="#ee0a24" font-weight="600" />
 </template>
 ```
+
+## Props
+
+| 参数 | 说明 | 类型 | 默认值 |
+| --- | --- | --- | --- |
+| value | 数据值 | `string \| number` | `0` |
+| color | 字体颜色 | `string` | - |
+| font-size | 字体大小 | `string \| number` | `24` |
+| font-weight | 字体粗细 | `string` | - |
+| trim-zero | 去除小数末尾的0 | `boolean` | `true` |
+| thousands-sep | 千位分隔符 | `string` | - |
+| decimal-places | 小数位数 | `number` | `2` |
+| duration | 过渡时间 | `string \| number` | - |
+| timing-function | 动画函数 | `string` | - |
+| custom-class | 自定义类名 | `string` | - |
+| custom-style | 自定义样式 | `string \| object` | - |

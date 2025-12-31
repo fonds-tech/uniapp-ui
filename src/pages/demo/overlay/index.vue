@@ -72,7 +72,7 @@ const show5 = ref(false)
 }
 
 .overlay-text {
-  color: var(--ui-color-text-primary);
+  color: var(--ui-color-text-main);
   font-size: 28rpx;
 }
 </style>

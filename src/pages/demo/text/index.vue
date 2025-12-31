@@ -38,7 +38,7 @@
     <demo-section title="文本颜色">
       <demo-block :cols="3" :gap="24">
         <view class="text-item">
-          <ui-text text="主要文本" color="text-primary" />
+          <ui-text text="默认文本" color="text-main" />
         </view>
         <view class="text-item">
           <ui-text text="次要文本" color="text-secondary" />
@@ -109,19 +109,6 @@
       </demo-block>
     </demo-section>
 
-    <demo-section title="前后缀">
-      <demo-block :cols="2" :gap="24">
-        <view class="text-item">
-          <ui-text text="99.00" prefix="¥" prefix-size="24rpx" prefix-color="danger" size="36rpx" color="danger" weight="600" />
-          <text class="text-label">价格前缀</text>
-        </view>
-        <view class="text-item">
-          <ui-text text="128" suffix="元/月" suffix-size="24rpx" suffix-color="text-secondary" size="36rpx" weight="600" />
-          <text class="text-label">单位后缀</text>
-        </view>
-      </demo-block>
-    </demo-section>
-
     <demo-section title="可选择文本">
       <demo-block>
         <ui-text text="长按可以选择复制这段文本" selectable />
@@ -140,16 +127,18 @@ definePage({
 
 <style lang="scss" scoped>
 .text-item {
+  gap: 8rpx;
   display: flex;
   align-items: center;
   flex-direction: column;
-  gap: 8rpx;
 }
 
 .text-item-row {
-  display: flex;
-  align-items: flex-start;
   gap: 16rpx;
+  width: 100%;
+  display: flex;
+  overflow: hidden;
+  align-items: flex-start;
 }
 
 .text-label {

@@ -279,12 +279,12 @@ export default {
   }
 
   &--default {
-    color: var(--ui-color-text-primary);
+    color: var(--ui-color-text-main);
     border: var(--ui-border-width) solid var(--ui-color-border);
     background: var(--ui-color-background);
 
     &.ui-button--plain {
-      color: var(--ui-color-text-primary);
+      color: var(--ui-color-text-main);
       border: var(--ui-border-width-thick) solid var(--ui-color-border);
       background-color: var(--ui-color-background);
 

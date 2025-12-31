@@ -79,7 +79,7 @@
         <ui-badge icon="star" color="warning">
           <view class="badge-box" />
         </ui-badge>
-        <ui-badge icon="heart" color="#8B5CF6">
+        <ui-badge icon="like" color="#8B5CF6">
           <view class="badge-box" />
         </ui-badge>
       </demo-block>

@@ -25,3 +25,25 @@
   </ui-sticky>
 </template>
 ```
+
+## Props
+
+| 参数 | 说明 | 类型 | 默认值 |
+| --- | --- | --- | --- |
+| offset-top | 吸顶时距离顶部的距离 | `string \| number` | `0` |
+| z-index | 层级 | `string \| number` | - |
+| background | 背景颜色 | `string` | - |
+| custom-class | 自定义类名 | `string` | - |
+| custom-style | 自定义样式 | `string \| object` | - |
+
+## Events
+
+| 事件名 | 说明 | 回调参数 |
+| --- | --- | --- |
+| change | 吸顶状态变化时触发 | `sticky: boolean` |
+
+## Slots
+
+| 名称 | 说明 |
+| --- | --- |
+| default | 需要吸顶的内容 |

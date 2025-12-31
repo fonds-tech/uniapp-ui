@@ -43,3 +43,30 @@
   </ui-empty>
 </template>
 ```
+
+## Props
+
+| 参数 | 说明 | 类型 | 默认值 |
+| --- | --- | --- | --- |
+| show | 是否显示 | `boolean` | `true` |
+| icon | 图标名称 | `string` | - |
+| text | 提示文字 | `string` | `暂无数据~` |
+| text-size | 文字大小 | `string \| number` | - |
+| text-color | 文字颜色 | `string` | - |
+| text-weight | 文字粗细 | `string \| number` | - |
+| icon-size | 图标大小 | `string \| number` | - |
+| icon-color | 图标颜色 | `string` | - |
+| icon-weight | 图标粗细 | `string \| number` | - |
+| icon-width | 图标宽度 | `string \| number` | - |
+| icon-height | 图标高度 | `string \| number` | - |
+| margin | 外边距 | `string \| number` | - |
+| padding | 内边距 | `string \| number` | - |
+| custom-class | 自定义类名 | `string` | - |
+| custom-style | 自定义样式 | `string \| object` | - |
+
+## Slots
+
+| 名称 | 说明 |
+| --- | --- |
+| default | 自定义图标区域 |
+| footer | 底部内容 |

@@ -30,13 +30,13 @@
 
 ```vue
 <template>
-  <ui-text text="主要文本" color="text-primary" />
+  <ui-text text="默认文本" color="text-main" />
   <ui-text text="次要文本" color="text-secondary" />
   <ui-text text="占位文本" color="text-placeholder" />
   <ui-text text="主题色文本" color="primary" />
   <ui-text text="成功色文本" color="success" />
   <ui-text text="警告色文本" color="warning" />
-  <ui-text text="错误色文本" color="error" />
+  <ui-text text="危险色文本" color="danger" />
 </template>
 ```
 
@@ -64,18 +64,6 @@
 </template>
 ```
 
-## 前后缀
-
-通过 `prefix` 和 `suffix` 属性设置文本前后缀。
-
-```vue
-<template>
-  <ui-text text="99.00" prefix="¥" prefix-size="24rpx" prefix-color="error" />
-  <ui-text text="128" suffix="元/月" suffix-size="24rpx" suffix-color="text-secondary" />
-  <ui-text text="1000" prefix="¥" suffix=".00" color="error" size="40rpx" weight="600" />
-</template>
-```
-
 ## 文本装饰
 
 通过 `decoration` 属性设置文本装饰线。
@@ -97,3 +85,33 @@
   <ui-text text="长按可以选择复制这段文本" selectable />
 </template>
 ```
+
+## Props
+
+| 参数 | 说明 | 类型 | 默认值 |
+| --- | --- | --- | --- |
+| text | 文本内容 | `string \| number` | - |
+| size | 文本大小 | `string \| number` | - |
+| color | 文本颜色 | `string` | - |
+| weight | 文本粗细 | `string \| number` | - |
+| align | 对齐方式 | `left \| center \| right` | `left` |
+| rows | 显示行数，0 表示不限制 | `number` | `0` |
+| decoration | 文本装饰 | `underline \| line-through \| overline` | - |
+| line-height | 行高 | `string \| number` | - |
+| decode | 是否解码 | `boolean` | `false` |
+| clickable | 是否可点击 | `boolean` | `false` |
+| selectable | 是否可选择 | `boolean` | `false` |
+| custom-class | 自定义类名 | `string` | - |
+| custom-style | 自定义样式 | `string \| object` | - |
+
+## Events
+
+| 事件名 | 说明 | 回调参数 |
+| --- | --- | --- |
+| click | 点击文本时触发 | - |
+
+## Slots
+
+| 名称 | 说明 |
+| --- | --- |
+| default | 文本内容 |

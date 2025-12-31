@@ -53,7 +53,7 @@ function onClick() {
 
 <style lang="scss" scoped>
 .switch-label {
-  color: var(--ui-color-text-primary);
+  color: var(--ui-color-text-main);
   font-size: 28rpx;
   margin-left: 16rpx;
 }

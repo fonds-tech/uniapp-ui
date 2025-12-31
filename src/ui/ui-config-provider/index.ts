@@ -13,7 +13,7 @@ export type ThemeVarName =
   | "warning"
   | "error"
   | "info"
-  | "text-primary"
+  | "text-main"
   | "text-secondary"
   | "text-placeholder"
   | "text-disabled"

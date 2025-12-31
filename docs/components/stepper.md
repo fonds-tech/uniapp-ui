@@ -94,3 +94,45 @@ const value = ref(1)
   <ui-stepper v-model="value" height="64rpx" input-width="80rpx" />
 </template>
 ```
+
+## Props
+
+| 参数 | 说明 | 类型 | 默认值 |
+| --- | --- | --- | --- |
+| v-model | 当前输入的值 | `string \| number` | `0` |
+| min | 最小值 | `string \| number` | `0` |
+| max | 最大值 | `string \| number` | `Infinity` |
+| step | 步长 | `string \| number` | `1` |
+| name | 标识符 | `string \| number` | - |
+| height | 组件高度 | `string \| number` | - |
+| theme | 主题风格 | `button \| round \| border` | `button` |
+| integer | 是否只能输入正整数 | `boolean` | `false` |
+| decimal-length | 固定显示的小数位数 | `string \| number` | - |
+| disabled | 是否禁用 | `boolean` | `false` |
+| disable-plus | 是否禁用增加按钮 | `boolean` | `false` |
+| disable-minus | 是否禁用减少按钮 | `boolean` | `false` |
+| disabled-input | 是否禁用输入框 | `boolean` | `false` |
+| input-gap | 输入框左右间距 | `string \| number` | - |
+| input-width | 输入框宽度 | `string \| number` | - |
+| input-color | 输入框背景色 | `string` | - |
+| input-text-size | 输入框文字大小 | `string \| number` | - |
+| input-text-weight | 输入框文字粗细 | `string \| number` | - |
+| input-text-color | 输入框文字颜色 | `string` | - |
+| show-plus | 是否显示增加按钮 | `boolean` | `true` |
+| show-minus | 是否显示减少按钮 | `boolean` | `true` |
+| show-input | 是否显示输入框 | `boolean` | `true` |
+| long-press | 是否允许长按加减 | `boolean` | `false` |
+| before-change | 输入值变化前的回调函数 | `Function` | - |
+| custom-class | 自定义类名 | `string` | - |
+| custom-style | 自定义样式 | `string \| object` | - |
+
+## Events
+
+| 事件名 | 说明 | 回调参数 |
+| --- | --- | --- |
+| change | 当绑定值变化时触发 | `value: number \| string, name: number \| string` |
+| plus | 点击增加按钮时触发 | - |
+| minus | 点击减少按钮时触发 | - |
+| overlimit | 点击不可用按钮时触发 | `type: string` |
+| focus | 输入框聚焦时触发 | - |
+| blur | 输入框失焦时触发 | `event` |

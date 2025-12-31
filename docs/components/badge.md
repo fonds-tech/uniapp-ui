@@ -142,3 +142,38 @@
   </ui-badge>
 </template>
 ```
+
+## Props
+
+| 参数 | 说明 | 类型 | 默认值 |
+| --- | --- | --- | --- |
+| value | 徽标内容 | `string \| number` | - |
+| dot | 是否显示圆点 | `boolean` | `false` |
+| icon | 图标名称 | `string` | - |
+| color | 徽标颜色 | `string` | - |
+| dot-size | 圆点大小 | `string \| number` | - |
+| max | 最大值 | `number` | `99` |
+| show-zero | 值为 0 时是否显示 | `boolean` | `false` |
+| height | 徽标高度 | `string \| number` | - |
+| radius | 圆角大小 | `string \| number` | - |
+| offset | 位置偏移 | `[number, number]` | - |
+| z-index | 层级 | `number` | - |
+| position | 定位位置 | `top-left \| top-right \| bottom-left \| bottom-right` | `top-right` |
+| value-size | 字体大小 | `string \| number` | - |
+| value-color | 字体颜色 | `string` | - |
+| value-weight | 字体粗细 | `string \| number` | - |
+| custom-class | 自定义类名 | `string` | - |
+| custom-style | 自定义样式 | `string \| object` | - |
+
+## Events
+
+| 事件名 | 说明 | 回调参数 |
+| --- | --- | --- |
+| click | 点击徽标时触发 | - |
+
+## Slots
+
+| 名称 | 说明 |
+| --- | --- |
+| default | 徽标包裹的内容 |
+| content | 自定义徽标内容 |

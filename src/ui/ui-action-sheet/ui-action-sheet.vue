@@ -219,7 +219,7 @@ export default {
   }
 
   &__title {
-    color: var(--ui-color-text-primary);
+    color: var(--ui-color-text-main);
     font-size: var(--ui-font-size-lg);
     text-align: center;
   }
@@ -274,7 +274,7 @@ export default {
     }
 
     &__title {
-      color: var(--ui-color-text-primary);
+      color: var(--ui-color-text-main);
       font-size: var(--ui-font-size-lg);
       text-align: center;
     }
@@ -292,7 +292,7 @@ export default {
   }
 
   &__cancel {
-    color: var(--ui-color-text-primary);
+    color: var(--ui-color-text-main);
     height: var(--ui-size-large);
     margin: 0;
     display: flex;

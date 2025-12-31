@@ -24,7 +24,7 @@
     <demo-section title="自定义位置">
       <demo-block :cols="3" :gap="24">
         <ui-button @click="showPositionToast('top')">顶部展示</ui-button>
-        <ui-button @click="showPositionToast('center')">居中展示</ui-button>
+        <ui-button @click="showPositionToast('middle')">居中展示</ui-button>
         <ui-button @click="showPositionToast('bottom')">底部展示</ui-button>
       </demo-block>
     </demo-section>
@@ -36,40 +36,51 @@
         <ui-button @click="showDurationToast(5000)">5 秒</ui-button>
       </demo-block>
     </demo-section>
+
+    <!-- 页面级 Toast 组件 -->
+    <ui-toast ref="toastRef" />
   </demo-page>
 </template>
 
 <script setup lang="ts">
-import { useToast } from "@/ui"
+import type { ToastInstance } from "@/ui/ui-toast"
+import { ref } from "vue"
 import { DemoPage, DemoBlock, DemoSection } from "../components"
 
 definePage({
   style: { navigationBarTitleText: "Toast 轻提示" },
 })
 
-const { showToast } = useToast()
+// Toast 组件实例引用
+const toastRef = ref<ToastInstance | null>(null)
+
+function showToast(content: string) {
+  toastRef.value?.show(content)
+}
 
 function showSuccessToast() {
-  showToast({ message: "操作成功", type: "success" })
+  toastRef.value?.show({ content: "操作成功", type: "success" })
 }
 
 function showFailToast() {
-  showToast({ message: "操作失败", type: "fail" })
+  toastRef.value?.show({ content: "操作失败", type: "fail" })
 }
 
 function showLoadingToast() {
-  showToast({ message: "加载中...", type: "loading", duration: 2000 })
+  toastRef.value?.show({ content: "加载中...", type: "loading" })
+  // 2秒后手动关闭
+  setTimeout(() => toastRef.value?.hide(), 2000)
 }
 
 function showIconToast(icon: string, message: string) {
-  showToast({ message, icon })
+  toastRef.value?.show({ content: message, icon })
 }
 
-function showPositionToast(position: string) {
-  showToast({ message: `${position} 位置`, position })
+function showPositionToast(position: "top" | "middle" | "bottom") {
+  toastRef.value?.show({ content: `${position} 位置`, position })
 }
 
 function showDurationToast(duration: number) {
-  showToast({ message: `${duration / 1000}秒后关闭`, duration })
+  toastRef.value?.show({ content: `${duration / 1000}秒后关闭`, duration })
 }
 </script>

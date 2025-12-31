@@ -21,9 +21,9 @@
 ## 图标大小
 
 ```vue
-<ui-icon name="heart" size="32rpx" />
-<ui-icon name="heart" size="48rpx" />
-<ui-icon name="heart" size="64rpx" />
+<ui-icon name="like" size="32rpx" />
+<ui-icon name="like" size="48rpx" />
+<ui-icon name="like" size="64rpx" />
 ```
 
 ## 常用图标
@@ -33,8 +33,8 @@
 | ✓    | check  | ✕    | close    |
 | +    | plus   | -    | minus    |
 | 🔍   | search | ⭐   | star     |
-| ❤    | heart  | 🏠   | home     |
-| 👤   | user   | ⚙    | setting  |
+| ❤    | like   | 🏠   | home-o   |
+| 👤   | user-o | ⚙    | setting  |
 | 📞   | phone  | 📍   | location |
 | 🛒   | cart   | 📤   | share    |
 | 🗑   | delete | ✏    | edit     |

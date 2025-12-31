@@ -1,5 +1,5 @@
 <template>
-  <view v-if="visible" class="ui-tag" :class="[classs, customClass]" :style="[style]" @click="onClick">
+  <view v-if="visible" class="ui-tag" :class="[classes, customClass]" :style="[style]" @click="onClick">
     <view v-if="icon || slots.icon" class="ui-tag__icon">
       <slot name="icon">
         <ui-icon :name="icon" :color="iconColor" :size="iconSize" :weight="iconWeight" />
@@ -33,11 +33,13 @@ const style = computed(() => {
   style.color = useColor(props.textColor)
   style.height = useUnit(props.height)
   style.background = useColor(props.background)
+  style.borderColor = useColor(props.borderColor)
+  style.borderWidth = useUnit(props.borderWidth)
   style.borderRadius = useUnit(props.borderRadius)
   return useStyle({ ...style, ...useStyle(props.customStyle) })
 })
 
-const classs = computed(() => {
+const classes = computed(() => {
   const list: string[] = []
   list.push(`ui-tag--${props.type}`)
   if (props.round) list.push("ui-tag--round")
@@ -48,11 +50,8 @@ const classs = computed(() => {
 
 const textStyle = computed(() => {
   const style: any = {}
-  style.color = useColor(props.textColor)
   style.fontSize = useUnit(props.textSize)
   style.fontWeight = props.textWeight
-  style.background = useColor(props.background)
-  style.borderRadius = useUnit(props.borderRadius)
   return useStyle(style)
 })
 
@@ -80,17 +79,18 @@ function onClose() {
   emits("close")
 }
 
-defineExpose({ name: "ui-tag" })
 </script>
 
 <script lang="ts">
 export default {
+  name: "ui-tag",
   options: { virtualHost: true, multipleSlots: true, styleIsolation: "shared" },
 }
 </script>
 
 <style lang="scss">
 .ui-tag {
+  width: fit-content;
   display: inline-flex;
   padding: 4rpx 8rpx;
   overflow: hidden;
@@ -127,18 +127,18 @@ export default {
   }
 
   &--plain {
-    background-color: #fff;
+    background-color: var(--ui-color-background);
   }
 
   @each $type in (primary, success, warning, danger, info) {
     &--#{$type} {
-      color: #fff;
-      border-color: var(--#{$type}-color);
-      background-color: var(--#{$type}-color);
+      color: var(--ui-color-background);
+      border-color: var(--ui-color-#{$type});
+      background-color: var(--ui-color-#{$type});
 
       &.ui-tag--plain {
-        color: var(--#{$type}-color);
-        background-color: #fff;
+        color: var(--ui-color-#{$type});
+        background-color: var(--ui-color-background);
       }
     }
   }

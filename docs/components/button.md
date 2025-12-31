@@ -120,3 +120,53 @@
   <ui-button color="linear-gradient(135deg, #667eea 0%, #764ba2 100%)"> 渐变色按钮 </ui-button>
 </template>
 ```
+
+## Props
+
+| 参数 | 说明 | 类型 | 默认值 |
+| --- | --- | --- | --- |
+| type | 按钮类型 | `primary \| success \| warning \| danger \| info \| default` | `primary` |
+| size | 按钮尺寸 | `mini \| small \| normal \| medium \| large` | `normal` |
+| round | 是否圆形按钮 | `boolean` | `false` |
+| text | 是否文字按钮 | `boolean` | `false` |
+| plain | 是否朴素按钮 | `boolean` | `false` |
+| block | 是否块级按钮 | `boolean` | `false` |
+| color | 按钮颜色，支持渐变色 | `string` | - |
+| width | 按钮宽度 | `string \| number` | - |
+| height | 按钮高度 | `string \| number` | - |
+| disabled | 是否禁用 | `boolean` | `false` |
+| loading | 是否加载中 | `boolean` | `false` |
+| loading-text | 加载中文本 | `string` | - |
+| text-size | 文本大小 | `string \| number` | - |
+| text-color | 文本颜色 | `string` | - |
+| text-weight | 文本粗细 | `string \| number` | - |
+| icon | 图标名称 | `string` | - |
+| icon-position | 图标位置 | `left \| right` | `left` |
+| icon-size | 图标大小 | `string \| number` | - |
+| icon-color | 图标颜色 | `string` | - |
+| border-radius | 圆角大小 | `string \| number` | - |
+| border-width | 边框宽度 | `string \| number` | - |
+| border-color | 边框颜色 | `string` | - |
+| form-type | 表单类型 | `submit \| reset` | - |
+| open-type | 开放能力 | `contact \| share \| getPhoneNumber \| ...` | - |
+| throttle | 节流时间(ms) | `number` | `200` |
+| custom-class | 自定义类名 | `string` | - |
+| custom-style | 自定义样式 | `string \| object` | - |
+
+## Events
+
+| 事件名 | 说明 | 回调参数 |
+| --- | --- | --- |
+| click | 点击按钮时触发 | `event` |
+| getuserinfo | 获取用户信息时触发 | `event` |
+| getphonenumber | 获取手机号时触发 | `event` |
+| opensetting | 打开设置时触发 | `event` |
+| launchapp | 打开 APP 时触发 | `event` |
+| error | 发生错误时触发 | `event` |
+
+## Slots
+
+| 名称 | 说明 |
+| --- | --- |
+| default | 按钮内容 |
+| icon | 自定义图标 |

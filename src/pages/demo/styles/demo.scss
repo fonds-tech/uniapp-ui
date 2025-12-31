@@ -16,7 +16,7 @@
 }
 
 .section-title {
-  color: var(--ui-color-text-primary);
+  color: var(--ui-color-text-main);
   display: block;
   font-size: 30rpx;
   font-weight: 600;
@@ -59,7 +59,7 @@
 
 .api-cell {
   flex: 1;
-  color: var(--ui-color-text-primary);
+  color: var(--ui-color-text-main);
   padding: 16rpx 12rpx;
   font-size: 24rpx;
   word-break: break-all;

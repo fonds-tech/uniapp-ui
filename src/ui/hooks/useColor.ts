@@ -10,7 +10,7 @@ const colorMap: Record<string, string> = {
   info: "--ui-color-info",
 
   // 文本色彩
-  "text-primary": "--ui-color-text-primary",
+  "text-main": "--ui-color-text-main",
   "text-secondary": "--ui-color-text-secondary",
   "text-placeholder": "--ui-color-text-placeholder",
   "text-disabled": "--ui-color-text-disabled",
@@ -38,7 +38,7 @@ const colorMap: Record<string, string> = {
  *
  * @example
  * useColor('primary')        // -> var(--ui-color-primary)
- * useColor('text-primary')   // -> var(--ui-color-text-primary)
+ * useColor('text-main')      // -> var(--ui-color-text-main)
  * useColor('#ff0000')        // -> #ff0000
  * useColor('rgb(255,0,0)')   // -> rgb(255,0,0)
  */

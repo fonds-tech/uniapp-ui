@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(ls:*)",
+      "Bash(xargs:*)",
+      "Bash(while read name)",
+      "Bash(do if [ ! -f \"docs/components/$name.md\" ])",
+      "Bash(then echo \"缺少: $name\")",
+      "Bash(fi)",
+      "Bash(done)",
+      "Bash(comm:*)"
+    ]
+  }
+}
