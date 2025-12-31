@@ -50,7 +50,10 @@ export const badgeProps = buildProps("badge", {
   /**
    * 定位类型
    */
-  position: String,
+  position: {
+    type: String,
+    default: "top-right",
+  },
   /**
    * 字体大小
    */

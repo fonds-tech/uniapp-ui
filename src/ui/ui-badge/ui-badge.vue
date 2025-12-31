@@ -98,9 +98,16 @@ const formatValue = computed(() => {
 const isShow = computed(() => {
   if (props.dot) return true
   if (props.icon) return true
-  if (isNumber(formatValue.value)) {
-    if (+formatValue.value > 0) return true
-    if (+formatValue.value === 0 && props.showZero) return true
+  // 有 value 值时的判断
+  if (props.value !== undefined && props.value !== null && props.value !== "") {
+    // 数值类型
+    if (isNumber(props.value)) {
+      if (+props.value > 0) return true
+      if (+props.value === 0 && props.showZero) return true
+      return false
+    }
+    // 字符串类型直接显示
+    return true
   }
   return false
 })
@@ -139,11 +146,55 @@ export default {
     background-color: var(--ui-color-danger);
 
     &--absolute {
-      top: 0;
-      right: 0;
       position: absolute;
-      transform: translate(50%, -50%);
-      transform-origin: 100%;
+    }
+
+    &--top-right {
+      &.ui-badge__inner--absolute {
+        top: 0;
+        right: 0;
+        transform: translate(50%, -50%);
+        transform-origin: 100%;
+      }
+    }
+
+    &--top-left {
+      &.ui-badge__inner--absolute {
+        top: 0;
+        left: 0;
+        right: auto;
+        transform: translate(-50%, -50%);
+        transform-origin: 0;
+      }
+    }
+
+    &--bottom-right {
+      &.ui-badge__inner--absolute {
+        top: auto;
+        right: 0;
+        bottom: 0;
+        transform: translate(50%, 50%);
+        transform-origin: 100%;
+      }
+    }
+
+    &--bottom-left {
+      &.ui-badge__inner--absolute {
+        top: auto;
+        left: 0;
+        right: auto;
+        bottom: 0;
+        transform: translate(-50%, 50%);
+        transform-origin: 0;
+      }
+    }
+
+    &--dot {
+      width: 16rpx;
+      height: 16rpx;
+      padding: 0;
+      min-width: 0;
+      border-radius: 50%;
     }
   }
 

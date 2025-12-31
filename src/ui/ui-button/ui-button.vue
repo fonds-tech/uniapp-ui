@@ -255,7 +255,6 @@ export default {
   &--large {
     height: var(--ui-size-large);
     font-size: var(--ui-font-size-lg);
-    font-weight: var(--ui-font-weight-bold);
   }
 
   &--primary {

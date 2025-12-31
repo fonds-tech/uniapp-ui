@@ -40,11 +40,11 @@
    * ======================================== */
 
   // 按钮/组件高度
-  --ui-size-mini: 46rpx; // 迷你 - 用于小标签、小按钮
-  --ui-size-small: 52rpx; // 小 - 用于输入框、小按钮
-  --ui-size-normal: 78rpx; // 正常 - 标准按钮
-  --ui-size-medium: 88rpx; // 中等 - 主要按钮
-  --ui-size-large: 100rpx; // 大 - 大按钮、重要操作
+  --ui-size-mini: 56rpx; // 迷你 - 用于小标签、小按钮 (28px)
+  --ui-size-small: 64rpx; // 小 - 用于紧凑按钮 (32px)
+  --ui-size-normal: 80rpx; // 正常 - 标准按钮 (40px)
+  --ui-size-medium: 88rpx; // 中等 - 主要按钮 (44px，符合 Apple HIG)
+  --ui-size-large: 100rpx; // 大 - 大按钮、重要操作 (50px)
 
   // 图标尺寸
   --ui-icon-size-xs: 16rpx; // 特小图标

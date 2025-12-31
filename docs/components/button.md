@@ -4,14 +4,14 @@
 
 ## 基础用法
 
-按钮支持 `primary`、`success`、`warning`、`error`、`info`、`default` 六种类型。
+按钮支持 `primary`、`success`、`warning`、`danger`、`info`、`default` 六种类型。
 
 ```vue
 <template>
   <ui-button type="primary">主要按钮</ui-button>
   <ui-button type="success">成功按钮</ui-button>
   <ui-button type="warning">警告按钮</ui-button>
-  <ui-button type="error">危险按钮</ui-button>
+  <ui-button type="danger">危险按钮</ui-button>
   <ui-button type="info">信息按钮</ui-button>
   <ui-button type="default">默认按钮</ui-button>
 </template>
