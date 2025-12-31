@@ -1,0 +1,11 @@
+{
+  "prettier.enable": true,
+  "editor.formatOnSave": true,
+  "eslint.useFlatConfig": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit",
+    "source.organizeImports": "never"
+  },
+  "eslint.runtime": "node",
+  "eslint.validate": ["javascript", "javascriptreact", "typescript", "typescriptreact", "vue", "html", "markdown", "json", "json5", "jsonc", "yaml", "toml", "xml"]
+}

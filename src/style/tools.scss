@@ -1,0 +1,30 @@
+/**
+ * 调试工具样式
+ */
+
+/* 调试模式：显示页面元素边框（使用伪类，不占用空间） */
+.__dev-debug-border__ {
+  view,
+  text,
+  image,
+  button,
+  input,
+  textarea,
+  scroll-view,
+  swiper,
+  navigator {
+    position: relative;
+
+    &::after {
+      top: 0;
+      left: 0;
+      right: 0;
+      border: 1px solid rgba(255, 0, 0, 0.3);
+      bottom: 0;
+      content: "";
+      position: absolute;
+      box-sizing: border-box;
+      pointer-events: none;
+    }
+  }
+}

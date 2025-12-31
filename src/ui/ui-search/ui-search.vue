@@ -1,0 +1,202 @@
+<template>
+  <view class="ui-search" :class="[customClass]" :style="[style]" @click="onClick">
+    <view class="ui-search__content" :class="[contentClass]" :style="[contentStyle]">
+      <view class="ui-search__icon">
+        <slot name="icon">
+          <ui-icon :name="icon" :size="iconSize" :color="iconColor" :weight="iconWeight" />
+        </slot>
+      </view>
+      <input
+        v-model="modelValue"
+        class="ui-search__value"
+        :class="[valueClass]"
+        :style="[valueStyle]"
+        type="text"
+        confirm-type="search"
+        :focus="focus"
+        :disabled="disabled"
+        :maxlength="maxlength"
+        :placeholder="placeholder"
+        :placeholder-style="placeholderStyle"
+        @blur="onBlur"
+        @focus="onFocus"
+        @confirm="onConfirm"
+      />
+      <view v-if="clearabled" class="ui-search__clear" @click.stop="onClickClear">
+        <slot name="clear">
+          <ui-icon name="clear" color="#999" size="28rpx" />
+        </slot>
+      </view>
+    </view>
+    <view v-if="action" class="ui-search__action" @click.stop="onClickAction">
+      <slot name="action">
+        <view class="ui-search__action__button" hover-class="ui-search__action__button--active" :style="[actionButtonStyle]">
+          {{ actionText }}
+        </view>
+      </slot>
+    </view>
+  </view>
+</template>
+
+<script setup lang="ts">
+import { useUnit, useColor, useStyle } from "../hooks"
+import { searchEmits, searchProps, searchInputAlign } from "./index"
+
+defineOptions({ name: "ui-search" })
+
+const props = defineProps(searchProps)
+const emits = defineEmits(searchEmits)
+const modelValue = ref(props.modelValue)
+
+const style = computed(() => {
+  const style: any = {}
+  style.height = useUnit(props.height)
+  style.margin = useUnit(props.margin)
+  return useStyle({ ...style, ...useStyle(props.customStyle) })
+})
+
+const contentStyle = computed(() => {
+  const style: any = {}
+  style.border = props.border
+  style.background = useColor(props.background)
+  style.borderRadius = useUnit(props.radius)
+  return useStyle(style)
+})
+
+const contentClass = computed(() => {
+  const list: string[] = []
+  if (props.round) list.push("ui-search__content--round")
+  return list
+})
+
+const valueStyle = computed(() => {
+  const style: any = {}
+  style.color = useColor(props.color)
+  style.fontSize = useUnit(props.fontSize)
+  if (searchInputAlign.includes(props.inputAlign)) style.textAlign = props.inputAlign
+  return useStyle({ ...style, ...useStyle(props.inputStyle) })
+})
+
+const valueClass = computed(() => {
+  const list: string[] = []
+  if (props.disabled) list.push("ui-search__value--disabled")
+  return list
+})
+
+const actionButtonStyle = computed(() => {
+  const style: any = {}
+  style.color = useColor(props.actionColor)
+  style.fontSize = useUnit(props.actionSize)
+  style.fontWeight = props.actionWeight
+  return useStyle(style)
+})
+
+const placeholderStyle = computed(() => {
+  const style: any = {}
+  if (props.fontSize) style.fontSize = useUnit(props.fontSize)
+  if (props.placeholderColor) style.color = useColor(props.placeholderColor)
+  return useStyle(style, "string")
+})
+
+const clearabled = computed(() => {
+  return props.clearabled && modelValue.value
+})
+
+watch(() => modelValue.value, updateValue)
+watch(
+  () => props.modelValue,
+  (val) => (modelValue.value = val),
+)
+
+function updateValue(value: string) {
+  emits("update:modelValue", value)
+  nextTick(() => emits("change", value))
+}
+
+function onBlur(event: any) {
+  emits("blur", event)
+}
+
+function onFocus(event: any) {
+  emits("focus", event)
+}
+
+function onConfirm() {
+  emits("search", modelValue.value)
+}
+
+function onClick(event: any) {
+  emits("click", event)
+}
+
+function onClickClear(event: any) {
+  modelValue.value = ""
+  updateValue("")
+  emits("clear", event)
+}
+
+function onClickAction(event: any) {
+  emits("action", event)
+}
+
+defineExpose({ name: "ui-search" })
+</script>
+
+<script lang="ts">
+export default {
+  name: "ui-search",
+  options: { virtualHost: true, multipleSlots: true, styleIsolation: "shared" },
+}
+</script>
+
+<style lang="scss">
+.ui-search {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  &__content {
+    flex: 1;
+    height: 100%;
+    display: flex;
+    padding: 0 16rpx;
+    align-items: center;
+    border-radius: 8rpx;
+    background-color: #f7f8fa;
+
+    &--round {
+      border-radius: 999px;
+    }
+  }
+
+  &__icon {
+    display: flex;
+    margin-right: 8rpx;
+  }
+
+  &__value {
+    width: 100%;
+    font-size: 28rpx;
+    &--disabled {
+      pointer-events: none;
+    }
+  }
+
+  &__clear {
+    margin-left: 16rpx;
+  }
+
+  &__action {
+    margin-left: 16rpx;
+    &__button {
+      color: #999;
+      padding: 0 16rpx;
+      font-size: 28rpx;
+
+      &--active {
+        opacity: 0.6;
+      }
+    }
+  }
+}
+</style>

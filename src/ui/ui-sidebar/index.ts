@@ -1,0 +1,78 @@
+import type Sidebar from "./ui-sidebar.vue"
+import type { PropType, InjectionKey, CSSProperties, ExtractPropTypes } from "vue"
+import { truthProp, buildProps, numericProp, makeNumericProp } from "../utils/props"
+
+export const sidebarKey: InjectionKey<SidebarProvide> = Symbol("ui-tabs")
+export const sidebarProps = buildProps("sidebar", {
+  /**
+   * 绑定值
+   */
+  modelValue: makeNumericProp(0),
+  /**
+   * 宽度
+   */
+  width: numericProp,
+  /**
+   * 高度，默认自动
+   */
+  height: numericProp,
+  /**
+   * 激活线条动画过渡时间，单位ms
+   */
+  duration: makeNumericProp(300),
+  /**
+   * 背景颜色
+   */
+  background: String,
+  /**
+   * 激活线条颜色
+   */
+  lineColor: String,
+  /**
+   * 激活线条宽度
+   */
+  lineWidth: numericProp,
+  /**
+   * 激活线条高度
+   */
+  lineHeight: makeNumericProp("40rpx"),
+  /**
+   * 激活线条圆角
+   */
+  lineRadius: numericProp,
+  /**
+   * 是否显示线条
+   */
+  showLine: truthProp,
+  /**
+   * 是否自动滚动
+   */
+  autoScroll: truthProp,
+  /**
+   * 元素层级
+   */
+  zIndex: numericProp,
+  /**
+   * 自定义类名
+   */
+  customClass: String,
+  /**
+   * 自定义样式
+   */
+  customStyle: [String, Object] as PropType<string | CSSProperties>,
+})
+
+export const sidebarEmits = {
+  change: (name: number | string) => true,
+  clickItem: (name: number | string, index: number) => true,
+  "update:modelValue": (name: number | string) => true,
+}
+
+export type SidebarEmits = typeof sidebarEmits
+export type SidebarProps = ExtractPropTypes<typeof sidebarProps>
+export interface SidebarProvide {
+  props: SidebarProps
+  clickItem: (name: string | number) => void
+  updateModelValue: (value: string | number) => void
+}
+export type SidebarInstance = InstanceType<typeof Sidebar>
