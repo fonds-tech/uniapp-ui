@@ -1,39 +1,35 @@
 <template>
-  <view class="demo-page">
-    <!-- 基础用法 -->
-    <view class="demo-section">
-      <text class="section-title">基础用法</text>
-      <view class="demo-block">
+  <demo-page>
+    <demo-section title="基础用法">
+      <demo-block>
         <ui-button type="primary" @click="showBasic">基础用法</ui-button>
-      </view>
-    </view>
+      </demo-block>
+    </demo-section>
 
-    <!-- 通知类型 -->
-    <view class="demo-section">
-      <text class="section-title">通知类型</text>
-      <view class="demo-block">
+    <demo-section title="通知类型">
+      <demo-block>
         <ui-button type="primary" @click="showPrimary">主要通知</ui-button>
         <ui-button type="success" @click="showSuccess">成功通知</ui-button>
         <ui-button type="warning" @click="showWarning">警告通知</ui-button>
         <ui-button type="danger" @click="showDanger">危险通知</ui-button>
-      </view>
-    </view>
+      </demo-block>
+    </demo-section>
 
-    <!-- 自定义配置 -->
-    <view class="demo-section">
-      <text class="section-title">自定义配置</text>
-      <view class="demo-block">
+    <demo-section title="自定义配置">
+      <demo-block>
         <ui-button type="primary" @click="showCustom">自定义颜色</ui-button>
         <ui-button type="primary" @click="showDuration">自定义时长</ui-button>
-      </view>
-    </view>
+      </demo-block>
+    </demo-section>
 
-    <!-- 通知组件 -->
+    <!-- Notify Component -->
     <ui-notify ref="notifyRef" />
-  </view>
+  </demo-page>
 </template>
 
 <script setup lang="ts">
+import { DemoPage, DemoBlock, DemoSection } from "../components"
+
 definePage({
   style: { navigationBarTitleText: "Notify 消息通知" },
 })
@@ -68,7 +64,3 @@ function showDuration() {
   notifyRef.value?.show({ message: "5秒后关闭", duration: 5000 })
 }
 </script>
-
-<style lang="scss">
-@use "../styles/demo.scss" as *;
-</style>

@@ -1,73 +1,61 @@
 <template>
-  <view class="demo-page">
-    <!-- 基础用法 -->
-    <view class="demo-section">
-      <text class="section-title">基础用法</text>
-      <view class="demo-block-full">
+  <demo-page>
+    <demo-section title="基础用法">
+      <demo-block direction="column">
         <ui-progress :percentage="50" />
-      </view>
-    </view>
+      </demo-block>
+    </demo-section>
 
-    <!-- 线条粗细 -->
-    <view class="demo-section">
-      <text class="section-title">线条粗细</text>
-      <view class="demo-block-full">
+    <demo-section title="线条粗细">
+      <demo-block direction="column">
         <ui-progress :percentage="50" stroke-width="12rpx" />
         <ui-progress :percentage="50" stroke-width="24rpx" />
-      </view>
-    </view>
+      </demo-block>
+    </demo-section>
 
-    <!-- 置灰 -->
-    <view class="demo-section">
-      <text class="section-title">置灰</text>
-      <view class="demo-block-full">
+    <demo-section title="置灰">
+      <demo-block direction="column">
         <ui-progress :percentage="50" inactive />
-      </view>
-    </view>
+      </demo-block>
+    </demo-section>
 
-    <!-- 不同颜色 -->
-    <view class="demo-section">
-      <text class="section-title">不同颜色</text>
-      <view class="demo-block-full">
+    <demo-section title="不同颜色">
+      <demo-block direction="column">
         <ui-progress :percentage="30" color="primary" />
         <ui-progress :percentage="50" color="success" />
         <ui-progress :percentage="70" color="warning" />
-        <ui-progress :percentage="90" color="error" />
-      </view>
-    </view>
+        <ui-progress :percentage="90" color="danger" />
+      </demo-block>
+    </demo-section>
 
-    <!-- 渐变色 -->
-    <view class="demo-section">
-      <text class="section-title">渐变色</text>
-      <view class="demo-block-full">
+    <demo-section title="渐变色">
+      <demo-block direction="column">
         <ui-progress :percentage="percentage" :color="['#3b82f6', '#8b5cf6']" />
-      </view>
-    </view>
+      </demo-block>
+    </demo-section>
 
-    <!-- 显示百分比 -->
-    <view class="demo-section">
-      <text class="section-title">显示百分比</text>
-      <view class="demo-block-full">
+    <demo-section title="显示百分比">
+      <demo-block direction="column">
         <ui-progress :percentage="percentage" show-text />
         <ui-progress :percentage="percentage" show-text text-inside />
-      </view>
-    </view>
+      </demo-block>
+    </demo-section>
 
-    <!-- 动态演示 -->
-    <view class="demo-section">
-      <text class="section-title">动态演示</text>
-      <view class="demo-block-full">
+    <demo-section title="动态演示">
+      <demo-block direction="column">
         <ui-progress :percentage="percentage" show-text />
-        <view class="demo-block" style="margin-top: 24rpx">
+        <demo-block>
           <ui-button size="small" @click="decrease">减少</ui-button>
           <ui-button size="small" type="primary" @click="increase">增加</ui-button>
-        </view>
-      </view>
-    </view>
-  </view>
+        </demo-block>
+      </demo-block>
+    </demo-section>
+  </demo-page>
 </template>
 
 <script setup lang="ts">
+import { DemoPage, DemoBlock, DemoSection } from "../components"
+
 definePage({
   style: { navigationBarTitleText: "Progress 进度条" },
 })
@@ -82,7 +70,3 @@ function decrease() {
   percentage.value = Math.max(0, percentage.value - 10)
 }
 </script>
-
-<style lang="scss">
-@use "../styles/demo.scss" as *;
-</style>

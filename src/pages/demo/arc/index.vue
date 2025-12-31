@@ -1,63 +1,51 @@
 <template>
-  <view class="demo-page">
-    <!-- 基础用法 -->
-    <view class="demo-section">
-      <text class="section-title">基础用法</text>
-      <view class="demo-block arc-demo">
-        <ui-arc background="#ff4757" />
-      </view>
-    </view>
+  <demo-page>
+    <demo-section title="基础用法">
+      <demo-block class="arc-demo">
+        <ui-arc background="#1989fa" />
+      </demo-block>
+    </demo-section>
 
-    <!-- 自定义高度 -->
-    <view class="demo-section">
-      <text class="section-title">自定义高度</text>
-      <view class="demo-block arc-demo">
-        <ui-arc height="200rpx" background="#2ed573" />
-      </view>
-    </view>
+    <demo-section title="自定义高度">
+      <demo-block class="arc-demo">
+        <ui-arc height="200rpx" background="#07c160" />
+      </demo-block>
+    </demo-section>
 
-    <!-- 自定义圆弧 -->
-    <view class="demo-section">
-      <text class="section-title">自定义圆弧弧度</text>
-      <view class="demo-block arc-demo">
-        <ui-arc height="150rpx" :percent="80" background="#1e90ff" />
-      </view>
-    </view>
+    <demo-section title="自定义圆弧弧度">
+      <demo-block class="arc-demo">
+        <ui-arc height="150rpx" :percent="80" background="#1989fa" />
+      </demo-block>
+    </demo-section>
 
-    <!-- 渐变色 -->
-    <view class="demo-section">
-      <text class="section-title">渐变背景</text>
-      <view class="demo-block arc-demo">
+    <demo-section title="渐变背景">
+      <demo-block class="arc-demo">
         <ui-arc height="180rpx" background="linear-gradient(135deg, #667eea 0%, #764ba2 100%)" />
-      </view>
-    </view>
+      </demo-block>
+    </demo-section>
 
-    <!-- 组合使用 -->
-    <view class="demo-section">
-      <text class="section-title">组合使用</text>
-      <view class="demo-block arc-combined">
-        <ui-arc height="200rpx" :fixed="false" background="#ff6b6b">
+    <demo-section title="组合使用">
+      <demo-block class="arc-combined">
+        <ui-arc height="200rpx" :fixed="false" background="#ee0a24">
           <view class="arc-content">
             <text class="arc-title">圆弧装饰</text>
             <text class="arc-desc">可用于页面顶部装饰</text>
           </view>
         </ui-arc>
-      </view>
-    </view>
-  </view>
+      </demo-block>
+    </demo-section>
+  </demo-page>
 </template>
 
 <script setup lang="ts">
+import { DemoPage, DemoBlock, DemoSection } from "../components"
+
 definePage({
   style: { navigationBarTitleText: "Arc 圆弧进度" },
 })
-
-// Arc demo page
 </script>
 
-<style lang="scss">
-@use "../styles/demo.scss" as *;
-
+<style lang="scss" scoped>
 .arc-demo {
   height: 300rpx;
   overflow: hidden;

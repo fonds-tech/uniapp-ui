@@ -1,20 +1,16 @@
 <template>
-  <view class="demo-page">
-    <!-- 基础用法 -->
-    <view class="demo-section">
-      <text class="section-title">基础用法</text>
-      <view class="demo-block">
+  <demo-page>
+    <demo-section title="基础用法">
+      <demo-block direction="column">
         <ui-skeleton>
           <ui-skeleton-title />
           <ui-skeleton-paragraph />
         </ui-skeleton>
-      </view>
-    </view>
+      </demo-block>
+    </demo-section>
 
-    <!-- 显示头像 -->
-    <view class="demo-section">
-      <text class="section-title">显示头像</text>
-      <view class="demo-block">
+    <demo-section title="显示头像">
+      <demo-block direction="column">
         <ui-skeleton>
           <view class="skeleton-row">
             <ui-skeleton-avatar />
@@ -24,56 +20,48 @@
             </view>
           </view>
         </ui-skeleton>
-      </view>
-    </view>
+      </demo-block>
+    </demo-section>
 
-    <!-- 显示图片 -->
-    <view class="demo-section">
-      <text class="section-title">显示图片</text>
-      <view class="demo-block">
+    <demo-section title="显示图片">
+      <demo-block direction="column">
         <ui-skeleton>
           <ui-skeleton-image />
           <ui-skeleton-title />
           <ui-skeleton-paragraph />
         </ui-skeleton>
-      </view>
-    </view>
+      </demo-block>
+    </demo-section>
 
-    <!-- 关闭动画 -->
-    <view class="demo-section">
-      <text class="section-title">关闭动画</text>
-      <view class="demo-block">
+    <demo-section title="关闭动画">
+      <demo-block direction="column">
         <ui-skeleton :animate="false">
           <ui-skeleton-title />
           <ui-skeleton-paragraph />
         </ui-skeleton>
-      </view>
-    </view>
+      </demo-block>
+    </demo-section>
 
-    <!-- 自定义背景色 -->
-    <view class="demo-section">
-      <text class="section-title">自定义背景色</text>
-      <view class="demo-block">
+    <demo-section title="自定义背景色">
+      <demo-block direction="column">
         <ui-skeleton background="#e0e0e0">
           <ui-skeleton-title />
           <ui-skeleton-paragraph />
         </ui-skeleton>
-      </view>
-    </view>
-  </view>
+      </demo-block>
+    </demo-section>
+  </demo-page>
 </template>
 
 <script setup lang="ts">
+import { DemoPage, DemoBlock, DemoSection } from "../components"
+
 definePage({
   style: { navigationBarTitleText: "Skeleton 骨架屏" },
 })
-
-// Skeleton demo page
 </script>
 
-<style lang="scss">
-@use "../styles/demo.scss" as *;
-
+<style lang="scss" scoped>
 .skeleton-row {
   gap: 20rpx;
   display: flex;

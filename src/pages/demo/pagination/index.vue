@@ -1,14 +1,9 @@
 <template>
-  <view class="demo-page">
-    <!-- 基础用法 -->
-    <view class="demo-section">
-      <text class="section-title">基础用法</text>
-      <text class="section-desc">分页组件用于列表数据的分页加载</text>
-    </view>
+  <demo-page>
+    <demo-section title="基础用法" desc="分页组件用于列表数据的分页加载" />
 
-    <view class="demo-section">
-      <text class="section-title">模拟列表</text>
-      <view class="demo-block">
+    <demo-section title="模拟列表">
+      <demo-block direction="column">
         <ui-pagination :list="list" :page="page" :page-size="pageSize" :total="total" :loading="loading" @load="onLoad" @refresh="onRefresh">
           <template #default="{ data }">
             <view v-for="item in data" :key="item.id" class="list-item">
@@ -17,23 +12,23 @@
             </view>
           </template>
         </ui-pagination>
-      </view>
-    </view>
+      </demo-block>
+    </demo-section>
 
-    <!-- 加载状态 -->
-    <view class="demo-section">
-      <text class="section-title">当前状态</text>
-      <view class="demo-block status-info">
+    <demo-section title="当前状态">
+      <demo-block direction="column" class="status-info">
         <text>当前页: {{ page }}</text>
         <text>每页数量: {{ pageSize }}</text>
         <text>总数: {{ total }}</text>
         <text>加载中: {{ loading ? "是" : "否" }}</text>
-      </view>
-    </view>
-  </view>
+      </demo-block>
+    </demo-section>
+  </demo-page>
 </template>
 
 <script setup lang="ts">
+import { DemoPage, DemoBlock, DemoSection } from "../components"
+
 definePage({
   style: { navigationBarTitleText: "Pagination 分页" },
 })
@@ -83,16 +78,7 @@ onMounted(() => {
 })
 </script>
 
-<style lang="scss">
-@use "../styles/demo.scss" as *;
-
-.section-desc {
-  color: var(--ui-color-text-secondary);
-  display: block;
-  font-size: 24rpx;
-  margin-top: 8rpx;
-}
-
+<style lang="scss" scoped>
 .list-item {
   padding: 24rpx;
   border-bottom: 1rpx solid var(--ui-color-border-light);
@@ -118,8 +104,6 @@ onMounted(() => {
 .status-info {
   gap: 12rpx;
   color: var(--ui-color-text-secondary);
-  display: flex;
   font-size: 26rpx;
-  flex-direction: column;
 }
 </style>

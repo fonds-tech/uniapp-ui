@@ -1,41 +1,33 @@
 <template>
-  <view class="demo-page">
-    <!-- 基础用法 -->
-    <view class="demo-section">
-      <text class="section-title">基础用法</text>
-      <view class="demo-block">
+  <demo-page>
+    <demo-section title="基础用法">
+      <demo-block>
         <ui-button type="primary" @click="showCenter = true">居中弹出</ui-button>
-      </view>
-    </view>
+      </demo-block>
+    </demo-section>
 
-    <!-- 弹出位置 -->
-    <view class="demo-section">
-      <text class="section-title">弹出位置</text>
-      <view class="demo-block">
+    <demo-section title="弹出位置">
+      <demo-block>
         <ui-button @click="showTop = true">顶部弹出</ui-button>
         <ui-button @click="showBottom = true">底部弹出</ui-button>
         <ui-button @click="showLeft = true">左侧弹出</ui-button>
         <ui-button @click="showRight = true">右侧弹出</ui-button>
-      </view>
-    </view>
+      </demo-block>
+    </demo-section>
 
-    <!-- 关闭图标 -->
-    <view class="demo-section">
-      <text class="section-title">关闭图标</text>
-      <view class="demo-block">
+    <demo-section title="关闭图标">
+      <demo-block>
         <ui-button type="primary" @click="showClose = true">显示关闭图标</ui-button>
-      </view>
-    </view>
+      </demo-block>
+    </demo-section>
 
-    <!-- 圆角弹窗 -->
-    <view class="demo-section">
-      <text class="section-title">圆角弹窗</text>
-      <view class="demo-block">
+    <demo-section title="圆角弹窗">
+      <demo-block>
         <ui-button type="primary" @click="showRound = true">圆角弹窗</ui-button>
-      </view>
-    </view>
+      </demo-block>
+    </demo-section>
 
-    <!-- 弹出层组件 -->
+    <!-- Popup Components -->
     <ui-popup v-model:show="showCenter" position="center">
       <view class="popup-content center-content">
         <text>居中弹出内容</text>
@@ -77,48 +69,11 @@
         <text>圆角弹窗内容</text>
       </view>
     </ui-popup>
-
-    <!-- API 说明 -->
-    <view class="api-section">
-      <text class="section-title">常用属性</text>
-      <view class="api-table">
-        <view class="api-row api-header">
-          <text class="api-cell">属性</text>
-          <text class="api-cell">说明</text>
-          <text class="api-cell">类型</text>
-        </view>
-        <view class="api-row">
-          <text class="api-cell">v-model:show</text>
-          <text class="api-cell">是否显示弹出层</text>
-          <text class="api-cell">boolean</text>
-        </view>
-        <view class="api-row">
-          <text class="api-cell">position</text>
-          <text class="api-cell">弹出位置</text>
-          <text class="api-cell">top/bottom/left/right/center</text>
-        </view>
-        <view class="api-row">
-          <text class="api-cell">round</text>
-          <text class="api-cell">是否圆角</text>
-          <text class="api-cell">boolean</text>
-        </view>
-        <view class="api-row">
-          <text class="api-cell">closeable</text>
-          <text class="api-cell">是否显示关闭图标</text>
-          <text class="api-cell">boolean</text>
-        </view>
-        <view class="api-row">
-          <text class="api-cell">overlay</text>
-          <text class="api-cell">是否显示遮罩层</text>
-          <text class="api-cell">boolean</text>
-        </view>
-      </view>
-    </view>
-  </view>
+  </demo-page>
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue"
+import { DemoPage, DemoBlock, DemoSection } from "../components"
 
 definePage({
   style: { navigationBarTitleText: "Popup 弹出层" },
@@ -134,34 +89,6 @@ const showRound = ref(false)
 </script>
 
 <style lang="scss" scoped>
-.demo-page {
-  padding: 24rpx 32rpx;
-  background: #f5f6fa;
-  min-height: 100vh;
-  padding-bottom: 60rpx;
-}
-
-.demo-section {
-  padding: 24rpx;
-  background: #fff;
-  border-radius: 16rpx;
-  margin-bottom: 24rpx;
-}
-
-.section-title {
-  color: #333;
-  display: block;
-  font-size: 30rpx;
-  font-weight: 600;
-  margin-bottom: 24rpx;
-}
-
-.demo-block {
-  gap: 16rpx;
-  display: flex;
-  flex-wrap: wrap;
-}
-
 .popup-content {
   display: flex;
   padding: 48rpx;
@@ -186,35 +113,5 @@ const showRound = ref(false)
 .right-content {
   width: 50vw;
   height: 100vh;
-}
-
-.api-section {
-  padding: 24rpx;
-  background: #fff;
-  overflow-x: auto;
-  border-radius: 16rpx;
-  margin-bottom: 24rpx;
-}
-
-.api-table {
-  min-width: 500rpx;
-}
-
-.api-row {
-  display: flex;
-  border-bottom: 1rpx solid #eee;
-
-  &.api-header {
-    background: #f8f9fa;
-    font-weight: 600;
-  }
-}
-
-.api-cell {
-  flex: 1;
-  color: #333;
-  padding: 16rpx 12rpx;
-  font-size: 24rpx;
-  word-break: break-all;
 }
 </style>

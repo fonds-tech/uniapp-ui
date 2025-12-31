@@ -1,62 +1,54 @@
 <template>
-  <view class="demo-page">
-    <!-- 基础用法 -->
-    <view class="demo-section">
-      <text class="section-title">基础用法</text>
-      <view class="demo-block number-center">
+  <demo-page>
+    <demo-section title="基础用法">
+      <demo-block justify="center">
         <ui-number-roll :value="value1" />
-      </view>
-    </view>
+      </demo-block>
+    </demo-section>
 
-    <!-- 自定义样式 -->
-    <view class="demo-section">
-      <text class="section-title">自定义样式</text>
-      <view class="demo-block number-center">
-        <ui-number-roll :value="value2" color="#ff4757" :font-size="48" font-weight="600" />
-      </view>
-    </view>
+    <demo-section title="自定义样式">
+      <demo-block justify="center">
+        <ui-number-roll :value="value2" color="#ee0a24" :font-size="48" font-weight="600" />
+      </demo-block>
+    </demo-section>
 
-    <!-- 千位分隔符 -->
-    <view class="demo-section">
-      <text class="section-title">千位分隔符</text>
-      <view class="demo-block number-center">
+    <demo-section title="千位分隔符">
+      <demo-block justify="center">
         <ui-number-roll :value="value3" thousands-sep="," :font-size="36" />
-      </view>
-    </view>
+      </demo-block>
+    </demo-section>
 
-    <!-- 小数位数 -->
-    <view class="demo-section">
-      <text class="section-title">小数位数</text>
-      <view class="demo-block number-center">
+    <demo-section title="小数位数">
+      <demo-block justify="center">
         <ui-number-roll :value="value4" :decimal-places="2" :trim-zero="false" :font-size="36" />
-      </view>
-    </view>
+      </demo-block>
+    </demo-section>
 
-    <!-- 动态更新 -->
-    <view class="demo-section">
-      <text class="section-title">动态更新</text>
-      <view class="demo-block number-center">
-        <ui-number-roll :value="dynamicValue" :font-size="48" color="#1e90ff" font-weight="600" />
-      </view>
-      <view class="demo-block button-group">
-        <ui-button size="small" @click="addValue">+100</ui-button>
-        <ui-button size="small" @click="subtractValue">-100</ui-button>
-        <ui-button size="small" type="primary" @click="randomValue">随机</ui-button>
-      </view>
-    </view>
+    <demo-section title="动态更新">
+      <demo-block direction="column">
+        <demo-block justify="center">
+          <ui-number-roll :value="dynamicValue" :font-size="48" color="#1989fa" font-weight="600" />
+        </demo-block>
+        <demo-block justify="center">
+          <ui-button size="small" @click="addValue">+100</ui-button>
+          <ui-button size="small" @click="subtractValue">-100</ui-button>
+          <ui-button size="small" type="primary" @click="randomValue">随机</ui-button>
+        </demo-block>
+      </demo-block>
+    </demo-section>
 
-    <!-- 金额展示 -->
-    <view class="demo-section">
-      <text class="section-title">金额展示</text>
-      <view class="demo-block money-display">
+    <demo-section title="金额展示">
+      <demo-block justify="center" align="baseline" class="money-display">
         <text class="money-symbol">¥</text>
-        <ui-number-roll :value="moneyValue" thousands-sep="," :decimal-places="2" :trim-zero="false" :font-size="56" color="#ff4757" font-weight="600" />
-      </view>
-    </view>
-  </view>
+        <ui-number-roll :value="moneyValue" thousands-sep="," :decimal-places="2" :trim-zero="false" :font-size="56" color="#ee0a24" font-weight="600" />
+      </demo-block>
+    </demo-section>
+  </demo-page>
 </template>
 
 <script setup lang="ts">
+import { DemoPage, DemoBlock, DemoSection } from "../components"
+
 definePage({
   style: { navigationBarTitleText: "NumberRoll 数字滚动" },
 })
@@ -81,28 +73,9 @@ function randomValue() {
 }
 </script>
 
-<style lang="scss">
-@use "../styles/demo.scss" as *;
-
-.number-center {
-  display: flex;
-  justify-content: center;
-}
-
-.button-group {
-  gap: 20rpx;
-  display: flex;
-  justify-content: center;
-}
-
-.money-display {
-  display: flex;
-  align-items: baseline;
-  justify-content: center;
-}
-
+<style lang="scss" scoped>
 .money-symbol {
-  color: #ff4757;
+  color: #ee0a24;
   font-size: 36rpx;
   font-weight: 600;
   margin-right: 8rpx;

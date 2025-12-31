@@ -18,7 +18,7 @@ UiFloatButton 组件，属性与事件以源码注释为准。
 | -------------- | -------------------------- | ----------------------------------------------------- | ----------------------------------- | ---------------------------------------------- |
 | icon           | 图标名称                   | makeStringProp("plus")                                | -                                   | -                                              |
 | text           | 按钮文本，为空时只显示图标 | string                                                | ""                                  | -                                              |
-| type           | 按钮类型                   | string                                                | "primary"                           | primary, success, warning, danger, default      |
+| type           | 按钮类型                   | string                                                | "primary"                           | primary, success, warning, danger, default     |
 | size           | 按钮尺寸                   | makeNumericProp("100rpx")                             | -                                   | -                                              |
 | width          | 按钮宽度，优先级高于size   | numericProp                                           | -                                   | -                                              |
 | height         | 按钮高度，优先级高于size   | numericProp                                           | -                                   | -                                              |

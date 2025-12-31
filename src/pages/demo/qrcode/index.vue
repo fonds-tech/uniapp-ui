@@ -1,79 +1,54 @@
 <template>
-  <view class="demo-page">
-    <!-- 基础用法 -->
-    <view class="demo-section">
-      <text class="section-title">基础用法</text>
-      <view class="demo-block qrcode-center">
+  <demo-page>
+    <demo-section title="基础用法">
+      <demo-block justify="center">
         <ui-qrcode value="https://example.com" />
-      </view>
-    </view>
+      </demo-block>
+    </demo-section>
 
-    <!-- 自定义大小 -->
-    <view class="demo-section">
-      <text class="section-title">自定义大小</text>
-      <view class="demo-block qrcode-center">
+    <demo-section title="自定义大小">
+      <demo-block justify="center">
         <ui-qrcode value="https://example.com" size="300rpx" />
-      </view>
-    </view>
+      </demo-block>
+    </demo-section>
 
-    <!-- 自定义颜色 -->
-    <view class="demo-section">
-      <text class="section-title">自定义颜色</text>
-      <view class="demo-block qrcode-row">
-        <ui-qrcode value="https://example.com" size="160rpx" foreground="#ff4757" />
-        <ui-qrcode value="https://example.com" size="160rpx" foreground="#2ed573" />
-        <ui-qrcode value="https://example.com" size="160rpx" foreground="#1e90ff" />
-      </view>
-    </view>
+    <demo-section title="自定义颜色">
+      <demo-block justify="center" gap="24rpx">
+        <ui-qrcode value="https://example.com" size="160rpx" foreground="#1989fa" />
+        <ui-qrcode value="https://example.com" size="160rpx" foreground="#07c160" />
+        <ui-qrcode value="https://example.com" size="160rpx" foreground="#ee0a24" />
+      </demo-block>
+    </demo-section>
 
-    <!-- 带Logo -->
-    <view class="demo-section">
-      <text class="section-title">带Logo</text>
-      <view class="demo-block qrcode-center">
+    <demo-section title="带Logo">
+      <demo-block justify="center">
         <ui-qrcode value="https://example.com" size="250rpx" icon="https://picsum.photos/60" icon-size="60rpx" />
-      </view>
-    </view>
+      </demo-block>
+    </demo-section>
 
-    <!-- 条形码 -->
-    <view class="demo-section">
-      <text class="section-title">条形码</text>
-      <view class="demo-block qrcode-center">
+    <demo-section title="条形码">
+      <demo-block justify="center">
         <ui-qrcode type="barcode" value="1234567890" barcode-width="500rpx" barcode-height="120rpx" />
-      </view>
-    </view>
+      </demo-block>
+    </demo-section>
 
-    <!-- 动态生成 -->
-    <view class="demo-section">
-      <text class="section-title">动态生成</text>
-      <view class="demo-block">
+    <demo-section title="动态生成">
+      <demo-block direction="column">
         <ui-input v-model="inputValue" placeholder="输入内容生成二维码" />
-      </view>
-      <view class="demo-block qrcode-center">
+      </demo-block>
+      <demo-block justify="center">
         <ui-qrcode :value="inputValue || 'Hello World'" size="200rpx" />
-      </view>
-    </view>
-  </view>
+      </demo-block>
+    </demo-section>
+  </demo-page>
 </template>
 
 <script setup lang="ts">
+import { DemoPage, DemoBlock, DemoSection } from "../components"
+
 definePage({
   style: { navigationBarTitleText: "QRCode 二维码" },
 })
 
 const inputValue = ref("")
 </script>
-
-<style lang="scss">
-@use "../styles/demo.scss" as *;
-
-.qrcode-center {
-  display: flex;
-  justify-content: center;
-}
-
-.qrcode-row {
-  gap: 24rpx;
-  display: flex;
-  justify-content: center;
-}
-</style>

@@ -1,56 +1,50 @@
 <template>
-  <view class="demo-page">
-    <!-- 基础用法 -->
-    <view class="demo-section">
-      <text class="section-title">基础用法</text>
-      <view class="demo-block sidebar-wrap">
+  <demo-page>
+    <demo-section title="基础用法">
+      <demo-block class="sidebar-wrap">
         <ui-sidebar v-model="active1">
           <ui-sidebar-item title="标签一" />
           <ui-sidebar-item title="标签二" />
           <ui-sidebar-item title="标签三" />
         </ui-sidebar>
-      </view>
-    </view>
+      </demo-block>
+    </demo-section>
 
-    <!-- 徽标提示 -->
-    <view class="demo-section">
-      <text class="section-title">徽标提示</text>
-      <view class="demo-block sidebar-wrap">
+    <demo-section title="徽标提示">
+      <demo-block class="sidebar-wrap">
         <ui-sidebar v-model="active2">
           <ui-sidebar-item title="标签一" dot />
           <ui-sidebar-item title="标签二" badge="5" />
           <ui-sidebar-item title="标签三" badge="20" />
         </ui-sidebar>
-      </view>
-    </view>
+      </demo-block>
+    </demo-section>
 
-    <!-- 禁用选项 -->
-    <view class="demo-section">
-      <text class="section-title">禁用选项</text>
-      <view class="demo-block sidebar-wrap">
+    <demo-section title="禁用选项">
+      <demo-block class="sidebar-wrap">
         <ui-sidebar v-model="active3">
           <ui-sidebar-item title="标签一" />
           <ui-sidebar-item title="标签二" disabled />
           <ui-sidebar-item title="标签三" />
         </ui-sidebar>
-      </view>
-    </view>
+      </demo-block>
+    </demo-section>
 
-    <!-- 切换事件 -->
-    <view class="demo-section">
-      <text class="section-title">切换事件</text>
-      <view class="demo-block sidebar-wrap">
+    <demo-section title="切换事件">
+      <demo-block class="sidebar-wrap">
         <ui-sidebar v-model="active4" @change="onChange">
           <ui-sidebar-item title="标签一" />
           <ui-sidebar-item title="标签二" />
           <ui-sidebar-item title="标签三" />
         </ui-sidebar>
-      </view>
-    </view>
-  </view>
+      </demo-block>
+    </demo-section>
+  </demo-page>
 </template>
 
 <script setup lang="ts">
+import { DemoPage, DemoBlock, DemoSection } from "../components"
+
 definePage({
   style: { navigationBarTitleText: "Sidebar 侧边栏" },
 })
@@ -65,9 +59,7 @@ function onChange(index: number) {
 }
 </script>
 
-<style lang="scss">
-@use "../styles/demo.scss" as *;
-
+<style lang="scss" scoped>
 .sidebar-wrap {
   height: 300rpx;
   overflow: hidden;

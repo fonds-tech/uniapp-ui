@@ -1,30 +1,23 @@
 <template>
-  <view class="demo-page">
-    <!-- 基础用法 -->
-    <view class="demo-section">
-      <text class="section-title">基础用法</text>
-      <view class="demo-block">
+  <demo-page>
+    <demo-section title="基础用法">
+      <demo-block>
         <ui-cell title="选择地区" :value="areaText1 || '请选择'" is-link @click="show1 = true" />
-      </view>
-    </view>
+      </demo-block>
+    </demo-section>
 
-    <!-- 自定义颜色 -->
-    <view class="demo-section">
-      <text class="section-title">自定义颜色</text>
-      <view class="demo-block">
+    <demo-section title="自定义颜色">
+      <demo-block>
         <ui-cell title="选择地区" :value="areaText2 || '请选择'" is-link @click="show2 = true" />
-      </view>
-    </view>
+      </demo-block>
+    </demo-section>
 
-    <!-- 禁用选项 -->
-    <view class="demo-section">
-      <text class="section-title">禁用选项</text>
-      <view class="demo-block">
+    <demo-section title="禁用选项">
+      <demo-block>
         <ui-cell title="选择地区" :value="areaText3 || '请选择'" is-link @click="show3 = true" />
-      </view>
-    </view>
+      </demo-block>
+    </demo-section>
 
-    <!-- 弹出层 -->
     <ui-popup v-model:show="show1" mode="bottom" border-radius="24rpx 24rpx 0 0">
       <ui-cascader
         v-model="value1"
@@ -55,10 +48,12 @@
         @finish="onFinish3"
       />
     </ui-popup>
-  </view>
+  </demo-page>
 </template>
 
 <script setup lang="ts">
+import { DemoPage, DemoBlock, DemoSection } from "../components"
+
 definePage({
   style: { navigationBarTitleText: "Cascader 级联选择" },
 })
@@ -184,7 +179,3 @@ function onFinish3(data: FinishData) {
   show3.value = false
 }
 </script>
-
-<style lang="scss">
-@use "../styles/demo.scss" as *;
-</style>

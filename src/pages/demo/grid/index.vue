@@ -1,9 +1,7 @@
 <template>
-  <view class="demo-page">
-    <!-- 基础用法 -->
-    <view class="demo-section">
-      <text class="section-title">基础用法</text>
-      <view class="demo-block-full">
+  <demo-page>
+    <demo-section title="基础用法">
+      <demo-block direction="column">
         <ui-row>
           <ui-col :span="8">
             <view class="grid-item dark">span: 8</view>
@@ -15,13 +13,11 @@
             <view class="grid-item dark">span: 8</view>
           </ui-col>
         </ui-row>
-      </view>
-    </view>
+      </demo-block>
+    </demo-section>
 
-    <!-- 不同比例 -->
-    <view class="demo-section">
-      <text class="section-title">不同比例</text>
-      <view class="demo-block-full">
+    <demo-section title="不同比例">
+      <demo-block direction="column">
         <ui-row>
           <ui-col :span="4">
             <view class="grid-item dark">span: 4</view>
@@ -46,13 +42,11 @@
             <view class="grid-item light">span: 12</view>
           </ui-col>
         </ui-row>
-      </view>
-    </view>
+      </demo-block>
+    </demo-section>
 
-    <!-- 列间距 -->
-    <view class="demo-section">
-      <text class="section-title">列间距</text>
-      <view class="demo-block-full">
+    <demo-section title="列间距">
+      <demo-block direction="column">
         <ui-row gutter="20rpx">
           <ui-col :span="8">
             <view class="grid-item dark">span: 8</view>
@@ -64,13 +58,11 @@
             <view class="grid-item dark">span: 8</view>
           </ui-col>
         </ui-row>
-      </view>
-    </view>
+      </demo-block>
+    </demo-section>
 
-    <!-- 列偏移 -->
-    <view class="demo-section">
-      <text class="section-title">列偏移</text>
-      <view class="demo-block-full">
+    <demo-section title="列偏移">
+      <demo-block direction="column">
         <ui-row>
           <ui-col :span="8">
             <view class="grid-item dark">span: 8</view>
@@ -87,13 +79,11 @@
             <view class="grid-item dark">offset: 6</view>
           </ui-col>
         </ui-row>
-      </view>
-    </view>
+      </demo-block>
+    </demo-section>
 
-    <!-- 对齐方式 -->
-    <view class="demo-section">
-      <text class="section-title">对齐方式</text>
-      <view class="demo-block-full">
+    <demo-section title="对齐方式">
+      <demo-block direction="column">
         <ui-row justify="center">
           <ui-col :span="6">
             <view class="grid-item dark">居中</view>
@@ -118,22 +108,20 @@
             <view class="grid-item light">两端对齐</view>
           </ui-col>
         </ui-row>
-      </view>
-    </view>
-  </view>
+      </demo-block>
+    </demo-section>
+  </demo-page>
 </template>
 
 <script setup lang="ts">
+import { DemoPage, DemoBlock, DemoSection } from "../components"
+
 definePage({
   style: { navigationBarTitleText: "Row/Col 栅格" },
 })
-
-// Grid demo page
 </script>
 
-<style lang="scss">
-@use "../styles/demo.scss" as *;
-
+<style lang="scss" scoped>
 .grid-item {
   height: 60rpx;
   display: flex;
@@ -149,11 +137,11 @@ definePage({
 
   &.light {
     color: var(--ui-color-primary);
-    background: rgba(255, 71, 87, 0.2);
+    background: rgba(25, 137, 250, 0.2);
   }
 }
 
-.demo-block-full > .ui-row + .ui-row {
+:deep(.ui-row + .ui-row) {
   margin-top: 16rpx;
 }
 </style>

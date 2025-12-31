@@ -184,6 +184,6 @@ export default defineConfig({
 
   // Markdown 配置
   markdown: {
-    lineNumbers: true,
+    lineNumbers: false,
   },
 })

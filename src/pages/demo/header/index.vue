@@ -1,15 +1,10 @@
 <template>
-  <view class="demo-page">
-    <!-- 基础用法 -->
-    <view class="demo-section">
-      <text class="section-title">基础用法</text>
-      <text class="section-desc">Header 组件用于固定在页面顶部</text>
-    </view>
+  <demo-page>
+    <demo-section title="基础用法" desc="Header 组件用于固定在页面顶部" />
 
-    <view class="demo-section">
-      <text class="section-title">效果演示</text>
-      <view class="demo-block header-demo">
-        <ui-header background="#ff4757">
+    <demo-section title="效果演示">
+      <demo-block class="header-demo">
+        <ui-header background="#1989fa">
           <view class="header-content">
             <text class="header-title">页头标题</text>
           </view>
@@ -17,13 +12,11 @@
         <view class="page-content">
           <text>页面内容区域</text>
         </view>
-      </view>
-    </view>
+      </demo-block>
+    </demo-section>
 
-    <!-- 自定义背景 -->
-    <view class="demo-section">
-      <text class="section-title">自定义背景</text>
-      <view class="demo-block header-demo">
+    <demo-section title="自定义背景">
+      <demo-block class="header-demo">
         <ui-header background="linear-gradient(135deg, #667eea 0%, #764ba2 100%)">
           <view class="header-content">
             <text class="header-title">渐变背景</text>
@@ -32,14 +25,12 @@
         <view class="page-content">
           <text>页面内容区域</text>
         </view>
-      </view>
-    </view>
+      </demo-block>
+    </demo-section>
 
-    <!-- 带操作按钮 -->
-    <view class="demo-section">
-      <text class="section-title">带操作按钮</text>
-      <view class="demo-block header-demo">
-        <ui-header background="#1e90ff">
+    <demo-section title="带操作按钮">
+      <demo-block class="header-demo">
+        <ui-header background="#07c160">
           <view class="header-bar">
             <ui-icon name="arrow-left" color="#fff" size="40rpx" />
             <text class="header-title">标题</text>
@@ -49,40 +40,29 @@
         <view class="page-content">
           <text>页面内容区域</text>
         </view>
-      </view>
-    </view>
+      </demo-block>
+    </demo-section>
 
-    <!-- 使用说明 -->
-    <view class="demo-section">
-      <text class="section-title">使用说明</text>
-      <view class="demo-block">
+    <demo-section title="使用说明">
+      <demo-block direction="column" align="start">
         <text class="tip-text">1. Header 组件默认固定在页面顶部</text>
         <text class="tip-text">2. 支持自定义背景色和渐变背景</text>
         <text class="tip-text">3. 可配合 Navbar 组件使用</text>
         <text class="tip-text">4. 支持底部安全区域适配</text>
-      </view>
-    </view>
-  </view>
+      </demo-block>
+    </demo-section>
+  </demo-page>
 </template>
 
 <script setup lang="ts">
+import { DemoPage, DemoBlock, DemoSection } from "../components"
+
 definePage({
   style: { navigationBarTitleText: "Header 页头" },
 })
-
-// Header demo page
 </script>
 
-<style lang="scss">
-@use "../styles/demo.scss" as *;
-
-.section-desc {
-  color: var(--ui-color-text-secondary);
-  display: block;
-  font-size: 24rpx;
-  margin-top: 8rpx;
-}
-
+<style lang="scss" scoped>
 .header-demo {
   height: 400rpx;
   overflow: hidden;
@@ -90,7 +70,7 @@ definePage({
   background: var(--ui-color-background-light);
   border-radius: 12rpx;
 
-  .ui-header {
+  :deep(.ui-header) {
     position: relative !important;
   }
 }
@@ -119,7 +99,6 @@ definePage({
 
 .tip-text {
   color: var(--ui-color-text-secondary);
-  display: block;
   font-size: 26rpx;
   line-height: 1.8;
 }

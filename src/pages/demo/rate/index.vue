@@ -1,81 +1,65 @@
 <template>
-  <view class="demo-page">
-    <!-- 基础用法 -->
-    <view class="demo-section">
-      <text class="section-title">基础用法</text>
-      <view class="demo-block">
+  <demo-page>
+    <demo-section title="基础用法">
+      <demo-block>
         <ui-rate v-model="value1" />
-      </view>
-    </view>
+      </demo-block>
+    </demo-section>
 
-    <!-- 自定义图标 -->
-    <view class="demo-section">
-      <text class="section-title">自定义图标</text>
-      <view class="demo-block">
+    <demo-section title="自定义图标">
+      <demo-block>
         <ui-rate v-model="value2" icon="heart-fill" void-icon="heart" color="#ee0a24" />
-      </view>
-    </view>
+      </demo-block>
+    </demo-section>
 
-    <!-- 半星 -->
-    <view class="demo-section">
-      <text class="section-title">半星</text>
-      <view class="demo-block">
+    <demo-section title="半星">
+      <demo-block>
         <ui-rate v-model="value3" allow-half />
-      </view>
-    </view>
+      </demo-block>
+    </demo-section>
 
-    <!-- 自定义数量 -->
-    <view class="demo-section">
-      <text class="section-title">自定义数量</text>
-      <view class="demo-block">
+    <demo-section title="自定义数量">
+      <demo-block>
         <ui-rate v-model="value4" :count="6" />
-      </view>
-    </view>
+      </demo-block>
+    </demo-section>
 
-    <!-- 自定义颜色 -->
-    <view class="demo-section">
-      <text class="section-title">自定义颜色</text>
-      <view class="demo-block">
+    <demo-section title="自定义颜色">
+      <demo-block>
         <ui-rate v-model="value5" color="#07c160" void-color="#e8e8e8" />
-      </view>
-    </view>
+      </demo-block>
+    </demo-section>
 
-    <!-- 自定义大小 -->
-    <view class="demo-section">
-      <text class="section-title">自定义大小</text>
-      <view class="demo-block-full">
+    <demo-section title="自定义大小">
+      <demo-block direction="column" align="start">
         <ui-rate v-model="value6" size="40rpx" />
         <ui-rate v-model="value6" size="56rpx" />
-      </view>
-    </view>
+      </demo-block>
+    </demo-section>
 
-    <!-- 禁用状态 -->
-    <view class="demo-section">
-      <text class="section-title">禁用状态</text>
-      <view class="demo-block">
+    <demo-section title="禁用状态">
+      <demo-block>
         <ui-rate v-model="value7" disabled />
-      </view>
-    </view>
+      </demo-block>
+    </demo-section>
 
-    <!-- 只读状态 -->
-    <view class="demo-section">
-      <text class="section-title">只读状态</text>
-      <view class="demo-block">
+    <demo-section title="只读状态">
+      <demo-block>
         <ui-rate v-model="value8" readonly allow-half />
-      </view>
-    </view>
+      </demo-block>
+    </demo-section>
 
-    <!-- 可滑动选择 -->
-    <view class="demo-section">
-      <text class="section-title">可滑动选择</text>
-      <view class="demo-block">
+    <demo-section title="可滑动选择">
+      <demo-block>
         <ui-rate v-model="value9" touchable />
-      </view>
-    </view>
-  </view>
+      </demo-block>
+    </demo-section>
+  </demo-page>
 </template>
 
 <script setup lang="ts">
+import { DemoPage, DemoBlock, DemoSection } from "../components"
+
 definePage({
   style: { navigationBarTitleText: "Rate 评分" },
 })
@@ -90,7 +74,3 @@ const value7 = ref(3)
 const value8 = ref(3.5)
 const value9 = ref(3)
 </script>
-
-<style lang="scss">
-@use "../styles/demo.scss" as *;
-</style>

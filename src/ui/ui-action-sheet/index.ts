@@ -142,11 +142,12 @@ export const actionSheetEmits = {
 export type Action = "show" | "close" | "action" | "cancel"
 export interface ActionSheetAction {
   title: string
-  description: string
-  loading: boolean
-  disabled: boolean
-  titleStyle: string | CSSProperties
-  descriptionStyle: string | CSSProperties
+  description?: string
+  color?: string
+  loading?: boolean
+  disabled?: boolean
+  titleStyle?: string | CSSProperties
+  descriptionStyle?: string | CSSProperties
 }
 export type ActionSheetEmits = typeof actionSheetEmits
 export type ActionSheetProps = ExtractPropTypes<typeof actionSheetProps>

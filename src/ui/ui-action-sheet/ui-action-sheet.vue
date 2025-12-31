@@ -22,8 +22,9 @@
     <scroll-view class="ui-action-sheet__scroll" enable-flex scroll-y :style="[scrollStyle]">
       <slot>
         <view class="ui-action-sheet__content">
-          <view v-for="(item, index) in actions" :key="index" class="ui-action-sheet__item" @click="handleSelectAction(item, index)">
-            <text class="ui-action-sheet__item__title">{{ item.title }}</text>
+          <view v-for="(item, index) in actions" :key="index" class="ui-action-sheet__item" :class="{ 'ui-action-sheet__item--disabled': item.disabled, 'ui-action-sheet__item--loading': item.loading }" @click="!item.disabled && !item.loading && handleSelectAction(item, index)">
+            <ui-loading v-if="item.loading" size="36rpx" />
+            <text v-else class="ui-action-sheet__item__title" :style="{ color: item.color }">{{ item.title }}</text>
             <text v-if="item.description" class="ui-action-sheet__item__description">{{ item.description }}</text>
           </view>
         </view>
@@ -244,10 +245,32 @@ export default {
     row-gap: var(--ui-spacing-md);
     transition: background-color var(--ui-transition-fast);
     flex-direction: column;
+    align-items: center;
+    justify-items: center;
     grid-template-columns: repeat(1, minmax(0, 1fr));
 
     &:active {
       background-color: var(--ui-color-background-dark);
+    }
+
+    &--disabled {
+      cursor: not-allowed;
+
+      &:active {
+        background-color: transparent;
+      }
+
+      .ui-action-sheet__item__title {
+        color: var(--ui-color-text-tertiary);
+      }
+    }
+
+    &--loading {
+      cursor: not-allowed;
+
+      &:active {
+        background-color: transparent;
+      }
     }
 
     &__title {

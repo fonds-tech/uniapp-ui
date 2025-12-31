@@ -1,64 +1,52 @@
 <template>
-  <view class="demo-page">
-    <!-- 基础用法 -->
-    <view class="demo-section">
-      <text class="section-title">基础用法</text>
-      <view class="demo-block">
+  <demo-page>
+    <demo-section title="基础用法">
+      <demo-block>
         <ui-select v-model="value1" :columns="cities" placeholder="请选择城市" />
-      </view>
-    </view>
+      </demo-block>
+    </demo-section>
 
-    <!-- 多列选择 -->
-    <view class="demo-section">
-      <text class="section-title">多列选择</text>
-      <view class="demo-block">
+    <demo-section title="多列选择">
+      <demo-block>
         <ui-select v-model="value2" :columns="timeColumns" placeholder="请选择时间" />
-      </view>
-    </view>
+      </demo-block>
+    </demo-section>
 
-    <!-- 级联选择 -->
-    <view class="demo-section">
-      <text class="section-title">级联选择</text>
-      <view class="demo-block">
+    <demo-section title="级联选择">
+      <demo-block>
         <ui-select v-model="value3" :columns="areaColumns" placeholder="请选择地区" />
-      </view>
-    </view>
+      </demo-block>
+    </demo-section>
 
-    <!-- 禁用状态 -->
-    <view class="demo-section">
-      <text class="section-title">禁用状态</text>
-      <view class="demo-block">
+    <demo-section title="禁用状态">
+      <demo-block>
         <ui-select v-model="value4" :columns="cities" placeholder="禁用状态" disabled />
-      </view>
-    </view>
+      </demo-block>
+    </demo-section>
 
-    <!-- 只读状态 -->
-    <view class="demo-section">
-      <text class="section-title">只读状态</text>
-      <view class="demo-block">
+    <demo-section title="只读状态">
+      <demo-block>
         <ui-select v-model="value5" :columns="cities" placeholder="只读状态" readonly />
-      </view>
-    </view>
+      </demo-block>
+    </demo-section>
 
-    <!-- 自定义分隔符 -->
-    <view class="demo-section">
-      <text class="section-title">自定义分隔符</text>
-      <view class="demo-block">
+    <demo-section title="自定义分隔符">
+      <demo-block>
         <ui-select v-model="value6" :columns="areaColumns" placeholder="请选择" display-separator=" - " />
-      </view>
-    </view>
+      </demo-block>
+    </demo-section>
 
-    <!-- 带标题 -->
-    <view class="demo-section">
-      <text class="section-title">带标题</text>
-      <view class="demo-block">
+    <demo-section title="带标题">
+      <demo-block>
         <ui-select v-model="value7" :columns="cities" placeholder="请选择城市" title="选择城市" />
-      </view>
-    </view>
-  </view>
+      </demo-block>
+    </demo-section>
+  </demo-page>
 </template>
 
 <script setup lang="ts">
+import { DemoPage, DemoBlock, DemoSection } from "../components"
+
 definePage({
   style: { navigationBarTitleText: "Select 选择器" },
 })
@@ -113,7 +101,3 @@ const areaColumns = [
   },
 ]
 </script>
-
-<style lang="scss">
-@use "../styles/demo.scss" as *;
-</style>

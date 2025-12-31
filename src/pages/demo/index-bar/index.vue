@@ -1,15 +1,17 @@
 <template>
-  <view class="demo-page index-page">
+  <demo-page custom-class="index-page">
     <ui-index-bar :indexs="indexList" @select="onSelect">
       <template v-for="letter in indexList" :key="letter">
         <ui-index-anchor :index="letter" />
         <ui-cell v-for="item in getItemsByLetter(letter)" :key="item" :title="item" />
       </template>
     </ui-index-bar>
-  </view>
+  </demo-page>
 </template>
 
 <script setup lang="ts">
+import { DemoPage } from "../components"
+
 definePage({
   style: { navigationBarTitleText: "IndexBar 索引栏" },
 })
@@ -54,10 +56,8 @@ function onSelect(index: string | number) {
 }
 </script>
 
-<style lang="scss">
-@use "../styles/demo.scss" as *;
-
-.index-page {
+<style lang="scss" scoped>
+:deep(.index-page) {
   height: 100vh;
 }
 </style>

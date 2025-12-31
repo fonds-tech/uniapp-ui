@@ -1,54 +1,41 @@
 <template>
-  <view class="demo-page">
-    <!-- 数字键盘 -->
-    <view class="demo-section">
-      <text class="section-title">数字键盘</text>
-      <view class="demo-block">
+  <demo-page>
+    <demo-section title="数字键盘">
+      <demo-block>
         <ui-cell title="数字键盘" :value="value1 || '点击输入'" is-link @click="openKeyboard('number')" />
-      </view>
-    </view>
+      </demo-block>
+    </demo-section>
 
-    <!-- 身份证键盘 -->
-    <view class="demo-section">
-      <text class="section-title">身份证键盘</text>
-      <view class="demo-block">
+    <demo-section title="身份证键盘">
+      <demo-block>
         <ui-cell title="身份证键盘" :value="value2 || '点击输入'" is-link @click="openKeyboard('card')" />
-      </view>
-    </view>
+      </demo-block>
+    </demo-section>
 
-    <!-- 车牌号键盘 -->
-    <view class="demo-section">
-      <text class="section-title">车牌号键盘</text>
-      <view class="demo-block">
+    <demo-section title="车牌号键盘">
+      <demo-block>
         <ui-cell title="车牌号键盘" :value="value3 || '点击输入'" is-link @click="openKeyboard('car')" />
-      </view>
-    </view>
+      </demo-block>
+    </demo-section>
 
-    <!-- 带小数点 -->
-    <view class="demo-section">
-      <text class="section-title">带小数点</text>
-      <view class="demo-block">
+    <demo-section title="带小数点">
+      <demo-block>
         <ui-cell title="金额输入" :value="value4 || '点击输入'" is-link @click="openKeyboard('dot')" />
-      </view>
-    </view>
+      </demo-block>
+    </demo-section>
 
-    <!-- 随机键盘 -->
-    <view class="demo-section">
-      <text class="section-title">随机键盘</text>
-      <view class="demo-block">
+    <demo-section title="随机键盘">
+      <demo-block>
         <ui-cell title="密码输入" :value="maskValue" is-link @click="openKeyboard('random')" />
-      </view>
-    </view>
+      </demo-block>
+    </demo-section>
 
-    <!-- 限制长度 -->
-    <view class="demo-section">
-      <text class="section-title">限制长度 (6位)</text>
-      <view class="demo-block">
+    <demo-section title="限制长度 (6位)">
+      <demo-block>
         <ui-cell title="验证码" :value="value6 || '点击输入'" is-link @click="openKeyboard('maxlength')" />
-      </view>
-    </view>
+      </demo-block>
+    </demo-section>
 
-    <!-- 键盘组件 -->
     <ui-keyboard
       v-model:show="showKeyboard"
       :mode="keyboardMode"
@@ -60,10 +47,12 @@
       @delete="onDelete"
       @confirm="onConfirm"
     />
-  </view>
+  </demo-page>
 </template>
 
 <script setup lang="ts">
+import { DemoPage, DemoBlock, DemoSection } from "../components"
+
 definePage({
   style: { navigationBarTitleText: "Keyboard 键盘" },
 })
@@ -184,7 +173,3 @@ function onConfirm() {
   uni.showToast({ title: `输入完成: ${getCurrentValue()}`, icon: "none" })
 }
 </script>
-
-<style lang="scss">
-@use "../styles/demo.scss" as *;
-</style>

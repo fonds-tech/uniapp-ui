@@ -1,44 +1,38 @@
 <template>
-  <view class="demo-page">
-    <!-- 基础用法 -->
-    <view class="demo-section">
-      <text class="section-title">基础用法</text>
-      <view class="demo-block">
+  <demo-page>
+    <demo-section title="基础用法">
+      <demo-block>
         <ui-cell title="选择城市" :value="city1 || '请选择'" is-link @click="show1 = true" />
         <ui-picker v-model="city1" v-model:show="show1" title="选择城市" :columns="cities" />
-      </view>
-    </view>
+      </demo-block>
+    </demo-section>
 
-    <!-- 多列选择 -->
-    <view class="demo-section">
-      <text class="section-title">多列选择</text>
-      <view class="demo-block">
+    <demo-section title="多列选择">
+      <demo-block>
         <ui-cell title="选择时间" :value="timeText" is-link @click="show2 = true" />
         <ui-picker v-model="time" v-model:show="show2" title="选择时间" :columns="timeColumns" />
-      </view>
-    </view>
+      </demo-block>
+    </demo-section>
 
-    <!-- 级联选择 -->
-    <view class="demo-section">
-      <text class="section-title">级联选择</text>
-      <view class="demo-block">
+    <demo-section title="级联选择">
+      <demo-block>
         <ui-cell title="选择地区" :value="areaText" is-link @click="show3 = true" />
         <ui-picker v-model="area" v-model:show="show3" title="选择地区" :columns="areaColumns" />
-      </view>
-    </view>
+      </demo-block>
+    </demo-section>
 
-    <!-- 加载状态 -->
-    <view class="demo-section">
-      <text class="section-title">加载状态</text>
-      <view class="demo-block">
+    <demo-section title="加载状态">
+      <demo-block>
         <ui-cell title="加载中" value="请选择" is-link @click="show4 = true" />
         <ui-picker v-model:show="show4" title="加载中" :columns="[]" loading />
-      </view>
-    </view>
-  </view>
+      </demo-block>
+    </demo-section>
+  </demo-page>
 </template>
 
 <script setup lang="ts">
+import { DemoPage, DemoBlock, DemoSection } from "../components"
+
 definePage({
   style: { navigationBarTitleText: "Picker 选择器" },
 })
@@ -106,7 +100,3 @@ const areaText = computed(() => {
   return area.value.length > 0 ? area.value.join(" / ") : "请选择"
 })
 </script>
-
-<style lang="scss">
-@use "../styles/demo.scss" as *;
-</style>

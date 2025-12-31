@@ -1,39 +1,31 @@
 <template>
-  <view class="demo-page">
-    <!-- 基础用法 -->
-    <view class="demo-section">
-      <text class="section-title">基础用法</text>
-      <view class="demo-block">
+  <demo-page>
+    <demo-section title="基础用法">
+      <demo-block>
         <ui-button type="primary" @click="show1 = true">显示遮罩层</ui-button>
-      </view>
-    </view>
+      </demo-block>
+    </demo-section>
 
-    <!-- 嵌入内容 -->
-    <view class="demo-section">
-      <text class="section-title">嵌入内容</text>
-      <view class="demo-block">
+    <demo-section title="嵌入内容">
+      <demo-block>
         <ui-button type="primary" @click="show2 = true">嵌入内容</ui-button>
-      </view>
-    </view>
+      </demo-block>
+    </demo-section>
 
-    <!-- 自定义透明度 -->
-    <view class="demo-section">
-      <text class="section-title">自定义透明度</text>
-      <view class="demo-block">
+    <demo-section title="自定义透明度">
+      <demo-block>
         <ui-button type="primary" @click="show3 = true">透明度 0.3</ui-button>
         <ui-button type="primary" @click="show4 = true">透明度 0.7</ui-button>
-      </view>
-    </view>
+      </demo-block>
+    </demo-section>
 
-    <!-- 点击不关闭 -->
-    <view class="demo-section">
-      <text class="section-title">点击不关闭</text>
-      <view class="demo-block">
+    <demo-section title="点击不关闭">
+      <demo-block>
         <ui-button type="primary" @click="show5 = true">点击不关闭</ui-button>
-      </view>
-    </view>
+      </demo-block>
+    </demo-section>
 
-    <!-- 遮罩层 -->
+    <!-- Overlay Components -->
     <ui-overlay :show="show1" @click="show1 = false" />
 
     <ui-overlay :show="show2" @click="show2 = false">
@@ -51,10 +43,12 @@
         <text class="overlay-text">点击此处关闭</text>
       </view>
     </ui-overlay>
-  </view>
+  </demo-page>
 </template>
 
 <script setup lang="ts">
+import { DemoPage, DemoBlock, DemoSection } from "../components"
+
 definePage({
   style: { navigationBarTitleText: "Overlay 遮罩层" },
 })
@@ -66,9 +60,7 @@ const show4 = ref(false)
 const show5 = ref(false)
 </script>
 
-<style lang="scss">
-@use "../styles/demo.scss" as *;
-
+<style lang="scss" scoped>
 .overlay-content {
   width: 300rpx;
   height: 300rpx;

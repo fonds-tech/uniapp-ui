@@ -1,56 +1,46 @@
 <template>
-  <view class="demo-page">
-    <!-- 基础用法 -->
-    <view class="demo-section">
-      <text class="section-title">基础用法</text>
-      <view class="demo-block-full">
+  <demo-page>
+    <demo-section title="基础用法">
+      <demo-block direction="column">
         <ui-swiper :list="images" height="300rpx" />
-      </view>
-    </view>
+      </demo-block>
+    </demo-section>
 
-    <!-- 数字指示器 -->
-    <view class="demo-section">
-      <text class="section-title">数字指示器</text>
-      <view class="demo-block-full">
+    <demo-section title="数字指示器">
+      <demo-block direction="column">
         <ui-swiper :list="images" height="300rpx" indicator-type="number" />
-      </view>
-    </view>
+      </demo-block>
+    </demo-section>
 
-    <!-- 指示器位置 -->
-    <view class="demo-section">
-      <text class="section-title">指示器位置</text>
-      <view class="demo-block-full">
+    <demo-section title="指示器位置">
+      <demo-block direction="column">
         <ui-swiper :list="images" height="300rpx" indicator-position="bottom" />
-      </view>
-    </view>
+      </demo-block>
+    </demo-section>
 
-    <!-- 垂直滚动 -->
-    <view class="demo-section">
-      <text class="section-title">垂直滚动</text>
-      <view class="demo-block-full">
+    <demo-section title="垂直滚动">
+      <demo-block direction="column">
         <ui-swiper :list="images" height="300rpx" vertical indicator-position="right" />
-      </view>
-    </view>
+      </demo-block>
+    </demo-section>
 
-    <!-- 关闭自动播放 -->
-    <view class="demo-section">
-      <text class="section-title">关闭自动播放</text>
-      <view class="demo-block-full">
+    <demo-section title="关闭自动播放">
+      <demo-block direction="column">
         <ui-swiper :list="images" height="300rpx" :autoplay="false" />
-      </view>
-    </view>
+      </demo-block>
+    </demo-section>
 
-    <!-- 自定义间隔 -->
-    <view class="demo-section">
-      <text class="section-title">自定义间隔 (5s)</text>
-      <view class="demo-block-full">
+    <demo-section title="自定义间隔 (5s)">
+      <demo-block direction="column">
         <ui-swiper :list="images" height="300rpx" :interval="5000" />
-      </view>
-    </view>
-  </view>
+      </demo-block>
+    </demo-section>
+  </demo-page>
 </template>
 
 <script setup lang="ts">
+import { DemoPage, DemoBlock, DemoSection } from "../components"
+
 definePage({
   style: { navigationBarTitleText: "Swiper 轮播" },
 })
@@ -62,7 +52,3 @@ const images = [
   "https://picsum.photos/750/300?random=4",
 ]
 </script>
-
-<style lang="scss">
-@use "../styles/demo.scss" as *;
-</style>

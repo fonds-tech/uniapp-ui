@@ -1,14 +1,9 @@
 <template>
-  <view class="demo-page">
-    <!-- 基础用法 -->
-    <view class="demo-section">
-      <text class="section-title">基础用法</text>
-      <text class="section-desc">Footer 组件用于固定在页面底部</text>
-    </view>
+  <demo-page>
+    <demo-section title="基础用法" desc="Footer 组件用于固定在页面底部" />
 
-    <view class="demo-section">
-      <text class="section-title">效果演示</text>
-      <view class="demo-block footer-demo">
+    <demo-section title="效果演示">
+      <demo-block class="footer-demo">
         <view class="page-content">
           <text>页面内容区域</text>
         </view>
@@ -17,13 +12,11 @@
             <text class="footer-text">页脚内容</text>
           </view>
         </ui-footer>
-      </view>
-    </view>
+      </demo-block>
+    </demo-section>
 
-    <!-- 操作按钮 -->
-    <view class="demo-section">
-      <text class="section-title">操作按钮</text>
-      <view class="demo-block footer-demo">
+    <demo-section title="操作按钮">
+      <demo-block class="footer-demo">
         <view class="page-content">
           <text>商品详情页面</text>
         </view>
@@ -39,13 +32,11 @@
             </view>
           </view>
         </ui-footer>
-      </view>
-    </view>
+      </demo-block>
+    </demo-section>
 
-    <!-- 版权信息 -->
-    <view class="demo-section">
-      <text class="section-title">版权信息</text>
-      <view class="demo-block footer-demo">
+    <demo-section title="版权信息">
+      <demo-block class="footer-demo">
         <view class="page-content">
           <text>关于我们页面</text>
         </view>
@@ -55,40 +46,29 @@
             <text class="copyright-text">基于 MIT 许可发布</text>
           </view>
         </ui-footer>
-      </view>
-    </view>
+      </demo-block>
+    </demo-section>
 
-    <!-- 使用说明 -->
-    <view class="demo-section">
-      <text class="section-title">使用说明</text>
-      <view class="demo-block">
+    <demo-section title="使用说明">
+      <demo-block direction="column" align="start">
         <text class="tip-text">1. Footer 组件默认固定在页面底部</text>
         <text class="tip-text">2. 支持自定义背景色</text>
         <text class="tip-text">3. 默认开启底部安全区域适配</text>
         <text class="tip-text">4. 可用于操作栏、版权信息等场景</text>
-      </view>
-    </view>
-  </view>
+      </demo-block>
+    </demo-section>
+  </demo-page>
 </template>
 
 <script setup lang="ts">
+import { DemoPage, DemoBlock, DemoSection } from "../components"
+
 definePage({
   style: { navigationBarTitleText: "Footer 页脚" },
 })
-
-// Footer demo page
 </script>
 
-<style lang="scss">
-@use "../styles/demo.scss" as *;
-
-.section-desc {
-  color: var(--ui-color-text-secondary);
-  display: block;
-  font-size: 24rpx;
-  margin-top: 8rpx;
-}
-
+<style lang="scss" scoped>
 .footer-demo {
   height: 400rpx;
   display: flex;
@@ -98,7 +78,7 @@ definePage({
   border-radius: 12rpx;
   flex-direction: column;
 
-  .ui-footer {
+  :deep(.ui-footer) {
     position: relative !important;
   }
 }
@@ -151,7 +131,6 @@ definePage({
 
 .tip-text {
   color: var(--ui-color-text-secondary);
-  display: block;
   font-size: 26rpx;
   line-height: 1.8;
 }
