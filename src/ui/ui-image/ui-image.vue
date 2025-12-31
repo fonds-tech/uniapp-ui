@@ -1,7 +1,20 @@
 <template>
   <view class="ui-image" :class="[classs, customClass]" :style="[style]" @click="onClick">
+    <view v-if="showLoading" class="ui-image__placeholder">
+      <slot name="loading">
+        <view class="ui-image__icon ui-image__icon--loading" />
+      </slot>
+    </view>
+    <view v-else-if="showError" class="ui-image__placeholder">
+      <slot name="error">
+        <view class="ui-image__icon ui-image__icon--error" />
+      </slot>
+    </view>
     <image
+      v-if="src"
+      v-show="!loading && !error"
       class="ui-image__image"
+      :class="{ 'ui-image__image--fade': fade }"
       :src="src"
       :mode="mode"
       :webp="webp"
@@ -16,10 +29,9 @@
 
 <script setup lang="ts">
 import type { CSSProperties } from "vue"
-import { osName } from "../utils/platform"
 import { ref, watch, computed } from "vue"
 import { imageEmits, imageProps } from "./index"
-import { useRect, useUnit, useColor, useStyle } from "../hooks"
+import { useUnit, useColor, useStyle } from "../hooks"
 
 defineOptions({ name: "ui-image" })
 
@@ -28,9 +40,6 @@ const emits = defineEmits(imageEmits)
 
 const error = ref(false)
 const loading = ref(true)
-const maxSize = ref(0)
-
-const instance = getCurrentInstance()
 
 const style = computed(() => {
   const style: CSSProperties = {}
@@ -38,12 +47,6 @@ const style = computed(() => {
   style.height = useUnit(props.height)
   style.background = useColor(props.background)
   style.borderRadius = useUnit(props.radius)
-  // #ifdef MP-WEIXIN
-  if (osName === "ios" && props.square && maxSize.value > 0) {
-    style.width = `${maxSize.value}px`
-    style.height = `${maxSize.value}px`
-  }
-  // #endif
   return useStyle({ ...style, ...useStyle(props.customStyle) })
 })
 
@@ -55,14 +58,16 @@ const classs = computed(() => {
   return list
 })
 
-watch(() => [props.width, props.height, props.mode, props.src, props.square], resize)
+const showLoading = computed(() => !props.src || (loading.value && !error.value))
+const showError = computed(() => props.src && error.value)
 
-async function resize() {
-  if (osName === "ios" && props.square) {
-    const size = await useRect(".ui-image", instance)
-    maxSize.value = Math.max(size.width, size.height, 0)
-  }
-}
+watch(
+  () => props.src,
+  () => {
+    error.value = false
+    loading.value = true
+  },
+)
 
 function onImageLoad(event: any) {
   loading.value = false
@@ -70,6 +75,7 @@ function onImageLoad(event: any) {
 }
 
 function onImageError(event: any) {
+  loading.value = false
   error.value = true
   emits("error", event)
 }
@@ -77,24 +83,12 @@ function onImageError(event: any) {
 function onClick(event: any) {
   emits("click", event)
 }
-
-onMounted(() => {
-  resize()
-})
-
-defineExpose({ resize })
 </script>
 
 <script lang="ts">
 export default {
   name: "ui-image",
-  options: {
-    // #ifndef MP-TOUTIAO
-    virtualHost: true,
-    // #endif
-    multipleSlots: true,
-    styleIsolation: "shared",
-  },
+  options: { virtualHost: true, multipleSlots: true, styleIsolation: "shared" },
 }
 </script>
 
@@ -107,6 +101,68 @@ export default {
   &__image {
     width: 100%;
     height: 100%;
+
+    &--fade {
+      animation: ui-image-fade-in 0.3s ease-out;
+    }
+  }
+
+  &__placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+    justify-content: center;
+    background-color: var(--ui-color-background-light);
+  }
+
+  &__icon {
+    width: 48rpx;
+    border: 3rpx solid var(--ui-color-text-placeholder);
+    height: 48rpx;
+    position: relative;
+    border-radius: 6rpx;
+
+    &--loading {
+      border: none;
+      animation: ui-image-loading 0.8s linear infinite;
+      border-top: 3rpx solid var(--ui-color-text-placeholder);
+      border-left: 3rpx solid transparent;
+      border-right: 3rpx solid var(--ui-color-text-placeholder);
+      border-bottom: 3rpx solid var(--ui-color-text-placeholder);
+      border-radius: 50%;
+    }
+
+    &--error {
+      border: none;
+      border-radius: 50%;
+      background-color: var(--ui-color-text-placeholder);
+    }
+
+    &--error::before {
+      top: 8rpx;
+      left: 50%;
+      width: 4rpx;
+      height: 20rpx;
+      content: "";
+      position: absolute;
+      transform: translateX(-50%);
+      border-radius: 2rpx;
+      background-color: #fff;
+    }
+
+    &--error::after {
+      left: 50%;
+      width: 4rpx;
+      bottom: 8rpx;
+      height: 4rpx;
+      content: "";
+      position: absolute;
+      transform: translateX(-50%);
+      border-radius: 50%;
+      background-color: #fff;
+    }
   }
 
   &--block {
@@ -119,6 +175,24 @@ export default {
 
   &--square {
     aspect-ratio: 1 / 1;
+  }
+}
+
+@keyframes ui-image-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes ui-image-loading {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
   }
 }
 </style>

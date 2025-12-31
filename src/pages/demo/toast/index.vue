@@ -1,10 +1,10 @@
 <template>
   <demo-page>
     <demo-section title="基础用法">
-      <demo-block>
+      <demo-block :cols="3" :gap="24">
         <ui-button type="primary" @click="showToast('文字提示')">文字提示</ui-button>
         <ui-button type="success" @click="showSuccessToast">成功提示</ui-button>
-        <ui-button type="warning" @click="showFailToast">失败提示</ui-button>
+        <ui-button type="danger" @click="showFailToast">失败提示</ui-button>
       </demo-block>
     </demo-section>
 
@@ -15,14 +15,14 @@
     </demo-section>
 
     <demo-section title="自定义图标">
-      <demo-block>
-        <ui-button @click="showIconToast('star', '收藏成功')">自定义图标</ui-button>
+      <demo-block :cols="2" :gap="24">
+        <ui-button @click="showIconToast('star', '收藏成功')">星星图标</ui-button>
         <ui-button @click="showIconToast('heart', '已喜欢')">心形图标</ui-button>
       </demo-block>
     </demo-section>
 
     <demo-section title="自定义位置">
-      <demo-block>
+      <demo-block :cols="3" :gap="24">
         <ui-button @click="showPositionToast('top')">顶部展示</ui-button>
         <ui-button @click="showPositionToast('center')">居中展示</ui-button>
         <ui-button @click="showPositionToast('bottom')">底部展示</ui-button>
@@ -30,10 +30,10 @@
     </demo-section>
 
     <demo-section title="自定义时长">
-      <demo-block>
-        <ui-button @click="showDurationToast(1000)">1秒后关闭</ui-button>
-        <ui-button @click="showDurationToast(3000)">3秒后关闭</ui-button>
-        <ui-button @click="showDurationToast(5000)">5秒后关闭</ui-button>
+      <demo-block :cols="3" :gap="24">
+        <ui-button @click="showDurationToast(1000)">1 秒</ui-button>
+        <ui-button @click="showDurationToast(3000)">3 秒</ui-button>
+        <ui-button @click="showDurationToast(5000)">5 秒</ui-button>
       </demo-block>
     </demo-section>
   </demo-page>

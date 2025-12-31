@@ -1,38 +1,62 @@
 <template>
   <demo-page>
-    <demo-section title="基础用法">
-      <demo-block>
-        <ui-loading />
-      </demo-block>
-    </demo-section>
-
     <demo-section title="加载类型">
-      <demo-block>
-        <ui-loading type="circular" />
-        <ui-loading type="spinner" />
+      <demo-block :cols="2" :gap="32">
+        <view class="loading-item">
+          <ui-loading type="circular" />
+          <text class="loading-label">circular</text>
+        </view>
+        <view class="loading-item">
+          <ui-loading type="spinner" />
+          <text class="loading-label">spinner</text>
+        </view>
       </demo-block>
     </demo-section>
 
     <demo-section title="自定义颜色">
-      <demo-block>
-        <ui-loading color="#1989fa" />
-        <ui-loading color="#07c160" />
-        <ui-loading color="#ee0a24" />
-        <ui-loading color="#7232dd" />
+      <demo-block :cols="4" :gap="32">
+        <view class="loading-item">
+          <ui-loading color="primary" />
+          <text class="loading-label">primary</text>
+        </view>
+        <view class="loading-item">
+          <ui-loading color="success" />
+          <text class="loading-label">success</text>
+        </view>
+        <view class="loading-item">
+          <ui-loading color="warning" />
+          <text class="loading-label">warning</text>
+        </view>
+        <view class="loading-item">
+          <ui-loading color="danger" />
+          <text class="loading-label">danger</text>
+        </view>
       </demo-block>
     </demo-section>
 
     <demo-section title="自定义大小">
-      <demo-block>
-        <ui-loading size="24rpx" />
-        <ui-loading size="36rpx" />
-        <ui-loading size="48rpx" />
-        <ui-loading size="64rpx" />
+      <demo-block :cols="4" :gap="32">
+        <view class="loading-item">
+          <ui-loading size="24rpx" />
+          <text class="loading-label">24rpx</text>
+        </view>
+        <view class="loading-item">
+          <ui-loading size="36rpx" />
+          <text class="loading-label">36rpx</text>
+        </view>
+        <view class="loading-item">
+          <ui-loading size="48rpx" />
+          <text class="loading-label">48rpx</text>
+        </view>
+        <view class="loading-item">
+          <ui-loading size="64rpx" />
+          <text class="loading-label">64rpx</text>
+        </view>
       </demo-block>
     </demo-section>
 
     <demo-section title="加载文案">
-      <demo-block direction="column" align="start">
+      <demo-block :cols="2" :gap="32">
         <ui-loading text="加载中..." />
         <ui-loading text="请稍候..." vertical />
       </demo-block>
@@ -47,3 +71,17 @@ definePage({
   style: { navigationBarTitleText: "Loading 加载" },
 })
 </script>
+
+<style lang="scss" scoped>
+.loading-item {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 16rpx;
+}
+
+.loading-label {
+  color: var(--ui-color-text-secondary);
+  font-size: 24rpx;
+}
+</style>

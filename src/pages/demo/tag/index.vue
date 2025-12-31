@@ -1,7 +1,7 @@
 <template>
   <demo-page>
     <demo-section title="基础用法">
-      <demo-block>
+      <demo-block :cols="3" :gap="24">
         <ui-tag text="标签" />
         <ui-tag type="primary" text="主要" />
         <ui-tag type="success" text="成功" />
@@ -12,7 +12,7 @@
     </demo-section>
 
     <demo-section title="镂空样式">
-      <demo-block>
+      <demo-block :cols="3" :gap="24">
         <ui-tag type="primary" plain text="主要" />
         <ui-tag type="success" plain text="成功" />
         <ui-tag type="warning" plain text="警告" />
@@ -22,15 +22,23 @@
     </demo-section>
 
     <demo-section title="圆角样式">
-      <demo-block>
+      <demo-block :cols="3" :gap="24">
         <ui-tag type="primary" round text="圆角标签" />
         <ui-tag type="success" round text="圆角标签" />
         <ui-tag type="warning" round text="圆角标签" />
       </demo-block>
     </demo-section>
 
+    <demo-section title="标签大小">
+      <demo-block :cols="3" :gap="24" align="center">
+        <ui-tag type="primary" size="small" text="小号" />
+        <ui-tag type="primary" text="默认" />
+        <ui-tag type="primary" size="large" text="大号" />
+      </demo-block>
+    </demo-section>
+
     <demo-section title="可关闭标签">
-      <demo-block>
+      <demo-block :cols="3" :gap="24">
         <ui-tag v-if="showTag1" type="primary" closeable text="点击关闭" @close="showTag1 = false" />
         <ui-tag v-if="showTag2" type="success" closeable text="点击关闭" @close="showTag2 = false" />
         <ui-tag v-if="showTag3" type="warning" closeable text="点击关闭" @close="showTag3 = false" />
@@ -41,7 +49,7 @@
     </demo-section>
 
     <demo-section title="带图标">
-      <demo-block>
+      <demo-block :cols="3" :gap="24">
         <ui-tag type="primary" icon="star" text="收藏" />
         <ui-tag type="success" icon="check" text="已完成" />
         <ui-tag type="danger" icon="close" text="已删除" />
@@ -49,7 +57,7 @@
     </demo-section>
 
     <demo-section title="自定义颜色">
-      <demo-block>
+      <demo-block :cols="2" :gap="24">
         <ui-tag background="#7232dd" text-color="#fff" text="自定义背景" />
         <ui-tag background="linear-gradient(135deg, #667eea 0%, #764ba2 100%)" text-color="#fff" text="渐变背景" />
       </demo-block>

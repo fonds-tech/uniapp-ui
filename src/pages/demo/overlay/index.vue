@@ -13,7 +13,7 @@
     </demo-section>
 
     <demo-section title="自定义透明度">
-      <demo-block>
+      <demo-block :cols="2" :gap="24">
         <ui-button type="primary" @click="show3 = true">透明度 0.3</ui-button>
         <ui-button type="primary" @click="show4 = true">透明度 0.7</ui-button>
       </demo-block>

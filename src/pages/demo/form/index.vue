@@ -14,7 +14,7 @@
           </ui-form-item>
         </ui-form>
       </demo-block>
-      <demo-block :gap="20" custom-style="margin-top: 24rpx">
+      <demo-block :cols="2" :gap="24" custom-style="margin-top: 24rpx">
         <ui-button type="primary" @click="onSubmit">提交</ui-button>
         <ui-button @click="onReset">重置</ui-button>
       </demo-block>

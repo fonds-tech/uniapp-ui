@@ -13,7 +13,7 @@
     </demo-section>
 
     <demo-section title="自定义颜色">
-      <demo-block justify="center" gap="24rpx">
+      <demo-block :cols="3" :gap="24" justify="center">
         <ui-qrcode value="https://example.com" size="160rpx" foreground="#1989fa" />
         <ui-qrcode value="https://example.com" size="160rpx" foreground="#07c160" />
         <ui-qrcode value="https://example.com" size="160rpx" foreground="#ee0a24" />

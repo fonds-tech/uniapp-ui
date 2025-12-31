@@ -7,23 +7,25 @@
     </demo-section>
 
     <demo-section title="弹出位置">
-      <demo-block>
-        <ui-button @click="showTop = true">顶部弹出</ui-button>
-        <ui-button @click="showBottom = true">底部弹出</ui-button>
-        <ui-button @click="showLeft = true">左侧弹出</ui-button>
-        <ui-button @click="showRight = true">右侧弹出</ui-button>
+      <demo-block :cols="4" :gap="24">
+        <ui-button @click="showTop = true">顶部</ui-button>
+        <ui-button @click="showBottom = true">底部</ui-button>
+        <ui-button @click="showLeft = true">左侧</ui-button>
+        <ui-button @click="showRight = true">右侧</ui-button>
       </demo-block>
     </demo-section>
 
     <demo-section title="关闭图标">
-      <demo-block>
+      <demo-block :cols="2" :gap="24">
         <ui-button type="primary" @click="showClose = true">显示关闭图标</ui-button>
+        <ui-button type="primary" @click="showCloseTop = true">顶部关闭图标</ui-button>
       </demo-block>
     </demo-section>
 
     <demo-section title="圆角弹窗">
-      <demo-block>
+      <demo-block :cols="2" :gap="24">
         <ui-button type="primary" @click="showRound = true">圆角弹窗</ui-button>
+        <ui-button type="primary" @click="showRoundTop = true">顶部圆角</ui-button>
       </demo-block>
     </demo-section>
 
@@ -64,9 +66,21 @@
       </view>
     </ui-popup>
 
+    <ui-popup v-model:show="showCloseTop" position="top" closeable>
+      <view class="popup-content top-content">
+        <text>顶部带关闭图标</text>
+      </view>
+    </ui-popup>
+
     <ui-popup v-model:show="showRound" position="bottom" round>
       <view class="popup-content bottom-content">
         <text>圆角弹窗内容</text>
+      </view>
+    </ui-popup>
+
+    <ui-popup v-model:show="showRoundTop" position="top" round>
+      <view class="popup-content top-content">
+        <text>顶部圆角弹窗</text>
       </view>
     </ui-popup>
   </demo-page>
@@ -85,7 +99,9 @@ const showBottom = ref(false)
 const showLeft = ref(false)
 const showRight = ref(false)
 const showClose = ref(false)
+const showCloseTop = ref(false)
 const showRound = ref(false)
+const showRoundTop = ref(false)
 </script>
 
 <style lang="scss" scoped>

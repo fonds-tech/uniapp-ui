@@ -3,7 +3,7 @@
     <demo-section title="基础用法" desc="右下角显示一个浮动按钮" />
 
     <demo-section title="按钮类型">
-      <demo-block>
+      <demo-block :cols="4" :gap="24">
         <ui-button type="primary" size="small" @click="currentType = 'primary'">Primary</ui-button>
         <ui-button type="success" size="small" @click="currentType = 'success'">Success</ui-button>
         <ui-button type="warning" size="small" @click="currentType = 'warning'">Warning</ui-button>
@@ -12,7 +12,7 @@
     </demo-section>
 
     <demo-section title="自定义图标">
-      <demo-block>
+      <demo-block :cols="4" :gap="24">
         <ui-button size="small" @click="currentIcon = 'plus'">Plus</ui-button>
         <ui-button size="small" @click="currentIcon = 'edit'">Edit</ui-button>
         <ui-button size="small" @click="currentIcon = 'message'">Message</ui-button>

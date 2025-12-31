@@ -1,7 +1,7 @@
 <template>
   <demo-page>
     <demo-section title="基础用法">
-      <demo-block>
+      <demo-block :cols="2" :gap="24">
         <ui-button type="primary" @click="showBasicDialog">提示弹窗</ui-button>
         <ui-button type="primary" @click="showConfirmDialog">确认弹窗</ui-button>
       </demo-block>
@@ -16,6 +16,13 @@
     <demo-section title="异步关闭">
       <demo-block>
         <ui-button @click="showAsyncDialog">异步关闭</ui-button>
+      </demo-block>
+    </demo-section>
+
+    <demo-section title="自定义内容">
+      <demo-block :cols="2" :gap="24">
+        <ui-button type="primary" @click="showNoTitleDialog">无标题</ui-button>
+        <ui-button type="primary" @click="showLongDialog">长内容</ui-button>
       </demo-block>
     </demo-section>
 
@@ -76,6 +83,20 @@ function showAsyncDialog() {
         }, 1000)
       })
     },
+  })
+}
+
+function showNoTitleDialog() {
+  showDialog({
+    message: "这是一个没有标题的弹窗",
+  })
+}
+
+function showLongDialog() {
+  showDialog({
+    title: "长内容",
+    message: "这是一段很长的内容，用于测试对话框对长文本的显示效果。当内容过长时，对话框应该能够正确处理滚动或自适应高度。这里是更多的文字内容，让我们看看效果如何。",
+    showCancelButton: true,
   })
 }
 </script>

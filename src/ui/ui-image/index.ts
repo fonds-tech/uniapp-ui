@@ -10,7 +10,7 @@ export const imageProps = buildProps("image", {
   /**
    * 图片裁剪、缩放的模式
    */
-  mode: makeStringProp("scaleToFill"),
+  mode: makeStringProp<UniHelper.ImageProps["mode"]>("scaleToFill"),
   /**
    * 图片宽度
    */
@@ -60,20 +60,6 @@ export const imageProps = buildProps("image", {
    */
   background: makeStringProp(""),
   /**
-   * 链接参数
-   */
-  srcParams: {
-    type: Object,
-    default: () => ({ "x-oss-process": "image/format,webp" }),
-  },
-  /**
-   * 指定生效srcParams的url列表
-   */
-  srcParamsUrls: {
-    type: Array,
-    default: () => ["ilike-images.oss-cn-hangzhou.aliyuncs.com"],
-  },
-  /**
    * 自定义类名
    */
   customClass: makeStringProp(""),
@@ -83,9 +69,9 @@ export const imageProps = buildProps("image", {
   customStyle: styleProp,
 })
 export const imageEmits = {
-  load: (evnet: any) => true,
-  error: (evnet: any) => true,
-  click: (evnet: any) => true,
+  load: (event: any) => true,
+  error: (event: any) => true,
+  click: (event: any) => true,
 }
 
 export type ImageEmits = typeof imageEmits

@@ -7,7 +7,7 @@
     </demo-section>
 
     <demo-section title="通知类型">
-      <demo-block>
+      <demo-block :cols="2" :gap="24">
         <ui-button type="primary" @click="showPrimary">主要通知</ui-button>
         <ui-button type="success" @click="showSuccess">成功通知</ui-button>
         <ui-button type="warning" @click="showWarning">警告通知</ui-button>
@@ -16,7 +16,7 @@
     </demo-section>
 
     <demo-section title="自定义配置">
-      <demo-block>
+      <demo-block :cols="2" :gap="24">
         <ui-button type="primary" @click="showCustom">自定义颜色</ui-button>
         <ui-button type="primary" @click="showDuration">自定义时长</ui-button>
       </demo-block>

@@ -29,7 +29,7 @@
         <demo-block justify="center">
           <ui-number-roll :value="dynamicValue" :font-size="48" color="#1989fa" font-weight="600" />
         </demo-block>
-        <demo-block justify="center">
+        <demo-block :cols="3" :gap="24" justify="center">
           <ui-button size="small" @click="addValue">+100</ui-button>
           <ui-button size="small" @click="subtractValue">-100</ui-button>
           <ui-button size="small" type="primary" @click="randomValue">随机</ui-button>

@@ -24,7 +24,7 @@
 
     <demo-section title="滑动动画">
       <demo-block direction="column">
-        <demo-block>
+        <demo-block :cols="4" :gap="24">
           <ui-button size="small" @click="toggleSlide('up')">上滑</ui-button>
           <ui-button size="small" @click="toggleSlide('down')">下滑</ui-button>
           <ui-button size="small" @click="toggleSlide('left')">左滑</ui-button>
@@ -40,7 +40,7 @@
 
     <demo-section title="淡入动画">
       <demo-block direction="column">
-        <demo-block>
+        <demo-block :cols="4" :gap="24">
           <ui-button size="small" @click="toggleFade('up')">上淡入</ui-button>
           <ui-button size="small" @click="toggleFade('down')">下淡入</ui-button>
           <ui-button size="small" @click="toggleFade('left')">左淡入</ui-button>
@@ -56,7 +56,7 @@
 
     <demo-section title="自定义时长">
       <demo-block direction="column">
-        <demo-block>
+        <demo-block :cols="2" :gap="24">
           <ui-button size="small" @click="show5 = !show5">快速 (200ms)</ui-button>
           <ui-button size="small" @click="show6 = !show6">慢速 (800ms)</ui-button>
         </demo-block>
