@@ -87,8 +87,8 @@ definePage({
   height: 400rpx;
   overflow: hidden;
   position: relative;
-  border-radius: 12rpx;
   background: var(--ui-color-background-light);
+  border-radius: 12rpx;
 
   .ui-header {
     position: relative !important;
@@ -101,8 +101,8 @@ definePage({
 
 .header-bar {
   display: flex;
-  align-items: center;
   padding: 24rpx 32rpx;
+  align-items: center;
   justify-content: space-between;
 }
 
@@ -113,14 +113,14 @@ definePage({
 }
 
 .page-content {
-  padding: 32rpx;
   color: var(--ui-color-text-secondary);
+  padding: 32rpx;
 }
 
 .tip-text {
+  color: var(--ui-color-text-secondary);
   display: block;
   font-size: 26rpx;
   line-height: 1.8;
-  color: var(--ui-color-text-secondary);
 }
 </style>

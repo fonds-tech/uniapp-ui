@@ -110,11 +110,11 @@
 </template>
 
 <script setup lang="ts">
+import { ref } from "vue"
+
 definePage({
   style: { navigationBarTitleText: "Tag 标签" },
 })
-
-import { ref } from "vue"
 
 const showTag1 = ref(true)
 const showTag2 = ref(true)

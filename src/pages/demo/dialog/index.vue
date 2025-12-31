@@ -99,12 +99,12 @@
 </template>
 
 <script setup lang="ts">
+import { ref } from "vue"
+import { useDialog } from "@/ui"
+
 definePage({
   style: { navigationBarTitleText: "Dialog 对话框" },
 })
-
-import { ref } from "vue"
-import { useDialog } from "@/ui"
 
 const { showDialog } = useDialog()
 const showComponentDialog = ref(false)

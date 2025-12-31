@@ -73,8 +73,8 @@ function onChange(index: number) {
 @use "../styles/demo.scss" as *;
 
 .tabbar-wrap {
+  border: 1rpx solid var(--ui-color-border-light);
   overflow: hidden;
   border-radius: 12rpx;
-  border: 1rpx solid var(--ui-color-border-light);
 }
 </style>

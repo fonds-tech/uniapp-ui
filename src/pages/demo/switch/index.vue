@@ -94,11 +94,11 @@
 </template>
 
 <script setup lang="ts">
+import { ref } from "vue"
+
 definePage({
   style: { navigationBarTitleText: "Switch 开关" },
 })
-
-import { ref } from "vue"
 
 const value1 = ref(false)
 const value2 = ref(false)

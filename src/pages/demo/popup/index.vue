@@ -118,11 +118,11 @@
 </template>
 
 <script setup lang="ts">
+import { ref } from "vue"
+
 definePage({
   style: { navigationBarTitleText: "Popup 弹出层" },
 })
-
-import { ref } from "vue"
 
 const showCenter = ref(false)
 const showTop = ref(false)
@@ -165,9 +165,9 @@ const showRound = ref(false)
 .popup-content {
   display: flex;
   padding: 48rpx;
+  background: #fff;
   align-items: center;
   justify-content: center;
-  background: #fff;
 }
 
 .center-content {

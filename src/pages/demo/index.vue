@@ -45,11 +45,11 @@
 </template>
 
 <script setup lang="ts">
+import { ref, computed } from "vue"
+
 definePage({
   style: { navigationBarTitleText: "组件演示" },
 })
-
-import { ref, computed } from "vue"
 
 // 搜索文本
 const searchText = ref("")

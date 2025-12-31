@@ -77,11 +77,11 @@
 </template>
 
 <script setup lang="ts">
+import { useToast } from "@/ui"
+
 definePage({
   style: { navigationBarTitleText: "Toast 轻提示" },
 })
-
-import { useToast } from "@/ui"
 
 const { showToast } = useToast()
 

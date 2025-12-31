@@ -51,15 +51,15 @@ watch(isDark, (dark) => {
 
 .preview-wrapper {
   width: 390px;
+  border: 1px solid var(--vp-c-divider);
   height: 844px;
   overflow: hidden;
   background: var(--vp-c-bg);
   box-shadow:
     0 4px 6px -1px rgba(0, 0, 0, 0.1),
     0 24px 48px -12px rgba(0, 0, 0, 0.15);
-  border-radius: 12px; /* 柔和阴影 */
-  border: 1px solid var(--vp-c-divider); /* 细微边框 */
   transition: all 0.3s ease;
+  border-radius: 12px;
 }
 
 .preview-iframe {
@@ -72,7 +72,7 @@ watch(isDark, (dark) => {
 :global(.dark) .preview-wrapper {
   box-shadow:
     0 4px 6px -1px rgba(0, 0, 0, 0.3),
-    0 24px 48px -12px rgba(0, 0, 0, 0.5); /* 深色模式下加重阴影 */
+    0 24px 48px -12px rgba(0, 0, 0, 0.5);
   border-color: rgba(255, 255, 255, 0.1);
 }
 

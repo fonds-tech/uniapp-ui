@@ -73,8 +73,8 @@ definePage({
 @use "../styles/demo.scss" as *;
 
 .icon-row {
-  display: flex;
   gap: 40rpx;
+  display: flex;
   flex-wrap: wrap;
 }
 </style>

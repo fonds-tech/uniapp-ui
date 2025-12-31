@@ -94,9 +94,9 @@ definePage({
   display: flex;
   overflow: hidden;
   position: relative;
+  background: var(--ui-color-background-light);
   border-radius: 12rpx;
   flex-direction: column;
-  background: var(--ui-color-background-light);
 
   .ui-footer {
     position: relative !important;
@@ -105,8 +105,8 @@ definePage({
 
 .page-content {
   flex: 1;
-  padding: 32rpx;
   color: var(--ui-color-text-secondary);
+  padding: 32rpx;
 }
 
 .footer-content {
@@ -115,26 +115,26 @@ definePage({
 }
 
 .footer-text {
-  font-size: 28rpx;
   color: var(--ui-color-text-secondary);
+  font-size: 28rpx;
 }
 
 .footer-bar {
   display: flex;
-  align-items: center;
   padding: 16rpx 32rpx;
-  justify-content: space-between;
   border-top: 1rpx solid var(--ui-color-border-light);
+  align-items: center;
+  justify-content: space-between;
 }
 
 .footer-icons {
-  display: flex;
   gap: 40rpx;
+  display: flex;
 }
 
 .footer-buttons {
-  display: flex;
   gap: 16rpx;
+  display: flex;
 }
 
 .footer-copyright {
@@ -143,16 +143,16 @@ definePage({
 }
 
 .copyright-text {
+  color: var(--ui-color-text-tertiary);
   display: block;
   font-size: 24rpx;
   line-height: 1.6;
-  color: var(--ui-color-text-tertiary);
 }
 
 .tip-text {
+  color: var(--ui-color-text-secondary);
   display: block;
   font-size: 26rpx;
   line-height: 1.8;
-  color: var(--ui-color-text-secondary);
 }
 </style>

@@ -76,10 +76,10 @@ definePage({
 @use "../styles/demo.scss" as *;
 
 .demo-text {
-  display: block;
-  font-size: 28rpx;
-  padding: 16rpx 0;
   color: var(--ui-color-text-primary);
+  display: block;
+  padding: 16rpx 0;
+  font-size: 28rpx;
 }
 
 .vertical-demo {

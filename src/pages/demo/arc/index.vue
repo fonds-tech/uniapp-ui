@@ -72,8 +72,8 @@ definePage({
 
 .arc-content {
   display: flex;
-  padding-top: 40rpx;
   text-align: center;
+  padding-top: 40rpx;
   flex-direction: column;
 }
 

@@ -105,11 +105,11 @@
 </template>
 
 <script setup lang="ts">
+import { ref } from "vue"
+
 definePage({
   style: { navigationBarTitleText: "Input 输入框" },
 })
-
-import { ref } from "vue"
 
 const value1 = ref("")
 const value2 = ref("")

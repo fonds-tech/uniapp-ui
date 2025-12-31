@@ -83,9 +83,9 @@ definePage({
 @use "../styles/demo.scss" as *;
 
 .image-grid {
+  gap: 24rpx;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 24rpx;
 }
 
 .image-item {

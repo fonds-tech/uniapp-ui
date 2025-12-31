@@ -144,18 +144,18 @@ const commonIcons = [
 }
 
 .icon-grid {
+  gap: 24rpx;
   display: grid;
   grid-template-columns: repeat(5, 1fr);
-  gap: 24rpx;
 }
 
 .icon-item {
   display: flex;
   padding: 16rpx;
-  align-items: center;
-  flex-direction: column;
-  border-radius: 8rpx;
   background: #f8f9fa;
+  align-items: center;
+  border-radius: 8rpx;
+  flex-direction: column;
 }
 
 .icon-name {

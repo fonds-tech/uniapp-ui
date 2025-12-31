@@ -42,10 +42,19 @@ features:
 
 <style>
 :root {
+  /* Hero 渐变标题 */
   --vp-home-hero-name-color: transparent;
-  --vp-home-hero-name-background: -webkit-linear-gradient(120deg, #667eea 30%, #764ba2);
-  --vp-home-hero-image-background-image: linear-gradient(-45deg, #667eea 50%, #764ba2 50%);
+  --vp-home-hero-name-background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+
+  /* Hero 图片背景光晕 */
+  --vp-home-hero-image-background-image: linear-gradient(-45deg, #667eea 30%, #764ba2 50%, #f093fb 70%);
   --vp-home-hero-image-filter: blur(44px);
+}
+
+/* 暗色模式 Hero 调整 */
+.dark {
+  --vp-home-hero-name-background: linear-gradient(135deg, #a78bfa 0%, #c084fc 50%, #f0abfc 100%);
+  --vp-home-hero-image-background-image: linear-gradient(-45deg, #a78bfa 30%, #c084fc 50%, #f0abfc 70%);
 }
 
 @media (min-width: 640px) {
@@ -56,7 +65,66 @@ features:
 
 @media (min-width: 960px) {
   :root {
-    --vp-home-hero-image-filter: blur(68px);
+    --vp-home-hero-image-filter: blur(72px);
+  }
+}
+
+/* 首页动态背景 */
+.VPHome {
+  position: relative;
+  overflow: hidden;
+}
+
+.VPHome::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 100vh;
+  background:
+    radial-gradient(ellipse 80% 50% at 50% -20%, rgba(102, 126, 234, 0.12), transparent),
+    radial-gradient(ellipse 60% 40% at 80% 60%, rgba(118, 75, 162, 0.08), transparent),
+    radial-gradient(ellipse 50% 30% at 20% 80%, rgba(240, 147, 251, 0.06), transparent);
+  pointer-events: none;
+  z-index: -1;
+}
+
+.dark .VPHome::before {
+  background:
+    radial-gradient(ellipse 80% 50% at 50% -20%, rgba(167, 139, 250, 0.1), transparent),
+    radial-gradient(ellipse 60% 40% at 80% 60%, rgba(192, 132, 252, 0.06), transparent),
+    radial-gradient(ellipse 50% 30% at 20% 80%, rgba(240, 171, 252, 0.04), transparent);
+}
+
+/* 特性卡片容器间距 */
+.VPFeatures {
+  padding: 0 24px !important;
+}
+
+/* 首页容器宽度优化 */
+.VPHome .container {
+  max-width: 1280px;
+}
+
+/* Hero 按钮组间距 */
+.VPHero .actions {
+  gap: 16px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+/* Hero 图片动画 */
+.VPHero .image-container {
+  animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
   }
 }
 </style>

@@ -128,8 +128,8 @@ definePage({
 .demo-block-vertical {
   gap: 32rpx;
   display: flex;
-  flex-direction: column;
   align-items: flex-start;
+  flex-direction: column;
 }
 
 .api-section {

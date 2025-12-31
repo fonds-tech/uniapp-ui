@@ -73,14 +73,14 @@ function onClick() {
 }
 
 .button-list {
-  display: flex;
   gap: 16rpx;
+  display: flex;
   flex-wrap: wrap;
 }
 
 .switch-label {
+  color: var(--ui-color-text-primary);
   font-size: 28rpx;
   margin-left: 16rpx;
-  color: var(--ui-color-text-primary);
 }
 </style>

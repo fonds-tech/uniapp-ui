@@ -108,11 +108,11 @@
 </template>
 
 <script setup lang="ts">
+import { ref } from "vue"
+
 definePage({
   style: { navigationBarTitleText: "Checkbox 复选框" },
 })
-
-import { ref } from "vue"
 
 const checked = ref(true)
 const disabled1 = ref(false)

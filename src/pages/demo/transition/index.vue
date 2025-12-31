@@ -120,18 +120,18 @@ function toggleFade(direction: string) {
 }
 
 .transition-row {
-  display: flex;
   gap: 20rpx;
+  display: flex;
   min-height: 120rpx;
 }
 
 .demo-content {
-  padding: 32rpx;
   color: #fff;
+  padding: 32rpx;
   font-size: 28rpx;
+  background: var(--ui-color-primary);
   text-align: center;
   border-radius: 12rpx;
-  background: var(--ui-color-primary);
 
   &.small {
     flex: 1;
@@ -140,8 +140,8 @@ function toggleFade(direction: string) {
 }
 
 .button-row {
-  display: flex;
   gap: 16rpx;
+  display: flex;
   flex-wrap: wrap;
 }
 </style>

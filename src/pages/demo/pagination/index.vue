@@ -103,23 +103,23 @@ onMounted(() => {
 }
 
 .item-title {
+  color: var(--ui-color-text-primary);
   display: block;
   font-size: 30rpx;
-  color: var(--ui-color-text-primary);
 }
 
 .item-desc {
+  color: var(--ui-color-text-secondary);
   display: block;
   font-size: 24rpx;
   margin-top: 8rpx;
-  color: var(--ui-color-text-secondary);
 }
 
 .status-info {
-  display: flex;
-  flex-direction: column;
   gap: 12rpx;
-  font-size: 26rpx;
   color: var(--ui-color-text-secondary);
+  display: flex;
+  font-size: 26rpx;
+  flex-direction: column;
 }
 </style>

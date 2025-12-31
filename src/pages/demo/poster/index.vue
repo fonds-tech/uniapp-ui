@@ -223,17 +223,17 @@ function savePoster() {
 }
 
 .button-row {
-  display: flex;
   gap: 20rpx;
+  display: flex;
 }
 
 .preview-area {
   display: flex;
+  background: var(--ui-color-background-light);
   min-height: 500rpx;
   align-items: center;
   border-radius: 12rpx;
   justify-content: center;
-  background: var(--ui-color-background-light);
 }
 
 .poster-preview {
@@ -254,9 +254,9 @@ function savePoster() {
 }
 
 .tip-text {
+  color: var(--ui-color-text-secondary);
   display: block;
   font-size: 26rpx;
   line-height: 1.8;
-  color: var(--ui-color-text-secondary);
 }
 </style>

@@ -72,8 +72,8 @@ const inputValue = ref("")
 }
 
 .qrcode-row {
-  display: flex;
   gap: 24rpx;
+  display: flex;
   justify-content: center;
 }
 </style>

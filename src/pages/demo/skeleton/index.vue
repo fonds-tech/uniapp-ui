@@ -75,8 +75,8 @@ definePage({
 @use "../styles/demo.scss" as *;
 
 .skeleton-row {
-  display: flex;
   gap: 20rpx;
+  display: flex;
 }
 
 .skeleton-content {

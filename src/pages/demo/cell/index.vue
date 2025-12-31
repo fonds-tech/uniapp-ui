@@ -116,10 +116,10 @@ definePage({
 .section-title {
   color: #333;
   display: block;
+  padding: 0 8rpx;
   font-size: 30rpx;
   font-weight: 600;
   margin-bottom: 24rpx;
-  padding: 0 8rpx;
 }
 
 .api-section {

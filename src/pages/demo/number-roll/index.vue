@@ -90,8 +90,8 @@ function randomValue() {
 }
 
 .button-group {
-  display: flex;
   gap: 20rpx;
+  display: flex;
   justify-content: center;
 }
 

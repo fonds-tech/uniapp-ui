@@ -129,7 +129,7 @@ function onReset() {
 @use "../styles/demo.scss" as *;
 
 .button-group {
-  display: flex;
   gap: 20rpx;
+  display: flex;
 }
 </style>
