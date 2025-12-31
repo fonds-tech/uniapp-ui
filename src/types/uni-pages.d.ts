@@ -6,17 +6,64 @@
 type _LocationUrl =
   "/pages/index/index" |
   "/pages/demo/index" |
+  "/pages/demo/action-sheet/index" |
+  "/pages/demo/arc/index" |
+  "/pages/demo/back-top/index" |
+  "/pages/demo/badge/index" |
   "/pages/demo/button/index" |
+  "/pages/demo/cascader/index" |
   "/pages/demo/cell/index" |
   "/pages/demo/checkbox/index" |
+  "/pages/demo/countdown/index" |
+  "/pages/demo/date-picker/index" |
   "/pages/demo/dialog/index" |
+  "/pages/demo/dropdown-menu/index" |
+  "/pages/demo/empty/index" |
+  "/pages/demo/field/index" |
+  "/pages/demo/float-button/index" |
+  "/pages/demo/footer/index" |
+  "/pages/demo/form/index" |
+  "/pages/demo/grid/index" |
+  "/pages/demo/header/index" |
   "/pages/demo/icon/index" |
+  "/pages/demo/icon-text/index" |
+  "/pages/demo/image/index" |
+  "/pages/demo/index-bar/index" |
   "/pages/demo/input/index" |
+  "/pages/demo/keyboard/index" |
+  "/pages/demo/line/index" |
   "/pages/demo/loading/index" |
+  "/pages/demo/navbar/index" |
+  "/pages/demo/noticebar/index" |
+  "/pages/demo/notify/index" |
+  "/pages/demo/number-roll/index" |
+  "/pages/demo/overlay/index" |
+  "/pages/demo/pagination/index" |
+  "/pages/demo/picker/index" |
   "/pages/demo/popup/index" |
+  "/pages/demo/poster/index" |
+  "/pages/demo/progress/index" |
+  "/pages/demo/qrcode/index" |
+  "/pages/demo/radio/index" |
+  "/pages/demo/rate/index" |
+  "/pages/demo/search/index" |
+  "/pages/demo/select/index" |
+  "/pages/demo/sidebar/index" |
+  "/pages/demo/skeleton/index" |
+  "/pages/demo/stepper/index" |
+  "/pages/demo/sticky/index" |
+  "/pages/demo/swiper/index" |
   "/pages/demo/switch/index" |
+  "/pages/demo/tabbar/index" |
+  "/pages/demo/tabs/index" |
   "/pages/demo/tag/index" |
-  "/pages/demo/toast/index";
+  "/pages/demo/text/index" |
+  "/pages/demo/text-ellipsis/index" |
+  "/pages/demo/text-highlight/index" |
+  "/pages/demo/textarea/index" |
+  "/pages/demo/toast/index" |
+  "/pages/demo/transition/index" |
+  "/pages/demo/upload/index";
 
 interface NavigateToOptions {
   url: _LocationUrl;

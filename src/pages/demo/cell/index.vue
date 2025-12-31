@@ -1,11 +1,3 @@
-<route lang="json">
-{
-  "style": {
-    "navigationBarTitleText": "Cell 单元格"
-  }
-}
-</route>
-
 <template>
   <view class="demo-page">
     <!-- 基础用法 -->
@@ -102,6 +94,10 @@
 </template>
 
 <script setup lang="ts">
+definePage({
+  style: { navigationBarTitleText: "Cell 单元格" },
+})
+
 // Cell 演示页面
 </script>
 

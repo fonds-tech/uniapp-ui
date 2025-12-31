@@ -1,11 +1,3 @@
-<route lang="json">
-{
-  "style": {
-    "navigationBarTitleText": "Toast 轻提示"
-  }
-}
-</route>
-
 <template>
   <view class="demo-page">
     <!-- 基础用法 -->
@@ -85,6 +77,10 @@
 </template>
 
 <script setup lang="ts">
+definePage({
+  style: { navigationBarTitleText: "Toast 轻提示" },
+})
+
 import { useToast } from "@/ui"
 
 const { showToast } = useToast()

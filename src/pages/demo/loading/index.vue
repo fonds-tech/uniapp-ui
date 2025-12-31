@@ -1,11 +1,3 @@
-<route lang="json">
-{
-  "style": {
-    "navigationBarTitleText": "Loading 加载"
-  }
-}
-</route>
-
 <template>
   <view class="demo-page">
     <!-- 基础用法 -->
@@ -96,6 +88,10 @@
 </template>
 
 <script setup lang="ts">
+definePage({
+  style: { navigationBarTitleText: "Loading 加载" },
+})
+
 // Loading 演示页面
 </script>
 

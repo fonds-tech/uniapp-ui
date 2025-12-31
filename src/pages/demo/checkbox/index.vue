@@ -1,11 +1,3 @@
-<route lang="json">
-{
-  "style": {
-    "navigationBarTitleText": "Checkbox 复选框"
-  }
-}
-</route>
-
 <template>
   <view class="demo-page">
     <!-- 基础用法 -->
@@ -116,6 +108,10 @@
 </template>
 
 <script setup lang="ts">
+definePage({
+  style: { navigationBarTitleText: "Checkbox 复选框" },
+})
+
 import { ref } from "vue"
 
 const checked = ref(true)

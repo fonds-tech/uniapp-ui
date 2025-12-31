@@ -1,11 +1,3 @@
-<route lang="json">
-{
-  "style": {
-    "navigationBarTitleText": "Tag 标签"
-  }
-}
-</route>
-
 <template>
   <view class="demo-page">
     <!-- 基础用法 -->
@@ -118,6 +110,10 @@
 </template>
 
 <script setup lang="ts">
+definePage({
+  style: { navigationBarTitleText: "Tag 标签" },
+})
+
 import { ref } from "vue"
 
 const showTag1 = ref(true)

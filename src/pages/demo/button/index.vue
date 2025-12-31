@@ -1,11 +1,3 @@
-<route lang="json">
-{
-  "style": {
-    "navigationBarTitleText": "Button 按钮"
-  }
-}
-</route>
-
 <template>
   <view class="demo-page">
     <!-- 基础用法 -->
@@ -86,66 +78,13 @@
         <ui-button type="success" icon="plus">新增</ui-button>
       </view>
     </view>
-
-    <!-- API 说明 -->
-    <view class="api-section">
-      <text class="section-title">API</text>
-      <view class="api-table">
-        <view class="api-row api-header">
-          <text class="api-cell">属性</text>
-          <text class="api-cell">说明</text>
-          <text class="api-cell">类型</text>
-          <text class="api-cell">默认值</text>
-        </view>
-        <view class="api-row">
-          <text class="api-cell">type</text>
-          <text class="api-cell">按钮类型</text>
-          <text class="api-cell">string</text>
-          <text class="api-cell">default</text>
-        </view>
-        <view class="api-row">
-          <text class="api-cell">size</text>
-          <text class="api-cell">按钮尺寸</text>
-          <text class="api-cell">string</text>
-          <text class="api-cell">normal</text>
-        </view>
-        <view class="api-row">
-          <text class="api-cell">plain</text>
-          <text class="api-cell">是否朴素按钮</text>
-          <text class="api-cell">boolean</text>
-          <text class="api-cell">false</text>
-        </view>
-        <view class="api-row">
-          <text class="api-cell">disabled</text>
-          <text class="api-cell">是否禁用</text>
-          <text class="api-cell">boolean</text>
-          <text class="api-cell">false</text>
-        </view>
-        <view class="api-row">
-          <text class="api-cell">loading</text>
-          <text class="api-cell">是否加载中</text>
-          <text class="api-cell">boolean</text>
-          <text class="api-cell">false</text>
-        </view>
-        <view class="api-row">
-          <text class="api-cell">block</text>
-          <text class="api-cell">是否块级</text>
-          <text class="api-cell">boolean</text>
-          <text class="api-cell">false</text>
-        </view>
-        <view class="api-row">
-          <text class="api-cell">round</text>
-          <text class="api-cell">是否圆角</text>
-          <text class="api-cell">boolean</text>
-          <text class="api-cell">false</text>
-        </view>
-      </view>
-    </view>
   </view>
 </template>
 
 <script setup lang="ts">
-// Button demo page
+definePage({
+  style: { navigationBarTitleText: "Button 按钮" },
+})
 </script>
 
 <style lang="scss">

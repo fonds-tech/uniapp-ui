@@ -1,11 +1,3 @@
-<route lang="json">
-{
-  "style": {
-    "navigationBarTitleText": "组件演示"
-  }
-}
-</route>
-
 <template>
   <view class="demo-container">
     <!-- 搜索栏 -->
@@ -53,6 +45,10 @@
 </template>
 
 <script setup lang="ts">
+definePage({
+  style: { navigationBarTitleText: "组件演示" },
+})
+
 import { ref, computed } from "vue"
 
 // 搜索文本

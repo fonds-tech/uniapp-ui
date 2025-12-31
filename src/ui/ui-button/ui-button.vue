@@ -179,12 +179,11 @@ export default {
     top: 50%;
     left: 50%;
     width: 100%;
-    border: inherit;
     height: 100%;
     content: "";
     opacity: 0;
     position: absolute;
-    transform: translate3d(-50%, -50%, -1px);
+    transform: translate(-50%, -50%);
     background: #000;
     transition: opacity var(--ui-transition-fast) var(--ui-transition-timing);
     user-select: none;
@@ -270,7 +269,6 @@ export default {
 
       &::before {
         background: currentcolor;
-        border-color: currentcolor;
       }
     }
 
@@ -293,7 +291,6 @@ export default {
 
       &::before {
         background: currentcolor;
-        border-color: currentcolor;
       }
     }
 
@@ -314,7 +311,6 @@ export default {
 
       &::before {
         background: currentcolor;
-        border-color: currentcolor;
       }
     }
 
@@ -336,7 +332,6 @@ export default {
 
       &::before {
         background: currentcolor;
-        border-color: currentcolor;
       }
     }
 
@@ -358,7 +353,6 @@ export default {
 
       &::before {
         background: currentcolor;
-        border-color: currentcolor;
       }
     }
 
@@ -380,7 +374,6 @@ export default {
 
       &::before {
         background: currentcolor;
-        border-color: currentcolor;
       }
     }
 

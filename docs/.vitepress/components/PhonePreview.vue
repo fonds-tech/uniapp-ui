@@ -23,7 +23,7 @@ const componentName = computed(() => {
 const demoUrl = computed(() => {
   if (!componentName.value) return ""
   const theme = isDark.value ? "dark" : "light"
-  return `http://localhost:9302/#/pages/demo/${componentName.value}/index?theme=${theme}`
+  return `http://localhost:9300/#/pages/demo/${componentName.value}/index?theme=${theme}`
 })
 
 const showPreview = computed(() => {
@@ -50,8 +50,8 @@ watch(isDark, (dark) => {
 }
 
 .preview-wrapper {
-  width: 375px;
-  height: 667px;
+  width: 390px;
+  height: 844px;
   overflow: hidden;
   background: var(--vp-c-bg);
   box-shadow:
