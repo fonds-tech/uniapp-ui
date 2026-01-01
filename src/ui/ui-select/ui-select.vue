@@ -503,7 +503,7 @@ export default {
   flex-direction: column;
 
   &--disabled {
-    opacity: 0.6;
+    opacity: var(--ui-opacity-disabled);
   }
 
   &__trigger {
@@ -524,22 +524,22 @@ export default {
   }
 
   &__text {
-    color: #323233;
+    color: var(--ui-color-text-main);
     overflow: hidden;
-    font-size: 28rpx;
+    font-size: var(--ui-font-size-md);
     white-space: nowrap;
     text-overflow: ellipsis;
   }
 
   &__placeholder {
-    color: #999999;
-    font-size: 28rpx;
+    color: var(--ui-color-text-secondary);
+    font-size: var(--ui-font-size-md);
   }
 
   &__icon {
     display: flex;
     align-items: center;
-    margin-left: 12rpx;
+    margin-left: var(--ui-spacing-md);
   }
 }
 </style>

@@ -86,9 +86,9 @@ export default {
   width: 100%;
   height: 88rpx;
   display: flex;
-  z-index: 1;
+  z-index: var(--ui-z-index-base);
   position: relative;
-  background-color: #fff;
+  background-color: var(--ui-color-background);
 
   &--border::after {
     left: 0;
@@ -96,7 +96,7 @@ export default {
     bottom: 0;
     content: "";
     position: absolute;
-    border-bottom: 1rpx solid #eee;
+    border-bottom: var(--ui-border-width) solid var(--ui-color-border-light);
   }
 
   &__list {

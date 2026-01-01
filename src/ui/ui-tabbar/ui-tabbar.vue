@@ -95,7 +95,7 @@ export default {
 <style lang="scss" scoped>
 .ui-tabbar {
   display: flex;
-  z-index: 1000;
+  z-index: var(--ui-z-index-fixed);
   position: relative;
   margin-top: auto;
   flex-direction: column;
@@ -115,7 +115,7 @@ export default {
 
     &--border::after {
       inset: -50%;
-      border: 1rpx solid #ebedf0;
+      border: var(--ui-border-width) solid var(--ui-color-border-light);
       content: " ";
       position: absolute;
       transform: scale(0.5);

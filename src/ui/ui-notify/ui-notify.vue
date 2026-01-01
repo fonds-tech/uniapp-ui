@@ -141,14 +141,14 @@ export default {
   top: 0;
   left: 0;
   right: 0;
-  padding: 24rpx;
+  padding: var(--ui-spacing-xl);
 
   &--primary {
     background-color: var(--ui-color-primary);
   }
 
   &__content {
-    color: #fff;
+    color: var(--ui-color-background);
     display: flex;
     align-items: center;
     justify-content: center;

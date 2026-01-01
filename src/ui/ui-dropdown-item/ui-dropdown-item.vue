@@ -258,7 +258,7 @@ export default {
   right: 0;
   overflow: hidden;
   position: fixed;
-  border-top: 1rpx solid #f5f5f5;
+  border-top: var(--ui-border-width) solid var(--ui-color-background-dark);
 
   &--up {
     top: 0;
@@ -275,7 +275,7 @@ export default {
     overflow: hidden;
     position: absolute;
     flex-direction: column;
-    background-color: #fff;
+    background-color: var(--ui-color-background);
 
     &--up {
       bottom: 0;
@@ -292,9 +292,9 @@ export default {
   }
 
   &__option {
-    margin: 0 24rpx;
+    margin: 0 var(--ui-spacing-xl);
     display: flex;
-    padding: 24rpx 0;
+    padding: var(--ui-spacing-xl) 0;
     position: relative;
     align-items: center;
     justify-content: space-between;
@@ -306,7 +306,7 @@ export default {
       content: " ";
       position: absolute;
       box-sizing: border-box;
-      border-bottom: 1rpx solid #ebedf0;
+      border-bottom: var(--ui-border-width) solid var(--ui-color-border-light);
       pointer-events: none;
     }
 
@@ -319,19 +319,19 @@ export default {
     flex: 1;
     overflow: hidden;
     white-space: nowrap;
-    margin-right: 24rpx;
+    margin-right: var(--ui-spacing-xl);
     text-overflow: ellipsis;
   }
 
   &--up {
     .ui-dropdown-item__content {
-      border-radius: 16rpx 16rpx 0 0;
+      border-radius: var(--ui-radius-xl) var(--ui-radius-xl) 0 0;
     }
   }
 
   &--down {
     .ui-dropdown-item__content {
-      border-radius: 0 0 16rpx 16rpx;
+      border-radius: 0 0 var(--ui-radius-xl) var(--ui-radius-xl);
     }
   }
 }

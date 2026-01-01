@@ -114,17 +114,17 @@ export default {
   overflow: hidden;
   position: relative;
   box-sizing: content-box;
-  transition: background-color 0.3s cubic-bezier(0.3, 1.05, 0.4, 1.05);
+  transition: background-color var(--ui-transition-duration) cubic-bezier(0.3, 1.05, 0.4, 1.05);
   flex-shrink: 0;
-  border-radius: 9999px;
-  background-color: #e3e4e7;
+  border-radius: var(--ui-radius-round);
+  background-color: var(--ui-color-border);
 
   &--active {
     background-color: var(--ui-color-primary);
   }
 
   &--disabled {
-    opacity: 0.6;
+    opacity: var(--ui-opacity-disabled);
   }
 
   &__node {
@@ -134,12 +134,12 @@ export default {
     height: 32rpx;
     display: flex;
     position: absolute;
-    box-shadow: 0 6rpx 2rpx 0 rgb(0 0 0 / 5%);
-    transition: transform 0.3s cubic-bezier(0.3, 1.05, 0.4, 1.05);
+    box-shadow: var(--ui-shadow-sm);
+    transition: transform var(--ui-transition-duration) cubic-bezier(0.3, 1.05, 0.4, 1.05);
     align-items: center;
     border-radius: 50%;
     justify-content: center;
-    background-color: #fff;
+    background-color: var(--ui-color-background);
   }
 }
 </style>

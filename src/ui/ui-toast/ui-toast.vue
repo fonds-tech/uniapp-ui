@@ -261,10 +261,10 @@ export default {
 
   &__body {
     display: flex;
-    padding: 30rpx 48rpx;
+    padding: var(--ui-spacing-xxl) var(--ui-spacing-xxxl);
     max-width: calc(100% - 160rpx);
     align-items: center;
-    border-radius: 12rpx;
+    border-radius: var(--ui-radius-lg);
     flex-direction: column;
     justify-content: center;
   }
@@ -273,7 +273,7 @@ export default {
     width: 60rpx;
     height: 60rpx;
     display: flex;
-    margin-bottom: 24rpx;
+    margin-bottom: var(--ui-spacing-xl);
     justify-content: center;
     .image {
       width: 100%;
@@ -284,9 +284,9 @@ export default {
       width: 100%;
       height: 100%;
       animation: rotate 1s linear infinite;
-      border-color: #fff #535353 #535353;
+      border-color: var(--ui-color-background) var(--ui-color-mask-light) var(--ui-color-mask-light);
       border-style: solid;
-      border-width: 4rpx;
+      border-width: var(--ui-spacing-xs);
       border-radius: 50%;
       animation-duration: 1200ms;
       animation-timing-function: linear;
@@ -304,7 +304,7 @@ export default {
   }
 
   &__text {
-    color: #fff;
+    color: var(--ui-color-background);
     text-align: center;
     white-space: pre-wrap;
   }

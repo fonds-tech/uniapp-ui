@@ -38,8 +38,8 @@ export default {
   display: flex;
   overflow: hidden;
   position: relative;
-  border-radius: 16rpx;
+  border-radius: var(--ui-radius-xl);
   flex-direction: column;
-  background-color: #fff;
+  background-color: var(--ui-color-background);
 }
 </style>

@@ -225,15 +225,15 @@ export default {
 .ui-picker {
   &__header {
     display: flex;
-    padding: 24rpx;
+    padding: var(--ui-spacing-xl);
     align-items: center;
-    border-bottom: 1px solid #ebedf0;
+    border-bottom: var(--ui-border-width) solid var(--ui-color-border-light);
     justify-content: space-between;
 
     &__title {
-      color: #323233;
-      font-size: 32rpx;
-      font-weight: bold;
+      color: var(--ui-color-text-main);
+      font-size: var(--ui-font-size-lg);
+      font-weight: var(--ui-font-weight-bold);
     }
   }
 }

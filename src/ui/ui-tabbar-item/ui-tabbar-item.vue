@@ -105,7 +105,7 @@ export default {
 <style lang="scss" scoped>
 .ui-tabbar-item {
   flex: 1;
-  color: #999;
+  color: var(--ui-color-text-secondary);
   display: flex;
   position: relative;
   align-items: center;
@@ -122,14 +122,14 @@ export default {
     display: flex;
     position: relative;
     align-items: center;
-    margin-bottom: 8rpx;
+    margin-bottom: var(--ui-spacing-sm);
     justify-content: center;
 
     &__absolute {
       left: 50%;
       bottom: 0;
       display: flex;
-      z-index: 1;
+      z-index: var(--ui-z-index-base);
       position: absolute;
       transform: translateX(-50%);
     }

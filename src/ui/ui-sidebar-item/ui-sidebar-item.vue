@@ -101,12 +101,12 @@ export default {
 
   &--active {
     color: var(--ui-color-primary);
-    background-color: #fff;
+    background-color: var(--ui-color-background);
   }
 
   &__title {
     flex: 1;
-    padding: 0 24rpx;
+    padding: 0 var(--ui-spacing-xl);
     overflow: hidden;
     position: relative;
     white-space: nowrap;

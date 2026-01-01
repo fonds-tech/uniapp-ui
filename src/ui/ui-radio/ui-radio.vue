@@ -175,45 +175,45 @@ export default {
     align-items: center;
 
     &__wrap {
-      border: 2rpx solid #cccccc;
+      border: var(--ui-border-width-thick) solid var(--ui-color-border);
       display: flex;
       align-items: center;
-      border-radius: 4rpx;
+      border-radius: var(--ui-radius-sm);
       justify-content: center;
-      transition-duration: 0.2s;
+      transition-duration: var(--ui-transition-fast);
       transition-property: color, border-color, background-color;
     }
 
     &--round > &__wrap {
-      border-radius: 9999px;
+      border-radius: var(--ui-radius-round);
     }
 
     &--checked > &__wrap {
-      color: #ffffff;
+      color: var(--ui-color-background);
       border-color: var(--ui-color-primary);
       background-color: var(--ui-color-primary);
     }
 
     &--disabled > &__wrap {
-      color: #ffffff;
-      border-color: #cccccc;
-      background-color: #f5f5f5;
+      color: var(--ui-color-background);
+      border-color: var(--ui-color-border);
+      background-color: var(--ui-color-background-dark);
     }
   }
 
   &__dot {
     width: 40%;
     height: 40%;
-    transition: border-radius 0.2s;
-    background-color: #ffffff;
+    transition: border-radius var(--ui-transition-fast);
+    background-color: var(--ui-color-background);
   }
 
   &__label {
     flex: 1;
-    margin-left: 12rpx;
+    margin-left: var(--ui-spacing-md);
     &--left {
       margin-left: 0;
-      margin-right: 12rpx;
+      margin-right: var(--ui-spacing-md);
     }
   }
 

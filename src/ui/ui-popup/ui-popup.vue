@@ -191,36 +191,36 @@ export default {
 @use "../styles/animation.scss";
 
 .ui-popup {
-  --ui-popup-border-radius: 16rpx;
+  --ui-popup-border-radius: var(--ui-radius-xl);
   overflow: hidden;
   position: fixed;
   max-width: 100vw;
   max-height: 100vh;
-  background-color: #fff;
-  transition-duration: 300ms;
+  background-color: var(--ui-color-background);
+  transition-duration: var(--ui-transition-duration);
 
   &__close {
-    z-index: 100;
+    z-index: var(--ui-z-index-absolute);
     position: absolute;
 
     &--top-left {
-      top: 24rpx;
-      left: 24rpx;
+      top: var(--ui-spacing-xl);
+      left: var(--ui-spacing-xl);
     }
 
     &--top-right {
-      top: 24rpx;
-      right: 24rpx;
+      top: var(--ui-spacing-xl);
+      right: var(--ui-spacing-xl);
     }
 
     &--bottom-left {
-      left: 24rpx;
-      bottom: 24rpx;
+      left: var(--ui-spacing-xl);
+      bottom: var(--ui-spacing-xl);
     }
 
     &--bottom-right {
-      right: 24rpx;
-      bottom: 24rpx;
+      right: var(--ui-spacing-xl);
+      bottom: var(--ui-spacing-xl);
     }
   }
 

@@ -326,7 +326,7 @@ export default {
       content: none;
     }
     &--active {
-      opacity: 0.6;
+      opacity: var(--ui-opacity-active);
     }
   }
   &__minus {
@@ -339,34 +339,34 @@ export default {
       content: "";
       position: absolute;
       transform: translate(-50%, -50%);
-      background-color: #333333;
+      background-color: var(--ui-color-text-main);
     }
 
     &--disabled {
-      opacity: 0.6;
+      opacity: var(--ui-opacity-disabled);
     }
 
     &--button {
       width: 48rpx;
       height: 100%;
-      border-radius: 8rpx 0 0 8rpx;
-      background-color: #f2f3f5;
+      border-radius: var(--ui-radius-md) 0 0 var(--ui-radius-md);
+      background-color: var(--ui-color-background-dark);
     }
 
     &--round {
       width: 48rpx;
-      border: 1rpx solid currentColor;
+      border: var(--ui-border-width) solid currentColor;
       height: 100%;
-      border-radius: 999px;
-      background-color: #ffffff;
+      border-radius: var(--ui-radius-round);
+      background-color: var(--ui-color-background);
     }
 
     &--border {
       color: currentColor;
       width: 48rpx;
       height: 100%;
-      border-right: 2rpx solid #eeeeee;
-      background-color: #ffffff;
+      border-right: var(--ui-border-width-thick) solid var(--ui-color-border-light);
+      background-color: var(--ui-color-background);
     }
   }
   &__plus {
@@ -393,22 +393,22 @@ export default {
     }
 
     &--disabled {
-      opacity: 0.6;
+      opacity: var(--ui-opacity-disabled);
     }
 
     &--button {
       width: 48rpx;
       height: 100%;
-      border-radius: 0 8rpx 8rpx 0;
-      background-color: #f2f3f5;
+      border-radius: 0 var(--ui-radius-md) var(--ui-radius-md) 0;
+      background-color: var(--ui-color-background-dark);
     }
 
     &--round {
-      color: #ffffff;
+      color: var(--ui-color-background);
       width: 48rpx;
-      border: 1rpx solid var(--ui-color-primary);
+      border: var(--ui-border-width) solid var(--ui-color-primary);
       height: 100%;
-      border-radius: 999px;
+      border-radius: var(--ui-radius-round);
       background-color: var(--ui-color-primary);
     }
 
@@ -416,28 +416,28 @@ export default {
       color: currentColor;
       width: 48rpx;
       height: 100%;
-      border-left: 2rpx solid #eeeeee;
-      background-color: #ffffff;
+      border-left: var(--ui-border-width-thick) solid var(--ui-color-border-light);
+      background-color: var(--ui-color-background);
     }
   }
 
   &__input {
     width: 48rpx;
     height: 100%;
-    margin: 0 6rpx;
+    margin: 0 var(--ui-spacing-sm);
     display: flex;
-    font-size: 24rpx;
+    font-size: var(--ui-font-size-sm);
     text-align: center;
     align-items: center;
     &--button {
-      background-color: #f2f3f5;
+      background-color: var(--ui-color-background-dark);
     }
   }
 
   &--border {
-    border: 2rpx solid #eeeeee;
+    border: var(--ui-border-width-thick) solid var(--ui-color-border-light);
     overflow: hidden;
-    border-radius: 999px;
+    border-radius: var(--ui-radius-round);
   }
 }
 </style>

@@ -386,7 +386,7 @@ export default {
   max-width: calc(100vw - 96rpx);
   transform: translateY(-50%);
   max-height: 100%;
-  border-radius: 12rpx;
+  border-radius: var(--ui-radius-lg);
   flex-direction: column;
   backface-visibility: hidden;
   transition-property: transform, opacity;
@@ -394,18 +394,18 @@ export default {
   &__body {
     margin: 0 auto;
     overflow: hidden;
-    border-radius: 16rpx;
-    background-color: #fff;
+    border-radius: var(--ui-radius-xl);
+    background-color: var(--ui-color-background);
   }
 
   &__title {
     display: flex;
     overflow: hidden;
-    font-size: 32rpx;
-    font-weight: bold;
-    padding-top: 44rpx;
-    padding-left: 48rpx;
-    padding-right: 48rpx;
+    font-size: var(--ui-font-size-lg);
+    font-weight: var(--ui-font-weight-bold);
+    padding-top: var(--ui-spacing-xxxl);
+    padding-left: var(--ui-spacing-xxxl);
+    padding-right: var(--ui-spacing-xxxl);
     justify-content: center;
   }
 
@@ -414,8 +414,8 @@ export default {
   }
 
   &__content {
-    padding: 44rpx 48rpx;
-    font-size: 28rpx;
+    padding: var(--ui-spacing-xxxl) var(--ui-spacing-xxxl);
+    font-size: var(--ui-font-size-md);
     word-wrap: break-word;
     white-space: pre-wrap;
 
@@ -447,13 +447,13 @@ export default {
     &__line {
       top: 0;
       left: 50%;
-      width: 2rpx;
+      width: var(--ui-border-width-thick);
       height: 100%;
       display: flex;
-      z-index: 10;
+      z-index: var(--ui-z-index-content);
       position: absolute;
       transform: translateX(-50%);
-      background-color: #eee;
+      background-color: var(--ui-color-border-light);
     }
 
     &::after {
@@ -462,7 +462,7 @@ export default {
       width: 100%;
       content: "";
       position: absolute;
-      border-top: 2rpx solid #eee;
+      border-top: var(--ui-border-width-thick) solid var(--ui-color-border-light);
     }
   }
 

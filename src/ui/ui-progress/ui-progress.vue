@@ -62,37 +62,37 @@ export default {
   height: 24rpx;
   display: flex;
   position: relative;
-  border-radius: 9999px;
-  background-color: #ebedf0;
+  border-radius: var(--ui-radius-round);
+  background-color: var(--ui-color-border-light);
 
   &__pivot {
     top: 50%;
     display: flex;
-    z-index: 2;
+    z-index: calc(var(--ui-z-index-base) + 1);
     position: absolute;
     transform: translate(-100%, -50%);
     box-sizing: border-box;
     text-align: center;
-    transition: all 0.3s ease-out;
+    transition: all var(--ui-transition-duration) ease-out;
     word-break: keep-all;
     align-items: center;
   }
 
   &__text {
-    color: #fff;
-    padding: 0 8rpx;
-    font-size: 20rpx;
-    border-radius: 9999px;
+    color: var(--ui-color-background);
+    padding: 0 var(--ui-spacing-sm);
+    font-size: var(--ui-font-size-xs);
+    border-radius: var(--ui-radius-round);
   }
 
   &__portion {
     top: 0;
     left: 0;
     bottom: 0;
-    z-index: 1;
+    z-index: var(--ui-z-index-base);
     position: absolute;
-    transition: all 0.3s ease-out;
-    border-radius: 9999px;
+    transition: all var(--ui-transition-duration) ease-out;
+    border-radius: var(--ui-radius-round);
     background-color: var(--ui-color-primary);
   }
 }

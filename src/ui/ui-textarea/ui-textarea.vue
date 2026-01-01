@@ -186,7 +186,7 @@ export default {
 
   &--disabled {
     cursor: not-allowed;
-    opacity: 0.6;
+    opacity: var(--ui-opacity-disabled);
   }
 
   &__textarea {
@@ -202,7 +202,7 @@ export default {
     }
 
     :deep(.textarea-placeholder) {
-      font-weight: 400;
+      font-weight: var(--ui-font-weight-normal);
     }
   }
 
@@ -212,20 +212,20 @@ export default {
   }
 
   &__count {
-    color: #909193;
-    margin-top: 12rpx;
+    color: var(--ui-color-text-secondary);
+    margin-top: var(--ui-spacing-md);
     text-align: right;
   }
 
   &__clear {
     display: flex;
-    padding: 4rpx;
+    padding: var(--ui-spacing-xs);
     box-sizing: content-box;
     align-items: center;
-    margin-left: 8rpx;
-    border-radius: 9999px;
+    margin-left: var(--ui-spacing-sm);
+    border-radius: var(--ui-radius-round);
     justify-content: center;
-    background-color: #c6c7cb;
+    background-color: var(--ui-color-text-placeholder);
   }
 }
 </style>

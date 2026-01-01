@@ -162,7 +162,7 @@ export default {
   position: relative;
   flex-direction: column;
   justify-content: space-between;
-  background-color: #f7f8fa;
+  background-color: var(--ui-color-background-light);
 
   &__scroll {
     top: 0;
@@ -183,15 +183,15 @@ export default {
 
   &__line {
     left: 0;
-    z-index: 1;
+    z-index: var(--ui-z-index-base);
     position: absolute;
     transition: all 0s ease-out;
     visibility: hidden;
   }
 
   &__line-inner {
-    width: 6rpx;
-    border-radius: 9999rpx;
+    width: var(--ui-spacing-sm);
+    border-radius: var(--ui-radius-round);
     background-color: var(--ui-color-primary);
   }
 }

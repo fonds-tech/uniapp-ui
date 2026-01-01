@@ -159,42 +159,42 @@ export default {
     flex: 1;
     height: 100%;
     display: flex;
-    padding: 0 16rpx;
+    padding: 0 var(--ui-spacing-lg);
     align-items: center;
-    border-radius: 8rpx;
-    background-color: #f7f8fa;
+    border-radius: var(--ui-radius-md);
+    background-color: var(--ui-color-background-light);
 
     &--round {
-      border-radius: 999px;
+      border-radius: var(--ui-radius-round);
     }
   }
 
   &__icon {
     display: flex;
-    margin-right: 8rpx;
+    margin-right: var(--ui-spacing-sm);
   }
 
   &__value {
     width: 100%;
-    font-size: 28rpx;
+    font-size: var(--ui-font-size-md);
     &--disabled {
       pointer-events: none;
     }
   }
 
   &__clear {
-    margin-left: 16rpx;
+    margin-left: var(--ui-spacing-lg);
   }
 
   &__action {
-    margin-left: 16rpx;
+    margin-left: var(--ui-spacing-lg);
     &__button {
-      color: #999;
-      padding: 0 16rpx;
-      font-size: 28rpx;
+      color: var(--ui-color-text-secondary);
+      padding: 0 var(--ui-spacing-lg);
+      font-size: var(--ui-font-size-md);
 
       &--active {
-        opacity: 0.6;
+        opacity: var(--ui-opacity-active);
       }
     }
   }

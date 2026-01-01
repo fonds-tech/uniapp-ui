@@ -123,7 +123,7 @@ export default {
   height: 80rpx;
   display: flex;
   align-items: center;
-  background-color: #fff;
+  background-color: var(--ui-color-background);
 
   &__item {
     flex: 1;
@@ -135,8 +135,8 @@ export default {
 
     &__icon {
       display: flex;
-      transition: transform 0.3s ease-out;
-      margin-left: 8rpx;
+      transition: transform var(--ui-transition-duration) ease-out;
+      margin-left: var(--ui-spacing-sm);
     }
 
     &.is-active {
@@ -144,7 +144,7 @@ export default {
     }
 
     &.is-disabled {
-      opacity: 0.6;
+      opacity: var(--ui-opacity-disabled);
     }
   }
 }

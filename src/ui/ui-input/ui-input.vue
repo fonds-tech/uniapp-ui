@@ -183,14 +183,14 @@ export default {
 
   &--disabled {
     cursor: not-allowed;
-    opacity: 0.6;
+    opacity: var(--ui-opacity-disabled);
   }
 
   &__input {
     flex: 1;
     height: 100%;
     display: flex;
-    font-size: 24rpx;
+    font-size: var(--ui-font-size-sm);
     align-items: center;
 
     &--center {
@@ -207,13 +207,13 @@ export default {
 
   &__clear {
     display: flex;
-    padding: 4rpx;
+    padding: var(--ui-spacing-xs);
     box-sizing: content-box;
     align-items: center;
-    margin-left: 8rpx;
-    border-radius: 9999px;
+    margin-left: var(--ui-spacing-sm);
+    border-radius: var(--ui-radius-round);
     justify-content: center;
-    background-color: #c6c7cb;
+    background-color: var(--ui-color-text-placeholder);
   }
 }
 </style>

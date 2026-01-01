@@ -260,7 +260,7 @@ export default {
 .ui-navbar {
   width: 100%;
   display: flex;
-  z-index: 1000;
+  z-index: var(--ui-z-index-fixed);
   position: relative;
   flex-direction: column;
 
@@ -274,7 +274,7 @@ export default {
       top: 0;
       left: 0;
       right: 0;
-      z-index: 10;
+      z-index: var(--ui-z-index-content);
       position: fixed;
     }
 
@@ -284,7 +284,7 @@ export default {
       bottom: 0;
       content: "";
       position: absolute;
-      border-bottom: 1rpx solid #e4e7ed;
+      border-bottom: var(--ui-border-width) solid var(--ui-color-border);
     }
   }
 
@@ -298,7 +298,7 @@ export default {
   &__body {
     height: 100%;
     display: flex;
-    padding: 0 12rpx;
+    padding: 0 var(--ui-spacing-md);
     position: relative;
     align-items: center;
     justify-content: space-between;
@@ -316,10 +316,10 @@ export default {
     display: flex;
     align-items: center;
     flex-shrink: 0;
-    margin-right: 12rpx;
+    margin-right: var(--ui-spacing-md);
 
     &__text {
-      padding-left: 4rpx;
+      padding-left: var(--ui-spacing-xs);
     }
   }
 

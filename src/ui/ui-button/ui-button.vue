@@ -184,7 +184,7 @@ export default {
     opacity: 0;
     position: absolute;
     transform: translate(-50%, -50%);
-    background: #000;
+    background: var(--ui-color-text-main);
     transition: opacity var(--ui-transition-fast) var(--ui-transition-timing);
     user-select: none;
     border-radius: inherit;

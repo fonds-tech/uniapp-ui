@@ -376,7 +376,7 @@ export default {
 .ui-form-item {
   flex: 1;
   display: flex;
-  padding: 24rpx 0;
+  padding: var(--ui-spacing-xl) 0;
   flex-direction: column;
 
   &__main {
@@ -417,19 +417,19 @@ export default {
     }
 
     &--top {
-      margin-bottom: 12rpx;
+      margin-bottom: var(--ui-spacing-md);
     }
 
     &--effective {
-      margin-right: 24rpx;
+      margin-right: var(--ui-spacing-xl);
     }
 
     &--required {
       &::after {
-        color: var(--ui-error-color);
+        color: var(--ui-color-danger);
         content: "*";
-        margin-top: 4rpx;
-        margin-left: 4rpx;
+        margin-top: var(--ui-spacing-xs);
+        margin-left: var(--ui-spacing-xs);
       }
     }
   }
@@ -454,17 +454,17 @@ export default {
     max-height: 0;
 
     &--failed {
-      margin-top: 8rpx;
+      margin-top: var(--ui-spacing-sm);
       max-height: max-content;
     }
 
     &__text {
       flex: 1;
-      color: var(--ui-error-color);
+      color: var(--ui-color-danger);
     }
 
     &__offset {
-      margin-right: 24rpx;
+      margin-right: var(--ui-spacing-xl);
     }
   }
 }

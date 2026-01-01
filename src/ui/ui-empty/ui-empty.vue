@@ -72,12 +72,12 @@ export default {
   }
 
   &__text {
-    color: #999;
-    margin-top: 24rpx;
+    color: var(--ui-color-text-secondary);
+    margin-top: var(--ui-spacing-xl);
   }
 
   &__slot {
-    margin-top: 24rpx;
+    margin-top: var(--ui-spacing-xl);
   }
 }
 </style>
