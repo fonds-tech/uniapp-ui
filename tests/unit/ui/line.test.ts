@@ -1,0 +1,204 @@
+/**
+ * ui-line 组件单元测试
+ * 测试分割线组件的 props 和渲染逻辑
+ */
+
+import UiLine from "@/ui/ui-line/ui-line.vue"
+import { mount } from "@vue/test-utils"
+import { it, expect, describe } from "vitest"
+
+describe("ui-line 分割线组件", () => {
+  describe("基础渲染", () => {
+    it("应正确渲染默认分割线组件", () => {
+      const wrapper = mount(UiLine)
+
+      expect(wrapper.find(".ui-line").exists()).toBe(true)
+    })
+  })
+
+  describe("颜色属性", () => {
+    it("应支持自定义颜色", () => {
+      const wrapper = mount(UiLine, {
+        props: { color: "#e0e0e0" },
+      })
+
+      expect(wrapper.props("color")).toBe("#e0e0e0")
+    })
+
+    it("应支持主题色", () => {
+      const wrapper = mount(UiLine, {
+        props: { color: "primary" },
+      })
+
+      expect(wrapper.props("color")).toBe("primary")
+    })
+  })
+
+  describe("尺寸属性", () => {
+    it("默认宽度应为 100%", () => {
+      const wrapper = mount(UiLine)
+
+      expect(wrapper.props("width")).toBe("100%")
+    })
+
+    it("应支持自定义宽度", () => {
+      const wrapper = mount(UiLine, {
+        props: { width: 200 },
+      })
+
+      expect(wrapper.props("width")).toBe(200)
+    })
+
+    it("应支持字符串类型的宽度", () => {
+      const wrapper = mount(UiLine, {
+        props: { width: "50%" },
+      })
+
+      expect(wrapper.props("width")).toBe("50%")
+    })
+
+    it("默认高度应为 2rpx", () => {
+      const wrapper = mount(UiLine)
+
+      expect(wrapper.props("height")).toBe("2rpx")
+    })
+
+    it("应支持自定义高度", () => {
+      const wrapper = mount(UiLine, {
+        props: { height: 4 },
+      })
+
+      expect(wrapper.props("height")).toBe(4)
+    })
+
+    it("应支持字符串类型的高度", () => {
+      const wrapper = mount(UiLine, {
+        props: { height: "4rpx" },
+      })
+
+      expect(wrapper.props("height")).toBe("4rpx")
+    })
+  })
+
+  describe("线条类型属性", () => {
+    it("默认类型应为 solid", () => {
+      const wrapper = mount(UiLine)
+
+      expect(wrapper.props("type")).toBe("solid")
+    })
+
+    it("应支持 dashed 虚线类型", () => {
+      const wrapper = mount(UiLine, {
+        props: { type: "dashed" },
+      })
+
+      expect(wrapper.props("type")).toBe("dashed")
+    })
+
+    it("应支持 dotted 点线类型", () => {
+      const wrapper = mount(UiLine, {
+        props: { type: "dotted" },
+      })
+
+      expect(wrapper.props("type")).toBe("dotted")
+    })
+  })
+
+  describe("方向属性", () => {
+    it("默认应为水平线条", () => {
+      const wrapper = mount(UiLine)
+
+      expect(wrapper.props("vertical")).toBe(false)
+    })
+
+    it("vertical 为 true 时应为垂直线条", () => {
+      const wrapper = mount(UiLine, {
+        props: { vertical: true },
+      })
+
+      expect(wrapper.props("vertical")).toBe(true)
+    })
+  })
+
+  describe("间距属性", () => {
+    it("应支持自定义外间距", () => {
+      const wrapper = mount(UiLine, {
+        props: { margin: 20 },
+      })
+
+      expect(wrapper.props("margin")).toBe(20)
+    })
+
+    it("应支持字符串类型的外间距", () => {
+      const wrapper = mount(UiLine, {
+        props: { margin: "20rpx 0" },
+      })
+
+      expect(wrapper.props("margin")).toBe("20rpx 0")
+    })
+  })
+
+  describe("自定义样式属性", () => {
+    it("应支持自定义类名", () => {
+      const wrapper = mount(UiLine, {
+        props: { customClass: "my-line" },
+      })
+
+      expect(wrapper.classes()).toContain("my-line")
+    })
+
+    it("应支持自定义样式对象", () => {
+      const wrapper = mount(UiLine, {
+        props: { customStyle: { opacity: 0.5 } },
+      })
+
+      expect(wrapper.props("customStyle")).toEqual({ opacity: 0.5 })
+    })
+  })
+
+  describe("暴露的属性", () => {
+    it("应暴露 name 属性", () => {
+      const wrapper = mount(UiLine)
+
+      expect(wrapper.vm.name).toBe("ui-line")
+    })
+  })
+
+  describe("边界情况", () => {
+    it("多个属性应正确设置", () => {
+      const wrapper = mount(UiLine, {
+        props: {
+          color: "#cccccc",
+          width: 300,
+          height: 2,
+          type: "dashed",
+          vertical: false,
+          margin: 10,
+          customClass: "my-line",
+        },
+      })
+
+      expect(wrapper.props("color")).toBe("#cccccc")
+      expect(wrapper.props("width")).toBe(300)
+      expect(wrapper.props("height")).toBe(2)
+      expect(wrapper.props("type")).toBe("dashed")
+      expect(wrapper.props("vertical")).toBe(false)
+      expect(wrapper.props("margin")).toBe(10)
+      expect(wrapper.classes()).toContain("my-line")
+    })
+
+    it("垂直线条应正确设置", () => {
+      const wrapper = mount(UiLine, {
+        props: {
+          vertical: true,
+          width: 2,
+          height: 100,
+        },
+      })
+
+      expect(wrapper.props("vertical")).toBe(true)
+      expect(wrapper.props("width")).toBe(2)
+      expect(wrapper.props("height")).toBe(100)
+    })
+  })
+})

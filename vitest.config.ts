@@ -1,9 +1,17 @@
 import path from "node:path"
 import vue from "@vitejs/plugin-vue"
+import AutoImport from "unplugin-auto-import/vite"
 import { defineConfig } from "vitest/config"
 
 export default defineConfig({
-  plugins: [vue()],
+  plugins: [
+    vue(),
+    // 自动导入 Vue API，与项目配置保持一致
+    AutoImport({
+      imports: ["vue"],
+      dts: false, // 测试环境不生成类型文件
+    }),
+  ],
   test: {
     // 测试环境
     environment: "jsdom",
@@ -26,6 +34,7 @@ export default defineConfig({
       exclude: [
         "src/ui/**/index.ts",
         "src/ui/**/*.d.ts",
+        "src/ui/**/README*.md",
       ],
     },
 
@@ -34,6 +43,15 @@ export default defineConfig({
 
     // 超时时间
     testTimeout: 10000,
+
+    // 依赖优化 - 预打包 Vue 相关依赖
+    deps: {
+      optimizer: {
+        web: {
+          include: ["vue", "@vue/test-utils"],
+        },
+      },
+    },
   },
   resolve: {
     alias: {

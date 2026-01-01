@@ -93,7 +93,7 @@ export const [tagProps, useTagProps] = createProps("tag", {
 export const tagEmits = {
   click: () => true,
   close: () => true,
-  "update:show": (show: boolean) => show,
+  "update:show": (show: boolean) => typeof show === "boolean",
 }
 
 export type TagEmits = typeof tagEmits

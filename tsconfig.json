@@ -17,7 +17,8 @@
       "miniprogram-api-typings",
       "./src/types/global.d.ts",
       "./src/types/async-import.d.ts",
-      "./src/types/async-component.d.ts"
+      "./src/types/async-component.d.ts",
+      "vitest/jsdom"
     ],
     "allowJs": true,
     "noImplicitThis": true,
@@ -37,7 +38,8 @@
     "src/**/*.tsx",
     "src/**/*.jsx",
     "src/**/*.vue",
-    "src/**/*.json"
+    "src/**/*.json",
+    "tests/**/*.ts"
   ],
   "exclude": ["node_modules", "dist"]
 }
