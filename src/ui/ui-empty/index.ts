@@ -1,7 +1,8 @@
 import type Empty from "./ui-empty.vue"
-import { styleProp, truthProp, buildProps, makeStringProp, makeNumericProp } from "../utils/props"
+import { createProps } from "../hooks"
+import { styleProp, truthProp, makeStringProp, makeNumericProp } from "../utils/props"
 
-export const emptyProps = buildProps("empty", {
+export const [emptyProps, useEmptyProps] = createProps("empty", {
   /**
    * 是否显示
    */

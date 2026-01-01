@@ -69,36 +69,36 @@ function onChange(index) {
 
 ## Sidebar Props
 
-| 参数 | 说明 | 类型 | 默认值 |
-| --- | --- | --- | --- |
-| v-model | 当前选中项索引 | `string \| number` | `0` |
-| width | 宽度 | `string \| number` | - |
-| height | 高度 | `string \| number` | - |
-| duration | 切换动画时长(ms) | `string \| number` | `300` |
-| background | 背景颜色 | `string` | - |
-| line-color | 激活线条颜色 | `string` | - |
-| line-width | 激活线条宽度 | `string \| number` | - |
-| line-height | 激活线条高度 | `string \| number` | `40rpx` |
-| line-radius | 激活线条圆角 | `string \| number` | - |
-| show-line | 是否显示线条 | `boolean` | `true` |
-| auto-scroll | 是否自动滚动 | `boolean` | `true` |
-| z-index | 层级 | `string \| number` | - |
-| custom-class | 自定义类名 | `string` | - |
-| custom-style | 自定义样式 | `string \| object` | - |
+| 参数         | 说明             | 类型               | 默认值  |
+| ------------ | ---------------- | ------------------ | ------- |
+| v-model      | 当前选中项索引   | `string \| number` | `0`     |
+| width        | 宽度             | `string \| number` | -       |
+| height       | 高度             | `string \| number` | -       |
+| duration     | 切换动画时长(ms) | `string \| number` | `300`   |
+| background   | 背景颜色         | `string`           | -       |
+| line-color   | 激活线条颜色     | `string`           | -       |
+| line-width   | 激活线条宽度     | `string \| number` | -       |
+| line-height  | 激活线条高度     | `string \| number` | `40rpx` |
+| line-radius  | 激活线条圆角     | `string \| number` | -       |
+| show-line    | 是否显示线条     | `boolean`          | `true`  |
+| auto-scroll  | 是否自动滚动     | `boolean`          | `true`  |
+| z-index      | 层级             | `string \| number` | -       |
+| custom-class | 自定义类名       | `string`           | -       |
+| custom-style | 自定义样式       | `string \| object` | -       |
 
 ## Sidebar Events
 
-| 事件名 | 说明 | 回调参数 |
-| --- | --- | --- |
-| change | 切换选项时触发 | `name: string \| number` |
+| 事件名     | 说明           | 回调参数                                |
+| ---------- | -------------- | --------------------------------------- |
+| change     | 切换选项时触发 | `name: string \| number`                |
 | click-item | 点击选项时触发 | `name: string \| number, index: number` |
 
 ## SidebarItem Props
 
-| 参数 | 说明 | 类型 | 默认值 |
-| --- | --- | --- | --- |
-| title | 标题 | `string` | - |
-| name | 标识符，用于匹配选中项 | `string \| number` | 当前索引 |
-| disabled | 是否禁用 | `boolean` | `false` |
-| dot | 是否显示圆点徽标 | `boolean` | `false` |
-| badge | 徽标内容 | `string \| number` | - |
+| 参数     | 说明                   | 类型               | 默认值   |
+| -------- | ---------------------- | ------------------ | -------- |
+| title    | 标题                   | `string`           | -        |
+| name     | 标识符，用于匹配选中项 | `string \| number` | 当前索引 |
+| disabled | 是否禁用               | `boolean`          | `false`  |
+| dot      | 是否显示圆点徽标       | `boolean`          | `false`  |
+| badge    | 徽标内容               | `string \| number` | -        |

@@ -1,9 +1,10 @@
 import type Form from "./ui-form.vue"
 import type { PropType, InjectionKey, CSSProperties, ExtractPropTypes } from "vue"
-import { truthProp, buildProps, numericProp, makeStringProp, makeNumericProp } from "../utils/props"
+import { createProps } from "../hooks"
+import { truthProp, numericProp, makeStringProp, makeNumericProp } from "../utils/props"
 
 export const formKey: InjectionKey<FormProvide> = Symbol("ui-form")
-export const formProps = buildProps("form", {
+export const [formProps, useFormProps] = createProps("form", {
   /**
    * 表单数据对象
    */

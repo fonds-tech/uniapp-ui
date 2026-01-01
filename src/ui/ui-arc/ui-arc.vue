@@ -5,8 +5,8 @@
 </template>
 
 <script setup lang="ts">
-import { arcEmits, arcProps } from "./index"
 import { useUnit, useColor, useStyle } from "../hooks"
+import { arcEmits, arcProps, useArcProps } from "./index"
 
 // 定义组件名称
 defineOptions({ name: "ui-arc" })
@@ -14,33 +14,33 @@ defineOptions({ name: "ui-arc" })
 // 定义组件的属性和事件
 const props = defineProps(arcProps)
 const emits = defineEmits(arcEmits)
-
+const useProps = useArcProps(props)
 // 计算宽度,确保至少为100%
 // 这样可以保证弧形始终能覆盖整个容器宽度
 const width = computed(() => {
-  return Math.max(Number(props.percent), 100)
+  return Math.max(Number(useProps.percent), 100)
 })
 
 // 计算外层容器的样式
 const style = computed(() => {
   const style: any = {}
-  style.top = useUnit(props.top)
-  style.left = useUnit(props.left)
-  style.height = useUnit(props.height)
-  style.zIndex = props.zIndex
-  if (props.fixed) style.position = "fixed"
-  return useStyle({ ...style, ...useStyle(props.customStyle) })
+  style.top = useUnit(useProps.top)
+  style.left = useUnit(useProps.left)
+  style.height = useUnit(useProps.height)
+  style.zIndex = useProps.zIndex
+  if (useProps.fixed) style.position = "fixed"
+  return useStyle({ ...style, ...useStyle(useProps.customStyle) })
 })
 
 // 计算内层弧形的样式
 const innerStyle = computed(() => {
   const style: any = {}
-  style.height = useUnit(props.height)
+  style.height = useUnit(useProps.height)
   style.left = `-${(width.value - 100) / 2}%`
   style.right = `-${(width.value - 100) / 2}%`
   style.paddingLeft = `${(width.value - 100) / 2}%`
   style.paddingRight = `${(width.value - 100) / 2}%`
-  style.background = useColor(props.background)
+  style.background = useColor(useProps.background)
   return useStyle(style)
 })
 

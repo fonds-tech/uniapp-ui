@@ -17,46 +17,47 @@
 </template>
 
 <script setup lang="ts">
-import { tagEmits, tagProps } from "./index"
 import { useUnit, useColor, useStyle } from "../hooks"
+import { tagEmits, tagProps, useTagProps } from "./index"
 
 defineOptions({ name: "ui-tag" })
 
 const props = defineProps(tagProps)
 const emits = defineEmits(tagEmits)
+const useProps = useTagProps(props)
 const slots = useSlots()
 const visible = ref(true)
 
 const style = computed(() => {
   const style: any = {}
-  style.padding = props.padding
-  style.color = useColor(props.textColor)
-  style.height = useUnit(props.height)
-  style.background = useColor(props.background)
-  style.borderColor = useColor(props.borderColor)
-  style.borderWidth = useUnit(props.borderWidth)
-  style.borderRadius = useUnit(props.borderRadius)
-  return useStyle({ ...style, ...useStyle(props.customStyle) })
+  style.padding = useProps.padding
+  style.color = useColor(useProps.textColor)
+  style.height = useUnit(useProps.height)
+  style.background = useColor(useProps.background)
+  style.borderColor = useColor(useProps.borderColor)
+  style.borderWidth = useUnit(useProps.borderWidth)
+  style.borderRadius = useUnit(useProps.borderRadius)
+  return useStyle({ ...style, ...useStyle(useProps.customStyle) })
 })
 
 const classes = computed(() => {
   const list: string[] = []
-  list.push(`ui-tag--${props.type}`)
-  if (props.round) list.push("ui-tag--round")
-  if (props.plain) list.push("ui-tag--plain")
-  if (props.closeable) list.push("ui-tag--closeable")
+  list.push(`ui-tag--${useProps.type}`)
+  if (useProps.round) list.push("ui-tag--round")
+  if (useProps.plain) list.push("ui-tag--plain")
+  if (useProps.closeable) list.push("ui-tag--closeable")
   return list
 })
 
 const textStyle = computed(() => {
   const style: any = {}
-  style.fontSize = useUnit(props.textSize)
-  style.fontWeight = props.textWeight
+  style.fontSize = useUnit(useProps.textSize)
+  style.fontWeight = useProps.textWeight
   return useStyle(style)
 })
 
 watch(
-  () => props.show,
+  () => useProps.show,
   (val) => {
     visible.value = val
   },
@@ -78,7 +79,6 @@ function onClose() {
   visible.value = false
   emits("close")
 }
-
 </script>
 
 <script lang="ts">

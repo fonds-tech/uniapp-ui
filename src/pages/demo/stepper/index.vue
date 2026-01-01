@@ -118,10 +118,10 @@ const value9b = ref(1)
 
 <style lang="scss" scoped>
 .stepper-item {
+  gap: 12rpx;
   display: flex;
   align-items: center;
   flex-direction: column;
-  gap: 12rpx;
 }
 
 .stepper-label {

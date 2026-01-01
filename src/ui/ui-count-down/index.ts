@@ -1,8 +1,9 @@
 import type CountDown from "./ui-count-down.vue"
 import type { ExtractPropTypes } from "vue"
-import { styleProp, truthProp, buildProps, makeStringProp, makeNumericProp } from "../utils/props"
+import { createProps } from "../hooks"
+import { styleProp, truthProp, makeStringProp, makeNumericProp } from "../utils/props"
 
-export const countDownProps = buildProps("countDown", {
+export const [countDownProps, useCountDownProps] = createProps("countDown", {
   /**
    * 倒计时时长，单位毫秒
    */

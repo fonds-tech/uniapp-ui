@@ -19,13 +19,14 @@ import type { CSSProperties } from "vue"
 import type { CheckboxValueType } from "./index"
 import { checkboxGroupKey } from "../ui-checkbox-group"
 import { isDef, isBoolean } from "../utils/check"
-import { checkboxEmits, checkboxProps } from "./index"
 import { useUnit, useColor, useStyle, useParent } from "../hooks"
+import { checkboxEmits, checkboxProps, useCheckboxProps } from "./index"
 
 defineOptions({ name: "ui-checkbox" })
 
 const props = defineProps(checkboxProps)
 const emits = defineEmits(checkboxEmits)
+const useProps = useCheckboxProps(props)
 const slots = useSlots()
 
 const { index, parent } = useParent(checkboxGroupKey)
@@ -33,7 +34,7 @@ const { index, parent } = useParent(checkboxGroupKey)
 const style = computed(() => {
   const style: CSSProperties = {}
   style.fontSize = useUnit(prop("iconSize"))
-  return useStyle({ ...style, ...useStyle(props.customStyle) })
+  return useStyle({ ...style, ...useStyle(useProps.customStyle) })
 })
 
 const classs = computed(() => {
@@ -110,18 +111,18 @@ const labelClass = computed(() => {
   return list
 })
 
-const name = computed(() => props.name || index.value)
-const checked = computed(() => (props.bindGroup && parent ? parent.props.modelValue.includes(name.value) : !!props.modelValue))
+const name = computed(() => useProps.name || index.value)
+const checked = computed(() => (useProps.bindGroup && parent ? parent.useProps.modelValue.includes(name.value) : !!useProps.modelValue))
 const disabled = computed(() => prop("disabled"))
-const labelVisible = computed(() => slots.default || props.label)
+const labelVisible = computed(() => slots.default || useProps.label)
 
 watch(
-  () => props.modelValue,
+  () => useProps.modelValue,
   (value) => emits("change", value),
 )
 
 function prop(name: string) {
-  if (props.bindGroup && parent) {
+  if (useProps.bindGroup && parent) {
     if (isDef(props[name])) return props[name]
     if (isDef(parent.props[name])) return parent.props[name]
   } else {
@@ -135,12 +136,12 @@ async function updateValue(value: CheckboxValueType) {
 
 function toggle(check?: boolean) {
   if (prop("disabled")) return
-  if (parent && props.bindGroup) {
-    const value = parent.props.modelValue
+  if (parent && useProps.bindGroup) {
+    const value = parent.useProps.modelValue
     const add = () => {
-      const isMax = parent.props.max && value.length >= parent.props.max
-      if (!isMax && !value.includes(props.name)) {
-        value.push(props.name)
+      const isMax = parent.useProps.max && value.length >= parent.useProps.max
+      if (!isMax && !value.includes(useProps.name)) {
+        value.push(useProps.name)
         parent.updateValue(value)
       }
     }
@@ -159,7 +160,7 @@ function toggle(check?: boolean) {
       add()
     }
   } else {
-    updateValue(!props.modelValue)
+    updateValue(!useProps.modelValue)
   }
 }
 
@@ -179,7 +180,7 @@ function onClickLabel(event: any) {
   emits("click", event)
 }
 
-defineExpose({ toggle, name })
+defineExpose({ useProps, checked, toggle, name })
 </script>
 
 <script lang="ts">

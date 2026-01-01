@@ -1,8 +1,9 @@
 import type Badge from "./ui-badge.vue"
 import type { PropType, CSSProperties, ExtractPropTypes } from "vue"
-import { buildProps, numericProp, makeNumericProp } from "../utils/props"
+import { createProps } from "../hooks"
+import { numericProp, makeNumericProp } from "../utils/props"
 
-export const badgeProps = buildProps("badge", {
+export const [badgeProps, useBadgeProps] = createProps("badge", {
   /**
    * 内容值
    */

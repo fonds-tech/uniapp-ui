@@ -1,8 +1,9 @@
 import type SkeletonTitle from "./ui-skeleton-title.vue"
 import type { PropType, CSSProperties, ExtractPropTypes } from "vue"
-import { buildProps, numericProp } from "../utils/props"
+import { createProps } from "../hooks"
+import { numericProp } from "../utils/props"
 
-export const skeletonTitleProps = buildProps("skeletonTitle", {
+export const [skeletonTitleProps, useSkeletonTitleProps] = createProps("skeletonTitle", {
   /**
    * 标题占位图宽度
    */

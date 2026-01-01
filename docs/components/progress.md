@@ -91,22 +91,22 @@ function decrease() {
 
 ## Props
 
-| 参数 | 说明 | 类型 | 默认值 |
-| --- | --- | --- | --- |
-| percentage | 进度百分比 | `string \| number` | `0` |
-| color | 进度条颜色 | `string \| string[]` | - |
-| background | 进度条背景色 | `string` | - |
-| text | 进度文本内容 | `string` | - |
-| show-text | 是否显示进度文本 | `boolean` | `true` |
-| text-color | 进度文本颜色 | `string` | - |
-| text-size | 进度文本大小 | `string \| number` | - |
-| text-weight | 进度文本粗细 | `string \| number` | - |
-| height | 进度条高度 | `string \| number` | `24rpx` |
-| custom-class | 自定义类名 | `string` | - |
-| custom-style | 自定义样式 | `string \| object` | - |
+| 参数         | 说明             | 类型                 | 默认值  |
+| ------------ | ---------------- | -------------------- | ------- |
+| percentage   | 进度百分比       | `string \| number`   | `0`     |
+| color        | 进度条颜色       | `string \| string[]` | -       |
+| background   | 进度条背景色     | `string`             | -       |
+| text         | 进度文本内容     | `string`             | -       |
+| show-text    | 是否显示进度文本 | `boolean`            | `true`  |
+| text-color   | 进度文本颜色     | `string`             | -       |
+| text-size    | 进度文本大小     | `string \| number`   | -       |
+| text-weight  | 进度文本粗细     | `string \| number`   | -       |
+| height       | 进度条高度       | `string \| number`   | `24rpx` |
+| custom-class | 自定义类名       | `string`             | -       |
+| custom-style | 自定义样式       | `string \| object`   | -       |
 
 ## Events
 
-| 事件名 | 说明 | 回调参数 |
-| --- | --- | --- |
-| finish | 进度达到100%时触发 | - |
+| 事件名 | 说明               | 回调参数 |
+| ------ | ------------------ | -------- |
+| finish | 进度达到100%时触发 | -        |

@@ -15,14 +15,14 @@
 <script setup lang="ts">
 import type { CSSProperties } from "vue"
 import { pick, uuid } from "../utils/utils"
-import { resizeEmits, resizeProps } from "./index"
 import { useRect, useUnit, useStyle } from "../hooks"
+import { resizeEmits, resizeProps, useResizeProps } from "./index"
 
 defineOptions({ name: "ui-resize" })
 
 const props = defineProps(resizeProps)
 const emits = defineEmits(resizeEmits)
-
+const useProps = useResizeProps(props)
 const width = ref(0)
 const height = ref(0)
 const oldWidth = ref(0)
@@ -38,15 +38,15 @@ const instance = getCurrentInstance()
 
 const style = computed(() => {
   const style: CSSProperties = {}
-  style.width = props.width ? useUnit(props.width) : `${width.value}px`
-  style.height = props.height ? useUnit(props.height) : `${height.value}px`
-  return useStyle({ ...style, ...useStyle(props.customStyle) })
+  style.width = useProps.width ? useUnit(useProps.width) : `${width.value}px`
+  style.height = useProps.height ? useUnit(useProps.height) : `${height.value}px`
+  return useStyle({ ...style, ...useStyle(useProps.customStyle) })
 })
 
 const contentStyle = computed(() => {
   const style: CSSProperties = {}
-  style.width = props.width ?? useUnit(props.width)
-  style.height = props.height ?? useUnit(props.height)
+  style.width = useProps.width ?? useUnit(useProps.width)
+  style.height = useProps.height ?? useUnit(useProps.height)
   return useStyle(style)
 })
 
@@ -60,7 +60,7 @@ async function init() {
 }
 
 async function resize() {
-  if (props.disabled) return
+  if (useProps.disabled) return
   const rect = await useRect(`#${id.value}`, instance)
   let isEmit = false
 

@@ -148,10 +148,10 @@ definePage({
 }
 
 .custom-error {
+  gap: 8rpx;
   display: flex;
   align-items: center;
   flex-direction: column;
-  gap: 8rpx;
 }
 
 .custom-error-text {

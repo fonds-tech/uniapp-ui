@@ -28,7 +28,7 @@
 import type { CSSProperties } from "vue"
 import { isDef } from "../utils/check"
 import { cellGroupKey } from "../ui-cell-group"
-import { cellEmits, cellProps } from "./index"
+import { cellEmits, cellProps, useCellProps } from "./index"
 import { useUnit, useColor, useStyle, useParent } from "../hooks"
 
 defineOptions({ name: "ui-cell" })
@@ -36,6 +36,7 @@ defineOptions({ name: "ui-cell" })
 // 定义props和emits
 const props = defineProps(cellProps)
 const emits = defineEmits(cellEmits)
+const useProps = useCellProps(props)
 const slots = useSlots()
 
 // 使用useParent hook获取父组件信息
@@ -44,61 +45,61 @@ const { index, parent: cellGroup } = useParent(cellGroupKey)
 // 计算样式
 const style = computed(() => {
   const style: any = {}
-  style.height = useUnit(props.height)
-  style.padding = useUnit(props.padding)
-  style.background = useColor(props.background)
+  style.height = useUnit(useProps.height)
+  style.padding = useUnit(useProps.padding)
+  style.background = useColor(useProps.background)
 
-  style["--ui-cell-border-left"] = useUnit(props.borderLeft)
-  style["--ui-cell-border-right"] = useUnit(props.borderRight)
-  style["--ui-cell-border-width"] = useUnit(props.borderWidth)
-  style["--ui-cell-border-color"] = useColor(props.borderColor)
-  return useStyle({ ...style, ...useStyle(props.customStyle) })
+  style["--ui-cell-border-left"] = useUnit(useProps.borderLeft)
+  style["--ui-cell-border-right"] = useUnit(useProps.borderRight)
+  style["--ui-cell-border-width"] = useUnit(useProps.borderWidth)
+  style["--ui-cell-border-color"] = useColor(useProps.borderColor)
+  return useStyle({ ...style, ...useStyle(useProps.customStyle) })
 })
 
 // 计算class列表
 const classs = computed(() => {
   const list: string[] = []
-  if (props.border) list.push("ui-cell--border")
-  if (props.center) list.push("ui-cell--center")
-  if (props.clickable) list.push("ui-cell--clickable")
+  if (useProps.border) list.push("ui-cell--border")
+  if (useProps.center) list.push("ui-cell--center")
+  if (useProps.clickable) list.push("ui-cell--clickable")
   return list
 })
 
 // 计算hover class
 const hoverClass = computed(() => {
-  return props.clickable || props.isLink ? "ui-cell--active" : ""
+  return useProps.clickable || useProps.isLink ? "ui-cell--active" : ""
 })
 
 // 计算图标样式
 const iconStyle = computed(() => {
   const style: CSSProperties = {}
-  style.marginRight = useStyle(props.iconGap)
+  style.marginRight = useStyle(useProps.iconGap)
   return useStyle(style)
 })
 
 // 计算标题样式
 const titleStyle = computed(() => {
   const style: CSSProperties = {}
-  style.color = useColor(props.titleColor)
-  style.fontSize = useUnit(props.titleSize)
-  style.fontWeight = props.titleWeight
+  style.color = useColor(useProps.titleColor)
+  style.fontSize = useUnit(useProps.titleSize)
+  style.fontWeight = useProps.titleWeight
   return useStyle(style)
 })
 
 // 计算标签样式
 const labelStyle = computed(() => {
   const style: CSSProperties = {}
-  style.color = useColor(props.labelColor)
-  style.fontSize = useUnit(props.labelSize)
-  style.marginTop = useUnit(props.labelGap)
-  style.fontWeight = props.labelWeight
+  style.color = useColor(useProps.labelColor)
+  style.fontSize = useUnit(useProps.labelSize)
+  style.marginTop = useUnit(useProps.labelGap)
+  style.fontWeight = useProps.labelWeight
   return useStyle(style)
 })
 
 // 计算右侧图标样式
 const rightIconStyle = computed(() => {
   const style: CSSProperties = {}
-  style.marginLeft = useStyle(props.rightIconGap)
+  style.marginLeft = useStyle(useProps.rightIconGap)
   return useStyle(style)
 })
 
@@ -112,11 +113,11 @@ const contentStyle = computed(() => {
 })
 
 // 计算是否显示各个元素
-const isShowIcon = computed(() => props.icon)
-const isShowTitle = computed(() => props.title)
-const isShowLabel = computed(() => props.label)
-const isShowValue = computed(() => props.value)
-const isShowRightIcon = computed(() => props.isLink && isDef(props.rightIcon))
+const isShowIcon = computed(() => useProps.icon)
+const isShowTitle = computed(() => useProps.title)
+const isShowLabel = computed(() => useProps.label)
+const isShowValue = computed(() => useProps.value)
+const isShowRightIcon = computed(() => useProps.isLink && isDef(useProps.rightIcon))
 
 // 获取属性值，优先使用props中的值，如果没有则使用cellGroup中的值
 function prop(name: string) {
@@ -127,9 +128,9 @@ function prop(name: string) {
 
 // 点击事件处理
 function onClick() {
-  if (props.url) {
-    if (uni[props.linkType]) {
-      uni[props.linkType]({ url: props.url })
+  if (useProps.url) {
+    if (uni[useProps.linkType]) {
+      uni[useProps.linkType]({ url: useProps.url })
     }
   } else {
     emits("click")

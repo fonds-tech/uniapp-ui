@@ -1,8 +1,9 @@
 import type Notify from "./ui-notify.vue"
 import type { PropType, ExtractPropTypes } from "vue"
-import { styleProp, buildProps, makeStringProp, makeNumericProp } from "../utils/props"
+import { createProps } from "../hooks"
+import { styleProp, makeStringProp, makeNumericProp } from "../utils/props"
 
-export const notifyProps = buildProps("notify", {
+export const [notifyProps, useNotifyProps] = createProps("notify", {
   /**
    * 是否显示
    */

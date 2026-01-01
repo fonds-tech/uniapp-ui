@@ -1,8 +1,9 @@
 import type Text from "./ui-text.vue"
 import type { ExtractPropTypes } from "vue"
-import { styleProp, buildProps, makeStringProp, makeNumericProp } from "../utils/props"
+import { createProps } from "../hooks"
+import { styleProp, makeStringProp, makeNumericProp } from "../utils/props"
 
-export const textProps = buildProps("text", {
+export const [textProps, useTextProps] = createProps("text", {
   /**
    * 文本内容
    */

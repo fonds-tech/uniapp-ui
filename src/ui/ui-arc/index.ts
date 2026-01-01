@@ -1,8 +1,9 @@
 import type Arc from "./ui-arc.vue"
 import type { PropType, CSSProperties, ExtractPropTypes } from "vue"
-import { truthProp, buildProps, numericProp, makeNumericProp } from "../utils/props"
+import { createProps } from "../hooks"
+import { truthProp, numericProp, makeNumericProp } from "../utils/props"
 
-export const arcProps = buildProps("arc", {
+export const [arcProps, useArcProps] = createProps("arc", {
   /**
    * 弧形高度
    */

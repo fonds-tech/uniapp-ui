@@ -1,7 +1,8 @@
 import type ConfigProvider from "./ui-config-provider.vue"
 import type { Mitt } from "../utils/mitt"
 import type { PropType, InjectionKey, ExtractPropTypes } from "vue"
-import { styleProp, buildProps, makeStringProp, makeNumericProp } from "../utils/props"
+import { createProps } from "../hooks"
+import { styleProp, makeStringProp, makeNumericProp } from "../utils/props"
 
 /**
  * 主题色变量名称
@@ -40,7 +41,7 @@ export type CssVars = Record<string, string | number>
 export type ThemeMode = "light" | "dark" | "auto"
 
 export const configProviderKey: InjectionKey<ConfigProviderProvide> = Symbol("ui-config-provider")
-export const configProviderProps = buildProps("configProvider", {
+export const [configProviderProps, useConfigProviderProps] = createProps("configProvider", {
   /**
    * 主题模式
    * - light: 亮色模式

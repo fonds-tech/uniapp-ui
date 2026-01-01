@@ -1,8 +1,9 @@
 import type Navbar from "./ui-navbar.vue"
 import type { ExtractPropTypes } from "vue"
-import { styleProp, buildProps, makeStringProp } from "../utils/props"
+import { createProps } from "../hooks"
+import { styleProp, makeStringProp } from "../utils/props"
 
-export const navbarProps = buildProps("navbar", {
+export const [navbarProps, useNavbarProps] = createProps("navbar", {
   /**
    * 高度
    */

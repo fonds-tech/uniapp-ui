@@ -1,9 +1,9 @@
 <template>
   <image
     v-if="isImage(name)"
-    :class="[prefix, `${prefix}-${props.name}`, props.customClass, isHover ? props.hoverClass : '']"
+    :class="[prefix, `${prefix}-${useProps.name}`, useProps.customClass, isHover ? useProps.hoverClass : '']"
     :style="[imageStyle]"
-    :src="props.name"
+    :src="useProps.name"
     :mode="imageMode"
     @touchstart="onTouchStart"
     @touchend="onTouchEnd"
@@ -13,7 +13,7 @@
   />
   <text
     v-else
-    :class="[prefix, `${prefix}-${props.name}`, props.customClass, isHover ? props.hoverClass : '']"
+    :class="[prefix, `${prefix}-${useProps.name}`, useProps.customClass, isHover ? useProps.hoverClass : '']"
     :style="[iconStyle]"
     @touchstart="onTouchStart"
     @touchend="onTouchEnd"
@@ -26,42 +26,43 @@
 <script setup lang="ts">
 import { merge } from "../utils/utils"
 import { isImage } from "../utils/check"
-import { iconEmits, iconProps } from "./index"
 import { useUnit, useColor, useStyle } from "../hooks"
+import { iconEmits, iconProps, useIconProps } from "./index"
 
 defineOptions({ name: "ui-icon" })
 
 const props = defineProps(iconProps)
 const emits = defineEmits(iconEmits)
+const useProps = useIconProps(props)
 const isHover = ref(false)
 
 const prefix = computed(() => {
-  return props.customPrefix || "ui-icon"
+  return useProps.customPrefix || "ui-icon"
 })
 
-const imageMode: any = computed(() => props.imageMode)
+const imageMode: any = computed(() => useProps.imageMode)
 
 const iconStyle = computed(() => {
   let style: any = {}
-  style.color = useColor(props.color)
-  style.fontSize = useUnit(props.size)
-  style.fontWeight = props.weight
-  style.lineHeight = props.lineHeight
-  style.borderRadius = useUnit(props.radius)
-  style.background = useColor(props.background)
+  style.color = useColor(useProps.color)
+  style.fontSize = useUnit(useProps.size)
+  style.fontWeight = useProps.weight
+  style.lineHeight = useProps.lineHeight
+  style.borderRadius = useUnit(useProps.radius)
+  style.background = useColor(useProps.background)
   if (isHover.value) {
-    style = merge(style, useStyle(props.hoverStyle))
+    style = merge(style, useStyle(useProps.hoverStyle))
   }
-  return useStyle({ ...style, ...useStyle(props.customStyle) })
+  return useStyle({ ...style, ...useStyle(useProps.customStyle) })
 })
 
 const imageStyle = computed(() => {
   const style: any = {}
-  style.width = useUnit(props.width || props.size)
-  style.height = useUnit(props.height || props.size)
-  style.background = useColor(props.background)
-  style.borderRadius = useUnit(props.radius)
-  return useStyle({ ...style, ...useStyle(props.customStyle) })
+  style.width = useUnit(useProps.width || useProps.size)
+  style.height = useUnit(useProps.height || useProps.size)
+  style.background = useColor(useProps.background)
+  style.borderRadius = useUnit(useProps.radius)
+  return useStyle({ ...style, ...useStyle(useProps.customStyle) })
 })
 
 function onClick() {
@@ -81,6 +82,7 @@ defineExpose({ name: "ui-icon" })
 
 <script lang="ts">
 export default {
+  name: "ui-icon",
   options: { virtualHost: true, multipleSlots: true, styleIsolation: "shared" },
 }
 </script>
@@ -100,7 +102,6 @@ export default {
 }
 /*  #endif  */
 .ui-icon {
-  speak: none;
   display: inline-flex;
   position: relative;
   box-sizing: border-box;

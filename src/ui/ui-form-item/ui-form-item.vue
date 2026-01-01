@@ -24,15 +24,17 @@ import type { CSSProperties } from "vue"
 import type { FormValidateRule, FormValidateError, FormValidateTrigger } from "../ui-form"
 import { formKey } from "../ui-form"
 import { clone, toArray, getDeepValue } from "../utils/utils"
-import { formItemKey, formItemEmits, formItemProps } from "./index"
 import { isDef, isEmpty, isNoEmpty, isPromise, isFunction } from "../utils/check"
+import { formItemKey, formItemEmits, formItemProps, useFormItemProps } from "./index"
 import { useRect, useUnit, useColor, useStyle, useParent, usePxToRpx, useChildren, useUnitToPx } from "../hooks"
 
 defineOptions({ name: "ui-form-item" })
 
 const props = defineProps(formItemProps)
-
 const emits = defineEmits(formItemEmits)
+
+const useProps = useFormItemProps(props)
+
 const slots = useSlots()
 
 const state = reactive({ status: "unvalidated", focused: false, validateMessage: "" })
@@ -46,11 +48,11 @@ const { linkChildren } = useChildren(formItemKey)
 
 const style = computed(() => {
   const style: CSSProperties = {}
-  style.padding = useUnit(props.padding)
+  style.padding = useUnit(useProps.padding)
   if (prop("border")) {
     style.borderBottom = `2rpx solid ${useColor(prop("borderColor"))}`
   }
-  return useStyle({ ...style, ...useStyle(props.customStyle) })
+  return useStyle({ ...style, ...useStyle(useProps.customStyle) })
 })
 
 const mainClass = computed(() => {
@@ -97,7 +99,7 @@ const labelClass = computed(() => {
   if (prop("required")) {
     list.push("ui-form-item__label--required")
   }
-  if (props.label || slots.label) {
+  if (useProps.label || slots.label) {
     list.push("ui-form-item__label--effective")
   }
   return list
@@ -252,7 +254,7 @@ function getRuleMessage(value: unknown, rule: FormValidateRule) {
   if (isFunction(message)) {
     return message(value, rule)
   }
-  return message || props.errorMessage
+  return message || useProps.errorMessage
 }
 
 /**
@@ -266,7 +268,7 @@ function validate(rules = getPropRules()) {
     if (isNoEmpty(rules)) {
       runRules(rules).then(() => {
         if (state.status === "failed") {
-          resolve({ prop: props.prop, message: state.validateMessage })
+          resolve({ prop: useProps.prop, message: state.validateMessage })
         } else {
           state.status = "passed"
           resolve()
@@ -299,8 +301,8 @@ function validateWithTrigger(trigger: FormValidateTrigger) {
  * 重置字段状态
  */
 async function resetField() {
-  const value = form.initialModel.value[props.prop]
-  form.model.value[props.prop] = clone(value)
+  const value = form.initialModel.value[useProps.prop]
+  form.model.value[useProps.prop] = clone(value)
   await nextTick()
   resetValidate()
 }
@@ -317,7 +319,7 @@ function resetValidate() {
  * @returns 返回属性值
  */
 function getPropValue() {
-  return getDeepValue(form.model.value, props.prop)
+  return getDeepValue(form.model.value, useProps.prop)
 }
 
 /**
@@ -325,7 +327,7 @@ function getPropValue() {
  * @returns 返回属性值
  */
 function getPropRules() {
-  return getDeepValue(form.rules, props.prop)
+  return getDeepValue(form.rules, useProps.prop)
 }
 
 /**
@@ -353,10 +355,11 @@ function onChange() {
 }
 
 onMounted(resize)
-linkChildren({ props, prop: props.prop, onBlur, onChange })
+linkChildren({ props, prop: useProps.prop, onBlur, onChange })
 defineExpose({
-  prop: props.prop,
-  modelValue: form.model.value[props.prop],
+  useProps,
+  prop: useProps.prop,
+  modelValue: form.model.value[useProps.prop],
   labelRect,
   validate,
   resetField,

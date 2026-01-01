@@ -68,49 +68,49 @@ const actions = [
 
 ## Props
 
-| 参数 | 说明 | 类型 | 默认值 |
-| --- | --- | --- | --- |
-| v-model:show | 是否显示 | `boolean` | `false` |
-| actions | 操作项列表 | `ActionSheetAction[]` | `[]` |
-| title | 标题 | `string` | - |
-| description | 描述信息 | `string` | - |
-| cancel-text | 取消按钮文字 | `string` | `取消` |
-| close-on-click-action | 点击选项后是否关闭 | `boolean` | `true` |
-| close-on-click-overlay | 点击遮罩是否关闭 | `boolean` | `true` |
-| overlay | 是否显示遮罩层 | `boolean` | `true` |
-| duration | 动画时长(ms) | `string \| number` | `300` |
-| z-index | 层级 | `string \| number` | - |
-| border-radius | 圆角大小 | `string \| number` | - |
-| safe-area-inset-bottom | 是否开启底部安全区 | `boolean` | `true` |
-| before-close | 关闭前的回调函数 | `function` | - |
-| custom-class | 自定义类名 | `string` | - |
-| custom-style | 自定义样式 | `string \| object` | - |
+| 参数                   | 说明               | 类型                  | 默认值  |
+| ---------------------- | ------------------ | --------------------- | ------- |
+| v-model:show           | 是否显示           | `boolean`             | `false` |
+| actions                | 操作项列表         | `ActionSheetAction[]` | `[]`    |
+| title                  | 标题               | `string`              | -       |
+| description            | 描述信息           | `string`              | -       |
+| cancel-text            | 取消按钮文字       | `string`              | `取消`  |
+| close-on-click-action  | 点击选项后是否关闭 | `boolean`             | `true`  |
+| close-on-click-overlay | 点击遮罩是否关闭   | `boolean`             | `true`  |
+| overlay                | 是否显示遮罩层     | `boolean`             | `true`  |
+| duration               | 动画时长(ms)       | `string \| number`    | `300`   |
+| z-index                | 层级               | `string \| number`    | -       |
+| border-radius          | 圆角大小           | `string \| number`    | -       |
+| safe-area-inset-bottom | 是否开启底部安全区 | `boolean`             | `true`  |
+| before-close           | 关闭前的回调函数   | `function`            | -       |
+| custom-class           | 自定义类名         | `string`              | -       |
+| custom-style           | 自定义样式         | `string \| object`    | -       |
 
 ## ActionSheetAction 数据结构
 
-| 参数 | 说明 | 类型 |
-| --- | --- | --- |
-| title | 选项标题 | `string` |
-| description | 选项描述 | `string` |
-| color | 选项颜色 | `string` |
-| loading | 是否为加载状态 | `boolean` |
-| disabled | 是否为禁用状态 | `boolean` |
+| 参数        | 说明           | 类型      |
+| ----------- | -------------- | --------- |
+| title       | 选项标题       | `string`  |
+| description | 选项描述       | `string`  |
+| color       | 选项颜色       | `string`  |
+| loading     | 是否为加载状态 | `boolean` |
+| disabled    | 是否为禁用状态 | `boolean` |
 
 ## Events
 
-| 事件名 | 说明 | 回调参数 |
-| --- | --- | --- |
-| select | 点击选项时触发 | `action: object, index: number` |
-| cancel | 点击取消按钮时触发 | - |
-| open | 打开时触发 | - |
-| opened | 打开动画结束时触发 | - |
-| close | 关闭时触发 | - |
-| closed | 关闭动画结束时触发 | - |
+| 事件名 | 说明               | 回调参数                        |
+| ------ | ------------------ | ------------------------------- |
+| select | 点击选项时触发     | `action: object, index: number` |
+| cancel | 点击取消按钮时触发 | -                               |
+| open   | 打开时触发         | -                               |
+| opened | 打开动画结束时触发 | -                               |
+| close  | 关闭时触发         | -                               |
+| closed | 关闭动画结束时触发 | -                               |
 
 ## Slots
 
-| 名称 | 说明 |
-| --- | --- |
-| default | 自定义面板内容 |
-| description | 自定义描述 |
-| cancel | 自定义取消按钮 |
+| 名称        | 说明           |
+| ----------- | -------------- |
+| default     | 自定义面板内容 |
+| description | 自定义描述     |
+| cancel      | 自定义取消按钮 |

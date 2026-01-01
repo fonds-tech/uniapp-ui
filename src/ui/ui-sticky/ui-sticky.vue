@@ -1,84 +1,206 @@
 <template>
-  <view class="ui-sticky" :style="[style]">
-    <ui-resize width="100%" :disabled="sticky" @resize="onResize">
-      <view class="ui-sticky__body" :style="[bodyStyle]" :class="[customClass]">
-        <slot />
-      </view>
-    </ui-resize>
+  <view :id="stickyId" class="ui-sticky" :style="[rootStyle]">
+    <view :id="bodyId" class="ui-sticky__body" :style="[bodyStyle]" :class="[customClass]">
+      <slot />
+    </view>
   </view>
 </template>
 
 <script setup lang="ts">
 import type { CSSProperties } from "vue"
-import { stickyEmits, stickyProps } from "./index"
 import { useRect, useColor, useStyle, useUnitToPx } from "../hooks"
+import { stickyEmits, stickyProps, useStickyProps } from "./index"
 
-// 定义组件名称
 defineOptions({ name: "ui-sticky" })
 
-// 定义props和emits
 const props = defineProps(stickyProps)
 const emits = defineEmits(stickyEmits)
+const useProps = useStickyProps(props)
+// Unique id for selector query
+const uid = Math.random().toString(36).slice(2, 10)
+const stickyId = `sticky-${uid}`
+const bodyId = `sticky-body-${uid}`
 
-// 响应式状态
-const sticky = ref(false) // 是否处于粘性状态
-const bodyHeight = ref("auto") // 主体高度
-const navbarHeight = ref<number>(0) // 导航栏高度
-const instance = getCurrentInstance()
+// Reactive state
+const isFixed = ref(false)
+const contentHeight = ref(0)
+const contentWidth = ref(0)
+const navbarHeight = ref(0)
+const instance = getCurrentInstance()!
 
-// 计算样式
-const style = computed(() => {
+// Throttle timer
+let scrollTimer: ReturnType<typeof setTimeout> | null = null
+
+// Computed offset top in px
+const offsetTopPx = computed(() => useUnitToPx(useProps.offsetTop))
+
+// Root container style - maintains layout space when fixed
+const rootStyle = computed(() => {
   const style: CSSProperties = {}
-  style.zIndex = props.zIndex
-  style.minHeight = bodyHeight.value
+  if (useProps.zIndex) {
+    style.zIndex = useProps.zIndex
+  }
+  // Reserve space when fixed to prevent layout jump
+  if (isFixed.value && contentHeight.value > 0) {
+    style.height = `${contentHeight.value}px`
+  }
   return useStyle(style)
 })
 
-// 计算主体样式
+// Body style - applies fixed positioning
 const bodyStyle = computed(() => {
   const style: CSSProperties = {}
-  style.top = `${useUnitToPx(props.offsetTop) + navbarHeight.value}px`
-  style.minHeight = bodyHeight.value
-  style.background = useColor(props.background)
-  if (sticky.value) style.position = "fixed"
-  return useStyle({ ...style, ...useStyle(props.customStyle) })
+
+  if (isFixed.value) {
+    style.position = "fixed"
+    style.top = `${offsetTopPx.value + navbarHeight.value}px`
+    style.left = "0"
+    style.right = "0"
+    style.zIndex = useProps.zIndex || 99
+  }
+
+  if (useProps.background) {
+    style.background = useColor(useProps.background)
+  }
+
+  return useStyle({ ...style, ...useStyle(useProps.customStyle) })
 })
 
-// 监听粘性状态变化
+// Watch fixed state change
 watch(
-  () => sticky.value,
-  (val) => emits("change", val),
-  { immediate: true },
+  () => isFixed.value,
+  (val, oldVal) => {
+    if (val !== oldVal) {
+      emits("change", val)
+    }
+  },
 )
 
-// 处理大小调整
-function onResize(rect: any) {
-  bodyHeight.value = `${rect.height}px`
-}
-
-// 处理滚动
-function onScroll() {
-  useRect(".ui-sticky", instance).then((rect: any) => {
-    if (rect) {
-      sticky.value = rect.top < useUnitToPx(props.offsetTop)
+// Watch external scrollTop prop
+watch(
+  () => useProps.scrollTop,
+  (val) => {
+    if (val !== undefined && !useProps.disabled) {
+      checkStickyState()
     }
+  },
+)
+
+// Get body element rect
+async function getBodyRect(): Promise<UniApp.NodeInfo | null> {
+  return new Promise((resolve) => {
+    useRect(`#${bodyId}`, instance)
+      .then((rect) => resolve(rect))
+      .catch(() => resolve(null))
   })
 }
 
-// 调整大小
-async function resize() {
+// Get container element rect
+async function getContainerRect(): Promise<UniApp.NodeInfo | null> {
+  return new Promise((resolve) => {
+    useRect(`#${stickyId}`, instance)
+      .then((rect) => resolve(rect))
+      .catch(() => resolve(null))
+  })
+}
+
+// Update content size
+async function updateContentSize() {
+  const rect = await getBodyRect()
+  if (rect) {
+    contentHeight.value = rect.height || 0
+    contentWidth.value = rect.width || 0
+  }
+}
+
+// Check sticky state based on element position
+async function checkStickyState() {
+  if (useProps.disabled) {
+    if (isFixed.value) {
+      isFixed.value = false
+    }
+    return
+  }
+
+  const rect = await getContainerRect()
+  if (!rect) return
+
+  // Calculate threshold considering navbar height
+  const threshold = offsetTopPx.value + navbarHeight.value
+
+  // When element top goes above threshold, fix it
+  const shouldFix = rect.top <= threshold
+
+  if (shouldFix !== isFixed.value) {
+    isFixed.value = shouldFix
+  }
+
+  // Emit scroll event with current state
+  emits("scroll", {
+    scrollTop: useProps.scrollTop !== undefined ? Number(useProps.scrollTop) : -rect.top,
+    isFixed: isFixed.value,
+  })
+}
+
+// Throttled scroll handler
+function onScroll() {
+  if (useProps.disabled) return
+
+  if (scrollTimer) {
+    clearTimeout(scrollTimer)
+  }
+
+  scrollTimer = setTimeout(() => {
+    checkStickyState()
+    scrollTimer = null
+  }, 16) // ~60fps
+}
+
+// Initialize navbar height for H5
+async function initNavbarHeight() {
   await nextTick()
-  // #ifdef WEB
-  const head: HTMLElement = document.querySelector(".uni-page-head")
+  // #ifdef H5
+  const head = document.querySelector(".uni-page-head") as HTMLElement | null
   if (head) {
     navbarHeight.value = head.offsetHeight
   }
   // #endif
 }
 
-onMounted(resize)
+// Reset and recalculate
+async function resize() {
+  await nextTick()
+  await initNavbarHeight()
+  await updateContentSize()
+  checkStickyState()
+}
+
+// Initialize component
+async function init() {
+  await nextTick()
+  await initNavbarHeight()
+  await updateContentSize()
+  // Check initial state
+  checkStickyState()
+}
+
+onMounted(() => {
+  init()
+})
+
 onPageScroll(onScroll)
-defineExpose({ resize })
+
+onUnmounted(() => {
+  if (scrollTimer) {
+    clearTimeout(scrollTimer)
+  }
+})
+
+defineExpose({
+  name: "ui-sticky",
+  resize,
+  isFixed: () => isFixed.value,
+})
 </script>
 
 <script lang="ts">
@@ -90,15 +212,10 @@ export default {
 
 <style lang="scss" scoped>
 .ui-sticky {
-  top: 0;
-  left: 0;
   width: 100%;
-  z-index: 1;
-  position: sticky;
+  position: relative;
 
   &__body {
-    top: 0;
-    left: 0;
     width: 100%;
   }
 }

@@ -1,8 +1,9 @@
 import type Progress from "./ui-progress.vue"
 import type { ExtractPropTypes } from "vue"
-import { styleProp, truthProp, buildProps, makeStringProp, makeNumericProp } from "../utils/props"
+import { createProps } from "../hooks"
+import { styleProp, truthProp, makeStringProp, makeNumericProp } from "../utils/props"
 
-export const progressProps = buildProps("progress", {
+export const [progressProps, useProgressProps] = createProps("progress", {
   /**
    * 进度百分比
    */

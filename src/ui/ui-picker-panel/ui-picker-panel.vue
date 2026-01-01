@@ -23,14 +23,14 @@
 import type { PickerColumn, PickerChangeEvent, PickerColumnsType, PickerColumnFields } from "./index"
 import { merge } from "../utils/utils"
 import { isNoEmpty } from "../utils/check"
-import { pickerPanelEmits, pickerPanelProps } from "./index"
 import { useUnit, useColor, useStyle, useUnitToPx } from "../hooks"
+import { pickerPanelEmits, pickerPanelProps, usePickerPanelProps } from "./index"
 
 defineOptions({ name: "ui-picker-panel" })
 
 const props = defineProps(pickerPanelProps)
 const emits = defineEmits(pickerPanelEmits)
-
+const useProps = usePickerPanelProps(props)
 // 当前选中的值列表，与列索引一一对应
 const selectedValues = ref<(string | number)[]>([])
 // 当前选中索引，用于驱动 picker-view
@@ -42,9 +42,9 @@ const prevSelectedIndexes = ref<number[]>([])
 const visible = computed(() => selectedIndexes.value.length > 0 && columns.value.length > 0)
 
 // 列类型：单列 / 多列 / 级联
-const columnsType = computed<PickerColumnsType>(() => getColumnsType(props.columns, resolvedFields.value))
+const columnsType = computed<PickerColumnsType>(() => getColumnsType(useProps.columns, resolvedFields.value))
 // 统一字段映射，兼容自定义字段名
-const resolvedFields = computed(() => mergeFields(props.columnFields))
+const resolvedFields = computed(() => mergeFields(useProps.columnFields))
 const columns = computed<PickerColumn[]>(() => {
   const { columns } = props
   if (columns.length) {
@@ -61,13 +61,13 @@ const columns = computed<PickerColumn[]>(() => {
   return []
 })
 
-const style = computed(() => useStyle(props.customStyle))
+const style = computed(() => useStyle(useProps.customStyle))
 
 const viewStyle = computed(() => {
   return useStyle(
     {
       // 视图高度 = 单列高度 * 可见列数
-      height: `${useUnitToPx(props.columnHeight) * +props.visibleColumnNum}px`,
+      height: `${useUnitToPx(useProps.columnHeight) * +useProps.visibleColumnNum}px`,
     },
     "string",
   )
@@ -77,7 +77,7 @@ const indicatorStyle = computed(() => {
   return useStyle(
     {
       // 指示器高度与单列高度保持一致
-      height: useUnit(props.columnHeight),
+      height: useUnit(useProps.columnHeight),
     },
     "string",
   )
@@ -88,9 +88,9 @@ const columnStyle = computed(() => {
   return (columnIndex: string | number, index: string | number) => {
     const isActive = isActiveColumn.value(columnIndex, index)
     return useStyle({
-      fontSize: useUnit(isActive ? props.activeColumnSize : props.columnSize),
-      color: isActive ? useColor(props.activeColumnColor) : useColor(props.columnColor),
-      fontWeight: isActive ? props.activeColumnWeight : props.columnWeight,
+      fontSize: useUnit(isActive ? useProps.activeColumnSize : useProps.columnSize),
+      color: isActive ? useColor(useProps.activeColumnColor) : useColor(useProps.columnColor),
+      fontWeight: isActive ? useProps.activeColumnWeight : useProps.columnWeight,
     })
   }
 })
@@ -103,7 +103,7 @@ const isActiveColumn = computed(() => {
 })
 
 watch(
-  () => props.modelValue,
+  () => useProps.modelValue,
   (val) => {
     // 外部值变化时同步内部状态
     selectedValues.value = val

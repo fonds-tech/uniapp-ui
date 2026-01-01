@@ -1,8 +1,9 @@
 import type Footer from "./ui-footer.vue"
 import type { ExtractPropTypes } from "vue"
-import { styleProp, truthProp, buildProps, makeStringProp, makeNumericProp } from "../utils/props"
+import { createProps } from "../hooks"
+import { styleProp, truthProp, makeStringProp, makeNumericProp } from "../utils/props"
 
-export const footerProps = buildProps("footer", {
+export const [footerProps, useFooterProps] = createProps("footer", {
   /**
    * 元素层级
    */

@@ -143,10 +143,10 @@ const value13 = ref("1")
 
 <style lang="scss" scoped>
 .radio-item {
+  gap: 12rpx;
   display: flex;
   align-items: center;
   flex-direction: column;
-  gap: 12rpx;
 }
 
 .radio-label {

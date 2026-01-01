@@ -1,8 +1,9 @@
 import type Tag from "./ui-tag.vue"
 import type { ExtractPropTypes } from "vue"
-import { styleProp, truthProp, buildProps, makeStringProp, makeNumericProp } from "../utils/props"
+import { createProps } from "../hooks"
+import { styleProp, truthProp, makeStringProp, makeNumericProp } from "../utils/props"
 
-export const tagProps = buildProps("tag", {
+export const [tagProps, useTagProps] = createProps("tag", {
   /**
    * 是否显示
    */

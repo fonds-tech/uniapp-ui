@@ -38,28 +38,28 @@ function onSelect(index) {
 
 ## IndexBar Props
 
-| 参数 | 说明 | 类型 | 默认值 |
-| --- | --- | --- | --- |
-| indexs | 索引字符列表 | `(string \| number)[]` | `[]` |
-| z-index | 层级 | `string \| number` | `1` |
-| sticky | 是否自动吸顶 | `boolean` | `true` |
-| custom-class | 自定义类名 | `string` | - |
-| custom-style | 自定义样式 | `string \| object` | - |
+| 参数         | 说明         | 类型                   | 默认值 |
+| ------------ | ------------ | ---------------------- | ------ |
+| indexs       | 索引字符列表 | `(string \| number)[]` | `[]`   |
+| z-index      | 层级         | `string \| number`     | `1`    |
+| sticky       | 是否自动吸顶 | `boolean`              | `true` |
+| custom-class | 自定义类名   | `string`               | -      |
+| custom-style | 自定义样式   | `string \| object`     | -      |
 
 ## IndexBar Events
 
-| 事件名 | 说明 | 回调参数 |
-| --- | --- | --- |
+| 事件名 | 说明               | 回调参数                  |
+| ------ | ------------------ | ------------------------- |
 | select | 点击索引字符时触发 | `index: string \| number` |
 
 ## IndexBar Slots
 
-| 名称 | 说明 |
-| --- | --- |
+| 名称    | 说明     |
+| ------- | -------- |
 | default | 列表内容 |
 
 ## IndexAnchor Props
 
-| 参数 | 说明 | 类型 | 默认值 |
-| --- | --- | --- | --- |
-| index | 索引字符 | `string \| number` | - |
+| 参数  | 说明     | 类型               | 默认值 |
+| ----- | -------- | ------------------ | ------ |
+| index | 索引字符 | `string \| number` | -      |

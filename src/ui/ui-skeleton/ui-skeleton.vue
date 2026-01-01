@@ -7,17 +7,18 @@
 <script setup lang="ts">
 import type { CSSProperties } from "vue"
 import { useStyle, useChildren } from "../hooks"
-import { skeletonKey, skeletonProps } from "./index"
+import { skeletonKey, skeletonProps, useSkeletonProps } from "./index"
 
 defineOptions({ name: "ui-skeleton" })
 
 const props = defineProps(skeletonProps)
+const useProps = useSkeletonProps(props)
 
 const { linkChildren } = useChildren(skeletonKey)
 
 const style = computed(() => {
   const style: CSSProperties = {}
-  return useStyle({ ...style, ...useStyle(props.customStyle) })
+  return useStyle({ ...style, ...useStyle(useProps.customStyle) })
 })
 
 linkChildren({ props })

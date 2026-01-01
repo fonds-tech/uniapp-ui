@@ -1,8 +1,9 @@
 import type Sticky from "./ui-sticky.vue"
 import type { PropType, CSSProperties, ExtractPropTypes } from "vue"
-import { buildProps, numericProp, makeNumericProp } from "../utils/props"
+import { createProps } from "../hooks"
+import { numericProp, makeNumericProp } from "../utils/props"
 
-export const stickyProps = buildProps("sticky", {
+export const [stickyProps, useStickyProps] = createProps("sticky", {
   /**
    * 元素层级
    */
@@ -11,6 +12,14 @@ export const stickyProps = buildProps("sticky", {
    * 吸顶时距离顶部距离
    */
   offsetTop: makeNumericProp(0),
+  /**
+   * 外部传入的滚动距离，用于子组件场景
+   */
+  scrollTop: numericProp,
+  /**
+   * 是否禁用粘性效果
+   */
+  disabled: Boolean,
   /**
    * 背景色
    */
@@ -26,6 +35,7 @@ export const stickyProps = buildProps("sticky", {
 })
 export const stickyEmits = {
   change: (sticky: boolean) => true,
+  scroll: (data: { scrollTop: number; isFixed: boolean }) => true,
 }
 
 export type StickyEmits = typeof stickyEmits

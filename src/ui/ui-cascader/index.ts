@@ -1,9 +1,10 @@
 import type Cascader from "./ui-cascader.vue"
 import type { Interceptor } from "../utils/interceptor"
 import type { PropType, CSSProperties, ExtractPropTypes } from "vue"
-import { truthProp, buildProps, numericProp, makeStringProp, makeNumericProp } from "../utils/props"
+import { createProps } from "../hooks"
+import { truthProp, numericProp, makeStringProp, makeNumericProp } from "../utils/props"
 
-export const cascaderProps = buildProps("cascader", {
+export const [cascaderProps, useCascaderProps] = createProps("cascader", {
   /**
    * 绑定值
    */

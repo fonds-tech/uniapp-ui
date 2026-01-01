@@ -10,39 +10,40 @@
 </template>
 
 <script setup lang="ts">
-import { progressProps } from "./index"
 import { useUnit, useColor, useStyle } from "../hooks"
+import { progressProps, useProgressProps } from "./index"
 
 defineOptions({ name: "ui-progress" })
 
 const props = defineProps(progressProps)
+const useProps = useProgressProps(props)
 
 const style = computed(() => {
   const style: any = {}
-  style.height = useUnit(props.height)
-  style.background = useColor(props.background)
-  return useStyle({ ...style, ...useStyle(props.customStyle) })
+  style.height = useUnit(useProps.height)
+  style.background = useColor(useProps.background)
+  return useStyle({ ...style, ...useStyle(useProps.customStyle) })
 })
 
 const textStyle = computed(() => {
   const style: any = {}
-  style.color = useColor(props.textColor)
-  style.fontSize = useUnit(props.textSize)
-  style.fontWeight = props.textWeight
+  style.color = useColor(useProps.textColor)
+  style.fontSize = useUnit(useProps.textSize)
+  style.fontWeight = useProps.textWeight
   return useStyle(style)
 })
 
 const pivotStyle = computed(() => {
   const style: any = {}
-  style.left = `${props.percentage}%`
-  style.background = useColor(props.color)
+  style.left = `${useProps.percentage}%`
+  style.background = useColor(useProps.color)
   return useStyle(style)
 })
 
 const portionStyle = computed(() => {
   const style: any = {}
-  style.width = `${props.percentage}%`
-  style.background = useColor(props.background)
+  style.width = `${useProps.percentage}%`
+  style.background = useColor(useProps.background)
   return useStyle(style)
 })
 

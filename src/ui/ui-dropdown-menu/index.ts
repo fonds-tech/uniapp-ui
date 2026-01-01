@@ -1,9 +1,10 @@
 import type DropdownMenu from "./ui-dropdown-menu.vue"
 import type { PropType, InjectionKey, CSSProperties, ExtractPropTypes } from "vue"
-import { truthProp, buildProps, numericProp, makeStringProp, makeNumericProp } from "../utils/props"
+import { createProps } from "../hooks"
+import { truthProp, numericProp, makeStringProp, makeNumericProp } from "../utils/props"
 
 export const dropdownMenuKey: InjectionKey<DropdownMenuProvide> = Symbol("ui-dropdown-menu")
-export const dropdownMenuProps = buildProps("dropdownMenu", {
+export const [dropdownMenuProps, useDropdownMenuProps] = createProps("dropdownMenu", {
   /**
    * 菜单高度
    */

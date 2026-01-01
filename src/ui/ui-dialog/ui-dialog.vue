@@ -75,7 +75,7 @@ import type { CSSProperties } from "vue"
 import type { DialogOptions, DialogDoneAction, DialogOpenAction, DialogCloseAction } from "./index"
 import { noop, merge } from "../utils/utils"
 import { isNumber, isFunction } from "../utils/check"
-import { dialogEmits, dialogProps } from "./index"
+import { dialogEmits, dialogProps, useDialogProps } from "./index"
 import { useUnit, useColor, useStyle, useTransition, useGlobalZIndex } from "../hooks"
 
 // 定义组件名称
@@ -84,7 +84,7 @@ defineOptions({ name: "ui-dialog" })
 // 定义props和emits
 const props = defineProps(dialogProps)
 const emits = defineEmits(dialogEmits)
-
+const useProps = useDialogProps(props)
 // 使用transition hook
 const transition = useTransition()
 
@@ -130,7 +130,7 @@ const baseOptions = ref<DialogOptions>({
 })
 
 // 计算属性: 是否已初始化
-const inited = computed(() => !props.lazyRender || transition.inited.value)
+const inited = computed(() => !useProps.lazyRender || transition.inited.value)
 
 // 为transition的各个阶段绑定事件
 transition.on("before-enter", () => emits("open"))
@@ -202,7 +202,7 @@ watch(
 
 // 监听show属性变化,控制对话框的打开和关闭
 watch(
-  () => props.show,
+  () => useProps.show,
   (val) => {
     val ? open({}, "inner") : close("close")
   },
@@ -210,17 +210,17 @@ watch(
 )
 
 // 监听mode和duration属性变化,重新初始化transition
-watch(() => [props.duration, props.enterTimingFunction, props.leaveTimingFunction], initTransition, { immediate: true })
+watch(() => [useProps.duration, useProps.enterTimingFunction, useProps.leaveTimingFunction], initTransition, { immediate: true })
 
 // 初始化transition
 function initTransition() {
-  useOptions.value.enterTimingFunction = props.enterTimingFunction
-  useOptions.value.leaveTimingFunction = props.leaveTimingFunction
+  useOptions.value.enterTimingFunction = useProps.enterTimingFunction
+  useOptions.value.leaveTimingFunction = useProps.leaveTimingFunction
   transition.init({
     name: "dialog-bounce",
-    duration: props.duration,
-    enterTimingFunction: props.enterTimingFunction,
-    leaveTimingFunction: props.leaveTimingFunction,
+    duration: useProps.duration,
+    enterTimingFunction: useProps.enterTimingFunction,
+    leaveTimingFunction: useProps.leaveTimingFunction,
   })
 }
 

@@ -18,13 +18,14 @@
 import type { CSSProperties } from "vue"
 import { isDef } from "../utils/check"
 import { radioGroupKey } from "../ui-radio-group"
-import { radioEmits, radioProps } from "./index"
+import { radioEmits, radioProps, useRadioProps } from "./index"
 import { useUnit, useColor, useStyle, useParent } from "../hooks"
 
 defineOptions({ name: "ui-radio" })
 
 const props = defineProps(radioProps)
 const emits = defineEmits(radioEmits)
+const useProps = useRadioProps(props)
 const slots = useSlots()
 
 const { index, parent } = useParent(radioGroupKey)
@@ -35,14 +36,14 @@ const style = computed(() => {
 
   const gap = prop("gap")
   if (gap && index.value > 0) {
-    if (parent?.props.vertical) {
+    if (parent?.useProps.vertical) {
       style.marginTop = useUnit(gap)
     } else {
       style.marginLeft = useUnit(gap)
     }
   }
 
-  return useStyle({ ...style, ...useStyle(props.customStyle) })
+  return useStyle({ ...style, ...useStyle(useProps.customStyle) })
 })
 
 const classs = computed(() => {
@@ -122,10 +123,10 @@ const labelClass = computed(() => {
   return list
 })
 
-const name = computed(() => props.name || index.value)
-const checked = computed(() => parent?.props.modelValue === name.value)
+const name = computed(() => useProps.name || index.value)
+const checked = computed(() => parent?.useProps.modelValue === name.value)
 const disabled = computed(() => prop("disabled"))
-const labelVisible = computed(() => slots.default || props.label)
+const labelVisible = computed(() => slots.default || useProps.label)
 
 function prop(name: string) {
   if (isDef(props[name])) return props[name]
@@ -135,7 +136,7 @@ function prop(name: string) {
 
 function toggle() {
   if (prop("disabled") || checked.value) return
-  parent.updateValue(props.name)
+  parent.updateValue(useProps.name)
 }
 
 function onClick() {

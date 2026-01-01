@@ -7,21 +7,22 @@ import type { CSSProperties } from "vue"
 import { skeletonKey } from "../ui-skeleton"
 import { isDef, isEmpty } from "../utils/check"
 import { useUnit, useStyle, useParent } from "../hooks"
-import { skeletonTitleEmits, skeletonTitleProps } from "./index"
+import { skeletonTitleEmits, skeletonTitleProps, useSkeletonTitleProps } from "./index"
 
 defineOptions({ name: "ui-skeleton-title" })
 
 const props = defineProps(skeletonTitleProps)
 const emits = defineEmits(skeletonTitleEmits)
+const useProps = useSkeletonTitleProps(props)
 const { parent } = useParent(skeletonKey)
 
 const style = computed(() => {
   const style: CSSProperties = {}
-  style.width = useUnit(props.width)
-  style.height = useUnit(props.height)
-  style.borderRadius = useUnit(props.radius)
-  if (isEmpty(props.width)) style.flex = "1"
-  return useStyle({ ...style, ...useStyle(props.customStyle) })
+  style.width = useUnit(useProps.width)
+  style.height = useUnit(useProps.height)
+  style.borderRadius = useUnit(useProps.radius)
+  if (isEmpty(useProps.width)) style.flex = "1"
+  return useStyle({ ...style, ...useStyle(useProps.customStyle) })
 })
 
 const classs = computed(() => {

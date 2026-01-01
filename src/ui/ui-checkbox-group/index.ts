@@ -1,9 +1,10 @@
 import type CheckboxGroup from "./ui-checkbox-group.vue"
 import type { PropType, ExtractPropTypes } from "vue"
-import { styleProp, buildProps, makeStringProp, makeNumericProp } from "../utils/props"
+import { createProps } from "../hooks"
+import { styleProp, makeStringProp, makeNumericProp } from "../utils/props"
 
 export const checkboxGroupKey = Symbol("ui-checkbox-group")
-export const checkboxGroupProps = buildProps("checkboxGroup", {
+export const [checkboxGroupProps, useCheckboxGroupProps] = createProps("checkboxGroup", {
   /**
    * 绑定值
    */

@@ -1,9 +1,10 @@
 import type Tabs from "./ui-tabs.vue"
 import type { PropType, InjectionKey, CSSProperties, ExtractPropTypes } from "vue"
-import { truthProp, buildProps, numericProp, makeNumericProp } from "../utils/props"
+import { createProps } from "../hooks"
+import { truthProp, numericProp, makeNumericProp } from "../utils/props"
 
 export const tabsKey: InjectionKey<TabsProvide> = Symbol("ui-tabs")
-export const tabsProps = buildProps("tabs", {
+export const [tabsProps, useTabsProps] = createProps("tabs", {
   /**
    * 绑定值
    */

@@ -1,5 +1,5 @@
 <template>
-  <view class="ui-icon-text" :class="[classs, props.customClass]" :style="[style]" @click="click">
+  <view class="ui-icon-text" :class="[classs, useProps.customClass]" :style="[style]" @click="click">
     <ui-icon :name="name" :size="size" :color="color" :radius="radius" :weight="weight" :custom-prefix="customPrefix" />
     <text v-if="text" class="icon-text" :style="[textStyle]">{{ text }}</text>
   </view>
@@ -7,34 +7,35 @@
 
 <script setup lang="ts">
 import { useUnit, useColor, useStyle } from "../hooks"
-import { iconTextEmits, iconTextProps } from "./index"
+import { iconTextEmits, iconTextProps, useIconTextProps } from "./index"
 
 defineOptions({ name: "ui-icon-text" })
 const props = defineProps(iconTextProps)
 const emits = defineEmits(iconTextEmits)
+const useProps = useIconTextProps(props)
 const style = computed(() => {
   const style: any = {}
-  style.borderRadius = useUnit(props.radius)
-  style.background = useColor(props.background)
-  return useStyle({ ...style, ...useStyle(props.customStyle) })
+  style.borderRadius = useUnit(useProps.radius)
+  style.background = useColor(useProps.background)
+  return useStyle({ ...style, ...useStyle(useProps.customStyle) })
 })
 
 const classs = computed(() => {
   const list = []
-  if (props.textLeft) list.push("ui-icon-text--left")
+  if (useProps.textLeft) list.push("ui-icon-text--left")
   return list
 })
 
 const textStyle = computed(() => {
   const style: any = {}
-  style.color = useColor(props.textColor)
-  style.fontSize = useUnit(props.textSize)
-  style.fontWeight = props.textWeight
-  if (props.textGap) {
-    if (props.textLeft) style.marginRight = useUnit(props.textGap)
-    else style.marginLeft = useUnit(props.textGap)
+  style.color = useColor(useProps.textColor)
+  style.fontSize = useUnit(useProps.textSize)
+  style.fontWeight = useProps.textWeight
+  if (useProps.textGap) {
+    if (useProps.textLeft) style.marginRight = useUnit(useProps.textGap)
+    else style.marginLeft = useUnit(useProps.textGap)
   }
-  if (props.textLeft) {
+  if (useProps.textLeft) {
     style.marginLeft = "0"
   }
   return useStyle(style)

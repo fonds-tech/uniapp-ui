@@ -1,9 +1,10 @@
 import type Tabbar from "./ui-tabbar.vue"
 import type { InjectionKey, ExtractPropTypes } from "vue"
-import { styleProp, truthProp, buildProps, makeStringProp, makeNumericProp } from "../utils/props"
+import { createProps } from "../hooks"
+import { styleProp, truthProp, makeStringProp, makeNumericProp } from "../utils/props"
 
 export const tabbarKey: InjectionKey<TabbarProvide> = Symbol("ui-tabbar")
-export const tabbarProps = buildProps("tabbar", {
+export const [tabbarProps, useTabbarProps] = createProps("tabbar", {
   /**
    * 当前选中标签的名称或索引值
    */

@@ -98,27 +98,27 @@ const value = ref(3)
 
 ## Props
 
-| 参数 | 说明 | 类型 | 默认值 |
-| --- | --- | --- | --- |
-| v-model | 当前分值 | `number` | `0` |
-| icon | 选中时的图标名称 | `string` | `star` |
-| void-icon | 未选中时的图标名称 | `string` | `star-o` |
-| count | 图标总数 | `number` | `5` |
-| size | 图标大小 | `string \| number` | - |
-| color | 选中时的颜色 | `string` | `primary` |
-| void-color | 未选中时的颜色 | `string` | `#c8c9cc` |
-| gutter | 图标间距 | `string \| number` | `8rpx` |
-| readonly | 是否为只读状态 | `boolean` | `false` |
-| touchable | 是否可通过滑动手势选择评分 | `boolean` | `true` |
-| disabled | 是否禁用 | `boolean` | `false` |
-| disabled-color | 禁用时的颜色 | `string` | `#c8c9cc` |
-| allow-half | 是否允许半星 | `boolean` | `false` |
-| icon-weight | 图标粗细 | `string \| number` | - |
-| custom-class | 自定义类名 | `string` | - |
-| custom-style | 自定义样式 | `string \| object` | - |
+| 参数           | 说明                       | 类型               | 默认值    |
+| -------------- | -------------------------- | ------------------ | --------- |
+| v-model        | 当前分值                   | `number`           | `0`       |
+| icon           | 选中时的图标名称           | `string`           | `star`    |
+| void-icon      | 未选中时的图标名称         | `string`           | `star-o`  |
+| count          | 图标总数                   | `number`           | `5`       |
+| size           | 图标大小                   | `string \| number` | -         |
+| color          | 选中时的颜色               | `string`           | `primary` |
+| void-color     | 未选中时的颜色             | `string`           | `#c8c9cc` |
+| gutter         | 图标间距                   | `string \| number` | `8rpx`    |
+| readonly       | 是否为只读状态             | `boolean`          | `false`   |
+| touchable      | 是否可通过滑动手势选择评分 | `boolean`          | `true`    |
+| disabled       | 是否禁用                   | `boolean`          | `false`   |
+| disabled-color | 禁用时的颜色               | `string`           | `#c8c9cc` |
+| allow-half     | 是否允许半星               | `boolean`          | `false`   |
+| icon-weight    | 图标粗细                   | `string \| number` | -         |
+| custom-class   | 自定义类名                 | `string`           | -         |
+| custom-style   | 自定义样式                 | `string \| object` | -         |
 
 ## Events
 
-| 事件名 | 说明 | 回调参数 |
-| --- | --- | --- |
+| 事件名 | 说明               | 回调参数        |
+| ------ | ------------------ | --------------- |
 | change | 当前分值变化时触发 | `value: number` |

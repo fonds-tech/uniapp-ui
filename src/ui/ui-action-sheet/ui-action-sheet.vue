@@ -1,10 +1,10 @@
 <template>
   <ui-overlay
-    v-if="props.overlay"
+    v-if="useProps.overlay"
     :show="visible"
-    :duration="props.duration"
+    :duration="useProps.duration"
     :z-index="currentZIndex"
-    :lazy-render="props.lazyRender"
+    :lazy-render="useProps.lazyRender"
     :custom-style="overlayStyle"
     @click="handleOverlayClick"
   />
@@ -39,10 +39,10 @@
     <slot name="footer">
       <view class="ui-action-sheet__gap" />
       <button class="ui-action-sheet__cancel" :style="[cancelBtnStyle]" hover-class="ui-action-sheet__cancel--active" @click="handleCancel">
-        {{ props.cancelText }}
+        {{ useProps.cancelText }}
       </button>
     </slot>
-    <ui-safe-area-bottom v-if="props.safeAreaInsetBottom" />
+    <ui-safe-area-bottom v-if="useProps.safeAreaInsetBottom" />
   </view>
 </template>
 
@@ -51,7 +51,7 @@ import type { CSSProperties } from "vue"
 import type { ActionSheetAction } from "./index"
 import { callInterceptor } from "../utils/interceptor"
 import { isNumber, isFunction } from "../utils/check"
-import { actionSheetEmits, actionSheetProps } from "./index"
+import { actionSheetEmits, actionSheetProps, useActionSheetProps } from "./index"
 import { useUnit, useColor, useStyle, useTransition, useGlobalZIndex } from "../hooks"
 
 // 定义组件名称
@@ -60,7 +60,7 @@ defineOptions({ name: "ui-action-sheet" })
 // 定义props和emits
 const props = defineProps(actionSheetProps)
 const emits = defineEmits(actionSheetEmits)
-
+const useProps = useActionSheetProps(props)
 // 使用 transition hook
 const transition = useTransition()
 
@@ -69,7 +69,7 @@ const currentZIndex = ref<number>()
 const visible = ref(false)
 
 // 计算属性: 是否已初始化
-const inited = computed(() => !props.lazyRender || transition.inited.value)
+const inited = computed(() => !useProps.lazyRender || transition.inited.value)
 
 // 为 transition 的各个阶段绑定事件
 transition.on("before-enter", () => emits("open"))
@@ -81,9 +81,9 @@ transition.on("after-leave", () => emits("closed"))
 const panelStyle = computed(() => {
   const styles: CSSProperties = {}
   styles.zIndex = currentZIndex.value
-  styles.borderTopLeftRadius = useUnit(props.borderRadius)
-  styles.borderTopRightRadius = useUnit(props.borderRadius)
-  return useStyle({ ...styles, ...useStyle(props.customStyle), ...transition.styles.value })
+  styles.borderTopLeftRadius = useUnit(useProps.borderRadius)
+  styles.borderTopRightRadius = useUnit(useProps.borderRadius)
+  return useStyle({ ...styles, ...useStyle(useProps.customStyle), ...transition.styles.value })
 })
 
 // 计算类名
@@ -92,42 +92,42 @@ const classNames = computed(() => [transition.classs.value])
 // 计算标题样式
 const headerTitleStyle = computed(() => {
   const styles: CSSProperties = {}
-  styles.color = useColor(props.titleColor)
-  styles.fontSize = useUnit(props.titleSize)
-  styles.fontWeight = props.titleWeight
+  styles.color = useColor(useProps.titleColor)
+  styles.fontSize = useUnit(useProps.titleSize)
+  styles.fontWeight = useProps.titleWeight
   return useStyle(styles)
 })
 
 // 计算描述样式
 const headerDescStyle = computed(() => {
   const styles: CSSProperties = {}
-  styles.color = useColor(props.descriptionColor)
-  styles.fontSize = useUnit(props.descriptionSize)
-  styles.fontWeight = props.descriptionWeight
+  styles.color = useColor(useProps.descriptionColor)
+  styles.fontSize = useUnit(useProps.descriptionSize)
+  styles.fontWeight = useProps.descriptionWeight
   return useStyle(styles)
 })
 
 // 计算取消按钮样式
 const cancelBtnStyle = computed(() => {
   const styles: CSSProperties = {}
-  styles.color = useColor(props.cancelTextColor)
-  styles.fontSize = useUnit(props.cancelTextSize)
-  styles.fontWeight = props.cancelTextWeight
-  styles.background = useColor(props.cancelBackground)
+  styles.color = useColor(useProps.cancelTextColor)
+  styles.fontSize = useUnit(useProps.cancelTextSize)
+  styles.fontWeight = useProps.cancelTextWeight
+  styles.background = useColor(useProps.cancelBackground)
   return useStyle(styles)
 })
 
 // 计算滚动区域样式
 const scrollStyle = computed(() => {
   const styles: CSSProperties = {}
-  styles.height = useUnit(props.height)
-  styles.maxHeight = useUnit(props.maxHeight)
+  styles.height = useUnit(useProps.height)
+  styles.maxHeight = useUnit(useProps.maxHeight)
   return useStyle(styles)
 })
 
 // 监听 show 属性变化
 watch(
-  () => props.show,
+  () => useProps.show,
   (val) => {
     val ? open() : close()
   },
@@ -135,18 +135,18 @@ watch(
 )
 
 // 监听 duration 属性变化
-watch(() => [props.duration], initTransition, { immediate: true })
+watch(() => [useProps.duration], initTransition, { immediate: true })
 
 // 初始化 transition
 function initTransition() {
-  transition.init({ name: "slide-up", duration: props.duration })
+  transition.init({ name: "slide-up", duration: useProps.duration })
 }
 
 // 打开面板
 function open() {
   if (transition.visible.value) return
   initTransition()
-  currentZIndex.value = isNumber(props.zIndex) ? +props.zIndex : useGlobalZIndex()
+  currentZIndex.value = isNumber(useProps.zIndex) ? +useProps.zIndex : useGlobalZIndex()
   visible.value = true
   transition.enter()
   emits("update:show", true)
@@ -164,9 +164,9 @@ function close() {
 // 选择操作项
 function handleSelectAction(item: ActionSheetAction, index: number) {
   emits("select", item, index)
-  if (props.closeOnClickAction) {
-    if (isFunction(props.beforeClose)) {
-      callInterceptor(props.beforeClose, {
+  if (useProps.closeOnClickAction) {
+    if (isFunction(useProps.beforeClose)) {
+      callInterceptor(useProps.beforeClose, {
         args: [{ action: item, index }],
         done: () => close(),
       })
@@ -185,7 +185,7 @@ function handleCancel() {
 // 点击遮罩层
 function handleOverlayClick() {
   emits("clickOverlay")
-  if (props.closeOnClickOverlay) close()
+  if (useProps.closeOnClickOverlay) close()
 }
 
 defineExpose({ open, close })

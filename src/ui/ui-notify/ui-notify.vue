@@ -21,14 +21,14 @@
 <script setup lang="ts">
 import type { NotifyOptions } from "./index"
 import { merge } from "../utils/utils"
-import { notifyEmits, notifyProps } from "./index"
 import { useUnit, useColor, useStyle } from "../hooks"
+import { notifyEmits, notifyProps, useNotifyProps } from "./index"
 
 defineOptions({ name: "ui-notify" })
 
 const props = defineProps(notifyProps)
 const emits = defineEmits(notifyEmits)
-
+const useProps = useNotifyProps(props)
 const visible = ref(false)
 const useOptions = ref<NotifyOptions>({})
 const propOptions = ref<NotifyOptions>({})
@@ -78,7 +78,7 @@ watch(
 )
 
 watch(
-  () => props.show,
+  () => useProps.show,
   (val) => {
     if (val) show()
     else close()

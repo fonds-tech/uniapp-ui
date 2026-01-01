@@ -1,7 +1,8 @@
 import type Select from "./ui-select.vue"
 import type { PropType, CSSProperties, ExtractPropTypes } from "vue"
 import type { PopupMode, PickerValue, PickerColumn, PickerCancelData, PickerChangeData, PickerConfirmData, PickerColumnFields } from "../ui-picker"
-import { truthProp, buildProps, numericProp, makeArrayProp, makeStringProp, makeNumericProp } from "../utils/props"
+import { createProps } from "../hooks"
+import { truthProp, numericProp, makeArrayProp, makeStringProp, makeNumericProp } from "../utils/props"
 
 /**
  * 选择器值类型：单选为单值，多选/级联/多列为数组
@@ -30,7 +31,7 @@ export interface SelectDisplayPayload {
   texts: Array<string | number>
 }
 
-export const selectProps = buildProps("select", {
+export const [selectProps, useSelectProps] = createProps("select", {
   /**
    * 绑定值
    * - 单选模式：string | number

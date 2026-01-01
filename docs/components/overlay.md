@@ -57,28 +57,28 @@ const show = ref(false)
 
 ## Props
 
-| 参数 | 说明 | 类型 | 默认值 |
-| --- | --- | --- | --- |
-| show | 是否显示 | `boolean` | `false` |
-| z-index | 层级 | `string \| number` | - |
-| opacity | 透明度 | `string \| number` | `0.7` |
-| duration | 动画时长(ms) | `string \| number` | `300` |
-| lazy-render | 是否在显示时才渲染节点 | `boolean` | `true` |
-| custom-class | 自定义类名 | `string` | - |
-| custom-style | 自定义样式 | `string \| object` | - |
+| 参数         | 说明                   | 类型               | 默认值  |
+| ------------ | ---------------------- | ------------------ | ------- |
+| show         | 是否显示               | `boolean`          | `false` |
+| z-index      | 层级                   | `string \| number` | -       |
+| opacity      | 透明度                 | `string \| number` | `0.7`   |
+| duration     | 动画时长(ms)           | `string \| number` | `300`   |
+| lazy-render  | 是否在显示时才渲染节点 | `boolean`          | `true`  |
+| custom-class | 自定义类名             | `string`           | -       |
+| custom-style | 自定义样式             | `string \| object` | -       |
 
 ## Events
 
-| 事件名 | 说明 | 回调参数 |
-| --- | --- | --- |
-| click | 点击遮罩层时触发 | - |
-| open | 打开时触发 | - |
-| opened | 打开动画结束时触发 | - |
-| close | 关闭时触发 | - |
-| closed | 关闭动画结束时触发 | - |
+| 事件名 | 说明               | 回调参数 |
+| ------ | ------------------ | -------- |
+| click  | 点击遮罩层时触发   | -        |
+| open   | 打开时触发         | -        |
+| opened | 打开动画结束时触发 | -        |
+| close  | 关闭时触发         | -        |
+| closed | 关闭动画结束时触发 | -        |
 
 ## Slots
 
-| 名称 | 说明 |
-| --- | --- |
+| 名称    | 说明       |
+| ------- | ---------- |
 | default | 遮罩层内容 |

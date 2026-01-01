@@ -1,10 +1,11 @@
 import type FormItem from "./ui-form-item.vue"
 import type { PropType, ExtractPropTypes } from "vue"
 import type { FormLabelPosition, FormValidateError, FormValidateTrigger, FormErrorMessageAlign } from "../ui-form"
-import { styleProp, truthProp, buildProps, numericProp, makeStringProp } from "../utils/props"
+import { createProps } from "../hooks"
+import { styleProp, truthProp, numericProp, makeStringProp } from "../utils/props"
 
 export const formItemKey = Symbol("ui-form-item")
-export const formItemProps = buildProps("formItem", {
+export const [formItemProps, useFormItemProps] = createProps("formItem", {
   /**
    * model的键名
    */

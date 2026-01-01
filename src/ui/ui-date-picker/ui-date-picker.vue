@@ -2,14 +2,14 @@
   <view class="ui-date-picker">
     <ui-popup
       :show="show"
-      :mode="props.mode"
-      :border-radius="props.borderRadius"
-      :close-on-click-overlay="props.closeOnClickOverlay"
-      :overlay="props.overlay"
-      :duration="props.duration"
-      :z-index="props.zIndex"
-      :background="props.background"
-      :safe-area-inset-bottom="props.safeAreaInsetBottom"
+      :mode="useProps.mode"
+      :border-radius="useProps.borderRadius"
+      :close-on-click-overlay="useProps.closeOnClickOverlay"
+      :overlay="useProps.overlay"
+      :duration="useProps.duration"
+      :z-index="useProps.zIndex"
+      :background="useProps.background"
+      :safe-area-inset-bottom="useProps.safeAreaInsetBottom"
       @update:show="handleUpdateShow"
       @open="emits('open')"
       @opened="emits('opened')"
@@ -19,20 +19,20 @@
       <!-- Header 插槽 -->
       <template #header>
         <slot name="header">
-          <view v-if="props.showHeader" class="ui-date-picker__header">
+          <view v-if="useProps.showHeader" class="ui-date-picker__header">
             <view class="ui-date-picker__header__cancel" @click="onCancel">
               <slot name="cancel">
                 <ui-button text text-color="#969799">
-                  {{ props.cancelText }}
+                  {{ useProps.cancelText }}
                 </ui-button>
               </slot>
             </view>
             <view class="ui-date-picker__header__title">
-              <slot name="title">{{ props.title }}</slot>
+              <slot name="title">{{ useProps.title }}</slot>
             </view>
             <view class="ui-date-picker__header__confirm" @click="onConfirm">
               <slot name="confirm">
-                <ui-button text>{{ props.confirmText }}</ui-button>
+                <ui-button text>{{ useProps.confirmText }}</ui-button>
               </slot>
             </view>
           </view>
@@ -68,15 +68,15 @@
 import type { DatePickerOption, DatePickerColumnType } from "./index"
 import UiPopup from "../ui-popup/ui-popup.vue"
 import { padZero } from "../utils/utils"
-import { datePickerEmits, datePickerProps } from "./index"
 import { ref, toRaw, watch, computed, nextTick } from "vue"
 import { useUnit, useColor, useStyle, useUnitToPx } from "../hooks"
+import { datePickerEmits, datePickerProps, useDatePickerProps } from "./index"
 
 defineOptions({ name: "ui-date-picker" })
 
 const props = defineProps(datePickerProps)
 const emits = defineEmits(datePickerEmits)
-
+const useProps = useDatePickerProps(props)
 // ==================== 核心状态 ====================
 
 // 当前选中的日期各部分值 (year, month, day, hour, minute, second)
@@ -148,16 +148,16 @@ function parseDate(value: string | number | Date | null | undefined): { y: numbe
 // ==================== 日期范围 ====================
 
 const minBound = computed(() => {
-  if (props.minDate) {
-    return parseDate(props.minDate)
+  if (useProps.minDate) {
+    return parseDate(useProps.minDate)
   }
   const y = new Date().getFullYear() - 10
   return { y, m: 1, d: 1, h: 0, mi: 0, s: 0 }
 })
 
 const maxBound = computed(() => {
-  if (props.maxDate) {
-    return parseDate(props.maxDate)
+  if (useProps.maxDate) {
+    return parseDate(useProps.maxDate)
   }
   const y = new Date().getFullYear() + 10
   return { y, m: 12, d: 31, h: 23, mi: 59, s: 59 }
@@ -186,7 +186,7 @@ function genOptions(start: number, end: number, type: DatePickerColumnType): Dat
 
   // 默认 formatter：直接返回 option
   const defaultFormatter = (_type: string, option: DatePickerOption) => option
-  const formatter = props.columnFormatter ?? defaultFormatter
+  const formatter = useProps.columnFormatter ?? defaultFormatter
 
   for (let i = safeStart; i <= safeEnd; i++) {
     const text = pad(i)
@@ -196,7 +196,7 @@ function genOptions(start: number, end: number, type: DatePickerColumnType): Dat
   }
 
   // 过滤器
-  const filter = props.columnFilter
+  const filter = useProps.columnFilter
   if (typeof filter === "function") {
     return filter(type, options, [])
   }
@@ -330,7 +330,7 @@ function setCurrentValue(type: DatePickerColumnType, val: number) {
 
 // picker-view 的列数据
 const pickerColumns = computed(() => {
-  return props.columns.map((type) => {
+  return useProps.columns.map((type) => {
     const col = columnMap[type]
     return col ? col.value : []
   })
@@ -338,7 +338,7 @@ const pickerColumns = computed(() => {
 
 // picker-view 的选中索引
 const pickerIndexes = computed(() => {
-  return props.columns.map((type, colIdx) => {
+  return useProps.columns.map((type, colIdx) => {
     const column = pickerColumns.value[colIdx]
     if (!column || column.length === 0) return 0
     const currentVal = pad(getCurrentValue(type))
@@ -350,12 +350,12 @@ const pickerIndexes = computed(() => {
 // ==================== 样式 ====================
 
 const viewStyle = computed(() => {
-  const height = useUnitToPx(props.columnHeight) * +props.visibleColumnNum
+  const height = useUnitToPx(useProps.columnHeight) * +useProps.visibleColumnNum
   return useStyle({ height: `${height}px` })
 })
 
 const optionStyle = computed(() => {
-  return useStyle({ height: useUnit(props.columnHeight) }, "string")
+  return useStyle({ height: useUnit(useProps.columnHeight) }, "string")
 })
 
 const isActiveColumn = computed(() => {
@@ -369,9 +369,9 @@ const columnStyle = computed(() => {
   return (columnIndex: number, index: number) => {
     const isActive = isActiveColumn.value(columnIndex, index)
     return useStyle({
-      fontSize: useUnit(isActive ? props.activeColumnSize : props.columnSize),
-      color: isActive ? useColor(props.activeColumnColor) : useColor(props.columnColor),
-      fontWeight: isActive ? props.activeColumnWeight : props.columnWeight,
+      fontSize: useUnit(isActive ? useProps.activeColumnSize : useProps.columnSize),
+      color: isActive ? useColor(useProps.activeColumnColor) : useColor(useProps.columnColor),
+      fontWeight: isActive ? useProps.activeColumnWeight : useProps.columnWeight,
     })
   }
 })
@@ -379,7 +379,7 @@ const columnStyle = computed(() => {
 // ==================== 初始化 ====================
 
 function initFromValue() {
-  const parsed = parseDate(props.modelValue)
+  const parsed = parseDate(useProps.modelValue)
 
   // 限制在范围内
   currentYear.value = clamp(parsed.y, minBound.value.y, maxBound.value.y)
@@ -454,7 +454,7 @@ function onPickerChange(e: PickerViewChangeEvent) {
   const indexes = e.detail.value
 
   // 根据新索引更新值
-  props.columns.forEach((type, colIdx) => {
+  useProps.columns.forEach((type, colIdx) => {
     const column = pickerColumns.value[colIdx]
     const selectedIdx = indexes[colIdx] ?? 0
     const selectedOption = column[selectedIdx]
@@ -474,14 +474,14 @@ function onPickerChange(e: PickerViewChangeEvent) {
  * 获取当前选中的值数组
  */
 function getSelectedValues(): string[] {
-  return props.columns.map((type) => pad(getCurrentValue(type)))
+  return useProps.columns.map((type) => pad(getCurrentValue(type)))
 }
 
 /**
  * 获取格式化后的值
  */
 function getFormattedValue(): string {
-  return formatDate(currentYear.value, currentMonth.value, currentDay.value, currentHour.value, currentMinute.value, currentSecond.value, props.format)
+  return formatDate(currentYear.value, currentMonth.value, currentDay.value, currentHour.value, currentMinute.value, currentSecond.value, useProps.format)
 }
 
 /**
@@ -519,7 +519,7 @@ function onConfirm() {
 
 // 监听 modelValue 变化
 watch(
-  () => props.modelValue,
+  () => useProps.modelValue,
   () => {
     initFromValue()
   },
@@ -528,7 +528,7 @@ watch(
 
 // 监听 show 变化，弹窗打开时重新初始化
 watch(
-  () => props.show,
+  () => useProps.show,
   (val) => {
     if (val) {
       initFromValue()

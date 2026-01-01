@@ -1,8 +1,9 @@
 import type Upload from "./ui-upload.vue"
 import type { PropType, ExtractPropTypes } from "vue"
-import { styleProp, truthProp, buildProps, makeNumberProp, makeStringProp, makeNumericProp } from "../utils/props"
+import { createProps } from "../hooks"
+import { styleProp, truthProp, makeNumberProp, makeStringProp, makeNumericProp } from "../utils/props"
 
-export const uploadProps = buildProps("upload", {
+export const [uploadProps, useUploadProps] = createProps("upload", {
   /**
    * 绑定值
    */

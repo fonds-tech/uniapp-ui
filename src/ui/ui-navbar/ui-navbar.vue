@@ -1,22 +1,22 @@
 <template>
-  <view class="ui-navbar" :class="[props.customClass]">
+  <view class="ui-navbar" :class="[useProps.customClass]">
     <view class="ui-navbar__content" :style="[contentStyle]" :class="[contentClass]">
       <view class="ui-navbar__status-bar" :style="[statusBarStyle]" />
       <view class="ui-navbar__body" :style="[bodyStyle]">
         <view v-if="slots.left" class="ui-navbar__left">
           <slot name="left" />
         </view>
-        <view v-else-if="props.isBack" class="ui-navbar__back" @click="onClickBack">
+        <view v-else-if="useProps.isBack" class="ui-navbar__back" @click="onClickBack">
           <slot name="back">
-            <ui-icon :name="backIcon" :color="props.backIconColor" :size="props.backIconSize" />
+            <ui-icon :name="backIcon" :color="useProps.backIconColor" :size="useProps.backIconSize" />
           </slot>
-          <view v-if="props.backText" class="ui-navbar__back__text" :style="[backTextStyle]">
-            {{ props.backText }}
+          <view v-if="useProps.backText" class="ui-navbar__back__text" :style="[backTextStyle]">
+            {{ useProps.backText }}
           </view>
         </view>
-        <view v-if="props.title || slots.title" class="ui-navbar__title" :style="[titleStyle]">
+        <view v-if="useProps.title || slots.title" class="ui-navbar__title" :style="[titleStyle]">
           <slot name="title">
-            {{ props.title }}
+            {{ useProps.title }}
           </slot>
         </view>
         <view v-else-if="slots.default" class="ui-navbar__default">
@@ -33,8 +33,8 @@
 
 <script setup lang="ts">
 import type { CSSProperties } from "vue"
-import { navbarEmits, navbarProps } from "./index"
 import { isEmpty, isNumber, isFunction } from "../utils/check"
+import { navbarEmits, navbarProps, useNavbarProps } from "./index"
 import { useRgb, useMitt, useRect, useUnit, useColor, useStyle, usePxToRpx, useUnitToPx, useUnitToRpx, useSystemInfo } from "../hooks"
 
 // 定义组件名称
@@ -43,6 +43,7 @@ defineOptions({ name: "ui-navbar" })
 // 定义组件的 props 和 emits
 const props = defineProps(navbarProps)
 const emits = defineEmits(navbarEmits)
+const useProps = useNavbarProps(props)
 const slots = useSlots()
 
 // 获取系统信息，用于后续计算
@@ -66,12 +67,12 @@ const instance = getCurrentInstance()
 // 计算导航栏内容的样式
 const contentStyle = computed(() => {
   const style: CSSProperties = {}
-  style.zIndex = props.zIndex
-  style.background = useColor(props.background)
+  style.zIndex = useProps.zIndex
+  style.background = useColor(useProps.background)
   // 如果启用了渐变效果，根据滚动位置计算背景颜色
-  if (props.gradient && props.background) {
-    const { r, g, b } = useRgb(props.background)
-    style.background = `rgba(${r},${g},${b},${innerScrollTop.value / useUnitToPx(props.gradientHeight)})`
+  if (useProps.gradient && useProps.background) {
+    const { r, g, b } = useRgb(useProps.background)
+    style.background = `rgba(${r},${g},${b},${innerScrollTop.value / useUnitToPx(useProps.gradientHeight)})`
   }
   return useStyle(style)
 })
@@ -79,8 +80,8 @@ const contentStyle = computed(() => {
 // 计算导航栏内容的类名
 const contentClass = computed(() => {
   const list: string[] = []
-  if (props.fixed) list.push("is-fixed")
-  if (props.borderBottom) list.push("is-border")
+  if (useProps.fixed) list.push("is-fixed")
+  if (useProps.borderBottom) list.push("is-border")
   return list
 })
 
@@ -95,33 +96,33 @@ const statusBarStyle = computed(() => {
 const bodyStyle = computed(() => {
   const style: CSSProperties = {}
   style.height = `${navbarHeight.value}rpx`
-  style.paddingLeft = useUnit(props.padding)
-  style.paddingRight = useUnit(props.padding)
+  style.paddingLeft = useUnit(useProps.padding)
+  style.paddingRight = useUnit(useProps.padding)
 
   // #ifdef MP
   // 在小程序中，调整右侧边距以适应胶囊按钮
   style.marginRight = `${systemInfo.windowWidth - (menuButtonInfo.left || 0)}px`
 
   // #endif
-  if (props.height) style.alignItems = "flex-start"
-  return useStyle({ ...style, ...useStyle(props.customStyle) })
+  if (useProps.height) style.alignItems = "flex-start"
+  return useStyle({ ...style, ...useStyle(useProps.customStyle) })
 })
 
 // 计算返回按钮文本样式
 const backTextStyle = computed(() => {
   const style: CSSProperties = {}
-  style.color = useColor(props.backTextColor)
-  style.fontSize = useUnit(props.backTextSize)
-  style.fontWeight = props.backTextWeight
+  style.color = useColor(useProps.backTextColor)
+  style.fontSize = useUnit(useProps.backTextSize)
+  style.fontWeight = useProps.backTextWeight
   return useStyle(style)
 })
 
 // 计算标题样式
 const titleStyle = computed(() => {
   const style: CSSProperties = {}
-  if (props.titleCenter) {
+  if (useProps.titleCenter) {
     // #ifndef MP
-    const titleWidth = useUnitToPx(props.titleWidth ?? "376rpx")
+    const titleWidth = useUnitToPx(useProps.titleWidth ?? "376rpx")
     // 非小程序平台的居中逻辑
     style.left = `${(systemInfo.windowWidth - titleWidth) / 2}px`
     style.right = `${(systemInfo.windowWidth - titleWidth) / 2}px`
@@ -129,7 +130,7 @@ const titleStyle = computed(() => {
     // #endif
     // #ifdef MP
     // 小程序平台的居中逻辑，考虑胶囊按钮的位置
-    const mpTitleWidth = useUnitToPx(props.titleWidth ?? 300)
+    const mpTitleWidth = useUnitToPx(useProps.titleWidth ?? 300)
     const rightButtonWidth = systemInfo.windowWidth - menuButtonInfo.left
     style.left = `${(systemInfo.windowWidth - mpTitleWidth) / 2}px`
     style.right = `${rightButtonWidth - (systemInfo.windowWidth - mpTitleWidth) / 2 + rightButtonWidth}px`
@@ -139,9 +140,9 @@ const titleStyle = computed(() => {
     style.justifyContent = "center"
   }
 
-  style.color = props.titleColor
-  style.fontSize = props.titleSize
-  style.fontWeight = props.titleWeight
+  style.color = useProps.titleColor
+  style.fontSize = useProps.titleSize
+  style.fontWeight = useProps.titleWeight
   return useStyle(style)
 })
 
@@ -149,7 +150,7 @@ const titleStyle = computed(() => {
 const placeholderStyle = computed(() => {
   const style: CSSProperties = {}
   style.height = 0
-  if (props.fixed && !props.immersive) style.height = `${navbarHeight.value + usePxToRpx(statusBarHeight.value)}rpx`
+  if (useProps.fixed && !useProps.immersive) style.height = `${navbarHeight.value + usePxToRpx(statusBarHeight.value)}rpx`
   return useStyle(style)
 })
 
@@ -160,7 +161,7 @@ const navbarHeight = computed(() => {
   // 小程序中，根据胶囊按钮高度计算
   height = usePxToRpx(menuButtonInfo.height + 1) + 24
   // #endif
-  return props.height ? useUnitToRpx(props.height) : height
+  return useProps.height ? useUnitToRpx(useProps.height) : height
 })
 
 // 计算状态栏高度
@@ -174,14 +175,14 @@ const statusBarHeight = computed(() => {
 })
 
 // 计算返回图标，根据路由层级决定显示首页图标还是返回图标
-const backIcon = computed(() => (routes.value.length === 1 ? "wap-home-o" : props.backIconName))
+const backIcon = computed(() => (routes.value.length === 1 ? "wap-home-o" : useProps.backIconName))
 
 watch(
-  () => props.scrollTop,
+  () => useProps.scrollTop,
   (val) => {
     if (isNumber(val)) {
       innerScrollTop.value = val
-      if (props.gradient) {
+      if (useProps.gradient) {
         emits("gradient", val)
       }
     }
@@ -202,7 +203,7 @@ function onEvent() {
 
   // 监听滚动事件，用于渐变效果
   mitt.on(`scroll:${route}`, (options: { scrollTop: number }) => {
-    if (props.gradient && isEmpty(props.scrollTop)) {
+    if (useProps.gradient && isEmpty(useProps.scrollTop)) {
       innerScrollTop.value = options.scrollTop
       emits("gradient", options.scrollTop)
     }
@@ -222,14 +223,14 @@ async function resize() {
 // 处理返回按钮点击
 function onClickBack() {
   emits("back")
-  if (typeof props.customBack === "function") {
+  if (typeof useProps.customBack === "function") {
     // 如果有自定义返回函数，则调用它
-    props.customBack()
+    useProps.customBack()
   } else {
     if (routes.value.length === 1) {
       // 如果只有一个页面，则跳转到首页
-      const homePath = props.homePath
-      const homeType = props.homeType
+      const homePath = useProps.homePath
+      const homeType = useProps.homeType
 
       // 根据类型选择跳转方式
       if (homeType === "tab") {

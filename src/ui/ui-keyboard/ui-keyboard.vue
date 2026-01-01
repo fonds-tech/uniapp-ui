@@ -50,13 +50,13 @@
 <script setup lang="ts">
 import { useStyle } from "../hooks"
 import { clone, shuffleArray } from "../utils/utils"
-import { keyboardEmits, keyboardProps } from "./index"
+import { keyboardEmits, keyboardProps, useKeyboardProps } from "./index"
 
 defineOptions({ name: "ui-keyboard" })
 
 const props = defineProps(keyboardProps)
 const emits = defineEmits(keyboardEmits)
-
+const useProps = useKeyboardProps(props)
 const visible = ref(false)
 const numbers = ref([])
 const letters = ref([])
@@ -102,7 +102,7 @@ const language = ref("zh-cn")
 
 const style = computed(() => {
   const style: any = {}
-  return useStyle({ ...style, ...useStyle(props.customStyle) })
+  return useStyle({ ...style, ...useStyle(useProps.customStyle) })
 })
 
 const classs = computed(() => {
@@ -112,14 +112,14 @@ const classs = computed(() => {
 
 const keysClass = computed(() => {
   const list: string[] = []
-  list.push(`ui-keyboard__keys--${props.mode}`)
+  list.push(`ui-keyboard__keys--${useProps.mode}`)
   return list
 })
 
 const keyStyle = computed(() => {
   return (item: any, index: number) => {
     const style: any = {}
-    if (props.mode === "car") {
+    if (useProps.mode === "car") {
       if (item.type === "switch") {
         style.gridArea = "4 / 1 / 5 / 3"
       }
@@ -134,12 +134,12 @@ const keyStyle = computed(() => {
 const keys = computed(() => {
   const { random, showDot } = props
   let list = []
-  if (props.mode === "number") {
+  if (useProps.mode === "number") {
     list = random ? shuffleArray(clone(numbers.value)) : clone(numbers.value)
     showDot ? list.splice(9, 0, { value: ".", type: "key" }) : list.splice(9, 0, { value: "keyboard-hide", type: "close" })
     list.push({ value: "backspace-o", type: "delete" })
   }
-  if (props.mode === "car") {
+  if (useProps.mode === "car") {
     if (language.value === "zh-cn") {
       list = random ? shuffleArray(clone(cars.value)) : clone(cars.value)
     } else {
@@ -151,7 +151,7 @@ const keys = computed(() => {
     list.splice(30, 0, { value: "", type: "switch" })
     list.push({ value: "backspace-o", type: "delete" })
   }
-  if (props.mode === "card") {
+  if (useProps.mode === "card") {
     const ns = random ? shuffleArray(clone(numbers.value)) : clone(numbers.value)
     if (ns.length) ns.push(ns.shift())
     list = ns
@@ -163,7 +163,7 @@ const keys = computed(() => {
 })
 
 watch(
-  () => props.show,
+  () => useProps.show,
   (val) => {
     visible.value = val
   },

@@ -1,8 +1,9 @@
 import type Pagination from "./ui-pagination.vue"
 import type { ExtractPropTypes } from "vue"
-import { styleProp, buildProps, makeStringProp, makeNumericProp } from "../utils/props"
+import { createProps } from "../hooks"
+import { styleProp, makeStringProp, makeNumericProp } from "../utils/props"
 
-export const paginationProps = buildProps("pagination", {
+export const [paginationProps, usePaginationProps] = createProps("pagination", {
   /**
    * 列表数据
    */

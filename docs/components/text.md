@@ -88,30 +88,30 @@
 
 ## Props
 
-| 参数 | 说明 | 类型 | 默认值 |
-| --- | --- | --- | --- |
-| text | 文本内容 | `string \| number` | - |
-| size | 文本大小 | `string \| number` | - |
-| color | 文本颜色 | `string` | - |
-| weight | 文本粗细 | `string \| number` | - |
-| align | 对齐方式 | `left \| center \| right` | `left` |
-| rows | 显示行数，0 表示不限制 | `number` | `0` |
-| decoration | 文本装饰 | `underline \| line-through \| overline` | - |
-| line-height | 行高 | `string \| number` | - |
-| decode | 是否解码 | `boolean` | `false` |
-| clickable | 是否可点击 | `boolean` | `false` |
-| selectable | 是否可选择 | `boolean` | `false` |
-| custom-class | 自定义类名 | `string` | - |
-| custom-style | 自定义样式 | `string \| object` | - |
+| 参数         | 说明                   | 类型                                    | 默认值  |
+| ------------ | ---------------------- | --------------------------------------- | ------- |
+| text         | 文本内容               | `string \| number`                      | -       |
+| size         | 文本大小               | `string \| number`                      | -       |
+| color        | 文本颜色               | `string`                                | -       |
+| weight       | 文本粗细               | `string \| number`                      | -       |
+| align        | 对齐方式               | `left \| center \| right`               | `left`  |
+| rows         | 显示行数，0 表示不限制 | `number`                                | `0`     |
+| decoration   | 文本装饰               | `underline \| line-through \| overline` | -       |
+| line-height  | 行高                   | `string \| number`                      | -       |
+| decode       | 是否解码               | `boolean`                               | `false` |
+| clickable    | 是否可点击             | `boolean`                               | `false` |
+| selectable   | 是否可选择             | `boolean`                               | `false` |
+| custom-class | 自定义类名             | `string`                                | -       |
+| custom-style | 自定义样式             | `string \| object`                      | -       |
 
 ## Events
 
-| 事件名 | 说明 | 回调参数 |
-| --- | --- | --- |
-| click | 点击文本时触发 | - |
+| 事件名 | 说明           | 回调参数 |
+| ------ | -------------- | -------- |
+| click  | 点击文本时触发 | -        |
 
 ## Slots
 
-| 名称 | 说明 |
-| --- | --- |
+| 名称    | 说明     |
+| ------- | -------- |
 | default | 文本内容 |

@@ -71,17 +71,17 @@
 
 ## Props
 
-| 参数 | 说明 | 类型 | 默认值 |
-| --- | --- | --- | --- |
-| span | 栅格占据的列数 | `number` | `24` |
-| offset | 栅格左侧的偏移格数 | `number` | `0` |
-| align | 垂直对齐方式 | `start \| end \| center \| stretch \| baseline` | `stretch` |
-| justify | 水平对齐方式 | `start \| end \| center \| between \| around` | `start` |
-| custom-class | 自定义类名 | `string` | - |
-| custom-style | 自定义样式 | `string \| object` | - |
+| 参数         | 说明               | 类型                                            | 默认值    |
+| ------------ | ------------------ | ----------------------------------------------- | --------- |
+| span         | 栅格占据的列数     | `number`                                        | `24`      |
+| offset       | 栅格左侧的偏移格数 | `number`                                        | `0`       |
+| align        | 垂直对齐方式       | `start \| end \| center \| stretch \| baseline` | `stretch` |
+| justify      | 水平对齐方式       | `start \| end \| center \| between \| around`   | `start`   |
+| custom-class | 自定义类名         | `string`                                        | -         |
+| custom-style | 自定义样式         | `string \| object`                              | -         |
 
 ## Slots
 
-| 名称 | 说明 |
-| --- | --- |
+| 名称    | 说明   |
+| ------- | ------ |
 | default | 列内容 |

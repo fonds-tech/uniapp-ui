@@ -1,7 +1,8 @@
 import type IconText from "./ui-icon-text.vue"
-import { styleProp, buildProps, makeStringProp, makeNumericProp } from "../utils/props"
+import { createProps } from "../hooks"
+import { styleProp, makeStringProp, makeNumericProp } from "../utils/props"
 
-export const iconTextProps = buildProps("iconText", {
+export const [iconTextProps, useIconTextProps] = createProps("iconText", {
   /**
    * 图标名称或者图片地址
    */

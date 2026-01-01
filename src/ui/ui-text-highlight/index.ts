@@ -1,7 +1,8 @@
 import type TextHighlight from "./ui-text-highlight.vue"
-import { styleProp, buildProps, makeStringProp, makeNumericProp } from "../utils/props"
+import { createProps } from "../hooks"
+import { styleProp, makeStringProp, makeNumericProp } from "../utils/props"
 
-export const textHighlightProps = buildProps("textHighlight", {
+export const [textHighlightProps, useTextHighlightProps] = createProps("textHighlight", {
   /**
    * 文本内容
    */

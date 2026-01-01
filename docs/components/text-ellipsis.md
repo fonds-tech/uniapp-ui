@@ -55,24 +55,24 @@
 
 ## Props
 
-| 参数 | 说明 | 类型 | 默认值 |
-| --- | --- | --- | --- |
-| text | 文本内容 | `string` | - |
-| rows | 展示的行数 | `string \| number` | `2` |
-| dots | 省略号的文本内容 | `string` | `...` |
-| color | 文字颜色 | `string` | - |
-| weight | 文字粗细 | `string \| number` | - |
-| line-height | 文字行高 | `string \| number` | - |
-| offset | 字数偏移，当操作按钮显示不准确时可调整 | `string \| number` | - |
-| expand-text | 展开操作的文案 | `string` | `展开` |
-| expand-text-color | 展开操作的文案颜色 | `string` | - |
-| collapse-text | 收起操作的文案 | `string` | `收起` |
-| collapse-text-color | 收起操作的文案颜色 | `string` | - |
-| custom-class | 自定义类名 | `string` | - |
-| custom-style | 自定义样式 | `string \| object` | - |
+| 参数                | 说明                                   | 类型               | 默认值 |
+| ------------------- | -------------------------------------- | ------------------ | ------ |
+| text                | 文本内容                               | `string`           | -      |
+| rows                | 展示的行数                             | `string \| number` | `2`    |
+| dots                | 省略号的文本内容                       | `string`           | `...`  |
+| color               | 文字颜色                               | `string`           | -      |
+| weight              | 文字粗细                               | `string \| number` | -      |
+| line-height         | 文字行高                               | `string \| number` | -      |
+| offset              | 字数偏移，当操作按钮显示不准确时可调整 | `string \| number` | -      |
+| expand-text         | 展开操作的文案                         | `string`           | `展开` |
+| expand-text-color   | 展开操作的文案颜色                     | `string`           | -      |
+| collapse-text       | 收起操作的文案                         | `string`           | `收起` |
+| collapse-text-color | 收起操作的文案颜色                     | `string`           | -      |
+| custom-class        | 自定义类名                             | `string`           | -      |
+| custom-style        | 自定义样式                             | `string \| object` | -      |
 
 ## Events
 
-| 事件名 | 说明 | 回调参数 |
-| --- | --- | --- |
-| click | 点击文本时触发 | - |
+| 事件名 | 说明           | 回调参数 |
+| ------ | -------------- | -------- |
+| click  | 点击文本时触发 | -        |

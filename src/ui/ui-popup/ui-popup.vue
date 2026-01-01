@@ -24,7 +24,7 @@ import type { CSSProperties } from "vue"
 import type { TransitionName } from "../hooks"
 import { noop } from "../utils/utils"
 import { isNumber } from "../utils/check"
-import { popupEmits, popupProps } from "./index"
+import { popupEmits, popupProps, usePopupProps } from "./index"
 import { useUnit, useColor, useStyle, useTransition, useGlobalZIndex } from "../hooks"
 
 // 定义组件名称
@@ -33,7 +33,7 @@ defineOptions({ name: "ui-popup" })
 // 定义props和emits
 const props = defineProps(popupProps)
 const emits = defineEmits(popupEmits)
-
+const useProps = usePopupProps(props)
 // 使用transition hook
 const transition = useTransition()
 
@@ -44,7 +44,7 @@ const visible = ref(false) // 控制弹出层的可见性
 const windowBottom = ref(0) // 窗口底部安全区域高度
 
 // 计算属性: 是否已初始化
-const inited = computed(() => !props.lazyRender || transition.inited.value)
+const inited = computed(() => !useProps.lazyRender || transition.inited.value)
 
 // 为transition的各个阶段绑定事件
 transition.on("before-enter", () => emits("open"))
@@ -56,20 +56,20 @@ transition.on("after-leave", () => emits("closed", action.value))
 const style = computed(() => {
   const style: CSSProperties = {}
   style.zIndex = zIndex.value
-  style.background = useColor(props.background)
-  style["--ui-popup-border-radius"] = useUnit(props.borderRadius)
+  style.background = useColor(useProps.background)
+  style["--ui-popup-border-radius"] = useUnit(useProps.borderRadius)
   // 当mode为bottom时，设置底部偏移以避免被系统底部状态栏遮挡
   // #ifdef WEB
-  if (props.mode === "bottom" && windowBottom.value > 0) {
+  if (useProps.mode === "bottom" && windowBottom.value > 0) {
     style.bottom = `${windowBottom.value}px`
   }
   // #endif
-  return useStyle({ ...style, ...useStyle(props.customStyle), ...transition.styles.value })
+  return useStyle({ ...style, ...useStyle(useProps.customStyle), ...transition.styles.value })
 })
 
 // 计算弹出层的类名
 const classs = computed(() => {
-  const list: string[] = [`ui-popup--${props.mode}`, transition.classs.value]
+  const list: string[] = [`ui-popup--${useProps.mode}`, transition.classs.value]
   return list
 })
 
@@ -77,24 +77,24 @@ const classs = computed(() => {
 const closeClass = computed(() => {
   const list: string[] = []
   const positions = { top: "top-right", right: "top-left", bottom: "top-right", left: "top-right" }
-  if (props.closeIconPosition) list.push(`ui-popup__close--${props.closeIconPosition}`)
-  else list.push(`ui-popup__close--${positions[props.mode]}`)
+  if (useProps.closeIconPosition) list.push(`ui-popup__close--${useProps.closeIconPosition}`)
+  else list.push(`ui-popup__close--${positions[useProps.mode]}`)
   return list
 })
 
 // 计算滚动视图的样式
 const scrollViewStyle = computed(() => {
   const style: CSSProperties = {}
-  style.width = useUnit(props.width)
-  style.height = useUnit(props.height)
-  style.maxWidth = useUnit(props.maxWidth)
-  style.maxHeight = useUnit(props.maxHeight)
+  style.width = useUnit(useProps.width)
+  style.height = useUnit(useProps.height)
+  style.maxWidth = useUnit(useProps.maxWidth)
+  style.maxHeight = useUnit(useProps.maxHeight)
   return useStyle(style)
 })
 
 // 监听show属性变化,控制弹出层的显示和隐藏
 watch(
-  () => props.show,
+  () => useProps.show,
   (val) => {
     if (val) open()
     else close("show")
@@ -103,19 +103,19 @@ watch(
 )
 
 // 监听mode和duration属性变化,重新初始化transition
-watch(() => [props.mode, props.duration], initTransition, { immediate: true })
+watch(() => [useProps.mode, useProps.duration], initTransition, { immediate: true })
 
 // 初始化transition
 function initTransition() {
   const modes = { top: "slide-down", left: "slide-left", right: "slide-right", bottom: "slide-up", center: "fade" }
-  transition.init({ name: modes[props.mode] as TransitionName, duration: props.duration })
+  transition.init({ name: modes[useProps.mode] as TransitionName, duration: useProps.duration })
 }
 
 // 打开弹出层
 function open() {
   if (transition.visible.value) return
   initTransition()
-  zIndex.value = isNumber(props.zIndex) ? +props.zIndex : useGlobalZIndex()
+  zIndex.value = isNumber(useProps.zIndex) ? +useProps.zIndex : useGlobalZIndex()
   visible.value = true
   transition.enter()
   emits("update:show", true)
@@ -144,7 +144,7 @@ function onClickBody() {
 
 // 点击遮罩层时的处理函数
 function onClickOverlay() {
-  if (props.closeOnClickOverlay) {
+  if (useProps.closeOnClickOverlay) {
     close("overlay")
   }
   emits("clickOverlay")
@@ -152,7 +152,7 @@ function onClickOverlay() {
 
 // 获取窗口底部安全区域高度
 function getWindowBottom() {
-  if (props.mode !== "bottom") return
+  if (useProps.mode !== "bottom") return
   // #ifdef MP-WEIXIN
   try {
     const windowInfo = uni.getWindowInfo()

@@ -50,24 +50,24 @@
 
 ## Props
 
-| 参数 | 说明 | 类型 | 默认值 |
-| --- | --- | --- | --- |
-| z-index | 元素层级 | `string \| number` | - |
-| offset | 距离底部偏移 | `string \| number` | `0` |
-| background | 背景颜色 | `string` | - |
-| safe-area-inset-bottom | 是否开启底部安全区域 | `boolean` | `true` |
-| custom-class | 自定义类名 | `string` | - |
-| custom-style | 自定义样式 | `string \| object` | - |
+| 参数                   | 说明                 | 类型               | 默认值 |
+| ---------------------- | -------------------- | ------------------ | ------ |
+| z-index                | 元素层级             | `string \| number` | -      |
+| offset                 | 距离底部偏移         | `string \| number` | `0`    |
+| background             | 背景颜色             | `string`           | -      |
+| safe-area-inset-bottom | 是否开启底部安全区域 | `boolean`          | `true` |
+| custom-class           | 自定义类名           | `string`           | -      |
+| custom-style           | 自定义样式           | `string \| object` | -      |
 
 ## Events
 
-| 事件名 | 说明 | 回调参数 |
-| --- | --- | --- |
-| rect | 获取元素信息时触发 | `rect: UniApp.NodeInfo` |
-| height | 获取元素高度时触发 | `height: number` |
+| 事件名 | 说明               | 回调参数                |
+| ------ | ------------------ | ----------------------- |
+| rect   | 获取元素信息时触发 | `rect: UniApp.NodeInfo` |
+| height | 获取元素高度时触发 | `height: number`        |
 
 ## Slots
 
-| 名称 | 说明 |
-| --- | --- |
+| 名称    | 说明     |
+| ------- | -------- |
 | default | 页脚内容 |

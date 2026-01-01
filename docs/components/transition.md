@@ -69,32 +69,32 @@ const show = ref(true)
 
 ## Props
 
-| 参数 | 说明 | 类型 | 默认值 |
-| --- | --- | --- | --- |
-| show | 是否显示 | `boolean` | `false` |
-| name | 动画名称 | `fade \| zoom-in \| fade-up \| fade-down \| fade-left \| fade-right \| slide-up \| slide-down \| slide-left \| slide-right` | `fade` |
-| z-index | 元素层级 | `string \| number` | - |
-| duration | 过渡时间(ms) | `string \| number` | `300` |
-| lazy-render | 是否在显示时才渲染节点 | `boolean` | `true` |
-| enter-timing-function | 进入动画函数 | `string` | `ease-out` |
-| leave-timing-function | 离开动画函数 | `string` | `ease-in` |
-| custom-class | 自定义类名 | `string` | - |
-| custom-style | 自定义样式 | `string \| object` | - |
+| 参数                  | 说明                   | 类型                                                                                                                        | 默认值     |
+| --------------------- | ---------------------- | --------------------------------------------------------------------------------------------------------------------------- | ---------- |
+| show                  | 是否显示               | `boolean`                                                                                                                   | `false`    |
+| name                  | 动画名称               | `fade \| zoom-in \| fade-up \| fade-down \| fade-left \| fade-right \| slide-up \| slide-down \| slide-left \| slide-right` | `fade`     |
+| z-index               | 元素层级               | `string \| number`                                                                                                          | -          |
+| duration              | 过渡时间(ms)           | `string \| number`                                                                                                          | `300`      |
+| lazy-render           | 是否在显示时才渲染节点 | `boolean`                                                                                                                   | `true`     |
+| enter-timing-function | 进入动画函数           | `string`                                                                                                                    | `ease-out` |
+| leave-timing-function | 离开动画函数           | `string`                                                                                                                    | `ease-in`  |
+| custom-class          | 自定义类名             | `string`                                                                                                                    | -          |
+| custom-style          | 自定义样式             | `string \| object`                                                                                                          | -          |
 
 ## Events
 
-| 事件名 | 说明 | 回调参数 |
-| --- | --- | --- |
-| click | 点击时触发 | - |
-| enter | 进入动画开始时触发 | - |
-| leave | 离开动画开始时触发 | - |
-| before-enter | 进入动画之前触发 | - |
-| after-enter | 进入动画完成后触发 | - |
-| before-leave | 离开动画之前触发 | - |
-| after-leave | 离开动画完成后触发 | - |
+| 事件名       | 说明               | 回调参数 |
+| ------------ | ------------------ | -------- |
+| click        | 点击时触发         | -        |
+| enter        | 进入动画开始时触发 | -        |
+| leave        | 离开动画开始时触发 | -        |
+| before-enter | 进入动画之前触发   | -        |
+| after-enter  | 进入动画完成后触发 | -        |
+| before-leave | 离开动画之前触发   | -        |
+| after-leave  | 离开动画完成后触发 | -        |
 
 ## Slots
 
-| 名称 | 说明 |
-| --- | --- |
+| 名称    | 说明     |
+| ------- | -------- |
 | default | 过渡内容 |

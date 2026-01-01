@@ -118,10 +118,10 @@ const value9 = ref(3)
 
 <style lang="scss" scoped>
 .rate-item {
+  gap: 12rpx;
   display: flex;
   align-items: center;
   flex-direction: column;
-  gap: 12rpx;
 }
 
 .rate-label {

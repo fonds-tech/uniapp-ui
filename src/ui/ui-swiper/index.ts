@@ -1,8 +1,9 @@
 import type Swiper from "./ui-swiper.vue"
 import type { PropType, CSSProperties, ExtractPropTypes } from "vue"
-import { truthProp, buildProps, numericProp, makeNumberProp, makeStringProp } from "../utils/props"
+import { createProps } from "../hooks"
+import { truthProp, numericProp, makeNumberProp, makeStringProp } from "../utils/props"
 
-export const swiperProps = buildProps("swiper", {
+export const [swiperProps, useSwiperProps] = createProps("swiper", {
   /**
    * 数据列表
    */

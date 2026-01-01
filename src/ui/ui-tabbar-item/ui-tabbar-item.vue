@@ -19,14 +19,14 @@ import type { CSSProperties } from "vue"
 import { isDef } from "../utils/check"
 import { tabbarKey } from "../ui-tabbar"
 import { debounce, createUrlParams } from "../utils/utils"
-import { tabbarItemEmits, tabbarItemProps } from "./index"
 import { useUnit, useColor, useStyle, useParent } from "../hooks"
+import { tabbarItemEmits, tabbarItemProps, useTabbarItemProps } from "./index"
 
 defineOptions({ name: "ui-tabbar-item" })
 
 const props = defineProps(tabbarItemProps)
 const emits = defineEmits(tabbarItemEmits)
-
+const useProps = useTabbarItemProps(props)
 const { parent, index } = useParent(tabbarKey)
 
 const style = computed(() => {
@@ -42,7 +42,7 @@ const classs = computed(() => {
 
 const iconStyle = computed(() => {
   const style: CSSProperties = {}
-  style.fontSize = useUnit(props.iconSize)
+  style.fontSize = useUnit(useProps.iconSize)
   style.color = active.value ? useColor(prop("activeColor")) : useColor(prop("inactiveColor"))
   return useStyle(style)
 })
@@ -53,8 +53,8 @@ const testStyle = computed(() => {
   return useStyle(style)
 })
 
-const name = computed(() => props.name || index.value)
-const active = computed(() => parent?.props.modelValue === name.value)
+const name = computed(() => useProps.name || index.value)
+const active = computed(() => parent?.useProps.modelValue === name.value)
 
 function prop(name: string) {
   if (isDef(props[name])) return props[name]
@@ -67,17 +67,17 @@ function onClick() {
   if (parent) {
     const pages = getCurrentPages()
     const page = pages[pages.length - 1]
-    if (parent.props.route) {
-      if (!props.route) {
+    if (parent.useProps.route) {
+      if (!useProps.route) {
         console.error("ui-tabbar-item: route is required")
         return
-      } else if (props.route === page.route) {
+      } else if (useProps.route === page.route) {
         return
       }
       debounce(
         () => {
-          uni[props.routeType]({
-            url: `${props.route}${createUrlParams(props.routeParams)}`,
+          uni[useProps.routeType]({
+            url: `${useProps.route}${createUrlParams(useProps.routeParams)}`,
             fail: (err: any) => {
               throw err
             },

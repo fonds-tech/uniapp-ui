@@ -77,47 +77,47 @@ function onDelete1() {
 
 ## Props
 
-| 参数 | 说明 | 类型 | 默认值 |
-| --- | --- | --- | --- |
-| v-model:show | 是否显示键盘 | `boolean` | `false` |
-| title | 标题 | `string \| number` | - |
-| mode | 键盘类型 | `number \| card \| car` | `number` |
-| maxlength | 最大输入长度 | `string \| number` | `Infinity` |
-| z-index | 元素层级 | `string \| number` | - |
-| random | 是否打乱键盘按键顺序 | `boolean` | `false` |
-| overlay | 是否显示遮罩 | `boolean` | `true` |
-| show-dot | 是否显示小数点按钮 | `boolean` | `false` |
-| show-header | 是否显示顶部栏 | `boolean` | `true` |
-| show-cancel | 是否显示取消按钮 | `boolean` | `true` |
-| cancel-text | 取消按钮文字 | `string` | `取消` |
-| cancel-text-size | 取消按钮文字大小 | `string \| number` | - |
-| cancel-text-color | 取消按钮文字颜色 | `string` | `error` |
-| cancel-text-weight | 取消按钮文字粗细 | `string \| number` | - |
-| show-confirm | 是否显示确认按钮 | `boolean` | `true` |
-| confirm-text | 确认按钮文字 | `string` | `确定` |
-| confirm-text-size | 确认按钮文字大小 | `string \| number` | - |
-| confirm-text-color | 确认按钮文字颜色 | `string` | - |
-| confirm-text-weight | 确认按钮文字粗细 | `string \| number` | - |
-| background | 背景颜色 | `string` | `#f2f3f5` |
-| safe-area-inset-bottom | 是否开启底部安全区适配 | `boolean` | `true` |
-| close-on-click-overlay | 是否允许点击遮罩收起键盘 | `boolean` | `true` |
-| custom-class | 自定义类名 | `string` | - |
-| custom-style | 自定义样式 | `string \| object` | - |
+| 参数                   | 说明                     | 类型                    | 默认值     |
+| ---------------------- | ------------------------ | ----------------------- | ---------- |
+| v-model:show           | 是否显示键盘             | `boolean`               | `false`    |
+| title                  | 标题                     | `string \| number`      | -          |
+| mode                   | 键盘类型                 | `number \| card \| car` | `number`   |
+| maxlength              | 最大输入长度             | `string \| number`      | `Infinity` |
+| z-index                | 元素层级                 | `string \| number`      | -          |
+| random                 | 是否打乱键盘按键顺序     | `boolean`               | `false`    |
+| overlay                | 是否显示遮罩             | `boolean`               | `true`     |
+| show-dot               | 是否显示小数点按钮       | `boolean`               | `false`    |
+| show-header            | 是否显示顶部栏           | `boolean`               | `true`     |
+| show-cancel            | 是否显示取消按钮         | `boolean`               | `true`     |
+| cancel-text            | 取消按钮文字             | `string`                | `取消`     |
+| cancel-text-size       | 取消按钮文字大小         | `string \| number`      | -          |
+| cancel-text-color      | 取消按钮文字颜色         | `string`                | `error`    |
+| cancel-text-weight     | 取消按钮文字粗细         | `string \| number`      | -          |
+| show-confirm           | 是否显示确认按钮         | `boolean`               | `true`     |
+| confirm-text           | 确认按钮文字             | `string`                | `确定`     |
+| confirm-text-size      | 确认按钮文字大小         | `string \| number`      | -          |
+| confirm-text-color     | 确认按钮文字颜色         | `string`                | -          |
+| confirm-text-weight    | 确认按钮文字粗细         | `string \| number`      | -          |
+| background             | 背景颜色                 | `string`                | `#f2f3f5`  |
+| safe-area-inset-bottom | 是否开启底部安全区适配   | `boolean`               | `true`     |
+| close-on-click-overlay | 是否允许点击遮罩收起键盘 | `boolean`               | `true`     |
+| custom-class           | 自定义类名               | `string`                | -          |
+| custom-style           | 自定义样式               | `string \| object`      | -          |
 
 ## Events
 
-| 事件名 | 说明 | 回调参数 |
-| --- | --- | --- |
-| open | 键盘打开时触发 | - |
-| close | 键盘关闭时触发 | - |
-| input | 点击按键时触发 | `value: string` |
-| delete | 点击删除键时触发 | - |
-| change | 输入值变化时触发 | `value: string` |
-| cancel | 点击取消按钮时触发 | - |
-| confirm | 点击确认按钮时触发 | - |
+| 事件名  | 说明               | 回调参数        |
+| ------- | ------------------ | --------------- |
+| open    | 键盘打开时触发     | -               |
+| close   | 键盘关闭时触发     | -               |
+| input   | 点击按键时触发     | `value: string` |
+| delete  | 点击删除键时触发   | -               |
+| change  | 输入值变化时触发   | `value: string` |
+| cancel  | 点击取消按钮时触发 | -               |
+| confirm | 点击确认按钮时触发 | -               |
 
 ## Slots
 
-| 名称 | 说明 |
-| --- | --- |
+| 名称  | 说明           |
+| ----- | -------------- |
 | title | 自定义标题内容 |

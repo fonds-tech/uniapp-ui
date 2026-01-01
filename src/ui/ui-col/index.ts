@@ -1,7 +1,8 @@
 import type Col from "./ui-col.vue"
-import { styleProp, buildProps, makeNumberProp, makeStringProp } from "../utils/props"
+import { createProps } from "../hooks"
+import { styleProp, makeNumberProp, makeStringProp } from "../utils/props"
 
-export const colProps = buildProps("col", {
+export const [colProps, useColProps] = createProps("col", {
   /**
    * 栅格占据的列数
    */

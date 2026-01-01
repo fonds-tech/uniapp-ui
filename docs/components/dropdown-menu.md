@@ -92,49 +92,49 @@ const options = [
 
 ## DropdownMenu Props
 
-| 参数 | 说明 | 类型 | 默认值 |
-| --- | --- | --- | --- |
-| height | 菜单高度 | `string \| number` | - |
-| direction | 菜单展开方向 | `up \| down` | `down` |
-| title-color | 标题颜色 | `string` | - |
-| title-size | 标题大小 | `string \| number` | - |
-| active-title-color | 选中标题颜色 | `string` | - |
-| icon | 图标名称 | `string` | `arrow-down` |
-| icon-size | 图标大小 | `string \| number` | - |
-| icon-color | 图标颜色 | `string` | - |
-| show-icon | 是否显示图标 | `boolean` | `true` |
-| overlay | 是否显示遮罩层 | `boolean` | `true` |
-| duration | 动画时长(ms) | `string \| number` | `300` |
-| z-index | 层级 | `string \| number` | - |
-| border-radius | 选项菜单圆角 | `string \| number` | - |
-| close-on-click-overlay | 点击遮罩是否关闭 | `boolean` | `true` |
-| label-field | 选项名称字段 | `string` | `label` |
-| value-field | 选项值字段 | `string` | `value` |
-| background | 背景颜色 | `string` | - |
-| custom-class | 自定义类名 | `string` | - |
-| custom-style | 自定义样式 | `string \| object` | - |
+| 参数                   | 说明             | 类型               | 默认值       |
+| ---------------------- | ---------------- | ------------------ | ------------ |
+| height                 | 菜单高度         | `string \| number` | -            |
+| direction              | 菜单展开方向     | `up \| down`       | `down`       |
+| title-color            | 标题颜色         | `string`           | -            |
+| title-size             | 标题大小         | `string \| number` | -            |
+| active-title-color     | 选中标题颜色     | `string`           | -            |
+| icon                   | 图标名称         | `string`           | `arrow-down` |
+| icon-size              | 图标大小         | `string \| number` | -            |
+| icon-color             | 图标颜色         | `string`           | -            |
+| show-icon              | 是否显示图标     | `boolean`          | `true`       |
+| overlay                | 是否显示遮罩层   | `boolean`          | `true`       |
+| duration               | 动画时长(ms)     | `string \| number` | `300`        |
+| z-index                | 层级             | `string \| number` | -            |
+| border-radius          | 选项菜单圆角     | `string \| number` | -            |
+| close-on-click-overlay | 点击遮罩是否关闭 | `boolean`          | `true`       |
+| label-field            | 选项名称字段     | `string`           | `label`      |
+| value-field            | 选项值字段       | `string`           | `value`      |
+| background             | 背景颜色         | `string`           | -            |
+| custom-class           | 自定义类名       | `string`           | -            |
+| custom-style           | 自定义样式       | `string \| object` | -            |
 
 ## DropdownItem Props
 
-| 参数 | 说明 | 类型 | 默认值 |
-| --- | --- | --- | --- |
-| v-model | 当前选中值 | `any` | - |
-| title | 标题 | `string` | - |
-| options | 选项数组 | `array` | `[]` |
-| mode | 选择模式 | `single \| multiple` | `single` |
-| disabled | 是否禁用 | `boolean` | `false` |
+| 参数     | 说明       | 类型                 | 默认值   |
+| -------- | ---------- | -------------------- | -------- |
+| v-model  | 当前选中值 | `any`                | -        |
+| title    | 标题       | `string`             | -        |
+| options  | 选项数组   | `array`              | `[]`     |
+| mode     | 选择模式   | `single \| multiple` | `single` |
+| disabled | 是否禁用   | `boolean`            | `false`  |
 
 ## DropdownItem Events
 
-| 事件名 | 说明 | 回调参数 |
-| --- | --- | --- |
-| change | 选中值变化时触发 | `value` |
-| open | 打开菜单时触发 | - |
-| close | 关闭菜单时触发 | - |
+| 事件名 | 说明             | 回调参数 |
+| ------ | ---------------- | -------- |
+| change | 选中值变化时触发 | `value`  |
+| open   | 打开菜单时触发   | -        |
+| close  | 关闭菜单时触发   | -        |
 
 ## DropdownItem Slots
 
-| 名称 | 说明 |
-| --- | --- |
+| 名称    | 说明           |
+| ------- | -------------- |
 | default | 自定义菜单内容 |
-| title | 自定义标题 |
+| title   | 自定义标题     |

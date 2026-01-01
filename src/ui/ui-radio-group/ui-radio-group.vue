@@ -8,28 +8,28 @@
 import type { CSSProperties } from "vue"
 import type { RadioGroupValueType } from "./index"
 import { useStyle, useChildren } from "../hooks"
-import { radioGroupKey, radioGroupEmits, radioGroupProps } from "./index"
+import { radioGroupKey, radioGroupEmits, radioGroupProps, useRadioGroupProps } from "./index"
 
 defineOptions({ name: "ui-radio-group" })
 
 const props = defineProps(radioGroupProps)
 const emits = defineEmits(radioGroupEmits)
-
+const useProps = useRadioGroupProps(props)
 const { linkChildren } = useChildren(radioGroupKey)
 
 const style = computed(() => {
   const style: CSSProperties = {}
-  return useStyle({ ...style, ...useStyle(props.customStyle) })
+  return useStyle({ ...style, ...useStyle(useProps.customStyle) })
 })
 
 const classs = computed(() => {
   const list: string[] = []
-  if (props.vertical) list.push("ui-radio-group--vertical")
+  if (useProps.vertical) list.push("ui-radio-group--vertical")
   return list
 })
 
 watch(
-  () => props.modelValue,
+  () => useProps.modelValue,
   (value) => emits("change", value),
 )
 
@@ -37,7 +37,7 @@ async function updateValue(value: RadioGroupValueType) {
   emits("update:modelValue", toRaw(value))
 }
 
-linkChildren({ props, updateValue })
+linkChildren({ props, useProps, updateValue })
 </script>
 
 <script lang="ts">

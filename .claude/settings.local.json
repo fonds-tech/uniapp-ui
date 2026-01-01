@@ -8,7 +8,18 @@
       "Bash(then echo \"缺少: $name\")",
       "Bash(fi)",
       "Bash(done)",
-      "Bash(comm:*)"
+      "Bash(comm:*)",
+      "mcp__desktop-commander__list_directory",
+      "Bash(for file in checkbox-group radio-group form-item cell-group safe-area-top safe-area-bottom dropdown-item skeleton-title skeleton-paragraph skeleton-avatar skeleton-image tabbar-item tab sidebar-item index-anchor)",
+      "Bash(do:*)",
+      "Bash(echo:*)",
+      "Bash(for file in checkbox-group radio-group form-item cell-group safe-area-top safe-area-bottom dropdown-item skeleton-title skeleton-paragraph skeleton-avatar skeleton-image tabbar-item tab sidebar-item index-anchor picker-panel)",
+      "Bash(npx vue-tsc:*)",
+      "Bash(grep:*)",
+      "Bash(node:*)",
+      "Bash(while read f)",
+      "Bash(if ! grep -q \"import.*CSSProperties\" \"$f\")",
+      "Bash(then)"
     ]
   }
 }

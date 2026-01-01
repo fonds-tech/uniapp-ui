@@ -40,23 +40,23 @@
 
 ## Props
 
-| 参数 | 说明 | 类型 | 默认值 |
-| --- | --- | --- | --- |
-| show | 是否显示 | `boolean` | `true` |
-| type | 类型 | `circular \| spinner` | `circular` |
-| size | 大小 | `string \| number` | `32rpx` |
-| color | 颜色 | `string` | `#999999` |
-| text | 加载文案 | `string` | - |
-| text-gap | 文案和图标间距 | `string \| number` | `12rpx` |
-| text-size | 文案大小 | `string \| number` | - |
-| text-color | 文案颜色 | `string` | - |
-| text-weight | 文案粗细 | `string \| number` | - |
-| vertical | 是否垂直排列 | `boolean` | `false` |
-| custom-class | 自定义类名 | `string` | - |
-| custom-style | 自定义样式 | `string \| object` | - |
+| 参数         | 说明           | 类型                  | 默认值     |
+| ------------ | -------------- | --------------------- | ---------- |
+| show         | 是否显示       | `boolean`             | `true`     |
+| type         | 类型           | `circular \| spinner` | `circular` |
+| size         | 大小           | `string \| number`    | `32rpx`    |
+| color        | 颜色           | `string`              | `#999999`  |
+| text         | 加载文案       | `string`              | -          |
+| text-gap     | 文案和图标间距 | `string \| number`    | `12rpx`    |
+| text-size    | 文案大小       | `string \| number`    | -          |
+| text-color   | 文案颜色       | `string`              | -          |
+| text-weight  | 文案粗细       | `string \| number`    | -          |
+| vertical     | 是否垂直排列   | `boolean`             | `false`    |
+| custom-class | 自定义类名     | `string`              | -          |
+| custom-style | 自定义样式     | `string \| object`    | -          |
 
 ## Slots
 
-| 名称 | 说明 |
-| --- | --- |
+| 名称    | 说明           |
+| ------- | -------------- |
 | default | 自定义加载图标 |

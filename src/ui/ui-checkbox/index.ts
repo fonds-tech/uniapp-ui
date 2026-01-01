@@ -1,8 +1,9 @@
 import type Checkbox from "./ui-checkbox.vue"
 import type { ExtractPropTypes } from "vue"
-import { styleProp, truthProp, buildProps, makeStringProp, makeNumericProp } from "../utils/props"
+import { createProps } from "../hooks"
+import { styleProp, truthProp, makeStringProp, makeNumericProp } from "../utils/props"
 
-export const checkboxProps = buildProps("checkbox", {
+export const [checkboxProps, useCheckboxProps] = createProps("checkbox", {
   /**
    * 绑定值
    */

@@ -1,8 +1,9 @@
 import type Loading from "./ui-loading.vue"
 import type { PropType, CSSProperties, ExtractPropTypes } from "vue"
-import { truthProp, buildProps, numericProp, makeStringProp, makeNumericProp } from "../utils/props"
+import { createProps } from "../hooks"
+import { truthProp, numericProp, makeStringProp, makeNumericProp } from "../utils/props"
 
-export const loadingProps = buildProps("loading", {
+export const [loadingProps, useLoadingProps] = createProps("loading", {
   /**
    * 是否显示
    */

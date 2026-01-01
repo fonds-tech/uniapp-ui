@@ -30,7 +30,7 @@ import type { UploadFile } from "./index"
 import type { CSSProperties } from "vue"
 import { uuid, clone } from "../utils/utils"
 import { callInterceptor } from "../utils/interceptor"
-import { uploadEmits, uploadProps } from "./index"
+import { uploadEmits, uploadProps, useUploadProps } from "./index"
 import { useRect, useUnit, useColor, useRects, useStyle } from "../hooks"
 import { isArray, isNoEmpty, isFunction, isImage as isImageLink, isDocument as isDocumentLink } from "../utils/check"
 
@@ -38,7 +38,7 @@ defineOptions({ name: "ui-upload" })
 
 const props = defineProps(uploadProps)
 const emits = defineEmits(uploadEmits)
-
+const useProps = useUploadProps(props)
 const list = reactive<UploadFile[]>([])
 const triggerRect = ref<UniApp.NodeInfo>({})
 const previewRects = ref<UniApp.NodeInfo[]>([])
@@ -46,12 +46,12 @@ const instance = getCurrentInstance()
 
 const style = computed(() => {
   const style: CSSProperties = {}
-  return useStyle({ ...style, ...useStyle(props.customStyle) })
+  return useStyle({ ...style, ...useStyle(useProps.customStyle) })
 })
 
 const classs = computed(() => {
   const list: string[] = []
-  if (props.disabled) list.push("ui-upload--disabled")
+  if (useProps.disabled) list.push("ui-upload--disabled")
   return list
 })
 
@@ -60,13 +60,13 @@ const previewStyle = computed(() => {
     const style: CSSProperties = {}
     const firstRect = clone(previewRects.value[0])
     const currentRect = previewRects.value[index]
-    style.width = useUnit(props.width)
-    style.height = useUnit(props.height)
-    style.background = useColor(props.background)
-    style.marginRight = props.maxCount > 1 ? useUnit(props.previewGap) : 0
+    style.width = useUnit(useProps.width)
+    style.height = useUnit(useProps.height)
+    style.background = useColor(useProps.background)
+    style.marginRight = useProps.maxCount > 1 ? useUnit(useProps.previewGap) : 0
     if (index === list.length - 1) style.marginRight = 0
     if (firstRect && currentRect && firstRect?.top !== currentRect.top) {
-      style.marginTop = useUnit(props.previewGap)
+      style.marginTop = useUnit(useProps.previewGap)
     }
 
     return useStyle(style)
@@ -76,18 +76,18 @@ const previewStyle = computed(() => {
 const triggerStyle = computed(() => {
   const style: CSSProperties = {}
   const firstRect = clone(previewRects.value[0])
-  style.width = useUnit(props.width)
-  style.height = useUnit(props.height)
-  style.background = useColor(props.background)
-  if (props.disabled) {
+  style.width = useUnit(useProps.width)
+  style.height = useUnit(useProps.height)
+  style.background = useColor(useProps.background)
+  if (useProps.disabled) {
     style.opacity = 0.6
     style.cursor = "not-allowed"
   }
-  style.marginLeft = list.length > 0 ? useUnit(props.previewGap) : 0
+  style.marginLeft = list.length > 0 ? useUnit(useProps.previewGap) : 0
 
   if (isNoEmpty(firstRect) && isNoEmpty(triggerRect.value)) {
     const diff = Math.abs(triggerRect.value.top - firstRect.top)
-    if (diff >= triggerRect.value.height) style.marginTop = useUnit(props.previewGap)
+    if (diff >= triggerRect.value.height) style.marginTop = useUnit(useProps.previewGap)
   }
 
   return useStyle(style)
@@ -96,12 +96,12 @@ const triggerStyle = computed(() => {
 const isImage = computed(() => (url: string) => isImageLink(url))
 const isDocument = computed(() => (url: string) => isDocumentLink(url))
 const isShowStatus = computed(() => (item: UploadFile) => ["fail", "uploading"].includes(item.status))
-const isShowDelete = computed(() => (item: UploadFile) => item.status !== "uploading" && props.deletable && !props.disabled)
-const triggerHoverClass = computed(() => (props.disabled ? "" : "ui-upload__trigger--active"))
-const renderList = computed(() => list.slice(0, props.maxCount))
+const isShowDelete = computed(() => (item: UploadFile) => item.status !== "uploading" && useProps.deletable && !useProps.disabled)
+const triggerHoverClass = computed(() => (useProps.disabled ? "" : "ui-upload__trigger--active"))
+const renderList = computed(() => list.slice(0, useProps.maxCount))
 
 watch(() => list, resize, { deep: true, immediate: true })
-watch(() => props.modelValue, formatModelValue, { deep: true, immediate: true })
+watch(() => useProps.modelValue, formatModelValue, { deep: true, immediate: true })
 
 async function resize() {
   await nextTick()
@@ -111,7 +111,7 @@ async function resize() {
 
 // 触发上传
 async function triggerUpload() {
-  if (props.disabled) return
+  if (useProps.disabled) return
   const files = await handleChoose()
   beforeRead(reactive(files))
 }
@@ -133,8 +133,8 @@ function beforeRead(files: UploadFile[]) {
     afterRead(newFiles)
     updateModelValue()
   }
-  if (isFunction(props.beforeRead)) {
-    callInterceptor(props.beforeRead, { args: [validFiles], done: (files: UploadFile[] = validFiles) => next(isArray(files) ? files : validFiles) })
+  if (isFunction(useProps.beforeRead)) {
+    callInterceptor(useProps.beforeRead, { args: [validFiles], done: (files: UploadFile[] = validFiles) => next(isArray(files) ? files : validFiles) })
   } else {
     next(validFiles)
   }
@@ -154,8 +154,8 @@ async function afterRead(files: UploadFile[]) {
     }
     updateModelValue()
   }
-  if (isFunction(props.afterRead)) {
-    props.afterRead(files, next)
+  if (isFunction(useProps.afterRead)) {
+    useProps.afterRead(files, next)
   } else {
     next(files)
   }
@@ -163,12 +163,12 @@ async function afterRead(files: UploadFile[]) {
 
 // 检查是否超出大小
 function checkOversize(file: UploadFile) {
-  return isFunction(props.maxSize) ? props.maxSize(file) : file.size > +props.maxSize
+  return isFunction(useProps.maxSize) ? useProps.maxSize(file) : file.size > +useProps.maxSize
 }
 
 // 格式化绑定值列表
 function formatModelValue() {
-  const modelUrls = new Set(isArray(props.modelValue) ? props.modelValue : props.modelValue ? props.modelValue.split(",") : [])
+  const modelUrls = new Set(isArray(useProps.modelValue) ? useProps.modelValue : useProps.modelValue ? useProps.modelValue.split(",") : [])
 
   // 1. 移除 list 中状态为 success 但不在 modelValue 中的项（外部删除了）
   // 注意倒序遍历以安全删除
@@ -193,7 +193,7 @@ function formatModelValue() {
 // 更新绑定值
 function updateModelValue() {
   const urls = list.filter((item) => item.status === "success" && item.url).map((item) => item.url)
-  const newValue = isArray(props.modelValue) ? urls : urls.join(",")
+  const newValue = isArray(useProps.modelValue) ? urls : urls.join(",")
   emits("update:modelValue", newValue)
 }
 
@@ -203,7 +203,7 @@ function handleChoose(): Promise<UploadFile[]> {
   return new Promise(async (resolve, reject) => {
     try {
       let result: UploadFile[] = []
-      switch (props.accept) {
+      switch (useProps.accept) {
         case "image":
           // #ifdef MP-WEIXIN
           result = await chooseMediaFile({ mediaType: ["image"] })
@@ -258,8 +258,8 @@ function handleChoose(): Promise<UploadFile[]> {
 function chooseFile(): Promise<UploadFile[]> {
   return new Promise((resolve, reject) => {
     uni.chooseFile({
-      count: props.multiple ? props.maxCount : 1,
-      type: props.accept as any,
+      count: useProps.multiple ? useProps.maxCount : 1,
+      type: useProps.accept as any,
       success: (res: any) => {
         resolve(
           res.tempFiles.map((file: any) => {
@@ -282,9 +282,9 @@ function deleteFile(index: number) {
 function chooseImageFile(): Promise<UploadFile[]> {
   return new Promise((resolve, reject) => {
     uni.chooseImage({
-      count: props.multiple ? Math.min(props.maxCount, 9) : 1,
-      sizeType: props.sizeType,
-      sourceType: props.capture,
+      count: useProps.multiple ? Math.min(useProps.maxCount, 9) : 1,
+      sizeType: useProps.sizeType,
+      sourceType: useProps.capture,
       success: (res: any) => {
         resolve(
           res.tempFiles.map((file: any) => {
@@ -312,12 +312,12 @@ function chooseImageFile(): Promise<UploadFile[]> {
 function chooseMediaFile(params?: any): Promise<UploadFile[]> {
   return new Promise((resolve, reject) => {
     uni.chooseMedia({
-      count: props.multiple ? Math.min(props.maxCount, 9) : 1,
+      count: useProps.multiple ? Math.min(useProps.maxCount, 9) : 1,
       mediaType: params.mediaType || ["image", "video"],
-      sourceType: props.capture as any,
-      maxDuration: props.maxDuration,
-      sizeType: props.sizeType,
-      camera: props.camera,
+      sourceType: useProps.capture as any,
+      maxDuration: useProps.maxDuration,
+      sizeType: useProps.sizeType,
+      camera: useProps.camera,
       success: (res) => {
         resolve(
           res.tempFiles.map((item: any) => {
@@ -341,8 +341,8 @@ function chooseMediaFile(params?: any): Promise<UploadFile[]> {
 function chooseMessageFile(): Promise<UploadFile[]> {
   return new Promise((resolve, reject) => {
     wx.chooseMessageFile({
-      count: props.multiple ? Math.min(props.maxCount, 100) : 1,
-      type: props.accept as UniApp.ChooseMessageFileOption["type"],
+      count: useProps.multiple ? Math.min(useProps.maxCount, 100) : 1,
+      type: useProps.accept as UniApp.ChooseMessageFileOption["type"],
       success: (res: any) => {
         resolve(
           res.tempFiles.map((item: any) => {
@@ -359,10 +359,10 @@ function chooseMessageFile(): Promise<UploadFile[]> {
 function chooseVideoFile(): Promise<UploadFile[]> {
   return new Promise((resolve, reject) => {
     uni.chooseVideo({
-      camera: props.camera,
-      sourceType: props.capture as any,
-      compressed: props.compressed,
-      maxDuration: props.maxDuration,
+      camera: useProps.camera,
+      sourceType: useProps.capture as any,
+      compressed: useProps.compressed,
+      maxDuration: useProps.maxDuration,
       success: (res: any) => {
         resolve([
           {

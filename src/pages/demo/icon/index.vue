@@ -114,13 +114,13 @@ const commonIcons = [
 
 <style lang="scss" scoped>
 .icon-item {
+  gap: 8rpx;
   display: flex;
   padding: 16rpx;
   background: var(--ui-color-background-light);
   align-items: center;
   border-radius: 8rpx;
   flex-direction: column;
-  gap: 8rpx;
 }
 
 .icon-label {

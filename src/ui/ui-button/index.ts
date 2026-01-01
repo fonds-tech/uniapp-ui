@@ -1,6 +1,7 @@
 import type Button from "./ui-button.vue"
 import type { PropType, ExtractPropTypes } from "vue"
-import { styleProp, truthProp, buildProps, numericProp, makeNumberProp, makeStringProp, makeNumericProp } from "../utils/props"
+import { createProps } from "../hooks"
+import { styleProp, truthProp, numericProp, makeNumberProp, makeStringProp, makeNumericProp } from "../utils/props"
 
 export type ButtonType = "primary" | "success" | "warning" | "danger" | "info" | "default"
 export type ButtonSize = "mini" | "small" | "normal" | "medium" | "large"
@@ -18,7 +19,7 @@ export type ButtonOpenType =
   | "agreePrivacyAuthorization"
 export type ButtonLang = "zh_CN" | "zh_TW" | "en"
 
-export const buttonProps = buildProps("button", {
+export const [buttonProps, useButtonProps] = createProps("button", {
   /**
    * 按钮类型
    */

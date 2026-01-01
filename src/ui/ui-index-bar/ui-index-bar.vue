@@ -14,12 +14,13 @@
 <script setup lang="ts">
 import { debounce } from "../utils/utils"
 import { useRect, useRects, useStyle, useChildren } from "../hooks"
-import { indexBarKey, indexBarEmits, indexBarProps } from "../ui-index-bar"
+import { indexBarKey, indexBarEmits, indexBarProps, useIndexBarProps } from "../ui-index-bar"
 
 defineOptions({ name: "ui-index-bar" })
 
 const props = defineProps(indexBarProps)
 const emits = defineEmits(indexBarEmits)
+const useProps = useIndexBarProps(props)
 const instance = getCurrentInstance()
 const { childrens, linkChildren } = useChildren(indexBarKey)
 
@@ -33,8 +34,8 @@ const currentName = ref(null)
 
 const style = computed(() => {
   const style: any = {}
-  style.zIndex = props.zIndex
-  return useStyle({ ...style, ...useStyle(props.customStyle) })
+  style.zIndex = useProps.zIndex
+  return useStyle({ ...style, ...useStyle(useProps.customStyle) })
 })
 
 const itemClass = computed(() => (item: string | number) => (currentName.value === item ? "is-active" : ""))
@@ -67,7 +68,7 @@ function onTouchMove(event: any) {
   itemsRect.value?.forEach((item, index) => {
     const { top, bottom } = item
     if (y >= top && y <= bottom) {
-      onClick(props.indexs[index])
+      onClick(useProps.indexs[index])
     }
   })
 }
@@ -92,7 +93,7 @@ function onScroll(event: any) {
   }
 }
 
-linkChildren({ props, currentName })
+linkChildren({ props, useProps, currentName })
 defineExpose({ resize })
 </script>
 

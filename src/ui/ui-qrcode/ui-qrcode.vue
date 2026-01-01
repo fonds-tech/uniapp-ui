@@ -1,5 +1,5 @@
 <template>
-  <view class="ui-qrcode" :class="[props.customClass]" :style="[style]" @click="onClick">
+  <view class="ui-qrcode" :class="[useProps.customClass]" :style="[style]" @click="onClick">
     <!-- #ifndef MP-ALIPAY -->
     <canvas class="ui-qrcode-canvas" :canvas-id="id" :style="{ width: `${canvasSize.width}px`, height: `${canvasSize.height}px` }" />
     <!-- #endif -->
@@ -18,13 +18,14 @@
 import QRCode from "./qrcode"
 import { uuid } from "../utils/utils"
 import { CODE128AUTO } from "./code128/index"
-import { qrcodeEmits, qrcodeProps } from "./index"
 import { useUnit, useStyle, useUnitToPx } from "../hooks"
+import { qrcodeEmits, qrcodeProps, useQrcodeProps } from "./index"
 
 defineOptions({ name: "ui-qrcode" })
 
 const props = defineProps(qrcodeProps)
 const emits = defineEmits(qrcodeEmits)
+const useProps = useQrcodeProps(props)
 const id = ref(uuid())
 const result = ref()
 const isError = ref(false)
@@ -33,34 +34,34 @@ const isLoading = ref(false)
 const instance = getCurrentInstance()
 
 const size = computed(() => {
-  return useUnitToPx(props.size)
+  return useUnitToPx(useProps.size)
 })
 
 const style = computed(() => {
   const style: any = {}
-  style.width = props.type === "qrcode" ? useUnit(props.size) : useUnit(props.barcodeWidth)
-  style.height = props.type === "qrcode" ? useUnit(props.size) : useUnit(props.barcodeHeight)
-  return useStyle({ ...style, ...useStyle(props.customStyle) })
+  style.width = useProps.type === "qrcode" ? useUnit(useProps.size) : useUnit(useProps.barcodeWidth)
+  style.height = useProps.type === "qrcode" ? useUnit(useProps.size) : useUnit(useProps.barcodeHeight)
+  return useStyle({ ...style, ...useStyle(useProps.customStyle) })
 })
 
 // 条形码高度计算
 const barcodeHeight = computed(() => {
-  return useUnitToPx(props.barcodeHeight)
+  return useUnitToPx(useProps.barcodeHeight)
 })
 
 // 条形码宽度
 const barcodeWidth = computed(() => {
-  return useUnitToPx(props.barcodeWidth)
+  return useUnitToPx(useProps.barcodeWidth)
 })
 
 // 动态画布尺寸（根据类型切换）
 const canvasSize = computed(() => {
-  return props.type === "barcode" ? { width: barcodeWidth.value, height: barcodeHeight.value } : { width: size.value, height: size.value }
+  return useProps.type === "barcode" ? { width: barcodeWidth.value, height: barcodeHeight.value } : { width: size.value, height: size.value }
 })
 watch(
   () => props,
   () => {
-    if (props.auto && props.value) makeCode()
+    if (useProps.auto && useProps.value) makeCode()
   },
   { deep: true, immediate: true },
 )
@@ -70,10 +71,10 @@ async function makeCode() {
   isLoading.value = true
   await nextTick()
   setTimeout(() => {
-    if (props.type === "barcode") {
+    if (useProps.type === "barcode") {
       // 条形码生成逻辑
       try {
-        const barcode = new CODE128AUTO(String(props.value), {})
+        const barcode = new CODE128AUTO(String(useProps.value), {})
         const barcodeResult = barcode.encode()
         const pattern = barcodeResult.data
         if (!pattern) throw new Error("Invalid barcode content")
@@ -85,11 +86,11 @@ async function makeCode() {
         const moduleWidth = width / pattern.length
 
         // 绘制背景
-        ctx.setFillStyle(props.background)
+        ctx.setFillStyle(useProps.background)
         ctx.fillRect(0, 0, width, height)
 
         // 绘制条形码
-        ctx.setFillStyle(props.foreground)
+        ctx.setFillStyle(useProps.foreground)
 
         for (let i = 0; i < pattern.length; i++) {
           if (pattern[i] === "1") {
@@ -123,21 +124,21 @@ async function makeCode() {
         emits("error", err)
         isLoading.value = false
       }
-    } else if (props.type === "qrcode") {
+    } else if (useProps.type === "qrcode") {
       // @ts-expect-error 注释错误
       const qrcode = new QRCode({
         context: instance, // 上下文环境
         canvasId: id.value, // canvas-id
         usingComponents: true, // 是否是自定义组件
         showLoading: false, // 是否显示loading
-        text: props.value, // 生成内容
-        size: useUnitToPx(props.size), // 二维码大小
-        background: props.background, // 背景色
-        foreground: props.foreground, // 前景色
-        pdground: props.pdground, // 定位角点颜色
-        correctLevel: props.lv, // 容错级别
-        image: props.icon, // 二维码图标
-        imageSize: useUnitToPx(props.iconSize), // 二维码图标大小
+        text: useProps.value, // 生成内容
+        size: useUnitToPx(useProps.size), // 二维码大小
+        background: useProps.background, // 背景色
+        foreground: useProps.foreground, // 前景色
+        pdground: useProps.pdground, // 定位角点颜色
+        correctLevel: useProps.lv, // 容错级别
+        image: useProps.icon, // 二维码图标
+        imageSize: useUnitToPx(useProps.iconSize), // 二维码图标大小
         success: (res: any) => {
           result.value = res
           isSuccess.value = true

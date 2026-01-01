@@ -59,28 +59,28 @@ onMounted(() => {
 
 ## Props
 
-| 参数 | 说明 | 类型 | 默认值 |
-| --- | --- | --- | --- |
-| list | 列表数据 | `array` | `[]` |
-| page | 当前页码 | `string \| number` | `1` |
-| page-size | 每页条数 | `string \| number` | `10` |
-| total | 总条数 | `string \| number` | `0` |
-| loading | 是否加载中 | `boolean` | `false` |
-| empty-text | 空数据提示文字 | `string` | `暂无数据～` |
-| custom-class | 自定义类名 | `string` | - |
-| custom-style | 自定义样式 | `string \| object` | - |
+| 参数         | 说明           | 类型               | 默认值       |
+| ------------ | -------------- | ------------------ | ------------ |
+| list         | 列表数据       | `array`            | `[]`         |
+| page         | 当前页码       | `string \| number` | `1`          |
+| page-size    | 每页条数       | `string \| number` | `10`         |
+| total        | 总条数         | `string \| number` | `0`          |
+| loading      | 是否加载中     | `boolean`          | `false`      |
+| empty-text   | 空数据提示文字 | `string`           | `暂无数据～` |
+| custom-class | 自定义类名     | `string`           | -            |
+| custom-style | 自定义样式     | `string \| object` | -            |
 
 ## Events
 
-| 事件名 | 说明 | 回调参数 |
-| --- | --- | --- |
-| load | 加载更多时触发 | `page: number, pageSize: number` |
+| 事件名  | 说明           | 回调参数                         |
+| ------- | -------------- | -------------------------------- |
+| load    | 加载更多时触发 | `page: number, pageSize: number` |
 | refresh | 下拉刷新时触发 | `page: number, pageSize: number` |
 
 ## Slots
 
-| 名称 | 说明 | 参数 |
-| --- | --- | --- |
-| default | 列表内容 | `{ data: array }` |
-| loading | 加载中内容 | - |
-| empty | 空数据内容 | - |
+| 名称    | 说明       | 参数              |
+| ------- | ---------- | ----------------- |
+| default | 列表内容   | `{ data: array }` |
+| loading | 加载中内容 | -                 |
+| empty   | 空数据内容 | -                 |

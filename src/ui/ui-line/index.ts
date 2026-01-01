@@ -1,7 +1,8 @@
 import type Line from "./ui-line.vue"
-import { styleProp, buildProps, makeStringProp, makeNumericProp } from "../utils/props"
+import { createProps } from "../hooks"
+import { styleProp, makeStringProp, makeNumericProp } from "../utils/props"
 
-export const lineProps = buildProps("line", {
+export const [lineProps, useLineProps] = createProps("line", {
   /**
    * 线条颜色
    */

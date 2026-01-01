@@ -9,29 +9,30 @@ import type { CSSProperties } from "vue"
 import { skeletonKey } from "../ui-skeleton"
 import { isDef, isArray } from "../utils/check"
 import { useUnit, useStyle, useParent } from "../hooks"
-import { skeletonParagraphEmits, skeletonParagraphProps } from "./index"
+import { skeletonParagraphEmits, skeletonParagraphProps, useSkeletonParagraphProps } from "./index"
 
 defineOptions({ name: "ui-skeleton-paragraph" })
 
 const props = defineProps(skeletonParagraphProps)
 const emits = defineEmits(skeletonParagraphEmits)
+const useProps = useSkeletonParagraphProps(props)
 const { parent } = useParent(skeletonKey)
 
-const row = computed(() => +props.row)
+const row = computed(() => +useProps.row)
 
 const style = computed(() => {
   const style: CSSProperties = {}
-  if (props.rowWidth === "100%") style.flex = "1"
-  return useStyle({ ...style, ...useStyle(props.customStyle) })
+  if (useProps.rowWidth === "100%") style.flex = "1"
+  return useStyle({ ...style, ...useStyle(useProps.customStyle) })
 })
 
 const rowStyle = computed(() => {
   return (index: number) => {
     const style: CSSProperties = {}
-    if (isArray(props.rowWidth)) {
-      style.width = useUnit(props.rowWidth[index])
+    if (isArray(useProps.rowWidth)) {
+      style.width = useUnit(useProps.rowWidth[index])
     } else {
-      style.width = useUnit(props.rowWidth)
+      style.width = useUnit(useProps.rowWidth)
     }
     return useStyle(style)
   }

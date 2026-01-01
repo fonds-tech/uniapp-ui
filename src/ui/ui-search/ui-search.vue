@@ -40,71 +40,72 @@
 
 <script setup lang="ts">
 import { useUnit, useColor, useStyle } from "../hooks"
-import { searchEmits, searchProps, searchInputAlign } from "./index"
+import { searchEmits, searchProps, useSearchProps, searchInputAlign } from "./index"
 
 defineOptions({ name: "ui-search" })
 
 const props = defineProps(searchProps)
 const emits = defineEmits(searchEmits)
-const modelValue = ref(props.modelValue)
+const useProps = useSearchProps(props)
+const modelValue = ref(useProps.modelValue)
 
 const style = computed(() => {
   const style: any = {}
-  style.height = useUnit(props.height)
-  style.margin = useUnit(props.margin)
-  return useStyle({ ...style, ...useStyle(props.customStyle) })
+  style.height = useUnit(useProps.height)
+  style.margin = useUnit(useProps.margin)
+  return useStyle({ ...style, ...useStyle(useProps.customStyle) })
 })
 
 const contentStyle = computed(() => {
   const style: any = {}
-  style.border = props.border
-  style.background = useColor(props.background)
-  style.borderRadius = useUnit(props.radius)
+  style.border = useProps.border
+  style.background = useColor(useProps.background)
+  style.borderRadius = useUnit(useProps.radius)
   return useStyle(style)
 })
 
 const contentClass = computed(() => {
   const list: string[] = []
-  if (props.round) list.push("ui-search__content--round")
+  if (useProps.round) list.push("ui-search__content--round")
   return list
 })
 
 const valueStyle = computed(() => {
   const style: any = {}
-  style.color = useColor(props.color)
-  style.fontSize = useUnit(props.fontSize)
-  if (searchInputAlign.includes(props.inputAlign)) style.textAlign = props.inputAlign
-  return useStyle({ ...style, ...useStyle(props.inputStyle) })
+  style.color = useColor(useProps.color)
+  style.fontSize = useUnit(useProps.fontSize)
+  if (searchInputAlign.includes(useProps.inputAlign)) style.textAlign = useProps.inputAlign
+  return useStyle({ ...style, ...useStyle(useProps.inputStyle) })
 })
 
 const valueClass = computed(() => {
   const list: string[] = []
-  if (props.disabled) list.push("ui-search__value--disabled")
+  if (useProps.disabled) list.push("ui-search__value--disabled")
   return list
 })
 
 const actionButtonStyle = computed(() => {
   const style: any = {}
-  style.color = useColor(props.actionColor)
-  style.fontSize = useUnit(props.actionSize)
-  style.fontWeight = props.actionWeight
+  style.color = useColor(useProps.actionColor)
+  style.fontSize = useUnit(useProps.actionSize)
+  style.fontWeight = useProps.actionWeight
   return useStyle(style)
 })
 
 const placeholderStyle = computed(() => {
   const style: any = {}
-  if (props.fontSize) style.fontSize = useUnit(props.fontSize)
-  if (props.placeholderColor) style.color = useColor(props.placeholderColor)
+  if (useProps.fontSize) style.fontSize = useUnit(useProps.fontSize)
+  if (useProps.placeholderColor) style.color = useColor(useProps.placeholderColor)
   return useStyle(style, "string")
 })
 
 const clearabled = computed(() => {
-  return props.clearabled && modelValue.value
+  return useProps.clearabled && modelValue.value
 })
 
 watch(() => modelValue.value, updateValue)
 watch(
-  () => props.modelValue,
+  () => useProps.modelValue,
   (val) => (modelValue.value = val),
 )
 

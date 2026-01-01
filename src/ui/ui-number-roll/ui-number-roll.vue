@@ -8,12 +8,13 @@
 
 <script setup lang="ts">
 import { formatDigit } from "../utils/format"
-import { numberRollProps } from "./index"
+import { numberRollProps, useNumberRollProps } from "./index"
 import { useRect, useUnit, useColor, useStyle } from "../hooks"
 
 defineOptions({ name: "ui-number-roll" })
 
 const props = defineProps(numberRollProps)
+const useProps = useNumberRollProps(props)
 
 const instance = getCurrentInstance()
 const isInit = ref(false)
@@ -24,35 +25,35 @@ const arab = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
 
 const style = computed(() => {
   const style: any = {}
-  style.height = props.fontSize ? useUnit(props.fontSize) : `${height.value}px`
-  return useStyle({ ...style, ...useStyle(props.customStyle) })
+  style.height = useProps.fontSize ? useUnit(useProps.fontSize) : `${height.value}px`
+  return useStyle({ ...style, ...useStyle(useProps.customStyle) })
 })
 const columnStyle = computed(() => {
   return (index: number) => {
     const style: any = {}
-    const h = props.fontSize ? useUnit(props.fontSize) : `${height.value}px`
+    const h = useProps.fontSize ? useUnit(useProps.fontSize) : `${height.value}px`
     style.transform = `translate3d(0, calc(${indexs.value[index]} * ${h} * -1), 0)`
-    style.transitionTimingFunction = props.timingFunction
-    if (props.duration) style.transitionDuration = `${props.duration}ms`
+    style.transitionTimingFunction = useProps.timingFunction
+    if (useProps.duration) style.transitionDuration = `${useProps.duration}ms`
     return useStyle(style)
   }
 })
 const columnItemStyle = computed(() => {
   const style: any = {}
-  style.color = useColor(props.color)
-  style.height = props.fontSize ? useUnit(props.fontSize) : `${height.value}px`
-  style.fontSize = props.fontSize ? useUnit(props.fontSize) : `${height.value}px`
-  style.lineHeight = props.fontSize ? useUnit(props.fontSize) : `${height.value}px`
-  style.fontWeight = props.fontWeight
+  style.color = useColor(useProps.color)
+  style.height = useProps.fontSize ? useUnit(useProps.fontSize) : `${height.value}px`
+  style.fontSize = useProps.fontSize ? useUnit(useProps.fontSize) : `${height.value}px`
+  style.lineHeight = useProps.fontSize ? useUnit(useProps.fontSize) : `${height.value}px`
+  style.fontWeight = useProps.fontWeight
   return useStyle(style)
 })
 
-watch(() => props.value, resize)
+watch(() => useProps.value, resize)
 
 async function resize() {
   await nextTick()
-  let value: string | number = Number(isInit.value ? props.value : 0)
-  value = formatDigit(value, { decimalPlaces: props.decimalPlaces, trimZero: props.trimZero, thousandsSep: props.thousandsSep })
+  let value: string | number = Number(isInit.value ? useProps.value : 0)
+  value = formatDigit(value, { decimalPlaces: useProps.decimalPlaces, trimZero: useProps.trimZero, thousandsSep: useProps.thousandsSep })
   const formatValueArr = String(value).split("")
   columns.value = formatValueArr.map((val) => (~arab.indexOf(val) ? arab : [val]))
   indexs.value = formatValueArr

@@ -12,14 +12,15 @@
 
 <script setup lang="ts">
 import type { CSSProperties } from "vue"
-import { dropdownMenuKey, dropdownMenuProps } from "./index"
 import { useRect, useUnit, useColor, useStyle, useChildren } from "../hooks"
+import { dropdownMenuKey, dropdownMenuProps, useDropdownMenuProps } from "./index"
 
 // 定义组件名称
 defineOptions({ name: "ui-dropdown-menu" })
 
 // 定义props
 const props = defineProps(dropdownMenuProps)
+const useProps = useDropdownMenuProps(props)
 
 // 使用useChildren hook获取子组件
 const { childrens, linkChildren } = useChildren(dropdownMenuKey)
@@ -29,21 +30,21 @@ const rect = ref<UniApp.NodeInfo>({})
 const instance = getCurrentInstance()
 
 // 链接子组件
-linkChildren({ props, rect, close, resize })
+linkChildren({ props, useProps, rect, close, resize })
 
 // 计算元素样式
 const style = computed(() => {
   const style: CSSProperties = {}
-  style.zIndex = props.zIndex
-  style.height = useUnit(props.height)
-  style.background = useColor(props.background)
-  return useStyle({ ...style, ...useStyle(props.customStyle) })
+  style.zIndex = useProps.zIndex
+  style.height = useUnit(useProps.height)
+  style.background = useColor(useProps.background)
+  return useStyle({ ...style, ...useStyle(useProps.customStyle) })
 })
 
 // 计算菜单项类名
 const itemClass = computed(() => (item: any) => {
   const list: string[] = []
-  if (item.props.disabled) list.push("is-disabled")
+  if (item.exposed.useProps.disabled) list.push("is-disabled")
   if (toRef(item.exposed.visible).value) list.push("is-active")
   return list
 })
@@ -84,7 +85,7 @@ async function resize() {
 
 // 点击菜单处理函数
 function onClick(item: any, index: number) {
-  if (item.props.disabled) return
+  if (item.exposed.useProps.disabled) return
   toggleItem(index)
 }
 

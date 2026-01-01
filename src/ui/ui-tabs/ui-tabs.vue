@@ -11,14 +11,14 @@
 <script setup lang="ts">
 import type { CSSProperties } from "vue"
 import { isEmpty } from "../utils/check"
-import { tabsKey, tabsEmits, tabsProps } from "./index"
 import { useUnit, useColor, useStyle, useChildren } from "../hooks"
+import { tabsKey, tabsEmits, tabsProps, useTabsProps } from "./index"
 
 defineOptions({ name: "ui-tabs" })
 
 const props = defineProps(tabsProps)
 const emits = defineEmits(tabsEmits)
-
+const useProps = useTabsProps(props)
 const { childrens, linkChildren } = useChildren(tabsKey)
 
 const inited = ref(false)
@@ -27,32 +27,32 @@ const currentName = ref<string | number | null>(null)
 
 const style = computed(() => {
   const style: CSSProperties = {}
-  style.zIndex = props.zIndex
-  style.height = useUnit(props.height)
-  style.background = useColor(props.background)
-  return useStyle({ ...style, ...useStyle(props.customStyle) })
+  style.zIndex = useProps.zIndex
+  style.height = useUnit(useProps.height)
+  style.background = useColor(useProps.background)
+  return useStyle({ ...style, ...useStyle(useProps.customStyle) })
 })
 
 const classs = computed(() => {
   const list = []
-  if (props.borderBottom) list.push("ui-tabs--border")
+  if (useProps.borderBottom) list.push("ui-tabs--border")
   return list
 })
 
 const listStyle = computed(() => {
   const style: CSSProperties = {}
-  style.height = useUnit(props.height)
+  style.height = useUnit(useProps.height)
   return useStyle(style)
 })
 
-watch(() => props.modelValue, setCurrentName)
+watch(() => useProps.modelValue, setCurrentName)
 watch(
   () => childrens.length,
-  () => setCurrentName(props.modelValue),
+  () => setCurrentName(useProps.modelValue),
 )
 
 function findTabByName(name: string | number) {
-  return childrens.find((tab) => toRef(tab.exposed.name).value === name) || childrens.find((tab) => isEmpty(tab.props.disabled))
+  return childrens.find((tab) => toRef(tab.exposed.name).value === name) || childrens.find((tab) => isEmpty(tab.exposed.useProps.disabled))
 }
 
 async function setCurrentName(name: string | number) {
@@ -72,7 +72,7 @@ function clickTab(name: string | number) {
   emits("clickTab", name)
 }
 
-linkChildren({ props, currentName, clickTab, setCurrentName })
+linkChildren({ props, useProps, currentName, clickTab, setCurrentName })
 </script>
 
 <script lang="ts">

@@ -13,13 +13,14 @@
 <script setup lang="ts">
 import type { CSSProperties } from "vue"
 import { isFunction } from "../utils/check"
-import { tabbarKey, tabbarEmits, tabbarProps } from "./index"
+import { tabbarKey, tabbarEmits, tabbarProps, useTabbarProps } from "./index"
 import { useMitt, useRect, useColor, useStyle, usePxToRpx, useChildren, useUnitToRpx } from "../hooks"
 
 defineOptions({ name: "ui-tabbar" })
 
 const props = defineProps(tabbarProps)
 const emits = defineEmits(tabbarEmits)
+const useProps = useTabbarProps(props)
 const { childrens, linkChildren } = useChildren(tabbarKey)
 
 const mitt = useMitt()
@@ -29,26 +30,26 @@ const instance = getCurrentInstance()
 
 const style = computed(() => {
   const style: CSSProperties = {}
-  style.height = `${useUnitToRpx(props.height) + usePxToRpx(offsetHeight.value)}rpx`
-  style.background = useColor(props.background)
+  style.height = `${useUnitToRpx(useProps.height) + usePxToRpx(offsetHeight.value)}rpx`
+  style.background = useColor(useProps.background)
   style.paddingBottom = `${useUnitToRpx(offsetHeight.value)}rpx`
-  return useStyle({ ...useStyle(props.customStyle), ...style })
+  return useStyle({ ...useStyle(useProps.customStyle), ...style })
 })
 
 const classs = computed(() => {
   const list: string[] = []
-  if (props.border) list.push("ui-tabbar__content--border")
+  if (useProps.border) list.push("ui-tabbar__content--border")
   return list
 })
 
 const placeholderStyle = computed(() => {
   const style: CSSProperties = {}
-  style.height = `${useUnitToRpx(props.height) + usePxToRpx(offsetHeight.value)}rpx`
+  style.height = `${useUnitToRpx(useProps.height) + usePxToRpx(offsetHeight.value)}rpx`
   return useStyle(style)
 })
 
 watch(
-  () => props.modelValue,
+  () => useProps.modelValue,
   (value) => emits("change", value),
 )
 
@@ -81,7 +82,7 @@ function onSafeAreaBottomHeight(height: number) {
 }
 
 onEvent()
-linkChildren({ props, updateValue })
+linkChildren({ props, useProps, updateValue })
 defineExpose({ resize })
 </script>
 

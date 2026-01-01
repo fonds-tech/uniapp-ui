@@ -1,5 +1,5 @@
 <template>
-  <view class="ui-text-highlight" :style="[style]" :class="[props.customClass]">
+  <view class="ui-text-highlight" :style="[style]" :class="[useProps.customClass]">
     <text
       v-for="(item, index) in list"
       :key="index"
@@ -16,48 +16,48 @@
 <script setup lang="ts">
 import { isNoEmpty } from "../utils/check"
 import { useUnit, useColor, useStyle } from "../hooks"
-import { textHighlightEmits, textHighlightProps } from "./index"
+import { textHighlightEmits, textHighlightProps, useTextHighlightProps } from "./index"
 
 defineOptions({ name: "ui-text-highlight" })
 
 const props = defineProps(textHighlightProps)
 const emits = defineEmits(textHighlightEmits)
-
+const useProps = useTextHighlightProps(props)
 const list = ref([])
 
 const style = computed(() => {
   const style: any = {}
-  style.color = useColor(props.color)
-  style.fontSize = useUnit(props.fontSize)
-  style.fontWeight = props.fontWeight
-  style.lineHeight = props.lineHeight
-  style["-webkit-line-clamp"] = props.textRow
-  return useStyle({ ...style, ...useStyle(props.customStyle) })
+  style.color = useColor(useProps.color)
+  style.fontSize = useUnit(useProps.fontSize)
+  style.fontWeight = useProps.fontWeight
+  style.lineHeight = useProps.lineHeight
+  style["-webkit-line-clamp"] = useProps.textRow
+  return useStyle({ ...style, ...useStyle(useProps.customStyle) })
 })
 
 const textStyle = computed(() => {
   return (val: any) => {
     const style: any = {}
-    if (val.matched) style.color = useColor(props.highlightColor)
+    if (val.matched) style.color = useColor(useProps.highlightColor)
     return useStyle(style)
   }
 })
 
-watch(() => props.text, match, { immediate: true })
-watch(() => props.match, match, { immediate: true })
+watch(() => useProps.text, match, { immediate: true })
+watch(() => useProps.match, match, { immediate: true })
 
 function match() {
   const escapeRegExp = (val: string) => {
     return val.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")
   }
-  if (props.text && isNoEmpty(props.match)) {
-    const escapedMatch = escapeRegExp(props.match)
-    const parts = props.text.split(new RegExp(`(${escapedMatch})`)).filter(Boolean)
+  if (useProps.text && isNoEmpty(useProps.match)) {
+    const escapedMatch = escapeRegExp(useProps.match)
+    const parts = useProps.text.split(new RegExp(`(${escapedMatch})`)).filter(Boolean)
     list.value = parts.map((text: string) => {
-      return { text, matched: text === props.match }
+      return { text, matched: text === useProps.match }
     })
   } else {
-    list.value = [{ text: props.text, matched: false }]
+    list.value = [{ text: useProps.text, matched: false }]
   }
 }
 

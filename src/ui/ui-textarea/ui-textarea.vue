@@ -42,14 +42,14 @@
 
 <script setup lang="ts">
 import { formItemKey } from "../ui-form-item"
-import { textareaEmits, textareaProps } from "./index"
 import { useUnit, useColor, useStyle, useParent } from "../hooks"
+import { textareaEmits, textareaProps, useTextareaProps } from "./index"
 
 defineOptions({ name: "ui-textarea" })
 
 const props = defineProps(textareaProps)
 const emits = defineEmits(textareaEmits)
-
+const useProps = useTextareaProps(props)
 const { parent } = useParent(formItemKey)
 
 const isFocus = ref(false)
@@ -57,65 +57,65 @@ const current = ref("")
 
 const style = computed(() => {
   const style: any = {}
-  style.border = props.border
-  style.width = useUnit(props.width)
-  style.padding = useUnit(props.padding)
-  style.minHeight = useUnit(props.minHeight)
-  style.background = useColor(props.background)
-  style.borderRadius = useUnit(props.radius)
-  return useStyle({ ...style, ...useStyle(props.customStyle) })
+  style.border = useProps.border
+  style.width = useUnit(useProps.width)
+  style.padding = useUnit(useProps.padding)
+  style.minHeight = useUnit(useProps.minHeight)
+  style.background = useColor(useProps.background)
+  style.borderRadius = useUnit(useProps.radius)
+  return useStyle({ ...style, ...useStyle(useProps.customStyle) })
 })
 
 const classs = computed(() => {
   const list: string[] = []
-  if (props.disabled) list.push("ui-textarea--disabled")
-  if (props.clearable) list.push("ui-textarea--clearable")
+  if (useProps.disabled) list.push("ui-textarea--disabled")
+  if (useProps.clearable) list.push("ui-textarea--clearable")
   return list
 })
 
 const textareaStyle = computed(() => {
   const style: any = {}
-  style.color = useColor(props.color)
-  style.fontSize = useUnit(props.fontSize)
-  style.minHeight = useUnit(props.minHeight)
-  style.fontWeight = props.fontWeight
+  style.color = useColor(useProps.color)
+  style.fontSize = useUnit(useProps.fontSize)
+  style.minHeight = useUnit(useProps.minHeight)
+  style.fontWeight = useProps.fontWeight
   return useStyle(style)
 })
 
 const textareaClass = computed(() => {
   const list: string[] = []
-  list.push(`ui-textarea__textarea--${props.inputAlign}`)
+  list.push(`ui-textarea__textarea--${useProps.inputAlign}`)
   return list
 })
 
 const placeholderStyle = computed(() => {
   const style: any = {}
-  style.color = useColor(props.placeholderColor)
-  return useStyle({ ...style, ...useStyle(props.placeholderStyle) }, "string")
+  style.color = useColor(useProps.placeholderColor)
+  return useStyle({ ...style, ...useStyle(useProps.placeholderStyle) }, "string")
 })
 
 const clearStyle = computed(() => {
   const style: any = {}
-  style.width = useUnit(props.clearIconSize)
-  style.height = useUnit(props.clearIconSize)
+  style.width = useUnit(useProps.clearIconSize)
+  style.height = useUnit(useProps.clearIconSize)
   return useStyle(style)
 })
 
 const countStyle = computed(() => {
   const style: any = {}
-  style.color = useColor(props.countColor)
-  style.fontSize = useUnit(props.countSize)
-  style.fontWeight = props.countWeight
+  style.color = useColor(useProps.countColor)
+  style.fontSize = useUnit(useProps.countSize)
+  style.fontWeight = useProps.countWeight
   return useStyle(style)
 })
 
 const valueLength = computed(() => {
-  const count = String(props.modelValue).length
-  return props.maxlength === -1 ? count : `${count > +props.maxlength ? props.maxlength : count}/${props.maxlength}`
+  const count = String(useProps.modelValue).length
+  return useProps.maxlength === -1 ? count : `${count > +useProps.maxlength ? useProps.maxlength : count}/${useProps.maxlength}`
 })
 
 watch(
-  () => props.modelValue,
+  () => useProps.modelValue,
   (value) => {
     current.value = value
   },

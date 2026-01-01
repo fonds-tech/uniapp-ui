@@ -1,8 +1,9 @@
 import type SidebarItem from "./ui-sidebar-item.vue"
 import type { PropType, CSSProperties, ExtractPropTypes } from "vue"
-import { buildProps, numericProp, makeStringProp } from "../utils/props"
+import { createProps } from "../hooks"
+import { numericProp, makeStringProp } from "../utils/props"
 
-export const sidebarItemProps = buildProps("sidebarItem", {
+export const [sidebarItemProps, useSidebarItemProps] = createProps("sidebarItem", {
   /**
    * 标识符
    */

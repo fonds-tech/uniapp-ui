@@ -1,8 +1,9 @@
 import type IndexAnchor from "./ui-index-anchor.vue"
 import type { ExtractPropTypes } from "vue"
-import { styleProp, buildProps, makeStringProp, makeNumericProp } from "../utils/props"
+import { createProps } from "../hooks"
+import { styleProp, makeStringProp, makeNumericProp } from "../utils/props"
 
-export const indexAnchorProps = buildProps("indexAnchor", {
+export const [indexAnchorProps, useIndexAnchorProps] = createProps("indexAnchor", {
   /**
    * 索引名称，作为匹配的标识符
    */

@@ -1,9 +1,10 @@
 import type Sidebar from "./ui-sidebar.vue"
 import type { PropType, InjectionKey, CSSProperties, ExtractPropTypes } from "vue"
-import { truthProp, buildProps, numericProp, makeNumericProp } from "../utils/props"
+import { createProps } from "../hooks"
+import { truthProp, numericProp, makeNumericProp } from "../utils/props"
 
 export const sidebarKey: InjectionKey<SidebarProvide> = Symbol("ui-tabs")
-export const sidebarProps = buildProps("sidebar", {
+export const [sidebarProps, useSidebarProps] = createProps("sidebar", {
   /**
    * 绑定值
    */

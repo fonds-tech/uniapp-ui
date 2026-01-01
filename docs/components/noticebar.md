@@ -77,36 +77,36 @@ const notices = ["通知内容一", "通知内容二", "通知内容三"]
 
 ## Props
 
-| 参数 | 说明 | 类型 | 默认值 |
-| --- | --- | --- | --- |
-| text | 通知文本内容 | `string \| string[]` | - |
-| mode | 滚动模式 | `horizontal \| vertical` | `horizontal` |
-| color | 文本颜色 | `string` | - |
-| speed | 滚动速率(px/s) | `number` | `60` |
-| interval | 垂直滚动时切换间隔(ms) | `number` | `3000` |
-| duration | 垂直滚动时动画时长(ms) | `number` | `500` |
-| scrollable | 是否开启滚动 | `boolean` | `true` |
-| min-height | 最小高度 | `string \| number` | `80rpx` |
-| font-size | 文本大小 | `string \| number` | - |
-| font-weight | 文本粗细 | `string \| number` | - |
-| icon | 左侧图标 | `string` | `volume-o` |
-| icon-size | 左侧图标大小 | `string \| number` | - |
-| icon-color | 左侧图标颜色 | `string` | `primary` |
-| right-icon | 右侧图标 | `string` | - |
-| background | 背景颜色 | `string` | - |
-| custom-class | 自定义类名 | `string` | - |
-| custom-style | 自定义样式 | `string \| object` | - |
+| 参数         | 说明                   | 类型                     | 默认值       |
+| ------------ | ---------------------- | ------------------------ | ------------ |
+| text         | 通知文本内容           | `string \| string[]`     | -            |
+| mode         | 滚动模式               | `horizontal \| vertical` | `horizontal` |
+| color        | 文本颜色               | `string`                 | -            |
+| speed        | 滚动速率(px/s)         | `number`                 | `60`         |
+| interval     | 垂直滚动时切换间隔(ms) | `number`                 | `3000`       |
+| duration     | 垂直滚动时动画时长(ms) | `number`                 | `500`        |
+| scrollable   | 是否开启滚动           | `boolean`                | `true`       |
+| min-height   | 最小高度               | `string \| number`       | `80rpx`      |
+| font-size    | 文本大小               | `string \| number`       | -            |
+| font-weight  | 文本粗细               | `string \| number`       | -            |
+| icon         | 左侧图标               | `string`                 | `volume-o`   |
+| icon-size    | 左侧图标大小           | `string \| number`       | -            |
+| icon-color   | 左侧图标颜色           | `string`                 | `primary`    |
+| right-icon   | 右侧图标               | `string`                 | -            |
+| background   | 背景颜色               | `string`                 | -            |
+| custom-class | 自定义类名             | `string`                 | -            |
+| custom-style | 自定义样式             | `string \| object`       | -            |
 
 ## Events
 
-| 事件名 | 说明 | 回调参数 |
-| --- | --- | --- |
-| click | 点击通知栏时触发 | `index: number` |
+| 事件名 | 说明             | 回调参数        |
+| ------ | ---------------- | --------------- |
+| click  | 点击通知栏时触发 | `index: number` |
 
 ## Slots
 
-| 名称 | 说明 |
-| --- | --- |
+| 名称    | 说明           |
+| ------- | -------------- |
 | default | 自定义通知内容 |
-| left | 自定义左侧图标 |
-| right | 自定义右侧图标 |
+| left    | 自定义左侧图标 |
+| right   | 自定义右侧图标 |

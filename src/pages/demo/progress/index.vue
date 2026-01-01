@@ -104,15 +104,15 @@ function decrease() {
 
 <style lang="scss" scoped>
 .progress-item {
+  gap: 16rpx;
   display: flex;
   align-items: center;
-  gap: 16rpx;
 }
 
 .progress-label {
   color: var(--ui-color-text-secondary);
   font-size: 24rpx;
-  flex-shrink: 0;
   min-width: 100rpx;
+  flex-shrink: 0;
 }
 </style>

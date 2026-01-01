@@ -68,36 +68,36 @@ const inputValue = ref("")
 
 ## Props
 
-| 参数 | 说明 | 类型 | 默认值 |
-| --- | --- | --- | --- |
-| show | 是否显示 | `boolean` | `true` |
-| value | 二维码/条形码内容 | `string \| number` | - |
-| size | 二维码大小 | `string \| number` | `200rpx` |
-| type | 类型 | `qrcode \| barcode` | `qrcode` |
-| background | 背景色 | `string` | `#ffffff` |
-| foreground | 前景色 | `string` | `#000000` |
-| pdground | 定位角点颜色 | `string` | `#000000` |
-| icon | 二维码中心图标 | `string` | - |
-| icon-size | 图标大小 | `string \| number` | `60rpx` |
-| lv | 容错级别 (1-4) | `number` | `3` |
-| auto | 是否自动生成 | `boolean` | `true` |
-| loading-text | 生成中文本 | `string` | `生成中...` |
-| barcode-width | 条形码宽度 | `string \| number` | `600rpx` |
-| barcode-height | 条形码高度 | `string \| number` | `200rpx` |
-| custom-class | 自定义类名 | `string` | - |
-| custom-style | 自定义样式 | `string \| object` | - |
+| 参数           | 说明              | 类型                | 默认值      |
+| -------------- | ----------------- | ------------------- | ----------- |
+| show           | 是否显示          | `boolean`           | `true`      |
+| value          | 二维码/条形码内容 | `string \| number`  | -           |
+| size           | 二维码大小        | `string \| number`  | `200rpx`    |
+| type           | 类型              | `qrcode \| barcode` | `qrcode`    |
+| background     | 背景色            | `string`            | `#ffffff`   |
+| foreground     | 前景色            | `string`            | `#000000`   |
+| pdground       | 定位角点颜色      | `string`            | `#000000`   |
+| icon           | 二维码中心图标    | `string`            | -           |
+| icon-size      | 图标大小          | `string \| number`  | `60rpx`     |
+| lv             | 容错级别 (1-4)    | `number`            | `3`         |
+| auto           | 是否自动生成      | `boolean`           | `true`      |
+| loading-text   | 生成中文本        | `string`            | `生成中...` |
+| barcode-width  | 条形码宽度        | `string \| number`  | `600rpx`    |
+| barcode-height | 条形码高度        | `string \| number`  | `200rpx`    |
+| custom-class   | 自定义类名        | `string`            | -           |
+| custom-style   | 自定义样式        | `string \| object`  | -           |
 
 ## Events
 
-| 事件名 | 说明 | 回调参数 |
-| --- | --- | --- |
-| click | 点击时触发 | - |
+| 事件名  | 说明           | 回调参数      |
+| ------- | -------------- | ------------- |
+| click   | 点击时触发     | -             |
 | success | 生成成功时触发 | `res: string` |
-| error | 生成失败时触发 | `err: any` |
+| error   | 生成失败时触发 | `err: any`    |
 
 ## Methods
 
-| 方法名 | 说明 | 参数 |
-| --- | --- | --- |
-| makeCode | 手动生成二维码 | - |
-| saveCode | 保存二维码到相册 | - |
+| 方法名   | 说明             | 参数 |
+| -------- | ---------------- | ---- |
+| makeCode | 手动生成二维码   | -    |
+| saveCode | 保存二维码到相册 | -    |

@@ -11,14 +11,14 @@
 import type { CSSProperties } from "vue"
 import { isDef } from "../utils/check"
 import { tabsKey } from "../ui-tabs"
-import { tabEmits, tabProps } from "./index"
+import { tabEmits, tabProps, useTabProps } from "./index"
 import { useUnit, useColor, useStyle, useParent } from "../hooks"
 
 defineOptions({ name: "ui-tab" })
 
 const props = defineProps(tabProps)
 const emits = defineEmits(tabEmits)
-
+const useProps = useTabProps(props)
 const { parent, index } = useParent(tabsKey)
 
 const style = computed(() => {
@@ -26,13 +26,13 @@ const style = computed(() => {
   style.flex = prop("scrollable") ? "" : "1"
   style.width = useUnit(prop("tabWidth"))
   style.maxWidth = useUnit(prop("tabMaxWidth"))
-  return useStyle({ ...style, ...useStyle(props.customStyle) })
+  return useStyle({ ...style, ...useStyle(useProps.customStyle) })
 })
 
 const classs = computed(() => {
   const list: string[] = []
   if (active.value) list.push("ui-tab--active")
-  if (props.disabled) list.push("ui-tab--disabled")
+  if (useProps.disabled) list.push("ui-tab--disabled")
   return list
 })
 
@@ -58,7 +58,7 @@ const lineStyle = computed(() => {
   return useStyle(style)
 })
 
-const name = computed(() => props.name ?? index.value)
+const name = computed(() => useProps.name ?? index.value)
 const active = computed(() => parent?.currentName.value === name.value)
 
 function prop(name: string) {
@@ -69,12 +69,12 @@ function prop(name: string) {
 
 async function onClick() {
   emits("click", name.value)
-  if (props.disabled) return
+  if (useProps.disabled) return
   parent.clickTab(name.value)
   parent.setCurrentName(name.value)
 }
 
-defineExpose({ name, index })
+defineExpose({ useProps, name, index })
 </script>
 
 <script lang="ts">

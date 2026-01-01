@@ -79,24 +79,24 @@
 
 ## Props
 
-| 参数 | 说明 | 类型 | 默认值 |
-| --- | --- | --- | --- |
-| gap | 列间距 | `string \| number` | - |
-| col-gap | 水平间距 | `string \| number` | - |
-| row-gap | 垂直间距 | `string \| number` | - |
-| align | 垂直对齐方式 | `start \| end \| center \| stretch \| baseline` | `stretch` |
-| justify | 水平对齐方式 | `start \| end \| center \| between \| around` | `start` |
-| custom-class | 自定义类名 | `string` | - |
-| custom-style | 自定义样式 | `string \| object` | - |
+| 参数         | 说明         | 类型                                            | 默认值    |
+| ------------ | ------------ | ----------------------------------------------- | --------- |
+| gap          | 列间距       | `string \| number`                              | -         |
+| col-gap      | 水平间距     | `string \| number`                              | -         |
+| row-gap      | 垂直间距     | `string \| number`                              | -         |
+| align        | 垂直对齐方式 | `start \| end \| center \| stretch \| baseline` | `stretch` |
+| justify      | 水平对齐方式 | `start \| end \| center \| between \| around`   | `start`   |
+| custom-class | 自定义类名   | `string`                                        | -         |
+| custom-style | 自定义样式   | `string \| object`                              | -         |
 
 ## Methods
 
-| 方法名 | 说明 | 参数 |
-| --- | --- | --- |
-| resize | 重新计算布局 | - |
+| 方法名 | 说明         | 参数 |
+| ------ | ------------ | ---- |
+| resize | 重新计算布局 | -    |
 
 ## Slots
 
-| 名称 | 说明 |
-| --- | --- |
+| 名称    | 说明                    |
+| ------- | ----------------------- |
 | default | 行内容，通常为 Col 组件 |

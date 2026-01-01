@@ -9,29 +9,30 @@ import type { CSSProperties } from "vue"
 import type { FieldValidateError, FieldValidationStatus } from "../ui-field"
 import { clone } from "../utils/utils"
 import { useStyle, useChildren } from "../hooks"
-import { formKey, formEmits, formProps } from "../ui-form"
+import { formKey, formEmits, formProps, useFormProps } from "../ui-form"
 
 defineOptions({ name: "ui-form" })
 
 const props = defineProps(formProps)
 const emits = defineEmits(formEmits)
+const useProps = useFormProps(props)
 const { childrens, linkChildren } = useChildren(formKey)
 
-const initialModel = ref(clone(props.model))
+const initialModel = ref(clone(useProps.model))
 
 const style = computed(() => {
   const style: CSSProperties = {}
-  return useStyle({ ...style, ...useStyle(props.customStyle) })
+  return useStyle({ ...style, ...useStyle(useProps.customStyle) })
 })
 
 const classs = computed(() => {
   const list: string[] = []
-  if (props.readonly) list.push("ui-form--readonly")
-  if (props.disabled) list.push("ui-form--disabled")
+  if (useProps.readonly) list.push("ui-form--readonly")
+  if (useProps.disabled) list.push("ui-form--disabled")
   return list
 })
 
-const model = computed({ get: () => props.model, set: (value) => emits("update:model", value) })
+const model = computed({ get: () => useProps.model, set: (value) => emits("update:model", value) })
 const maxLabelWidth = computed(() => {
   return Math.max(...childrens.filter((child) => child.exposed.labelPosition !== "top").map((child) => toRef(child.exposed.labelRect).value.width))
 })
@@ -59,7 +60,7 @@ function validate(prop?: string | string[]) {
   if (typeof prop === "string") {
     return validateField(prop)
   }
-  return props.validateFirst ? validateSeq(prop) : validateAll(prop)
+  return useProps.validateFirst ? validateSeq(prop) : validateAll(prop)
 }
 
 /**
@@ -122,7 +123,7 @@ function validateAll(props?: string[]) {
  */
 function validateField(prop: string) {
   return new Promise<void>((resolve, reject) => {
-    const children = childrens.find((item) => item.props.prop === prop)
+    const children = childrens.find((item) => item.exposed.useProps.prop === prop)
     if (children) {
       children.exposed.validate().then((error?: FieldValidateError) => {
         if (error) {
@@ -168,7 +169,7 @@ function clearValidate(prop?: string | string[]) {
 function getValues() {
   return childrens.reduce<Record<string, unknown>>((form, field) => {
     if (field.exposed.prop !== undefined) {
-      form[field.exposed.prop] = props.model[field.exposed.prop]
+      form[field.exposed.prop] = useProps.model[field.exposed.prop]
     }
     return form
   }, {})
@@ -193,7 +194,7 @@ function getValidateStatus() {
   }, {})
 }
 
-linkChildren({ props, model, rules: props.rules, initialModel, maxLabelWidth })
+linkChildren({ props, useProps, model, rules: useProps.rules, initialModel, maxLabelWidth })
 defineExpose({ submit, validate, validateField, resetFields, getValues, clearValidate, getValidateStatus })
 </script>
 

@@ -1,46 +1,47 @@
 <template>
-  <view class="ui-row" :class="[props.customClass]" :style="[style]">
+  <view class="ui-row" :class="[useProps.customClass]" :style="[style]">
     <slot />
   </view>
 </template>
 
 <script setup lang="ts">
 import { pick } from "lodash-es"
-import { rowProps } from "./index"
+import { rowProps, useRowProps } from "./index"
 import { useRect, useStyle, useUnitToPx } from "../hooks"
 
 defineOptions({ name: "ui-row" })
 
 const props = defineProps(rowProps)
+const useProps = useRowProps(props)
 const rect = ref<UniApp.NodeInfo>({})
 const instance = getCurrentInstance()
 
 const style = computed(() => {
   const style: any = {}
-  style.margin = `-${useUnitToPx(props.gap || props.rowGap) / 2}px -${useUnitToPx(props.gap || props.colGap) / 2}px`
-  switch (props.justify) {
+  style.margin = `-${useUnitToPx(useProps.gap || useProps.rowGap) / 2}px -${useUnitToPx(useProps.gap || useProps.colGap) / 2}px`
+  switch (useProps.justify) {
     case "start":
     case "end":
-      style.justifyContent = `flex-${props.justify}`
+      style.justifyContent = `flex-${useProps.justify}`
       break
     case "around":
     case "between":
-      style.justifyContent = `space-${props.justify}`
+      style.justifyContent = `space-${useProps.justify}`
       break
     default:
-      style.justifyContent = props.justify
+      style.justifyContent = useProps.justify
       break
   }
-  switch (props.align) {
+  switch (useProps.align) {
     case "start":
     case "end":
-      style.alignItems = `flex-${props.align}`
+      style.alignItems = `flex-${useProps.align}`
       break
     default:
-      style.alignItems = props.align
+      style.alignItems = useProps.align
       break
   }
-  return useStyle({ ...style, ...useStyle(props.customStyle) })
+  return useStyle({ ...style, ...useStyle(useProps.customStyle) })
 })
 
 function resize() {

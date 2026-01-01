@@ -19,13 +19,14 @@
 import type { CSSProperties } from "vue"
 import { isEmpty } from "../utils/check"
 import { debounce } from "../utils/utils"
-import { sidebarKey, sidebarEmits, sidebarProps } from "./index"
+import { sidebarKey, sidebarEmits, sidebarProps, useSidebarProps } from "./index"
 import { useRect, useUnit, useColor, useStyle, useChildren, useUnitToPx } from "../hooks"
 
 defineOptions({ name: "ui-sidebar" })
 
 const props = defineProps(sidebarProps)
 const emits = defineEmits(sidebarEmits)
+const useProps = useSidebarProps(props)
 const { childrens, linkChildren } = useChildren(sidebarKey)
 
 const inited = ref(false)
@@ -40,41 +41,41 @@ const currentName = ref(null)
 
 const style = computed(() => {
   const style: CSSProperties = {}
-  style.zIndex = props.zIndex
-  style.width = useUnit(props.width)
-  style.height = useUnit(props.height)
-  style.background = useColor(props.background)
-  return useStyle({ ...style, ...useStyle(props.customStyle) })
+  style.zIndex = useProps.zIndex
+  style.width = useUnit(useProps.width)
+  style.height = useUnit(useProps.height)
+  style.background = useColor(useProps.background)
+  return useStyle({ ...style, ...useStyle(useProps.customStyle) })
 })
 
 const listStyle = computed(() => {
   const style: CSSProperties = {}
-  style.width = useUnit(props.width)
-  style.height = useUnit(props.height)
+  style.width = useUnit(useProps.width)
+  style.height = useUnit(useProps.height)
   return useStyle(style)
 })
 
 const lineStyle = computed(() => {
   const style: CSSProperties = {}
   style.transform = `translateY(${lineTop.value}px)`
-  style.transitionDuration = inited.value ? `${props.duration}ms` : "0"
-  style.visibility = props.showLine ? "visible" : "hidden"
+  style.transitionDuration = inited.value ? `${useProps.duration}ms` : "0"
+  style.visibility = useProps.showLine ? "visible" : "hidden"
   return useStyle(style)
 })
 
 const lineInnerStyle = computed(() => {
   const style: CSSProperties = {}
-  style.width = useUnit(props.lineWidth)
-  style.height = `${useUnitToPx(props.lineHeight)}px`
-  style.background = useColor(props.lineColor)
-  style.borderRadius = useUnit(props.lineRadius)
+  style.width = useUnit(useProps.lineWidth)
+  style.height = `${useUnitToPx(useProps.lineHeight)}px`
+  style.background = useColor(useProps.lineColor)
+  style.borderRadius = useUnit(useProps.lineRadius)
   return useStyle(style)
 })
 
-watch(() => props.modelValue, setCurrentName)
+watch(() => useProps.modelValue, setCurrentName)
 watch(
   () => childrens.length,
-  () => setCurrentName(props.modelValue),
+  () => setCurrentName(useProps.modelValue),
 )
 
 async function resize(isChildrensResize = true) {
@@ -92,7 +93,7 @@ function clickItem(name: string | number, index: number) {
 }
 
 function findItemByName(name: string | number) {
-  return childrens.find((item) => toRef(item.exposed.name).value === name) || childrens.find((item) => isEmpty(item.props.disabled))
+  return childrens.find((item) => toRef(item.exposed.name).value === name) || childrens.find((item) => isEmpty(item.exposed.useProps.disabled))
 }
 
 async function setCurrentName(name: string | number) {
@@ -116,11 +117,11 @@ function setLine(name: string | number) {
     const rect = toRef(item.exposed.rect)
     const index = toRef(item.exposed.index)
     const height = childrens.slice(0, index.value).reduce((prev: any, curr: any) => prev + toRef(curr.exposed.rect).value.height, 0)
-    if (props.lineHeight === "100%") {
+    if (useProps.lineHeight === "100%") {
       lineTop.value = height
       lineHeight.value = rect.value.height
     } else {
-      lineHeight.value = props.lineHeight ? useUnitToPx(props.lineHeight) : lineRect.value.height
+      lineHeight.value = useProps.lineHeight ? useUnitToPx(useProps.lineHeight) : lineRect.value.height
       lineTop.value = height + (rect.value.height - lineHeight.value) / 2
     }
     setTimeout(() => (inited.value = true), 30)
@@ -143,7 +144,7 @@ function onResize(rect: any) {
   if (rect.height <= 1) console.error("ui-sidebar: 检测到高度可能不正常，请检查父容器高度是否正常")
 }
 
-linkChildren({ props, currentName, setLine, scrollIntoView, clickItem, setCurrentName })
+linkChildren({ props, useProps, currentName, setLine, scrollIntoView, clickItem, setCurrentName })
 defineExpose({ resize })
 </script>
 

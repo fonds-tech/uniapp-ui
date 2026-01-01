@@ -6,7 +6,7 @@
       </slot>
     </view>
 
-    <swiper v-if="mode === 'vertical'" class="ui-notice-bar__vertical" circular vertical :autoplay="scrollable" :interval="interval" :duration="props.duration">
+    <swiper v-if="mode === 'vertical'" class="ui-notice-bar__vertical" circular vertical :autoplay="scrollable" :interval="interval" :duration="useProps.duration">
       <swiper-item v-for="(text, index) in list" :key="index" style="display: flex" @click="onClick(index)">
         <text class="ui-notice-bar__vertical__text" :style="[textStyle]">{{ text }}12312123</text>
       </swiper-item>
@@ -36,14 +36,14 @@
 <script setup lang="ts">
 import { delay } from "../utils/utils"
 import { isArray, isString } from "../utils/check"
-import { noticeBarEmits, noticeBarProps } from "./index"
 import { useRect, useUnit, useColor, useStyle } from "../hooks"
+import { noticeBarEmits, noticeBarProps, useNoticeBarProps } from "./index"
 
 defineOptions({ name: "ui-notice-bar" })
 
 const props = defineProps(noticeBarProps)
 const emits = defineEmits(noticeBarEmits)
-
+const useProps = useNoticeBarProps(props)
 const slots = useSlots()
 const pause = ref(false)
 const duration = ref(0)
@@ -52,33 +52,33 @@ const horizontalPaddingRight = ref("100%")
 const instance = getCurrentInstance()
 
 const list = computed(() => {
-  if (isString(props.text)) return [props.text]
-  if (isArray(props.text) && props.mode === "horizontal") {
-    return [props.text[0]]
+  if (isString(useProps.text)) return [useProps.text]
+  if (isArray(useProps.text) && useProps.mode === "horizontal") {
+    return [useProps.text[0]]
   }
-  return props.text
+  return useProps.text
 })
 
 const style = computed(() => {
   const style: any = {}
-  style.background = useColor(props.background)
-  return useStyle({ ...style, ...useStyle(props.customStyle) })
+  style.background = useColor(useProps.background)
+  return useStyle({ ...style, ...useStyle(useProps.customStyle) })
 })
 
 const textStyle = computed(() => {
   const style: any = {}
-  style.color = useColor(props.color)
-  style.fontSize = useUnit(props.fontSize)
-  style.fontWeight = props.fontWeight
-  style.minHeight = useUnit(props.minHeight)
-  style.lineHeight = useUnit(props.minHeight)
+  style.color = useColor(useProps.color)
+  style.fontSize = useUnit(useProps.fontSize)
+  style.fontWeight = useProps.fontWeight
+  style.minHeight = useUnit(useProps.minHeight)
+  style.lineHeight = useUnit(useProps.minHeight)
   return useStyle(style)
 })
 
 const horizontalTextStyle = computed(() => {
   const style: any = {}
   style.animationDuration = `${duration.value}s`
-  if (props.scrollable) {
+  if (useProps.scrollable) {
     style.paddingLeft = horizontalPaddingLeft.value
     style.paddingRight = horizontalPaddingRight.value
     style.opacity = pause.value ? 0 : 1
@@ -89,28 +89,28 @@ const horizontalTextStyle = computed(() => {
 
 const horizontalTextClass = computed(() => {
   const list: string[] = []
-  if (props.scrollable) list.push("ui-notice-bar__horizontal__text--scrollable")
-  if (!pause.value && props.scrollable) list.push("ui-notice-bar__horizontal__text--animation")
+  if (useProps.scrollable) list.push("ui-notice-bar__horizontal__text--scrollable")
+  if (!pause.value && useProps.scrollable) list.push("ui-notice-bar__horizontal__text--animation")
   return list
 })
 
 async function resize() {
-  if (props.mode === "horizontal") horizontalAnimation()
+  if (useProps.mode === "horizontal") horizontalAnimation()
 }
 
 async function horizontalAnimation() {
   pause.value = false
   const textRect = await useRect(".ui-notice-bar__horizontal__text", instance)
   const horizontalRect = await useRect(".ui-notice-bar__horizontal", instance)
-  const horizontalDduration = horizontalRect.width / props.speed
-  duration.value = textRect.width / props.speed
+  const horizontalDduration = horizontalRect.width / useProps.speed
+  duration.value = textRect.width / useProps.speed
   await delay((duration.value - horizontalDduration) * 1000)
   pause.value = true
   await delay(10)
   duration.value = 0
   horizontalPaddingLeft.value = "100%"
   horizontalPaddingRight.value = "0"
-  duration.value = textRect.width / props.speed
+  duration.value = textRect.width / useProps.speed
   await delay(10)
   pause.value = false
 }

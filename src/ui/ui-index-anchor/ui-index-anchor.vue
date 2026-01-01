@@ -11,12 +11,13 @@
 <script setup lang="ts">
 import { isDef } from "../utils/check"
 import { indexBarKey } from "../ui-index-bar"
-import { indexAnchorProps } from "./index"
+import { indexAnchorProps, useIndexAnchorProps } from "./index"
 import { useRect, useUnit, useColor, useStyle, useParent } from "../hooks"
 
 defineOptions({ name: "ui-index-anchor" })
 
 const props = defineProps(indexAnchorProps)
+const useProps = useIndexAnchorProps(props)
 
 const { index, parent } = useParent(indexBarKey)
 
@@ -31,30 +32,30 @@ const classs = computed(() => {
 
 const style = computed(() => {
   const style: any = {}
-  style.height = useUnit(props.height)
-  style.background = useColor(props.background)
-  if (isActive.value) style.background = useColor(props.stickyBackground)
-  if (parent.props.sticky) {
+  style.height = useUnit(useProps.height)
+  style.background = useColor(useProps.background)
+  if (isActive.value) style.background = useColor(useProps.stickyBackground)
+  if (parent.useProps.sticky) {
     style.top = 0
     style.position = "sticky"
   }
-  return useStyle({ ...style, ...useStyle(props.customStyle) })
+  return useStyle({ ...style, ...useStyle(useProps.customStyle) })
 })
 
 const indexStyle = computed(() => {
   const style: any = {}
-  style.color = useColor(props.color)
-  style.fontSize = useUnit(props.fontSize)
-  style.fontWeight = props.fontWeight
+  style.color = useColor(useProps.color)
+  style.fontSize = useUnit(useProps.fontSize)
+  style.fontWeight = useProps.fontWeight
   if (isActive.value) {
-    style.color = useColor(props.stickyColor)
-    style.fontSize = useUnit(props.stickyFontSize)
-    style.fontWeight = props.stickyFontWeight
+    style.color = useColor(useProps.stickyColor)
+    style.fontSize = useUnit(useProps.stickyFontSize)
+    style.fontWeight = useProps.stickyFontWeight
   }
   return useStyle(style)
 })
 
-const name = computed(() => (isDef(props.name) ? props.name : index.value))
+const name = computed(() => (isDef(useProps.name) ? useProps.name : index.value))
 const isActive = computed(() => parent.currentName.value === name.value)
 
 async function resize() {

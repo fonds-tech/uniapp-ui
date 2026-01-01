@@ -1,8 +1,9 @@
 import type Dialog from "./ui-dialog.vue"
 import type { PropType, CSSProperties, ExtractPropTypes } from "vue"
-import { truthProp, buildProps, numericProp, makeStringProp, makeNumericProp } from "../utils/props"
+import { createProps } from "../hooks"
+import { truthProp, numericProp, makeStringProp, makeNumericProp } from "../utils/props"
 
-export const dialogProps = buildProps("dialog", {
+export const [dialogProps, useDialogProps] = createProps("dialog", {
   /**
    * 是否显示
    */

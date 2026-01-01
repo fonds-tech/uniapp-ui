@@ -1,26 +1,27 @@
 <template>
-  <view class="ui-line" :class="[props.customClass]" :style="[style]" />
+  <view class="ui-line" :class="[useProps.customClass]" :style="[style]" />
 </template>
 
 <script setup lang="ts">
-import { lineProps } from "./index"
+import { lineProps, useLineProps } from "./index"
 import { useUnit, useColor, useStyle } from "../hooks"
 
 defineOptions({ name: "ui-line" })
 
 const props = defineProps(lineProps)
+const useProps = useLineProps(props)
 
 const style = computed(() => {
   const style: any = {}
-  style.width = useUnit(props.width)
-  style.height = useUnit(props.height)
-  style.margin = useUnit(props.margin)
-  if (props.vertical) {
-    style.borderLeft = `${useUnit(props.width)} ${props.type} ${useColor(props.color)}`
+  style.width = useUnit(useProps.width)
+  style.height = useUnit(useProps.height)
+  style.margin = useUnit(useProps.margin)
+  if (useProps.vertical) {
+    style.borderLeft = `${useUnit(useProps.width)} ${useProps.type} ${useColor(useProps.color)}`
   } else {
-    style.borderTop = `${useUnit(props.height)} ${props.type} ${useColor(props.color)}`
+    style.borderTop = `${useUnit(useProps.height)} ${useProps.type} ${useColor(useProps.color)}`
   }
-  return useStyle({ ...style, ...useStyle(props.customStyle) })
+  return useStyle({ ...style, ...useStyle(useProps.customStyle) })
 })
 
 defineExpose({ name: "ui-line" })

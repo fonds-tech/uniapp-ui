@@ -1,7 +1,8 @@
 import type TabbarItem from "./ui-tabbar-item.vue"
-import { styleProp, buildProps, makeStringProp, makeNumericProp } from "../utils/props"
+import { createProps } from "../hooks"
+import { styleProp, makeStringProp, makeNumericProp } from "../utils/props"
 
-export const tabbarItemProps = buildProps("tabbarItem", {
+export const [tabbarItemProps, useTabbarItemProps] = createProps("tabbarItem", {
   /**
    * 标签名称，作为匹配的标识符
    */

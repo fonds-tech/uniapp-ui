@@ -10,7 +10,7 @@
 
 <script setup lang="ts">
 import type { CSSProperties } from "vue"
-import { backTopEmits, backTopProps } from "./index"
+import { backTopEmits, backTopProps, useBackTopProps } from "./index"
 import { useMitt, useUnit, useColor, useStyle, useUnitToPx } from "../hooks"
 
 // 定义组件名称
@@ -19,6 +19,7 @@ defineOptions({ name: "ui-back-top" })
 // 定义props和emits
 const props = defineProps(backTopProps)
 const emits = defineEmits(backTopEmits)
+const useProps = useBackTopProps(props)
 
 // 使用mitt事件总线
 const mitt = useMitt()
@@ -36,27 +37,27 @@ const classs = computed(() => {
 // 计算组件的样式
 const style = computed(() => {
   const style: CSSProperties = {}
-  style.zIndex = props.zIndex
-  style.right = useUnit(props.right)
-  style.bottom = useUnit(props.bottom)
-  style.background = useColor(props.background)
-  style.borderRadius = useUnit(props.borderRadius)
+  style.zIndex = useProps.zIndex
+  style.right = useUnit(useProps.right)
+  style.bottom = useUnit(useProps.bottom)
+  style.background = useColor(useProps.background)
+  style.borderRadius = useUnit(useProps.borderRadius)
   // 合并自定义样式
-  return useStyle({ ...style, ...useStyle(props.customStyle) })
+  return useStyle({ ...style, ...useStyle(useProps.customStyle) })
 })
 
 // 监听滚动事件
 function onEvent() {
   mitt.on("scroll", (options: { scrollTop: number }) => {
     // 当滚动位置超过设定的偏移量时,显示组件
-    visible.value = options.scrollTop >= useUnitToPx(props.offset)
+    visible.value = options.scrollTop >= useUnitToPx(useProps.offset)
   })
 }
 
 // 点击事件处理函数
 function onClick() {
   // 滚动到页面顶部
-  uni.pageScrollTo({ scrollTop: 0, duration: +props.duration })
+  uni.pageScrollTo({ scrollTop: 0, duration: +useProps.duration })
   // 触发click事件
   emits("click")
 }

@@ -1,7 +1,8 @@
 import type Icon from "./ui-icon.vue"
-import { styleProp, buildProps, makeStringProp, makeNumericProp } from "../utils/props"
+import { createProps } from "../hooks"
+import { styleProp, makeStringProp, makeNumericProp } from "../utils/props"
 
-export const iconProps = buildProps("icon", {
+export const [iconProps, useIconProps] = createProps("icon", {
   /**
    * 图标名称或者图片地址
    */

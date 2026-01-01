@@ -1,8 +1,9 @@
 import type SafeAreaBottom from "./ui-safe-area-bottom.vue"
 import { isNumber } from "../utils/check"
-import { styleProp, buildProps, makeStringProp } from "../utils/props"
+import { createProps } from "../hooks"
+import { styleProp, makeStringProp } from "../utils/props"
 
-export const safeAreaBottomProps = buildProps("safeAreaBottom", {
+export const [safeAreaBottomProps, useSafeAreaBottomProps] = createProps("safeAreaBottom", {
   /**
    * 背景色
    */

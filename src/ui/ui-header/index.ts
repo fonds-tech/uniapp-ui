@@ -1,8 +1,9 @@
 import type Header from "./ui-header.vue"
 import type { ExtractPropTypes } from "vue"
-import { styleProp, buildProps, makeStringProp, makeNumericProp } from "../utils/props"
+import { createProps } from "../hooks"
+import { styleProp, makeStringProp, makeNumericProp } from "../utils/props"
 
-export const headerProps = buildProps("header", {
+export const [headerProps, useHeaderProps] = createProps("header", {
   /**
    * 元素层级
    */

@@ -58,9 +58,39 @@
       </demo-block>
     </demo-section>
 
+    <demo-section title="显示文字">
+      <demo-block direction="column" :gap="32" :cols="3">
+        <ui-switch v-model="textValue1" size="56rpx" active-text="开" inactive-text="关" />
+        <ui-switch v-model="textValue2" size="70rpx" active-text="ON" inactive-text="OFF" />
+        <ui-switch v-model="textValue3" size="80rpx" active-text="启用" inactive-text="禁用" text-size="24rpx" text-weight="600" />
+      </demo-block>
+    </demo-section>
+
+    <demo-section title="自定义值">
+      <demo-block direction="column" align="start" :gap="16">
+        <ui-switch v-model="customValue" active-value="1" inactive-value="0" />
+        <text class="demo-text">当前值: {{ customValue }}</text>
+      </demo-block>
+    </demo-section>
+
+    <demo-section title="自定义节点">
+      <demo-block :cols="2" :gap="32">
+        <ui-switch v-model="nodeValue1" size="50rpx">
+          <template #node="{ checked }">
+            <ui-icon :name="checked ? 'check' : 'close'" size="24rpx" :color="checked ? '#07c160' : '#999'" />
+          </template>
+        </ui-switch>
+        <ui-switch v-model="nodeValue2" size="50rpx">
+          <template #node="{ checked }">
+            <text class="node-emoji">{{ checked ? "🌙" : "☀️" }}</text>
+          </template>
+        </ui-switch>
+      </demo-block>
+    </demo-section>
+
     <demo-section title="异步控制">
       <demo-block direction="column" align="start" :gap="16">
-        <ui-switch v-model="asyncValue" :loading="asyncLoading" @change="onAsyncChange" />
+        <ui-switch v-model="asyncValue" :loading="asyncLoading" :before-change="onBeforeChange" />
         <text class="demo-text">点击后延迟1秒切换</text>
       </demo-block>
     </demo-section>
@@ -85,24 +115,33 @@ const value8 = ref(true)
 const value9 = ref(true)
 const value10 = ref(true)
 
+const textValue1 = ref(true)
+const textValue2 = ref(false)
+const textValue3 = ref(true)
+
+const customValue = ref("0")
+
+const nodeValue1 = ref(true)
+const nodeValue2 = ref(false)
+
 const asyncValue = ref(false)
 const asyncLoading = ref(false)
 
-function onAsyncChange() {
+function onBeforeChange(value: boolean, next: (val?: boolean) => void) {
   asyncLoading.value = true
   setTimeout(() => {
-    asyncValue.value = !asyncValue.value
     asyncLoading.value = false
+    next()
   }, 1000)
 }
 </script>
 
 <style lang="scss" scoped>
 .switch-item {
+  gap: 12rpx;
   display: flex;
   align-items: center;
   flex-direction: column;
-  gap: 12rpx;
 }
 
 .switch-label {
@@ -113,5 +152,9 @@ function onAsyncChange() {
 .demo-text {
   color: var(--ui-color-text-secondary);
   font-size: 24rpx;
+}
+
+.node-emoji {
+  font-size: 20rpx;
 }
 </style>

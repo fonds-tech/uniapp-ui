@@ -1,8 +1,9 @@
 import type SafeAreaTop from "./ui-safe-area-top.vue"
 import { isNumber } from "../utils/check"
-import { styleProp, buildProps, makeStringProp } from "../utils/props"
+import { createProps } from "../hooks"
+import { styleProp, makeStringProp } from "../utils/props"
 
-export const safeAreaTopProps = buildProps("safeAreaTop", {
+export const [safeAreaTopProps, useSafeAreaTopProps] = createProps("safeAreaTop", {
   /**
    * 背景色
    */

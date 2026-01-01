@@ -1,8 +1,9 @@
 import type TextEllipsis from "./ui-text-ellipsis.vue"
 import type { PropType, CSSProperties, ExtractPropTypes } from "vue"
-import { buildProps, numericProp, makeStringProp, makeNumericProp } from "../utils/props"
+import { createProps } from "../hooks"
+import { numericProp, makeStringProp, makeNumericProp } from "../utils/props"
 
-export const textEllipsisProps = buildProps("textEllipsis", {
+export const [textEllipsisProps, useTextEllipsisProps] = createProps("textEllipsis", {
   /**
    * 文本内容
    */

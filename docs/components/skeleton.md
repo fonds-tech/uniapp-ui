@@ -73,47 +73,47 @@
 
 ## Skeleton Props
 
-| 参数 | 说明 | 类型 | 默认值 |
-| --- | --- | --- | --- |
-| animate | 是否开启动画 | `boolean` | `true` |
-| background | 背景颜色 | `string` | - |
-| custom-class | 自定义类名 | `string` | - |
-| custom-style | 自定义样式 | `string \| object` | - |
+| 参数         | 说明         | 类型               | 默认值 |
+| ------------ | ------------ | ------------------ | ------ |
+| animate      | 是否开启动画 | `boolean`          | `true` |
+| background   | 背景颜色     | `string`           | -      |
+| custom-class | 自定义类名   | `string`           | -      |
+| custom-style | 自定义样式   | `string \| object` | -      |
 
 ## Skeleton Slots
 
-| 名称 | 说明 |
-| --- | --- |
+| 名称    | 说明       |
+| ------- | ---------- |
 | default | 骨架屏内容 |
 
 ## SkeletonTitle Props
 
-| 参数 | 说明 | 类型 | 默认值 |
-| --- | --- | --- | --- |
-| width | 宽度 | `string \| number` | `40%` |
+| 参数   | 说明 | 类型               | 默认值  |
+| ------ | ---- | ------------------ | ------- |
+| width  | 宽度 | `string \| number` | `40%`   |
 | height | 高度 | `string \| number` | `32rpx` |
-| radius | 圆角 | `string \| number` | `8rpx` |
+| radius | 圆角 | `string \| number` | `8rpx`  |
 
 ## SkeletonParagraph Props
 
-| 参数 | 说明 | 类型 | 默认值 |
-| --- | --- | --- | --- |
-| rows | 行数 | `number` | `3` |
-| row-width | 每行宽度 | `string \| number \| array` | `100%` |
-| row-height | 行高 | `string \| number` | `28rpx` |
-| row-gap | 行间距 | `string \| number` | `16rpx` |
+| 参数       | 说明     | 类型                        | 默认值  |
+| ---------- | -------- | --------------------------- | ------- |
+| rows       | 行数     | `number`                    | `3`     |
+| row-width  | 每行宽度 | `string \| number \| array` | `100%`  |
+| row-height | 行高     | `string \| number`          | `28rpx` |
+| row-gap    | 行间距   | `string \| number`          | `16rpx` |
 
 ## SkeletonAvatar Props
 
-| 参数 | 说明 | 类型 | 默认值 |
-| --- | --- | --- | --- |
-| size | 头像大小 | `string \| number` | `64rpx` |
-| shape | 头像形状 | `round \| square` | `round` |
+| 参数  | 说明     | 类型               | 默认值  |
+| ----- | -------- | ------------------ | ------- |
+| size  | 头像大小 | `string \| number` | `64rpx` |
+| shape | 头像形状 | `round \| square`  | `round` |
 
 ## SkeletonImage Props
 
-| 参数 | 说明 | 类型 | 默认值 |
-| --- | --- | --- | --- |
-| width | 图片宽度 | `string \| number` | `100%` |
+| 参数   | 说明     | 类型               | 默认值   |
+| ------ | -------- | ------------------ | -------- |
+| width  | 图片宽度 | `string \| number` | `100%`   |
 | height | 图片高度 | `string \| number` | `200rpx` |
-| radius | 圆角 | `string \| number` | `8rpx` |
+| radius | 圆角     | `string \| number` | `8rpx`   |

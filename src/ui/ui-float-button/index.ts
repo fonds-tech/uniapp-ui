@@ -1,8 +1,9 @@
 import type FloatButton from "./ui-float-button.vue"
 import type { ExtractPropTypes } from "vue"
-import { styleProp, buildProps, numericProp, makeStringProp, makeNumericProp } from "../utils/props"
+import { createProps } from "../hooks"
+import { styleProp, numericProp, makeStringProp, makeNumericProp } from "../utils/props"
 
-export const floatButtonProps = buildProps("floatButton", {
+export const [floatButtonProps, useFloatButtonProps] = createProps("floatButton", {
   /**
    * 图标名称
    */

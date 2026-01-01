@@ -1,7 +1,8 @@
 import type Row from "./ui-row.vue"
-import { styleProp, buildProps, makeStringProp, makeNumericProp } from "../utils/props"
+import { createProps } from "../hooks"
+import { styleProp, makeStringProp, makeNumericProp } from "../utils/props"
 
-export const rowProps = buildProps("row", {
+export const [rowProps, useRowProps] = createProps("row", {
   /**
    * 间隔距离
    */

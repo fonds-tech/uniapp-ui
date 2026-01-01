@@ -65,22 +65,22 @@ const show = ref(true)
 
 ### Props
 
-| 属性名        | 说明       | 类型                                             | 默认值    |
-| ------------- | ---------- | ------------------------------------------------ | --------- |
-| text          | 标签内容   | `string`                                         | -         |
+| 属性名        | 说明       | 类型                                              | 默认值    |
+| ------------- | ---------- | ------------------------------------------------- | --------- |
+| text          | 标签内容   | `string`                                          | -         |
 | type          | 类型       | `primary \| success \| warning \| danger \| info` | `primary` |
-| plain         | 是否镂空   | `boolean`                                        | `false`   |
-| round         | 是否圆角   | `boolean`                                        | `false`   |
-| closeable     | 是否可关闭 | `boolean`                                        | `false`   |
-| show          | 是否显示   | `boolean`                                        | `true`    |
-| icon          | 图标名称   | `string`                                         | -         |
-| icon-color    | 图标颜色   | `string`                                         | -         |
-| icon-size     | 图标大小   | `string \| number`                               | -         |
-| text-color    | 文字颜色   | `string`                                         | -         |
-| text-size     | 文字大小   | `string \| number`                               | -         |
-| background    | 背景颜色   | `string`                                         | -         |
-| border-color  | 边框颜色   | `string`                                         | -         |
-| border-radius | 圆角大小   | `string \| number`                               | -         |
+| plain         | 是否镂空   | `boolean`                                         | `false`   |
+| round         | 是否圆角   | `boolean`                                         | `false`   |
+| closeable     | 是否可关闭 | `boolean`                                         | `false`   |
+| show          | 是否显示   | `boolean`                                         | `true`    |
+| icon          | 图标名称   | `string`                                          | -         |
+| icon-color    | 图标颜色   | `string`                                          | -         |
+| icon-size     | 图标大小   | `string \| number`                                | -         |
+| text-color    | 文字颜色   | `string`                                          | -         |
+| text-size     | 文字大小   | `string \| number`                                | -         |
+| background    | 背景颜色   | `string`                                          | -         |
+| border-color  | 边框颜色   | `string`                                          | -         |
+| border-radius | 圆角大小   | `string \| number`                                | -         |
 
 ### Events
 

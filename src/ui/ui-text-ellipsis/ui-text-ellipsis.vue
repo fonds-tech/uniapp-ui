@@ -5,7 +5,7 @@
     <view v-if="isShowTail" class="ui-text-ellipsis__tail" :class="{ 'ui-text-ellipsis__action--expand': expand }" @click="onClickExpand">
       <text v-if="isShowDots" class="ui-text-ellipsis__dots" :style="[dotsStyle]">{{ dots }}</text>
       <slot :expand="expand">
-        <text class="ui-text-ellipsis__action" :style="[actionStyle]">{{ expand ? props.collapseText : props.expandText }}</text>
+        <text class="ui-text-ellipsis__action" :style="[actionStyle]">{{ expand ? useProps.collapseText : useProps.expandText }}</text>
       </slot>
     </view>
     {{ text }}
@@ -15,7 +15,7 @@
 <script setup lang="ts">
 import type { CSSProperties } from "vue"
 import { useRect, useUnit, useColor, useStyle } from "../hooks"
-import { textEllipsisEmits, textEllipsisProps } from "./index"
+import { textEllipsisEmits, textEllipsisProps, useTextEllipsisProps } from "./index"
 
 // 定义组件名称
 defineOptions({ name: "ui-text-ellipsis" })
@@ -23,7 +23,7 @@ defineOptions({ name: "ui-text-ellipsis" })
 // 定义props和emits
 const props = defineProps(textEllipsisProps)
 const emits = defineEmits(textEllipsisEmits)
-
+const useProps = useTextEllipsisProps(props)
 // 定义refs用于存储DOM元素的尺寸信息
 const rect = ref<UniApp.NodeInfo>(null)
 const colRect = ref<UniApp.NodeInfo>(null)
@@ -37,52 +37,52 @@ const instance = getCurrentInstance()
 // 计算组件的样式
 const style = computed(() => {
   const style: CSSProperties = {}
-  style.color = useColor(props.color)
-  style.fontWeight = props.weight
-  style.lineHeight = useUnit(props.lineHeight)
+  style.color = useColor(useProps.color)
+  style.fontWeight = useProps.weight
+  style.lineHeight = useUnit(useProps.lineHeight)
   // 如果未展开且有列高度，设置最大高度
   if (!expand.value && colRect.value?.height) {
-    style.maxHeight = `calc(${colRect.value.height}px * ${props.rows})`
+    style.maxHeight = `calc(${colRect.value.height}px * ${useProps.rows})`
   }
-  return useStyle({ ...style, ...useStyle(props.customStyle) })
+  return useStyle({ ...style, ...useStyle(useProps.customStyle) })
 })
 
 // 计算省略号的样式
 const dotsStyle = computed(() => {
   const style: CSSProperties = {}
-  style.color = useColor(props.color)
-  style.fontWeight = props.weight
-  style.lineHeight = useUnit(props.lineHeight)
+  style.color = useColor(useProps.color)
+  style.fontWeight = useProps.weight
+  style.lineHeight = useUnit(useProps.lineHeight)
   return useStyle(style)
 })
 
 // 计算展开/收起按钮的样式
 const actionStyle = computed(() => {
   const style: CSSProperties = {}
-  style.fontWeight = props.weight
-  style.lineHeight = useUnit(props.lineHeight)
-  style.color = useColor(expand.value ? props.collapseTextColor : props.expandTextColor)
+  style.fontWeight = useProps.weight
+  style.lineHeight = useUnit(useProps.lineHeight)
+  style.color = useColor(expand.value ? useProps.collapseTextColor : useProps.expandTextColor)
   return useStyle(style)
 })
 
 // 获取文本的第一个字符（优先选择中文字符）
 const colText = computed(() => {
-  const matched = props.text.match(/[\u4E00-\u9FA5]/)
+  const matched = useProps.text.match(/[\u4E00-\u9FA5]/)
   if (matched) return matched[0]
-  return props.text?.slice(0, 1) || ""
+  return useProps.text?.slice(0, 1) || ""
 })
 
 // 判断是否需要显示尾部（展开/收起按钮）
 const isShowTail = computed(() => {
-  const maxHeihgt = Math.floor(colRect.value?.height * +props.rows)
-  return fullRect.value?.height > maxHeihgt && props.text
+  const maxHeihgt = Math.floor(colRect.value?.height * +useProps.rows)
+  return fullRect.value?.height > maxHeihgt && useProps.text
 })
 
 // 判断是否显示省略号
-const isShowDots = computed(() => props.dots && !expand.value)
+const isShowDots = computed(() => useProps.dots && !expand.value)
 
 // 监听文本变化，触发重新计算尺寸
-watch(() => props.text, resize, { immediate: true })
+watch(() => useProps.text, resize, { immediate: true })
 
 // 重新计算各元素尺寸
 async function resize() {

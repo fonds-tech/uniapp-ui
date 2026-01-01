@@ -73,86 +73,87 @@
 </template>
 
 <script setup lang="ts">
-import { fieldEmits, fieldProps } from "./index"
 import { useUnit, useColor, useStyle } from "../hooks"
+import { fieldEmits, fieldProps, useFieldProps } from "./index"
 
 defineOptions({ name: "ui-field" })
 
 const props = defineProps(fieldProps)
 const emits = defineEmits(fieldEmits)
+const useProps = useFieldProps(props)
 const slots = useSlots()
 const current = ref("")
 const isFocus = ref(false)
 
 const style = computed(() => {
   const style: any = {}
-  style.border = props.border
-  style.width = useUnit(props.width)
-  style.height = useUnit(props.height)
-  style.minHeight = useUnit(props.minHeight)
-  style.background = useColor(props.background)
-  style.borderRadius = useUnit(props.borderRadius)
-  return useStyle({ ...style, ...useStyle(props.customStyle) })
+  style.border = useProps.border
+  style.width = useUnit(useProps.width)
+  style.height = useUnit(useProps.height)
+  style.minHeight = useUnit(useProps.minHeight)
+  style.background = useColor(useProps.background)
+  style.borderRadius = useUnit(useProps.borderRadius)
+  return useStyle({ ...style, ...useStyle(useProps.customStyle) })
 })
 
 const classs = computed(() => {
   const list: string[] = []
-  list.push(`ui-field--${props.type}`)
-  if (props.readonly) list.push("ui-field--readonly")
-  if (props.disabled) list.push("ui-field--disabled")
-  if (props.labelAlign) list.push(`ui-field--${props.labelAlign}`)
+  list.push(`ui-field--${useProps.type}`)
+  if (useProps.readonly) list.push("ui-field--readonly")
+  if (useProps.disabled) list.push("ui-field--disabled")
+  if (useProps.labelAlign) list.push(`ui-field--${useProps.labelAlign}`)
   return list
 })
 
 const inputStyle = computed(() => {
   const style: any = {}
-  style.color = useColor(props.color)
-  style.fontSize = useUnit(props.fontSize)
-  style.fontWeight = props.fontWeight
-  style.textAlign = props.inputAlign
+  style.color = useColor(useProps.color)
+  style.fontSize = useUnit(useProps.fontSize)
+  style.fontWeight = useProps.fontWeight
+  style.textAlign = useProps.inputAlign
   return useStyle(style)
 })
 
 const labelStyle = computed(() => {
   const style: any = {}
-  style.width = useUnit(props.labelWidth)
-  style.color = useColor(props.labelColor)
-  style.fontSize = useUnit(props.labelSize)
-  style.fontWeight = props.labelWeight
-  style.textAlign = props.labelAlign
+  style.width = useUnit(useProps.labelWidth)
+  style.color = useColor(useProps.labelColor)
+  style.fontSize = useUnit(useProps.labelSize)
+  style.fontWeight = useProps.labelWeight
+  style.textAlign = useProps.labelAlign
   return useStyle(style)
 })
 
 const labelClass = computed(() => {
   const list: string[] = []
-  if (props.labelAlign) list.push(`ui-field__label--${props.labelAlign}`)
+  if (useProps.labelAlign) list.push(`ui-field__label--${useProps.labelAlign}`)
   return list
 })
 
 const textareaStyle = computed(() => {
   const style: any = {}
-  style.color = useColor(props.color)
-  style.fontSize = useUnit(props.fontSize)
-  style.fontWeight = props.fontWeight
+  style.color = useColor(useProps.color)
+  style.fontSize = useUnit(useProps.fontSize)
+  style.fontWeight = useProps.fontWeight
   return useStyle(style)
 })
 
 const placeholderStyle = computed(() => {
   const style: any = {}
-  style.color = useColor(props.placeholderColor)
-  return useStyle({ ...style, ...useStyle(props.placeholderStyle) }, "string")
+  style.color = useColor(useProps.placeholderColor)
+  return useStyle({ ...style, ...useStyle(useProps.placeholderStyle) }, "string")
 })
 
 const type = computed(() => {
-  return props.type as any
+  return useProps.type as any
 })
 
 const disabled = computed(() => {
-  return props.disabled || props.readonly
+  return useProps.disabled || useProps.readonly
 })
 
 watch(
-  () => props.modelValue,
+  () => useProps.modelValue,
   (val) => (current.value = String(val)),
   { immediate: true },
 )
@@ -199,7 +200,7 @@ function onKeyboardheightchange() {
   emits("keyboardheightchange")
 }
 
-defineExpose({ name: "ui-field", prop: props.prop, modelValue: props.modelValue, reset })
+defineExpose({ name: "ui-field", prop: useProps.prop, modelValue: useProps.modelValue, reset })
 </script>
 
 <script lang="ts">

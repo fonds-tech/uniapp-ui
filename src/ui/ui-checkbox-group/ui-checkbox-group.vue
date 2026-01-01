@@ -8,34 +8,34 @@
 import type { CSSProperties } from "vue"
 import { isEmpty } from "../utils/check"
 import { useStyle, useChildren } from "../hooks"
-import { checkboxGroupKey, checkboxGroupEmits, checkboxGroupProps } from "./index"
+import { checkboxGroupKey, checkboxGroupEmits, checkboxGroupProps, useCheckboxGroupProps } from "./index"
 
 defineOptions({ name: "ui-checkbox-group" })
 
 const props = defineProps(checkboxGroupProps)
 const emits = defineEmits(checkboxGroupEmits)
-
+const useProps = useCheckboxGroupProps(props)
 const { childrens, linkChildren } = useChildren(checkboxGroupKey)
 
 const style = computed(() => {
   const style: CSSProperties = {}
-  return useStyle({ ...style, ...useStyle(props.customStyle) })
+  return useStyle({ ...style, ...useStyle(useProps.customStyle) })
 })
 
 const classs = computed(() => {
   const list: string[] = []
-  if (props.vertical) list.push("ui-checkbox-group--vertical")
+  if (useProps.vertical) list.push("ui-checkbox-group--vertical")
   return list
 })
 
 watch(
-  () => props.modelValue,
+  () => useProps.modelValue,
   (value) => emits("change", value),
 )
 
 function toggleAll(checked: boolean) {
   const checkeds = childrens.filter((children) => {
-    if (isEmpty(children.props.bindGroup)) return false
+    if (isEmpty(children.exposed.useProps.bindGroup)) return false
     return checked ?? !toRef(children.exposed.checked).value
   })
   const value = checkeds.map((children) => toRef(children.exposed.name).value)
@@ -46,7 +46,7 @@ async function updateValue(value: unknown[]) {
   emits("update:modelValue", toRaw(value))
 }
 
-linkChildren({ props, updateValue })
+linkChildren({ props, useProps, updateValue })
 defineExpose({ toggleAll })
 </script>
 

@@ -61,8 +61,8 @@ import type { CascaderTab, CascaderOption } from "./index"
 import { clone, merge } from "../utils/utils"
 import { callInterceptor } from "../utils/interceptor"
 import { useRects, useStyle } from "../hooks"
-import { cascaderEmits, cascaderProps } from "./index"
 import { isDef, isEmpty, isNoEmpty, isFunction } from "../utils/check"
+import { cascaderEmits, cascaderProps, useCascaderProps } from "./index"
 
 // 定义组件名称
 defineOptions({ name: "ui-cascader" })
@@ -70,6 +70,7 @@ defineOptions({ name: "ui-cascader" })
 // 定义props和emits
 const props = defineProps(cascaderProps)
 const emits = defineEmits(cascaderEmits)
+const useProps = useCascaderProps(props)
 const instance = getCurrentInstance()
 
 // 定义响应式数据
@@ -81,12 +82,12 @@ const currentValue = ref<string | number>("") // 当前选中的值
 
 // 定义默认的字段键名
 const defaultFieldKeys = { text: "text", value: "value", children: "children", disabled: "disabled" }
-const { text: textKey, value: valueKey, children: childrenKey, disabled: disabledKey } = merge(defaultFieldKeys, props.fieldKeys)
+const { text: textKey, value: valueKey, children: childrenKey, disabled: disabledKey } = merge(defaultFieldKeys, useProps.fieldKeys)
 
 // 计算样式
 const style = computed(() => {
   const style: any = {}
-  return useStyle({ ...style, ...useStyle(props.customStyle) })
+  return useStyle({ ...style, ...useStyle(useProps.customStyle) })
 })
 
 // 计算标签页下划线的样式
@@ -99,9 +100,9 @@ const tabsLineStyle = computed(() => {
   return style
 })
 
-// 监听props.modelValue的变化
+// 监听useProps.modelValue的变化
 watch(
-  () => props.modelValue,
+  () => useProps.modelValue,
   (value) => {
     currentValue.value = value
     updateTabs()
@@ -109,8 +110,8 @@ watch(
   { immediate: true },
 )
 
-// 监听props.options的变化
-watch(() => props.options, updateTabs, { deep: true })
+// 监听useProps.options的变化
+watch(() => useProps.options, updateTabs, { deep: true })
 
 // 监听activeTab的变化
 watch(() => activeTab.value, updateRect, { immediate: true })
@@ -213,11 +214,11 @@ async function onClickOption(option: CascaderOption, index: number, optionIndex:
   }
 
   // 处理beforeChange拦截器
-  if (isFunction(props.beforeChange)) {
+  if (isFunction(useProps.beforeChange)) {
     const indexs = [...tabs.value.filter((tab) => tab.selected).map((tab) => tab.options.findIndex((item: any) => item[valueKey] === tab.selected?.[valueKey]))]
     indexs[index] = optionIndex
     loading.value = true
-    callInterceptor(props.beforeChange, {
+    callInterceptor(useProps.beforeChange, {
       args: [{ index, option: toRaw(clone(option)), optionIndex, optionIndexs: indexs }],
       done() {
         next()

@@ -1,9 +1,10 @@
 import type Overlay from "./ui-overlay.vue"
 import type { PropType, CSSProperties, ExtractPropTypes } from "vue"
 import { isBoolean } from "../utils/check"
-import { truthProp, buildProps, numericProp, makeStringProp, makeNumericProp } from "../utils/props"
+import { createProps } from "../hooks"
+import { truthProp, numericProp, makeStringProp, makeNumericProp } from "../utils/props"
 
-export const overlayProps = buildProps("overlay", {
+export const [overlayProps, useOverlayProps] = createProps("overlay", {
   /**
    * 是否显示
    */

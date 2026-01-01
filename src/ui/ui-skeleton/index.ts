@@ -1,9 +1,10 @@
 import type Skeleton from "./ui-skeleton.vue"
 import type { PropType, InjectionKey, CSSProperties, ExtractPropTypes } from "vue"
-import { truthProp, buildProps } from "../utils/props"
+import { truthProp } from "../utils/props"
+import { createProps } from "../hooks"
 
 export const skeletonKey: InjectionKey<SkeletonProvide> = Symbol("ui-skeleton")
-export const skeletonProps = buildProps("skeleton", {
+export const [skeletonProps, useSkeletonProps] = createProps("skeleton", {
   /**
    * 是否开启动画
    */

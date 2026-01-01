@@ -1,7 +1,8 @@
 import type Qrcode from "./ui-qrcode.vue"
-import { styleProp, truthProp, buildProps, makeNumberProp, makeStringProp, makeNumericProp } from "../utils/props"
+import { createProps } from "../hooks"
+import { styleProp, truthProp, makeNumberProp, makeStringProp, makeNumericProp } from "../utils/props"
 
-export const qrcodeProps = buildProps("qrcode", {
+export const [qrcodeProps, useQrcodeProps] = createProps("qrcode", {
   /**
    * 是否显示
    */

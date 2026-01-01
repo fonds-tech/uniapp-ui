@@ -1,8 +1,9 @@
 import type Radio from "./ui-radio.vue"
 import type { ExtractPropTypes } from "vue"
-import { styleProp, truthProp, buildProps, makeStringProp, makeNumericProp } from "../utils/props"
+import { createProps } from "../hooks"
+import { styleProp, truthProp, makeStringProp, makeNumericProp } from "../utils/props"
 
-export const radioProps = buildProps("radio", {
+export const [radioProps, useRadioProps] = createProps("radio", {
   /**
    * 标识符，通常为一个唯一的字符串或数字
    */

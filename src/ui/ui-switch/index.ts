@@ -1,8 +1,9 @@
 import type Switch from "./ui-switch.vue"
 import type { ExtractPropTypes } from "vue"
-import { styleProp, buildProps, makeStringProp, makeNumericProp } from "../utils/props"
+import { createProps } from "../hooks"
+import { styleProp, makeStringProp, makeNumericProp } from "../utils/props"
 
-export const switchProps = buildProps("switch", {
+export const [switchProps, useSwitchProps] = createProps("switch", {
   /**
    * 开关选中状态
    */
@@ -39,6 +40,26 @@ export const switchProps = buildProps("switch", {
    * 关闭时的背景色
    */
   inactiveColor: makeStringProp(""),
+  /**
+   * 打开时显示的文字
+   */
+  activeText: makeStringProp(""),
+  /**
+   * 关闭时显示的文字
+   */
+  inactiveText: makeStringProp(""),
+  /**
+   * 文字大小
+   */
+  textSize: makeNumericProp(""),
+  /**
+   * 文字颜色
+   */
+  textColor: makeStringProp(""),
+  /**
+   * 文字粗细
+   */
+  textWeight: makeNumericProp(""),
   /**
    * 加载中图标大小
    */

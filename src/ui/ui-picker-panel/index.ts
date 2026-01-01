@@ -1,8 +1,9 @@
 import type PickerPanel from "./ui-picker-panel.vue"
 import type { PropType, ExtractPropTypes } from "vue"
-import { buildProps, numericProp, makeArrayProp, makeNumericProp } from "../utils/props"
+import { createProps } from "../hooks"
+import { numericProp, makeArrayProp, makeNumericProp } from "../utils/props"
 
-export const pickerPanelProps = buildProps("pickerPanel", {
+export const [pickerPanelProps, usePickerPanelProps] = createProps("pickerPanel", {
   /**
    * 绑定值
    */

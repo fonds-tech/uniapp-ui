@@ -7,12 +7,13 @@
 <script setup lang="ts">
 import type { CSSProperties } from "vue"
 import { useRgb, useMitt, useUnit, useColor, useStyle, useChildren } from "../hooks"
-import { configProviderKey, configProviderEmits, configProviderProps } from "./index"
+import { configProviderKey, configProviderEmits, configProviderProps, useConfigProviderProps } from "./index"
 
 defineOptions({ name: "ui-config-provider" })
 
 const props = defineProps(configProviderProps)
 const emits = defineEmits(configProviderEmits)
+const useProps = useConfigProviderProps(props)
 const { linkChildren } = useChildren(configProviderKey)
 
 const route = ref("")
@@ -22,18 +23,18 @@ const mitt = useMitt()
 
 /** 当前生效的主题 */
 const currentTheme = computed(() => {
-  if (props.theme === "auto") {
+  if (useProps.theme === "auto") {
     return systemTheme.value
   }
-  return props.theme
+  return useProps.theme
 })
 
 const style = computed(() => {
   const style: CSSProperties = {}
 
   // 遍历用户传入的 themeVars，生成对应的 CSS 变量
-  if (props.themeVars) {
-    Object.entries(props.themeVars).forEach(([key, value]) => {
+  if (useProps.themeVars) {
+    Object.entries(useProps.themeVars).forEach(([key, value]) => {
       if (value) {
         Object.assign(style, generateColorVars(key, value))
       }
@@ -41,11 +42,11 @@ const style = computed(() => {
   }
 
   // 注入自定义 CSS 变量（用于任意扩展）
-  applyCustomCssVars(style, props.cssVars)
+  applyCustomCssVars(style, useProps.cssVars)
 
-  style.minHeight = useUnit(props.height)
-  style.background = useColor(props.background)
-  return useStyle({ ...style, ...useStyle(props.customStyle) })
+  style.minHeight = useUnit(useProps.height)
+  style.background = useColor(useProps.background)
+  return useStyle({ ...style, ...useStyle(useProps.customStyle) })
 })
 
 function init() {
@@ -158,8 +159,8 @@ export default {
 
 <style scoped lang="scss">
 .ui-config-provider {
-  width: 100%;
   color: var(--ui-color-text-main);
+  width: 100%;
   display: flex;
   position: relative;
   flex-direction: column;

@@ -1,8 +1,9 @@
 import type Resize from "./ui-resize.vue"
 import type { ExtractPropTypes } from "vue"
-import { styleProp, buildProps, numericProp, makeStringProp } from "../utils/props"
+import { createProps } from "../hooks"
+import { styleProp, numericProp, makeStringProp } from "../utils/props"
 
-export const resizeProps = buildProps("resize", {
+export const [resizeProps, useResizeProps] = createProps("resize", {
   /**
    * 初始宽度
    */

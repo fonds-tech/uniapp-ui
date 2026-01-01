@@ -1,8 +1,9 @@
 import type Textarea from "./ui-textarea.vue"
 import type { ExtractPropTypes } from "vue"
-import { styleProp, truthProp, buildProps, makeStringProp, makeNumericProp } from "../utils/props"
+import { createProps } from "../hooks"
+import { styleProp, truthProp, makeStringProp, makeNumericProp } from "../utils/props"
 
-export const textareaProps = buildProps("textarea", {
+export const [textareaProps, useTextareaProps] = createProps("textarea", {
   /**
    * 输入值
    */

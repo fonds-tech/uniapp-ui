@@ -58,28 +58,28 @@ const searchText = "UniApp UI 是一个基于 Vue 3 的跨端 UI 组件库"
 
 ## Props
 
-| 参数 | 说明 | 类型 | 默认值 |
-| --- | --- | --- | --- |
-| text | 文本内容 | `string` | - |
-| match | 匹配文本内容 | `string` | - |
-| color | 文本颜色 | `string` | - |
-| text-row | 文本行数 | `string \| number` | `2` |
-| font-size | 文本大小 | `string \| number` | - |
-| font-weight | 文本粗细 | `string \| number` | - |
-| line-height | 文本行高 | `string \| number` | - |
-| highlight-color | 文本高亮颜色 | `string` | - |
-| custom-class | 自定义类名 | `string` | - |
-| custom-style | 自定义样式 | `string \| object` | - |
+| 参数            | 说明         | 类型               | 默认值 |
+| --------------- | ------------ | ------------------ | ------ |
+| text            | 文本内容     | `string`           | -      |
+| match           | 匹配文本内容 | `string`           | -      |
+| color           | 文本颜色     | `string`           | -      |
+| text-row        | 文本行数     | `string \| number` | `2`    |
+| font-size       | 文本大小     | `string \| number` | -      |
+| font-weight     | 文本粗细     | `string \| number` | -      |
+| line-height     | 文本行高     | `string \| number` | -      |
+| highlight-color | 文本高亮颜色 | `string`           | -      |
+| custom-class    | 自定义类名   | `string`           | -      |
+| custom-style    | 自定义样式   | `string \| object` | -      |
 
 ## Events
 
-| 事件名 | 说明 | 回调参数 |
-| --- | --- | --- |
-| click | 点击文本时触发 | `value: string \| number` |
+| 事件名      | 说明               | 回调参数                  |
+| ----------- | ------------------ | ------------------------- |
+| click       | 点击文本时触发     | `value: string \| number` |
 | click-match | 点击高亮文本时触发 | `value: string \| number` |
 
 ## Methods
 
-| 方法名 | 说明 | 参数 |
-| --- | --- | --- |
-| match | 手动触发匹配 | - |
+| 方法名 | 说明         | 参数 |
+| ------ | ------------ | ---- |
+| match  | 手动触发匹配 | -    |

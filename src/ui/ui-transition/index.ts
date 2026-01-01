@@ -1,9 +1,10 @@
 import type Transition from "./ui-transition.vue"
 import type { PropType, CSSProperties, ExtractPropTypes } from "vue"
 import { isBoolean } from "../utils/check"
-import { truthProp, buildProps, numericProp, makeStringProp, makeNumericProp } from "../utils/props"
+import { createProps } from "../hooks"
+import { truthProp, numericProp, makeStringProp, makeNumericProp } from "../utils/props"
 
-export const transitionProps = buildProps("transition", {
+export const [transitionProps, useTransitionProps] = createProps("transition", {
   /**
    * 是否显示
    */

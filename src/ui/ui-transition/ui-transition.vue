@@ -6,8 +6,8 @@
 
 <script setup lang="ts">
 import { isNumber } from "../utils/check"
-import { transitionEmits, transitionProps } from "./index"
 import { useStyle, useTransition, useGlobalZIndex } from "../hooks"
+import { transitionEmits, transitionProps, useTransitionProps } from "./index"
 
 // 定义组件名称
 defineOptions({ name: "ui-transition" })
@@ -15,11 +15,11 @@ defineOptions({ name: "ui-transition" })
 // 定义props和emits
 const props = defineProps(transitionProps)
 const emits = defineEmits(transitionEmits)
-
+const useProps = useTransitionProps(props)
 const transition = useTransition() // 使用transition钩子
 
 const zIndex = ref<number>() // 用于存储z-index值
-const inited = computed(() => !props.lazyRender || transition.inited.value)
+const inited = computed(() => !useProps.lazyRender || transition.inited.value)
 
 // 为transition的各个阶段绑定事件
 transition.on("enter", () => emits("enter"))
@@ -34,12 +34,12 @@ const style = computed(() => {
   const style: any = {}
   style.zIndex = zIndex.value
   style.display = transition.visible.value ? "block" : "none"
-  return useStyle({ ...style, ...useStyle(props.customStyle), ...transition.styles.value })
+  return useStyle({ ...style, ...useStyle(useProps.customStyle), ...transition.styles.value })
 })
 
 // 监听visible的变化,触发enter或leave过渡
 watch(
-  () => props.show,
+  () => useProps.show,
   (val) => {
     val ? enter() : leave()
   },
@@ -47,15 +47,15 @@ watch(
 )
 
 // 监听props的变化,重新初始化transition
-watch(() => [props.name, props.duration, props.enterTimingFunction, props.leaveTimingFunction], initTransition, { immediate: true })
+watch(() => [useProps.name, useProps.duration, useProps.enterTimingFunction, useProps.leaveTimingFunction], initTransition, { immediate: true })
 
 // 初始化transition
 function initTransition() {
   transition.init({
-    name: props.name,
-    duration: props.duration,
-    enterTimingFunction: props.enterTimingFunction,
-    leaveTimingFunction: props.leaveTimingFunction,
+    name: useProps.name,
+    duration: useProps.duration,
+    enterTimingFunction: useProps.enterTimingFunction,
+    leaveTimingFunction: useProps.leaveTimingFunction,
   })
 }
 
@@ -63,7 +63,7 @@ function initTransition() {
 function enter() {
   if (transition.visible.value) return
   initTransition()
-  zIndex.value = isNumber(props.zIndex) ? +props.zIndex : useGlobalZIndex()
+  zIndex.value = isNumber(useProps.zIndex) ? +useProps.zIndex : useGlobalZIndex()
   transition.enter()
   emits("update:show", true)
 }

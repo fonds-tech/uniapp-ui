@@ -7,12 +7,13 @@ import type { CSSProperties } from "vue"
 import { isDef } from "../utils/check"
 import { skeletonKey } from "../ui-skeleton"
 import { useRect, useUnit, useStyle, useParent } from "../hooks"
-import { skeletonImageEmits, skeletonImageProps } from "./index"
+import { skeletonImageEmits, skeletonImageProps, useSkeletonImageProps } from "./index"
 
 defineOptions({ name: "ui-skeleton-image" })
 
 const props = defineProps(skeletonImageProps)
 const emits = defineEmits(skeletonImageEmits)
+const useProps = useSkeletonImageProps(props)
 const { parent } = useParent(skeletonKey)
 
 const instance = getCurrentInstance()
@@ -21,14 +22,14 @@ const rect = ref<UniApp.NodeInfo>({ width: 0, height: 0 })
 
 const style = computed(() => {
   const style: CSSProperties = {}
-  style.width = useUnit(props.width ?? props.size)
-  style.height = useUnit(props.height ?? props.size)
+  style.width = useUnit(useProps.width ?? useProps.size)
+  style.height = useUnit(useProps.height ?? useProps.size)
 
   if (prop("square")) {
     style.height = `${rect.value.width}px`
   }
-  style.borderRadius = useUnit(props.radius)
-  return useStyle({ ...style, ...useStyle(props.customStyle) })
+  style.borderRadius = useUnit(useProps.radius)
+  return useStyle({ ...style, ...useStyle(useProps.customStyle) })
 })
 
 const classs = computed(() => {

@@ -1,8 +1,9 @@
 import type SkeletonParagraph from "./ui-skeleton-paragraph.vue"
 import type { PropType, CSSProperties, ExtractPropTypes } from "vue"
-import { buildProps, makeNumericProp } from "../utils/props"
+import { createProps } from "../hooks"
+import { makeNumericProp } from "../utils/props"
 
-export const skeletonParagraphProps = buildProps("skeletonParagraph", {
+export const [skeletonParagraphProps, useSkeletonParagraphProps] = createProps("skeletonParagraph", {
   /**
    * 段落占位图行数
    */

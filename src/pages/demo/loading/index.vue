@@ -74,10 +74,10 @@ definePage({
 
 <style lang="scss" scoped>
 .loading-item {
+  gap: 16rpx;
   display: flex;
   align-items: center;
   flex-direction: column;
-  gap: 16rpx;
 }
 
 .loading-label {

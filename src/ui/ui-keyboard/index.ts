@@ -1,8 +1,9 @@
 import type Keyboard from "./ui-keyboard.vue"
 import type { ExtractPropTypes } from "vue"
-import { styleProp, truthProp, buildProps, makeStringProp, makeNumericProp } from "../utils/props"
+import { createProps } from "../hooks"
+import { styleProp, truthProp, makeStringProp, makeNumericProp } from "../utils/props"
 
-export const keyboardProps = buildProps("keyboard", {
+export const [keyboardProps, useKeyboardProps] = createProps("keyboard", {
   /**
    * 是否显示
    */

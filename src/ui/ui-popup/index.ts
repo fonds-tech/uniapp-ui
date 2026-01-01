@@ -1,8 +1,9 @@
 import type Popup from "./ui-popup.vue"
 import type { PropType, CSSProperties } from "vue"
-import { truthProp, buildProps, numericProp, makeStringProp, makeNumericProp } from "../utils/props"
+import { createProps } from "../hooks"
+import { truthProp, numericProp, makeStringProp, makeNumericProp } from "../utils/props"
 
-export const popupProps = buildProps("popup", {
+export const [popupProps, usePopupProps] = createProps("popup", {
   /**
    * 是否显示
    */

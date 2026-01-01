@@ -1,8 +1,9 @@
 import type BackTop from "./ui-back-top.vue"
 import type { PropType, CSSProperties, ExtractPropTypes } from "vue"
-import { buildProps, numericProp, makeNumericProp } from "../utils/props"
+import { createProps } from "../hooks"
+import { numericProp, makeNumericProp } from "../utils/props"
 
-export const backTopProps = buildProps("backTop", {
+export const [backTopProps, useBackTopProps] = createProps("backTop", {
   /**
    * 滚动高度达到此参数值时才显示组件
    */

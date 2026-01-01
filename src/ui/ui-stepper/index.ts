@@ -1,8 +1,9 @@
 import type Stepper from "./ui-stepper.vue"
 import type { PropType, ExtractPropTypes } from "vue"
-import { styleProp, truthProp, buildProps, makeStringProp, makeNumericProp } from "../utils/props"
+import { createProps } from "../hooks"
+import { styleProp, truthProp, makeStringProp, makeNumericProp } from "../utils/props"
 
-export const stepperProps = buildProps("stepper", {
+export const [stepperProps, useStepperProps] = createProps("stepper", {
   /**
    * 绑定值
    */

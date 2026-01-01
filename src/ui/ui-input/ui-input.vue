@@ -1,50 +1,50 @@
 <template>
-  <view class="ui-input" :class="[classs, props.customClass]" :style="[style]" @click="onClick">
+  <view class="ui-input" :class="[classs, useProps.customClass]" :style="[style]" @click="onClick">
     <input
       class="ui-input__input"
       :style="[inputStyle]"
       :class="[inputClass]"
       :value="current"
       :type="type"
-      :focus="props.focus"
-      :cursor="+props.cursor"
+      :focus="useProps.focus"
+      :cursor="+useProps.cursor"
       :password="password"
       :disabled="disabled"
-      :maxlength="+props.maxlength"
-      :auto-blur="props.autoBlur"
-      :confirm-type="props.confirmType"
-      :confirm-hold="props.confirmHold"
-      :hold-keyboard="props.holdKeyboard"
-      :placeholder="props.placeholder"
-      :cursor-color="props.cursorColor"
-      :adjust-position="props.adjustPosition"
-      :cursor-spacing="+props.cursorSpacing"
-      :selection-end="+props.selectionEnd"
-      :selection-start="+props.selectionStart"
+      :maxlength="+useProps.maxlength"
+      :auto-blur="useProps.autoBlur"
+      :confirm-type="useProps.confirmType"
+      :confirm-hold="useProps.confirmHold"
+      :hold-keyboard="useProps.holdKeyboard"
+      :placeholder="useProps.placeholder"
+      :cursor-color="useProps.cursorColor"
+      :adjust-position="useProps.adjustPosition"
+      :cursor-spacing="+useProps.cursorSpacing"
+      :selection-end="+useProps.selectionEnd"
+      :selection-start="+useProps.selectionStart"
       :placeholder-style="placeholderStyle"
-      :ignore-composition-event="props.ignoreCompositionEvent"
+      :ignore-composition-event="useProps.ignoreCompositionEvent"
       @blur="onBlur"
       @input="onInput"
       @focus="onFocus"
       @confirm="onConfirm"
       @keyboardheightchange="onKeyboardheightchange"
     />
-    <view v-if="props.clearable && current && isFocus" class="ui-input__clear" :style="[clearStyle]" @click="onClickClear">
-      <ui-icon :name="props.clearIcon" :size="props.clearIconSize" :color="props.clearIconColor" :weight="props.clearIconWeight" />
+    <view v-if="useProps.clearable && current && isFocus" class="ui-input__clear" :style="[clearStyle]" @click="onClickClear">
+      <ui-icon :name="useProps.clearIcon" :size="useProps.clearIconSize" :color="useProps.clearIconColor" :weight="useProps.clearIconWeight" />
     </view>
   </view>
 </template>
 
 <script setup lang="ts">
 import { formItemKey } from "../ui-form-item"
-import { inputEmits, inputProps } from "./index"
+import { inputEmits, inputProps, useInputProps } from "./index"
 import { useUnit, useColor, useStyle, useParent } from "../hooks"
 
 defineOptions({ name: "ui-input" })
 
 const props = defineProps(inputProps)
 const emits = defineEmits(inputEmits)
-
+const useProps = useInputProps(props)
 const { parent } = useParent(formItemKey)
 
 const current = ref("")
@@ -52,65 +52,65 @@ const isFocus = ref(false)
 
 const style = computed(() => {
   const style: any = {}
-  style.width = useUnit(props.width)
-  style.height = useUnit(props.height)
-  style.padding = useUnit(props.padding)
-  style.background = useColor(props.background)
-  style.borderRadius = useUnit(props.radius)
-  return useStyle({ ...style, ...useStyle(props.customStyle) })
+  style.width = useUnit(useProps.width)
+  style.height = useUnit(useProps.height)
+  style.padding = useUnit(useProps.padding)
+  style.background = useColor(useProps.background)
+  style.borderRadius = useUnit(useProps.radius)
+  return useStyle({ ...style, ...useStyle(useProps.customStyle) })
 })
 
 const classs = computed(() => {
   const list: string[] = []
-  if (props.readonly) list.push("ui-input--readonly")
-  if (props.disabled) list.push("ui-input--disabled")
-  if (props.clearable) list.push("ui-input--clearable")
+  if (useProps.readonly) list.push("ui-input--readonly")
+  if (useProps.disabled) list.push("ui-input--disabled")
+  if (useProps.clearable) list.push("ui-input--clearable")
   return list
 })
 
 const inputStyle = computed(() => {
   const style: any = {}
-  style.color = useColor(props.color)
-  style.fontSize = useUnit(props.fontSize)
-  style.fontWeight = props.fontWeight
-  style.textAlign = props.inputAlign
+  style.color = useColor(useProps.color)
+  style.fontSize = useUnit(useProps.fontSize)
+  style.fontWeight = useProps.fontWeight
+  style.textAlign = useProps.inputAlign
   return useStyle(style)
 })
 
 const inputClass = computed(() => {
   const list: string[] = []
-  list.push(`ui-input__input--${props.inputAlign}`)
-  if (props.readonly) list.push("ui-input__input--readonly")
+  list.push(`ui-input__input--${useProps.inputAlign}`)
+  if (useProps.readonly) list.push("ui-input__input--readonly")
   return list
 })
 
 const clearStyle = computed(() => {
   const style: any = {}
-  style.width = useUnit(props.clearIconSize)
-  style.height = useUnit(props.clearIconSize)
+  style.width = useUnit(useProps.clearIconSize)
+  style.height = useUnit(useProps.clearIconSize)
   return useStyle(style)
 })
 
 const placeholderStyle = computed(() => {
   const style: any = {}
-  style.color = useColor(props.placeholderColor)
-  return useStyle({ ...style, ...useStyle(props.placeholderStyle) }, "string")
+  style.color = useColor(useProps.placeholderColor)
+  return useStyle({ ...style, ...useStyle(useProps.placeholderStyle) }, "string")
 })
 
 const type = computed(() => {
-  return props.type === "password" ? "text" : props.type
+  return useProps.type === "password" ? "text" : useProps.type
 })
 
 const password = computed(() => {
-  return props.type === "password" ? true : props.password
+  return useProps.type === "password" ? true : useProps.password
 })
 
 const disabled = computed(() => {
-  return props.disabled || props.readonly
+  return useProps.disabled || useProps.readonly
 })
 
 watch(
-  () => props.modelValue,
+  () => useProps.modelValue,
   (val) => {
     current.value = String(val)
   },

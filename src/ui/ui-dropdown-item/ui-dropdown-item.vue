@@ -9,7 +9,7 @@
             <view v-for="(option, index) in options" :key="index" class="ui-dropdown-item__option" :class="{ 'is-select': isSelected(option) }" @click="onClickOption(option)">
               <text class="ui-dropdown-item__label" :style="[labelStyle(option)]">{{ option[labelField] }}</text>
               <view v-if="isSelected(option)" class="ui-dropdown-item__icon">
-                <ui-icon name="success" :size="useUnit(props.iconSize)" :weight="iconWeight" :color="iconColor(option)" />
+                <ui-icon name="success" :size="useUnit(useProps.iconSize)" :weight="iconWeight" :color="iconColor(option)" />
               </view>
             </view>
           </view>
@@ -26,8 +26,8 @@ import type { TransitionName } from "../hooks"
 import type { DropdownItemValue, DropdownItemOption } from "./index"
 import { noop } from "../utils/utils"
 import { dropdownMenuKey } from "../ui-dropdown-menu"
-import { dropdownItemEmits, dropdownItemProps } from "./index"
 import { isDef, isArray, isEmpty, isNumber, isString } from "../utils/check"
+import { dropdownItemEmits, dropdownItemProps, useDropdownItemProps } from "./index"
 import { useUnit, useColor, useStyle, useParent, useLockScroll, useSystemInfo, useTransition, useGlobalZIndex } from "../hooks"
 
 // 定义组件名称
@@ -36,7 +36,7 @@ defineOptions({ name: "ui-dropdown-item" })
 // 定义props和emits
 const props = defineProps(dropdownItemProps)
 const emits = defineEmits(dropdownItemEmits)
-
+const useProps = useDropdownItemProps(props)
 // 获取父组件实例
 const { parent } = useParent(dropdownMenuKey)
 
@@ -59,7 +59,7 @@ const style = computed(() => {
   if (prop("direction") === "up") style.bottom = `${windowHeight.value - top}px`
   if (prop("direction") === "down") style.top = `${bottom}px`
   if (isEmpty(transition.visible.value)) style.display = "none"
-  return useStyle({ ...style, ...useStyle(props.customClass) })
+  return useStyle({ ...style, ...useStyle(useProps.customClass) })
 })
 
 // 计算类名
@@ -84,7 +84,7 @@ const overlayStyle = computed(() => {
 // 计算内容样式
 const contentStyle = computed(() => {
   const style: CSSProperties = { zIndex: zIndex.value }
-  style.background = useColor(props.background)
+  style.background = useColor(useProps.background)
   if (prop("direction") === "up") {
     style.borderTopLeftRadius = useUnit(prop("borderRadius"))
     style.borderTopRightRadius = useUnit(prop("borderRadius"))
@@ -106,8 +106,8 @@ const contentClass = computed(() => {
 // 计算滚动视图样式
 const scrollViewStyle = computed(() => {
   const style: CSSProperties = {}
-  style.minHeight = useUnit(props.minHeight)
-  style.maxHeight = useUnit(props.maxHeight)
+  style.minHeight = useUnit(useProps.minHeight)
+  style.maxHeight = useUnit(useProps.maxHeight)
   return useStyle(style)
 })
 
@@ -122,9 +122,9 @@ const labelStyle = computed(() => (option: DropdownItemOption) => {
 
 // 计算标题
 const title = computed(() => {
-  if (props.mode === "multiple") return props.title
-  const find = props.options.find((option) => option[props.valueField] === props.modelValue)
-  return find ? find[props.labelField] : props.title
+  if (useProps.mode === "multiple") return useProps.title
+  const find = useProps.options.find((option) => option[useProps.valueField] === useProps.modelValue)
+  return find ? find[useProps.labelField] : useProps.title
 })
 
 // 计算图标颜色
@@ -135,7 +135,7 @@ const isSelected = computed(() => (option: DropdownItemOption) => checkIsSelecte
 
 // 监听modelValue的变化
 watch(
-  () => props.modelValue,
+  () => useProps.modelValue,
   (value) => {
     current.value = value
   },
@@ -188,16 +188,16 @@ function toggle(state = !visible.value) {
 
 // 检查选项是否被选中
 function checkIsSelected(option: DropdownItemOption) {
-  if (props.mode === "multiple") {
-    if (isArray(props.modelValue)) {
-      return props.modelValue.includes(option[props.valueField])
+  if (useProps.mode === "multiple") {
+    if (isArray(useProps.modelValue)) {
+      return useProps.modelValue.includes(option[useProps.valueField])
     }
-    if (isString(props.modelValue)) {
-      return props.modelValue.split(",").includes(option[props.valueField])
+    if (isString(useProps.modelValue)) {
+      return useProps.modelValue.split(",").includes(option[useProps.valueField])
     }
   }
-  if (props.mode === "single") {
-    return props.modelValue === option[props.valueField]
+  if (useProps.mode === "single") {
+    return useProps.modelValue === option[useProps.valueField]
   }
   return false
 }
@@ -212,22 +212,22 @@ async function updateValue(value: DropdownItemValue) {
 
 // 点击选项时的处理函数
 function onClickOption(option: DropdownItemOption) {
-  if (props.mode === "multiple") {
-    if (isArray(props.modelValue)) {
-      const index = current.value.findIndex((val: any) => val === option[props.valueField])
-      index >= 0 ? current.value.splice(index, 1) : current.value.push(option[props.valueField])
+  if (useProps.mode === "multiple") {
+    if (isArray(useProps.modelValue)) {
+      const index = current.value.findIndex((val: any) => val === option[useProps.valueField])
+      index >= 0 ? current.value.splice(index, 1) : current.value.push(option[useProps.valueField])
       updateValue(current.value)
     }
-    if (isString(props.modelValue)) {
-      const list = props.modelValue ? props.modelValue.split(",") : []
-      const index = list.findIndex((val: any) => val === option[props.valueField])
-      index >= 0 ? list.splice(index, 1) : list.push(option[props.valueField])
+    if (isString(useProps.modelValue)) {
+      const list = useProps.modelValue ? useProps.modelValue.split(",") : []
+      const index = list.findIndex((val: any) => val === option[useProps.valueField])
+      index >= 0 ? list.splice(index, 1) : list.push(option[useProps.valueField])
       updateValue(list.join(","))
     }
   }
-  if (props.mode === "single") {
-    if (props.modelValue === option[props.valueField]) return
-    updateValue(option[props.valueField])
+  if (useProps.mode === "single") {
+    if (useProps.modelValue === option[useProps.valueField]) return
+    updateValue(option[useProps.valueField])
   }
 }
 
@@ -240,7 +240,7 @@ function onClickOverlay() {
 
 useLockScroll(() => visible.value)
 onMounted(resize)
-defineExpose({ title, visible, toggle })
+defineExpose({ useProps, title, visible, toggle })
 </script>
 
 <script lang="ts">

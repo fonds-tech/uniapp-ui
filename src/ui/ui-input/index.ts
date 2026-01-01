@@ -1,9 +1,10 @@
 import type Input from "./ui-input.vue"
 import type { PropType, ExtractPropTypes } from "vue"
 import type { InputType, InputConfirmType } from "@uni-helper/uni-types"
-import { styleProp, buildProps, makeStringProp } from "../utils/props"
+import { createProps } from "../hooks"
+import { styleProp, makeStringProp } from "../utils/props"
 
-export const inputProps = buildProps("input", {
+export const [inputProps, useInputProps] = createProps("input", {
   /**
    * 输入值
    */

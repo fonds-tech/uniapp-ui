@@ -13,7 +13,7 @@
 <script setup lang="ts">
 import type { CSSProperties } from "vue"
 import { useUnit, useColor, useStyle } from "../hooks"
-import { floatButtonEmits, floatButtonProps } from "./index"
+import { floatButtonEmits, floatButtonProps, useFloatButtonProps } from "./index"
 
 // 定义组件名称
 defineOptions({ name: "ui-float-button" })
@@ -21,16 +21,16 @@ defineOptions({ name: "ui-float-button" })
 // 定义props和emits
 const props = defineProps(floatButtonProps)
 const emits = defineEmits(floatButtonEmits)
-
+const useProps = useFloatButtonProps(props)
 // 计算组件的class列表
 const classs = computed(() => {
   const list: string[] = []
-  list.push(`ui-float-button--${props.type}`)
-  list.push(`ui-float-button--${props.position}`)
-  if (props.disabled) list.push("ui-float-button--disabled")
-  if (props.loading) list.push("ui-float-button--loading")
-  if (props.text) list.push("ui-float-button--with-text")
-  if (props.safeAreaBottom && props.position.includes("bottom")) {
+  list.push(`ui-float-button--${useProps.type}`)
+  list.push(`ui-float-button--${useProps.position}`)
+  if (useProps.disabled) list.push("ui-float-button--disabled")
+  if (useProps.loading) list.push("ui-float-button--loading")
+  if (useProps.text) list.push("ui-float-button--with-text")
+  if (useProps.safeAreaBottom && useProps.position.includes("bottom")) {
     list.push("ui-float-button--safe-area-bottom")
   }
   return list
@@ -39,45 +39,45 @@ const classs = computed(() => {
 // 计算组件的样式
 const style = computed(() => {
   const style: CSSProperties = {}
-  style.zIndex = +props.zIndex
+  style.zIndex = +useProps.zIndex
   // 设置尺寸：width/height 优先级高于 size
-  style.width = useUnit(props.width) || useUnit(props.size)
-  style.height = useUnit(props.height) || useUnit(props.size)
+  style.width = useUnit(useProps.width) || useUnit(useProps.size)
+  style.height = useUnit(useProps.height) || useUnit(useProps.size)
   // 根据position设置位置
-  if (props.position.includes("right")) {
-    style.right = useUnit(props.right)
+  if (useProps.position.includes("right")) {
+    style.right = useUnit(useProps.right)
   }
-  if (props.position.includes("left")) {
-    style.left = useUnit(props.left) || useUnit(props.right)
+  if (useProps.position.includes("left")) {
+    style.left = useUnit(useProps.left) || useUnit(useProps.right)
   }
-  if (props.position.includes("bottom")) {
-    style.bottom = useUnit(props.bottom)
+  if (useProps.position.includes("bottom")) {
+    style.bottom = useUnit(useProps.bottom)
   }
-  if (props.position.includes("top")) {
-    style.top = useUnit(props.top) || useUnit(props.bottom)
+  if (useProps.position.includes("top")) {
+    style.top = useUnit(useProps.top) || useUnit(useProps.bottom)
   }
   // 自定义样式
-  if (props.color) {
-    style.background = useColor(props.color)
+  if (useProps.color) {
+    style.background = useColor(useProps.color)
   }
-  if (props.shadow) {
-    style.boxShadow = props.shadow
+  if (useProps.shadow) {
+    style.boxShadow = useProps.shadow
   }
-  style.borderRadius = useUnit(props.borderRadius)
+  style.borderRadius = useUnit(useProps.borderRadius)
   // 文本样式
-  if (props.textColor) {
-    style.color = useColor(props.textColor)
+  if (useProps.textColor) {
+    style.color = useColor(useProps.textColor)
   }
-  if (props.textSize) {
-    style.fontSize = useUnit(props.textSize)
+  if (useProps.textSize) {
+    style.fontSize = useUnit(useProps.textSize)
   }
   // 合并自定义样式
-  return useStyle({ ...style, ...useStyle(props.customStyle) })
+  return useStyle({ ...style, ...useStyle(useProps.customStyle) })
 })
 
 // 点击事件处理函数
 function onClick() {
-  if (props.disabled || props.loading) return
+  if (useProps.disabled || useProps.loading) return
   emits("click")
 }
 </script>

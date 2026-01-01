@@ -1,8 +1,9 @@
 import type Image from "./ui-image.vue"
 import type { ExtractPropTypes } from "vue"
-import { styleProp, truthProp, buildProps, makeStringProp, makeNumericProp } from "../utils/props"
+import { createProps } from "../hooks"
+import { styleProp, truthProp, makeStringProp, makeNumericProp } from "../utils/props"
 
-export const imageProps = buildProps("image", {
+export const [imageProps, useImageProps] = createProps("image", {
   /**
    * 图片资源地址
    */

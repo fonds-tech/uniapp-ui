@@ -1,8 +1,9 @@
 import type Cell from "./ui-cell.vue"
 import type { PropType, CSSProperties, ExtractPropTypes } from "vue"
-import { truthProp, buildProps, numericProp, makeStringProp } from "../utils/props"
+import { createProps } from "../hooks"
+import { truthProp, numericProp, makeStringProp } from "../utils/props"
 
-export const cellProps = buildProps("cell", {
+export const [cellProps, useCellProps] = createProps("cell", {
   /**
    * 图标
    */

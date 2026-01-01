@@ -1,8 +1,9 @@
 import type Rate from "./ui-rate.vue"
 import type { ExtractPropTypes } from "vue"
-import { styleProp, truthProp, buildProps, makeNumberProp, makeStringProp, makeNumericProp } from "../utils/props"
+import { createProps } from "../hooks"
+import { styleProp, truthProp, makeNumberProp, makeStringProp, makeNumericProp } from "../utils/props"
 
-export const rateProps = buildProps("rate", {
+export const [rateProps, useRateProps] = createProps("rate", {
   /**
    * 当前分值
    */

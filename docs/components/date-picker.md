@@ -63,35 +63,35 @@ const maxDate = new Date(2025, 11, 31)
 
 ## Props
 
-| 参数 | 说明 | 类型 | 默认值 |
-| --- | --- | --- | --- |
-| v-model | 当前选中日期 | `string \| Date \| number` | - |
-| v-model:show | 是否显示 | `boolean` | `false` |
-| columns | 列类型 | `array` | `['year', 'month', 'day']` |
-| format | 日期格式 | `string` | `YYYY-MM-DD HH:mm:ss` |
-| min-date | 最小日期 | `string \| Date \| number` | - |
-| max-date | 最大日期 | `string \| Date \| number` | - |
-| title | 顶部标题 | `string` | - |
-| cancel-text | 取消按钮文字 | `string` | `取消` |
-| confirm-text | 确认按钮文字 | `string` | `确认` |
-| show-header | 是否显示头部 | `boolean` | `true` |
-| mode | 弹窗位置 | `top \| bottom \| left \| right \| center` | `bottom` |
-| border-radius | 圆角大小 | `string \| number` | `16rpx` |
-| close-on-click-overlay | 点击遮罩是否关闭 | `boolean` | `true` |
-| column-height | 选项高度 | `string \| number` | `88rpx` |
-| visible-column-num | 可见选项数 | `string \| number` | `5` |
-| column-filter | 选项过滤函数 | `function` | - |
-| column-formatter | 选项格式化函数 | `function` | - |
-| safe-area-inset-bottom | 是否开启底部安全区 | `boolean` | `true` |
+| 参数                   | 说明               | 类型                                       | 默认值                     |
+| ---------------------- | ------------------ | ------------------------------------------ | -------------------------- |
+| v-model                | 当前选中日期       | `string \| Date \| number`                 | -                          |
+| v-model:show           | 是否显示           | `boolean`                                  | `false`                    |
+| columns                | 列类型             | `array`                                    | `['year', 'month', 'day']` |
+| format                 | 日期格式           | `string`                                   | `YYYY-MM-DD HH:mm:ss`      |
+| min-date               | 最小日期           | `string \| Date \| number`                 | -                          |
+| max-date               | 最大日期           | `string \| Date \| number`                 | -                          |
+| title                  | 顶部标题           | `string`                                   | -                          |
+| cancel-text            | 取消按钮文字       | `string`                                   | `取消`                     |
+| confirm-text           | 确认按钮文字       | `string`                                   | `确认`                     |
+| show-header            | 是否显示头部       | `boolean`                                  | `true`                     |
+| mode                   | 弹窗位置           | `top \| bottom \| left \| right \| center` | `bottom`                   |
+| border-radius          | 圆角大小           | `string \| number`                         | `16rpx`                    |
+| close-on-click-overlay | 点击遮罩是否关闭   | `boolean`                                  | `true`                     |
+| column-height          | 选项高度           | `string \| number`                         | `88rpx`                    |
+| visible-column-num     | 可见选项数         | `string \| number`                         | `5`                        |
+| column-filter          | 选项过滤函数       | `function`                                 | -                          |
+| column-formatter       | 选项格式化函数     | `function`                                 | -                          |
+| safe-area-inset-bottom | 是否开启底部安全区 | `boolean`                                  | `true`                     |
 
 ## Events
 
-| 事件名 | 说明 | 回调参数 |
-| --- | --- | --- |
-| change | 选项改变时触发 | `{ value, selectedValues, selectedIndexes }` |
+| 事件名  | 说明               | 回调参数                                     |
+| ------- | ------------------ | -------------------------------------------- |
+| change  | 选项改变时触发     | `{ value, selectedValues, selectedIndexes }` |
 | confirm | 点击确认按钮时触发 | `{ value, selectedValues, selectedIndexes }` |
-| cancel | 点击取消按钮时触发 | `{ value, selectedValues, selectedIndexes }` |
-| open | 打开时触发 | - |
-| opened | 打开动画结束时触发 | - |
-| close | 关闭时触发 | `action: string` |
-| closed | 关闭动画结束时触发 | `action: string` |
+| cancel  | 点击取消按钮时触发 | `{ value, selectedValues, selectedIndexes }` |
+| open    | 打开时触发         | -                                            |
+| opened  | 打开动画结束时触发 | -                                            |
+| close   | 关闭时触发         | `action: string`                             |
+| closed  | 关闭动画结束时触发 | `action: string`                             |

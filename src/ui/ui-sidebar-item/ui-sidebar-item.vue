@@ -12,14 +12,14 @@
 import type { CSSProperties } from "vue"
 import { isDef } from "../utils/check"
 import { sidebarKey } from "../ui-sidebar"
-import { sidebarItemEmits, sidebarItemProps } from "./index"
 import { useRect, useUnit, useColor, useStyle, useParent } from "../hooks"
+import { sidebarItemEmits, sidebarItemProps, useSidebarItemProps } from "./index"
 
 defineOptions({ name: "ui-sidebar-item" })
 
 const props = defineProps(sidebarItemProps)
 const emits = defineEmits(sidebarItemEmits)
-
+const useProps = useSidebarItemProps(props)
 const { index, parent } = useParent(sidebarKey)
 
 const rect = ref<UniApp.NodeInfo>({})
@@ -27,12 +27,12 @@ const instance = getCurrentInstance()
 
 const style = computed(() => {
   const style: CSSProperties = {}
-  style.height = useUnit(props.height)
-  style.background = useColor(props.background)
+  style.height = useUnit(useProps.height)
+  style.background = useColor(useProps.background)
   if (active.value) {
-    style.background = useColor(props.activeBackground)
+    style.background = useColor(useProps.activeBackground)
   }
-  return useStyle({ ...style, ...useStyle(props.customStyle) })
+  return useStyle({ ...style, ...useStyle(useProps.customStyle) })
 })
 
 const classs = computed(() => {
@@ -55,7 +55,7 @@ const titleStyle = computed(() => {
   return useStyle(style)
 })
 
-const name = computed(() => props.name ?? index.value)
+const name = computed(() => useProps.name ?? index.value)
 const active = computed(() => parent?.currentName.value === name.value)
 
 watch(() => props, resize, { deep: true })
@@ -76,13 +76,13 @@ async function resize() {
 }
 
 function onClick() {
-  if (props.disabled) return
+  if (useProps.disabled) return
   parent.clickItem(name.value, index.value)
   parent.setCurrentName(name.value)
 }
 
 onMounted(resize)
-defineExpose({ rect, name, index, resize })
+defineExpose({ useProps, rect, name, index, resize })
 </script>
 
 <script lang="ts">

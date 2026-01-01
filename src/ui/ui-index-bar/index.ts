@@ -1,9 +1,10 @@
 import type IndexBar from "./ui-index-bar.vue"
 import type { PropType, ExtractPropTypes } from "vue"
-import { styleProp, truthProp, buildProps, makeStringProp, makeNumericProp } from "../utils/props"
+import { createProps } from "../hooks"
+import { styleProp, truthProp, makeStringProp, makeNumericProp } from "../utils/props"
 
 export const indexBarKey = Symbol("ui-index-bar")
-export const indexBarProps = buildProps("indexBar", {
+export const [indexBarProps, useIndexBarProps] = createProps("indexBar", {
   /**
    * 索引字符列表
    */

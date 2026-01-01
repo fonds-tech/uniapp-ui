@@ -1,8 +1,9 @@
 import type ActionSheet from "./ui-action-sheet.vue"
-import type { PropType, ExtractPropTypes } from "vue"
-import { styleProp, truthProp, buildProps, numericProp, makeArrayProp, makeStringProp, makeNumericProp } from "../utils/props"
+import type { PropType, CSSProperties, ExtractPropTypes } from "vue"
+import { createProps } from "../hooks"
+import { styleProp, truthProp, numericProp, makeArrayProp, makeStringProp, makeNumericProp } from "../utils/props"
 
-export const actionSheetProps = buildProps("actionSheet", {
+export const [actionSheetProps, useActionSheetProps] = createProps("actionSheet", {
   /**
    * 是否显示
    */

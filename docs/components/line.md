@@ -72,13 +72,13 @@
 
 ## Props
 
-| 参数 | 说明 | 类型 | 默认值 |
-| --- | --- | --- | --- |
-| color | 线条颜色 | `string` | - |
-| width | 线条宽度 | `string \| number` | `100%` |
-| height | 线条高度/粗细 | `string \| number` | `2rpx` |
-| type | 线条类型 | `solid \| dashed \| dotted` | `solid` |
-| vertical | 是否为垂直线条 | `boolean` | `false` |
-| margin | 外边距 | `string \| number` | - |
-| custom-class | 自定义类名 | `string` | - |
-| custom-style | 自定义样式 | `string \| object` | - |
+| 参数         | 说明           | 类型                        | 默认值  |
+| ------------ | -------------- | --------------------------- | ------- |
+| color        | 线条颜色       | `string`                    | -       |
+| width        | 线条宽度       | `string \| number`          | `100%`  |
+| height       | 线条高度/粗细  | `string \| number`          | `2rpx`  |
+| type         | 线条类型       | `solid \| dashed \| dotted` | `solid` |
+| vertical     | 是否为垂直线条 | `boolean`                   | `false` |
+| margin       | 外边距         | `string \| number`          | -       |
+| custom-class | 自定义类名     | `string`                    | -       |
+| custom-style | 自定义样式     | `string \| object`          | -       |

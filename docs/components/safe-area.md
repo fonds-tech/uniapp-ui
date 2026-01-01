@@ -54,28 +54,28 @@ function onHeight(height) {
 
 ## SafeAreaTop Props
 
-| 参数 | 说明 | 类型 | 默认值 |
-| --- | --- | --- | --- |
-| background | 背景色，支持主题色名称或自定义颜色值 | `string` | - |
-| custom-class | 自定义类名 | `string` | - |
-| custom-style | 自定义样式 | `string \| object` | - |
+| 参数         | 说明                                 | 类型               | 默认值 |
+| ------------ | ------------------------------------ | ------------------ | ------ |
+| background   | 背景色，支持主题色名称或自定义颜色值 | `string`           | -      |
+| custom-class | 自定义类名                           | `string`           | -      |
+| custom-style | 自定义样式                           | `string \| object` | -      |
 
 ## SafeAreaTop Events
 
-| 事件名 | 说明 | 回调参数 |
-| --- | --- | --- |
+| 事件名 | 说明                   | 回调参数         |
+| ------ | ---------------------- | ---------------- |
 | height | 获取安全区域高度时触发 | `height: number` |
 
 ## SafeAreaBottom Props
 
-| 参数 | 说明 | 类型 | 默认值 |
-| --- | --- | --- | --- |
-| background | 背景色，支持主题色名称或自定义颜色值 | `string` | - |
-| custom-class | 自定义类名 | `string` | - |
-| custom-style | 自定义样式 | `string \| object` | - |
+| 参数         | 说明                                 | 类型               | 默认值 |
+| ------------ | ------------------------------------ | ------------------ | ------ |
+| background   | 背景色，支持主题色名称或自定义颜色值 | `string`           | -      |
+| custom-class | 自定义类名                           | `string`           | -      |
+| custom-style | 自定义样式                           | `string \| object` | -      |
 
 ## SafeAreaBottom Events
 
-| 事件名 | 说明 | 回调参数 |
-| --- | --- | --- |
+| 事件名 | 说明                   | 回调参数         |
+| ------ | ---------------------- | ---------------- |
 | height | 获取安全区域高度时触发 | `height: number` |

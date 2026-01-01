@@ -102,44 +102,44 @@ const areaColumns = [
 
 ## Props
 
-| 参数 | 说明 | 类型 | 默认值 |
-| --- | --- | --- | --- |
-| v-model | 当前选中值 | `string \| number \| array` | - |
-| v-model:show | 是否显示 | `boolean` | `false` |
-| columns | 列数据 | `array` | `[]` |
-| title | 顶部标题 | `string` | - |
-| loading | 是否加载中 | `boolean` | `false` |
-| cancel-text | 取消按钮文字 | `string` | `取消` |
-| confirm-text | 确认按钮文字 | `string` | `确认` |
-| show-header | 是否显示头部 | `boolean` | `true` |
-| mode | 弹窗位置 | `top \| bottom \| left \| right \| center` | `bottom` |
-| border-radius | 圆角大小 | `string \| number` | `16rpx` |
-| close-on-click-overlay | 点击遮罩是否关闭 | `boolean` | `true` |
-| overlay | 是否显示遮罩 | `boolean` | `true` |
-| duration | 动画时长(ms) | `string \| number` | `300` |
-| z-index | 层级 | `number` | - |
-| column-height | 选项高度 | `string \| number` | `88rpx` |
-| visible-column-num | 可见选项数 | `string \| number` | `5` |
-| column-fields | 字段映射 | `object` | `{ text: 'text', value: 'value', children: 'children' }` |
-| safe-area-inset-bottom | 是否开启底部安全区 | `boolean` | `true` |
-| custom-class | 自定义类名 | `string` | - |
-| custom-style | 自定义样式 | `string \| object` | - |
+| 参数                   | 说明               | 类型                                       | 默认值                                                   |
+| ---------------------- | ------------------ | ------------------------------------------ | -------------------------------------------------------- |
+| v-model                | 当前选中值         | `string \| number \| array`                | -                                                        |
+| v-model:show           | 是否显示           | `boolean`                                  | `false`                                                  |
+| columns                | 列数据             | `array`                                    | `[]`                                                     |
+| title                  | 顶部标题           | `string`                                   | -                                                        |
+| loading                | 是否加载中         | `boolean`                                  | `false`                                                  |
+| cancel-text            | 取消按钮文字       | `string`                                   | `取消`                                                   |
+| confirm-text           | 确认按钮文字       | `string`                                   | `确认`                                                   |
+| show-header            | 是否显示头部       | `boolean`                                  | `true`                                                   |
+| mode                   | 弹窗位置           | `top \| bottom \| left \| right \| center` | `bottom`                                                 |
+| border-radius          | 圆角大小           | `string \| number`                         | `16rpx`                                                  |
+| close-on-click-overlay | 点击遮罩是否关闭   | `boolean`                                  | `true`                                                   |
+| overlay                | 是否显示遮罩       | `boolean`                                  | `true`                                                   |
+| duration               | 动画时长(ms)       | `string \| number`                         | `300`                                                    |
+| z-index                | 层级               | `number`                                   | -                                                        |
+| column-height          | 选项高度           | `string \| number`                         | `88rpx`                                                  |
+| visible-column-num     | 可见选项数         | `string \| number`                         | `5`                                                      |
+| column-fields          | 字段映射           | `object`                                   | `{ text: 'text', value: 'value', children: 'children' }` |
+| safe-area-inset-bottom | 是否开启底部安全区 | `boolean`                                  | `true`                                                   |
+| custom-class           | 自定义类名         | `string`                                   | -                                                        |
+| custom-style           | 自定义样式         | `string \| object`                         | -                                                        |
 
 ## Events
 
-| 事件名 | 说明 | 回调参数 |
-| --- | --- | --- |
-| change | 选项改变时触发 | `{ values, indexs, columns }` |
+| 事件名  | 说明               | 回调参数                      |
+| ------- | ------------------ | ----------------------------- |
+| change  | 选项改变时触发     | `{ values, indexs, columns }` |
 | confirm | 点击确认按钮时触发 | `{ values, indexs, columns }` |
-| cancel | 点击取消按钮时触发 | `{ values, indexs, columns }` |
-| open | 打开时触发 | - |
-| opened | 打开动画结束时触发 | - |
-| close | 关闭时触发 | `action: string` |
-| closed | 关闭动画结束时触发 | `action: string` |
+| cancel  | 点击取消按钮时触发 | `{ values, indexs, columns }` |
+| open    | 打开时触发         | -                             |
+| opened  | 打开动画结束时触发 | -                             |
+| close   | 关闭时触发         | `action: string`              |
+| closed  | 关闭动画结束时触发 | `action: string`              |
 
 ## Slots
 
-| 名称 | 说明 |
-| --- | --- |
+| 名称    | 说明         |
+| ------- | ------------ |
 | toolbar | 自定义工具栏 |
-| title | 自定义标题 |
+| title   | 自定义标题   |

@@ -5,21 +5,21 @@
         <ui-icon :name="icon(item)" :size="size" :weight="iconWeight" :color="iconColor(item)" />
       </view>
       <view v-if="isShowHalf(item)" class="ui-rate__item__icon ui-rate__item__icon--half" :style="[iconHalfStyle(item, index)]">
-        <ui-icon :name="props.icon" :size="size" :weight="iconWeight" :color="color" />
+        <ui-icon :name="useProps.icon" :size="size" :weight="iconWeight" :color="color" />
       </view>
     </view>
   </view>
 </template>
 
 <script setup lang="ts">
-import { rateEmits, rateProps } from "./index"
+import { rateEmits, rateProps, useRateProps } from "./index"
 import { useRect, useRects, useStyle, useUnitToPx } from "../hooks"
 
 defineOptions({ name: "ui-rate" })
 
 const props = defineProps(rateProps)
 const emits = defineEmits(rateEmits)
-
+const useProps = useRateProps(props)
 const score = ref(null)
 const ranges = ref([])
 const rect = ref<UniApp.NodeInfo>({})
@@ -27,20 +27,20 @@ const rects = ref<UniApp.NodeInfo[]>([])
 const instance = getCurrentInstance()
 
 const list = computed(() =>
-  Array.from({ length: props.count })
+  Array.from({ length: useProps.count })
     .fill("")
-    .map((_, i) => getRateStatus(props.modelValue, i + 1)),
+    .map((_, i) => getRateStatus(useProps.modelValue, i + 1)),
 )
 
 const style = computed(() => {
   const style: any = {}
-  return useStyle({ ...style, ...useStyle(props.customStyle) })
+  return useStyle({ ...style, ...useStyle(useProps.customStyle) })
 })
 
 const classs = computed(() => {
   const list: string[] = []
-  if (props.disabled) list.push("ui-rate--disabled")
-  if (props.readonly) list.push("ui-rate--readonly")
+  if (useProps.disabled) list.push("ui-rate--disabled")
+  if (useProps.readonly) list.push("ui-rate--readonly")
   return list
 })
 
@@ -48,7 +48,7 @@ const itemStyle = computed(() => {
   return (index: number) => {
     const style: any = {}
     if (index < list.value.length - 1) {
-      style.marginRight = `${useUnitToPx(props.gutter)}px`
+      style.marginRight = `${useUnitToPx(useProps.gutter)}px`
     }
     return useStyle(style)
   }
@@ -65,13 +65,13 @@ const iconHalfStyle = computed(() => {
 
 const icon = computed(() => {
   return (item: any) => {
-    return item.status === "full" ? props.icon : props.voidIcon
+    return item.status === "full" ? useProps.icon : useProps.voidIcon
   }
 })
 
 const iconColor = computed(() => {
   return (item: any) => {
-    return item.value && item.status === "full" ? props.color : props.voidColor
+    return item.value && item.status === "full" ? useProps.color : useProps.voidColor
   }
 })
 
@@ -93,9 +93,9 @@ async function resize() {
 function getRateStatus(value: number, index: number) {
   if (value >= index) return { status: "full", value: 1 }
 
-  if (value + 0.5 >= index && props.allowHalf && !props.readonly) return { status: "half", value: 0.5 }
+  if (value + 0.5 >= index && useProps.allowHalf && !useProps.readonly) return { status: "half", value: 0.5 }
 
-  if (value + 1 >= index && props.allowHalf && props.readonly) {
+  if (value + 1 >= index && useProps.allowHalf && useProps.readonly) {
     const cardinal = 10 ** 10
     return { status: "half", value: Math.round((value - index + 1) * cardinal) / cardinal }
   }
@@ -104,12 +104,12 @@ function getRateStatus(value: number, index: number) {
 }
 
 async function updateRanges() {
-  const gutter = useUnitToPx(props.gutter)
+  const gutter = useUnitToPx(useProps.gutter)
   rect.value = await useRect(".ui-rate", instance)
   rects.value = await useRects(".ui-rate__item", instance)
   ranges.value = []
   rects.value?.forEach((rect, index) => {
-    if (props.allowHalf) {
+    if (useProps.allowHalf) {
       const left = index === 0 ? rect.left : rect.left - gutter / 2
       const right = index === 0 ? rect.width / 2 : rect.right - rect.width / 2
       ranges.value.push({ score: index + 0.5, left, right }, { score: index + 1, left: rect.left + rect.width / 2, right: rect.right + gutter / 2 })
@@ -130,8 +130,8 @@ function getScoreByPosition(x: number) {
     }
   }
   if (x <= minLeft) return 0
-  if (x >= maxRight) return props.count
-  return props.modelValue
+  if (x >= maxRight) return useProps.count
+  return useProps.modelValue
 }
 
 async function onClick(event: any) {
@@ -145,15 +145,15 @@ function onTouchstart() {
 }
 
 function onTouchmove(event: any) {
-  if (props.touchable) {
+  if (useProps.touchable) {
     const value = getScoreByPosition(event.touches[0].clientX)
     updateValue(value)
   }
 }
 
 async function updateValue(value: number) {
-  if (props.disabled) return
-  if (props.readonly) return
+  if (useProps.disabled) return
+  if (useProps.readonly) return
   if (value === score.value) return
   emits("change", value)
   await nextTick()

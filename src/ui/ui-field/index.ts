@@ -1,9 +1,10 @@
 import type Field from "./ui-field.vue"
 import type { PropType, ExtractPropTypes } from "vue"
-import { styleProp, truthProp, buildProps, makeStringProp, makeNumericProp } from "../utils/props"
+import { createProps } from "../hooks"
+import { styleProp, truthProp, makeStringProp, makeNumericProp } from "../utils/props"
 
 export const fieldKey = Symbol("ui-form")
-export const fieldProps = buildProps("field", {
+export const [fieldProps, useFieldProps] = createProps("field", {
   /**
    * 当前输入的值
    */

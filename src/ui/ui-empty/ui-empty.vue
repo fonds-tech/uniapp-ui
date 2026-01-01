@@ -1,5 +1,5 @@
 <template>
-  <view v-if="show" class="ui-empty" :class="[props.customClass]" :style="[style]">
+  <view v-if="show" class="ui-empty" :class="[useProps.customClass]" :style="[style]">
     <slot name="icon">
       <image v-if="icon" class="ui-empty__icon" :src="icon" mode="widthFix" :style="[iconStyle]" />
       <image v-else class="ui-empty__icon" :src="emptyImg" mode="widthFix" :style="[iconStyle]" />
@@ -15,36 +15,37 @@
 
 <script setup lang="ts">
 import emptyImg from "./lib/empty.png"
-import { emptyProps } from "./index"
+import { emptyProps, useEmptyProps } from "./index"
 import { useUnit, useColor, useStyle } from "../hooks"
 
 defineOptions({ name: "ui-empty" })
 
 const props = defineProps(emptyProps)
+const useProps = useEmptyProps(props)
 
 const style = computed(() => {
   return useStyle({
-    margin: useUnit(props.margin),
-    padding: useUnit(props.padding),
-    ...useStyle(props.customStyle),
+    margin: useUnit(useProps.margin),
+    padding: useUnit(useProps.padding),
+    ...useStyle(useProps.customStyle),
   })
 })
 
 const iconStyle = computed(() => {
   const style: any = {}
-  style.color = useColor(props.iconColor)
-  style.width = useUnit(props.iconSize || props.iconWidth)
-  style.height = useUnit(props.iconSize || props.iconHeight)
-  style.fontWeight = props.iconWeight
+  style.color = useColor(useProps.iconColor)
+  style.width = useUnit(useProps.iconSize || useProps.iconWidth)
+  style.height = useUnit(useProps.iconSize || useProps.iconHeight)
+  style.fontWeight = useProps.iconWeight
   return useStyle(style)
 })
 
 const textStyle = computed(() => {
   const style: any = {}
-  style.color = useColor(props.iconColor)
-  style.width = useUnit(props.iconSize || props.iconWidth)
-  style.height = useUnit(props.iconSize || props.iconHeight)
-  style.fontWeight = props.iconWeight
+  style.color = useColor(useProps.iconColor)
+  style.width = useUnit(useProps.iconSize || useProps.iconWidth)
+  style.height = useUnit(useProps.iconSize || useProps.iconHeight)
+  style.fontWeight = useProps.iconWeight
   return useStyle(style)
 })
 </script>

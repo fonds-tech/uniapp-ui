@@ -10,12 +10,13 @@
 import type { CountDownTimeData } from "./index"
 import { padZero } from "../utils/utils"
 import { useStyle } from "../hooks"
-import { countDownEmits, countDownProps } from "./index"
+import { countDownEmits, countDownProps, useCountDownProps } from "./index"
 
 defineOptions({ name: "ui-count-down" })
 
 const props = defineProps(countDownProps)
 const emits = defineEmits(countDownEmits)
+const useProps = useCountDownProps(props)
 const timer = ref(null)
 const runing = ref(false)
 const endTime = ref(null)
@@ -26,18 +27,18 @@ const formatTimeText = ref("")
 
 const style = computed(() => {
   const style: any = {}
-  return useStyle({ ...style, ...useStyle(props.customStyle) })
+  return useStyle({ ...style, ...useStyle(useProps.customStyle) })
 })
 
-watch(() => props.time, reset, { immediate: true })
+watch(() => useProps.time, reset, { immediate: true })
 
 function tick() {
   const next = () => {
     timer.value = useRequestAnimationFrame(() => {
       const remain = Math.max(endTime.value - Date.now(), 0)
       timeData.value = parseTimeData(remain)
-      formatTimeText.value = parseTimeFormat(timeData.value, props.format)
-      if (props.millisecond) {
+      formatTimeText.value = parseTimeFormat(timeData.value, useProps.format)
+      if (useProps.millisecond) {
         emits("change", parseTimeData(remain))
       } else if (!isSameSecond(remain, remainTime.value)) {
         emits("change", parseTimeData(remain))
@@ -63,8 +64,8 @@ function start() {
 
 function reset() {
   pause()
-  remainTime.value = +props.time
-  if (props.autoStart) start()
+  remainTime.value = +useProps.time
+  if (useProps.autoStart) start()
 }
 
 function pause() {

@@ -6,6 +6,11 @@ export default defineConfig({
   title: "UniApp UI",
   description: "跨端 UI 组件库 - 基于 Vue 3 + UniApp",
   lang: "zh-CN",
+  vite: {
+    server: {
+      port: 5180, // 固定端口，避免与其他项目冲突
+    },
+  },
 
   // 主题配置
   themeConfig: {

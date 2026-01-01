@@ -67,48 +67,48 @@ const value = ref("")
 
 ## Props
 
-| 参数 | 说明 | 类型 | 默认值 |
-| --- | --- | --- | --- |
-| v-model | 输入值 | `string` | - |
-| placeholder | 占位文本 | `string` | `请输入内容` |
-| placeholder-color | 占位符颜色 | `string` | - |
-| maxlength | 最大输入长度 | `string \| number` | `200` |
-| disabled | 是否禁用 | `boolean` | `false` |
-| clearable | 是否显示清除按钮 | `boolean` | `true` |
-| focus | 是否自动获取焦点 | `boolean` | `false` |
-| auto-height | 是否自动增加高度 | `boolean` | `false` |
-| input-align | 输入内容对齐方式 | `left \| center \| right` | `left` |
-| show-count | 是否显示字数统计 | `boolean` | `true` |
-| min-height | 最小高度 | `string \| number` | `150rpx` |
-| width | 宽度 | `string \| number` | - |
-| padding | 内边距 | `string \| number` | - |
-| background | 背景颜色 | `string` | - |
-| color | 文字颜色 | `string` | - |
-| font-size | 文字大小 | `string \| number` | - |
-| font-weight | 文字粗细 | `string \| number` | - |
-| radius | 圆角大小 | `string \| number` | - |
-| border | 边框样式 | `string` | - |
-| confirm-type | 键盘右下角按钮文字 | `string` | `done` |
-| cursor-spacing | 光标与键盘距离 | `string \| number` | `30` |
-| count-size | 字数统计文字大小 | `string \| number` | - |
-| count-color | 字数统计文字颜色 | `string` | - |
-| custom-class | 自定义类名 | `string` | - |
-| custom-style | 自定义样式 | `string \| object` | - |
+| 参数              | 说明               | 类型                      | 默认值       |
+| ----------------- | ------------------ | ------------------------- | ------------ |
+| v-model           | 输入值             | `string`                  | -            |
+| placeholder       | 占位文本           | `string`                  | `请输入内容` |
+| placeholder-color | 占位符颜色         | `string`                  | -            |
+| maxlength         | 最大输入长度       | `string \| number`        | `200`        |
+| disabled          | 是否禁用           | `boolean`                 | `false`      |
+| clearable         | 是否显示清除按钮   | `boolean`                 | `true`       |
+| focus             | 是否自动获取焦点   | `boolean`                 | `false`      |
+| auto-height       | 是否自动增加高度   | `boolean`                 | `false`      |
+| input-align       | 输入内容对齐方式   | `left \| center \| right` | `left`       |
+| show-count        | 是否显示字数统计   | `boolean`                 | `true`       |
+| min-height        | 最小高度           | `string \| number`        | `150rpx`     |
+| width             | 宽度               | `string \| number`        | -            |
+| padding           | 内边距             | `string \| number`        | -            |
+| background        | 背景颜色           | `string`                  | -            |
+| color             | 文字颜色           | `string`                  | -            |
+| font-size         | 文字大小           | `string \| number`        | -            |
+| font-weight       | 文字粗细           | `string \| number`        | -            |
+| radius            | 圆角大小           | `string \| number`        | -            |
+| border            | 边框样式           | `string`                  | -            |
+| confirm-type      | 键盘右下角按钮文字 | `string`                  | `done`       |
+| cursor-spacing    | 光标与键盘距离     | `string \| number`        | `30`         |
+| count-size        | 字数统计文字大小   | `string \| number`        | -            |
+| count-color       | 字数统计文字颜色   | `string`                  | -            |
+| custom-class      | 自定义类名         | `string`                  | -            |
+| custom-style      | 自定义样式         | `string \| object`        | -            |
 
 ## Events
 
-| 事件名 | 说明 | 回调参数 |
-| --- | --- | --- |
-| input | 输入时触发 | `value: string` |
-| change | 内容变化时触发 | `value: string` |
-| focus | 获取焦点时触发 | - |
-| blur | 失去焦点时触发 | `value: string` |
-| confirm | 点击完成按钮时触发 | `value: string` |
-| clear | 点击清除按钮时触发 | - |
-| linechange | 输入框行数变化时触发 | `event` |
+| 事件名     | 说明                 | 回调参数        |
+| ---------- | -------------------- | --------------- |
+| input      | 输入时触发           | `value: string` |
+| change     | 内容变化时触发       | `value: string` |
+| focus      | 获取焦点时触发       | -               |
+| blur       | 失去焦点时触发       | `value: string` |
+| confirm    | 点击完成按钮时触发   | `value: string` |
+| clear      | 点击清除按钮时触发   | -               |
+| linechange | 输入框行数变化时触发 | `event`         |
 
 ## Slots
 
-| 名称 | 说明 |
-| --- | --- |
+| 名称    | 说明                 |
+| ------- | -------------------- |
 | default | 自定义输入框右侧内容 |

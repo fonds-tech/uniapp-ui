@@ -1,8 +1,9 @@
 import type Tab from "./ui-tab.vue"
 import type { PropType, CSSProperties } from "vue"
-import { buildProps, numericProp } from "../utils/props"
+import { createProps } from "../hooks"
+import { numericProp } from "../utils/props"
 
-export const tabProps = buildProps("tab", {
+export const [tabProps, useTabProps] = createProps("tab", {
   /**
    * 标题
    */

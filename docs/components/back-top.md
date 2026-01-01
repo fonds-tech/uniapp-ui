@@ -20,26 +20,26 @@
 
 ## Props
 
-| 参数 | 说明 | 类型 | 默认值 |
-| --- | --- | --- | --- |
-| offset | 滚动高度达到此值时显示 | `string \| number` | `200rpx` |
-| right | 距离页面右侧的距离 | `string \| number` | - |
-| bottom | 距离页面底部的距离 | `string \| number` | - |
-| z-index | 层级 | `string \| number` | - |
-| duration | 返回顶部过渡时间(ms) | `string \| number` | `200` |
-| background | 背景颜色 | `string` | - |
-| border-radius | 圆角大小 | `string \| number` | - |
-| custom-class | 自定义类名 | `string` | - |
-| custom-style | 自定义样式 | `string \| object` | - |
+| 参数          | 说明                   | 类型               | 默认值   |
+| ------------- | ---------------------- | ------------------ | -------- |
+| offset        | 滚动高度达到此值时显示 | `string \| number` | `200rpx` |
+| right         | 距离页面右侧的距离     | `string \| number` | -        |
+| bottom        | 距离页面底部的距离     | `string \| number` | -        |
+| z-index       | 层级                   | `string \| number` | -        |
+| duration      | 返回顶部过渡时间(ms)   | `string \| number` | `200`    |
+| background    | 背景颜色               | `string`           | -        |
+| border-radius | 圆角大小               | `string \| number` | -        |
+| custom-class  | 自定义类名             | `string`           | -        |
+| custom-style  | 自定义样式             | `string \| object` | -        |
 
 ## Events
 
-| 事件名 | 说明 | 回调参数 |
-| --- | --- | --- |
-| click | 点击按钮时触发 | - |
+| 事件名 | 说明           | 回调参数 |
+| ------ | -------------- | -------- |
+| click  | 点击按钮时触发 | -        |
 
 ## Slots
 
-| 名称 | 说明 |
-| --- | --- |
+| 名称    | 说明           |
+| ------- | -------------- |
 | default | 自定义按钮内容 |

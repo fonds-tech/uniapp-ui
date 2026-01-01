@@ -19,18 +19,18 @@
 import type { CSSProperties } from "vue"
 import { useStyle } from "../hooks"
 import { isArray, isEmpty, isNoEmpty } from "../utils/check"
-import { paginationEmits, paginationProps } from "./index"
+import { paginationEmits, paginationProps, usePaginationProps } from "./index"
 
 defineOptions({ name: "ui-pagination" })
 
 const props = defineProps(paginationProps)
 const emits = defineEmits(paginationEmits)
-
+const useProps = usePaginationProps(props)
 const init = ref(false)
 
 const style = computed(() => {
   const style: CSSProperties = {}
-  return useStyle({ ...style, ...useStyle(props.customStyle) })
+  return useStyle({ ...style, ...useStyle(useProps.customStyle) })
 })
 
 const text = computed(() => {
@@ -40,14 +40,14 @@ const text = computed(() => {
   return text
 })
 
-const list = computed(() => (isPagination.value ? props.pagination.data.value : props.list))
-const page = computed(() => (isPagination.value ? props.pagination.page.value : props.page))
-const total = computed(() => (isPagination.value ? props.pagination.total.value : props.total))
-const loading = computed(() => (isPagination.value ? props.pagination.loading.value : props.loading))
-const pageSize = computed(() => (isPagination.value ? props.pagination.pageSize.value : props.pageSize))
+const list = computed(() => (isPagination.value ? useProps.pagination.data.value : useProps.list))
+const page = computed(() => (isPagination.value ? useProps.pagination.page.value : useProps.page))
+const total = computed(() => (isPagination.value ? useProps.pagination.total.value : useProps.total))
+const loading = computed(() => (isPagination.value ? useProps.pagination.loading.value : useProps.loading))
+const pageSize = computed(() => (isPagination.value ? useProps.pagination.pageSize.value : useProps.pageSize))
 const isLastPage = computed(() => (isPagination.value ? list.value.length >= total.value : true))
 const isShowEmpty = computed(() => init.value && isEmpty(loading.value) && isEmpty(list.value))
-const isPagination = computed(() => isNoEmpty(props.pagination))
+const isPagination = computed(() => isNoEmpty(useProps.pagination))
 
 watch(
   () => loading.value,
@@ -59,7 +59,7 @@ watch(
 )
 
 function onEvent() {
-  const { onComplete } = props.pagination
+  const { onComplete } = useProps.pagination
   if (onComplete) {
     onComplete(() => {
       init.value = true
@@ -71,7 +71,7 @@ function onEvent() {
 onReachBottom(() => {
   if (isEmpty(isLastPage.value)) {
     if (isPagination.value) {
-      const { page } = props.pagination
+      const { page } = useProps.pagination
       page.value++
     }
     emits("load", page.value, pageSize.value)
@@ -80,7 +80,7 @@ onReachBottom(() => {
 
 onPullDownRefresh(() => {
   if (isPagination.value) {
-    const { reload } = props.pagination
+    const { reload } = useProps.pagination
     if (reload) reload()
   }
   emits("refresh", 1, pageSize.value)

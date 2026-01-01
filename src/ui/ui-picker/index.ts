@@ -1,7 +1,8 @@
 import type Picker from "./ui-picker.vue"
 import type { PropType, ExtractPropTypes } from "vue"
 import type { PickerValue, PickerColumn, PickerChangeData, PickerColumnsType, PickerColumnFields } from "../ui-picker-panel"
-import { truthProp, buildProps, numericProp, makeArrayProp, makeStringProp, makeNumericProp } from "../utils/props"
+import { createProps } from "../hooks"
+import { truthProp, numericProp, makeArrayProp, makeStringProp, makeNumericProp } from "../utils/props"
 
 // 重新导出这些类型供其他文件使用
 export type { PickerChangeData, PickerColumn, PickerColumnFields, PickerColumnsType, PickerValue }
@@ -18,7 +19,7 @@ export type PopupMode = "top" | "bottom" | "left" | "right" | "center"
  * ui-picker Props 定义
  * 使用 buildProps 工具函数,与 ui-picker-panel 保持一致
  */
-export const pickerProps = buildProps("picker", {
+export const [pickerProps, usePickerProps] = createProps("picker", {
   /**
    * 是否显示弹窗
    */

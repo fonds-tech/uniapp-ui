@@ -1,10 +1,11 @@
 import type RadioGroup from "./ui-radio-group.vue"
 import type { ExtractPropTypes } from "vue"
+import { createProps } from "../hooks"
 import { isString, isBoolean } from "../utils/check"
-import { styleProp, truthProp, buildProps, makeStringProp, makeNumericProp } from "../utils/props"
+import { styleProp, truthProp, makeStringProp, makeNumericProp } from "../utils/props"
 
 export const radioGroupKey = Symbol("ui-radio-group")
-export const radioGroupProps = buildProps("radioGroup", {
+export const [radioGroupProps, useRadioGroupProps] = createProps("radioGroup", {
   /**
    * 绑定值
    */
