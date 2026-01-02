@@ -1,0 +1,81 @@
+/**
+ * ui-safe-area-bottom 组件单元测试
+ * 测试底部安全区域组件的 props、events 和渲染逻辑
+ */
+
+import UiSafeAreaBottom from "@/ui/ui-safe-area-bottom/ui-safe-area-bottom.vue"
+import { mount } from "@vue/test-utils"
+import { it, vi, expect, describe, beforeEach, afterEach } from "vitest"
+import { waitForTransition } from "../setup"
+
+describe("ui-safe-area-bottom 底部安全区域组件", () => {
+  // 启用 fake timers
+  beforeEach(() => {
+    vi.useFakeTimers()
+  })
+
+  // 每个测试后恢复真实计时器
+  afterEach(() => {
+    vi.useRealTimers()
+  })
+
+  describe("基础渲染", () => {
+    it("应正确渲染默认底部安全区域组件", async () => {
+      const wrapper = mount(UiSafeAreaBottom)
+
+      await waitForTransition()
+
+      expect(wrapper.find(".ui-safe-area-bottom").exists()).toBe(true)
+    })
+  })
+
+  describe("样式配置", () => {
+    it("应支持背景颜色", () => {
+      const wrapper = mount(UiSafeAreaBottom, {
+        props: { background: "#fff" },
+      })
+
+      expect(wrapper.props("background")).toBe("#fff")
+    })
+
+    it("应支持自定义类名", async () => {
+      const wrapper = mount(UiSafeAreaBottom, {
+        props: { customClass: "my-safe-area" },
+      })
+
+      await waitForTransition()
+
+      expect(wrapper.classes()).toContain("my-safe-area")
+    })
+
+    it("应支持自定义样式对象", async () => {
+      const wrapper = mount(UiSafeAreaBottom, {
+        props: {
+          customStyle: { minHeight: "20px" },
+        },
+      })
+
+      await waitForTransition()
+
+      expect(wrapper.find(".ui-safe-area-bottom").exists()).toBe(true)
+    })
+  })
+
+  describe("暴露的属性", () => {
+    it("应暴露 name 属性", () => {
+      const wrapper = mount(UiSafeAreaBottom)
+
+      expect(wrapper.vm.name).toBe("ui-safe-area-bottom")
+    })
+  })
+
+  describe("边界情况", () => {
+    it("无安全区域时应正常渲染", async () => {
+      const wrapper = mount(UiSafeAreaBottom)
+
+      await waitForTransition()
+
+      expect(wrapper.find(".ui-safe-area-bottom").exists()).toBe(true)
+    })
+  })
+})

@@ -23,7 +23,10 @@ export function useStyle(style: any, type: string = "object"): any {
     for (let i = 0; i < styleArray.length; i++) {
       if (styleArray[i]) {
         const item = styleArray[i].split(":")
-        styleObject[item[0].trim()] = item[1].trim()
+        // 确保属性名和属性值都存在
+        if (item[0] && item[1]) {
+          styleObject[item[0].trim()] = item[1].trim()
+        }
       }
     }
     return styleObject

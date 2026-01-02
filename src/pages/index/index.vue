@@ -1,81 +1,151 @@
 <route lang="json">
 {
   "style": {
-    "navigationBarTitleText": "UI 组件库"
+    "navigationBarTitleText": "Fonds UI",
+    "navigationBarBackgroundColor": "#ffffff",
+    "navigationBarTextStyle": "black",
+    "navigationStyle": "custom"
   }
 }
 </route>
 
 <template>
-  <view class="page-container">
-    <!-- 头部 Banner -->
-    <view class="header-banner">
-      <view class="banner-content">
-        <text class="title">UniApp UI</text>
-        <text class="subtitle">跨端 UI 组件库</text>
-        <text class="desc">基于 Vue 3 + UniApp，支持 H5、小程序、App 多端适配</text>
+  <view class="min-h-screen bg-[#F6F7F9] pb-safe">
+    <!-- 顶部导航栏占位 (Custom Navigation Bar) -->
+    <view class="fixed left-0 top-0 z-50 w-full bg-white/80 backdrop-blur-md transition-all duration-300" :style="{ paddingTop: safeAreaInsets?.top + 'px' }">
+      <view class="flex h-[88rpx] items-center px-[32rpx]">
+        <text class="text-[36rpx] font-bold text-slate-800">Fonds UI</text>
       </view>
     </view>
+    
+    <!-- 头部区域 -->
+    <view class="relative overflow-hidden bg-white pt-[calc(var(--status-bar-height)+100rpx)] pb-[64rpx]">
+      <!-- 装饰背景 -->
+      <view class="absolute right-0 top-0 -mr-[100rpx] -mt-[100rpx] h-[400rpx] w-[400rpx] rounded-full bg-indigo-500/10 blur-[80rpx] opacity-60"></view>
+      <view class="absolute left-0 top-[200rpx] -ml-[100rpx] h-[300rpx] w-[300rpx] rounded-full bg-fuchsia-500/10 blur-[60rpx] opacity-60"></view>
 
-    <!-- 功能入口 -->
-    <view class="feature-grid">
-      <view class="feature-card" @click="navigateTo('/pages/demo/index')">
-        <view class="feature-icon">🎨</view>
-        <text class="feature-title">组件演示</text>
-        <text class="feature-desc">查看所有组件的实时效果</text>
-      </view>
-
-      <view class="feature-card" @click="openDocs">
-        <view class="feature-icon">📖</view>
-        <text class="feature-title">开发文档</text>
-        <text class="feature-desc">API 文档与使用指南</text>
-      </view>
-
-      <view class="feature-card">
-        <view class="feature-icon">🧪</view>
-        <text class="feature-title">测试报告</text>
-        <text class="feature-desc">组件单元测试覆盖</text>
-      </view>
-
-      <view class="feature-card">
-        <view class="feature-icon">⚡</view>
-        <text class="feature-title">快速开始</text>
-        <text class="feature-desc">5 分钟快速上手</text>
-      </view>
-    </view>
-
-    <!-- 组件统计 -->
-    <view class="stats-section">
-      <text class="section-title">组件概览</text>
-      <view class="stats-grid">
-        <view class="stat-item">
-          <text class="stat-number">80+</text>
-          <text class="stat-label">UI 组件</text>
+      <view class="relative px-[40rpx]">
+        <view class="flex items-center justify-between">
+          <view>
+            <text class="block text-[64rpx] font-extrabold text-slate-900 leading-tight tracking-tight">Design <br/> System</text>
+            <text class="mt-[24rpx] block text-[30rpx] font-medium text-slate-500">构建优雅的跨端应用界面</text>
+          </view>
+          <view class="flex h-[112rpx] w-[112rpx] items-center justify-center rounded-[32rpx] bg-indigo-50 border border-indigo-100 shadow-sm rotate-3">
+            <view class="i-lucide-layers text-[56rpx] text-indigo-600"></view>
+          </view>
         </view>
-        <view class="stat-item">
-          <text class="stat-number">20+</text>
-          <text class="stat-label">Hooks</text>
-        </view>
-        <view class="stat-item">
-          <text class="stat-number">3</text>
-          <text class="stat-label">端适配</text>
+
+        <!-- 统计卡片 -->
+        <view class="mt-[80rpx] relative overflow-hidden rounded-[40rpx] bg-gradient-to-r from-indigo-600 to-violet-600 p-[1rpx] shadow-xl shadow-indigo-500/25">
+           <!-- 卡片内部 -->
+           <view class="relative h-full w-full bg-gradient-to-br from-white/10 to-transparent p-[48rpx]">
+              <view class="flex justify-between text-white relative z-10">
+                <view class="flex flex-col items-center">
+                  <text class="text-[52rpx] font-bold leading-none tracking-tight">80+</text>
+                  <text class="mt-[12rpx] text-[24rpx] font-medium text-indigo-100 opacity-90">组件总数</text>
+                </view>
+                <view class="h-[80rpx] w-[1rpx] bg-gradient-to-b from-white/0 via-white/30 to-white/0"></view>
+                <view class="flex flex-col items-center">
+                  <text class="text-[52rpx] font-bold leading-none tracking-tight">20+</text>
+                  <text class="mt-[12rpx] text-[24rpx] font-medium text-indigo-100 opacity-90">工具函数</text>
+                </view>
+                <view class="h-[80rpx] w-[1rpx] bg-gradient-to-b from-white/0 via-white/30 to-white/0"></view>
+                <view class="flex flex-col items-center">
+                  <text class="text-[52rpx] font-bold leading-none tracking-tight">3</text>
+                  <text class="mt-[12rpx] text-[24rpx] font-medium text-indigo-100 opacity-90">多端适配</text>
+                </view>
+              </view>
+              
+              <!-- 装饰圆环 -->
+              <view class="absolute -right-[40rpx] -top-[40rpx] h-[200rpx] w-[200rpx] rounded-full border-[20rpx] border-white/5 opacity-50"></view>
+              <view class="absolute -left-[40rpx] -bottom-[40rpx] h-[160rpx] w-[160rpx] rounded-full border-[16rpx] border-white/5 opacity-50"></view>
+           </view>
         </view>
       </view>
     </view>
 
-    <!-- 组件分类快速入口 -->
-    <view class="category-section">
-      <text class="section-title">组件分类</text>
-      <view class="category-list">
+    <!-- 快捷入口 -->
+    <view class="px-[32rpx] -mt-[32rpx] relative z-10">
+      <view class="grid grid-cols-2 gap-[24rpx]">
+        <view 
+          class="group flex flex-col justify-center rounded-[32rpx] bg-white p-[36rpx] shadow-[0_8rpx_30rpx_rgba(0,0,0,0.04)] active:scale-[0.98] transition-all duration-200" 
+          @click="navigateTo('/pages/demo/index')"
+        >
+          <view class="mb-[24rpx] flex h-[88rpx] w-[88rpx] items-center justify-center rounded-[24rpx] bg-indigo-50 group-active:bg-indigo-100 transition-colors">
+            <view class="i-lucide-component text-[44rpx] text-indigo-600"></view>
+          </view>
+          <text class="text-[32rpx] font-bold text-slate-800">组件演示</text>
+          <text class="mt-[8rpx] text-[24rpx] text-slate-400">实时预览效果</text>
+        </view>
+
+        <view 
+          class="group flex flex-col justify-center rounded-[32rpx] bg-white p-[36rpx] shadow-[0_8rpx_30rpx_rgba(0,0,0,0.04)] active:scale-[0.98] transition-all duration-200" 
+          @click="openDocs"
+        >
+          <view class="mb-[24rpx] flex h-[88rpx] w-[88rpx] items-center justify-center rounded-[24rpx] bg-emerald-50 group-active:bg-emerald-100 transition-colors">
+            <view class="i-lucide-book-open text-[44rpx] text-emerald-600"></view>
+          </view>
+          <text class="text-[32rpx] font-bold text-slate-800">开发文档</text>
+          <text class="mt-[8rpx] text-[24rpx] text-slate-400">API 与指南</text>
+        </view>
+      </view>
+      
+      <!-- 次级入口 -->
+      <view class="mt-[24rpx] grid grid-cols-2 gap-[24rpx]">
+         <view class="flex items-center rounded-[28rpx] bg-white p-[24rpx] shadow-sm active:bg-gray-50 transition-colors">
+            <view class="flex h-[72rpx] w-[72rpx] items-center justify-center rounded-[20rpx] bg-amber-50 mr-[20rpx]">
+               <view class="i-lucide-flask-conical text-[36rpx] text-amber-600"></view>
+            </view>
+            <view>
+               <text class="block text-[28rpx] font-bold text-slate-800">测试报告</text>
+               <text class="text-[22rpx] text-slate-400">覆盖率 90%</text>
+            </view>
+         </view>
+         
+         <view class="flex items-center rounded-[28rpx] bg-white p-[24rpx] shadow-sm active:bg-gray-50 transition-colors">
+            <view class="flex h-[72rpx] w-[72rpx] items-center justify-center rounded-[20rpx] bg-rose-50 mr-[20rpx]">
+               <view class="i-lucide-zap text-[36rpx] text-rose-600"></view>
+            </view>
+            <view>
+               <text class="block text-[28rpx] font-bold text-slate-800">快速上手</text>
+               <text class="text-[22rpx] text-slate-400">5 分钟集成</text>
+            </view>
+         </view>
+      </view>
+    </view>
+
+    <!-- 组件分类 -->
+    <view class="px-[32rpx] py-[64rpx]">
+      <view class="mb-[40rpx] flex items-center justify-between">
+        <view class="flex items-center">
+            <view class="h-[32rpx] w-[8rpx] rounded-full bg-indigo-600 mr-[16rpx]"></view>
+            <text class="text-[36rpx] font-bold text-slate-900">组件分类</text>
+        </view>
+        <text class="text-[26rpx] font-medium text-indigo-500 active:opacity-60">查看全部</text>
+      </view>
+
+      <view class="flex flex-col space-y-[24rpx]">
         <view
-          v-for="category in categories"
+          v-for="(category, index) in categories"
           :key="category.name"
-          class="category-item"
+          class="relative overflow-hidden flex items-center justify-between rounded-[32rpx] bg-white p-[32rpx] shadow-[0_4rpx_20rpx_rgba(0,0,0,0.02)] border border-gray-100 active:bg-gray-50 active:scale-[0.99] transition-all duration-300"
           @click="navigateTo(`/pages/demo/index?category=${category.key}`)"
         >
-          <text class="category-icon">{{ category.icon }}</text>
-          <text class="category-name">{{ category.name }}</text>
-          <text class="category-count">{{ category.count }} 个</text>
+          <view class="flex items-center z-10">
+            <view :class="`flex h-[96rpx] w-[96rpx] items-center justify-center rounded-[24rpx] ${category.bgClass} transition-transform duration-300 group-hover:scale-110`">
+              <view :class="`${category.icon} text-[44rpx] ${category.textClass}`"></view>
+            </view>
+            <view class="ml-[32rpx] flex flex-col">
+              <text class="text-[32rpx] font-bold text-slate-800">{{ category.name }}</text>
+              <text class="text-[24rpx] text-slate-400 mt-[6rpx]">{{ category.desc }}</text>
+            </view>
+          </view>
+          <view class="flex items-center z-10">
+            <view class="flex items-center justify-center rounded-full bg-gray-50 px-[20rpx] py-[8rpx]">
+                <text class="text-[24rpx] font-bold text-gray-400">{{ category.count }}</text>
+            </view>
+            <view class="i-lucide-chevron-right ml-[16rpx] text-gray-300 text-[36rpx]"></view>
+          </view>
         </view>
       </view>
     </view>
@@ -83,13 +153,17 @@
 </template>
 
 <script setup lang="ts">
+import { ref } from 'vue'
+
+const safeAreaInsets = uni.getSystemInfoSync().safeAreaInsets
+
 const categories = [
-  { key: "basic", name: "基础组件", icon: "📦", count: 12 },
-  { key: "form", name: "表单组件", icon: "📝", count: 15 },
-  { key: "feedback", name: "反馈组件", icon: "💬", count: 10 },
-  { key: "display", name: "展示组件", icon: "🖼️", count: 18 },
-  { key: "navigation", name: "导航组件", icon: "🧭", count: 8 },
-  { key: "layout", name: "布局组件", icon: "📐", count: 6 },
+  { key: "basic", name: "基础组件", desc: "Button, Icon, Layout...", icon: "i-lucide-box", count: 12, bgClass: "bg-blue-50", textClass: "text-blue-500" },
+  { key: "form", name: "表单组件", desc: "Input, Select, Switch...", icon: "i-lucide-check-square", count: 15, bgClass: "bg-indigo-50", textClass: "text-indigo-500" },
+  { key: "feedback", name: "反馈组件", desc: "Toast, Modal, Popup...", icon: "i-lucide-message-circle", count: 10, bgClass: "bg-amber-50", textClass: "text-amber-500" },
+  { key: "display", name: "展示组件", desc: "Avatar, Tag, Badge...", icon: "i-lucide-image", count: 18, bgClass: "bg-rose-50", textClass: "text-rose-500" },
+  { key: "navigation", name: "导航组件", desc: "Tabs, Navbar, Tabbar...", icon: "i-lucide-compass", count: 8, bgClass: "bg-emerald-50", textClass: "text-emerald-500" },
+  { key: "layout", name: "布局组件", desc: "Grid, Section, Divider...", icon: "i-lucide-layout-grid", count: 6, bgClass: "bg-cyan-50", textClass: "text-cyan-500" },
 ]
 
 function navigateTo(url: string) {
@@ -106,163 +180,9 @@ function openDocs() {
 }
 </script>
 
-<style lang="scss" scoped>
-.page-container {
-  background: linear-gradient(180deg, #667eea 0%, #764ba2 100%);
-  min-height: 100vh;
-  padding-bottom: 40rpx;
-}
-
-.header-banner {
-  padding: 80rpx 40rpx;
-  text-align: center;
-
-  .banner-content {
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-  }
-
-  .title {
-    color: #fff;
-    font-size: 64rpx;
-    font-weight: 700;
-    margin-bottom: 16rpx;
-  }
-
-  .subtitle {
-    color: rgba(255, 255, 255, 0.9);
-    font-size: 36rpx;
-    margin-bottom: 20rpx;
-  }
-
-  .desc {
-    color: rgba(255, 255, 255, 0.7);
-    font-size: 26rpx;
-    max-width: 600rpx;
-    line-height: 1.6;
-  }
-}
-
-.feature-grid {
-  gap: 24rpx;
-  display: grid;
-  padding: 0 32rpx;
-  margin-bottom: 40rpx;
-  grid-template-columns: repeat(2, 1fr);
-}
-
-.feature-card {
-  display: flex;
-  padding: 32rpx;
-  background: rgba(255, 255, 255, 0.95);
-  box-shadow: 0 8rpx 32rpx rgba(0, 0, 0, 0.1);
-  transition: transform 0.2s;
-  align-items: center;
-  border-radius: 24rpx;
-  flex-direction: column;
-
-  &:active {
-    transform: scale(0.98);
-  }
-
-  .feature-icon {
-    font-size: 56rpx;
-    margin-bottom: 16rpx;
-  }
-
-  .feature-title {
-    color: #333;
-    font-size: 30rpx;
-    font-weight: 600;
-    margin-bottom: 8rpx;
-  }
-
-  .feature-desc {
-    color: #666;
-    font-size: 24rpx;
-    text-align: center;
-  }
-}
-
-.stats-section {
-  margin: 0 32rpx 40rpx;
-  padding: 32rpx;
-  background: rgba(255, 255, 255, 0.95);
-  border-radius: 24rpx;
-}
-
-.section-title {
-  color: #333;
-  display: block;
-  font-size: 32rpx;
-  font-weight: 600;
-  margin-bottom: 24rpx;
-}
-
-.stats-grid {
-  display: flex;
-  justify-content: space-around;
-}
-
-.stat-item {
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-
-  .stat-number {
-    color: #667eea;
-    font-size: 48rpx;
-    font-weight: 700;
-    margin-bottom: 8rpx;
-  }
-
-  .stat-label {
-    color: #666;
-    font-size: 24rpx;
-  }
-}
-
-.category-section {
-  margin: 0 32rpx;
-  padding: 32rpx;
-  background: rgba(255, 255, 255, 0.95);
-  border-radius: 24rpx;
-}
-
-.category-list {
-  gap: 16rpx;
-  display: flex;
-  flex-direction: column;
-}
-
-.category-item {
-  display: flex;
-  padding: 24rpx;
-  background: #f8f9fa;
-  transition: background 0.2s;
-  align-items: center;
-  border-radius: 16rpx;
-
-  &:active {
-    background: #eee;
-  }
-
-  .category-icon {
-    font-size: 40rpx;
-    margin-right: 20rpx;
-  }
-
-  .category-name {
-    flex: 1;
-    color: #333;
-    font-size: 28rpx;
-    font-weight: 500;
-  }
-
-  .category-count {
-    color: #999;
-    font-size: 24rpx;
-  }
+<style>
+/* 确保背景色覆盖整个页面 */
+page {
+  background-color: #F6F7F9;
 }
 </style>

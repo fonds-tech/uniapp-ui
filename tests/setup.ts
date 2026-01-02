@@ -4,8 +4,51 @@
  * 参考 wot-design-uni 的测试配置最佳实践
  */
 
-import { vi } from "vitest"
 import { config } from "@vue/test-utils"
+import { vi, afterAll, afterEach } from "vitest"
+import { nextTick } from "vue"
+
+// ============================================
+// 测试辅助函数
+// ============================================
+
+/**
+ * 等待过渡动画完成
+ * 用于使用 useTransition hook 的组件测试
+ * useTransition 内部使用 setInterval 模拟 requestAnimationFrame
+ * 需要推进足够的时间让动画初始化完成
+ *
+ * @param ms 等待时间（毫秒），默认 150ms 足够完成 3 次 RAF 模拟
+ */
+export async function waitForTransition(ms = 150) {
+  await vi.advanceTimersByTimeAsync(ms)
+  await nextTick()
+}
+
+/**
+ * 等待组件完全渲染（包括过渡动画）
+ * 组合了时间推进和 Vue 更新周期
+ */
+export async function waitForRender() {
+  await nextTick()
+  await vi.advanceTimersByTimeAsync(100)
+  await nextTick()
+}
+
+/**
+ * 获取最后一次触发的事件值
+ * 用于弹窗组件测试，因为挂载时 open() 会先触发 update:show=true
+ * 点击关闭后触发 update:show=false 是第二个事件
+ *
+ * @param wrapper Vue Test Utils 挂载的组件
+ * @param eventName 事件名称
+ * @returns 最后一次事件的参数数组，如果没有触发过则返回 undefined
+ */
+export function getLastEmitted(wrapper: any, eventName: string): any[] | undefined {
+  const events = wrapper.emitted(eventName)
+  if (!events || events.length === 0) return undefined
+  return events[events.length - 1]
+}
 
 // ============================================
 // 静默 Vue 警告（UniApp 组件名与 HTML 保留元素冲突）
@@ -32,6 +75,12 @@ config.global.config = {
 // UniApp 全局 API Mock（使用 vi.stubGlobal）
 // ============================================
 vi.stubGlobal("uni", {
+  // 单位转换（rpx 转 px）
+  upx2px: vi.fn().mockImplementation((upx: number) => {
+    // 默认按照 750rpx 设计稿，375px 屏幕宽度计算
+    return Math.floor(upx * (375 / 750))
+  }),
+
   // 系统信息
   getSystemInfoSync: vi.fn().mockReturnValue({
     brand: "devtools",
@@ -257,6 +306,77 @@ vi.stubGlobal("uni", {
   // 能力检测
   canIUse: vi.fn().mockReturnValue(true),
 
+  // 胶囊按钮信息（小程序特有）
+  getMenuButtonBoundingClientRect: vi.fn().mockReturnValue({
+    width: 87,
+    height: 32,
+    top: 48,
+    right: 368,
+    bottom: 80,
+    left: 281,
+  }),
+
+  // 系统信息异步版本
+  getSystemInfo: vi.fn().mockImplementation((options) => {
+    const result = {
+      brand: "devtools",
+      model: "iPhone",
+      pixelRatio: 2,
+      screenWidth: 375,
+      screenHeight: 800,
+      windowWidth: 375,
+      windowHeight: 667,
+      windowTop: 0,
+      statusBarHeight: 20,
+      language: "zh-CN",
+      version: "1.0.0",
+      platform: "ios",
+      safeArea: { bottom: 780, height: 667, left: 0, right: 375, top: 20, width: 375 },
+      safeAreaInsets: { bottom: 20, left: 0, right: 0, top: 20 },
+      theme: "light",
+      errMsg: "getSystemInfo:ok",
+    }
+    options?.success?.(result)
+    options?.complete?.(result)
+    return Promise.resolve(result)
+  }),
+
+  // 授权 API
+  authorize: vi.fn().mockImplementation((options) => {
+    options?.success?.({ errMsg: "authorize:ok" })
+    options?.complete?.()
+    return Promise.resolve({ errMsg: "authorize:ok" })
+  }),
+
+  // 文件选择 API
+  chooseFile: vi.fn().mockImplementation((options) => {
+    options?.success?.({
+      tempFilePaths: ["/temp/file.pdf"],
+      tempFiles: [{ path: "/temp/file.pdf", name: "file.pdf", size: 1024 }],
+    })
+    options?.complete?.()
+    return Promise.resolve({ tempFilePaths: ["/temp/file.pdf"] })
+  }),
+  chooseMedia: vi.fn().mockImplementation((options) => {
+    options?.success?.({
+      tempFiles: [{ tempFilePath: "/temp/media.mp4", size: 1024, duration: 10, width: 1920, height: 1080 }],
+      type: "video",
+    })
+    options?.complete?.()
+    return Promise.resolve({ tempFiles: [] })
+  }),
+  chooseVideo: vi.fn().mockImplementation((options) => {
+    options?.success?.({
+      tempFilePath: "/temp/video.mp4",
+      duration: 10,
+      size: 1024,
+      width: 1920,
+      height: 1080,
+    })
+    options?.complete?.()
+    return Promise.resolve({ tempFilePath: "/temp/video.mp4" })
+  }),
+
   // Canvas API
   createCanvasContext: vi.fn().mockReturnValue({
     setFillStyle: vi.fn(),
@@ -280,8 +400,14 @@ vi.stubGlobal("uni", {
 })
 
 // 全局函数 Mock
-vi.stubGlobal("getCurrentPages", vi.fn(() => [{ route: "pages/index/index", $vm: {}, $getAppWebview: vi.fn() }]))
-vi.stubGlobal("getApp", vi.fn(() => ({ globalData: {} })))
+vi.stubGlobal(
+  "getCurrentPages",
+  vi.fn(() => [{ route: "pages/index/index", $vm: {}, $getAppWebview: vi.fn() }]),
+)
+vi.stubGlobal(
+  "getApp",
+  vi.fn(() => ({ globalData: {} })),
+)
 
 // ============================================
 // UniApp 生命周期 Mock
@@ -291,6 +417,9 @@ vi.stubGlobal("onShow", vi.fn())
 vi.stubGlobal("onHide", vi.fn())
 vi.stubGlobal("onUnload", vi.fn())
 vi.stubGlobal("onError", vi.fn())
+vi.stubGlobal("onPageScroll", vi.fn())
+vi.stubGlobal("onReachBottom", vi.fn())
+vi.stubGlobal("onPullDownRefresh", vi.fn())
 
 // Mock @dcloudio/uni-app 生命周期钩子
 vi.mock("@dcloudio/uni-app", () => ({
@@ -312,25 +441,25 @@ const uniappBuiltInComponents: Record<string, any> = {
   view: { name: "uni-view", template: "<div><slot></slot></div>" },
   "scroll-view": {
     name: "uni-scroll-view",
-    template: "<div class=\"scroll-view\"><slot></slot></div>",
+    template: '<div class="scroll-view"><slot></slot></div>',
     props: ["scroll-y", "scroll-x", "scroll-top", "scroll-left", "scroll-into-view"],
   },
   swiper: {
     name: "uni-swiper",
-    template: "<div class=\"swiper\"><slot></slot></div>",
+    template: '<div class="swiper"><slot></slot></div>',
     props: ["indicator-dots", "autoplay", "interval", "duration", "circular"],
   },
-  "swiper-item": { name: "uni-swiper-item", template: "<div class=\"swiper-item\"><slot></slot></div>" },
-  "cover-view": { name: "uni-cover-view", template: "<div class=\"cover-view\"><slot></slot></div>" },
-  "cover-image": { name: "uni-cover-image", template: "<img class=\"cover-image\" />" },
-  "movable-area": { name: "uni-movable-area", template: "<div class=\"movable-area\"><slot></slot></div>" },
-  "movable-view": { name: "uni-movable-view", template: "<div class=\"movable-view\"><slot></slot></div>" },
+  "swiper-item": { name: "uni-swiper-item", template: '<div class="swiper-item"><slot></slot></div>' },
+  "cover-view": { name: "uni-cover-view", template: '<div class="cover-view"><slot></slot></div>' },
+  "cover-image": { name: "uni-cover-image", template: '<img class="cover-image" />' },
+  "movable-area": { name: "uni-movable-area", template: '<div class="movable-area"><slot></slot></div>' },
+  "movable-view": { name: "uni-movable-view", template: '<div class="movable-view"><slot></slot></div>' },
 
   // 基础内容
   text: { name: "uni-text", template: "<span><slot></slot></span>" },
-  "rich-text": { name: "uni-rich-text", template: "<div class=\"rich-text\"></div>" },
-  icon: { name: "uni-icon", template: "<i class=\"icon\"></i>" },
-  progress: { name: "uni-progress", template: "<div class=\"progress\"></div>" },
+  "rich-text": { name: "uni-rich-text", template: '<div class="rich-text"></div>' },
+  icon: { name: "uni-icon", template: '<i class="icon"></i>' },
+  progress: { name: "uni-progress", template: '<div class="progress"></div>' },
 
   // 表单组件
   button: { name: "uni-button", template: "<button><slot></slot></button>" },
@@ -346,23 +475,23 @@ const uniappBuiltInComponents: Record<string, any> = {
     props: ["value", "placeholder", "disabled", "maxlength"],
     emits: ["input", "focus", "blur", "confirm"],
   },
-  checkbox: { name: "uni-checkbox", template: "<input type=\"checkbox\" class=\"checkbox\" />" },
-  "checkbox-group": { name: "uni-checkbox-group", template: "<div class=\"checkbox-group\"><slot></slot></div>" },
-  radio: { name: "uni-radio", template: "<input type=\"radio\" class=\"radio\" />" },
-  "radio-group": { name: "uni-radio-group", template: "<div class=\"radio-group\"><slot></slot></div>" },
-  picker: { name: "uni-picker", template: "<div class=\"picker\"><slot></slot></div>" },
+  checkbox: { name: "uni-checkbox", template: '<input type="checkbox" class="checkbox" />' },
+  "checkbox-group": { name: "uni-checkbox-group", template: '<div class="checkbox-group"><slot></slot></div>' },
+  radio: { name: "uni-radio", template: '<input type="radio" class="radio" />' },
+  "radio-group": { name: "uni-radio-group", template: '<div class="radio-group"><slot></slot></div>' },
+  picker: { name: "uni-picker", template: '<div class="picker"><slot></slot></div>' },
   "picker-view": {
     name: "uni-picker-view",
-    template: "<div class=\"picker-view\"><slot></slot></div>",
+    template: '<div class="picker-view"><slot></slot></div>',
     props: ["value", "range", "range-key"],
     emits: ["change"],
   },
-  "picker-view-column": { name: "uni-picker-view-column", template: "<div class=\"picker-view-column\"><slot></slot></div>" },
-  slider: { name: "uni-slider", template: "<input type=\"range\" class=\"slider\" />" },
-  switch: { name: "uni-switch", template: "<input type=\"checkbox\" class=\"switch\" />" },
+  "picker-view-column": { name: "uni-picker-view-column", template: '<div class="picker-view-column"><slot></slot></div>' },
+  slider: { name: "uni-slider", template: '<input type="range" class="slider" />' },
+  switch: { name: "uni-switch", template: '<input type="checkbox" class="switch" />' },
   label: { name: "uni-label", template: "<label><slot></slot></label>" },
   form: { name: "uni-form", template: "<form><slot></slot></form>" },
-  editor: { name: "uni-editor", template: "<div class=\"editor\"></div>" },
+  editor: { name: "uni-editor", template: '<div class="editor"></div>' },
 
   // 导航
   navigator: { name: "uni-navigator", template: "<a><slot></slot></a>" },
@@ -376,20 +505,20 @@ const uniappBuiltInComponents: Record<string, any> = {
     emits: ["play", "pause", "ended", "timeupdate"],
   },
   audio: { name: "uni-audio", template: "<audio></audio>" },
-  camera: { name: "uni-camera", template: "<div class=\"camera\"></div>" },
-  "live-player": { name: "uni-live-player", template: "<div class=\"live-player\"></div>" },
-  "live-pusher": { name: "uni-live-pusher", template: "<div class=\"live-pusher\"></div>" },
+  camera: { name: "uni-camera", template: '<div class="camera"></div>' },
+  "live-player": { name: "uni-live-player", template: '<div class="live-player"></div>' },
+  "live-pusher": { name: "uni-live-pusher", template: '<div class="live-pusher"></div>' },
 
   // 地图
-  map: { name: "uni-map", template: "<div class=\"map\"></div>" },
+  map: { name: "uni-map", template: '<div class="map"></div>' },
 
   // 画布
-  canvas: { name: "uni-canvas", template: "<canvas class=\"canvas\"></canvas>" },
+  canvas: { name: "uni-canvas", template: '<canvas class="canvas"></canvas>' },
 
   // 开放能力
-  "web-view": { name: "uni-web-view", template: "<iframe class=\"web-view\"></iframe>" },
-  "open-data": { name: "uni-open-data", template: "<div class=\"open-data\"></div>" },
-  ad: { name: "uni-ad", template: "<div class=\"ad\"></div>" },
+  "web-view": { name: "uni-web-view", template: '<iframe class="web-view"></iframe>' },
+  "open-data": { name: "uni-open-data", template: '<div class="open-data"></div>' },
+  ad: { name: "uni-ad", template: '<div class="ad"></div>' },
 
   // block 组件
   block: { name: "block", template: "<div><slot></slot></div>" },
@@ -407,13 +536,19 @@ config.global.stubs = {
   "ui-icon": {
     name: "ui-icon",
     // eslint-disable-next-line no-template-curly-in-string
-    template: "<i class=\"ui-icon\" :class=\"`ui-icon-${name}`\"></i>",
+    template: '<i class="ui-icon" :class="`ui-icon-${name}`"></i>',
     props: ["name", "color", "size", "weight", "lineHeight", "radius", "background", "customClass", "customStyle"],
   },
   "ui-loading": {
     name: "ui-loading",
-    template: "<span class=\"ui-loading\"><slot /></span>",
+    template: '<span class="ui-loading"><slot /></span>',
     props: ["show", "type", "size", "color", "text", "textColor", "textSize", "vertical", "customClass", "customStyle"],
+  },
+  "ui-overlay": {
+    name: "ui-overlay",
+    template: '<div v-if="show" class="ui-overlay" @click="$emit(\'click\')"><slot /></div>',
+    props: ["show", "zIndex", "duration", "lazyRender", "customStyle", "customClass"],
+    emits: ["click"],
   },
 }
 
@@ -439,6 +574,8 @@ vi.stubGlobal("TouchEvent", MockTouchEvent)
 // ============================================
 // CSS 变量注入
 // ============================================
+let injectedStyleElement: HTMLStyleElement | null = null
+
 if (typeof document !== "undefined") {
   const style = document.createElement("style")
   style.textContent = `
@@ -473,4 +610,17 @@ if (typeof document !== "undefined") {
     }
   `
   document.head.appendChild(style)
+  injectedStyleElement = style
 }
+
+// ============================================
+// 全局清理钩子 - 防止进程挂起
+// ============================================
+
+// 每个测试后清理定时器和 Mock
+afterEach(() => {
+  // 清理所有定时器（防止挂起的 setTimeout/setInterval）
+  vi.clearAllTimers()
+  // 清理所有 Mock 调用记录
+  vi.clearAllMocks()
+})

@@ -13,21 +13,27 @@ type _LocationUrl =
   "/pages/demo/button/index" |
   "/pages/demo/cascader/index" |
   "/pages/demo/cell/index" |
+  "/pages/demo/cell-group/index" |
   "/pages/demo/checkbox/index" |
+  "/pages/demo/checkbox-group/index" |
+  "/pages/demo/config-provider/index" |
   "/pages/demo/countdown/index" |
   "/pages/demo/date-picker/index" |
   "/pages/demo/dialog/index" |
+  "/pages/demo/dropdown-item/index" |
   "/pages/demo/dropdown-menu/index" |
   "/pages/demo/empty/index" |
   "/pages/demo/field/index" |
   "/pages/demo/float-button/index" |
   "/pages/demo/footer/index" |
   "/pages/demo/form/index" |
+  "/pages/demo/form-item/index" |
   "/pages/demo/grid/index" |
   "/pages/demo/header/index" |
   "/pages/demo/icon/index" |
   "/pages/demo/icon-text/index" |
   "/pages/demo/image/index" |
+  "/pages/demo/index-anchor/index" |
   "/pages/demo/index-bar/index" |
   "/pages/demo/input/index" |
   "/pages/demo/keyboard/index" |
@@ -40,21 +46,29 @@ type _LocationUrl =
   "/pages/demo/overlay/index" |
   "/pages/demo/pagination/index" |
   "/pages/demo/picker/index" |
+  "/pages/demo/picker-panel/index" |
   "/pages/demo/popup/index" |
   "/pages/demo/poster/index" |
   "/pages/demo/progress/index" |
   "/pages/demo/qrcode/index" |
   "/pages/demo/radio/index" |
+  "/pages/demo/radio-group/index" |
   "/pages/demo/rate/index" |
+  "/pages/demo/resize/index" |
+  "/pages/demo/safe-area/index" |
   "/pages/demo/search/index" |
   "/pages/demo/select/index" |
   "/pages/demo/sidebar/index" |
+  "/pages/demo/sidebar-item/index" |
   "/pages/demo/skeleton/index" |
+  "/pages/demo/skeleton-components/index" |
   "/pages/demo/stepper/index" |
   "/pages/demo/sticky/index" |
   "/pages/demo/swiper/index" |
   "/pages/demo/switch/index" |
+  "/pages/demo/tab/index" |
   "/pages/demo/tabbar/index" |
+  "/pages/demo/tabbar-item/index" |
   "/pages/demo/tabs/index" |
   "/pages/demo/tag/index" |
   "/pages/demo/text/index" |

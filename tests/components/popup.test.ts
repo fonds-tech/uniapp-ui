@@ -1,24 +1,14 @@
 /**
  * ui-popup 组件单元测试
  * 测试弹出层组件的 props、events 和渲染逻辑
- * 注意：由于 popup 依赖动画和 uni API，部分测试用例专注于 props 检测
+ * 注意：popup 组件使用 useTransition hook，内部用 setInterval 模拟 requestAnimationFrame
+ * 测试中需要使用 waitForTransition 推进时间以完成动画初始化
  */
 
 import UiPopup from "@/ui/ui-popup/ui-popup.vue"
 import { mount } from "@vue/test-utils"
-import { it, vi, expect, describe, beforeEach } from "vitest"
-
-// Mock uni API
-beforeEach(() => {
-  vi.stubGlobal("uni", {
-    getSystemInfo: vi.fn((options) => {
-      if (options.success) {
-        options.success({ windowBottom: 0 })
-      }
-    }),
-    getWindowInfo: vi.fn(() => ({ windowBottom: 0 })),
-  })
-})
+import { it, vi, expect, describe, beforeEach, afterEach } from "vitest"
+import { waitForTransition } from "../setup"
 
 // 创建 stub 组件
 const stubs = {
@@ -43,6 +33,16 @@ const stubs = {
 }
 
 describe("ui-popup 弹出层组件", () => {
+  // 启用 fake timers
+  beforeEach(() => {
+    vi.useFakeTimers()
+  })
+
+  // 每个测试后恢复真实计时器
+  afterEach(() => {
+    vi.useRealTimers()
+  })
+
   describe("基础渲染", () => {
     it("应正确渲染默认弹出层组件", () => {
       const wrapper = mount(UiPopup, { global: { stubs } })
@@ -59,11 +59,24 @@ describe("ui-popup 弹出层组件", () => {
       expect(wrapper.find(".ui-popup").exists()).toBe(false)
     })
 
-    it("lazyRender 为 false 时应立即渲染", () => {
+    it("lazyRender 为 false 时应立即渲染", async () => {
       const wrapper = mount(UiPopup, {
         props: { show: false, lazyRender: false },
         global: { stubs },
       })
+
+      // lazyRender 为 false 时，inited 始终为 true，无需等待动画
+      expect(wrapper.find(".ui-popup").exists()).toBe(true)
+    })
+
+    it("show 为 true 时应渲染弹出层（动画完成后）", async () => {
+      const wrapper = mount(UiPopup, {
+        props: { show: true },
+        global: { stubs },
+      })
+
+      // 等待 transition 动画初始化完成
+      await waitForTransition()
 
       expect(wrapper.find(".ui-popup").exists()).toBe(true)
     })
@@ -87,6 +100,21 @@ describe("ui-popup 弹出层组件", () => {
       const wrapper = mount(UiPopup, { global: { stubs } })
 
       expect(wrapper.props("mode")).toBe("bottom")
+    })
+
+    modes.forEach((mode) => {
+      it(`${mode} 模式应渲染对应的 CSS 类名`, async () => {
+        const wrapper = mount(UiPopup, {
+          props: { show: true, mode },
+          global: { stubs },
+        })
+
+        await waitForTransition()
+
+        const popup = wrapper.find(".ui-popup")
+        expect(popup.exists()).toBe(true)
+        expect(popup.classes()).toContain(`ui-popup--${mode}`)
+      })
     })
   })
 
@@ -153,6 +181,17 @@ describe("ui-popup 弹出层组件", () => {
 
       expect(wrapper.find(".ui-overlay-stub").exists()).toBe(false)
     })
+
+    it("overlay 为 true 时应显示遮罩层", async () => {
+      const wrapper = mount(UiPopup, {
+        props: { show: true, overlay: true },
+        global: { stubs },
+      })
+
+      await waitForTransition()
+
+      expect(wrapper.find(".ui-overlay-stub").exists()).toBe(true)
+    })
   })
 
   describe("关闭按钮属性", () => {
@@ -187,6 +226,43 @@ describe("ui-popup 弹出层组件", () => {
         })
 
         expect(wrapper.props("closeIconPosition")).toBe(position)
+      })
+    })
+
+    it("closeable 为 true 时应渲染关闭按钮", async () => {
+      const wrapper = mount(UiPopup, {
+        props: { show: true, closeable: true },
+        global: { stubs },
+      })
+
+      await waitForTransition()
+
+      expect(wrapper.find(".ui-popup__close").exists()).toBe(true)
+    })
+
+    it("closeable 为 false 时不应渲染关闭按钮", async () => {
+      const wrapper = mount(UiPopup, {
+        props: { show: true, closeable: false },
+        global: { stubs },
+      })
+
+      await waitForTransition()
+
+      expect(wrapper.find(".ui-popup__close").exists()).toBe(false)
+    })
+
+    closePositions.forEach((position) => {
+      it(`关闭按钮位置 ${position} 应渲染对应的 CSS 类名`, async () => {
+        const wrapper = mount(UiPopup, {
+          props: { show: true, closeable: true, closeIconPosition: position },
+          global: { stubs },
+        })
+
+        await waitForTransition()
+
+        const closeBtn = wrapper.find(".ui-popup__close")
+        expect(closeBtn.exists()).toBe(true)
+        expect(closeBtn.classes()).toContain(`ui-popup__close--${position}`)
       })
     })
   })
@@ -262,6 +338,28 @@ describe("ui-popup 弹出层组件", () => {
 
       expect(wrapper.props("safeAreaInsetTop")).toBe(true)
     })
+
+    it("safeAreaInsetTop 为 true 时应渲染顶部安全区域组件", async () => {
+      const wrapper = mount(UiPopup, {
+        props: { show: true, safeAreaInsetTop: true },
+        global: { stubs },
+      })
+
+      await waitForTransition()
+
+      expect(wrapper.find(".ui-safe-area-top-stub").exists()).toBe(true)
+    })
+
+    it("safeAreaInsetBottom 为 true 时应渲染底部安全区域组件", async () => {
+      const wrapper = mount(UiPopup, {
+        props: { show: true, safeAreaInsetBottom: true },
+        global: { stubs },
+      })
+
+      await waitForTransition()
+
+      expect(wrapper.find(".ui-safe-area-bottom-stub").exists()).toBe(true)
+    })
   })
 
   describe("事件处理", () => {
@@ -272,7 +370,7 @@ describe("ui-popup 弹出层组件", () => {
       })
 
       await wrapper.setProps({ show: true })
-      await wrapper.vm.$nextTick()
+      await waitForTransition()
 
       expect(wrapper.emitted("open")).toBeTruthy()
     })
@@ -284,9 +382,85 @@ describe("ui-popup 弹出层组件", () => {
       })
 
       await wrapper.setProps({ show: true })
-      await wrapper.vm.$nextTick()
+      await waitForTransition()
 
       expect(wrapper.emitted("update:show")).toBeTruthy()
+    })
+
+    it("点击遮罩层应触发 clickOverlay 事件", async () => {
+      const wrapper = mount(UiPopup, {
+        props: { show: true, overlay: true, closeOnClickOverlay: true },
+        global: { stubs },
+      })
+
+      await waitForTransition()
+
+      const overlay = wrapper.find(".ui-overlay-stub")
+      await overlay.trigger("click")
+
+      expect(wrapper.emitted("clickOverlay")).toBeTruthy()
+    })
+
+    it("点击遮罩层且 closeOnClickOverlay 为 true 时应触发关闭", async () => {
+      const wrapper = mount(UiPopup, {
+        props: { show: true, overlay: true, closeOnClickOverlay: true },
+        global: { stubs },
+      })
+
+      await waitForTransition()
+
+      const overlay = wrapper.find(".ui-overlay-stub")
+      await overlay.trigger("click")
+
+      const updateShowEvents = wrapper.emitted("update:show") as boolean[][]
+      // 第一次是打开时触发的 true，第二次是点击遮罩关闭时触发的 false
+      expect(updateShowEvents.some((event) => event[0] === false)).toBe(true)
+    })
+
+    it("closeOnClickOverlay 为 false 时点击遮罩层不应触发关闭", async () => {
+      const wrapper = mount(UiPopup, {
+        props: { show: true, overlay: true, closeOnClickOverlay: false },
+        global: { stubs },
+      })
+
+      await waitForTransition()
+
+      const overlay = wrapper.find(".ui-overlay-stub")
+      await overlay.trigger("click")
+
+      const updateShowEvents = wrapper.emitted("update:show") as boolean[][]
+      // 只有打开时的 true 事件，没有关闭的 false 事件
+      const hasCloseEvent = updateShowEvents.some((event) => event[0] === false)
+      expect(hasCloseEvent).toBe(false)
+    })
+
+    it("点击关闭按钮应触发 clickClose 事件", async () => {
+      const wrapper = mount(UiPopup, {
+        props: { show: true, closeable: true },
+        global: { stubs },
+      })
+
+      await waitForTransition()
+
+      const closeBtn = wrapper.find(".ui-popup__close")
+      await closeBtn.trigger("click")
+
+      expect(wrapper.emitted("clickClose")).toBeTruthy()
+    })
+
+    it("点击关闭按钮应触发关闭", async () => {
+      const wrapper = mount(UiPopup, {
+        props: { show: true, closeable: true },
+        global: { stubs },
+      })
+
+      await waitForTransition()
+
+      const closeBtn = wrapper.find(".ui-popup__close")
+      await closeBtn.trigger("click")
+
+      const updateShowEvents = wrapper.emitted("update:show") as boolean[][]
+      expect(updateShowEvents.some((event) => event[0] === false)).toBe(true)
     })
   })
 
@@ -351,6 +525,18 @@ describe("ui-popup 弹出层组件", () => {
 
       expect(wrapper.props("overlayStyle")).toEqual({ backgroundColor: "rgba(0,0,0,0.5)" })
     })
+
+    it("自定义类名应被应用到弹出层元素", async () => {
+      const wrapper = mount(UiPopup, {
+        props: { show: true, customClass: "my-custom-popup" },
+        global: { stubs },
+      })
+
+      await waitForTransition()
+
+      const popup = wrapper.find(".ui-popup")
+      expect(popup.classes()).toContain("my-custom-popup")
+    })
   })
 
   describe("暴露的方法", () => {
@@ -364,6 +550,34 @@ describe("ui-popup 弹出层组件", () => {
       const wrapper = mount(UiPopup, { global: { stubs } })
 
       expect(typeof wrapper.vm.close).toBe("function")
+    })
+
+    it("调用 open 方法应打开弹出层", async () => {
+      const wrapper = mount(UiPopup, {
+        props: { show: false },
+        global: { stubs },
+      })
+
+      wrapper.vm.open()
+      await waitForTransition()
+
+      expect(wrapper.emitted("update:show")).toBeTruthy()
+      expect(wrapper.emitted("open")).toBeTruthy()
+    })
+
+    it("调用 close 方法应关闭弹出层", async () => {
+      const wrapper = mount(UiPopup, {
+        props: { show: true },
+        global: { stubs },
+      })
+
+      await waitForTransition()
+
+      wrapper.vm.close()
+      await waitForTransition()
+
+      const updateShowEvents = wrapper.emitted("update:show") as boolean[][]
+      expect(updateShowEvents.some((event) => event[0] === false)).toBe(true)
     })
   })
 
@@ -385,6 +599,101 @@ describe("ui-popup 弹出层组件", () => {
       expect(wrapper.props("overlay")).toBe(true)
       expect(wrapper.props("borderRadius")).toBe(20)
       expect(wrapper.props("customClass")).toBe("my-popup")
+    })
+
+    it("多个属性的完整弹出层应正确渲染", async () => {
+      const wrapper = mount(UiPopup, {
+        props: {
+          show: true,
+          mode: "center",
+          closeable: true,
+          overlay: true,
+          borderRadius: 20,
+          customClass: "my-popup",
+          safeAreaInsetTop: true,
+          safeAreaInsetBottom: true,
+        },
+        global: { stubs },
+      })
+
+      await waitForTransition()
+
+      const popup = wrapper.find(".ui-popup")
+      expect(popup.exists()).toBe(true)
+      expect(popup.classes()).toContain("ui-popup--center")
+      expect(popup.classes()).toContain("my-popup")
+      expect(wrapper.find(".ui-popup__close").exists()).toBe(true)
+      expect(wrapper.find(".ui-overlay-stub").exists()).toBe(true)
+      expect(wrapper.find(".ui-safe-area-top-stub").exists()).toBe(true)
+      expect(wrapper.find(".ui-safe-area-bottom-stub").exists()).toBe(true)
+    })
+
+    it("快速切换 show 状态应正确处理", async () => {
+      const wrapper = mount(UiPopup, {
+        props: { show: false },
+        global: { stubs },
+      })
+
+      // 打开
+      await wrapper.setProps({ show: true })
+      await waitForTransition()
+
+      expect(wrapper.find(".ui-popup").exists()).toBe(true)
+
+      // 关闭
+      await wrapper.setProps({ show: false })
+      await waitForTransition()
+
+      // 再次打开
+      await wrapper.setProps({ show: true })
+      await waitForTransition()
+
+      expect(wrapper.find(".ui-popup").exists()).toBe(true)
+    })
+  })
+
+  describe("插槽", () => {
+    it("应渲染默认插槽内容", async () => {
+      const wrapper = mount(UiPopup, {
+        props: { show: true },
+        global: { stubs },
+        slots: {
+          default: "<div class=\"slot-content\">测试内容</div>",
+        },
+      })
+
+      await waitForTransition()
+
+      expect(wrapper.find(".slot-content").exists()).toBe(true)
+      expect(wrapper.find(".slot-content").text()).toBe("测试内容")
+    })
+
+    it("应渲染 header 插槽内容", async () => {
+      const wrapper = mount(UiPopup, {
+        props: { show: true },
+        global: { stubs },
+        slots: {
+          header: "<div class=\"header-content\">头部内容</div>",
+        },
+      })
+
+      await waitForTransition()
+
+      expect(wrapper.find(".header-content").exists()).toBe(true)
+    })
+
+    it("应渲染 footer 插槽内容", async () => {
+      const wrapper = mount(UiPopup, {
+        props: { show: true },
+        global: { stubs },
+        slots: {
+          footer: "<div class=\"footer-content\">底部内容</div>",
+        },
+      })
+
+      await waitForTransition()
+
+      expect(wrapper.find(".footer-content").exists()).toBe(true)
     })
   })
 })

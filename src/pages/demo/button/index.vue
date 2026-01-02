@@ -61,6 +61,14 @@
       </demo-block>
     </demo-section>
 
+    <!-- 新增：加载配置 -->
+    <demo-section title="加载配置">
+      <demo-block :cols="2">
+        <ui-button type="primary" loading loading-text="加载中...">加载文字</ui-button>
+        <ui-button type="success" loading loading-icon-size="36rpx">大图标</ui-button>
+      </demo-block>
+    </demo-section>
+
     <demo-section title="圆角按钮">
       <demo-block :cols="3">
         <ui-button type="primary" round>主要</ui-button>
@@ -79,6 +87,14 @@
         <ui-button type="warning" size="normal">普通</ui-button>
         <ui-button type="danger" size="small">小型</ui-button>
         <ui-button type="info" size="mini">迷你</ui-button>
+      </demo-block>
+    </demo-section>
+
+    <!-- 新增：自定义尺寸 -->
+    <demo-section title="自定义尺寸">
+      <demo-block :cols="2">
+        <ui-button type="primary" width="200rpx">固定宽度</ui-button>
+        <ui-button type="success" height="80rpx">自定义高度</ui-button>
       </demo-block>
     </demo-section>
 
@@ -113,6 +129,26 @@
       </demo-block>
     </demo-section>
 
+    <!-- 新增：图标样式 -->
+    <demo-section title="图标样式">
+      <demo-block :cols="2">
+        <ui-button type="primary" icon="star" icon-size="36rpx">大图标</ui-button>
+        <ui-button type="success" icon="heart" icon-color="#ff6b6b">自定义颜色</ui-button>
+      </demo-block>
+      <demo-block :cols="2" class="mt-16">
+        <ui-button type="warning" icon="like" icon-weight="600">粗图标</ui-button>
+        <ui-button type="default" icon="setting" icon-color="#1989fa" icon-size="40rpx">组合配置</ui-button>
+      </demo-block>
+    </demo-section>
+
+    <!-- 新增：文字样式 -->
+    <demo-section title="文字样式">
+      <demo-block :cols="2">
+        <ui-button type="primary" text-size="32rpx">大号文字</ui-button>
+        <ui-button type="success" text-weight="700">粗体文字</ui-button>
+      </demo-block>
+    </demo-section>
+
     <demo-section title="自定义颜色">
       <demo-block :cols="2">
         <ui-button color="#7232dd">紫色按钮</ui-button>
@@ -131,13 +167,104 @@
         <ui-button color="linear-gradient(135deg, #fc6076 0%, #ff9a44 100%)" block>橙红渐变</ui-button>
       </demo-block>
     </demo-section>
+
+    <!-- 新增：边框样式 -->
+    <demo-section title="边框样式">
+      <demo-block :cols="2">
+        <ui-button type="default" border-radius="8rpx">小圆角</ui-button>
+        <ui-button type="default" border-radius="32rpx">大圆角</ui-button>
+      </demo-block>
+      <demo-block :cols="2" class="mt-16">
+        <ui-button type="default" plain border-width="4rpx" border-color="#1989fa">粗边框</ui-button>
+        <ui-button type="default" plain border-color="#ee0a24">红色边框</ui-button>
+      </demo-block>
+    </demo-section>
+
+    <!-- 新增：阴影效果 -->
+    <demo-section title="阴影效果">
+      <demo-block :cols="2">
+        <ui-button type="primary" shadow="0 4rpx 12rpx rgba(25, 137, 250, 0.4)">蓝色阴影</ui-button>
+        <ui-button type="danger" shadow="0 4rpx 12rpx rgba(238, 10, 36, 0.4)">红色阴影</ui-button>
+      </demo-block>
+    </demo-section>
+
+    <!-- 新增：边距配置 -->
+    <demo-section title="边距配置">
+      <demo-block>
+        <ui-button type="primary" margin-right="24rpx">右边距</ui-button>
+        <ui-button type="success" margin-left="24rpx">左边距</ui-button>
+      </demo-block>
+    </demo-section>
+
+    <!-- 新增：节流配置 -->
+    <demo-section title="节流配置">
+      <demo-block direction="column" align="start" :gap="16">
+        <ui-button type="primary" :throttle="1000" @click="onThrottleClick">1秒节流（点击试试）</ui-button>
+        <text class="demo-text">{{ throttleLog }}</text>
+      </demo-block>
+    </demo-section>
+
+    <!-- 新增：事件处理 -->
+    <demo-section title="事件处理">
+      <demo-block direction="column" align="start" :gap="16">
+        <ui-button type="primary" @click="onButtonClick">点击触发事件</ui-button>
+        <text class="demo-text">{{ clickLog }}</text>
+      </demo-block>
+    </demo-section>
+
+    <!-- 新增：自定义样式 -->
+    <demo-section title="自定义样式">
+      <demo-block :cols="2">
+        <ui-button
+          type="default"
+          custom-class="my-button"
+          :custom-style="{ background: 'linear-gradient(45deg, #fff 0%, #f0f0f0 100%)', boxShadow: '0 2rpx 8rpx rgba(0,0,0,0.1)' }"
+        >
+          自定义样式
+        </ui-button>
+        <ui-button type="primary" :custom-style="{ letterSpacing: '8rpx' }">字间距</ui-button>
+      </demo-block>
+    </demo-section>
   </demo-page>
 </template>
 
 <script setup lang="ts">
+import { useToast } from "@/ui"
 import { DemoPage, DemoBlock, DemoSection } from "../components"
 
 definePage({
   style: { navigationBarTitleText: "Button 按钮" },
 })
+
+const { showToast } = useToast()
+
+// 事件日志
+const clickLog = ref("点击按钮查看事件")
+const throttleLog = ref("快速连续点击测试节流效果")
+
+let throttleCount = 0
+function onThrottleClick() {
+  throttleCount++
+  throttleLog.value = `触发了点击事件，第 ${throttleCount} 次`
+}
+
+function onButtonClick(event: any) {
+  clickLog.value = `触发了 click 事件，时间: ${new Date().toLocaleTimeString()}`
+  showToast({ message: "按钮被点击", type: "success" })
+}
 </script>
+
+<style lang="scss" scoped>
+.mt-16 {
+  margin-top: 16rpx;
+}
+
+.demo-text {
+  color: var(--ui-color-text-secondary);
+  font-size: 24rpx;
+}
+
+:deep(.my-button) {
+  border: 2rpx dashed #1989fa;
+}
+</style>

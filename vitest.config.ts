@@ -44,6 +44,17 @@ export default defineConfig({
     // 超时时间
     testTimeout: 10000,
 
+    // 线程池配置 - 确保测试完成后正确退出
+    pool: "forks",
+    poolOptions: {
+      forks: {
+        singleFork: true,
+      },
+    },
+
+    // 强制退出 - 防止挂起的定时器/资源阻止进程退出
+    teardownTimeout: 5000,
+
     // 依赖优化 - 预打包 Vue 相关依赖
     deps: {
       optimizer: {

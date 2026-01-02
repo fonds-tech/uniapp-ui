@@ -47,11 +47,29 @@
       <view class="form-list">
         <view class="form-item">
           <text class="form-label">可清除</text>
-          <ui-input v-model="value6" clearable placeholder="点击清除" />
+          <ui-input v-model="value6" clearable placeholder="点击清除" @clear="onClear" />
         </view>
         <view class="form-item">
           <text class="form-label">不可清除</text>
           <ui-input v-model="value7" :clearable="false" placeholder="无法清除" />
+        </view>
+      </view>
+    </demo-section>
+
+    <!-- 新增：清除图标样式 -->
+    <demo-section title="清除图标样式">
+      <view class="form-list">
+        <view class="form-item">
+          <text class="form-label">自定义图标</text>
+          <ui-input
+            v-model="valueClearIcon"
+            clearable
+            clear-icon="close"
+            clear-icon-size="28rpx"
+            clear-icon-color="#fff"
+            clear-icon-background="#1989fa"
+            placeholder="自定义清除图标"
+          />
         </view>
       </view>
     </demo-section>
@@ -73,6 +91,56 @@
       </view>
     </demo-section>
 
+    <!-- 新增：字体样式 -->
+    <demo-section title="字体样式">
+      <view class="form-list">
+        <view class="form-item">
+          <text class="form-label">字体颜色</text>
+          <ui-input v-model="valueColor" color="#1989fa" placeholder="蓝色字体" />
+        </view>
+        <view class="form-item">
+          <text class="form-label">字体大小</text>
+          <ui-input v-model="valueFontSize" font-size="36rpx" placeholder="大字体" />
+        </view>
+        <view class="form-item">
+          <text class="form-label">字体粗细</text>
+          <ui-input v-model="valueFontWeight" font-weight="600" placeholder="粗体文字" />
+        </view>
+      </view>
+    </demo-section>
+
+    <!-- 新增：尺寸配置 -->
+    <demo-section title="尺寸配置">
+      <view class="form-list">
+        <view class="form-item">
+          <text class="form-label">自定义宽度</text>
+          <ui-input v-model="valueWidth" width="300rpx" background="#f5f6fa" radius="8rpx" placeholder="固定宽度" />
+        </view>
+        <view class="form-item">
+          <text class="form-label">自定义高度</text>
+          <ui-input v-model="valueHeight" height="80rpx" background="#f5f6fa" radius="8rpx" placeholder="自定义高度" />
+        </view>
+        <view class="form-item">
+          <text class="form-label">内边距</text>
+          <ui-input v-model="valuePadding" padding="20rpx" background="#f5f6fa" radius="8rpx" placeholder="自定义内边距" />
+        </view>
+      </view>
+    </demo-section>
+
+    <!-- 新增：占位符样式 -->
+    <demo-section title="占位符样式">
+      <view class="form-list">
+        <view class="form-item">
+          <text class="form-label">占位符颜色</text>
+          <ui-input v-model="valuePlaceholder1" placeholder-color="#ee0a24" placeholder="红色占位符" />
+        </view>
+        <view class="form-item">
+          <text class="form-label">占位符样式</text>
+          <ui-input v-model="valuePlaceholder2" :placeholder-style="{ fontStyle: 'italic', fontSize: '24rpx' }" placeholder="斜体小字占位符" />
+        </view>
+      </view>
+    </demo-section>
+
     <demo-section title="限制输入长度">
       <view class="form-list">
         <view class="form-item">
@@ -81,16 +149,81 @@
         </view>
       </view>
     </demo-section>
+
+    <!-- 新增：键盘配置 -->
+    <demo-section title="键盘配置">
+      <view class="form-list">
+        <view class="form-item">
+          <text class="form-label">确认按钮</text>
+          <ui-input v-model="valueConfirm" confirm-type="search" placeholder="按回车搜索" @confirm="onConfirm" />
+        </view>
+        <view class="form-item">
+          <text class="form-label">光标颜色</text>
+          <ui-input v-model="valueCursor" cursor-color="#07c160" placeholder="绿色光标" />
+        </view>
+        <view class="form-item">
+          <text class="form-label">自动聚焦</text>
+          <ui-input v-model="valueFocus" :focus="autoFocus" placeholder="自动获取焦点" />
+        </view>
+      </view>
+    </demo-section>
+
+    <!-- 新增：事件处理 -->
+    <demo-section title="事件处理">
+      <view class="form-list">
+        <view class="form-item">
+          <text class="form-label">事件监听</text>
+          <ui-input
+            v-model="valueEvent"
+            clearable
+            placeholder="输入触发事件"
+            @click="onInputClick"
+            @focus="onInputFocus"
+            @blur="onInputBlur"
+            @input="onInputInput"
+            @change="onInputChange"
+            @clear="onInputClear"
+            @confirm="onInputConfirm"
+          />
+        </view>
+      </view>
+      <view class="event-log">
+        <text class="event-log__title">事件日志：</text>
+        <scroll-view scroll-y class="event-log__content">
+          <text v-for="(log, index) in eventLogs" :key="index" class="event-log__item">{{ log }}</text>
+        </scroll-view>
+        <ui-button size="small" @click="clearLogs">清空日志</ui-button>
+      </view>
+    </demo-section>
+
+    <!-- 新增：自定义类名和样式 -->
+    <demo-section title="自定义类名样式">
+      <view class="form-list">
+        <view class="form-item">
+          <text class="form-label">自定义样式</text>
+          <ui-input
+            v-model="valueCustom"
+            custom-class="my-input"
+            :custom-style="{ border: '2rpx solid #1989fa', borderRadius: '16rpx', padding: '16rpx' }"
+            placeholder="自定义样式输入框"
+          />
+        </view>
+      </view>
+    </demo-section>
   </demo-page>
 </template>
 
 <script setup lang="ts">
+import { useToast } from "@/ui"
 import { DemoPage, DemoSection } from "../components"
 
 definePage({
   style: { navigationBarTitleText: "Input 输入框" },
 })
 
+const { showToast } = useToast()
+
+// 基础示例
 const value1 = ref("")
 const value2 = ref("")
 const value3 = ref("")
@@ -102,6 +235,77 @@ const value8 = ref("")
 const value9 = ref("")
 const value10 = ref("")
 const value11 = ref("")
+
+// 新增示例
+const valueClearIcon = ref("清除图标示例")
+const valueColor = ref("蓝色文字")
+const valueFontSize = ref("大字体")
+const valueFontWeight = ref("粗体")
+const valueWidth = ref("")
+const valueHeight = ref("")
+const valuePadding = ref("")
+const valuePlaceholder1 = ref("")
+const valuePlaceholder2 = ref("")
+const valueConfirm = ref("")
+const valueCursor = ref("")
+const valueFocus = ref("")
+const autoFocus = ref(false)
+const valueEvent = ref("")
+const valueCustom = ref("")
+
+// 事件日志
+const eventLogs = ref<string[]>([])
+
+function addLog(log: string) {
+  const time = new Date().toLocaleTimeString()
+  eventLogs.value.unshift(`[${time}] ${log}`)
+  if (eventLogs.value.length > 20) {
+    eventLogs.value.pop()
+  }
+}
+
+function clearLogs() {
+  eventLogs.value = []
+}
+
+// 清除回调
+function onClear() {
+  showToast({ message: "已清除内容" })
+}
+
+// 确认回调
+function onConfirm(value: string) {
+  showToast({ message: `搜索: ${value}`, type: "success" })
+}
+
+// 事件处理
+function onInputClick() {
+  addLog("click: 点击输入框")
+}
+
+function onInputFocus() {
+  addLog("focus: 获取焦点")
+}
+
+function onInputBlur(value: string) {
+  addLog(`blur: 失去焦点，值=${value}`)
+}
+
+function onInputInput(value: string) {
+  addLog(`input: 输入中，值=${value}`)
+}
+
+function onInputChange(value: string) {
+  addLog(`change: 值变化，值=${value}`)
+}
+
+function onInputClear() {
+  addLog("clear: 清除内容")
+}
+
+function onInputConfirm(value: string) {
+  addLog(`confirm: 确认输入，值=${value}`)
+}
 </script>
 
 <style lang="scss" scoped>
@@ -127,5 +331,39 @@ const value11 = ref("")
   width: 160rpx;
   font-size: var(--ui-font-size-md);
   flex-shrink: 0;
+}
+
+.event-log {
+  margin-top: 24rpx;
+  padding: 24rpx;
+  background: var(--ui-color-background);
+  border-radius: var(--ui-radius-xl);
+
+  &__title {
+    font-size: var(--ui-font-size-md);
+    font-weight: 500;
+    color: var(--ui-color-text-main);
+    display: block;
+    margin-bottom: 16rpx;
+  }
+
+  &__content {
+    height: 200rpx;
+    margin-bottom: 16rpx;
+    background: var(--ui-color-background-light);
+    border-radius: var(--ui-radius-md);
+    padding: 16rpx;
+  }
+
+  &__item {
+    display: block;
+    font-size: 24rpx;
+    color: var(--ui-color-text-secondary);
+    line-height: 1.6;
+  }
+}
+
+:deep(.my-input) {
+  background: #f0f9eb;
 }
 </style>

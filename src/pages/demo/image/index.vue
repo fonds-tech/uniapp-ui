@@ -75,6 +75,14 @@
       </demo-block>
     </demo-section>
 
+    <!-- 新增：块级元素 -->
+    <demo-section title="块级元素">
+      <demo-block direction="column" :gap="16">
+        <ui-image src="https://picsum.photos/600/200" height="200rpx" block radius="8rpx" />
+        <text class="demo-text">block 属性使图片宽度充满容器</text>
+      </demo-block>
+    </demo-section>
+
     <demo-section title="加载状态">
       <demo-block :cols="3" :gap="24">
         <view class="image-item">
@@ -123,15 +131,133 @@
         <ui-image src="https://picsum.photos/214" width="200rpx" height="200rpx" background="#fff0f0" radius="8rpx" />
       </demo-block>
     </demo-section>
+
+    <!-- 新增：懒加载 -->
+    <demo-section title="懒加载">
+      <demo-block direction="column" align="start" :gap="16">
+        <demo-block :cols="3" :gap="24">
+          <ui-image src="https://picsum.photos/220" width="200rpx" height="200rpx" lazy-load radius="8rpx" />
+          <ui-image src="https://picsum.photos/221" width="200rpx" height="200rpx" lazy-load radius="8rpx" />
+          <ui-image src="https://picsum.photos/222" width="200rpx" height="200rpx" lazy-load radius="8rpx" />
+        </demo-block>
+        <text class="demo-text">lazy-load 属性开启懒加载，仅在 page/scroll-view 中生效</text>
+      </demo-block>
+    </demo-section>
+
+    <!-- 新增：拖动配置 -->
+    <demo-section title="拖动配置">
+      <demo-block :cols="2" :gap="24">
+        <view class="image-item">
+          <ui-image src="https://picsum.photos/223" width="200rpx" height="200rpx" draggable radius="8rpx" />
+          <text class="image-label">可拖动</text>
+        </view>
+        <view class="image-item">
+          <ui-image src="https://picsum.photos/224" width="200rpx" height="200rpx" :draggable="false" radius="8rpx" />
+          <text class="image-label">不可拖动</text>
+        </view>
+      </demo-block>
+    </demo-section>
+
+    <!-- 新增：webp 格式 -->
+    <demo-section title="Webp 格式">
+      <demo-block direction="column" align="start" :gap="16">
+        <ui-image src="https://www.gstatic.com/webp/gallery/1.webp" width="300rpx" height="200rpx" webp radius="8rpx" />
+        <text class="demo-text">webp 属性在不支持 webp 的系统上单独启用 webp 格式</text>
+      </demo-block>
+    </demo-section>
+
+    <!-- 新增：长按菜单 -->
+    <demo-section title="长按菜单">
+      <demo-block direction="column" align="start" :gap="16">
+        <ui-image src="https://picsum.photos/225" width="300rpx" height="200rpx" show-menu-by-longpress radius="8rpx" />
+        <text class="demo-text">长按图片可显示小程序码识别菜单（仅小程序端生效）</text>
+      </demo-block>
+    </demo-section>
+
+    <!-- 新增：事件处理 -->
+    <demo-section title="事件处理">
+      <demo-block direction="column" align="start" :gap="16">
+        <demo-block :cols="2" :gap="24">
+          <view class="image-item">
+            <ui-image
+              src="https://picsum.photos/226"
+              width="200rpx"
+              height="200rpx"
+              radius="8rpx"
+              @load="onImageLoad"
+              @click="onImageClick"
+            />
+            <text class="image-label">点击试试</text>
+          </view>
+          <view class="image-item">
+            <ui-image
+              src="https://invalid-url.com/error.jpg"
+              width="200rpx"
+              height="200rpx"
+              radius="8rpx"
+              @error="onImageError"
+            />
+            <text class="image-label">加载失败事件</text>
+          </view>
+        </demo-block>
+        <text class="demo-text">{{ eventLog }}</text>
+      </demo-block>
+    </demo-section>
+
+    <!-- 新增：自定义样式 -->
+    <demo-section title="自定义样式">
+      <demo-block :cols="2" :gap="24">
+        <view class="image-item">
+          <ui-image
+            src="https://picsum.photos/227"
+            width="200rpx"
+            height="200rpx"
+            custom-class="my-image"
+          />
+          <text class="image-label">自定义类名</text>
+        </view>
+        <view class="image-item">
+          <ui-image
+            src="https://picsum.photos/228"
+            width="200rpx"
+            height="200rpx"
+            :custom-style="{ boxShadow: '0 8rpx 24rpx rgba(0,0,0,0.15)', borderRadius: '16rpx' }"
+          />
+          <text class="image-label">自定义样式</text>
+        </view>
+      </demo-block>
+    </demo-section>
   </demo-page>
 </template>
 
 <script setup lang="ts">
+import { useToast } from "@/ui"
 import { DemoPage, DemoBlock, DemoSection } from "../components"
 
 definePage({
   style: { navigationBarTitleText: "Image 图片" },
 })
+
+const { showToast } = useToast()
+
+// 事件日志
+const eventLog = ref("点击图片或等待加载事件触发")
+
+// 事件处理
+function onImageLoad(event: any) {
+  eventLog.value = `触发 load 事件，图片加载成功`
+  showToast({ message: "图片加载成功", type: "success" })
+}
+
+function onImageError(event: any) {
+  eventLog.value = `触发 error 事件，图片加载失败`
+  showToast({ message: "图片加载失败", type: "warning" })
+}
+
+function onImageClick(event: any) {
+  eventLog.value = `触发 click 事件，时间: ${new Date().toLocaleTimeString()}`
+  showToast({ message: "图片被点击" })
+}
 </script>
 
 <style lang="scss" scoped>
@@ -147,6 +273,11 @@ definePage({
   margin-top: 12rpx;
 }
 
+.demo-text {
+  color: var(--ui-color-text-secondary);
+  font-size: 24rpx;
+}
+
 .custom-error {
   gap: 8rpx;
   display: flex;
@@ -157,5 +288,10 @@ definePage({
 .custom-error-text {
   color: #999;
   font-size: 22rpx;
+}
+
+:deep(.my-image) {
+  border: 4rpx solid #1989fa;
+  border-radius: 16rpx;
 }
 </style>

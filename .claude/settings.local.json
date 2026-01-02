@@ -10,7 +10,17 @@
       "Bash(pnpm lint)",
       "Bash(pnpm lint:*)",
       "Bash(ls:*)",
-      "Bash(cat:*)"
+      "Bash(cat:*)",
+      "mcp__serena__read_file",
+      "mcp__serena__create_text_file",
+      "mcp__serena__get_symbols_overview",
+      "mcp__serena__find_file",
+      "mcp__serena__replace_content",
+      "Bash(timeout:*)",
+      "mcp__serena__search_for_pattern",
+      "Bash(pnpm test:*)",
+      "Bash(npm test:*)",
+      "Bash(pnpm vitest run:*)"
     ],
     "deny": [],
     "ask": []
