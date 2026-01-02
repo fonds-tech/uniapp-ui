@@ -6,8 +6,8 @@
 import UiForm from "@/ui/ui-form/ui-form.vue"
 import UiField from "@/ui/ui-field/ui-field.vue"
 import { mount } from "@vue/test-utils"
-import { it, vi, expect, describe, afterEach, beforeEach } from "vitest"
 import { waitForTransition } from "../setup"
+import { it, vi, expect, describe, afterEach, beforeEach } from "vitest"
 
 describe("uiForm 组件", () => {
   beforeEach(() => {
@@ -28,7 +28,7 @@ describe("uiForm 组件", () => {
     it("应该支持默认插槽", async () => {
       const wrapper = mount(UiForm, {
         slots: {
-          default: '<div class="custom-field">自定义表单项</div>',
+          default: "<div class=\"custom-field\">自定义表单项</div>",
         },
       })
       await waitForTransition()
@@ -382,13 +382,13 @@ describe("uiField 组件", () => {
           "ui-icon": true,
           "ui-input": {
             name: "ui-input",
-            template: '<input class="ui-input" />',
+            template: "<input class=\"ui-input\" />",
             props: ["modelValue", "type", "placeholder", "disabled", "maxlength", "focus"],
             emits: ["input", "blur", "focus", "confirm", "clear"],
           },
           "ui-textarea": {
             name: "ui-textarea",
-            template: '<textarea class="ui-textarea" />',
+            template: "<textarea class=\"ui-textarea\" />",
             props: ["modelValue", "placeholder", "disabled", "maxlength"],
             emits: ["input", "blur", "focus", "confirm", "linechange", "keyboardheightchange"],
           },

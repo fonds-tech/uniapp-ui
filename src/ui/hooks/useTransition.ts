@@ -1,7 +1,7 @@
-import { ref } from "vue"
 import { merge } from "../utils/utils"
 import { isObject } from "../utils/check"
 import { usePromise } from "./usePromise"
+import { ref, nextTick } from "vue"
 
 export type TransitionName = "fade" | "zoom-in" | "fade-up" | "fade-down" | "fade-left" | "fade-right" | "slide-up" | "slide-down" | "slide-left" | "slide-right"
 
@@ -13,19 +13,38 @@ interface Options {
   leaveTimingFunction?: string
 }
 
+/**
+ * 过渡动画状态机钩子
+ * 提供进入/离开动画的状态管理和生命周期事件
+ */
 export function useTransition() {
-  const options = ref<Options>({ name: "fade", duration: 300, enterTimingFunction: "ease-out", leaveTimingFunction: "ease-in" })
-  const events = new Map()
-  const inited = ref(false)
-  const styles = ref<any>({})
-  const classs = ref("")
-  const status = ref("")
-  const visible = ref(false)
-  const enterPromise = ref(null)
-  const transitionEnded = ref(false)
-  const enterLifeCyclePromise = ref<any>(null)
-  const leaveLifeCyclePromise = ref<any>(null)
+  // 配置选项
+  const options = ref<Options>({
+    name: "fade",
+    duration: 300,
+    enterTimingFunction: "ease-out",
+    leaveTimingFunction: "ease-in",
+  })
 
+  // 事件管理
+  const events = new Map<string, Handler[]>()
+
+  // 状态管理
+  const inited = ref(false) // 是否已初始化渲染
+  const styles = ref<Record<string, string>>({}) // 动态样式
+  const classs = ref("") // 当前动画类名
+  const status = ref<"" | "enter" | "leave">("") // 当前状态
+  const visible = ref(false) // 是否可见
+  const transitionEnded = ref(false) // 过渡是否已结束
+
+  // Promise 管理（用于中断控制）
+  const enterPromise = ref<ReturnType<typeof usePromise> | null>(null)
+  const lifeCyclePromise = ref<ReturnType<typeof usePromise> | null>(null)
+  const fallbackTimer = ref<ReturnType<typeof setTimeout> | null>(null)
+
+  /**
+   * 注册事件监听器
+   */
   const on = (name: string, handler: Handler) => {
     const handlers = events.get(name)
     if (handlers) {
@@ -35,135 +54,53 @@ export function useTransition() {
     }
   }
 
+  /**
+   * 触发事件
+   */
   const emit = (name: string, ...args: any[]) => {
-    let handlers = events.get(name)
+    const handlers = events.get(name)
     if (handlers) {
-      handlers.slice()?.forEach((handler: Handler) => {
+      handlers.slice().forEach((handler) => {
         if (typeof handler === "function") handler(...args)
       })
     }
 
-    handlers = events.get("*")
-    if (handlers) {
-      handlers.slice()?.forEach((handler: Handler) => {
+    // 通配符监听器
+    const wildcardHandlers = events.get("*")
+    if (wildcardHandlers) {
+      wildcardHandlers.slice().forEach((handler) => {
         if (typeof handler === "function") handler(name, ...args)
       })
     }
   }
 
+  /**
+   * 初始化配置
+   */
   const init = (initOptions: Options = {}) => {
     if (isObject(initOptions)) {
       options.value = merge(options.value, initOptions)
     }
   }
 
-  const enter = () => {
-    // 中止之前的Promise
-    abortPromise()
-    // 创建新的进入过渡Promise
-    enterPromise.value = usePromise(async (resolve) => {
-      try {
-        // 获取过渡类名
-        const names = classNames(options.value.name)
-        // 设置状态为进入
-        status.value = "enter"
-        // 触发进入前事件
-        emit("before-enter")
-        // 设置进入时的过渡函数
-        styles.value.transitionDuration = `${options.value.duration}ms`
-        // 设置进入时的过渡函数
-        styles.value.transitionTimingFunction = options.value.enterTimingFunction
-        // 请求动画帧
-        enterLifeCyclePromise.value = useRequestAnimationFrame()
-        await enterLifeCyclePromise.value
-        // 触发进入事件
-        emit("enter")
-        // 设置进入类名
-        classs.value = names.enter
-        // 再次请求动画帧
-        enterLifeCyclePromise.value = useRequestAnimationFrame()
-        await enterLifeCyclePromise.value
-        // 标记组件已初始化
-        inited.value = true
-        // 设置组件可见
-        visible.value = true
-        // 第三次请求动画帧
-        enterLifeCyclePromise.value = useRequestAnimationFrame()
-        await enterLifeCyclePromise.value
-        // 清除Promise
-        enterLifeCyclePromise.value = null
-        // 重置过渡结束标志
-        transitionEnded.value = false
-        // 设置进入完成类名
-        classs.value = names["enter-to"]
-        // 解析Promise
-        resolve()
-      } catch (error) {
-        // 错误处理
-      }
+  /**
+   * 请求下一帧渲染
+   * 使用 nextTick + setTimeout(0) 确保浏览器完成当前帧渲染
+   */
+  const requestNextFrame = () => {
+    return usePromise<void>((resolve) => {
+      nextTick(() => {
+        const timer = setTimeout(() => {
+          clearTimeout(timer)
+          resolve()
+        }, 0)
+      })
     })
   }
-  const leave = async () => {
-    // 如果没有进入过渡Promise，直接结束过渡
-    if (!enterPromise.value) {
-      transitionEnded.value = false
-      return end()
-    }
-    try {
-      // 等待进入过渡完成
-      await enterPromise.value
-      // 获取过渡类名
-      const names = classNames(options.value.name)
-      // 设置状态为离开
-      status.value = "leave"
-      // 触发离开前事件
-      emit("before-leave")
-      // 设置离开时的过渡函数
-      styles.value.transitionTimingFunction = options.value.leaveTimingFunction
-      // 请求动画帧
-      leaveLifeCyclePromise.value = useRequestAnimationFrame()
-      await leaveLifeCyclePromise.value
-      // 触发离开事件
-      emit("leave")
-      // 设置离开类名
-      classs.value = names.leave
-      // 再次请求动画帧
-      leaveLifeCyclePromise.value = useRequestAnimationFrame()
-      await leaveLifeCyclePromise.value
-      // 重置过渡结束标志
-      transitionEnded.value = false
-      // 设置离开完成类名
-      classs.value = names["leave-to"]
-      // 等待过渡持续时间
-      leaveLifeCyclePromise.value = setPromise(+options.value.duration)
-      await leaveLifeCyclePromise.value
-      // 清除Promise
-      leaveLifeCyclePromise.value = null
-      // 触发过渡结束处理
-      end()
-      // 清除进入过渡Promise
-      enterPromise.value = null
-    } catch (error) {
-      // 错误处理
-    }
-  }
-  const end = () => {
-    // 如果已经处理过过渡结束，则直接返回
-    if (transitionEnded.value) return
 
-    // 标记过渡已结束
-    transitionEnded.value = true
-
-    // 根据当前状态触发相应的事件
-    if (status.value === "leave") {
-      emit("after-leave")
-      visible.value = false
-    } else if (status.value === "enter") {
-      emit("after-enter")
-      visible.value = true
-    }
-  }
-
+  /**
+   * 生成动画类名
+   */
   const classNames = (name: string) => {
     return {
       enter: `ui-${name}-enter ui-${name}-enter-active`,
@@ -173,37 +110,166 @@ export function useTransition() {
     }
   }
 
-  const setPromise = (duration: number) => {
-    return usePromise((resolve) => {
-      const timer = setTimeout(() => {
-        clearTimeout(timer)
-        resolve()
-      }, duration)
-    })
-  }
-
+  /**
+   * 中止所有进行中的 Promise 和定时器
+   */
   const abortPromise = () => {
     try {
       enterPromise.value?.abort()
-      enterLifeCyclePromise.value?.abort()
-      leaveLifeCyclePromise.value?.abort()
+      lifeCyclePromise.value?.abort()
       enterPromise.value = null
-      enterLifeCyclePromise.value = null
-      leaveLifeCyclePromise.value = null
+      lifeCyclePromise.value = null
+
+      // 清除降级定时器
+      if (fallbackTimer.value) {
+        clearTimeout(fallbackTimer.value)
+        fallbackTimer.value = null
+      }
     } catch (error) {
-      console.log(error)
+      // 忽略中止错误
     }
   }
 
-  const useRequestAnimationFrame = (cb = () => {}) => {
-    return usePromise((resolve) => {
-      const timer = setInterval(() => {
-        clearInterval(timer)
-        resolve(true)
-        cb()
-      }, 1000 / 30)
+  /**
+   * 进入过渡
+   * 支持从任何状态（包括离开中）切换到进入状态
+   */
+  const enter = () => {
+    // 中止之前的过渡（包括正在进行的离开动画）
+    abortPromise()
+
+    // 重置过渡结束标志
+    transitionEnded.value = false
+
+    enterPromise.value = usePromise(async (resolve) => {
+      try {
+        const names = classNames(options.value.name!)
+        status.value = "enter"
+
+        // 触发进入前事件
+        emit("before-enter")
+
+        // 设置过渡样式
+        styles.value = {
+          transitionDuration: `${options.value.duration}ms`,
+          transitionTimingFunction: options.value.enterTimingFunction!,
+        }
+
+        // 设置初始状态类名
+        classs.value = names.enter
+
+        // 标记已初始化并显示
+        inited.value = true
+        visible.value = true
+
+        // 触发进入事件
+        emit("enter")
+
+        // 等待一帧确保初始状态渲染
+        lifeCyclePromise.value = requestNextFrame()
+        await lifeCyclePromise.value
+
+        // 切换到结束状态类名，触发 CSS transition
+        classs.value = names["enter-to"]
+
+        lifeCyclePromise.value = null
+        resolve()
+      } catch (error) {
+        // 被 abort 时忽略
+      }
     })
   }
 
-  return { on, init, enter, leave, end, inited, styles, classs, visible }
+  /**
+   * 离开过渡
+   */
+  const leave = async () => {
+    // 中止之前的过渡
+    abortPromise()
+
+    // 重置过渡结束标志
+    transitionEnded.value = false
+
+    // 如果尚未显示，直接结束
+    if (!visible.value) {
+      return end()
+    }
+
+    try {
+      const names = classNames(options.value.name!)
+      status.value = "leave"
+
+      // 触发离开前事件
+      emit("before-leave")
+
+      // 设置离开时的过渡函数
+      styles.value = {
+        ...styles.value,
+        transitionTimingFunction: options.value.leaveTimingFunction!,
+      }
+
+      // 触发离开事件
+      emit("leave")
+
+      // 设置离开初始类名
+      classs.value = names.leave
+
+      // 等待一帧确保初始状态渲染
+      lifeCyclePromise.value = requestNextFrame()
+      await lifeCyclePromise.value
+
+      // 切换到离开结束状态
+      classs.value = names["leave-to"]
+
+      // 设置降级定时器：如果 transitionend 事件未触发，使用超时兜底
+      const duration = Number(options.value.duration) || 300
+      fallbackTimer.value = setTimeout(() => {
+        fallbackTimer.value = null
+        end()
+      }, duration + 50)
+
+      lifeCyclePromise.value = null
+    } catch (error) {
+      // 被 abort 时忽略
+    }
+  }
+
+  /**
+   * 过渡结束处理
+   * 由 transitionend 事件或降级定时器触发
+   */
+  const end = () => {
+    // 防止重复处理
+    if (transitionEnded.value) return
+
+    transitionEnded.value = true
+
+    // 清除降级定时器（如果是由 transitionend 触发）
+    if (fallbackTimer.value) {
+      clearTimeout(fallbackTimer.value)
+      fallbackTimer.value = null
+    }
+
+    // 根据当前状态触发相应事件
+    if (status.value === "leave") {
+      emit("after-leave")
+      visible.value = false
+    } else if (status.value === "enter") {
+      emit("after-enter")
+      visible.value = true
+    }
+  }
+
+  return {
+    on,
+    init,
+    enter,
+    leave,
+    end,
+    inited,
+    styles,
+    classs,
+    visible,
+    status, // 导出 status 供组件使用
+  }
 }

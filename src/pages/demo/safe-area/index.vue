@@ -92,15 +92,15 @@ function onBottomHeight(height: number) {
 
 <style scoped lang="scss">
 .safe-area-demo {
-  border-radius: 8px;
   overflow: hidden;
+  border-radius: 8px;
 }
 
 .content-box {
-  padding: 16px;
-  display: flex;
-  flex-direction: column;
   gap: 4px;
+  display: flex;
+  padding: 16px;
+  flex-direction: column;
 
   &.top {
     background: #1989fa;
@@ -112,21 +112,21 @@ function onBottomHeight(height: number) {
 }
 
 .color-demos {
-  display: flex;
   gap: 12px;
+  display: flex;
 }
 
 .color-demo-item {
   flex: 1;
-  border-radius: 8px;
   overflow: hidden;
+  border-radius: 8px;
 }
 
 .color-label {
-  padding: 12px;
   color: #fff;
-  text-align: center;
+  padding: 12px;
   font-size: 12px;
+  text-align: center;
 }
 
 .use-case {
@@ -138,29 +138,29 @@ function onBottomHeight(height: number) {
 }
 
 .mock-navbar {
-  margin-top: 8px;
-  border-radius: 8px;
   overflow: hidden;
   background: #1989fa;
+  margin-top: 8px;
+  border-radius: 8px;
 
   .navbar-content {
     display: flex;
+    padding: 12px 16px;
     align-items: center;
     justify-content: space-between;
-    padding: 12px 16px;
   }
 }
 
 .mock-footer {
-  margin-top: 8px;
-  border-radius: 8px;
+  border: 1px solid #eee;
   overflow: hidden;
   background: #fff;
-  border: 1px solid #eee;
+  margin-top: 8px;
+  border-radius: 8px;
 
   .footer-content {
-    display: flex;
     gap: 12px;
+    display: flex;
     padding: 12px 16px;
     justify-content: flex-end;
   }

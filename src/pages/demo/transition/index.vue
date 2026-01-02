@@ -243,31 +243,30 @@
       </demo-block>
     </demo-section>
 
-    <!-- 弹窗遮罩 -->
-    <ui-transition :show="showModalOverlay" :duration="300" @click="closeModal">
-      <view class="modal-overlay" />
-    </ui-transition>
-
-    <!-- 弹窗内容 -->
-    <ui-transition
-      :show="showModalContent"
-      :name="modalAnimation"
-      :duration="300"
-      :z-index="1001"
-      enter-timing-function="ease-out"
-      leave-timing-function="ease-in"
-    >
-      <view class="modal-content" @click.stop>
-        <view class="modal-header">
-          <text class="modal-title">弹窗标题</text>
-        </view>
-        <view class="modal-body">
-          <text class="modal-text">这是一个使用 {{ modalAnimation }} 动画的弹窗示例。</text>
-          <text class="modal-text">Transition 组件可以为任意内容添加进入/离开动画。</text>
-        </view>
-        <view class="modal-footer">
-          <ui-button type="primary" size="small" @click="closeModal">关闭</ui-button>
-        </view>
+    <!-- 弹窗：使用 Flexbox 居中，避免 transform 冲突 -->
+    <ui-transition :show="showModalOverlay" :duration="300">
+      <view class="modal-overlay" @click="closeModal">
+        <!-- 弹窗内容嵌套在遮罩内，由遮罩的 flexbox 负责居中 -->
+        <ui-transition
+          :show="showModalContent"
+          :name="modalAnimation"
+          :duration="300"
+          enter-timing-function="ease-out"
+          leave-timing-function="ease-in"
+        >
+          <view class="modal-content" @click.stop>
+            <view class="modal-header">
+              <text class="modal-title">弹窗标题</text>
+            </view>
+            <view class="modal-body">
+              <text class="modal-text">这是一个使用 {{ modalAnimation }} 动画的弹窗示例。</text>
+              <text class="modal-text">Transition 组件可以为任意内容添加进入/离开动画。</text>
+            </view>
+            <view class="modal-footer">
+              <ui-button type="primary" size="small" @click="closeModal">关闭</ui-button>
+            </view>
+          </view>
+        </ui-transition>
       </view>
     </ui-transition>
 
@@ -293,7 +292,7 @@ definePage({
   style: { navigationBarTitleText: "Transition 过渡动画" },
 })
 
-const { showToast } = useToast()
+const toast = useToast()
 
 // 基础示例
 const show1 = ref(true)
@@ -368,7 +367,7 @@ function onEnter() {
 
 function onAfterEnter() {
   addEventLog("触发 after-enter 事件")
-  showToast({ message: "进入动画完成", type: "success" })
+  toast.success("进入动画完成")
 }
 
 function onBeforeLeave() {
@@ -381,7 +380,7 @@ function onLeave() {
 
 function onAfterLeave() {
   addEventLog("触发 after-leave 事件")
-  showToast({ message: "离开动画完成" })
+  toast.text("离开动画完成")
 }
 
 // 自定义样式
@@ -445,8 +444,8 @@ function closeModal() {
 
 <style lang="scss" scoped>
 .demo-text {
-  font-size: 24rpx;
   color: var(--ui-color-text-secondary);
+  font-size: 24rpx;
 
   &--tip {
     color: var(--ui-color-text-tertiary);
@@ -462,19 +461,19 @@ function closeModal() {
     position: relative;
 
     .overlay-box {
-      position: absolute;
       top: 0;
       left: 0;
+      color: #fff;
       right: 0;
       bottom: 0;
-      z-index: 5;
-      background: rgba(0, 0, 0, 0.3);
-      color: #fff;
       display: flex;
-      align-items: center;
-      justify-content: center;
+      z-index: 5;
+      position: absolute;
       font-size: 24rpx;
+      background: rgba(0, 0, 0, 0.3);
+      align-items: center;
       border-radius: 12rpx;
+      justify-content: center;
     }
   }
 }
@@ -506,11 +505,11 @@ function closeModal() {
 
 .event-list {
   width: 100%;
+  padding: 16rpx;
+  background: var(--ui-color-background-light);
   max-height: 300rpx;
   overflow-y: auto;
-  background: var(--ui-color-background-light);
   border-radius: 8rpx;
-  padding: 16rpx;
 }
 
 .event-item {
@@ -523,16 +522,16 @@ function closeModal() {
 }
 
 .event-text {
-  font-size: 22rpx;
   color: var(--ui-color-text-secondary);
+  font-size: 22rpx;
 }
 
 .carousel-box {
   width: 100%;
   height: 300rpx;
   overflow: hidden;
-  border-radius: 16rpx;
   position: relative;
+  border-radius: 16rpx;
 }
 
 .carousel-item {
@@ -544,31 +543,29 @@ function closeModal() {
 }
 
 .carousel-text {
+  color: #fff;
   font-size: 36rpx;
   font-weight: 600;
-  color: #fff;
 }
 
 .modal-overlay {
-  position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
+  display: flex;
   z-index: 1000;
+  position: fixed;
+  background: rgba(0, 0, 0, 0.5);
+  align-items: center;
+  justify-content: center;
 }
 
 .modal-content {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
   width: 600rpx;
+  overflow: hidden;
   background: #fff;
   border-radius: 24rpx;
-  overflow: hidden;
-  z-index: 1001;
 }
 
 .modal-header {
@@ -578,9 +575,9 @@ function closeModal() {
 }
 
 .modal-title {
+  color: var(--ui-color-text-main);
   font-size: 32rpx;
   font-weight: 600;
-  color: var(--ui-color-text-main);
 }
 
 .modal-body {
@@ -588,9 +585,9 @@ function closeModal() {
 }
 
 .modal-text {
+  color: var(--ui-color-text-secondary);
   display: block;
   font-size: 28rpx;
-  color: var(--ui-color-text-secondary);
   line-height: 1.6;
   margin-bottom: 16rpx;
 
@@ -600,10 +597,10 @@ function closeModal() {
 }
 
 .modal-footer {
-  padding: 24rpx 32rpx;
   display: flex;
-  justify-content: center;
+  padding: 24rpx 32rpx;
   border-top: 1rpx solid var(--ui-color-border-light);
+  justify-content: center;
 }
 
 .tip-text {

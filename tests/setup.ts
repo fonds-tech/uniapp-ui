@@ -5,8 +5,8 @@
  */
 
 import { config } from "@vue/test-utils"
-import { vi, afterAll, afterEach } from "vitest"
 import { nextTick } from "vue"
+import { vi, afterEach } from "vitest"
 
 // ============================================
 // 测试辅助函数
@@ -441,25 +441,25 @@ const uniappBuiltInComponents: Record<string, any> = {
   view: { name: "uni-view", template: "<div><slot></slot></div>" },
   "scroll-view": {
     name: "uni-scroll-view",
-    template: '<div class="scroll-view"><slot></slot></div>',
+    template: "<div class=\"scroll-view\"><slot></slot></div>",
     props: ["scroll-y", "scroll-x", "scroll-top", "scroll-left", "scroll-into-view"],
   },
   swiper: {
     name: "uni-swiper",
-    template: '<div class="swiper"><slot></slot></div>',
+    template: "<div class=\"swiper\"><slot></slot></div>",
     props: ["indicator-dots", "autoplay", "interval", "duration", "circular"],
   },
-  "swiper-item": { name: "uni-swiper-item", template: '<div class="swiper-item"><slot></slot></div>' },
-  "cover-view": { name: "uni-cover-view", template: '<div class="cover-view"><slot></slot></div>' },
-  "cover-image": { name: "uni-cover-image", template: '<img class="cover-image" />' },
-  "movable-area": { name: "uni-movable-area", template: '<div class="movable-area"><slot></slot></div>' },
-  "movable-view": { name: "uni-movable-view", template: '<div class="movable-view"><slot></slot></div>' },
+  "swiper-item": { name: "uni-swiper-item", template: "<div class=\"swiper-item\"><slot></slot></div>" },
+  "cover-view": { name: "uni-cover-view", template: "<div class=\"cover-view\"><slot></slot></div>" },
+  "cover-image": { name: "uni-cover-image", template: "<img class=\"cover-image\" />" },
+  "movable-area": { name: "uni-movable-area", template: "<div class=\"movable-area\"><slot></slot></div>" },
+  "movable-view": { name: "uni-movable-view", template: "<div class=\"movable-view\"><slot></slot></div>" },
 
   // 基础内容
   text: { name: "uni-text", template: "<span><slot></slot></span>" },
-  "rich-text": { name: "uni-rich-text", template: '<div class="rich-text"></div>' },
-  icon: { name: "uni-icon", template: '<i class="icon"></i>' },
-  progress: { name: "uni-progress", template: '<div class="progress"></div>' },
+  "rich-text": { name: "uni-rich-text", template: "<div class=\"rich-text\"></div>" },
+  icon: { name: "uni-icon", template: "<i class=\"icon\"></i>" },
+  progress: { name: "uni-progress", template: "<div class=\"progress\"></div>" },
 
   // 表单组件
   button: { name: "uni-button", template: "<button><slot></slot></button>" },
@@ -475,23 +475,23 @@ const uniappBuiltInComponents: Record<string, any> = {
     props: ["value", "placeholder", "disabled", "maxlength"],
     emits: ["input", "focus", "blur", "confirm"],
   },
-  checkbox: { name: "uni-checkbox", template: '<input type="checkbox" class="checkbox" />' },
-  "checkbox-group": { name: "uni-checkbox-group", template: '<div class="checkbox-group"><slot></slot></div>' },
-  radio: { name: "uni-radio", template: '<input type="radio" class="radio" />' },
-  "radio-group": { name: "uni-radio-group", template: '<div class="radio-group"><slot></slot></div>' },
-  picker: { name: "uni-picker", template: '<div class="picker"><slot></slot></div>' },
+  checkbox: { name: "uni-checkbox", template: "<input type=\"checkbox\" class=\"checkbox\" />" },
+  "checkbox-group": { name: "uni-checkbox-group", template: "<div class=\"checkbox-group\"><slot></slot></div>" },
+  radio: { name: "uni-radio", template: "<input type=\"radio\" class=\"radio\" />" },
+  "radio-group": { name: "uni-radio-group", template: "<div class=\"radio-group\"><slot></slot></div>" },
+  picker: { name: "uni-picker", template: "<div class=\"picker\"><slot></slot></div>" },
   "picker-view": {
     name: "uni-picker-view",
-    template: '<div class="picker-view"><slot></slot></div>',
+    template: "<div class=\"picker-view\"><slot></slot></div>",
     props: ["value", "range", "range-key"],
     emits: ["change"],
   },
-  "picker-view-column": { name: "uni-picker-view-column", template: '<div class="picker-view-column"><slot></slot></div>' },
-  slider: { name: "uni-slider", template: '<input type="range" class="slider" />' },
-  switch: { name: "uni-switch", template: '<input type="checkbox" class="switch" />' },
+  "picker-view-column": { name: "uni-picker-view-column", template: "<div class=\"picker-view-column\"><slot></slot></div>" },
+  slider: { name: "uni-slider", template: "<input type=\"range\" class=\"slider\" />" },
+  switch: { name: "uni-switch", template: "<input type=\"checkbox\" class=\"switch\" />" },
   label: { name: "uni-label", template: "<label><slot></slot></label>" },
   form: { name: "uni-form", template: "<form><slot></slot></form>" },
-  editor: { name: "uni-editor", template: '<div class="editor"></div>' },
+  editor: { name: "uni-editor", template: "<div class=\"editor\"></div>" },
 
   // 导航
   navigator: { name: "uni-navigator", template: "<a><slot></slot></a>" },
@@ -505,20 +505,20 @@ const uniappBuiltInComponents: Record<string, any> = {
     emits: ["play", "pause", "ended", "timeupdate"],
   },
   audio: { name: "uni-audio", template: "<audio></audio>" },
-  camera: { name: "uni-camera", template: '<div class="camera"></div>' },
-  "live-player": { name: "uni-live-player", template: '<div class="live-player"></div>' },
-  "live-pusher": { name: "uni-live-pusher", template: '<div class="live-pusher"></div>' },
+  camera: { name: "uni-camera", template: "<div class=\"camera\"></div>" },
+  "live-player": { name: "uni-live-player", template: "<div class=\"live-player\"></div>" },
+  "live-pusher": { name: "uni-live-pusher", template: "<div class=\"live-pusher\"></div>" },
 
   // 地图
-  map: { name: "uni-map", template: '<div class="map"></div>' },
+  map: { name: "uni-map", template: "<div class=\"map\"></div>" },
 
   // 画布
-  canvas: { name: "uni-canvas", template: '<canvas class="canvas"></canvas>' },
+  canvas: { name: "uni-canvas", template: "<canvas class=\"canvas\"></canvas>" },
 
   // 开放能力
-  "web-view": { name: "uni-web-view", template: '<iframe class="web-view"></iframe>' },
-  "open-data": { name: "uni-open-data", template: '<div class="open-data"></div>' },
-  ad: { name: "uni-ad", template: '<div class="ad"></div>' },
+  "web-view": { name: "uni-web-view", template: "<iframe class=\"web-view\"></iframe>" },
+  "open-data": { name: "uni-open-data", template: "<div class=\"open-data\"></div>" },
+  ad: { name: "uni-ad", template: "<div class=\"ad\"></div>" },
 
   // block 组件
   block: { name: "block", template: "<div><slot></slot></div>" },
@@ -536,17 +536,17 @@ config.global.stubs = {
   "ui-icon": {
     name: "ui-icon",
     // eslint-disable-next-line no-template-curly-in-string
-    template: '<i class="ui-icon" :class="`ui-icon-${name}`"></i>',
+    template: "<i class=\"ui-icon\" :class=\"`ui-icon-${name}`\"></i>",
     props: ["name", "color", "size", "weight", "lineHeight", "radius", "background", "customClass", "customStyle"],
   },
   "ui-loading": {
     name: "ui-loading",
-    template: '<span class="ui-loading"><slot /></span>',
+    template: "<span class=\"ui-loading\"><slot /></span>",
     props: ["show", "type", "size", "color", "text", "textColor", "textSize", "vertical", "customClass", "customStyle"],
   },
   "ui-overlay": {
     name: "ui-overlay",
-    template: '<div v-if="show" class="ui-overlay" @click="$emit(\'click\')"><slot /></div>',
+    template: "<div v-if=\"show\" class=\"ui-overlay\" @click=\"$emit('click')\"><slot /></div>",
     props: ["show", "zIndex", "duration", "lazyRender", "customStyle", "customClass"],
     emits: ["click"],
   },

@@ -5,8 +5,8 @@
 
 import UiConfigProvider from "@/ui/ui-config-provider/ui-config-provider.vue"
 import { mount } from "@vue/test-utils"
-import { it, vi, expect, describe, afterEach, beforeEach } from "vitest"
 import { waitForTransition } from "../setup"
+import { it, vi, expect, describe, afterEach, beforeEach } from "vitest"
 
 // Mock uni.onThemeChange 和 uni.offThemeChange（如果未定义）
 if (!uni.onThemeChange) {

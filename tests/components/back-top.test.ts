@@ -1,7 +1,7 @@
 import UiBackTop from "@/ui/ui-back-top/ui-back-top.vue"
 import { mount } from "@vue/test-utils"
-import { it, vi, expect, describe, afterEach, beforeEach } from "vitest"
 import { waitForTransition } from "../setup"
+import { it, vi, expect, describe, afterEach, beforeEach } from "vitest"
 
 describe("uiBackTop 组件", () => {
   beforeEach(() => {

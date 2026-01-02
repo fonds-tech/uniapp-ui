@@ -1,7 +1,7 @@
 import UiSelect from "@/ui/ui-select/ui-select.vue"
 import { mount } from "@vue/test-utils"
-import { it, vi, expect, describe, afterEach, beforeEach } from "vitest"
 import { waitForTransition } from "../setup"
+import { it, vi, expect, describe, afterEach, beforeEach } from "vitest"
 
 describe("uiSelect 组件", () => {
   beforeEach(() => {

@@ -70,6 +70,12 @@ const sectionClass = computed(() => {
     margin-top: 8rpx;
   }
 
+  &__content {
+    gap: 24rpx;
+    display: flex;
+    flex-direction: column;
+  }
+
   // When not card mode, add padding to title
   &:not(.demo-section--card) &__header {
     padding: 0 8rpx;

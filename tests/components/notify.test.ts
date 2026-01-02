@@ -9,9 +9,9 @@
 
 import UiNotify from "@/ui/ui-notify/ui-notify.vue"
 import { mount } from "@vue/test-utils"
-import { h, nextTick, watch } from "vue"
+import { h, watch, nextTick } from "vue"
+import { getLastEmitted, waitForTransition } from "../setup"
 import { it, vi, expect, describe, afterEach, beforeEach } from "vitest"
-import { waitForTransition, getLastEmitted } from "../setup"
 
 // ui-transition stub：根据 show prop 决定是否渲染 slot，并触发对应事件
 const UiTransitionStub = {
@@ -31,7 +31,7 @@ const UiTransitionStub = {
           setTimeout(() => emit("after-leave"), 10)
         }
       },
-      { immediate: true }
+      { immediate: true },
     )
 
     return () => {
@@ -43,7 +43,7 @@ const UiTransitionStub = {
           style: props.customStyle,
           onClick: () => emit("click"),
         },
-        slots.default?.()
+        slots.default?.(),
       )
     }
   },

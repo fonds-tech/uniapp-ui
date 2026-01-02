@@ -4,14 +4,14 @@
  */
 
 import UiTab from "@/ui/ui-tab/ui-tab.vue"
-import { tabsKey } from "@/ui/ui-tabs"
 import { ref } from "vue"
 import { mount } from "@vue/test-utils"
-import { it, vi, expect, describe, afterEach, beforeEach } from "vitest"
+import { tabsKey } from "@/ui/ui-tabs"
 import { waitForTransition } from "../setup"
+import { it, vi, expect, describe, afterEach, beforeEach } from "vitest"
 
 // Mock tabs parent context
-const createMockTabsProvide = () => {
+function createMockTabsProvide() {
   const childrens: any[] = []
   return {
     props: {

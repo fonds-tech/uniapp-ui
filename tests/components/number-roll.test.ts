@@ -5,8 +5,8 @@
 
 import UiNumberRoll from "@/ui/ui-number-roll/ui-number-roll.vue"
 import { mount } from "@vue/test-utils"
-import { it, vi, expect, describe, beforeEach, afterEach } from "vitest"
 import { waitForTransition } from "../setup"
+import { it, vi, expect, describe, afterEach, beforeEach } from "vitest"
 
 describe("ui-number-roll 数字滚动组件", () => {
   // 启用 fake timers

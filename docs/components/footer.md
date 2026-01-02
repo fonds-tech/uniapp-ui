@@ -23,8 +23,14 @@
   <ui-footer background="#fff">
     <view class="footer-bar">
       <view class="footer-icons">
-        <ui-icon-text name="heart" text="收藏" size="40rpx" />
-        <ui-icon-text name="cart" text="购物车" size="40rpx" />
+        <view class="footer-icon-item">
+          <ui-icon name="heart" size="40rpx" />
+          <text>收藏</text>
+        </view>
+        <view class="footer-icon-item">
+          <ui-icon name="cart" size="40rpx" />
+          <text>购物车</text>
+        </view>
       </view>
       <view class="footer-buttons">
         <ui-button type="warning" size="small">加入购物车</ui-button>
@@ -33,6 +39,15 @@
     </view>
   </ui-footer>
 </template>
+
+<style>
+.footer-icon-item {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 4rpx;
+}
+</style>
 ```
 
 ## 版权信息

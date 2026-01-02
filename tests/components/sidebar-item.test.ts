@@ -4,9 +4,9 @@
  */
 
 import UiSidebarItem from "@/ui/ui-sidebar-item/ui-sidebar-item.vue"
+import { mount } from "@vue/test-utils"
 import { sidebarKey } from "@/ui/ui-sidebar"
 import { ref, reactive } from "vue"
-import { mount } from "@vue/test-utils"
 import { it, vi, expect, describe, afterEach, beforeEach } from "vitest"
 
 // 创建模拟的父组件上下文

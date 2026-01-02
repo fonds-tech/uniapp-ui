@@ -5,8 +5,8 @@
 
 import UiHeader from "@/ui/ui-header/ui-header.vue"
 import { mount } from "@vue/test-utils"
-import { it, vi, expect, describe, beforeEach, afterEach } from "vitest"
 import { waitForTransition } from "../setup"
+import { it, vi, expect, describe, afterEach, beforeEach } from "vitest"
 
 describe("ui-header 头部固定组件", () => {
   // 启用 fake timers

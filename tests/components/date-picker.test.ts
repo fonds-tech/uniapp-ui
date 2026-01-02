@@ -1,7 +1,7 @@
 import UiDatePicker from "@/ui/ui-date-picker/ui-date-picker.vue"
 import { mount } from "@vue/test-utils"
-import { it, vi, expect, describe, afterEach, beforeEach } from "vitest"
 import { waitForTransition } from "../setup"
+import { it, vi, expect, describe, afterEach, beforeEach } from "vitest"
 
 describe("uiDatePicker 组件", () => {
   beforeEach(() => {

@@ -5,8 +5,8 @@
 
 import UiSwitch from "@/ui/ui-switch/ui-switch.vue"
 import { mount } from "@vue/test-utils"
-import { it, vi, expect, describe, afterEach, beforeEach } from "vitest"
 import { waitForTransition } from "../setup"
+import { it, vi, expect, describe, afterEach, beforeEach } from "vitest"
 
 describe("ui-switch 开关组件", () => {
   beforeEach(() => {

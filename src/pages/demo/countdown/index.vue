@@ -143,15 +143,15 @@
 </template>
 
 <script setup lang="ts">
-import { useToast } from "@/ui"
 import type { CountDownTimeData } from "@/ui/ui-count-down"
+import { useToast } from "@/ui"
 import { DemoPage, DemoBlock, DemoSection } from "../components"
 
 definePage({
   style: { navigationBarTitleText: "CountDown 倒计时" },
 })
 
-const { showToast } = useToast()
+const toast = useToast()
 
 // 基础时间
 const time = ref(30 * 60 * 60 * 1000)
@@ -182,7 +182,7 @@ function reset() {
 }
 
 function onFinish() {
-  showToast({ message: "倒计时结束", type: "success" })
+  toast.success("倒计时结束")
 }
 
 // change 事件处理
@@ -192,13 +192,13 @@ function onCountDownChange(timeData: CountDownTimeData) {
 
 function onEventFinish() {
   eventLog.value = "倒计时已结束"
-  showToast({ message: "倒计时结束", type: "success" })
+  toast.success("倒计时结束")
 }
 
 // 验证码
 function sendCode() {
   codeCountingDown.value = true
-  showToast({ message: "验证码已发送" })
+  toast.text("验证码已发送")
 }
 
 function onCodeFinish() {
@@ -237,9 +237,9 @@ function padZero(num: number): string {
   height: 56rpx;
   display: inline-flex;
   font-size: 28rpx;
-  font-weight: 600;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   align-items: center;
+  font-weight: 600;
   border-radius: 50%;
   justify-content: center;
 }
@@ -255,8 +255,8 @@ function padZero(num: number): string {
   color: #fff;
   padding: 8rpx 16rpx;
   font-size: 28rpx;
-  font-weight: 600;
   background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  font-weight: 600;
   border-radius: 8rpx;
 }
 
@@ -267,54 +267,54 @@ function padZero(num: number): string {
 }
 
 .countdown-row {
+  gap: 16rpx;
   display: flex;
   align-items: center;
-  gap: 16rpx;
 
   &__label {
-    font-size: 28rpx;
     color: var(--ui-color-text-main);
     width: 140rpx;
+    font-size: 28rpx;
   }
 }
 
 .countdown-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
   gap: 12rpx;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
 }
 
 .countdown-label {
-  font-size: 24rpx;
   color: var(--ui-color-text-secondary);
+  font-size: 24rpx;
 }
 
 .demo-text {
-  font-size: 24rpx;
   color: var(--ui-color-text-secondary);
+  font-size: 24rpx;
 }
 
 .scene-card {
   padding: 24rpx;
-  border-radius: 16rpx;
   background: #fff;
+  border-radius: 16rpx;
 
   &--sale {
     background: linear-gradient(135deg, #ff6b6b 0%, #ee0a24 100%);
   }
 
   &--code {
+    border: 2rpx solid var(--ui-color-border-light);
     display: flex;
     align-items: center;
     justify-content: space-between;
-    border: 2rpx solid var(--ui-color-border-light);
   }
 
   &__header {
+    gap: 16rpx;
     display: flex;
     align-items: center;
-    gap: 16rpx;
   }
 
   &__title {
@@ -330,8 +330,8 @@ function padZero(num: number): string {
   }
 
   &__code-title {
-    font-size: 28rpx;
     color: var(--ui-color-text-main);
+    font-size: 28rpx;
   }
 }
 
@@ -341,9 +341,9 @@ function padZero(num: number): string {
   height: 44rpx;
   display: inline-flex;
   font-size: 24rpx;
-  font-weight: 600;
   background: #fff;
   align-items: center;
+  font-weight: 600;
   border-radius: 6rpx;
   justify-content: center;
 }
@@ -357,10 +357,10 @@ function padZero(num: number): string {
 
 :deep(.my-countdown) {
   color: #1989fa;
-  font-size: 32rpx;
-  font-weight: 500;
-  background: #e8f4ff;
   padding: 8rpx 16rpx;
+  font-size: 32rpx;
+  background: #e8f4ff;
+  font-weight: 500;
   border-radius: 8rpx;
 }
 </style>

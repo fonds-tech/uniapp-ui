@@ -10,8 +10,8 @@
 import UiCol from "@/ui/ui-col/ui-col.vue"
 import { ref } from "vue"
 import { mount } from "@vue/test-utils"
-import { it, vi, expect, describe, afterEach, beforeEach } from "vitest"
 import { waitForTransition } from "../setup"
+import { it, vi, expect, describe, afterEach, beforeEach } from "vitest"
 
 describe("ui-col 列布局组件", () => {
   beforeEach(() => {

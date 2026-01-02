@@ -318,7 +318,7 @@ definePage({
   style: { navigationBarTitleText: "Navbar 导航栏" },
 })
 
-const { showToast } = useToast()
+const toast = useToast()
 
 // 事件日志
 const eventLog = ref("点击导航栏触发事件")
@@ -330,7 +330,7 @@ function onBack() {
 
 function onNavbarBack() {
   eventLog.value = "触发 back 事件"
-  showToast({ message: "点击了返回按钮" })
+  toast.text("点击了返回按钮")
 }
 
 function onNavbarHeight(height: number) {
@@ -344,30 +344,30 @@ function onNavbarRect(rect: UniApp.NodeInfo) {
 
 // 自定义返回
 function onCustomBack() {
-  showToast({ message: "触发自定义返回逻辑", type: "success" })
+  toast.success("触发自定义返回逻辑")
 }
 
 // 右侧图标点击
 function onSearch() {
-  showToast({ message: "点击搜索" })
+  toast.text("点击搜索")
 }
 
 function onMore() {
-  showToast({ message: "点击更多" })
+  toast.text("点击更多")
 }
 
 // 搜索导航栏
 function onSearchClick() {
-  showToast({ message: "点击搜索框" })
+  toast.text("点击搜索框")
 }
 
 function onCategoryClick() {
-  showToast({ message: "点击分类" })
+  toast.text("点击分类")
 }
 
 // 设置
 function onSetting() {
-  showToast({ message: "点击设置" })
+  toast.text("点击设置")
 }
 </script>
 
@@ -377,90 +377,90 @@ function onSetting() {
 }
 
 .demo-text {
-  font-size: 24rpx;
   color: var(--ui-color-text-secondary);
+  font-size: 24rpx;
 }
 
 .navbar-icons {
-  display: flex;
   gap: 24rpx;
+  display: flex;
   align-items: center;
 }
 
 .immersive-demo {
   width: 100%;
   height: 200rpx;
+  overflow: hidden;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   border-radius: 12rpx;
-  overflow: hidden;
 }
 
 .gradient-demo {
   width: 100%;
   height: 200rpx;
+  overflow: hidden;
   background: linear-gradient(180deg, #1989fa 0%, #f7f8fa 100%);
   border-radius: 12rpx;
-  overflow: hidden;
 }
 
 .search-box {
-  display: flex;
-  align-items: center;
   gap: 12rpx;
   width: 400rpx;
   height: 64rpx;
+  display: flex;
   padding: 0 20rpx;
   background: #fff;
+  align-items: center;
   border-radius: 32rpx;
 }
 
 .search-placeholder {
-  font-size: 26rpx;
   color: #999;
+  font-size: 26rpx;
 }
 
 .nav-text {
-  font-size: 28rpx;
   color: #333;
+  font-size: 28rpx;
 }
 
 .transparent-demo {
-  position: relative;
   width: 100%;
   height: 300rpx;
-  border-radius: 12rpx;
   overflow: hidden;
+  position: relative;
+  border-radius: 12rpx;
 }
 
 .demo-bg {
-  position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
+  position: absolute;
 }
 
 .user-info {
+  gap: 16rpx;
   display: flex;
   align-items: center;
-  gap: 16rpx;
 }
 
 .user-avatar {
   width: 60rpx;
+  border: 2rpx solid #fff;
   height: 60rpx;
   border-radius: 50%;
-  border: 2rpx solid #fff;
 }
 
 .user-name {
+  color: #fff;
   font-size: 30rpx;
   font-weight: 600;
-  color: #fff;
 }
 
 :deep(.my-navbar) {
-  border-radius: 0 0 24rpx 24rpx;
   background: linear-gradient(90deg, #ff9a9e 0%, #fecfef 100%) !important;
+  border-radius: 0 0 24rpx 24rpx;
 }
 </style>

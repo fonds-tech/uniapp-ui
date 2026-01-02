@@ -30,7 +30,7 @@ const style = computed(() => {
   style.color = useColor(useProps.color)
   style.fontSize = useUnit(useProps.fontSize)
   style.fontWeight = useProps.fontWeight
-  style.lineHeight = useProps.lineHeight
+  if (useProps.lineHeight) style.lineHeight = useUnit(useProps.lineHeight)
   style["-webkit-line-clamp"] = useProps.textRow
   return useStyle({ ...style, ...useStyle(useProps.customStyle) })
 })
@@ -74,6 +74,7 @@ defineExpose({ name: "ui-text-highlight", match })
 
 <script lang="ts">
 export default {
+  name: "ui-text-highlight",
   options: { virtualHost: true, multipleSlots: true, styleIsolation: "shared" },
 }
 </script>

@@ -5,8 +5,8 @@
 
 import UiField from "@/ui/ui-field/ui-field.vue"
 import { mount } from "@vue/test-utils"
-import { it, vi, expect, describe, afterEach, beforeEach } from "vitest"
 import { waitForTransition } from "../setup"
+import { it, vi, expect, describe, afterEach, beforeEach } from "vitest"
 
 describe("ui-field 表单字段组件", () => {
   beforeEach(() => {
@@ -25,13 +25,13 @@ describe("ui-field 表单字段组件", () => {
           "ui-icon": true,
           "ui-input": {
             name: "ui-input",
-            template: '<input class="ui-input" />',
+            template: "<input class=\"ui-input\" />",
             props: ["modelValue", "type", "placeholder", "disabled", "maxlength", "focus"],
             emits: ["input", "blur", "focus", "confirm", "clear"],
           },
           "ui-textarea": {
             name: "ui-textarea",
-            template: '<textarea class="ui-textarea" />',
+            template: "<textarea class=\"ui-textarea\" />",
             props: ["modelValue", "placeholder", "disabled", "maxlength"],
             emits: ["input", "blur", "focus", "confirm", "linechange", "keyboardheightchange"],
           },

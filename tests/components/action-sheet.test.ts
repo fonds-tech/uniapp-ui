@@ -9,8 +9,8 @@
 import UiActionSheet from "@/ui/ui-action-sheet/ui-action-sheet.vue"
 import { mount } from "@vue/test-utils"
 import { nextTick } from "vue"
-import { it, vi, expect, describe, beforeEach, afterEach } from "vitest"
-import { waitForTransition, getLastEmitted } from "../setup"
+import { getLastEmitted, waitForTransition } from "../setup"
+import { it, vi, expect, describe, afterEach, beforeEach } from "vitest"
 
 describe("ui-action-sheet 动作面板组件", () => {
   const defaultActions = [

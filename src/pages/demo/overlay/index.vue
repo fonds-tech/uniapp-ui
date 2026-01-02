@@ -239,7 +239,7 @@ definePage({
   style: { navigationBarTitleText: "Overlay 遮罩层" },
 })
 
-const { showToast } = useToast()
+const toast = useToast()
 
 // 基础示例
 const show1 = ref(false)
@@ -336,7 +336,7 @@ function showLoading() {
   showLoadingOverlay.value = true
   setTimeout(() => {
     showLoadingOverlay.value = false
-    showToast({ message: "加载完成", type: "success" })
+    toast.success("加载完成")
   }, 2000)
 }
 
@@ -345,12 +345,12 @@ const showConfirm = ref(false)
 
 function onConfirmCancel() {
   showConfirm.value = false
-  showToast({ message: "已取消" })
+  toast.text("已取消")
 }
 
 function onConfirmOk() {
   showConfirm.value = false
-  showToast({ message: "已确认", type: "success" })
+  toast.success("已确认")
 }
 
 // 图片预览
@@ -359,17 +359,17 @@ const showPreview = ref(false)
 
 <style lang="scss" scoped>
 .demo-text {
-  font-size: 24rpx;
   color: var(--ui-color-text-secondary);
+  font-size: 24rpx;
 }
 
 .event-list {
   width: 100%;
+  padding: 16rpx;
+  background: var(--ui-color-background-light);
   max-height: 250rpx;
   overflow-y: auto;
-  background: var(--ui-color-background-light);
   border-radius: 8rpx;
-  padding: 16rpx;
 }
 
 .event-item {
@@ -382,19 +382,19 @@ const showPreview = ref(false)
 }
 
 .event-text {
-  font-size: 22rpx;
   color: var(--ui-color-text-secondary);
+  font-size: 22rpx;
 }
 
 .overlay-content {
+  gap: 16rpx;
   width: 300rpx;
   height: 300rpx;
   display: flex;
-  flex-direction: column;
-  gap: 16rpx;
   background: var(--ui-color-background);
   align-items: center;
   border-radius: 16rpx;
+  flex-direction: column;
   justify-content: center;
 
   &--dark {
@@ -407,8 +407,8 @@ const showPreview = ref(false)
   font-size: 28rpx;
 
   &--sub {
-    font-size: 24rpx;
     color: var(--ui-color-text-secondary);
+    font-size: 24rpx;
   }
 
   &--dark {
@@ -417,22 +417,22 @@ const showPreview = ref(false)
 }
 
 .loading-content {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
   gap: 24rpx;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
 }
 
 .loading-text {
-  font-size: 28rpx;
   color: #fff;
+  font-size: 28rpx;
 }
 
 .confirm-dialog {
   width: 560rpx;
+  overflow: hidden;
   background: #fff;
   border-radius: 24rpx;
-  overflow: hidden;
 }
 
 .confirm-header {
@@ -442,9 +442,9 @@ const showPreview = ref(false)
 }
 
 .confirm-title {
+  color: var(--ui-color-text-main);
   font-size: 32rpx;
   font-weight: 600;
-  color: var(--ui-color-text-main);
 }
 
 .confirm-body {
@@ -453,25 +453,25 @@ const showPreview = ref(false)
 }
 
 .confirm-text {
-  font-size: 28rpx;
   color: var(--ui-color-text-secondary);
+  font-size: 28rpx;
 }
 
 .confirm-footer {
-  display: flex;
   gap: 24rpx;
+  display: flex;
   padding: 24rpx 32rpx;
-  justify-content: center;
   border-top: 1rpx solid var(--ui-color-border-light);
+  justify-content: center;
 }
 
 .preview-content {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
   gap: 32rpx;
   width: 100%;
   height: 100%;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
   justify-content: center;
 }
 
@@ -482,8 +482,8 @@ const showPreview = ref(false)
 }
 
 .preview-tip {
-  font-size: 26rpx;
   color: rgba(255, 255, 255, 0.7);
+  font-size: 26rpx;
 }
 
 :deep(.my-overlay) {

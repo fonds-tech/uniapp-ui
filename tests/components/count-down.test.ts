@@ -5,8 +5,8 @@
 
 import UiCountDown from "@/ui/ui-count-down/ui-count-down.vue"
 import { mount } from "@vue/test-utils"
-import { it, vi, expect, describe, afterEach, beforeEach } from "vitest"
 import { waitForTransition } from "../setup"
+import { it, vi, expect, describe, afterEach, beforeEach } from "vitest"
 
 describe("uiCountDown 组件", () => {
   beforeEach(() => {

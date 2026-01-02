@@ -96,27 +96,27 @@ const customCssVars = {
 .theme-switch {
   display: flex;
   align-items: center;
-  justify-content: space-between;
   margin-bottom: 16px;
+  justify-content: space-between;
 }
 
 .theme-demo {
-  display: flex;
-  flex-wrap: wrap;
   gap: 12px;
+  display: flex;
   padding: 16px;
+  flex-wrap: wrap;
 }
 
 .css-vars-demo {
   padding: 16px;
 
   .custom-box {
-    margin-top: 12px;
-    padding: var(--ui-custom-padding, 16px);
-    border-radius: var(--ui-custom-radius, 8px);
-    background: var(--ui-color-primary, #1989fa);
     color: #fff;
+    padding: var(--ui-custom-padding, 16px);
+    background: var(--ui-color-primary, #1989fa);
+    margin-top: 12px;
     text-align: center;
+    border-radius: var(--ui-custom-radius, 8px);
   }
 }
 </style>

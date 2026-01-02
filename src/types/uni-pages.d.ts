@@ -31,7 +31,6 @@ type _LocationUrl =
   "/pages/demo/grid/index" |
   "/pages/demo/header/index" |
   "/pages/demo/icon/index" |
-  "/pages/demo/icon-text/index" |
   "/pages/demo/image/index" |
   "/pages/demo/index-anchor/index" |
   "/pages/demo/index-bar/index" |
@@ -72,7 +71,6 @@ type _LocationUrl =
   "/pages/demo/tabs/index" |
   "/pages/demo/tag/index" |
   "/pages/demo/text/index" |
-  "/pages/demo/text-ellipsis/index" |
   "/pages/demo/text-highlight/index" |
   "/pages/demo/textarea/index" |
   "/pages/demo/toast/index" |

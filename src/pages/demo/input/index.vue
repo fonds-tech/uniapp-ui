@@ -221,7 +221,7 @@ definePage({
   style: { navigationBarTitleText: "Input 输入框" },
 })
 
-const { showToast } = useToast()
+const toast = useToast()
 
 // 基础示例
 const value1 = ref("")
@@ -270,12 +270,12 @@ function clearLogs() {
 
 // 清除回调
 function onClear() {
-  showToast({ message: "已清除内容" })
+  toast.text("已清除内容")
 }
 
 // 确认回调
 function onConfirm(value: string) {
-  showToast({ message: `搜索: ${value}`, type: "success" })
+  toast.success(`搜索: ${value}`)
 }
 
 // 事件处理
@@ -334,31 +334,31 @@ function onInputConfirm(value: string) {
 }
 
 .event-log {
-  margin-top: 24rpx;
   padding: 24rpx;
   background: var(--ui-color-background);
+  margin-top: 24rpx;
   border-radius: var(--ui-radius-xl);
 
   &__title {
-    font-size: var(--ui-font-size-md);
-    font-weight: 500;
     color: var(--ui-color-text-main);
     display: block;
+    font-size: var(--ui-font-size-md);
+    font-weight: 500;
     margin-bottom: 16rpx;
   }
 
   &__content {
     height: 200rpx;
-    margin-bottom: 16rpx;
+    padding: 16rpx;
     background: var(--ui-color-background-light);
     border-radius: var(--ui-radius-md);
-    padding: 16rpx;
+    margin-bottom: 16rpx;
   }
 
   &__item {
+    color: var(--ui-color-text-secondary);
     display: block;
     font-size: 24rpx;
-    color: var(--ui-color-text-secondary);
     line-height: 1.6;
   }
 }

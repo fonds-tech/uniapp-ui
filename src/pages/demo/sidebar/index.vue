@@ -223,7 +223,7 @@
             <template #default="{ active }">
               <view class="custom-item">
                 <ui-icon name="home" :color="active ? '#1989fa' : '#666'" />
-                <text :class="['custom-item__text', { 'custom-item__text--active': active }]">首页</text>
+                <text class="custom-item__text" :class="[{ 'custom-item__text--active': active }]">首页</text>
               </view>
             </template>
           </ui-sidebar-item>
@@ -231,7 +231,7 @@
             <template #default="{ active }">
               <view class="custom-item">
                 <ui-icon name="grid" :color="active ? '#1989fa' : '#666'" />
-                <text :class="['custom-item__text', { 'custom-item__text--active': active }]">分类</text>
+                <text class="custom-item__text" :class="[{ 'custom-item__text--active': active }]">分类</text>
                 <view class="custom-item__badge">6</view>
               </view>
             </template>
@@ -240,7 +240,7 @@
             <template #default="{ active }">
               <view class="custom-item">
                 <ui-icon name="cart" :color="active ? '#1989fa' : '#666'" />
-                <text :class="['custom-item__text', { 'custom-item__text--active': active }]">购物车</text>
+                <text class="custom-item__text" :class="[{ 'custom-item__text--active': active }]">购物车</text>
                 <view class="custom-item__dot" />
               </view>
             </template>
@@ -249,7 +249,7 @@
             <template #default="{ active }">
               <view class="custom-item">
                 <ui-icon name="user" :color="active ? '#1989fa' : '#666'" />
-                <text :class="['custom-item__text', { 'custom-item__text--active': active }]">我的</text>
+                <text class="custom-item__text" :class="[{ 'custom-item__text--active': active }]">我的</text>
               </view>
             </template>
           </ui-sidebar-item>
@@ -343,7 +343,7 @@ definePage({
   style: { navigationBarTitleText: "Sidebar 侧边栏" },
 })
 
-const { showToast } = useToast()
+const toast = useToast()
 
 // 基础示例
 const active1 = ref(0)
@@ -409,7 +409,7 @@ const currentCategory = computed(() => categories.value.find((c) => c.name === a
 // 事件处理
 function onSidebarChange(name: number | string) {
   eventLog.value = `触发 change 事件，切换到: ${name}`
-  showToast({ message: `切换到第 ${Number(name) + 1} 项`, type: "success" })
+  toast.success(`切换到第 ${Number(name) + 1} 项`)
 }
 
 function onClickItem(name: number | string, index: number) {
@@ -419,8 +419,8 @@ function onClickItem(name: number | string, index: number) {
 
 <style lang="scss" scoped>
 .demo-text {
-  font-size: 24rpx;
   color: var(--ui-color-text-secondary);
+  font-size: 24rpx;
 }
 
 .sidebar-wrap {
@@ -443,29 +443,29 @@ function onClickItem(name: number | string, index: number) {
 }
 
 .sidebar-row {
+  gap: 16rpx;
   display: flex;
   align-items: center;
-  gap: 16rpx;
 
   &__label {
-    font-size: 28rpx;
     color: var(--ui-color-text-main);
     width: 160rpx;
+    font-size: 28rpx;
   }
 }
 
 .custom-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
   gap: 8rpx;
-  position: relative;
+  display: flex;
   padding: 16rpx;
+  position: relative;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
 
   &__text {
-    font-size: 24rpx;
     color: #666;
+    font-size: 24rpx;
 
     &--active {
       color: #1989fa;
@@ -474,50 +474,50 @@ function onClickItem(name: number | string, index: number) {
   }
 
   &__badge {
-    position: absolute;
     top: 8rpx;
-    right: 24rpx;
-    min-width: 32rpx;
-    height: 32rpx;
-    padding: 0 8rpx;
-    font-size: 20rpx;
     color: #fff;
-    background: #ee0a24;
-    border-radius: 32rpx;
+    right: 24rpx;
+    height: 32rpx;
     display: flex;
+    padding: 0 8rpx;
+    position: absolute;
+    font-size: 20rpx;
+    min-width: 32rpx;
+    background: #ee0a24;
     align-items: center;
+    border-radius: 32rpx;
     justify-content: center;
   }
 
   &__dot {
-    position: absolute;
     top: 12rpx;
     right: 32rpx;
     width: 16rpx;
     height: 16rpx;
+    position: absolute;
     background: #ee0a24;
     border-radius: 50%;
   }
 }
 
 .sidebar-content {
+  gap: 16rpx;
   flex: 1;
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
   background: #fff;
-  gap: 16rpx;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
 
   &__title {
+    color: var(--ui-color-text-main);
     font-size: 36rpx;
     font-weight: 600;
-    color: var(--ui-color-text-main);
   }
 
   &__desc {
-    font-size: 24rpx;
     color: var(--ui-color-text-secondary);
+    font-size: 24rpx;
   }
 }
 

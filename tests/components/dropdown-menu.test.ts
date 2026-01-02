@@ -5,14 +5,14 @@
 
 import UiDropdownItem from "@/ui/ui-dropdown-item/ui-dropdown-item.vue"
 import UiDropdownMenu from "@/ui/ui-dropdown-menu/ui-dropdown-menu.vue"
-import { dropdownMenuKey } from "@/ui/ui-dropdown-menu"
-import { h, ref } from "vue"
 import { mount } from "@vue/test-utils"
-import { it, vi, expect, describe, afterEach, beforeEach } from "vitest"
+import { h, ref } from "vue"
+import { dropdownMenuKey } from "@/ui/ui-dropdown-menu"
 import { waitForTransition } from "../setup"
+import { it, vi, expect, describe, afterEach, beforeEach } from "vitest"
 
 // Mock dropdown-menu parent context for dropdown-item tests
-const createMockDropdownMenuProvide = () => {
+function createMockDropdownMenuProvide() {
   const childrens: any[] = []
   return {
     props: {

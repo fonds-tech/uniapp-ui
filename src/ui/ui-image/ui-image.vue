@@ -97,6 +97,8 @@ export default {
   display: flex;
   overflow: hidden;
   position: relative;
+  align-items: center;
+  justify-content: center;
 
   &__image {
     width: 100%;
@@ -166,6 +168,7 @@ export default {
   }
 
   &--block {
+    width: 100%;
     display: block;
   }
 

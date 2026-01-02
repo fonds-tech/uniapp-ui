@@ -117,23 +117,23 @@ definePage({
   style: { navigationBarTitleText: "Tab 标签页子项" },
 })
 
-const activeTab1 = ref('1')
-const activeTab2 = ref('home')
-const activeTab3 = ref('1')
-const activeTab4 = ref('1')
-const activeTab5 = ref('hot')
+const activeTab1 = ref("1")
+const activeTab2 = ref("home")
+const activeTab3 = ref("1")
+const activeTab4 = ref("1")
+const activeTab5 = ref("hot")
 </script>
 
 <style scoped lang="scss">
 .tab-content {
+  color: #666;
   padding: 24px;
   text-align: center;
-  color: #666;
 }
 
 .custom-title {
+  gap: 4px;
   display: flex;
   align-items: center;
-  gap: 4px;
 }
 </style>

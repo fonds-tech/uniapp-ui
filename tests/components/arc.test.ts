@@ -5,8 +5,8 @@
 
 import UiArc from "@/ui/ui-arc/ui-arc.vue"
 import { mount } from "@vue/test-utils"
-import { it, vi, expect, describe, beforeEach, afterEach } from "vitest"
 import { waitForTransition } from "../setup"
+import { it, vi, expect, describe, afterEach, beforeEach } from "vitest"
 
 describe("ui-arc 弧形组件", () => {
   // 启用 fake timers

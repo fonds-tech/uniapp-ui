@@ -103,12 +103,12 @@ definePage({
   style: { navigationBarTitleText: "RadioGroup 单选框组" },
 })
 
-const value1 = ref('a')
-const value2 = ref('1')
-const value3 = ref('medium')
-const value4 = ref('a')
-const value5 = ref('1')
-const value6 = ref('a')
-const value7 = ref('1')
-const payMethod = ref('wechat')
+const value1 = ref("a")
+const value2 = ref("1")
+const value3 = ref("medium")
+const value4 = ref("a")
+const value5 = ref("1")
+const value6 = ref("a")
+const value7 = ref("1")
+const payMethod = ref("wechat")
 </script>

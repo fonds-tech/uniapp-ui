@@ -7,8 +7,8 @@
 
 import UiTextHighlight from "@/ui/ui-text-highlight/ui-text-highlight.vue"
 import { mount } from "@vue/test-utils"
-import { it, vi, expect, describe, beforeEach, afterEach } from "vitest"
 import { waitForTransition } from "../setup"
+import { it, vi, expect, describe, afterEach, beforeEach } from "vitest"
 
 describe("ui-text-highlight 文本高亮组件", () => {
   // 启用 fake timers

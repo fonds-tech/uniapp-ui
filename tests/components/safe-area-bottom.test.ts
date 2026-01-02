@@ -5,8 +5,8 @@
 
 import UiSafeAreaBottom from "@/ui/ui-safe-area-bottom/ui-safe-area-bottom.vue"
 import { mount } from "@vue/test-utils"
-import { it, vi, expect, describe, beforeEach, afterEach } from "vitest"
 import { waitForTransition } from "../setup"
+import { it, vi, expect, describe, afterEach, beforeEach } from "vitest"
 
 describe("ui-safe-area-bottom 底部安全区域组件", () => {
   // 启用 fake timers

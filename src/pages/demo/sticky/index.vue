@@ -102,7 +102,7 @@ definePage({
   style: { navigationBarTitleText: "Sticky 粘性布局" },
 })
 
-const { showToast } = useToast()
+const toast = useToast()
 
 // 禁用状态
 const stickyDisabled = ref(false)
@@ -113,15 +113,15 @@ const scrollLog = ref("等待 scroll 事件...")
 
 // 事件处理
 function onStickyChange1(isFixed: boolean) {
-  stickyLog.value = `change 事件: ${isFixed ? '已吸顶' : '未吸顶'}`
+  stickyLog.value = `change 事件: ${isFixed ? "已吸顶" : "未吸顶"}`
   if (isFixed) {
-    showToast({ message: "基础吸顶生效" })
+    toast.text("基础吸顶生效")
   }
 }
 
 function onStickyChange2(isFixed: boolean) {
   if (isFixed) {
-    showToast({ message: "偏移吸顶生效", type: "success" })
+    toast.success("偏移吸顶生效")
   }
 }
 
@@ -132,15 +132,15 @@ function onStickyScroll(data: { scrollTop: number; isFixed: boolean }) {
 
 <style lang="scss" scoped>
 .demo-text {
-  font-size: 24rpx;
   color: var(--ui-color-text-secondary);
+  font-size: 24rpx;
 }
 
 .sticky-box {
-  padding: 24rpx;
-  text-align: center;
   color: #fff;
+  padding: 24rpx;
   font-size: 28rpx;
+  text-align: center;
 
   &--warning {
     background: var(--ui-color-warning);
@@ -160,26 +160,26 @@ function onStickyScroll(data: { scrollTop: number; isFixed: boolean }) {
 }
 
 .sticky-content {
-  display: flex;
-  align-items: center;
   gap: 16rpx;
+  display: flex;
   padding: 16rpx 24rpx;
+  align-items: center;
 
   &__text {
-    font-size: 24rpx;
     color: var(--ui-color-text-secondary);
+    font-size: 24rpx;
   }
 }
 
 .sticky-custom {
-  padding: 24rpx;
-  text-align: center;
   color: #fff;
+  padding: 24rpx;
   font-size: 28rpx;
+  text-align: center;
 }
 
 :deep(.my-sticky) {
-  border-radius: 16rpx;
   overflow: hidden;
+  border-radius: 16rpx;
 }
 </style>

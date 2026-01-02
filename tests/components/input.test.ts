@@ -5,8 +5,8 @@
 
 import UiInput from "@/ui/ui-input/ui-input.vue"
 import { mount } from "@vue/test-utils"
-import { it, vi, expect, describe, afterEach, beforeEach } from "vitest"
 import { waitForTransition } from "../setup"
+import { it, vi, expect, describe, afterEach, beforeEach } from "vitest"
 
 describe("ui-input 输入框组件", () => {
   beforeEach(() => {

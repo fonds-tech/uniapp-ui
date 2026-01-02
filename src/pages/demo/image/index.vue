@@ -238,7 +238,7 @@ definePage({
   style: { navigationBarTitleText: "Image 图片" },
 })
 
-const { showToast } = useToast()
+const toast = useToast()
 
 // 事件日志
 const eventLog = ref("点击图片或等待加载事件触发")
@@ -246,17 +246,17 @@ const eventLog = ref("点击图片或等待加载事件触发")
 // 事件处理
 function onImageLoad(event: any) {
   eventLog.value = `触发 load 事件，图片加载成功`
-  showToast({ message: "图片加载成功", type: "success" })
+  toast.success("图片加载成功")
 }
 
 function onImageError(event: any) {
   eventLog.value = `触发 error 事件，图片加载失败`
-  showToast({ message: "图片加载失败", type: "warning" })
+  toast.fail("图片加载失败")
 }
 
 function onImageClick(event: any) {
   eventLog.value = `触发 click 事件，时间: ${new Date().toLocaleTimeString()}`
-  showToast({ message: "图片被点击" })
+  toast.text("图片被点击")
 }
 </script>
 

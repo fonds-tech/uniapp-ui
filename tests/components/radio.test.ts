@@ -7,8 +7,8 @@ import UiRadio from "@/ui/ui-radio/ui-radio.vue"
 import UiRadioGroup from "@/ui/ui-radio-group/ui-radio-group.vue"
 import { h } from "vue"
 import { mount } from "@vue/test-utils"
-import { it, vi, expect, describe, beforeEach, afterEach } from "vitest"
 import { waitForTransition } from "../setup"
+import { it, vi, expect, describe, afterEach, beforeEach } from "vitest"
 
 describe("ui-radio 单选框组件", () => {
   // 启用 fake timers

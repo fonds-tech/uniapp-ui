@@ -137,35 +137,35 @@ function onChartResize(data: any) {
 <style scoped lang="scss">
 .resize-demo {
   display: flex;
-  justify-content: center;
   padding: 20px;
   background: #f5f6fa;
   border-radius: 8px;
+  justify-content: center;
 }
 
 .resize-box {
+  gap: 4px;
   width: 100%;
   height: 100%;
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 4px;
   background: linear-gradient(135deg, #1989fa, #07c160);
+  align-items: center;
   border-radius: 8px;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .slider-group {
-  margin-top: 16px;
-  display: flex;
-  flex-direction: column;
   gap: 12px;
+  display: flex;
+  margin-top: 16px;
+  flex-direction: column;
 }
 
 .slider-item {
+  gap: 12px;
   display: flex;
   align-items: center;
-  gap: 12px;
 
   slider {
     flex: 1;
@@ -175,52 +175,52 @@ function onChartResize(data: any) {
 .adaptive-demo {
   padding: 20px;
   background: #f5f6fa;
-  border-radius: 8px;
   transition: width 0.3s ease;
+  border-radius: 8px;
 }
 
 .adaptive-box {
   width: 100%;
   height: 80px;
   display: flex;
-  align-items: center;
-  justify-content: center;
   background: linear-gradient(135deg, #7232dd, #ff6b6b);
+  align-items: center;
   border-radius: 8px;
+  justify-content: center;
 }
 
 .button-group {
-  display: flex;
   gap: 12px;
+  display: flex;
   margin-top: 16px;
 }
 
 .disabled-demo {
   display: flex;
-  justify-content: center;
   padding: 20px;
   background: #f5f6fa;
   border-radius: 8px;
+  justify-content: center;
 }
 
 .disabled-box {
+  gap: 4px;
   width: 100%;
+  border: 2px dashed #ccc;
   height: 100%;
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 4px;
   background: #eee;
+  align-items: center;
   border-radius: 8px;
-  border: 2px dashed #ccc;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .chart-demo {
-  margin-top: 12px;
-  background: #f5f6fa;
-  border-radius: 8px;
   padding: 16px;
+  background: #f5f6fa;
+  margin-top: 12px;
+  border-radius: 8px;
 }
 
 .chart-container {
@@ -229,25 +229,25 @@ function onChartResize(data: any) {
 }
 
 .chart-placeholder {
+  gap: 8px;
   width: 100%;
+  border: 1px dashed #1989fa;
   height: 100%;
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
   background: #fff;
+  align-items: center;
   border-radius: 8px;
-  border: 1px dashed #1989fa;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .code-block {
-  margin-top: 12px;
   padding: 12px;
   background: #f5f6fa;
-  border-radius: 8px;
+  margin-top: 12px;
+  word-break: break-all;
   font-family: monospace;
   white-space: pre-wrap;
-  word-break: break-all;
+  border-radius: 8px;
 }
 </style>

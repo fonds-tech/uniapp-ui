@@ -5,11 +5,11 @@
 
 import UiIndexBar from "@/ui/ui-index-bar/ui-index-bar.vue"
 import UiIndexAnchor from "@/ui/ui-index-anchor/ui-index-anchor.vue"
-import { indexBarKey } from "@/ui/ui-index-bar"
 import { ref } from "vue"
 import { mount } from "@vue/test-utils"
-import { it, vi, expect, describe, afterEach, beforeEach } from "vitest"
+import { indexBarKey } from "@/ui/ui-index-bar"
 import { waitForTransition } from "../setup"
+import { it, vi, expect, describe, afterEach, beforeEach } from "vitest"
 
 describe("uiIndexBar 组件", () => {
   beforeEach(() => {

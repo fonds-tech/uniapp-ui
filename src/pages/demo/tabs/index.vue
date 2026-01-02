@@ -287,7 +287,7 @@ definePage({
   style: { navigationBarTitleText: "Tabs 标签页" },
 })
 
-const { showToast } = useToast()
+const toast = useToast()
 
 // 基础示例
 const active1 = ref(0)
@@ -350,7 +350,7 @@ const inactiveTabStyle = {
 // 事件处理
 function onTabChange(name: string | number) {
   eventLog.value = `触发 change 事件，切换到: ${name}`
-  showToast({ message: `切换到第 ${Number(name) + 1} 项`, type: "success" })
+  toast.success(`切换到第 ${Number(name) + 1} 项`)
 }
 
 function onClickTab(name: string | number) {
@@ -364,19 +364,19 @@ function onTabClick(index: number) {
 
 <style lang="scss" scoped>
 .demo-text {
-  font-size: 24rpx;
   color: var(--ui-color-text-secondary);
+  font-size: 24rpx;
 }
 
 .tab-content {
   padding: 32rpx;
   background: #f7f8fa;
-  border-radius: 12rpx;
   text-align: center;
+  border-radius: 12rpx;
 
   &__text {
-    font-size: 28rpx;
     color: var(--ui-color-text-main);
+    font-size: 28rpx;
   }
 }
 

@@ -297,7 +297,7 @@ definePage({
   style: { navigationBarTitleText: "Popup 弹出层" },
 })
 
-const { showToast } = useToast()
+const toast = useToast()
 
 // 基础示例
 const showCenter = ref(false)
@@ -345,7 +345,7 @@ function onPopupOpen() {
 
 function onPopupOpened() {
   eventLog.value = "触发 opened 事件 - 动画结束"
-  showToast({ message: "弹窗已打开", type: "success" })
+  toast.success("弹窗已打开")
 }
 
 function onPopupClose(action: string) {
@@ -354,7 +354,7 @@ function onPopupClose(action: string) {
 
 function onPopupClosed(action: string) {
   eventLog.value = `触发 closed 事件, action: ${action}`
-  showToast({ message: "弹窗已关闭" })
+  toast.text("弹窗已关闭")
 }
 
 function onPopupClick() {
@@ -372,8 +372,8 @@ function onPopupClickOverlay() {
 
 <style lang="scss" scoped>
 .demo-text {
-  font-size: 24rpx;
   color: var(--ui-color-text-secondary);
+  font-size: 24rpx;
 }
 
 .popup-content {

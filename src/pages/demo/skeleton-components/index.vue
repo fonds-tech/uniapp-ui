@@ -132,50 +132,50 @@ definePage({
 
 <style scoped lang="scss">
 .avatar-row {
-  display: flex;
   gap: 16px;
+  display: flex;
   align-items: center;
 }
 
 .avatar-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
   gap: 8px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
 }
 
 .image-row {
-  display: flex;
   gap: 16px;
-  align-items: center;
+  display: flex;
   flex-wrap: wrap;
+  align-items: center;
 }
 
 .image-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
   gap: 8px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
 }
 
 .skeleton-card {
-  display: flex;
   gap: 16px;
+  display: flex;
   padding: 16px;
   background: #fff;
   border-radius: 12px;
 }
 
 .skeleton-content {
+  gap: 12px;
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 12px;
 }
 
 .skeleton-list-item {
-  display: flex;
   gap: 16px;
+  display: flex;
   padding: 12px 0;
   border-bottom: 1px solid #f0f0f0;
 
@@ -185,9 +185,9 @@ definePage({
 }
 
 .skeleton-list-content {
+  gap: 8px;
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 8px;
 }
 </style>

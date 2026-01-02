@@ -5,8 +5,8 @@
 
 import UiRate from "@/ui/ui-rate/ui-rate.vue"
 import { mount } from "@vue/test-utils"
-import { it, vi, expect, describe, afterEach, beforeEach } from "vitest"
 import { waitForTransition } from "../setup"
+import { it, vi, expect, describe, afterEach, beforeEach } from "vitest"
 
 describe("uiRate 组件", () => {
   beforeEach(() => {

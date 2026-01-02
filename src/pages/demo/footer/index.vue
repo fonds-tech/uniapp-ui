@@ -23,8 +23,14 @@
         <ui-footer background="#fff">
           <view class="footer-bar">
             <view class="footer-icons">
-              <ui-icon-text name="heart" text="收藏" size="40rpx" />
-              <ui-icon-text name="cart" text="购物车" size="40rpx" />
+              <view class="footer-icon-item">
+                <ui-icon name="heart" size="40rpx" />
+                <text class="footer-icon-text">收藏</text>
+              </view>
+              <view class="footer-icon-item">
+                <ui-icon name="cart" size="40rpx" />
+                <text class="footer-icon-text">购物车</text>
+              </view>
             </view>
             <view class="footer-buttons">
               <ui-button type="warning" size="small">加入购物车</ui-button>
@@ -153,7 +159,7 @@
           <ui-footer
             :custom-style="{
               background: 'linear-gradient(90deg, #667eea 0%, #764ba2 100%)',
-              borderRadius: '24rpx 24rpx 0 0'
+              borderRadius: '24rpx 24rpx 0 0',
             }"
           >
             <view class="footer-content">
@@ -269,7 +275,7 @@ definePage({
   style: { navigationBarTitleText: "Footer 页脚" },
 })
 
-const { showToast } = useToast()
+const toast = useToast()
 
 // 底部偏移
 const currentOffset = ref(0)
@@ -296,32 +302,32 @@ function onComplexHeight(height: number) {
 
 // 综合示例交互
 function onServiceClick() {
-  showToast({ message: "联系客服" })
+  toast.text("联系客服")
 }
 
 function onFavoriteClick() {
   isFavorite.value = !isFavorite.value
-  showToast({ message: isFavorite.value ? "已收藏" : "已取消收藏", type: "success" })
+  toast.success(isFavorite.value ? "已收藏" : "已取消收藏")
 }
 
 function onCartClick() {
-  showToast({ message: "查看购物车" })
+  toast.text("查看购物车")
 }
 
 function onAddCart() {
   cartCount.value++
-  showToast({ message: "已加入购物车", type: "success" })
+  toast.success("已加入购物车")
 }
 
 function onBuyNow() {
-  showToast({ message: "立即购买", type: "success" })
+  toast.success("立即购买")
 }
 </script>
 
 <style lang="scss" scoped>
 .demo-text {
-  font-size: 24rpx;
   color: var(--ui-color-text-secondary);
+  font-size: 24rpx;
 }
 
 .footer-demo {
@@ -343,18 +349,18 @@ function onBuyNow() {
 
   &--overlay {
     .mock-overlay {
-      position: absolute;
-      bottom: 0;
       left: 0;
-      right: 0;
-      height: 120rpx;
-      background: rgba(0, 0, 0, 0.5);
       color: #fff;
+      right: 0;
+      bottom: 0;
+      height: 120rpx;
       display: flex;
+      z-index: 50;
+      position: absolute;
+      font-size: 24rpx;
+      background: rgba(0, 0, 0, 0.5);
       align-items: center;
       justify-content: center;
-      font-size: 24rpx;
-      z-index: 50;
     }
   }
 
@@ -414,6 +420,18 @@ function onBuyNow() {
   display: flex;
 }
 
+.footer-icon-item {
+  gap: 4rpx;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.footer-icon-text {
+  color: #666;
+  font-size: 20rpx;
+}
+
 .footer-buttons {
   gap: 16rpx;
   display: flex;
@@ -442,9 +460,9 @@ function onBuyNow() {
 }
 
 .footer-double {
+  gap: 24rpx;
   display: flex;
   padding: 16rpx 32rpx;
-  gap: 24rpx;
 
   &__btn {
     flex: 1;
@@ -454,72 +472,72 @@ function onBuyNow() {
 .footer-checkout {
   display: flex;
   padding: 16rpx 32rpx;
+  border-top: 1rpx solid var(--ui-color-border-light);
   align-items: center;
   justify-content: space-between;
-  border-top: 1rpx solid var(--ui-color-border-light);
 
   &__info {
+    gap: 8rpx;
     display: flex;
     align-items: baseline;
-    gap: 8rpx;
   }
 
   &__label {
-    font-size: 26rpx;
     color: var(--ui-color-text-main);
+    font-size: 26rpx;
   }
 
   &__price {
+    color: #ee0a24;
     font-size: 36rpx;
     font-weight: 600;
-    color: #ee0a24;
   }
 }
 
 .footer-complex {
   display: flex;
   padding: 16rpx 32rpx;
+  border-top: 1rpx solid var(--ui-color-border-light);
   align-items: center;
   justify-content: space-between;
-  border-top: 1rpx solid var(--ui-color-border-light);
 
   &__left {
-    display: flex;
     gap: 32rpx;
+    display: flex;
   }
 
   &__item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
     gap: 4rpx;
+    display: flex;
     position: relative;
+    align-items: center;
+    flex-direction: column;
   }
 
   &__text {
-    font-size: 20rpx;
     color: #666;
+    font-size: 20rpx;
   }
 
   &__badge {
-    position: absolute;
     top: -8rpx;
-    right: -16rpx;
-    min-width: 28rpx;
-    height: 28rpx;
-    padding: 0 6rpx;
-    font-size: 18rpx;
     color: #fff;
-    background: #ee0a24;
-    border-radius: 28rpx;
+    right: -16rpx;
+    height: 28rpx;
     display: flex;
+    padding: 0 6rpx;
+    position: absolute;
+    font-size: 18rpx;
+    min-width: 28rpx;
+    background: #ee0a24;
     align-items: center;
+    border-radius: 28rpx;
     justify-content: center;
   }
 
   &__right {
-    display: flex;
     gap: 16rpx;
+    display: flex;
   }
 }
 

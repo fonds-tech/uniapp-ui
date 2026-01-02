@@ -98,13 +98,13 @@ definePage({
   style: { navigationBarTitleText: "CheckboxGroup 复选框组" },
 })
 
-const value1 = ref(['a'])
-const value2 = ref(['1', '2'])
-const value3 = ref(['a', 'c'])
-const value4 = ref(['1'])
-const value5 = ref(['a', 'b'])
-const value6 = ref(['1'])
-const value7 = ref(['a'])
-const value8 = ref(['a'])
-const value9 = ref(['1'])
+const value1 = ref(["a"])
+const value2 = ref(["1", "2"])
+const value3 = ref(["a", "c"])
+const value4 = ref(["1"])
+const value5 = ref(["a", "b"])
+const value6 = ref(["1"])
+const value7 = ref(["a"])
+const value8 = ref(["a"])
+const value9 = ref(["1"])
 </script>

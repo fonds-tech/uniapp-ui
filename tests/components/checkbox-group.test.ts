@@ -7,8 +7,8 @@ import UiCheckbox from "@/ui/ui-checkbox/ui-checkbox.vue"
 import UiCheckboxGroup from "@/ui/ui-checkbox-group/ui-checkbox-group.vue"
 import { h } from "vue"
 import { mount } from "@vue/test-utils"
-import { it, expect, describe, vi, beforeEach, afterEach } from "vitest"
 import { waitForTransition } from "../setup"
+import { it, vi, expect, describe, afterEach, beforeEach } from "vitest"
 
 describe("ui-checkbox-group 复选框组组件", () => {
   // 启用 fake timers

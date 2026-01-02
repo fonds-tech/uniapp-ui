@@ -177,7 +177,7 @@ definePage({
   style: { navigationBarTitleText: "Checkbox 复选框" },
 })
 
-const { showToast } = useToast()
+const toast = useToast()
 
 // 基础示例
 const checked = ref(true)
@@ -217,11 +217,11 @@ const customStyle = ref(false)
 
 // 事件处理
 function onChange(value: boolean) {
-  showToast({ message: `状态: ${value ? "选中" : "未选中"}` })
+  toast.text(`状态: ${value ? "选中" : "未选中"}`)
 }
 
 function onGroupChange(value: string[]) {
-  showToast({ message: `选中: ${value.join(", ") || "无"}` })
+  toast.text(`选中: ${value.join(", ") || "无"}`)
 }
 
 function onCheckboxClick() {
@@ -244,19 +244,19 @@ function onCheckboxChange(value: boolean) {
 }
 
 .custom-label {
+  gap: 8rpx;
   display: flex;
   flex-direction: column;
-  gap: 8rpx;
 
   &__title {
-    font-size: 28rpx;
     color: var(--ui-color-text-main);
+    font-size: 28rpx;
     font-weight: 500;
   }
 
   &__desc {
-    font-size: 24rpx;
     color: var(--ui-color-text-secondary);
+    font-size: 24rpx;
   }
 }
 

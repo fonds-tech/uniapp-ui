@@ -5,8 +5,8 @@
 
 import UiSearch from "@/ui/ui-search/ui-search.vue"
 import { mount } from "@vue/test-utils"
-import { it, vi, expect, describe, afterEach, beforeEach } from "vitest"
 import { waitForTransition } from "../setup"
+import { it, vi, expect, describe, afterEach, beforeEach } from "vitest"
 
 describe("uiSearch 组件", () => {
   beforeEach(() => {

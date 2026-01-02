@@ -231,7 +231,7 @@ definePage({
   style: { navigationBarTitleText: "ActionSheet 动作面板" },
 })
 
-const { showToast } = useToast()
+const toast = useToast()
 
 // 基础示例状态
 const show1 = ref(false)
@@ -293,25 +293,25 @@ const customItems = [
 
 // 选择回调
 function onSelect(action: { title: string }, index: number) {
-  showToast({ message: `选择了: ${action.title}`, type: "success" })
+  toast.success(`选择了: ${action.title}`)
 }
 
 // 取消回调
 function onCancel() {
-  showToast({ message: "取消" })
+  toast.text("取消")
 }
 
 // 点击遮罩层回调
 function onClickOverlay() {
-  showToast({ message: "点击了遮罩层" })
+  toast.text("点击了遮罩层")
 }
 
 // 异步关闭
 function beforeClose(action: object, index: number): Promise<boolean> {
   return new Promise((resolve) => {
-    showToast({ message: "处理中...", type: "loading" })
+    toast.loading("处理中...")
     setTimeout(() => {
-      showToast({ message: "操作成功", type: "success" })
+      toast.success("操作成功")
       resolve(true)
     }, 1500)
   })
@@ -323,7 +323,7 @@ function onOpen() {
 }
 
 function onOpened() {
-  showToast({ message: "面板已打开", type: "success" })
+  toast.success("面板已打开")
 }
 
 function onClose() {
@@ -331,12 +331,12 @@ function onClose() {
 }
 
 function onClosed() {
-  showToast({ message: "面板已关闭" })
+  toast.text("面板已关闭")
 }
 
 // 自定义内容选择
 function onCustomSelect(item: { id: number; name: string }) {
-  showToast({ message: `选择了: ${item.name}`, type: "success" })
+  toast.success(`选择了: ${item.name}`)
   showDefaultSlot.value = false
 }
 </script>
@@ -347,53 +347,53 @@ function onCustomSelect(item: { id: number; name: string }) {
 }
 
 .custom-header {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 32rpx 24rpx;
   gap: 16rpx;
+  display: flex;
+  padding: 32rpx 24rpx;
+  align-items: center;
+  flex-direction: column;
 
   &__title {
+    color: #333;
     font-size: 32rpx;
     font-weight: 600;
-    color: #333;
   }
 
   &__desc {
-    font-size: 26rpx;
     color: #999;
+    font-size: 26rpx;
   }
 }
 
 .custom-content {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  padding: 32rpx 24rpx;
   gap: 24rpx;
+  display: grid;
+  padding: 32rpx 24rpx;
+  grid-template-columns: repeat(4, 1fr);
 
   &__item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
     gap: 12rpx;
+    display: flex;
     padding: 16rpx;
+    align-items: center;
+    flex-direction: column;
 
     &:active {
-      background-color: #f5f5f5;
       border-radius: 12rpx;
+      background-color: #f5f5f5;
     }
   }
 
   &__text {
-    font-size: 24rpx;
     color: #666;
+    font-size: 24rpx;
   }
 }
 
 .custom-footer {
-  display: flex;
-  justify-content: space-around;
-  padding: 24rpx;
   gap: 24rpx;
+  display: flex;
+  padding: 24rpx;
+  justify-content: space-around;
 }
 </style>

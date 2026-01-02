@@ -5,8 +5,8 @@
 
 import UiNoticeBar from "@/ui/ui-notice-bar/ui-notice-bar.vue"
 import { mount } from "@vue/test-utils"
-import { it, vi, expect, describe, afterEach, beforeEach } from "vitest"
 import { waitForTransition } from "../setup"
+import { it, vi, expect, describe, afterEach, beforeEach } from "vitest"
 
 describe("uiNoticeBar 组件", () => {
   beforeEach(() => {

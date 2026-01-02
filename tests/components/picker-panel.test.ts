@@ -5,14 +5,14 @@
 
 import UiPickerPanel from "@/ui/ui-picker-panel/ui-picker-panel.vue"
 import { mount } from "@vue/test-utils"
-import { it, vi, expect, describe, beforeEach, afterEach } from "vitest"
 import { waitForTransition } from "../setup"
+import { it, vi, expect, describe, afterEach, beforeEach } from "vitest"
 
 // 创建 stub 组件
 const stubs = {
   "ui-loading": {
     name: "ui-loading",
-    template: '<div class="ui-loading-stub"><slot /></div>',
+    template: "<div class=\"ui-loading-stub\"><slot /></div>",
     props: ["show"],
   },
 }

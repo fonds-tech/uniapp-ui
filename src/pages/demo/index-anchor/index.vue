@@ -7,11 +7,11 @@
             <ui-index-anchor name="A" text="A" />
             <ui-cell title="阿里巴巴" />
             <ui-cell title="爱奇艺" />
-            
+
             <ui-index-anchor name="B" text="B" />
             <ui-cell title="百度" />
             <ui-cell title="哔哩哔哩" />
-            
+
             <ui-index-anchor name="C" text="C" />
             <ui-cell title="抖音" />
             <ui-cell title="滴滴出行" />
@@ -24,8 +24,8 @@
       <demo-block direction="column">
         <view class="index-bar-demo">
           <ui-index-bar>
-            <ui-index-anchor 
-              name="hot" 
+            <ui-index-anchor
+              name="hot"
               text="热门"
               color="#ff6b6b"
               font-size="28rpx"
@@ -34,9 +34,9 @@
             />
             <ui-cell title="微信" />
             <ui-cell title="支付宝" />
-            
-            <ui-index-anchor 
-              name="new" 
+
+            <ui-index-anchor
+              name="new"
               text="最新"
               color="#1989fa"
               font-size="28rpx"
@@ -54,8 +54,8 @@
       <demo-block direction="column">
         <view class="index-bar-demo">
           <ui-index-bar>
-            <ui-index-anchor 
-              name="A" 
+            <ui-index-anchor
+              name="A"
               text="A"
               sticky-color="#1989fa"
               sticky-font-size="32rpx"
@@ -64,9 +64,9 @@
             />
             <ui-cell title="苹果 Apple" />
             <ui-cell title="亚马逊 Amazon" />
-            
-            <ui-index-anchor 
-              name="B" 
+
+            <ui-index-anchor
+              name="B"
               text="B"
               sticky-color="#1989fa"
               sticky-font-size="32rpx"
@@ -88,7 +88,7 @@
             <ui-index-anchor name="1" text="第一组" height="60rpx" />
             <ui-cell title="项目 1-1" />
             <ui-cell title="项目 1-2" />
-            
+
             <ui-index-anchor name="2" text="第二组" height="60rpx" />
             <ui-cell title="项目 2-1" />
             <ui-cell title="项目 2-2" />
@@ -126,16 +126,16 @@ definePage({
 
 <style scoped lang="scss">
 .index-bar-demo {
-  height: 300px;
-  border-radius: 12px;
-  overflow: hidden;
   border: 1px solid #eee;
+  height: 300px;
+  overflow: hidden;
+  border-radius: 12px;
 }
 
 .index-bar-demo-small {
-  height: 200px;
-  border-radius: 12px;
-  overflow: hidden;
   border: 1px solid #eee;
+  height: 200px;
+  overflow: hidden;
+  border-radius: 12px;
 }
 </style>

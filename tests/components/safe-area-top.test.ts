@@ -5,8 +5,8 @@
 
 import UiSafeAreaTop from "@/ui/ui-safe-area-top/ui-safe-area-top.vue"
 import { mount } from "@vue/test-utils"
-import { it, vi, expect, describe, beforeEach, afterEach } from "vitest"
 import { waitForTransition } from "../setup"
+import { it, vi, expect, describe, afterEach, beforeEach } from "vitest"
 
 describe("ui-safe-area-top 顶部安全区域组件", () => {
   // 启用 fake timers

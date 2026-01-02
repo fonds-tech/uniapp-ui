@@ -8,8 +8,8 @@
 
 import UiOverlay from "@/ui/ui-overlay/ui-overlay.vue"
 import { mount } from "@vue/test-utils"
-import { it, expect, describe, vi, beforeEach, afterEach } from "vitest"
 import { waitForTransition } from "../setup"
+import { it, vi, expect, describe, afterEach, beforeEach } from "vitest"
 
 describe("ui-overlay 遮罩层组件", () => {
   // 在每个测试前启用假定时器

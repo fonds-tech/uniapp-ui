@@ -4,14 +4,15 @@
  */
 
 import UiIndexAnchor from "@/ui/ui-index-anchor/ui-index-anchor.vue"
-import { indexBarKey } from "@/ui/ui-index-bar"
 import { ref } from "vue"
 import { mount } from "@vue/test-utils"
-import { it, vi, expect, describe, afterEach, beforeEach } from "vitest"
+import { indexBarKey } from "@/ui/ui-index-bar"
 import { waitForTransition } from "../setup"
+import { it, vi, expect, describe, afterEach, beforeEach } from "vitest"
 
 // 创建用于 mock parent context 的辅助函数
-const createMockParentProvide = (currentNameValue: string | number | null = "A") => ({
+function createMockParentProvide(currentNameValue: string | number | null = "A") {
+  return {
   props: {},
   useProps: {
     sticky: true,
@@ -20,7 +21,8 @@ const createMockParentProvide = (currentNameValue: string | number | null = "A")
   link: vi.fn(),
   unlink: vi.fn(),
   childrens: [],
-})
+}
+}
 
 describe("ui-index-anchor 索引锚点组件", () => {
   beforeEach(() => {

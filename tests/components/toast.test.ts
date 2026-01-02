@@ -6,8 +6,8 @@
 import UiToast from "@/ui/ui-toast/ui-toast.vue"
 import { mount } from "@vue/test-utils"
 import { nextTick } from "vue"
+import { getLastEmitted, waitForTransition } from "../setup"
 import { it, vi, expect, describe, afterEach, beforeEach } from "vitest"
-import { waitForTransition, getLastEmitted } from "../setup"
 
 describe("ui-toast 轻提示组件", () => {
   beforeEach(() => {

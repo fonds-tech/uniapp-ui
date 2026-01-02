@@ -9,8 +9,8 @@
 
 import UiRow from "@/ui/ui-row/ui-row.vue"
 import { mount } from "@vue/test-utils"
-import { it, vi, expect, describe, afterEach, beforeEach } from "vitest"
 import { waitForTransition } from "../setup"
+import { it, vi, expect, describe, afterEach, beforeEach } from "vitest"
 
 /**
  * 默认有效的 gap 值，使用字符串形式避免 falsy 判断问题

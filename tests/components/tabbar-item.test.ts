@@ -4,14 +4,14 @@
  */
 
 import UiTabbarItem from "@/ui/ui-tabbar-item/ui-tabbar-item.vue"
-import { tabbarKey } from "@/ui/ui-tabbar"
-import { mount } from "@vue/test-utils"
-import { it, vi, expect, describe, beforeEach, afterEach } from "vitest"
-import { waitForTransition } from "../setup"
 import { ref } from "vue"
+import { mount } from "@vue/test-utils"
+import { tabbarKey } from "@/ui/ui-tabbar"
+import { waitForTransition } from "../setup"
+import { it, vi, expect, describe, afterEach, beforeEach } from "vitest"
 
 // Mock tabbar parent context
-const createMockTabbarProvide = (modelValue = 0) => {
+function createMockTabbarProvide(modelValue = 0) {
   const childrens: any[] = []
   return {
     props: {

@@ -5,8 +5,8 @@
 
 import UiQrcode from "@/ui/ui-qrcode/ui-qrcode.vue"
 import { mount } from "@vue/test-utils"
-import { it, vi, expect, describe, beforeEach, afterEach } from "vitest"
 import { waitForTransition } from "../setup"
+import { it, vi, expect, describe, afterEach, beforeEach } from "vitest"
 
 describe("ui-qrcode 二维码组件", () => {
   // 启用 fake timers

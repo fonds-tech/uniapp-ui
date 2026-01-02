@@ -7,8 +7,8 @@
 
 import UiCascader from "@/ui/ui-cascader/ui-cascader.vue"
 import { mount } from "@vue/test-utils"
-import { it, vi, expect, describe, afterEach, beforeEach } from "vitest"
 import { waitForTransition } from "../setup"
+import { it, vi, expect, describe, afterEach, beforeEach } from "vitest"
 
 describe("uiCascader 组件", () => {
   beforeEach(() => {
@@ -66,15 +66,15 @@ describe("uiCascader 组件", () => {
       "ui-loading": true,
       "scroll-view": {
         name: "scroll-view-stub",
-        template: '<div class="scroll-view"><slot /></div>',
+        template: "<div class=\"scroll-view\"><slot /></div>",
       },
       swiper: {
         name: "swiper-stub",
-        template: '<div class="swiper"><slot /></div>',
+        template: "<div class=\"swiper\"><slot /></div>",
       },
       "swiper-item": {
         name: "swiper-item-stub",
-        template: '<div class="swiper-item"><slot /></div>',
+        template: "<div class=\"swiper-item\"><slot /></div>",
       },
     },
   }

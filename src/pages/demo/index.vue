@@ -115,7 +115,6 @@ const componentCategories = [
       { name: "NumberRoll", path: "number-roll", icon: "🔢", desc: "数字滚动组件" },
       { name: "NoticeBar", path: "noticebar", icon: "📢", desc: "通知栏组件" },
       { name: "Swiper", path: "swiper", icon: "🎠", desc: "轮播图组件" },
-      { name: "TextEllipsis", path: "text-ellipsis", icon: "✂️", desc: "文本省略组件" },
       { name: "TextHighlight", path: "text-highlight", icon: "🖍️", desc: "文本高亮组件" },
       { name: "QRCode", path: "qrcode", icon: "📱", desc: "二维码组件" },
       { name: "Arc", path: "arc", icon: "🌈", desc: "弧形组件" },

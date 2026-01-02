@@ -5,8 +5,8 @@
 
 import UiNavbar from "@/ui/ui-navbar/ui-navbar.vue"
 import { mount } from "@vue/test-utils"
-import { it, vi, expect, describe, afterEach, beforeEach } from "vitest"
 import { waitForTransition } from "../setup"
+import { it, vi, expect, describe, afterEach, beforeEach } from "vitest"
 
 describe("ui-navbar 导航栏组件", () => {
   beforeEach(() => {

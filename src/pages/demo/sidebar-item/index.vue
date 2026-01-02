@@ -42,22 +42,22 @@
       <demo-block direction="column">
         <view class="sidebar-demo">
           <ui-sidebar v-model="active4">
-            <ui-sidebar-item 
-              title="热门" 
-              name="1" 
+            <ui-sidebar-item
+              title="热门"
+              name="1"
               title-color="#666"
               active-title-color="#1989fa"
               active-background="#e8f4ff"
             />
-            <ui-sidebar-item 
-              title="推荐" 
+            <ui-sidebar-item
+              title="推荐"
               name="2"
               title-color="#666"
               active-title-color="#07c160"
               active-background="#e8fff0"
             />
-            <ui-sidebar-item 
-              title="新品" 
+            <ui-sidebar-item
+              title="新品"
               name="3"
               title-color="#666"
               active-title-color="#ff6b6b"
@@ -72,15 +72,15 @@
       <demo-block direction="column">
         <view class="sidebar-demo">
           <ui-sidebar v-model="active5">
-            <ui-sidebar-item 
-              title="大字体" 
-              name="1" 
+            <ui-sidebar-item
+              title="大字体"
+              name="1"
               title-size="32rpx"
               active-title-size="34rpx"
               active-title-weight="600"
             />
-            <ui-sidebar-item 
-              title="普通" 
+            <ui-sidebar-item
+              title="普通"
               name="2"
               title-size="32rpx"
               active-title-size="34rpx"
@@ -116,18 +116,18 @@ definePage({
   style: { navigationBarTitleText: "SidebarItem 侧边栏子项" },
 })
 
-const active1 = ref('1')
-const active2 = ref('1')
-const active3 = ref('1')
-const active4 = ref('1')
-const active5 = ref('1')
+const active1 = ref("1")
+const active2 = ref("1")
+const active3 = ref("1")
+const active4 = ref("1")
+const active5 = ref("1")
 </script>
 
 <style scoped lang="scss">
 .sidebar-demo {
-  height: 200px;
-  border-radius: 12px;
-  overflow: hidden;
   border: 1px solid #eee;
+  height: 200px;
+  overflow: hidden;
+  border-radius: 12px;
 }
 </style>

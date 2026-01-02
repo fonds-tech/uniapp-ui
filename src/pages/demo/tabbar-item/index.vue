@@ -98,17 +98,17 @@ definePage({
   style: { navigationBarTitleText: "TabbarItem 标签栏子项" },
 })
 
-const active1 = ref('home')
-const active2 = ref('home')
-const active3 = ref('home')
-const active4 = ref('home')
+const active1 = ref("home")
+const active2 = ref("home")
+const active3 = ref("home")
+const active4 = ref("home")
 </script>
 
 <style scoped lang="scss">
 .tabbar-demo {
-  border-radius: 12px;
-  overflow: hidden;
   border: 1px solid #eee;
+  overflow: hidden;
+  border-radius: 12px;
 }
 
 .tab-icon {

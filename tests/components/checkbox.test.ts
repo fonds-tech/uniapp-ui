@@ -5,8 +5,8 @@
 
 import UiCheckbox from "@/ui/ui-checkbox/ui-checkbox.vue"
 import { mount } from "@vue/test-utils"
-import { it, expect, describe, vi, beforeEach, afterEach } from "vitest"
 import { waitForTransition } from "../setup"
+import { it, vi, expect, describe, afterEach, beforeEach } from "vitest"
 
 describe("ui-checkbox 复选框组件", () => {
   // 启用 fake timers

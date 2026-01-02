@@ -6,8 +6,8 @@
 import UiTabbar from "@/ui/ui-tabbar/ui-tabbar.vue"
 import UiTabbarItem from "@/ui/ui-tabbar-item/ui-tabbar-item.vue"
 import { mount } from "@vue/test-utils"
-import { it, vi, expect, describe, afterEach, beforeEach } from "vitest"
 import { waitForTransition } from "../setup"
+import { it, vi, expect, describe, afterEach, beforeEach } from "vitest"
 
 // 测试辅助函数：创建带子项的 tabbar 结构
 function mountTabbar(props = {}, slots = {}) {

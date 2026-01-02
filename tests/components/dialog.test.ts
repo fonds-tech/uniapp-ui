@@ -9,8 +9,8 @@
 import UiDialog from "@/ui/ui-dialog/ui-dialog.vue"
 import { mount } from "@vue/test-utils"
 import { nextTick } from "vue"
-import { it, vi, expect, describe, beforeEach, afterEach } from "vitest"
 import { waitForTransition } from "../setup"
+import { it, vi, expect, describe, afterEach, beforeEach } from "vitest"
 
 // 创建 stub 组件
 const stubs = {

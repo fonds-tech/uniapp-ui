@@ -1,7 +1,7 @@
 import UiFloatButton from "@/ui/ui-float-button/ui-float-button.vue"
 import { mount } from "@vue/test-utils"
-import { it, vi, expect, describe, afterEach, beforeEach } from "vitest"
 import { waitForTransition } from "../setup"
+import { it, vi, expect, describe, afterEach, beforeEach } from "vitest"
 
 describe("uiFloatButton 组件", () => {
   beforeEach(() => {

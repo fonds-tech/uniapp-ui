@@ -5,8 +5,8 @@
 
 import UiSticky from "@/ui/ui-sticky/ui-sticky.vue"
 import { mount } from "@vue/test-utils"
-import { it, vi, expect, describe, afterEach, beforeEach } from "vitest"
 import { waitForTransition } from "../setup"
+import { it, vi, expect, describe, afterEach, beforeEach } from "vitest"
 
 // Mock onPageScroll 全局函数（组件直接使用而非从模块导入）
 vi.stubGlobal("onPageScroll", vi.fn())

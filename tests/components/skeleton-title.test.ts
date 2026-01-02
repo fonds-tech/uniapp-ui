@@ -6,13 +6,13 @@
  */
 
 import UiSkeletonTitle from "@/ui/ui-skeleton-title/ui-skeleton-title.vue"
-import { skeletonKey } from "@/ui/ui-skeleton"
 import { mount } from "@vue/test-utils"
-import { it, vi, expect, describe, beforeEach, afterEach } from "vitest"
+import { skeletonKey } from "@/ui/ui-skeleton"
 import { waitForTransition } from "../setup"
+import { it, vi, expect, describe, afterEach, beforeEach } from "vitest"
 
 // Mock skeleton parent context with correct Symbol key
-const createMockSkeletonProvide = () => {
+function createMockSkeletonProvide() {
   const childrens: any[] = []
   return {
     props: {

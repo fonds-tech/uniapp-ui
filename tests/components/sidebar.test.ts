@@ -17,13 +17,13 @@ function mountSidebar(props = {}, slots = {}) {
         // stub ui-resize 组件，避免组件解析警告
         "ui-resize": {
           name: "ui-resize",
-          template: '<div class="ui-resize-stub"><slot /></div>',
+          template: "<div class=\"ui-resize-stub\"><slot /></div>",
           props: ["width", "height"],
           emits: ["resize"],
         },
         "scroll-view": {
           name: "scroll-view",
-          template: '<div class="scroll-view-stub"><slot /></div>',
+          template: "<div class=\"scroll-view-stub\"><slot /></div>",
           props: ["scroll-y", "scroll-top", "scroll-with-animation", "enable-flex"],
         },
       },

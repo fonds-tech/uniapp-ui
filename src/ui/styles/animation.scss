@@ -19,7 +19,7 @@
 .ui-fade-left-enter-active,
 .ui-fade-left-leave-active,
 .ui-fade-right-enter-active,
-.ui-fade-right-enter-active {
+.ui-fade-right-leave-active {
   transition-property: opacity, transform;
 }
 
@@ -54,7 +54,7 @@
 .ui-slide-left-enter-active,
 .ui-slide-left-leave-active,
 .ui-slide-right-enter-active,
-.ui-slide-right-enter-active {
+.ui-slide-right-leave-active {
   transition-property: transform;
 }
 

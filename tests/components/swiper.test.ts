@@ -5,8 +5,8 @@
 
 import UiSwiper from "@/ui/ui-swiper/ui-swiper.vue"
 import { mount } from "@vue/test-utils"
-import { it, vi, expect, describe, afterEach, beforeEach } from "vitest"
 import { waitForTransition } from "../setup"
+import { it, vi, expect, describe, afterEach, beforeEach } from "vitest"
 
 describe("uiSwiper 组件", () => {
   beforeEach(() => {

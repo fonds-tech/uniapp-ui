@@ -47,8 +47,6 @@ export default defineConfig({
             { text: "Tag 标签", link: "/components/tag" },
             { text: "Badge 徽标", link: "/components/badge" },
             { text: "Loading 加载", link: "/components/loading" },
-            { text: "IconText 图标文字", link: "/components/icon-text" },
-            { text: "TextEllipsis 文本省略", link: "/components/text-ellipsis" },
             { text: "TextHighlight 文本高亮", link: "/components/text-highlight" },
             { text: "Transition 过渡动画", link: "/components/transition" },
           ],

@@ -113,7 +113,7 @@ definePage({
   style: { navigationBarTitleText: "BackTop 返回顶部" },
 })
 
-const { showToast } = useToast()
+const toast = useToast()
 
 // 样式类型
 const styleType = ref<"default" | "primary" | "gradient" | "custom">("default")
@@ -130,14 +130,14 @@ const clickLog = ref("点击返回顶部按钮触发事件")
 // 事件处理
 function onBackTopClick() {
   clickLog.value = `触发 click 事件，时间: ${new Date().toLocaleTimeString()}`
-  showToast({ message: "返回顶部", type: "success" })
+  toast.success("返回顶部")
 }
 </script>
 
 <style lang="scss" scoped>
 .demo-text {
-  font-size: 24rpx;
   color: var(--ui-color-text-secondary);
+  font-size: 24rpx;
 }
 
 :deep(.my-back-top) {

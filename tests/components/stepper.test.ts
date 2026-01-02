@@ -5,8 +5,8 @@
 
 import UiStepper from "@/ui/ui-stepper/ui-stepper.vue"
 import { mount } from "@vue/test-utils"
-import { it, vi, expect, describe, afterEach, beforeEach } from "vitest"
 import { waitForTransition } from "../setup"
+import { it, vi, expect, describe, afterEach, beforeEach } from "vitest"
 
 describe("uiStepper 组件", () => {
   beforeEach(() => {

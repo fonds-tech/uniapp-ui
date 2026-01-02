@@ -5,8 +5,8 @@
 
 import UiPagination from "@/ui/ui-pagination/ui-pagination.vue"
 import { mount } from "@vue/test-utils"
-import { it, vi, expect, describe, afterEach, beforeEach } from "vitest"
 import { waitForTransition } from "../setup"
+import { it, vi, expect, describe, afterEach, beforeEach } from "vitest"
 
 describe("uiPagination 组件", () => {
   beforeEach(() => {

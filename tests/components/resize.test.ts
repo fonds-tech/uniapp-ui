@@ -5,8 +5,8 @@
 
 import UiResize from "@/ui/ui-resize/ui-resize.vue"
 import { mount } from "@vue/test-utils"
-import { it, vi, expect, describe, beforeEach, afterEach } from "vitest"
 import { waitForTransition } from "../setup"
+import { it, vi, expect, describe, afterEach, beforeEach } from "vitest"
 
 describe("ui-resize 尺寸监听组件", () => {
   // 启用 fake timers

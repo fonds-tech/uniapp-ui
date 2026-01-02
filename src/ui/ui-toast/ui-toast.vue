@@ -284,7 +284,7 @@ export default {
       width: 100%;
       height: 100%;
       animation: rotate 1s linear infinite;
-      border-color: var(--ui-color-background) var(--ui-color-mask-light) var(--ui-color-mask-light);
+      border-color: #ffffff var(--ui-color-mask-light) var(--ui-color-mask-light);
       border-style: solid;
       border-width: var(--ui-spacing-xs);
       border-radius: 50%;
@@ -304,7 +304,7 @@ export default {
   }
 
   &__text {
-    color: var(--ui-color-background);
+    color: #ffffff;
     text-align: center;
     white-space: pre-wrap;
   }

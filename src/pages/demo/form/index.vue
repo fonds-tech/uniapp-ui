@@ -212,7 +212,7 @@
             <ui-input v-model="formDataAsync.username" placeholder="输入 admin 会校验失败" />
           </ui-form-item>
         </ui-form>
-        <ui-button type="primary" @click="onAsyncSubmit" custom-style="margin-top: 24rpx">检查用户名</ui-button>
+        <ui-button type="primary" custom-style="margin-top: 24rpx" @click="onAsyncSubmit">检查用户名</ui-button>
       </demo-block>
     </demo-section>
 
@@ -231,7 +231,7 @@
             <ui-input v-model="formDataError.value" placeholder="请输入内容" />
           </ui-form-item>
         </ui-form>
-        <ui-button type="primary" size="small" @click="onErrorSubmit" custom-style="margin-top: 24rpx">触发验证</ui-button>
+        <ui-button type="primary" size="small" custom-style="margin-top: 24rpx" @click="onErrorSubmit">触发验证</ui-button>
       </demo-block>
     </demo-section>
 
@@ -352,7 +352,7 @@
 </template>
 
 <script setup lang="ts">
-import type { FormValidateRule, FormValidateError } from "@/ui/ui-form"
+import type { FormValidateError } from "@/ui/ui-form"
 import { useToast } from "@/ui"
 import { DemoPage, DemoBlock, DemoSection } from "../components"
 
@@ -360,7 +360,7 @@ definePage({
   style: { navigationBarTitleText: "Form 表单" },
 })
 
-const { showToast } = useToast()
+const toast = useToast()
 
 // 基础表单
 const formRef = ref()
@@ -446,8 +446,8 @@ const customRules = {
     { required: true, message: "请输入年龄" },
     {
       validator: (value: string) => {
-        const age = parseInt(value)
-        if (isNaN(age) || age < 18 || age > 60) {
+        const age = Number.parseInt(value)
+        if (Number.isNaN(age) || age < 18 || age > 60) {
           return "年龄必须在18-60之间"
         }
         return true
@@ -552,9 +552,9 @@ const complexLog = ref("")
 async function onSubmit() {
   try {
     await formRef.value?.validate()
-    showToast({ message: "验证通过", type: "success" })
+    toast.success("验证通过")
   } catch {
-    showToast({ message: "验证失败" })
+    toast.text("验证失败")
   }
 }
 
@@ -571,9 +571,9 @@ function onReset() {
 async function onTriggerSubmit() {
   try {
     await triggerFormRef.value?.validate()
-    showToast({ message: "验证通过", type: "success" })
+    toast.success("验证通过")
   } catch {
-    showToast({ message: "验证失败" })
+    toast.text("验证失败")
   }
 }
 
@@ -581,9 +581,9 @@ async function onTriggerSubmit() {
 async function onCustomSubmit() {
   try {
     await customFormRef.value?.validate()
-    showToast({ message: "验证通过", type: "success" })
+    toast.success("验证通过")
   } catch {
-    showToast({ message: "验证失败" })
+    toast.text("验证失败")
   }
 }
 
@@ -599,11 +599,11 @@ function onCustomReset() {
 // 异步验证表单
 async function onAsyncSubmit() {
   try {
-    showToast({ message: "正在验证..." })
+    toast.text("正在验证...")
     await asyncFormRef.value?.validate()
-    showToast({ message: "用户名可用", type: "success" })
+    toast.success("用户名可用")
   } catch {
-    showToast({ message: "验证失败" })
+    toast.text("验证失败")
   }
 }
 
@@ -611,7 +611,7 @@ async function onAsyncSubmit() {
 async function onErrorSubmit() {
   try {
     await errorFormRef.value?.validate()
-    showToast({ message: "验证通过", type: "success" })
+    toast.success("验证通过")
   } catch {
     // 验证失败，错误信息会显示
   }
@@ -620,7 +620,7 @@ async function onErrorSubmit() {
 // 事件处理
 function onFormSubmit(values: Record<string, unknown>) {
   eventLog.value = `触发 submit 事件，数据: ${JSON.stringify(values)}`
-  showToast({ message: "表单提交成功", type: "success" })
+  toast.success("表单提交成功")
 }
 
 function onFormFailed(result: { values: Record<string, unknown>; errors: FormValidateError[] }) {
@@ -641,10 +641,10 @@ async function onComplexSubmit() {
   try {
     await complexFormRef.value?.validate()
     complexLog.value = `提交成功: ${JSON.stringify(complexFormData.value)}`
-    showToast({ message: "表单提交成功", type: "success" })
+    toast.success("表单提交成功")
   } catch {
     complexLog.value = "验证失败，请检查表单"
-    showToast({ message: "验证失败" })
+    toast.text("验证失败")
   }
 }
 
@@ -663,16 +663,16 @@ function onComplexReset() {
 
 <style lang="scss" scoped>
 .demo-text {
-  font-size: 24rpx;
   color: var(--ui-color-text-secondary);
+  font-size: 24rpx;
 }
 
 .form-section {
   &__label {
-    font-size: 26rpx;
     color: var(--ui-color-text-secondary);
-    margin-bottom: 8rpx;
     display: block;
+    font-size: 26rpx;
+    margin-bottom: 8rpx;
   }
 }
 

@@ -4,14 +4,15 @@
  */
 
 import UiFormItem from "@/ui/ui-form-item/ui-form-item.vue"
-import { formKey } from "@/ui/ui-form"
-import { mount } from "@vue/test-utils"
-import { it, vi, expect, describe, afterEach, beforeEach } from "vitest"
 import { ref } from "vue"
+import { mount } from "@vue/test-utils"
+import { formKey } from "@/ui/ui-form"
 import { waitForTransition } from "../setup"
+import { it, vi, expect, describe, afterEach, beforeEach } from "vitest"
 
 // Mock form 父组件上下文
-const createMockFormProvide = () => ({
+function createMockFormProvide() {
+  return {
   props: {
     labelPosition: "left",
     labelWidth: "auto",
@@ -39,7 +40,8 @@ const createMockFormProvide = () => ({
   link: vi.fn(),
   unlink: vi.fn(),
   childrens: [],
-})
+}
+}
 
 describe("ui-form-item 表单项组件", () => {
   beforeEach(() => {

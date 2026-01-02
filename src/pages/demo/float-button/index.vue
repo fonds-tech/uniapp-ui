@@ -241,7 +241,7 @@ definePage({
   style: { navigationBarTitleText: "FloatButton 浮动按钮" },
 })
 
-const { showToast } = useToast()
+const toast = useToast()
 
 // 基础状态
 const currentType = ref("primary")
@@ -302,10 +302,10 @@ function toggleCustomSize(custom: boolean) {
 // 点击事件
 function onClick() {
   if (isLoading.value) {
-    showToast({ message: "加载中，请稍候..." })
+    toast.text("加载中，请稍候...")
     return
   }
-  showToast({ message: "点击了浮动按钮", type: "success" })
+  toast.success("点击了浮动按钮")
 }
 
 // 场景示例
@@ -330,7 +330,7 @@ function showSceneButton(scene: string) {
       customColor.value = ""
       break
   }
-  showToast({ message: `已切换到${scene === "add" ? "添加" : scene === "service" ? "客服" : "反馈"}按钮` })
+  toast.text(`已切换到${scene === "add" ? "添加" : scene === "service" ? "客服" : "反馈"}按钮`)
 }
 </script>
 
@@ -342,8 +342,8 @@ function showSceneButton(scene: string) {
 }
 
 .demo-text {
-  font-size: 24rpx;
   color: var(--ui-color-text-secondary);
+  font-size: 24rpx;
 }
 
 :deep(.my-float-button) {

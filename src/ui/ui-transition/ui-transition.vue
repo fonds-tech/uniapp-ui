@@ -1,5 +1,12 @@
 <template>
-  <view v-if="inited" class="ui-transition" :class="[transition.classs.value, customClass]" :style="[style]" @transitionend="transition.end" @click="onClick">
+  <view
+    v-if="inited"
+    class="ui-transition"
+    :class="[transition.classs.value, customClass]"
+    :style="[style]"
+    @transitionend="onTransitionEnd"
+    @click="onClick"
+  >
     <slot />
   </view>
 </template>
@@ -12,16 +19,16 @@ import { transitionEmits, transitionProps, useTransitionProps } from "./index"
 // 定义组件名称
 defineOptions({ name: "ui-transition" })
 
-// 定义props和emits
+// 定义 props 和 emits
 const props = defineProps(transitionProps)
 const emits = defineEmits(transitionEmits)
 const useProps = useTransitionProps(props)
-const transition = useTransition() // 使用transition钩子
+const transition = useTransition()
 
-const zIndex = ref<number>() // 用于存储z-index值
+const zIndex = ref<number>()
 const inited = computed(() => !useProps.lazyRender || transition.inited.value)
 
-// 为transition的各个阶段绑定事件
+// 绑定过渡生命周期事件
 transition.on("enter", () => emits("enter"))
 transition.on("leave", () => emits("leave"))
 transition.on("before-enter", () => emits("beforeEnter"))
@@ -29,15 +36,21 @@ transition.on("after-enter", () => emits("afterEnter"))
 transition.on("before-leave", () => emits("beforeLeave"))
 transition.on("after-leave", () => emits("afterLeave"))
 
-// 计算属性: 组合最终的样式对象
+// 计算最终样式
 const style = computed(() => {
-  const style: any = {}
-  style.zIndex = zIndex.value
-  style.display = transition.visible.value ? "block" : "none"
-  return useStyle({ ...style, ...useStyle(useProps.customStyle), ...transition.styles.value })
+  const baseStyle: Record<string, any> = {
+    zIndex: zIndex.value,
+    display: transition.visible.value ? "block" : "none",
+  }
+
+  return useStyle({
+    ...baseStyle,
+    ...useStyle(useProps.customStyle),
+    ...transition.styles.value,
+  })
 })
 
-// 监听visible的变化,触发enter或leave过渡
+// 监听 show 变化，触发进入或离开过渡
 watch(
   () => useProps.show,
   (val) => {
@@ -46,10 +59,14 @@ watch(
   { immediate: true },
 )
 
-// 监听props的变化,重新初始化transition
-watch(() => [useProps.name, useProps.duration, useProps.enterTimingFunction, useProps.leaveTimingFunction], initTransition, { immediate: true })
+// 监听配置变化，重新初始化
+watch(
+  () => [useProps.name, useProps.duration, useProps.enterTimingFunction, useProps.leaveTimingFunction],
+  initTransition,
+  { immediate: true },
+)
 
-// 初始化transition
+// 初始化过渡配置
 function initTransition() {
   transition.init({
     name: useProps.name,
@@ -60,8 +77,8 @@ function initTransition() {
 }
 
 // 进入过渡
+// 移除 visible 检查，允许从任何状态（包括离开中）切换到进入状态
 function enter() {
-  if (transition.visible.value) return
   initTransition()
   zIndex.value = isNumber(useProps.zIndex) ? +useProps.zIndex : useGlobalZIndex()
   transition.enter()
@@ -70,9 +87,15 @@ function enter() {
 
 // 离开过渡
 function leave() {
-  if (transition.visible.value) {
-    transition.leave()
-    emits("update:show", false)
+  transition.leave()
+  emits("update:show", false)
+}
+
+// transitionend 事件处理
+function onTransitionEnd(event: Event) {
+  // 只处理当前元素的事件，忽略子元素冒泡
+  if (event.target === event.currentTarget) {
+    transition.end()
   }
 }
 

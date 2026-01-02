@@ -121,7 +121,7 @@
 </template>
 
 <script setup lang="ts">
-import { useDialog, useToast } from "@/ui"
+import { useToast, useDialog } from "@/ui"
 import { DemoPage, DemoBlock, DemoSection } from "../components"
 
 definePage({
@@ -129,7 +129,7 @@ definePage({
 })
 
 const { showDialog } = useDialog()
-const { showToast } = useToast()
+const toast = useToast()
 
 // 组件方式调用的状态
 const showComponentDialog = ref(false)
@@ -267,7 +267,7 @@ function onDialogOpen() {
 }
 
 function onDialogOpened() {
-  showToast({ message: "弹窗已打开", type: "success" })
+  toast.success("弹窗已打开")
 }
 
 function onDialogClose() {
@@ -275,37 +275,37 @@ function onDialogClose() {
 }
 
 function onDialogClosed() {
-  showToast({ message: "弹窗已关闭" })
+  toast.text("弹窗已关闭")
 }
 
 function onDialogConfirm() {
-  showToast({ message: "点击了确认", type: "success" })
+  toast.success("点击了确认")
 }
 
 function onDialogCancel() {
-  showToast({ message: "点击了取消", type: "warning" })
+  toast.fail("点击了取消")
 }
 </script>
 
 <style lang="scss" scoped>
 .custom-content {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
   gap: 24rpx;
+  display: flex;
   padding: 20rpx 0;
+  align-items: center;
+  flex-direction: column;
 
   &__text {
-    font-size: 28rpx;
     color: #666;
+    font-size: 28rpx;
     text-align: center;
   }
 }
 
 .custom-footer {
-  display: flex;
-  justify-content: space-around;
-  padding: 24rpx;
   gap: 16rpx;
+  display: flex;
+  padding: 24rpx;
+  justify-content: space-around;
 }
 </style>

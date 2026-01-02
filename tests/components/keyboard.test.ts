@@ -6,19 +6,19 @@
 
 import UiKeyboard from "@/ui/ui-keyboard/ui-keyboard.vue"
 import { mount } from "@vue/test-utils"
-import { it, vi, expect, describe, beforeEach, afterEach } from "vitest"
 import { waitForTransition } from "../setup"
+import { it, vi, expect, describe, afterEach, beforeEach } from "vitest"
 
 // 创建 stub 组件
 const stubs = {
   "ui-popup": {
     name: "ui-popup",
-    template: '<div class="ui-popup-stub"><slot /></div>',
+    template: "<div class=\"ui-popup-stub\"><slot /></div>",
     props: ["show", "mode", "overlay", "closeOnClickOverlay", "safeAreaInsetBottom", "zIndex", "background", "customClass", "customStyle"],
   },
   "ui-safe-area-bottom": {
     name: "ui-safe-area-bottom",
-    template: '<div class="ui-safe-area-bottom-stub"></div>',
+    template: "<div class=\"ui-safe-area-bottom-stub\"></div>",
   },
 }
 

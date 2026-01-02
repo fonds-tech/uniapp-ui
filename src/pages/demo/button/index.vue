@@ -236,7 +236,7 @@ definePage({
   style: { navigationBarTitleText: "Button 按钮" },
 })
 
-const { showToast } = useToast()
+const toast = useToast()
 
 // 事件日志
 const clickLog = ref("点击按钮查看事件")
@@ -250,7 +250,7 @@ function onThrottleClick() {
 
 function onButtonClick(event: any) {
   clickLog.value = `触发了 click 事件，时间: ${new Date().toLocaleTimeString()}`
-  showToast({ message: "按钮被点击", type: "success" })
+  toast.success("按钮被点击")
 }
 </script>
 

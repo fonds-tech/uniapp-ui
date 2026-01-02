@@ -204,7 +204,7 @@ definePage({
   style: { navigationBarTitleText: "Rate 评分" },
 })
 
-const { showToast } = useToast()
+const toast = useToast()
 
 // 基础示例
 const value1 = ref(3)
@@ -243,11 +243,11 @@ const eventLog = ref("点击评分触发 change 事件")
 // 事件处理
 function onRateChange(value: number) {
   eventLog.value = `触发 change 事件，当前评分: ${value} 分`
-  showToast({ message: `评分: ${value} 分`, type: "success" })
+  toast.success(`评分: ${value} 分`)
 }
 
 function onDemoChange(value: number) {
-  showToast({ message: `商品评分: ${value} 分` })
+  toast.text(`商品评分: ${value} 分`)
 }
 </script>
 
@@ -270,26 +270,26 @@ function onDemoChange(value: number) {
 }
 
 .rate-demo {
+  gap: 16rpx;
   display: flex;
   align-items: center;
-  gap: 16rpx;
 
   &__label {
-    font-size: 28rpx;
     color: var(--ui-color-text-main);
     width: 140rpx;
+    font-size: 28rpx;
   }
 
   &__value {
-    font-size: 28rpx;
     color: var(--ui-color-text-secondary);
+    font-size: 28rpx;
     margin-left: 16rpx;
   }
 }
 
 :deep(.my-rate) {
-  background: linear-gradient(135deg, #fff5eb 0%, #fff0f0 100%);
   padding: 12rpx 16rpx;
+  background: linear-gradient(135deg, #fff5eb 0%, #fff0f0 100%);
   border-radius: 8rpx;
 }
 </style>
