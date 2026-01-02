@@ -30,7 +30,7 @@ const style = computed(() => {
   style.color = useColor(useProps.color)
   style.fontSize = useUnit(useProps.fontSize)
   style.fontWeight = useProps.fontWeight
-  if (useProps.lineHeight) style.lineHeight = useUnit(useProps.lineHeight)
+  style.lineHeight = useProps.lineHeight
   style["-webkit-line-clamp"] = useProps.textRow
   return useStyle({ ...style, ...useStyle(useProps.customStyle) })
 })
@@ -84,13 +84,16 @@ export default {
   width: 100%;
   display: -webkit-box;
   overflow: hidden;
-  line-clamp: 1;
   text-overflow: ellipsis;
   -webkit-box-orient: vertical;
-  -webkit-line-clamp: 1;
 
-  &__text.is-matched {
-    color: var(--ui-color-primary);
+  &__text {
+    display: inline;
+    word-break: break-all;
+
+    &.is-matched {
+      color: var(--ui-color-primary);
+    }
   }
 }
 </style>
