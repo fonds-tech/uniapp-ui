@@ -5,7 +5,7 @@ export default defineUniPages({
     navigationStyle: "default",
     backgroundColor: "#f5f6fa",
     navigationBarTextStyle: "black",
-    navigationBarTitleText: "UI 组件库",
+    navigationBarTitleText: "Fonds UI",
     navigationBarBackgroundColor: "#ffffff",
   },
   easycom: {
@@ -14,18 +14,36 @@ export default defineUniPages({
       "^ui-(.*)": "@/uni_modules/uniapp-ui/ui-$1/ui-$1.vue",
     },
   },
-  pages: [
-    {
-      path: "pages/index/index",
-      style: {
-        navigationBarTitleText: "UI 组件库",
+  tabBar: {
+    color: "#9CA3AF",
+    selectedColor: "#6366F1",
+    backgroundColor: "#ffffff",
+    borderStyle: "white",
+    list: [
+      {
+        pagePath: "pages/tabbar/home/index",
+        text: "首页",
+        iconPath: "static/tabbar/home.png",
+        selectedIconPath: "static/tabbar/home-active.png",
       },
-    },
-    {
-      path: "pages/demo/index",
-      style: {
-        navigationBarTitleText: "组件演示",
+      {
+        pagePath: "pages/tabbar/components/index",
+        text: "组件",
+        iconPath: "static/tabbar/component.png",
+        selectedIconPath: "static/tabbar/component-active.png",
       },
-    },
-  ],
+      {
+        pagePath: "pages/tabbar/templates/index",
+        text: "模板",
+        iconPath: "static/tabbar/template.png",
+        selectedIconPath: "static/tabbar/template-active.png",
+      },
+      {
+        pagePath: "pages/tabbar/about/index",
+        text: "关于",
+        iconPath: "static/tabbar/about.png",
+        selectedIconPath: "static/tabbar/about-active.png",
+      },
+    ],
+  },
 })

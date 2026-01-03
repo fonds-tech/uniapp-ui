@@ -44,14 +44,14 @@
 
 ## Props
 
-| 参数                   | 说明                 | 类型               | 默认值  |
-| ---------------------- | -------------------- | ------------------ | ------- |
-| z-index                | 元素层级             | `string \| number` | -       |
-| offset                 | 距离顶部偏移         | `string \| number` | `0`     |
-| background             | 背景颜色             | `string`           | -       |
-| safe-area-inset-bottom | 是否开启底部安全区域 | `boolean`          | `false` |
-| custom-class           | 自定义类名           | `string`           | -       |
-| custom-style           | 自定义样式           | `string \| object` | -       |
+| 参数                | 说明                 | 类型               | 默认值  |
+| ------------------- | -------------------- | ------------------ | ------- |
+| z-index             | 元素层级             | `string \| number` | -       |
+| offset              | 距离顶部偏移         | `string \| number` | `0`     |
+| background          | 背景颜色             | `string`           | -       |
+| safe-area-inset-top | 是否开启顶部安全区域 | `boolean`          | `false` |
+| custom-class        | 自定义类名           | `string`           | -       |
+| custom-style        | 自定义样式           | `string \| object` | -       |
 
 ## Events
 

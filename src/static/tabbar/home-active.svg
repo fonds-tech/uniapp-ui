@@ -1,0 +1,8 @@
+<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- 房子主体 - 填充 -->
+  <path d="M12 28L32 12L52 28V50C52 51.1046 51.1046 52 50 52H14C12.8954 52 12 51.1046 12 50V28Z" fill="#6366F1" stroke="#6366F1" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- 门 - 白色 -->
+  <path d="M26 52V38C26 36.8954 26.8954 36 28 36H36C37.1046 36 38 36.8954 38 38V52" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="white"/>
+  <!-- 屋顶装饰线 -->
+  <path d="M8 32L32 10L56 32" stroke="#6366F1" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+</svg>

@@ -54,75 +54,32 @@ export interface ToastController {
  */
 function createToastController(getInstance: () => ToastInstance | null): ToastController {
   /**
-   * 显示 toast
-   * 如果实例未注册，将调用放入队列等待实例注册后执行
+   * 通用调用方法，处理实例不存在时的队列逻辑
    */
-  function show(options: string | ToastOptions) {
+  function callMethod<K extends keyof ToastInstance>(
+    method: K,
+    ...args: ToastInstance[K] extends (...args: infer P) => unknown ? P : never
+  ) {
     const instance = getInstance()
     if (instance) {
-      instance.show(options)
-    } else {
-      // 实例未注册，放入队列等待
-      enqueuePendingToast("show", options)
+      const fn = instance[method]
+      if (typeof fn === "function") {
+        ;(fn as (...args: unknown[]) => void)(...args)
+      }
+    } else if (method === "show" || method === "hide") {
+      // 实例未注册时，只有 show/hide 需要入队列
+      enqueuePendingToast(method as "show" | "hide", args[0] as string | ToastOptions | undefined)
     }
-  }
-
-  /**
-   * 隐藏 toast
-   */
-  function hide() {
-    const instance = getInstance()
-    if (instance) {
-      instance.hide()
-    } else {
-      // 实例未注册，放入队列等待
-      enqueuePendingToast("hide")
-    }
-  }
-
-  /**
-   * 显示成功提示
-   */
-  function success(content: string, options?: ToastOptions) {
-    show({ ...options, type: "success", content })
-  }
-
-  /**
-   * 显示失败提示
-   */
-  function fail(content: string, options?: ToastOptions) {
-    show({ ...options, type: "fail", content })
-  }
-
-  /**
-   * 显示加载中提示
-   */
-  function loading(content?: string, options?: ToastOptions) {
-    show({ ...options, type: "loading", content: content ?? "加载中..." })
-  }
-
-  /**
-   * 显示等待提示
-   */
-  function awaitFn(content: string, options?: ToastOptions) {
-    show({ ...options, type: "await", content })
-  }
-
-  /**
-   * 显示默认提示（纯文本）
-   */
-  function text(content: string, options?: ToastOptions) {
-    show({ ...options, type: "default", content })
   }
 
   return {
-    show,
-    hide,
-    success,
-    fail,
-    loading,
-    await: awaitFn,
-    text,
+    show: (options) => callMethod("show", options),
+    hide: () => callMethod("hide"),
+    success: (content, options) => callMethod("success", content, options),
+    fail: (content, options) => callMethod("fail", content, options),
+    loading: (content, options) => callMethod("loading", content, options),
+    await: (content, options) => callMethod("await", content, options),
+    text: (content, options) => callMethod("text", content, options),
   }
 }
 

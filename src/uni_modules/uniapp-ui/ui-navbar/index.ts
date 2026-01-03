@@ -107,7 +107,7 @@ export const [navbarProps, useNavbarProps] = createProps("navbar", {
   /**
    * 首页路径，当页面栈只有一个页面时，点击返回会跳转到此路径
    */
-  homePath: { type: String, default: "/pages/home/index" },
+  homePath: { type: String, default: "/pages/tabbar/home/index" },
   /**
    * 首页类型
    * - 'tab': 使用 switchTab 跳转（适用于 tabBar 页面）

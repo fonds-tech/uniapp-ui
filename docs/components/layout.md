@@ -125,16 +125,16 @@
 
 ## Row Props
 
-| 参数         | 说明             | 类型                                            | 默认值    |
-| ------------ | ---------------- | ----------------------------------------------- | --------- |
-| gap          | 统一间距         | `string \| number`                              | `0`       |
-| col-gap      | 列间距（水平）   | `string \| number`                              | `0`       |
-| row-gap      | 行间距（垂直）   | `string \| number`                              | `0`       |
-| align        | 垂直对齐方式     | `start \| end \| center \| stretch \| baseline` | `stretch` |
-| justify      | 水平对齐方式     | `start \| end \| center \| between \| around`   | `start`   |
-| wrap         | 是否允许换行     | `boolean`                                       | `true`    |
-| custom-class | 自定义类名       | `string`                                        | -         |
-| custom-style | 自定义样式       | `string \| object`                              | -         |
+| 参数         | 说明           | 类型                                            | 默认值    |
+| ------------ | -------------- | ----------------------------------------------- | --------- |
+| gap          | 统一间距       | `string \| number`                              | `0`       |
+| col-gap      | 列间距（水平） | `string \| number`                              | `0`       |
+| row-gap      | 行间距（垂直） | `string \| number`                              | `0`       |
+| align        | 垂直对齐方式   | `start \| end \| center \| stretch \| baseline` | `stretch` |
+| justify      | 水平对齐方式   | `start \| end \| center \| between \| around`   | `start`   |
+| wrap         | 是否允许换行   | `boolean`                                       | `true`    |
+| custom-class | 自定义类名     | `string`                                        | -         |
+| custom-style | 自定义样式     | `string \| object`                              | -         |
 
 ## Row Slots
 

@@ -82,9 +82,23 @@ const drawerVisible = ref(false)
 const isLargeScreen = ref(false)
 const isMediumScreen = ref(false)
 
+// 组件名称到 demo 路径的映射（当文档名与 demo 路径不一致时使用）
+const demoPathMap: Record<string, string> = {
+  "safe-area-top": "safe-area",
+  "safe-area-bottom": "safe-area",
+  "skeleton-avatar": "skeleton-components",
+  "skeleton-image": "skeleton-components",
+  "skeleton-paragraph": "skeleton-components",
+  "skeleton-title": "skeleton-components",
+  "grid": "layout",
+}
+
 const componentName = computed(() => {
   const match = route.path.match(/\/components\/([^/]+?)(?:\.html)?$/)
-  return match ? match[1] : ""
+  if (!match) return ""
+  const name = match[1]
+  // 如果存在映射，使用映射后的路径
+  return demoPathMap[name] || name
 })
 
 const showPreview = computed(() => componentName.value && componentName.value !== "index")

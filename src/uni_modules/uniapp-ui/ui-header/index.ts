@@ -17,9 +17,9 @@ export const [headerProps, useHeaderProps] = createProps("header", {
    */
   background: makeStringProp(""),
   /**
-   * 是否开启底部安全区域
+   * 是否开启顶部安全区域适配
    */
-  safeAreaInsetBottom: { type: Boolean },
+  safeAreaInsetTop: { type: Boolean },
   /**
    * 自定义类名
    */

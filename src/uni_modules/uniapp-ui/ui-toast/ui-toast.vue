@@ -8,7 +8,7 @@
           <view v-else-if="mergedOptions.type === 'loading'" class="loading" />
           <ui-icon v-else-if="['await', 'fail', 'success'].includes(mergedOptions.type)" :name="icons[mergedOptions.type]" :size="mergedOptions.iconSize" color="#ffffff" />
         </view>
-        <text v-if="mergedOptions.content" class="ui-toast__text">{{ mergedOptions.content }}</text>
+        <view v-if="mergedOptions.content" class="ui-toast__text">{{ mergedOptions.content }}</view>
       </view>
     </slot>
   </view>
@@ -38,7 +38,7 @@ const inited = computed(() => transition.inited.value)
 const timer = ref<ReturnType<typeof setTimeout> | null>(null) // 用于存储定时器
 const visible = ref(false) // 控制toast是否可见
 const zIndex = ref<number>() // 存储z-index值
-const icons = ref<Record<string, string>>({ await: "clock", fail: "clear", success: "checked" }) // 定义不同类型的图标
+const icons: Record<string, string> = { await: "time-circle-fill", fail: "close-circle-fill", success: "check-circle-fill" } // 定义不同类型的图标
 const commandOptions = ref<ToastOptions>({}) // 命令式调用时传入的选项
 
 /**
@@ -231,7 +231,52 @@ function hide() {
   close()
 }
 
-defineExpose({ show, hide, open, close })
+/**
+ * 显示成功提示
+ * @param content 提示内容
+ * @param options 可选配置
+ */
+function success(content: string, options?: ToastOptions) {
+  show({ ...options, type: "success", content })
+}
+
+/**
+ * 显示失败提示
+ * @param content 提示内容
+ * @param options 可选配置
+ */
+function fail(content: string, options?: ToastOptions) {
+  show({ ...options, type: "fail", content })
+}
+
+/**
+ * 显示加载中提示
+ * @param content 提示内容（可选，默认"加载中..."）
+ * @param options 可选配置
+ */
+function loading(content?: string, options?: ToastOptions) {
+  show({ ...options, type: "loading", content: content ?? "加载中..." })
+}
+
+/**
+ * 显示等待提示
+ * @param content 提示内容
+ * @param options 可选配置
+ */
+function awaitFn(content: string, options?: ToastOptions) {
+  show({ ...options, type: "await", content })
+}
+
+/**
+ * 显示默认提示（纯文本）
+ * @param content 提示内容
+ * @param options 可选配置
+ */
+function text(content: string, options?: ToastOptions) {
+  show({ ...options, type: "default", content })
+}
+
+defineExpose({ show, hide, open, close, success, fail, loading, await: awaitFn, text })
 </script>
 
 <script lang="ts">

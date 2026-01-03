@@ -1,0 +1,2398 @@
+[
+  {
+    "name": "cloud-sync",
+    "unicode": "e82a"
+  },
+  {
+    "name": "antdesign",
+    "unicode": "e92a"
+  },
+  {
+    "name": "video",
+    "unicode": "e82b"
+  },
+  {
+    "name": "ant-cloud",
+    "unicode": "e92b"
+  },
+  {
+    "name": "notification",
+    "unicode": "e82c"
+  },
+  {
+    "name": "behance",
+    "unicode": "e92c"
+  },
+  {
+    "name": "sound",
+    "unicode": "e82d"
+  },
+  {
+    "name": "googleplus",
+    "unicode": "e92d"
+  },
+  {
+    "name": "radarchart",
+    "unicode": "e82e"
+  },
+  {
+    "name": "medium",
+    "unicode": "e92e"
+  },
+  {
+    "name": "qrcode",
+    "unicode": "e82f"
+  },
+  {
+    "name": "google",
+    "unicode": "e92f"
+  },
+  {
+    "name": "fund",
+    "unicode": "e830"
+  },
+  {
+    "name": "IE",
+    "unicode": "e930"
+  },
+  {
+    "name": "image",
+    "unicode": "e831"
+  },
+  {
+    "name": "amazon",
+    "unicode": "e931"
+  },
+  {
+    "name": "mail",
+    "unicode": "e832"
+  },
+  {
+    "name": "slack",
+    "unicode": "e932"
+  },
+  {
+    "name": "table",
+    "unicode": "e833"
+  },
+  {
+    "name": "alipay",
+    "unicode": "e933"
+  },
+  {
+    "name": "idcard",
+    "unicode": "e834"
+  },
+  {
+    "name": "taobao",
+    "unicode": "e934"
+  },
+  {
+    "name": "creditcard",
+    "unicode": "e835"
+  },
+  {
+    "name": "zhihu",
+    "unicode": "e935"
+  },
+  {
+    "name": "heart",
+    "unicode": "e836"
+  },
+  {
+    "name": "HTML",
+    "unicode": "e936"
+  },
+  {
+    "name": "block",
+    "unicode": "e837"
+  },
+  {
+    "name": "linkedin",
+    "unicode": "e937"
+  },
+  {
+    "name": "error",
+    "unicode": "e838"
+  },
+  {
+    "name": "yahoo",
+    "unicode": "e938"
+  },
+  {
+    "name": "star",
+    "unicode": "e839"
+  },
+  {
+    "name": "facebook",
+    "unicode": "e939"
+  },
+  {
+    "name": "gold",
+    "unicode": "e83a"
+  },
+  {
+    "name": "skype",
+    "unicode": "e93a"
+  },
+  {
+    "name": "heatmap",
+    "unicode": "e83b"
+  },
+  {
+    "name": "CodeSandbox",
+    "unicode": "e93b"
+  },
+  {
+    "name": "wifi",
+    "unicode": "e83c"
+  },
+  {
+    "name": "chrome",
+    "unicode": "e93c"
+  },
+  {
+    "name": "attachment",
+    "unicode": "e83d"
+  },
+  {
+    "name": "codepen",
+    "unicode": "e93d"
+  },
+  {
+    "name": "edit",
+    "unicode": "e83e"
+  },
+  {
+    "name": "aliwangwang",
+    "unicode": "e93e"
+  },
+  {
+    "name": "key",
+    "unicode": "e83f"
+  },
+  {
+    "name": "apple",
+    "unicode": "e93f"
+  },
+  {
+    "name": "api",
+    "unicode": "e840"
+  },
+  {
+    "name": "android",
+    "unicode": "e940"
+  },
+  {
+    "name": "disconnect",
+    "unicode": "e841"
+  },
+  {
+    "name": "sketch",
+    "unicode": "e941"
+  },
+  {
+    "name": "highlight",
+    "unicode": "e842"
+  },
+  {
+    "name": "Gitlab",
+    "unicode": "e942"
+  },
+  {
+    "name": "monitor",
+    "unicode": "e843"
+  },
+  {
+    "name": "dribbble",
+    "unicode": "e943"
+  },
+  {
+    "name": "link",
+    "unicode": "e844"
+  },
+  {
+    "name": "instagram",
+    "unicode": "e944"
+  },
+  {
+    "name": "man",
+    "unicode": "e845"
+  },
+  {
+    "name": "reddit",
+    "unicode": "e945"
+  },
+  {
+    "name": "percentage",
+    "unicode": "e846"
+  },
+  {
+    "name": "windows",
+    "unicode": "e946"
+  },
+  {
+    "name": "pushpin",
+    "unicode": "e847"
+  },
+  {
+    "name": "yuque",
+    "unicode": "e947"
+  },
+  {
+    "name": "phone",
+    "unicode": "e848"
+  },
+  {
+    "name": "Youtube",
+    "unicode": "e948"
+  },
+  {
+    "name": "shake",
+    "unicode": "e849"
+  },
+  {
+    "name": "Gitlab-fill",
+    "unicode": "e949"
+  },
+  {
+    "name": "tag",
+    "unicode": "e84a"
+  },
+  {
+    "name": "dropbox",
+    "unicode": "e94a"
+  },
+  {
+    "name": "wrench",
+    "unicode": "e84b"
+  },
+  {
+    "name": "dingtalk",
+    "unicode": "e94b"
+  },
+  {
+    "name": "tags",
+    "unicode": "e84c"
+  },
+  {
+    "name": "android-fill",
+    "unicode": "e94c"
+  },
+  {
+    "name": "scissor",
+    "unicode": "e84d"
+  },
+  {
+    "name": "apple-fill",
+    "unicode": "e94d"
+  },
+  {
+    "name": "mr",
+    "unicode": "e84e"
+  },
+  {
+    "name": "HTML-fill",
+    "unicode": "e94e"
+  },
+  {
+    "name": "share",
+    "unicode": "e84f"
+  },
+  {
+    "name": "windows-fill",
+    "unicode": "e94f"
+  },
+  {
+    "name": "branches",
+    "unicode": "e850"
+  },
+  {
+    "name": "QQ",
+    "unicode": "e950"
+  },
+  {
+    "name": "fork",
+    "unicode": "e851"
+  },
+  {
+    "name": "twitter",
+    "unicode": "e951"
+  },
+  {
+    "name": "shrink",
+    "unicode": "e852"
+  },
+  {
+    "name": "skype-fill",
+    "unicode": "e952"
+  },
+  {
+    "name": "arrawsalt",
+    "unicode": "e853"
+  },
+  {
+    "name": "weibo",
+    "unicode": "e953"
+  },
+  {
+    "name": "verticalright",
+    "unicode": "e854"
+  },
+  {
+    "name": "yuque-fill",
+    "unicode": "e954"
+  },
+  {
+    "name": "verticalleft",
+    "unicode": "e855"
+  },
+  {
+    "name": "Youtube-fill",
+    "unicode": "e955"
+  },
+  {
+    "name": "right",
+    "unicode": "e856"
+  },
+  {
+    "name": "yahoo-fill",
+    "unicode": "e956"
+  },
+  {
+    "name": "left",
+    "unicode": "e857"
+  },
+  {
+    "name": "wechat-fill",
+    "unicode": "e957"
+  },
+  {
+    "name": "up",
+    "unicode": "e858"
+  },
+  {
+    "name": "chrome-fill",
+    "unicode": "e958"
+  },
+  {
+    "name": "down",
+    "unicode": "e859"
+  },
+  {
+    "name": "alipay-circle-fill",
+    "unicode": "e959"
+  },
+  {
+    "name": "fullscreen",
+    "unicode": "e85a"
+  },
+  {
+    "name": "aliwangwang-fill",
+    "unicode": "e95a"
+  },
+  {
+    "name": "fullscreen-exit",
+    "unicode": "e85b"
+  },
+  {
+    "name": "behance-circle-fill",
+    "unicode": "e95b"
+  },
+  {
+    "name": "doubleleft",
+    "unicode": "e85c"
+  },
+  {
+    "name": "amazon-circle-fill",
+    "unicode": "e95c"
+  },
+  {
+    "name": "doubleright",
+    "unicode": "e85d"
+  },
+  {
+    "name": "codepen-circle-fill",
+    "unicode": "e95d"
+  },
+  {
+    "name": "arrowright",
+    "unicode": "e85e"
+  },
+  {
+    "name": "CodeSandbox-circle-f",
+    "unicode": "e95e"
+  },
+  {
+    "name": "arrowup",
+    "unicode": "e85f"
+  },
+  {
+    "name": "dropbox-circle-fill",
+    "unicode": "e95f"
+  },
+  {
+    "name": "arrowleft",
+    "unicode": "e860"
+  },
+  {
+    "name": "github-fill",
+    "unicode": "e960"
+  },
+  {
+    "name": "arrowdown",
+    "unicode": "e861"
+  },
+  {
+    "name": "dribbble-circle-fill",
+    "unicode": "e961"
+  },
+  {
+    "name": "upload",
+    "unicode": "e862"
+  },
+  {
+    "name": "googleplus-circle-f",
+    "unicode": "e962"
+  },
+  {
+    "name": "colum-height",
+    "unicode": "e863"
+  },
+  {
+    "name": "medium-circle-fill",
+    "unicode": "e963"
+  },
+  {
+    "name": "vertical-align-botto",
+    "unicode": "e864"
+  },
+  {
+    "name": "QQ-circle-fill",
+    "unicode": "e964"
+  },
+  {
+    "name": "vertical-align-middl",
+    "unicode": "e865"
+  },
+  {
+    "name": "IE-circle-fill",
+    "unicode": "e965"
+  },
+  {
+    "name": "totop",
+    "unicode": "e866"
+  },
+  {
+    "name": "google-circle-fill",
+    "unicode": "e966"
+  },
+  {
+    "name": "vertical-align-top",
+    "unicode": "e867"
+  },
+  {
+    "name": "dingtalk-circle-fill",
+    "unicode": "e967"
+  },
+  {
+    "name": "download",
+    "unicode": "e868"
+  },
+  {
+    "name": "sketch-circle-fill",
+    "unicode": "e968"
+  },
+  {
+    "name": "sort-descending",
+    "unicode": "e869"
+  },
+  {
+    "name": "slack-circle-fill",
+    "unicode": "e969"
+  },
+  {
+    "name": "sort-ascending",
+    "unicode": "e86a"
+  },
+  {
+    "name": "twitter-circle-fill",
+    "unicode": "e96a"
+  },
+  {
+    "name": "fall",
+    "unicode": "e86b"
+  },
+  {
+    "name": "taobao-circle-fill",
+    "unicode": "e96b"
+  },
+  {
+    "name": "swap",
+    "unicode": "e86c"
+  },
+  {
+    "name": "weibo-circle-fill",
+    "unicode": "e96c"
+  },
+  {
+    "name": "stock",
+    "unicode": "e86d"
+  },
+  {
+    "name": "zhihu-circle-fill",
+    "unicode": "e96d"
+  },
+  {
+    "name": "rise",
+    "unicode": "e86e"
+  },
+  {
+    "name": "reddit-circle-fill",
+    "unicode": "e96e"
+  },
+  {
+    "name": "indent",
+    "unicode": "e86f"
+  },
+  {
+    "name": "alipay-square-fill",
+    "unicode": "e96f"
+  },
+  {
+    "name": "outdent",
+    "unicode": "e870"
+  },
+  {
+    "name": "dingtalk-square-fill",
+    "unicode": "e970"
+  },
+  {
+    "name": "menu",
+    "unicode": "e871"
+  },
+  {
+    "name": "CodeSandbox-square-f",
+    "unicode": "e971"
+  },
+  {
+    "name": "unorderedlist",
+    "unicode": "e872"
+  },
+  {
+    "name": "behance-square-fill",
+    "unicode": "e972"
+  },
+  {
+    "name": "orderedlist",
+    "unicode": "e873"
+  },
+  {
+    "name": "amazon-square-fill",
+    "unicode": "e973"
+  },
+  {
+    "name": "align-right",
+    "unicode": "e874"
+  },
+  {
+    "name": "codepen-square-fill",
+    "unicode": "e974"
+  },
+  {
+    "name": "align-center",
+    "unicode": "e875"
+  },
+  {
+    "name": "dribbble-square-fill",
+    "unicode": "e975"
+  },
+  {
+    "name": "align-left",
+    "unicode": "e876"
+  },
+  {
+    "name": "dropbox-square-fill",
+    "unicode": "e976"
+  },
+  {
+    "name": "pic-center",
+    "unicode": "e877"
+  },
+  {
+    "name": "facebook-fill",
+    "unicode": "e977"
+  },
+  {
+    "name": "pic-right",
+    "unicode": "e878"
+  },
+  {
+    "name": "googleplus-square-f",
+    "unicode": "e978"
+  },
+  {
+    "name": "pic-left",
+    "unicode": "e879"
+  },
+  {
+    "name": "google-square-fill",
+    "unicode": "e979"
+  },
+  {
+    "name": "bold",
+    "unicode": "e87a"
+  },
+  {
+    "name": "instagram-fill",
+    "unicode": "e97a"
+  },
+  {
+    "name": "font-colors",
+    "unicode": "e87b"
+  },
+  {
+    "name": "IE-square-fill",
+    "unicode": "e97b"
+  },
+  {
+    "name": "exclaimination",
+    "unicode": "e87c"
+  },
+  {
+    "name": "medium-square-fill",
+    "unicode": "e97c"
+  },
+  {
+    "name": "check-circle",
+    "unicode": "e77d"
+  },
+  {
+    "name": "font-size",
+    "unicode": "e87d"
+  },
+  {
+    "name": "linkedin-fill",
+    "unicode": "e97d"
+  },
+  {
+    "name": "CI",
+    "unicode": "e77e"
+  },
+  {
+    "name": "infomation",
+    "unicode": "e87e"
+  },
+  {
+    "name": "QQ-square-fill",
+    "unicode": "e97e"
+  },
+  {
+    "name": "Dollar",
+    "unicode": "e77f"
+  },
+  {
+    "name": "line-height",
+    "unicode": "e87f"
+  },
+  {
+    "name": "reddit-square-fill",
+    "unicode": "e97f"
+  },
+  {
+    "name": "compass",
+    "unicode": "e780"
+  },
+  {
+    "name": "strikethrough",
+    "unicode": "e880"
+  },
+  {
+    "name": "twitter-square-fill",
+    "unicode": "e980"
+  },
+  {
+    "name": "close-circle",
+    "unicode": "e781"
+  },
+  {
+    "name": "underline",
+    "unicode": "e881"
+  },
+  {
+    "name": "sketch-square-fill",
+    "unicode": "e981"
+  },
+  {
+    "name": "frown",
+    "unicode": "e782"
+  },
+  {
+    "name": "number",
+    "unicode": "e882"
+  },
+  {
+    "name": "slack-square-fill",
+    "unicode": "e982"
+  },
+  {
+    "name": "info-circle",
+    "unicode": "e783"
+  },
+  {
+    "name": "italic",
+    "unicode": "e883"
+  },
+  {
+    "name": "taobao-square-fill",
+    "unicode": "e983"
+  },
+  {
+    "name": "left-circle",
+    "unicode": "e784"
+  },
+  {
+    "name": "code",
+    "unicode": "e884"
+  },
+  {
+    "name": "weibo-square-fill",
+    "unicode": "e984"
+  },
+  {
+    "name": "down-circle",
+    "unicode": "e785"
+  },
+  {
+    "name": "column-width",
+    "unicode": "e885"
+  },
+  {
+    "name": "zhihu-square-fill",
+    "unicode": "e985"
+  },
+  {
+    "name": "EURO",
+    "unicode": "e786"
+  },
+  {
+    "name": "check",
+    "unicode": "e886"
+  },
+  {
+    "name": "zoomout",
+    "unicode": "e986"
+  },
+  {
+    "name": "copyright",
+    "unicode": "e787"
+  },
+  {
+    "name": "ellipsis",
+    "unicode": "e887"
+  },
+  {
+    "name": "apartment",
+    "unicode": "e987"
+  },
+  {
+    "name": "minus-circle",
+    "unicode": "e788"
+  },
+  {
+    "name": "dash",
+    "unicode": "e888"
+  },
+  {
+    "name": "audio",
+    "unicode": "e988"
+  },
+  {
+    "name": "meh",
+    "unicode": "e789"
+  },
+  {
+    "name": "close",
+    "unicode": "e889"
+  },
+  {
+    "name": "audio-fill",
+    "unicode": "e989"
+  },
+  {
+    "name": "plus-circle",
+    "unicode": "e78a"
+  },
+  {
+    "name": "enter",
+    "unicode": "e88a"
+  },
+  {
+    "name": "robot",
+    "unicode": "e98a"
+  },
+  {
+    "name": "play-circle",
+    "unicode": "e78b"
+  },
+  {
+    "name": "line",
+    "unicode": "e88b"
+  },
+  {
+    "name": "zoomin",
+    "unicode": "e98b"
+  },
+  {
+    "name": "question-circle",
+    "unicode": "e78c"
+  },
+  {
+    "name": "minus",
+    "unicode": "e88c"
+  },
+  {
+    "name": "robot-fill",
+    "unicode": "e98c"
+  },
+  {
+    "name": "Pound",
+    "unicode": "e78d"
+  },
+  {
+    "name": "question",
+    "unicode": "e88d"
+  },
+  {
+    "name": "bug-fill",
+    "unicode": "e98d"
+  },
+  {
+    "name": "right-circle",
+    "unicode": "e78e"
+  },
+  {
+    "name": "rollback",
+    "unicode": "e88e"
+  },
+  {
+    "name": "bug",
+    "unicode": "e98e"
+  },
+  {
+    "name": "smile",
+    "unicode": "e78f"
+  },
+  {
+    "name": "small-dash",
+    "unicode": "e88f"
+  },
+  {
+    "name": "audiostatic",
+    "unicode": "e98f"
+  },
+  {
+    "name": "trademark",
+    "unicode": "e790"
+  },
+  {
+    "name": "pause",
+    "unicode": "e890"
+  },
+  {
+    "name": "comment",
+    "unicode": "e990"
+  },
+  {
+    "name": "time-circle",
+    "unicode": "e791"
+  },
+  {
+    "name": "bg-colors",
+    "unicode": "e891"
+  },
+  {
+    "name": "signal-fill",
+    "unicode": "e991"
+  },
+  {
+    "name": "timeout",
+    "unicode": "e792"
+  },
+  {
+    "name": "crown",
+    "unicode": "e892"
+  },
+  {
+    "name": "verified",
+    "unicode": "e992"
+  },
+  {
+    "name": "earth",
+    "unicode": "e793"
+  },
+  {
+    "name": "drag",
+    "unicode": "e893"
+  },
+  {
+    "name": "shortcut-fill",
+    "unicode": "e993"
+  },
+  {
+    "name": "YUAN",
+    "unicode": "e794"
+  },
+  {
+    "name": "desktop",
+    "unicode": "e894"
+  },
+  {
+    "name": "videocameraadd",
+    "unicode": "e994"
+  },
+  {
+    "name": "up-circle",
+    "unicode": "e795"
+  },
+  {
+    "name": "gift",
+    "unicode": "e895"
+  },
+  {
+    "name": "switchuser",
+    "unicode": "e995"
+  },
+  {
+    "name": "warning-circle",
+    "unicode": "e796"
+  },
+  {
+    "name": "stop",
+    "unicode": "e896"
+  },
+  {
+    "name": "whatsapp",
+    "unicode": "e996"
+  },
+  {
+    "name": "sync",
+    "unicode": "e797"
+  },
+  {
+    "name": "fire",
+    "unicode": "e897"
+  },
+  {
+    "name": "appstoreadd",
+    "unicode": "e997"
+  },
+  {
+    "name": "transaction",
+    "unicode": "e798"
+  },
+  {
+    "name": "thunderbolt",
+    "unicode": "e898"
+  },
+  {
+    "name": "caret-down",
+    "unicode": "e998"
+  },
+  {
+    "name": "undo",
+    "unicode": "e799"
+  },
+  {
+    "name": "check-circle-fill",
+    "unicode": "e899"
+  },
+  {
+    "name": "backward",
+    "unicode": "e999"
+  },
+  {
+    "name": "redo",
+    "unicode": "e79a"
+  },
+  {
+    "name": "left-circle-fill",
+    "unicode": "e89a"
+  },
+  {
+    "name": "caret-up",
+    "unicode": "e99a"
+  },
+  {
+    "name": "reload",
+    "unicode": "e79b"
+  },
+  {
+    "name": "down-circle-fill",
+    "unicode": "e89b"
+  },
+  {
+    "name": "caret-right",
+    "unicode": "e99b"
+  },
+  {
+    "name": "reloadtime",
+    "unicode": "e79c"
+  },
+  {
+    "name": "minus-circle-fill",
+    "unicode": "e89c"
+  },
+  {
+    "name": "caret-left",
+    "unicode": "e99c"
+  },
+  {
+    "name": "message",
+    "unicode": "e79d"
+  },
+  {
+    "name": "close-circle-fill",
+    "unicode": "e89d"
+  },
+  {
+    "name": "fast-backward",
+    "unicode": "e99d"
+  },
+  {
+    "name": "dashboard",
+    "unicode": "e79e"
+  },
+  {
+    "name": "info-circle-fill",
+    "unicode": "e89e"
+  },
+  {
+    "name": "forward",
+    "unicode": "e99e"
+  },
+  {
+    "name": "issuesclose",
+    "unicode": "e79f"
+  },
+  {
+    "name": "up-circle-fill",
+    "unicode": "e89f"
+  },
+  {
+    "name": "fast-forward",
+    "unicode": "e99f"
+  },
+  {
+    "name": "poweroff",
+    "unicode": "e7a0"
+  },
+  {
+    "name": "right-circle-fill",
+    "unicode": "e8a0"
+  },
+  {
+    "name": "search",
+    "unicode": "e9a0"
+  },
+  {
+    "name": "logout",
+    "unicode": "e7a1"
+  },
+  {
+    "name": "plus-circle-fill",
+    "unicode": "e8a1"
+  },
+  {
+    "name": "retweet",
+    "unicode": "e9a1"
+  },
+  {
+    "name": "piechart",
+    "unicode": "e7a2"
+  },
+  {
+    "name": "question-circle-fill",
+    "unicode": "e8a2"
+  },
+  {
+    "name": "login",
+    "unicode": "e9a2"
+  },
+  {
+    "name": "setting",
+    "unicode": "e7a3"
+  },
+  {
+    "name": "EURO-circle-fill",
+    "unicode": "e8a3"
+  },
+  {
+    "name": "step-backward",
+    "unicode": "e9a3"
+  },
+  {
+    "name": "eye",
+    "unicode": "e7a4"
+  },
+  {
+    "name": "frown-fill",
+    "unicode": "e8a4"
+  },
+  {
+    "name": "step-forward",
+    "unicode": "e9a4"
+  },
+  {
+    "name": "location",
+    "unicode": "e7a5"
+  },
+  {
+    "name": "copyright-circle-fil",
+    "unicode": "e8a5"
+  },
+  {
+    "name": "swap-right",
+    "unicode": "e9a5"
+  },
+  {
+    "name": "edit-square",
+    "unicode": "e7a6"
+  },
+  {
+    "name": "CI-circle-fill",
+    "unicode": "e8a6"
+  },
+  {
+    "name": "swap-left",
+    "unicode": "e9a6"
+  },
+  {
+    "name": "export",
+    "unicode": "e7a7"
+  },
+  {
+    "name": "compass-fill",
+    "unicode": "e8a7"
+  },
+  {
+    "name": "woman",
+    "unicode": "e9a7"
+  },
+  {
+    "name": "save",
+    "unicode": "e7a8"
+  },
+  {
+    "name": "Dollar-circle-fill",
+    "unicode": "e8a8"
+  },
+  {
+    "name": "plus",
+    "unicode": "e9a8"
+  },
+  {
+    "name": "Import",
+    "unicode": "e7a9"
+  },
+  {
+    "name": "poweroff-circle-fill",
+    "unicode": "e8a9"
+  },
+  {
+    "name": "eyeclose-fill",
+    "unicode": "e9a9"
+  },
+  {
+    "name": "appstore",
+    "unicode": "e7aa"
+  },
+  {
+    "name": "meh-fill",
+    "unicode": "e8aa"
+  },
+  {
+    "name": "eye-close",
+    "unicode": "e9aa"
+  },
+  {
+    "name": "close-square",
+    "unicode": "e7ab"
+  },
+  {
+    "name": "play-circle-fill",
+    "unicode": "e8ab"
+  },
+  {
+    "name": "clear",
+    "unicode": "e9ab"
+  },
+  {
+    "name": "down-square",
+    "unicode": "e7ac"
+  },
+  {
+    "name": "Pound-circle-fill",
+    "unicode": "e8ac"
+  },
+  {
+    "name": "collapse",
+    "unicode": "e9ac"
+  },
+  {
+    "name": "layout",
+    "unicode": "e7ad"
+  },
+  {
+    "name": "smile-fill",
+    "unicode": "e8ad"
+  },
+  {
+    "name": "expand",
+    "unicode": "e9ad"
+  },
+  {
+    "name": "left-square",
+    "unicode": "e7ae"
+  },
+  {
+    "name": "stop-fill",
+    "unicode": "e8ae"
+  },
+  {
+    "name": "deletecolumn",
+    "unicode": "e9ae"
+  },
+  {
+    "name": "play-square",
+    "unicode": "e7af"
+  },
+  {
+    "name": "warning-circle-fill",
+    "unicode": "e8af"
+  },
+  {
+    "name": "merge-cells",
+    "unicode": "e9af"
+  },
+  {
+    "name": "control",
+    "unicode": "e7b0"
+  },
+  {
+    "name": "time-circle-fill",
+    "unicode": "e8b0"
+  },
+  {
+    "name": "subnode",
+    "unicode": "e9b0"
+  },
+  {
+    "name": "codelibrary",
+    "unicode": "e7b1"
+  },
+  {
+    "name": "trademark-circle-fil",
+    "unicode": "e8b1"
+  },
+  {
+    "name": "rotate-left",
+    "unicode": "e9b1"
+  },
+  {
+    "name": "detail",
+    "unicode": "e7b2"
+  },
+  {
+    "name": "YUAN-circle-fill",
+    "unicode": "e8b2"
+  },
+  {
+    "name": "rotate-right",
+    "unicode": "e9b2"
+  },
+  {
+    "name": "minus-square",
+    "unicode": "e7b3"
+  },
+  {
+    "name": "heart-fill",
+    "unicode": "e8b3"
+  },
+  {
+    "name": "insertrowbelow",
+    "unicode": "e9b3"
+  },
+  {
+    "name": "plus-square",
+    "unicode": "e7b4"
+  },
+  {
+    "name": "piechart-circle-fil",
+    "unicode": "e8b4"
+  },
+  {
+    "name": "insertrowabove",
+    "unicode": "e9b4"
+  },
+  {
+    "name": "right-square",
+    "unicode": "e7b5"
+  },
+  {
+    "name": "dashboard-fill",
+    "unicode": "e8b5"
+  },
+  {
+    "name": "table1",
+    "unicode": "e9b5"
+  },
+  {
+    "name": "project",
+    "unicode": "e7b6"
+  },
+  {
+    "name": "message-fill",
+    "unicode": "e8b6"
+  },
+  {
+    "name": "solit-cells",
+    "unicode": "e9b6"
+  },
+  {
+    "name": "wallet",
+    "unicode": "e7b7"
+  },
+  {
+    "name": "check-square-fill",
+    "unicode": "e8b7"
+  },
+  {
+    "name": "formatpainter",
+    "unicode": "e9b7"
+  },
+  {
+    "name": "up-square",
+    "unicode": "e7b8"
+  },
+  {
+    "name": "down-square-fill",
+    "unicode": "e8b8"
+  },
+  {
+    "name": "insertrowright",
+    "unicode": "e9b8"
+  },
+  {
+    "name": "calculator",
+    "unicode": "e7b9"
+  },
+  {
+    "name": "minus-square-fill",
+    "unicode": "e8b9"
+  },
+  {
+    "name": "formatpainter-fill",
+    "unicode": "e9b9"
+  },
+  {
+    "name": "interation",
+    "unicode": "e7ba"
+  },
+  {
+    "name": "close-square-fill",
+    "unicode": "e8ba"
+  },
+  {
+    "name": "insertrowleft",
+    "unicode": "e9ba"
+  },
+  {
+    "name": "check-square",
+    "unicode": "e7bb"
+  },
+  {
+    "name": "codelibrary-fill",
+    "unicode": "e8bb"
+  },
+  {
+    "name": "translate",
+    "unicode": "e9bb"
+  },
+  {
+    "name": "border",
+    "unicode": "e7bc"
+  },
+  {
+    "name": "left-square-fill",
+    "unicode": "e8bc"
+  },
+  {
+    "name": "deleterow",
+    "unicode": "e9bc"
+  },
+  {
+    "name": "border-outer",
+    "unicode": "e7bd"
+  },
+  {
+    "name": "play-square-fill",
+    "unicode": "e8bd"
+  },
+  {
+    "name": "sisternode",
+    "unicode": "e9bd"
+  },
+  {
+    "name": "border-top",
+    "unicode": "e7be"
+  },
+  {
+    "name": "up-square-fill",
+    "unicode": "e8be"
+  },
+  {
+    "name": "Field-number",
+    "unicode": "e9be"
+  },
+  {
+    "name": "border-bottom",
+    "unicode": "e7bf"
+  },
+  {
+    "name": "right-square-fill",
+    "unicode": "e8bf"
+  },
+  {
+    "name": "Field-String",
+    "unicode": "e9bf"
+  },
+  {
+    "name": "border-left",
+    "unicode": "e7c0"
+  },
+  {
+    "name": "plus-square-fill",
+    "unicode": "e8c0"
+  },
+  {
+    "name": "Function",
+    "unicode": "e9c0"
+  },
+  {
+    "name": "border-right",
+    "unicode": "e7c1"
+  },
+  {
+    "name": "accountbook-fill",
+    "unicode": "e8c1"
+  },
+  {
+    "name": "Field-time",
+    "unicode": "e9c1"
+  },
+  {
+    "name": "border-inner",
+    "unicode": "e7c2"
+  },
+  {
+    "name": "carryout-fill",
+    "unicode": "e8c2"
+  },
+  {
+    "name": "GIF",
+    "unicode": "e9c2"
+  },
+  {
+    "name": "border-verticle",
+    "unicode": "e7c3"
+  },
+  {
+    "name": "calendar-fill",
+    "unicode": "e8c3"
+  },
+  {
+    "name": "Partition",
+    "unicode": "e9c3"
+  },
+  {
+    "name": "border-horizontal",
+    "unicode": "e7c4"
+  },
+  {
+    "name": "calculator-fill",
+    "unicode": "e8c4"
+  },
+  {
+    "name": "index",
+    "unicode": "e9c4"
+  },
+  {
+    "name": "radius-bottomleft",
+    "unicode": "e7c5"
+  },
+  {
+    "name": "interation-fill",
+    "unicode": "e8c5"
+  },
+  {
+    "name": "Storedprocedure",
+    "unicode": "e9c5"
+  },
+  {
+    "name": "radius-bottomright",
+    "unicode": "e7c6"
+  },
+  {
+    "name": "project-fill",
+    "unicode": "e8c6"
+  },
+  {
+    "name": "Field-Binary",
+    "unicode": "e9c6"
+  },
+  {
+    "name": "radius-upleft",
+    "unicode": "e7c7"
+  },
+  {
+    "name": "detail-fill",
+    "unicode": "e8c7"
+  },
+  {
+    "name": "Console-SQL",
+    "unicode": "e9c7"
+  },
+  {
+    "name": "radius-upright",
+    "unicode": "e7c8"
+  },
+  {
+    "name": "save-fill",
+    "unicode": "e8c8"
+  },
+  {
+    "name": "icon-test",
+    "unicode": "e9c8"
+  },
+  {
+    "name": "radius-setting",
+    "unicode": "e7c9"
+  },
+  {
+    "name": "wallet-fill",
+    "unicode": "e8c9"
+  },
+  {
+    "name": "aim",
+    "unicode": "e9c9"
+  },
+  {
+    "name": "adduser",
+    "unicode": "e7ca"
+  },
+  {
+    "name": "control-fill",
+    "unicode": "e8ca"
+  },
+  {
+    "name": "compress",
+    "unicode": "e9ca"
+  },
+  {
+    "name": "deleteteam",
+    "unicode": "e7cb"
+  },
+  {
+    "name": "layout-fill",
+    "unicode": "e8cb"
+  },
+  {
+    "name": "expend",
+    "unicode": "e9cb"
+  },
+  {
+    "name": "deleteuser",
+    "unicode": "e7cc"
+  },
+  {
+    "name": "appstore-fill",
+    "unicode": "e8cc"
+  },
+  {
+    "name": "folder-view",
+    "unicode": "e9cc"
+  },
+  {
+    "name": "addteam",
+    "unicode": "e7cd"
+  },
+  {
+    "name": "mobile-fill",
+    "unicode": "e8cd"
+  },
+  {
+    "name": "file-GIF",
+    "unicode": "e9cd"
+  },
+  {
+    "name": "user",
+    "unicode": "e7ce"
+  },
+  {
+    "name": "tablet-fill",
+    "unicode": "e8ce"
+  },
+  {
+    "name": "group",
+    "unicode": "e9ce"
+  },
+  {
+    "name": "team",
+    "unicode": "e7cf"
+  },
+  {
+    "name": "book-fill",
+    "unicode": "e8cf"
+  },
+  {
+    "name": "send",
+    "unicode": "e9cf"
+  },
+  {
+    "name": "areachart",
+    "unicode": "e7d0"
+  },
+  {
+    "name": "redenvelope-fill",
+    "unicode": "e8d0"
+  },
+  {
+    "name": "Report",
+    "unicode": "e9d0"
+  },
+  {
+    "name": "linechart",
+    "unicode": "e7d1"
+  },
+  {
+    "name": "safetycertificate-f",
+    "unicode": "e8d1"
+  },
+  {
+    "name": "View",
+    "unicode": "e9d1"
+  },
+  {
+    "name": "barchart",
+    "unicode": "e7d2"
+  },
+  {
+    "name": "propertysafety-fill",
+    "unicode": "e8d2"
+  },
+  {
+    "name": "shortcut",
+    "unicode": "e9d2"
+  },
+  {
+    "name": "pointmap",
+    "unicode": "e7d3"
+  },
+  {
+    "name": "insurance-fill",
+    "unicode": "e8d3"
+  },
+  {
+    "name": "ungroup",
+    "unicode": "e9d3"
+  },
+  {
+    "name": "container",
+    "unicode": "e7d4"
+  },
+  {
+    "name": "securityscan-fill",
+    "unicode": "e8d4"
+  },
+  {
+    "name": "database",
+    "unicode": "e7d5"
+  },
+  {
+    "name": "file-exclamation-fil",
+    "unicode": "e8d5"
+  },
+  {
+    "name": "sever",
+    "unicode": "e7d6"
+  },
+  {
+    "name": "file-add-fill",
+    "unicode": "e8d6"
+  },
+  {
+    "name": "mobile",
+    "unicode": "e7d7"
+  },
+  {
+    "name": "file-fill",
+    "unicode": "e8d7"
+  },
+  {
+    "name": "tablet",
+    "unicode": "e7d8"
+  },
+  {
+    "name": "file-excel-fill",
+    "unicode": "e8d8"
+  },
+  {
+    "name": "redenvelope",
+    "unicode": "e7d9"
+  },
+  {
+    "name": "file-markdown-fill",
+    "unicode": "e8d9"
+  },
+  {
+    "name": "book",
+    "unicode": "e7da"
+  },
+  {
+    "name": "file-text-fill",
+    "unicode": "e8da"
+  },
+  {
+    "name": "filedone",
+    "unicode": "e7db"
+  },
+  {
+    "name": "file-ppt-fill",
+    "unicode": "e8db"
+  },
+  {
+    "name": "reconciliation",
+    "unicode": "e7dc"
+  },
+  {
+    "name": "file-unknown-fill",
+    "unicode": "e8dc"
+  },
+  {
+    "name": "file-exception",
+    "unicode": "e7dd"
+  },
+  {
+    "name": "file-word-fill",
+    "unicode": "e8dd"
+  },
+  {
+    "name": "filesync",
+    "unicode": "e7de"
+  },
+  {
+    "name": "file-zip-fill",
+    "unicode": "e8de"
+  },
+  {
+    "name": "filesearch",
+    "unicode": "e7df"
+  },
+  {
+    "name": "file-pdf-fill",
+    "unicode": "e8df"
+  },
+  {
+    "name": "solution",
+    "unicode": "e7e0"
+  },
+  {
+    "name": "file-image-fill",
+    "unicode": "e8e0"
+  },
+  {
+    "name": "fileprotect",
+    "unicode": "e7e1"
+  },
+  {
+    "name": "diff-fill",
+    "unicode": "e8e1"
+  },
+  {
+    "name": "file-add",
+    "unicode": "e7e2"
+  },
+  {
+    "name": "file-copy-fill",
+    "unicode": "e8e2"
+  },
+  {
+    "name": "file-excel",
+    "unicode": "e7e3"
+  },
+  {
+    "name": "snippets-fill",
+    "unicode": "e8e3"
+  },
+  {
+    "name": "file-exclamation",
+    "unicode": "e7e4"
+  },
+  {
+    "name": "batchfolding-fill",
+    "unicode": "e8e4"
+  },
+  {
+    "name": "file-pdf",
+    "unicode": "e7e5"
+  },
+  {
+    "name": "reconciliation-fill",
+    "unicode": "e8e5"
+  },
+  {
+    "name": "file-image",
+    "unicode": "e7e6"
+  },
+  {
+    "name": "folder-add-fill",
+    "unicode": "e8e6"
+  },
+  {
+    "name": "file-markdown",
+    "unicode": "e7e7"
+  },
+  {
+    "name": "folder-fill",
+    "unicode": "e8e7"
+  },
+  {
+    "name": "file-unknown",
+    "unicode": "e7e8"
+  },
+  {
+    "name": "folder-open-fill",
+    "unicode": "e8e8"
+  },
+  {
+    "name": "file-ppt",
+    "unicode": "e7e9"
+  },
+  {
+    "name": "database-fill",
+    "unicode": "e8e9"
+  },
+  {
+    "name": "file-word",
+    "unicode": "e7ea"
+  },
+  {
+    "name": "container-fill",
+    "unicode": "e8ea"
+  },
+  {
+    "name": "file",
+    "unicode": "e7eb"
+  },
+  {
+    "name": "sever-fill",
+    "unicode": "e8eb"
+  },
+  {
+    "name": "file-zip",
+    "unicode": "e7ec"
+  },
+  {
+    "name": "calendar-check-fill",
+    "unicode": "e8ec"
+  },
+  {
+    "name": "file-text",
+    "unicode": "e7ed"
+  },
+  {
+    "name": "image-fill",
+    "unicode": "e8ed"
+  },
+  {
+    "name": "file-copy",
+    "unicode": "e7ee"
+  },
+  {
+    "name": "idcard-fill",
+    "unicode": "e8ee"
+  },
+  {
+    "name": "snippets",
+    "unicode": "e7ef"
+  },
+  {
+    "name": "creditcard-fill",
+    "unicode": "e8ef"
+  },
+  {
+    "name": "audit",
+    "unicode": "e7f0"
+  },
+  {
+    "name": "fund-fill",
+    "unicode": "e8f0"
+  },
+  {
+    "name": "diff",
+    "unicode": "e7f1"
+  },
+  {
+    "name": "read-fill",
+    "unicode": "e8f1"
+  },
+  {
+    "name": "Batchfolding",
+    "unicode": "e7f2"
+  },
+  {
+    "name": "contacts-fill",
+    "unicode": "e8f2"
+  },
+  {
+    "name": "securityscan",
+    "unicode": "e7f3"
+  },
+  {
+    "name": "delete-fill",
+    "unicode": "e8f3"
+  },
+  {
+    "name": "propertysafety",
+    "unicode": "e7f4"
+  },
+  {
+    "name": "notification-fill",
+    "unicode": "e8f4"
+  },
+  {
+    "name": "safetycertificate",
+    "unicode": "e7f5"
+  },
+  {
+    "name": "flag-fill",
+    "unicode": "e8f5"
+  },
+  {
+    "name": "insurance",
+    "unicode": "e7f6"
+  },
+  {
+    "name": "moneycollect-fill",
+    "unicode": "e8f6"
+  },
+  {
+    "name": "alert",
+    "unicode": "e7f7"
+  },
+  {
+    "name": "medicinebox-fill",
+    "unicode": "e8f7"
+  },
+  {
+    "name": "delete",
+    "unicode": "e7f8"
+  },
+  {
+    "name": "rest-fill",
+    "unicode": "e8f8"
+  },
+  {
+    "name": "hourglass",
+    "unicode": "e7f9"
+  },
+  {
+    "name": "shopping-fill",
+    "unicode": "e8f9"
+  },
+  {
+    "name": "bulb",
+    "unicode": "e7fa"
+  },
+  {
+    "name": "skin-fill",
+    "unicode": "e8fa"
+  },
+  {
+    "name": "experiment",
+    "unicode": "e7fb"
+  },
+  {
+    "name": "video-fill",
+    "unicode": "e8fb"
+  },
+  {
+    "name": "bell",
+    "unicode": "e7fc"
+  },
+  {
+    "name": "sound-fill",
+    "unicode": "e8fc"
+  },
+  {
+    "name": "trophy",
+    "unicode": "e7fd"
+  },
+  {
+    "name": "bulb-fill",
+    "unicode": "e8fd"
+  },
+  {
+    "name": "rest",
+    "unicode": "e7fe"
+  },
+  {
+    "name": "bell-fill",
+    "unicode": "e8fe"
+  },
+  {
+    "name": "USB",
+    "unicode": "e7ff"
+  },
+  {
+    "name": "filter-fill",
+    "unicode": "e8ff"
+  },
+  {
+    "name": "skin",
+    "unicode": "e800"
+  },
+  {
+    "name": "fire-fill",
+    "unicode": "e900"
+  },
+  {
+    "name": "home",
+    "unicode": "e801"
+  },
+  {
+    "name": "funnelplot-fill",
+    "unicode": "e901"
+  },
+  {
+    "name": "bank",
+    "unicode": "e802"
+  },
+  {
+    "name": "gift-fill",
+    "unicode": "e902"
+  },
+  {
+    "name": "filter",
+    "unicode": "e803"
+  },
+  {
+    "name": "hourglass-fill",
+    "unicode": "e903"
+  },
+  {
+    "name": "funnelplot",
+    "unicode": "e804"
+  },
+  {
+    "name": "home-fill",
+    "unicode": "e904"
+  },
+  {
+    "name": "like",
+    "unicode": "e805"
+  },
+  {
+    "name": "trophy-fill",
+    "unicode": "e905"
+  },
+  {
+    "name": "unlike",
+    "unicode": "e806"
+  },
+  {
+    "name": "location-fill",
+    "unicode": "e906"
+  },
+  {
+    "name": "unlock",
+    "unicode": "e807"
+  },
+  {
+    "name": "cloud-fill",
+    "unicode": "e907"
+  },
+  {
+    "name": "lock",
+    "unicode": "e808"
+  },
+  {
+    "name": "customerservice-fill",
+    "unicode": "e908"
+  },
+  {
+    "name": "customerservice",
+    "unicode": "e809"
+  },
+  {
+    "name": "experiment-fill",
+    "unicode": "e909"
+  },
+  {
+    "name": "flag",
+    "unicode": "e80a"
+  },
+  {
+    "name": "eye-fill",
+    "unicode": "e90a"
+  },
+  {
+    "name": "moneycollect",
+    "unicode": "e80b"
+  },
+  {
+    "name": "like-fill",
+    "unicode": "e90b"
+  },
+  {
+    "name": "medicinebox",
+    "unicode": "e80c"
+  },
+  {
+    "name": "lock-fill",
+    "unicode": "e90c"
+  },
+  {
+    "name": "shop",
+    "unicode": "e80d"
+  },
+  {
+    "name": "unlike-fill",
+    "unicode": "e90d"
+  },
+  {
+    "name": "rocket",
+    "unicode": "e80e"
+  },
+  {
+    "name": "star-fill",
+    "unicode": "e90e"
+  },
+  {
+    "name": "shopping",
+    "unicode": "e80f"
+  },
+  {
+    "name": "unlock-fill",
+    "unicode": "e90f"
+  },
+  {
+    "name": "folder",
+    "unicode": "e810"
+  },
+  {
+    "name": "alert-fill",
+    "unicode": "e910"
+  },
+  {
+    "name": "folder-open",
+    "unicode": "e811"
+  },
+  {
+    "name": "api-fill",
+    "unicode": "e911"
+  },
+  {
+    "name": "folder-add",
+    "unicode": "e812"
+  },
+  {
+    "name": "highlight-fill",
+    "unicode": "e912"
+  },
+  {
+    "name": "deploymentunit",
+    "unicode": "e813"
+  },
+  {
+    "name": "phone-fill",
+    "unicode": "e913"
+  },
+  {
+    "name": "accountbook",
+    "unicode": "e814"
+  },
+  {
+    "name": "edit-fill",
+    "unicode": "e914"
+  },
+  {
+    "name": "contacts",
+    "unicode": "e815"
+  },
+  {
+    "name": "pushpin-fill",
+    "unicode": "e915"
+  },
+  {
+    "name": "carryout",
+    "unicode": "e816"
+  },
+  {
+    "name": "rocket-fill",
+    "unicode": "e916"
+  },
+  {
+    "name": "calendar-check",
+    "unicode": "e817"
+  },
+  {
+    "name": "thunderbolt-fill",
+    "unicode": "e917"
+  },
+  {
+    "name": "calendar",
+    "unicode": "e818"
+  },
+  {
+    "name": "tag-fill",
+    "unicode": "e918"
+  },
+  {
+    "name": "scan",
+    "unicode": "e819"
+  },
+  {
+    "name": "wrench-fill",
+    "unicode": "e919"
+  },
+  {
+    "name": "select",
+    "unicode": "e81a"
+  },
+  {
+    "name": "tags-fill",
+    "unicode": "e91a"
+  },
+  {
+    "name": "boxplot",
+    "unicode": "e81b"
+  },
+  {
+    "name": "bank-fill",
+    "unicode": "e91b"
+  },
+  {
+    "name": "build",
+    "unicode": "e81c"
+  },
+  {
+    "name": "camera-fill",
+    "unicode": "e91c"
+  },
+  {
+    "name": "sliders",
+    "unicode": "e81d"
+  },
+  {
+    "name": "error-fill",
+    "unicode": "e91d"
+  },
+  {
+    "name": "laptop",
+    "unicode": "e81e"
+  },
+  {
+    "name": "crown-fill",
+    "unicode": "e91e"
+  },
+  {
+    "name": "barcode",
+    "unicode": "e81f"
+  },
+  {
+    "name": "mail-fill",
+    "unicode": "e91f"
+  },
+  {
+    "name": "camera",
+    "unicode": "e820"
+  },
+  {
+    "name": "car-fill",
+    "unicode": "e920"
+  },
+  {
+    "name": "cluster",
+    "unicode": "e821"
+  },
+  {
+    "name": "printer-fill",
+    "unicode": "e921"
+  },
+  {
+    "name": "gateway",
+    "unicode": "e822"
+  },
+  {
+    "name": "shop-fill",
+    "unicode": "e922"
+  },
+  {
+    "name": "car",
+    "unicode": "e823"
+  },
+  {
+    "name": "setting-fill",
+    "unicode": "e923"
+  },
+  {
+    "name": "printer",
+    "unicode": "e824"
+  },
+  {
+    "name": "USB-fill",
+    "unicode": "e924"
+  },
+  {
+    "name": "read",
+    "unicode": "e825"
+  },
+  {
+    "name": "golden-fill",
+    "unicode": "e925"
+  },
+  {
+    "name": "cloud-server",
+    "unicode": "e826"
+  },
+  {
+    "name": "build-fill",
+    "unicode": "e926"
+  },
+  {
+    "name": "cloud-upload",
+    "unicode": "e827"
+  },
+  {
+    "name": "boxplot-fill",
+    "unicode": "e927"
+  },
+  {
+    "name": "cloud",
+    "unicode": "e828"
+  },
+  {
+    "name": "sliders-fill",
+    "unicode": "e928"
+  },
+  {
+    "name": "cloud-download",
+    "unicode": "e829"
+  },
+  {
+    "name": "alibaba",
+    "unicode": "e929"
+  }
+]

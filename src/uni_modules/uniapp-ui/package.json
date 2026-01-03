@@ -3,8 +3,8 @@
   "name": "uniapp-ui",
   "displayName": "uniapp-ui 基于 Vue3 + TypeScript 的 UI 组件库",
   "version": "1.0.0",
-  "license": "MIT",
   "description": "一个基于 Vue3 + TypeScript 开发的 uni-app 组件库",
+  "license": "MIT",
   "keywords": ["uniapp-ui", "组件库", "vue3", "typescript", "uni-app"],
   "main": "index.ts",
   "engines": {

@@ -2,7 +2,7 @@
   <view :style="[rootStyle]">
     <view :id="stickyId" class="ui-sticky" :style="[stickyStyle]">
       <view class="ui-sticky__container" :style="[containerStyle]" :class="[customClass]">
-        <ui-resize @resize="handleResize" custom-style="display: inline-block;">
+        <ui-resize custom-style="display: inline-block;" @resize="handleResize">
           <slot />
         </ui-resize>
       </view>

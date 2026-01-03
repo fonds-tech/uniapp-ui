@@ -1,6 +1,10 @@
 <template>
-  <view class="ui-header">
-    <view class="ui-header__content" :style="[style]">
+  <view class="ui-header" :class="[customClass]">
+    <view
+      class="ui-header__content"
+      :class="{ 'safe-area-inset-top': safeAreaInsetTop }"
+      :style="[style]"
+    >
       <ui-resize width="100%" @resize="resize">
         <slot />
       </ui-resize>
@@ -24,6 +28,9 @@ const emits = defineEmits(headerEmits)
 const useProps = useHeaderProps(props)
 // 使用useParent hook获取父组件信息
 const { parent } = useParent(configProviderKey)
+
+// 解构常用属性
+const { customClass, safeAreaInsetTop } = toRefs(props)
 
 // 初始化rect和instance
 const rect = ref<UniApp.NodeInfo>({})
@@ -78,6 +85,7 @@ onMounted(() => {
   resize()
 })
 onBeforeMount(onEvent)
+defineExpose({ resize })
 </script>
 
 <script lang="ts">
@@ -90,12 +98,12 @@ export default {
 <style lang="scss" scoped>
 .ui-header {
   width: 100%;
-  z-index: 100;
   position: relative;
 
   &__content {
     left: 0;
     width: 100%;
+    z-index: var(--ui-z-index-fixed);
     position: fixed;
   }
 }

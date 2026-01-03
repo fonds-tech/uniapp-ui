@@ -5,10 +5,9 @@
 </template>
 
 <script setup lang="ts">
-import type { CSSProperties } from "vue"
-import type { ComputedRef } from "vue"
-import { colProps, useColProps } from "./index"
+import type { ComputedRef, CSSProperties } from "vue"
 import { useStyle } from "../hooks"
+import { colProps, useColProps } from "./index"
 
 defineOptions({ name: "ui-col" })
 
