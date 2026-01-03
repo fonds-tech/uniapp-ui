@@ -3,7 +3,7 @@
  * 测试粘性定位组件的 props、事件和渲染逻辑
  */
 
-import UiSticky from "@/ui/ui-sticky/ui-sticky.vue"
+import UiSticky from "@/uni_modules/uniapp-ui/ui-sticky/ui-sticky.vue"
 import { mount } from "@vue/test-utils"
 import { waitForTransition } from "../setup"
 import { it, vi, expect, describe, afterEach, beforeEach } from "vitest"

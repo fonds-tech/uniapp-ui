@@ -3,7 +3,7 @@
  * 测试顶部安全区域组件的 props、events 和渲染逻辑
  */
 
-import UiSafeAreaTop from "@/ui/ui-safe-area-top/ui-safe-area-top.vue"
+import UiSafeAreaTop from "@/uni_modules/uniapp-ui/ui-safe-area-top/ui-safe-area-top.vue"
 import { mount } from "@vue/test-utils"
 import { waitForTransition } from "../setup"
 import { it, vi, expect, describe, afterEach, beforeEach } from "vitest"

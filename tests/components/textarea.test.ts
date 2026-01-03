@@ -3,7 +3,7 @@
  * 测试多行文本输入框组件的 props、events 和渲染逻辑
  */
 
-import UiTextarea from "@/ui/ui-textarea/ui-textarea.vue"
+import UiTextarea from "@/uni_modules/uniapp-ui/ui-textarea/ui-textarea.vue"
 import { mount } from "@vue/test-utils"
 import { waitForTransition } from "../setup"
 import { it, vi, expect, describe, afterEach, beforeEach } from "vitest"

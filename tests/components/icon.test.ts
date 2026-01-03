@@ -3,7 +3,7 @@
  * 测试图标组件的 props、events 和渲染逻辑
  */
 
-import UiIcon from "@/ui/ui-icon/ui-icon.vue"
+import UiIcon from "@/uni_modules/uniapp-ui/ui-icon/ui-icon.vue"
 import { mount } from "@vue/test-utils"
 import { it, expect, describe } from "vitest"
 

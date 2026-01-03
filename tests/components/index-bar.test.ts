@@ -3,11 +3,11 @@
  * 测试索引栏组件的 props 和渲染逻辑
  */
 
-import UiIndexBar from "@/ui/ui-index-bar/ui-index-bar.vue"
-import UiIndexAnchor from "@/ui/ui-index-anchor/ui-index-anchor.vue"
+import UiIndexBar from "@/uni_modules/uniapp-ui/ui-index-bar/ui-index-bar.vue"
+import UiIndexAnchor from "@/uni_modules/uniapp-ui/ui-index-anchor/ui-index-anchor.vue"
 import { ref } from "vue"
 import { mount } from "@vue/test-utils"
-import { indexBarKey } from "@/ui/ui-index-bar"
+import { indexBarKey } from "@/uni_modules/uniapp-ui/ui-index-bar"
 import { waitForTransition } from "../setup"
 import { it, vi, expect, describe, afterEach, beforeEach } from "vitest"
 

@@ -3,7 +3,7 @@
  * 测试文本组件的 props、events、slots 和渲染逻辑
  */
 
-import UiText from "@/ui/ui-text/ui-text.vue"
+import UiText from "@/uni_modules/uniapp-ui/ui-text/ui-text.vue"
 import { mount } from "@vue/test-utils"
 import { it, expect, describe } from "vitest"
 

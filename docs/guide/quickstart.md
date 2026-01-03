@@ -32,7 +32,7 @@ yarn add uniapp-ui
   "easycom": {
     "autoscan": true,
     "custom": {
-      "^ui-(.*)": "@/ui/ui-$1/ui-$1.vue"
+      "^ui-(.*)": "@/uni_modules/uniapp-ui/ui-$1/ui-$1.vue"
     }
   }
 }
@@ -44,7 +44,7 @@ yarn add uniapp-ui
 
 ```typescript
 import { createSSRApp } from 'vue'
-import ui from '@/ui'
+import ui from '@/uni_modules/uniapp-ui'
 import App from './App.vue'
 
 export function createApp() {
@@ -71,7 +71,7 @@ export function createApp() {
 
 ```vue
 <style lang="scss">
-@import '@/ui/styles/index.scss';
+@import '@/uni_modules/uniapp-ui/styles/index.scss';
 </style>
 ```
 
@@ -101,7 +101,7 @@ const value = ref('')
 ```json
 {
   "compilerOptions": {
-    "types": ["@/ui/global.d.ts"]
+    "types": ["@/uni_modules/uniapp-ui/global.d.ts"]
   }
 }
 ```
@@ -111,7 +111,7 @@ const value = ref('')
 组件库提供了丰富的 Hooks 工具函数：
 
 ```typescript
-import { useToast, useDialog, useLoading } from '@/ui'
+import { useToast, useDialog, useLoading } from '@/uni_modules/uniapp-ui'
 
 // 使用 Toast
 const { showToast } = useToast()

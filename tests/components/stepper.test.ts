@@ -3,7 +3,7 @@
  * 测试步进器组件的 props、events 和渲染逻辑
  */
 
-import UiStepper from "@/ui/ui-stepper/ui-stepper.vue"
+import UiStepper from "@/uni_modules/uniapp-ui/ui-stepper/ui-stepper.vue"
 import { mount } from "@vue/test-utils"
 import { waitForTransition } from "../setup"
 import { it, vi, expect, describe, afterEach, beforeEach } from "vitest"

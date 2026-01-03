@@ -3,7 +3,7 @@
  * 测试空状态组件的 props、slots 和渲染逻辑
  */
 
-import UiEmpty from "@/ui/ui-empty/ui-empty.vue"
+import UiEmpty from "@/uni_modules/uniapp-ui/ui-empty/ui-empty.vue"
 import { mount } from "@vue/test-utils"
 import { it, expect, describe } from "vitest"
 

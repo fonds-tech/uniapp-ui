@@ -1,4 +1,4 @@
-import UiBackTop from "@/ui/ui-back-top/ui-back-top.vue"
+import UiBackTop from "@/uni_modules/uniapp-ui/ui-back-top/ui-back-top.vue"
 import { mount } from "@vue/test-utils"
 import { waitForTransition } from "../setup"
 import { it, vi, expect, describe, afterEach, beforeEach } from "vitest"

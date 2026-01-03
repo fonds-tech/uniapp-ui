@@ -6,7 +6,7 @@
 
 ```vue
 <script setup>
-import { useDialog } from "@/ui"
+import { useDialog } from "@/uni_modules/uniapp-ui"
 
 const { showDialog } = useDialog()
 

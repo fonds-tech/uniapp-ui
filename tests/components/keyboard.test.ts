@@ -4,7 +4,7 @@
  * 注意：keyboard 组件可能使用过渡动画，测试中需要使用 waitForTransition 推进时间
  */
 
-import UiKeyboard from "@/ui/ui-keyboard/ui-keyboard.vue"
+import UiKeyboard from "@/uni_modules/uniapp-ui/ui-keyboard/ui-keyboard.vue"
 import { mount } from "@vue/test-utils"
 import { waitForTransition } from "../setup"
 import { it, vi, expect, describe, afterEach, beforeEach } from "vitest"

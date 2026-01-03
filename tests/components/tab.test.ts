@@ -3,10 +3,10 @@
  * 测试标签页项组件的 props、events 和渲染逻辑
  */
 
-import UiTab from "@/ui/ui-tab/ui-tab.vue"
+import UiTab from "@/uni_modules/uniapp-ui/ui-tab/ui-tab.vue"
 import { ref } from "vue"
 import { mount } from "@vue/test-utils"
-import { tabsKey } from "@/ui/ui-tabs"
+import { tabsKey } from "@/uni_modules/uniapp-ui/ui-tabs"
 import { waitForTransition } from "../setup"
 import { it, vi, expect, describe, afterEach, beforeEach } from "vitest"
 

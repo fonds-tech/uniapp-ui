@@ -3,7 +3,7 @@
  * 测试骨架屏组件的 props、slots 和渲染逻辑
  */
 
-import UiSkeleton from "@/ui/ui-skeleton/ui-skeleton.vue"
+import UiSkeleton from "@/uni_modules/uniapp-ui/ui-skeleton/ui-skeleton.vue"
 import { mount } from "@vue/test-utils"
 import { it, expect, describe } from "vitest"
 

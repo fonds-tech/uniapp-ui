@@ -1,4 +1,4 @@
-import UiUpload from "@/ui/ui-upload/ui-upload.vue"
+import UiUpload from "@/uni_modules/uniapp-ui/ui-upload/ui-upload.vue"
 import { mount } from "@vue/test-utils"
 import { waitForTransition } from "../setup"
 import { it, vi, expect, describe, afterEach, beforeEach } from "vitest"

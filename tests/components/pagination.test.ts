@@ -3,7 +3,7 @@
  * 测试分页组件的 props、events 和渲染逻辑
  */
 
-import UiPagination from "@/ui/ui-pagination/ui-pagination.vue"
+import UiPagination from "@/uni_modules/uniapp-ui/ui-pagination/ui-pagination.vue"
 import { mount } from "@vue/test-utils"
 import { waitForTransition } from "../setup"
 import { it, vi, expect, describe, afterEach, beforeEach } from "vitest"

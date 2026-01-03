@@ -1,4 +1,4 @@
-import UiSelect from "@/ui/ui-select/ui-select.vue"
+import UiSelect from "@/uni_modules/uniapp-ui/ui-select/ui-select.vue"
 import { mount } from "@vue/test-utils"
 import { waitForTransition } from "../setup"
 import { it, vi, expect, describe, afterEach, beforeEach } from "vitest"

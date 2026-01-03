@@ -3,7 +3,7 @@
  * 测试行布局组件的 props、provide 和渲染逻辑
  */
 
-import UiRow from "@/ui/ui-row/ui-row.vue"
+import UiRow from "@/uni_modules/uniapp-ui/ui-row/ui-row.vue"
 import { mount } from "@vue/test-utils"
 import { waitForTransition } from "../setup"
 import { it, vi, expect, describe, afterEach, beforeEach } from "vitest"

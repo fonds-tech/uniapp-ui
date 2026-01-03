@@ -3,7 +3,7 @@
  * 测试输入框组件的 props、events 和渲染逻辑
  */
 
-import UiInput from "@/ui/ui-input/ui-input.vue"
+import UiInput from "@/uni_modules/uniapp-ui/ui-input/ui-input.vue"
 import { mount } from "@vue/test-utils"
 import { waitForTransition } from "../setup"
 import { it, vi, expect, describe, afterEach, beforeEach } from "vitest"

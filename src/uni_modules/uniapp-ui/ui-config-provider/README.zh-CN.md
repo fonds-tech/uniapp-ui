@@ -26,7 +26,7 @@ UiConfigProvider 组件，用于全局配置 UI 组件的主题变量。支持�
 </template>
 
 <script setup lang="ts">
-import type { ThemeVars } from "@/ui"
+import type { ThemeVars } from "@/uni_modules/uniapp-ui"
 
 const themeVars: ThemeVars = {
   primary: "#FF6B6B",

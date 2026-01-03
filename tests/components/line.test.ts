@@ -3,7 +3,7 @@
  * 测试分割线组件的 props 和渲染逻辑
  */
 
-import UiLine from "@/ui/ui-line/ui-line.vue"
+import UiLine from "@/uni_modules/uniapp-ui/ui-line/ui-line.vue"
 import { mount } from "@vue/test-utils"
 import { it, expect, describe } from "vitest"
 

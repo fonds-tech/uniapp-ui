@@ -3,11 +3,11 @@
  * 测试下拉菜单容器组件的 props、events 和渲染逻辑
  */
 
-import UiDropdownItem from "@/ui/ui-dropdown-item/ui-dropdown-item.vue"
-import UiDropdownMenu from "@/ui/ui-dropdown-menu/ui-dropdown-menu.vue"
+import UiDropdownItem from "@/uni_modules/uniapp-ui/ui-dropdown-item/ui-dropdown-item.vue"
+import UiDropdownMenu from "@/uni_modules/uniapp-ui/ui-dropdown-menu/ui-dropdown-menu.vue"
 import { mount } from "@vue/test-utils"
 import { h, ref } from "vue"
-import { dropdownMenuKey } from "@/ui/ui-dropdown-menu"
+import { dropdownMenuKey } from "@/uni_modules/uniapp-ui/ui-dropdown-menu"
 import { waitForTransition } from "../setup"
 import { it, vi, expect, describe, afterEach, beforeEach } from "vitest"
 

@@ -3,7 +3,7 @@
  * 测试评分组件的 props、events 和渲染逻辑
  */
 
-import UiRate from "@/ui/ui-rate/ui-rate.vue"
+import UiRate from "@/uni_modules/uniapp-ui/ui-rate/ui-rate.vue"
 import { mount } from "@vue/test-utils"
 import { waitForTransition } from "../setup"
 import { it, vi, expect, describe, afterEach, beforeEach } from "vitest"

@@ -1,4 +1,4 @@
-import UiTransition from "@/ui/ui-transition/ui-transition.vue"
+import UiTransition from "@/uni_modules/uniapp-ui/ui-transition/ui-transition.vue"
 import { mount } from "@vue/test-utils"
 import { waitForTransition } from "../setup"
 import { it, vi, expect, describe, afterEach, beforeEach } from "vitest"

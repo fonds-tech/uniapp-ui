@@ -3,7 +3,7 @@
  * 测试单元格组组件的 props、slots 和渲染逻辑
  */
 
-import UiCellGroup from "@/ui/ui-cell-group/ui-cell-group.vue"
+import UiCellGroup from "@/uni_modules/uniapp-ui/ui-cell-group/ui-cell-group.vue"
 import { mount } from "@vue/test-utils"
 import { it, expect, describe } from "vitest"
 

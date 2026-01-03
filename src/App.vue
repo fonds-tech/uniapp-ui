@@ -5,5 +5,5 @@ onLaunch(() => {})
 </script>
 
 <style lang="scss">
-@use "@/ui/styles/index.scss";
+@use "@/uni_modules/uniapp-ui/styles/index.scss";
 </style>

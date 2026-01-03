@@ -3,8 +3,8 @@
  * 测试标签栏组件的 props、events 和渲染逻辑
  */
 
-import UiTabbar from "@/ui/ui-tabbar/ui-tabbar.vue"
-import UiTabbarItem from "@/ui/ui-tabbar-item/ui-tabbar-item.vue"
+import UiTabbar from "@/uni_modules/uniapp-ui/ui-tabbar/ui-tabbar.vue"
+import UiTabbarItem from "@/uni_modules/uniapp-ui/ui-tabbar-item/ui-tabbar-item.vue"
 import { mount } from "@vue/test-utils"
 import { waitForTransition } from "../setup"
 import { it, vi, expect, describe, afterEach, beforeEach } from "vitest"

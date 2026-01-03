@@ -3,7 +3,7 @@
  * 测试轻提示组件的 props、events 和渲染逻辑
  */
 
-import UiToast from "@/ui/ui-toast/ui-toast.vue"
+import UiToast from "@/uni_modules/uniapp-ui/ui-toast/ui-toast.vue"
 import { mount } from "@vue/test-utils"
 import { nextTick } from "vue"
 import { getLastEmitted, waitForTransition } from "../setup"

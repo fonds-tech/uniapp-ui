@@ -5,7 +5,7 @@
  * 测试中需要使用 waitForTransition 推进时间以完成动画初始化
  */
 
-import UiPopup from "@/ui/ui-popup/ui-popup.vue"
+import UiPopup from "@/uni_modules/uniapp-ui/ui-popup/ui-popup.vue"
 import { mount } from "@vue/test-utils"
 import { waitForTransition } from "../setup"
 import { it, vi, expect, describe, afterEach, beforeEach } from "vitest"

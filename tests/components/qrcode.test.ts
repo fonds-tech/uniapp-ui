@@ -3,7 +3,7 @@
  * 测试二维码/条形码生成组件的 props、methods 和渲染逻辑
  */
 
-import UiQrcode from "@/ui/ui-qrcode/ui-qrcode.vue"
+import UiQrcode from "@/uni_modules/uniapp-ui/ui-qrcode/ui-qrcode.vue"
 import { mount } from "@vue/test-utils"
 import { waitForTransition } from "../setup"
 import { it, vi, expect, describe, afterEach, beforeEach } from "vitest"

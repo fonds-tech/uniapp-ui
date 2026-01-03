@@ -3,7 +3,7 @@
  * 测试头部固定组件的 props、events 和渲染逻辑
  */
 
-import UiHeader from "@/ui/ui-header/ui-header.vue"
+import UiHeader from "@/uni_modules/uniapp-ui/ui-header/ui-header.vue"
 import { mount } from "@vue/test-utils"
 import { waitForTransition } from "../setup"
 import { it, vi, expect, describe, afterEach, beforeEach } from "vitest"

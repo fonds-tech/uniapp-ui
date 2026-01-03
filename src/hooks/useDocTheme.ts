@@ -1,4 +1,4 @@
-import type { ThemeMode } from "@/ui"
+import type { ThemeMode } from "@/uni_modules/uniapp-ui"
 
 /**
  * Hook for syncing theme with documentation site

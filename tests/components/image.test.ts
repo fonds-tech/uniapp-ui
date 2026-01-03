@@ -3,7 +3,7 @@
  * 测试图片组件的 props、events、slots 和渲染逻辑
  */
 
-import UiImage from "@/ui/ui-image/ui-image.vue"
+import UiImage from "@/uni_modules/uniapp-ui/ui-image/ui-image.vue"
 import { mount } from "@vue/test-utils"
 import { it, expect, describe } from "vitest"
 

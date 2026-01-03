@@ -3,7 +3,7 @@
  * 测试底部固定组件的 props、events 和渲染逻辑
  */
 
-import UiFooter from "@/ui/ui-footer/ui-footer.vue"
+import UiFooter from "@/uni_modules/uniapp-ui/ui-footer/ui-footer.vue"
 import { mount } from "@vue/test-utils"
 import { waitForTransition } from "../setup"
 import { it, vi, expect, describe, afterEach, beforeEach } from "vitest"

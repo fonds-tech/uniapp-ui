@@ -3,7 +3,7 @@
  * 测试进度条组件的 props、渲染逻辑和插槽
  */
 
-import UiProgress from "@/ui/ui-progress/ui-progress.vue"
+import UiProgress from "@/uni_modules/uniapp-ui/ui-progress/ui-progress.vue"
 import { mount } from "@vue/test-utils"
 import { waitForTransition } from "../setup"
 import { it, vi, expect, describe, afterEach, beforeEach } from "vitest"

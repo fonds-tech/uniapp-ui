@@ -3,8 +3,8 @@
  * 测试单选框组组件的 props、events 和渲染逻辑
  */
 
-import UiRadio from "@/ui/ui-radio/ui-radio.vue"
-import UiRadioGroup from "@/ui/ui-radio-group/ui-radio-group.vue"
+import UiRadio from "@/uni_modules/uniapp-ui/ui-radio/ui-radio.vue"
+import UiRadioGroup from "@/uni_modules/uniapp-ui/ui-radio-group/ui-radio-group.vue"
 import { h } from "vue"
 import { mount } from "@vue/test-utils"
 import { waitForTransition } from "../setup"

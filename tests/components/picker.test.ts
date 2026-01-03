@@ -1,4 +1,4 @@
-import UiPicker from "@/ui/ui-picker/ui-picker.vue"
+import UiPicker from "@/uni_modules/uniapp-ui/ui-picker/ui-picker.vue"
 import { mount } from "@vue/test-utils"
 import { waitForTransition } from "../setup"
 import { it, vi, expect, describe, afterEach, beforeEach } from "vitest"

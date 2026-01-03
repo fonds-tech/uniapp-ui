@@ -6,7 +6,7 @@
 
 ```vue
 <script setup>
-import { useToast } from "@/ui"
+import { useToast } from "@/uni_modules/uniapp-ui"
 
 const { showToast } = useToast()
 

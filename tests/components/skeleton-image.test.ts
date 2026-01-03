@@ -5,9 +5,9 @@
  * 测试中需要使用 waitForTransition 推进时间以完成初始化
  */
 
-import UiSkeletonImage from "@/ui/ui-skeleton-image/ui-skeleton-image.vue"
+import UiSkeletonImage from "@/uni_modules/uniapp-ui/ui-skeleton-image/ui-skeleton-image.vue"
 import { mount } from "@vue/test-utils"
-import { skeletonKey } from "@/ui/ui-skeleton"
+import { skeletonKey } from "@/uni_modules/uniapp-ui/ui-skeleton"
 import { waitForTransition } from "../setup"
 import { it, vi, expect, describe, afterEach, beforeEach } from "vitest"
 

@@ -3,10 +3,10 @@
  * 测试表单项组件的 props、验证和渲染逻辑
  */
 
-import UiFormItem from "@/ui/ui-form-item/ui-form-item.vue"
+import UiFormItem from "@/uni_modules/uniapp-ui/ui-form-item/ui-form-item.vue"
 import { ref } from "vue"
 import { mount } from "@vue/test-utils"
-import { formKey } from "@/ui/ui-form"
+import { formKey } from "@/uni_modules/uniapp-ui/ui-form"
 import { waitForTransition } from "../setup"
 import { it, vi, expect, describe, afterEach, beforeEach } from "vitest"
 

@@ -3,7 +3,7 @@
  * 测试导航栏组件的 props、events 和渲染逻辑
  */
 
-import UiNavbar from "@/ui/ui-navbar/ui-navbar.vue"
+import UiNavbar from "@/uni_modules/uniapp-ui/ui-navbar/ui-navbar.vue"
 import { mount } from "@vue/test-utils"
 import { waitForTransition } from "../setup"
 import { it, vi, expect, describe, afterEach, beforeEach } from "vitest"

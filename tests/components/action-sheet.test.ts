@@ -6,7 +6,7 @@
  * 测试需要使用 waitForTransition() 来推进时间，让动画初始化完成
  */
 
-import UiActionSheet from "@/ui/ui-action-sheet/ui-action-sheet.vue"
+import UiActionSheet from "@/uni_modules/uniapp-ui/ui-action-sheet/ui-action-sheet.vue"
 import { mount } from "@vue/test-utils"
 import { nextTick } from "vue"
 import { getLastEmitted, waitForTransition } from "../setup"

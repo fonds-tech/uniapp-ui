@@ -3,7 +3,7 @@
  * 测试徽章组件的 props、events、slots 和渲染逻辑
  */
 
-import UiBadge from "@/ui/ui-badge/ui-badge.vue"
+import UiBadge from "@/uni_modules/uniapp-ui/ui-badge/ui-badge.vue"
 import { mount } from "@vue/test-utils"
 import { it, expect, describe } from "vitest"
 

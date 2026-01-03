@@ -3,7 +3,7 @@
  * 测试数字滚动组件的 props 和渲染逻辑
  */
 
-import UiNumberRoll from "@/ui/ui-number-roll/ui-number-roll.vue"
+import UiNumberRoll from "@/uni_modules/uniapp-ui/ui-number-roll/ui-number-roll.vue"
 import { mount } from "@vue/test-utils"
 import { waitForTransition } from "../setup"
 import { it, vi, expect, describe, afterEach, beforeEach } from "vitest"

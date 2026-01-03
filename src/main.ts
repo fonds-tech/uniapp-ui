@@ -1,4 +1,4 @@
-import ui from "./ui"
+import ui from "./uni_modules/uniapp-ui"
 import App from "./App.vue"
 import store from "./store"
 import router from "./router"

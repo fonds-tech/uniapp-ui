@@ -170,7 +170,7 @@ selectRef.value.getSelectedColumns()
 `ui-select` 支持通过全局配置设置默认 props：
 
 ```ts
-import { setGlobalProps } from "@/ui"
+import { setGlobalProps } from "@/uni_modules/uniapp-ui"
 
 setGlobalProps("select", {
   placeholder: "请选择",

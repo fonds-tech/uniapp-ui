@@ -30,11 +30,11 @@ export default defineConfig({
       provider: "v8",
       reporter: ["text", "json", "html"],
       reportsDirectory: "./coverage",
-      include: ["src/ui/**/*.{ts,vue}"],
+      include: ["src/uni_modules/uniapp-ui/**/*.{ts,vue}"],
       exclude: [
-        "src/ui/**/index.ts",
-        "src/ui/**/*.d.ts",
-        "src/ui/**/README*.md",
+        "src/uni_modules/uniapp-ui/**/index.ts",
+        "src/uni_modules/uniapp-ui/**/*.d.ts",
+        "src/uni_modules/uniapp-ui/**/README*.md",
       ],
     },
 

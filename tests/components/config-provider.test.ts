@@ -3,7 +3,7 @@
  * 测试全局配置组件的 props、provide、主题和事件
  */
 
-import UiConfigProvider from "@/ui/ui-config-provider/ui-config-provider.vue"
+import UiConfigProvider from "@/uni_modules/uniapp-ui/ui-config-provider/ui-config-provider.vue"
 import { mount } from "@vue/test-utils"
 import { waitForTransition } from "../setup"
 import { it, vi, expect, describe, afterEach, beforeEach } from "vitest"

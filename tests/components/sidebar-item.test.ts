@@ -3,9 +3,9 @@
  * 测试侧边栏项组件的 props、events 和渲染逻辑
  */
 
-import UiSidebarItem from "@/ui/ui-sidebar-item/ui-sidebar-item.vue"
+import UiSidebarItem from "@/uni_modules/uniapp-ui/ui-sidebar-item/ui-sidebar-item.vue"
 import { mount } from "@vue/test-utils"
-import { sidebarKey } from "@/ui/ui-sidebar"
+import { sidebarKey } from "@/uni_modules/uniapp-ui/ui-sidebar"
 import { ref, reactive } from "vue"
 import { it, vi, expect, describe, afterEach, beforeEach } from "vitest"
 

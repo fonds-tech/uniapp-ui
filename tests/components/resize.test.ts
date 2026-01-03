@@ -3,7 +3,7 @@
  * 测试尺寸监听组件的 props、events 和渲染逻辑
  */
 
-import UiResize from "@/ui/ui-resize/ui-resize.vue"
+import UiResize from "@/uni_modules/uniapp-ui/ui-resize/ui-resize.vue"
 import { mount } from "@vue/test-utils"
 import { waitForTransition } from "../setup"
 import { it, vi, expect, describe, afterEach, beforeEach } from "vitest"

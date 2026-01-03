@@ -352,8 +352,8 @@
 </template>
 
 <script setup lang="ts">
-import type { FormValidateError } from "@/ui/ui-form"
-import { useToast } from "@/ui"
+import type { FormValidateError } from "@/uni_modules/uniapp-ui/ui-form"
+import { useToast } from "@/uni_modules/uniapp-ui"
 import { DemoPage, DemoBlock, DemoSection } from "../components"
 
 definePage({

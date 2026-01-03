@@ -7,7 +7,7 @@
  * 因此需要使用 waitForTransition() 推进时间让动画完成、组件渲染。
  */
 
-import UiNotify from "@/ui/ui-notify/ui-notify.vue"
+import UiNotify from "@/uni_modules/uniapp-ui/ui-notify/ui-notify.vue"
 import { mount } from "@vue/test-utils"
 import { h, watch, nextTick } from "vue"
 import { getLastEmitted, waitForTransition } from "../setup"

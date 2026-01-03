@@ -3,7 +3,7 @@
  * 测试复选框组件的 props、events 和渲染逻辑
  */
 
-import UiCheckbox from "@/ui/ui-checkbox/ui-checkbox.vue"
+import UiCheckbox from "@/uni_modules/uniapp-ui/ui-checkbox/ui-checkbox.vue"
 import { mount } from "@vue/test-utils"
 import { waitForTransition } from "../setup"
 import { it, vi, expect, describe, afterEach, beforeEach } from "vitest"

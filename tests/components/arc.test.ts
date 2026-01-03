@@ -3,7 +3,7 @@
  * 测试弧形组件的 props、events 和渲染逻辑
  */
 
-import UiArc from "@/ui/ui-arc/ui-arc.vue"
+import UiArc from "@/uni_modules/uniapp-ui/ui-arc/ui-arc.vue"
 import { mount } from "@vue/test-utils"
 import { waitForTransition } from "../setup"
 import { it, vi, expect, describe, afterEach, beforeEach } from "vitest"

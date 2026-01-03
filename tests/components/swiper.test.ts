@@ -3,7 +3,7 @@
  * 测试轮播图组件的 props、事件和渲染逻辑
  */
 
-import UiSwiper from "@/ui/ui-swiper/ui-swiper.vue"
+import UiSwiper from "@/uni_modules/uniapp-ui/ui-swiper/ui-swiper.vue"
 import { mount } from "@vue/test-utils"
 import { waitForTransition } from "../setup"
 import { it, vi, expect, describe, afterEach, beforeEach } from "vitest"

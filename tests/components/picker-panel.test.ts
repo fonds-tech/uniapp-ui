@@ -3,7 +3,7 @@
  * 测试选择器面板组件的 props、events 和渲染逻辑
  */
 
-import UiPickerPanel from "@/ui/ui-picker-panel/ui-picker-panel.vue"
+import UiPickerPanel from "@/uni_modules/uniapp-ui/ui-picker-panel/ui-picker-panel.vue"
 import { mount } from "@vue/test-utils"
 import { waitForTransition } from "../setup"
 import { it, vi, expect, describe, afterEach, beforeEach } from "vitest"

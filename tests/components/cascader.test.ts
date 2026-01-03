@@ -5,7 +5,7 @@
  * 因此需要使用 vi.useFakeTimers() 和 waitForTransition() 来推进时间
  */
 
-import UiCascader from "@/ui/ui-cascader/ui-cascader.vue"
+import UiCascader from "@/uni_modules/uniapp-ui/ui-cascader/ui-cascader.vue"
 import { mount } from "@vue/test-utils"
 import { waitForTransition } from "../setup"
 import { it, vi, expect, describe, afterEach, beforeEach } from "vitest"

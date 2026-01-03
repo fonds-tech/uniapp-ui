@@ -138,7 +138,7 @@ function createToastController(getInstance: () => ToastInstance | null): ToastCo
  * @example
  * ```vue
  * <script setup>
- * import { useToast } from "@/ui"
+ * import { useToast } from "@/uni_modules/uniapp-ui"
  *
  * const toast = useToast()
  *

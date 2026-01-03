@@ -194,7 +194,7 @@ export default defineUniPages({
   easycom: {
     autoscan: true,
     custom: {
-      "^ui-(.*)": "@/ui/ui-$1/ui-$1.vue",
+      "^ui-(.*)": "@/uni_modules/uniapp-ui/ui-$1/ui-$1.vue",
     },
   },
 })

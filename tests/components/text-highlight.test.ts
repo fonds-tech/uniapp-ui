@@ -5,7 +5,7 @@
  * 测试中需要使用 waitForTransition 推进时间以完成初始化
  */
 
-import UiTextHighlight from "@/ui/ui-text-highlight/ui-text-highlight.vue"
+import UiTextHighlight from "@/uni_modules/uniapp-ui/ui-text-highlight/ui-text-highlight.vue"
 import { mount } from "@vue/test-utils"
 import { waitForTransition } from "../setup"
 import { it, vi, expect, describe, afterEach, beforeEach } from "vitest"

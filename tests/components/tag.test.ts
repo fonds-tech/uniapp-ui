@@ -3,7 +3,7 @@
  * 测试标签组件的 props、events、slots 和渲染逻辑
  */
 
-import UiTag from "@/ui/ui-tag/ui-tag.vue"
+import UiTag from "@/uni_modules/uniapp-ui/ui-tag/ui-tag.vue"
 import { mount } from "@vue/test-utils"
 import { it, expect, describe } from "vitest"
 

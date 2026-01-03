@@ -3,7 +3,7 @@
  * 测试海报生成组件的 props、methods 和渲染逻辑
  */
 
-import UiPoster from "@/ui/ui-poster/ui-poster.vue"
+import UiPoster from "@/uni_modules/uniapp-ui/ui-poster/ui-poster.vue"
 import { mount } from "@vue/test-utils"
 import { waitForTransition } from "../setup"
 import { it, vi, expect, describe, afterEach, beforeEach } from "vitest"

@@ -3,7 +3,7 @@
  * 测试列布局组件的 props 和渲染逻辑
  */
 
-import UiCol from "@/ui/ui-col/ui-col.vue"
+import UiCol from "@/uni_modules/uniapp-ui/ui-col/ui-col.vue"
 import { ref } from "vue"
 import { mount } from "@vue/test-utils"
 import { waitForTransition } from "../setup"

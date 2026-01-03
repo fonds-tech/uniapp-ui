@@ -141,7 +141,7 @@ const pendingQueue: Array<{ action: "show" | "hide"; options?: string | ToastOpt
  *
  * <script setup>
  * import { ref } from "vue"
- * import { provideToast } from "@/ui/ui-toast"
+ * import { provideToast } from "@/uni_modules/uniapp-ui/ui-toast"
  *
  * const toastRef = ref()
  * provideToast(toastRef)

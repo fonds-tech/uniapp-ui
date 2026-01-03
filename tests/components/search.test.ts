@@ -3,7 +3,7 @@
  * 测试搜索框组件的 props、events 和渲染逻辑
  */
 
-import UiSearch from "@/ui/ui-search/ui-search.vue"
+import UiSearch from "@/uni_modules/uniapp-ui/ui-search/ui-search.vue"
 import { mount } from "@vue/test-utils"
 import { waitForTransition } from "../setup"
 import { it, vi, expect, describe, afterEach, beforeEach } from "vitest"

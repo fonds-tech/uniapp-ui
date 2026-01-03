@@ -3,7 +3,7 @@
  * 测试通知栏组件的 props、events 和渲染逻辑
  */
 
-import UiNoticeBar from "@/ui/ui-notice-bar/ui-notice-bar.vue"
+import UiNoticeBar from "@/uni_modules/uniapp-ui/ui-notice-bar/ui-notice-bar.vue"
 import { mount } from "@vue/test-utils"
 import { waitForTransition } from "../setup"
 import { it, vi, expect, describe, afterEach, beforeEach } from "vitest"

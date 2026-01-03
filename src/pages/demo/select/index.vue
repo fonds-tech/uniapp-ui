@@ -443,8 +443,8 @@
 </template>
 
 <script setup lang="ts">
-import type { PopupMode } from "@/ui"
-import { useToast } from "@/ui"
+import type { PopupMode } from "@/uni_modules/uniapp-ui"
+import { useToast } from "@/uni_modules/uniapp-ui"
 import { DemoPage, DemoBlock, DemoSection } from "../components"
 
 definePage({

@@ -3,7 +3,7 @@
  * 测试底部安全区域组件的 props、events 和渲染逻辑
  */
 
-import UiSafeAreaBottom from "@/ui/ui-safe-area-bottom/ui-safe-area-bottom.vue"
+import UiSafeAreaBottom from "@/uni_modules/uniapp-ui/ui-safe-area-bottom/ui-safe-area-bottom.vue"
 import { mount } from "@vue/test-utils"
 import { waitForTransition } from "../setup"
 import { it, vi, expect, describe, afterEach, beforeEach } from "vitest"

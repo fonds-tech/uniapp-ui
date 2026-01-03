@@ -6,7 +6,7 @@
  * 需要使用 vi.useFakeTimers() 并通过 waitForTransition() 推进时间让动画完成
  */
 
-import UiDialog from "@/ui/ui-dialog/ui-dialog.vue"
+import UiDialog from "@/uni_modules/uniapp-ui/ui-dialog/ui-dialog.vue"
 import { mount } from "@vue/test-utils"
 import { nextTick } from "vue"
 import { waitForTransition } from "../setup"

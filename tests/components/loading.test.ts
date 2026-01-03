@@ -3,7 +3,7 @@
  * 测试加载组件的 props、slots 和渲染逻辑
  */
 
-import UiLoading from "@/ui/ui-loading/ui-loading.vue"
+import UiLoading from "@/uni_modules/uniapp-ui/ui-loading/ui-loading.vue"
 import { mount } from "@vue/test-utils"
 import { it, expect, describe } from "vitest"
 

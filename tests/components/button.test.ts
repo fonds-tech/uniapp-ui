@@ -3,7 +3,7 @@
  * 测试按钮组件的 props、events、slots 和渲染逻辑
  */
 
-import UiButton from "@/ui/ui-button/ui-button.vue"
+import UiButton from "@/uni_modules/uniapp-ui/ui-button/ui-button.vue"
 import { mount } from "@vue/test-utils"
 import { it, expect, describe } from "vitest"
 

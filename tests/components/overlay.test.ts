@@ -6,7 +6,7 @@
  * 需要使用 waitForTransition 辅助函数来推进时间，确保动画初始化完成
  */
 
-import UiOverlay from "@/ui/ui-overlay/ui-overlay.vue"
+import UiOverlay from "@/uni_modules/uniapp-ui/ui-overlay/ui-overlay.vue"
 import { mount } from "@vue/test-utils"
 import { waitForTransition } from "../setup"
 import { it, vi, expect, describe, afterEach, beforeEach } from "vitest"

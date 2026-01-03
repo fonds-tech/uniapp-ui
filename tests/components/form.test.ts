@@ -3,8 +3,8 @@
  * 测试表单组件的 props、方法和渲染逻辑
  */
 
-import UiForm from "@/ui/ui-form/ui-form.vue"
-import UiField from "@/ui/ui-field/ui-field.vue"
+import UiForm from "@/uni_modules/uniapp-ui/ui-form/ui-form.vue"
+import UiField from "@/uni_modules/uniapp-ui/ui-field/ui-field.vue"
 import { mount } from "@vue/test-utils"
 import { waitForTransition } from "../setup"
 import { it, vi, expect, describe, afterEach, beforeEach } from "vitest"

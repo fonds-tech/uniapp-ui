@@ -1,4 +1,4 @@
-import UiFloatButton from "@/ui/ui-float-button/ui-float-button.vue"
+import UiFloatButton from "@/uni_modules/uniapp-ui/ui-float-button/ui-float-button.vue"
 import { mount } from "@vue/test-utils"
 import { waitForTransition } from "../setup"
 import { it, vi, expect, describe, afterEach, beforeEach } from "vitest"
