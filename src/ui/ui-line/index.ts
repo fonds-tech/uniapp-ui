@@ -8,13 +8,13 @@ export const [lineProps, useLineProps] = createProps("line", {
    */
   color: makeStringProp(""),
   /**
-   * 线条宽度
+   * 线条长度
    */
-  width: makeNumericProp("100%"),
+  length: makeNumericProp("100%"),
   /**
-   * 线条高度
+   * 线条粗细
    */
-  height: makeNumericProp("2rpx"),
+  thickness: makeNumericProp("2rpx"),
   /**
    * 线条类型 solid 实线 dashed 虚线 dotted 点线
    */

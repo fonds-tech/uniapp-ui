@@ -13,14 +13,20 @@ const useProps = useLineProps(props)
 
 const style = computed(() => {
   const style: any = {}
-  style.width = useUnit(useProps.width)
-  style.height = useUnit(useProps.height)
   style.margin = useUnit(useProps.margin)
+
   if (useProps.vertical) {
-    style.borderLeft = `${useUnit(useProps.width)} ${useProps.type} ${useColor(useProps.color)}`
+    // 垂直线：length 作为高度，thickness 作为边框粗细
+    style.width = 0
+    style.height = useUnit(useProps.length)
+    style.borderLeft = `${useUnit(useProps.thickness)} ${useProps.type} ${useColor(useProps.color)}`
   } else {
-    style.borderTop = `${useUnit(useProps.height)} ${useProps.type} ${useColor(useProps.color)}`
+    // 水平线：length 作为宽度，thickness 作为边框粗细
+    style.width = useUnit(useProps.length)
+    style.height = 0
+    style.borderTop = `${useUnit(useProps.thickness)} ${useProps.type} ${useColor(useProps.color)}`
   }
+
   return useStyle({ ...style, ...useStyle(useProps.customStyle) })
 })
 

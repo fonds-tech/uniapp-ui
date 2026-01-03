@@ -32,20 +32,20 @@
       </demo-block>
     </demo-section>
 
-    <demo-section title="自定义高度">
+    <demo-section title="自定义粗细">
       <demo-block direction="column">
-        <ui-line height="4rpx" />
-        <ui-line height="8rpx" margin="20rpx 0" />
-        <ui-line height="12rpx" />
+        <ui-line thickness="4rpx" />
+        <ui-line thickness="8rpx" margin="20rpx 0" />
+        <ui-line thickness="12rpx" />
       </demo-block>
     </demo-section>
 
     <demo-section title="垂直线条">
       <demo-block align="center">
         <text class="demo-text inline">左边</text>
-        <ui-line vertical height="40rpx" margin="0 20rpx" />
+        <ui-line vertical length="40rpx" margin="0 20rpx" />
         <text class="demo-text inline">中间</text>
-        <ui-line vertical height="40rpx" margin="0 20rpx" />
+        <ui-line vertical length="40rpx" margin="0 20rpx" />
         <text class="demo-text inline">右边</text>
       </demo-block>
     </demo-section>

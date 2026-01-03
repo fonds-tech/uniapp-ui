@@ -35,48 +35,48 @@ describe("ui-line 分割线组件", () => {
   })
 
   describe("尺寸属性", () => {
-    it("默认宽度应为 100%", () => {
+    it("默认长度应为 100%", () => {
       const wrapper = mount(UiLine)
 
-      expect(wrapper.props("width")).toBe("100%")
+      expect(wrapper.props("length")).toBe("100%")
     })
 
-    it("应支持自定义宽度", () => {
+    it("应支持自定义长度", () => {
       const wrapper = mount(UiLine, {
-        props: { width: 200 },
+        props: { length: 200 },
       })
 
-      expect(wrapper.props("width")).toBe(200)
+      expect(wrapper.props("length")).toBe(200)
     })
 
-    it("应支持字符串类型的宽度", () => {
+    it("应支持字符串类型的长度", () => {
       const wrapper = mount(UiLine, {
-        props: { width: "50%" },
+        props: { length: "50%" },
       })
 
-      expect(wrapper.props("width")).toBe("50%")
+      expect(wrapper.props("length")).toBe("50%")
     })
 
-    it("默认高度应为 2rpx", () => {
+    it("默认粗细应为 2rpx", () => {
       const wrapper = mount(UiLine)
 
-      expect(wrapper.props("height")).toBe("2rpx")
+      expect(wrapper.props("thickness")).toBe("2rpx")
     })
 
-    it("应支持自定义高度", () => {
+    it("应支持自定义粗细", () => {
       const wrapper = mount(UiLine, {
-        props: { height: 4 },
+        props: { thickness: 4 },
       })
 
-      expect(wrapper.props("height")).toBe(4)
+      expect(wrapper.props("thickness")).toBe(4)
     })
 
-    it("应支持字符串类型的高度", () => {
+    it("应支持字符串类型的粗细", () => {
       const wrapper = mount(UiLine, {
-        props: { height: "4rpx" },
+        props: { thickness: "4rpx" },
       })
 
-      expect(wrapper.props("height")).toBe("4rpx")
+      expect(wrapper.props("thickness")).toBe("4rpx")
     })
   })
 
@@ -169,8 +169,8 @@ describe("ui-line 分割线组件", () => {
       const wrapper = mount(UiLine, {
         props: {
           color: "#cccccc",
-          width: 300,
-          height: 2,
+          length: 300,
+          thickness: 2,
           type: "dashed",
           vertical: false,
           margin: 10,
@@ -179,8 +179,8 @@ describe("ui-line 分割线组件", () => {
       })
 
       expect(wrapper.props("color")).toBe("#cccccc")
-      expect(wrapper.props("width")).toBe(300)
-      expect(wrapper.props("height")).toBe(2)
+      expect(wrapper.props("length")).toBe(300)
+      expect(wrapper.props("thickness")).toBe(2)
       expect(wrapper.props("type")).toBe("dashed")
       expect(wrapper.props("vertical")).toBe(false)
       expect(wrapper.props("margin")).toBe(10)
@@ -191,14 +191,14 @@ describe("ui-line 分割线组件", () => {
       const wrapper = mount(UiLine, {
         props: {
           vertical: true,
-          width: 2,
-          height: 100,
+          length: 100,
+          thickness: 2,
         },
       })
 
       expect(wrapper.props("vertical")).toBe(true)
-      expect(wrapper.props("width")).toBe(2)
-      expect(wrapper.props("height")).toBe(100)
+      expect(wrapper.props("length")).toBe(100)
+      expect(wrapper.props("thickness")).toBe(2)
     })
   })
 })
