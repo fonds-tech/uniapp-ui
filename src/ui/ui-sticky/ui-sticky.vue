@@ -1,14 +1,19 @@
 <template>
-  <view :id="stickyId" class="ui-sticky" :style="[rootStyle]">
-    <view :id="bodyId" class="ui-sticky__body" :style="[bodyStyle]" :class="[customClass]">
-      <slot />
+  <view :style="[rootStyle]">
+    <view :id="stickyId" class="ui-sticky" :style="[stickyStyle]">
+      <view class="ui-sticky__container" :style="[containerStyle]" :class="[customClass]">
+        <ui-resize @resize="handleResize" custom-style="display: inline-block;">
+          <slot />
+        </ui-resize>
+      </view>
     </view>
   </view>
 </template>
 
 <script setup lang="ts">
 import type { CSSProperties } from "vue"
-import { useRect, useColor, useStyle, useUnitToPx } from "../hooks"
+import { uuid } from "../utils/utils"
+import { useRect, useColor, useStyle } from "../hooks"
 import { stickyEmits, stickyProps, useStickyProps } from "./index"
 
 defineOptions({ name: "ui-sticky" })
@@ -16,47 +21,69 @@ defineOptions({ name: "ui-sticky" })
 const props = defineProps(stickyProps)
 const emits = defineEmits(stickyEmits)
 const useProps = useStickyProps(props)
-// Unique id for selector query
-const uid = Math.random().toString(36).slice(2, 10)
-const stickyId = `sticky-${uid}`
-const bodyId = `sticky-body-${uid}`
 
-// Reactive state
-const isFixed = ref(false)
-const contentHeight = ref(0)
-const contentWidth = ref(0)
-const navbarHeight = ref(0)
+// 唯一 ID
+const stickyId = ref(`sticky-${uuid()}`)
 const instance = getCurrentInstance()!
 
-// Throttle timer
-let scrollTimer: ReturnType<typeof setTimeout> | null = null
+// 响应式状态
+const stickyState = reactive({
+  // 非吸顶时用 absolute，吸顶时用 fixed
+  position: "absolute" as "absolute" | "fixed",
+  top: 0,
+  height: 0,
+  width: 0,
+  state: "" as "" | "sticky" | "normal",
+})
 
-// Computed offset top in px
-const offsetTopPx = computed(() => useUnitToPx(useProps.offsetTop))
+// 观察器列表
+const observerList = ref<UniApp.IntersectionObserver[]>([])
 
-// Root container style - maintains layout space when fixed
+// 计算内部偏移量（H5 需要加上导航栏高度）
+const innerOffsetTop = computed(() => {
+  let top = 0
+  // #ifdef H5
+  // H5 端导航栏高度为 44px
+  top = 44
+  // #endif
+  return top + Number(useProps.offsetTop || 0)
+})
+
+// 根容器样式 - 外层占位
 const rootStyle = computed(() => {
-  const style: CSSProperties = {}
-  if (useProps.zIndex) {
-    style.zIndex = useProps.zIndex
-  }
-  // Reserve space when fixed to prevent layout jump
-  if (isFixed.value && contentHeight.value > 0) {
-    style.height = `${contentHeight.value}px`
+  const style: CSSProperties = {
+    display: "inline-block",
+    position: "relative",
+    zIndex: useProps.zIndex,
+    width: stickyState.width ? `${stickyState.width}px` : undefined,
+    height: stickyState.height ? `${stickyState.height}px` : undefined,
   }
   return useStyle(style)
 })
 
-// Body style - applies fixed positioning
-const bodyStyle = computed(() => {
-  const style: CSSProperties = {}
+// sticky 容器样式 - 保持占位
+const stickyStyle = computed(() => {
+  const style: CSSProperties = {
+    position: "relative",
+    zIndex: useProps.zIndex,
+    width: stickyState.width ? `${stickyState.width}px` : undefined,
+    height: stickyState.height ? `${stickyState.height}px` : undefined,
+  }
+  return useStyle(style)
+})
 
-  if (isFixed.value) {
-    style.position = "fixed"
-    style.top = `${offsetTopPx.value + navbarHeight.value}px`
+// 内容容器样式 - 实际定位
+const containerStyle = computed(() => {
+  const style: CSSProperties = {
+    position: stickyState.position,
+    top: `${stickyState.top}px`,
+    zIndex: useProps.zIndex,
+  }
+
+  // fixed 定位时需要设置 left/right
+  if (stickyState.position === "fixed") {
     style.left = "0"
     style.right = "0"
-    style.zIndex = useProps.zIndex || 99
   }
 
   if (useProps.background) {
@@ -66,134 +93,133 @@ const bodyStyle = computed(() => {
   return useStyle({ ...style, ...useStyle(useProps.customStyle) })
 })
 
-// Watch fixed state change
-watch(
-  () => isFixed.value,
-  (val, oldVal) => {
-    if (val !== oldVal) {
-      emits("change", val)
-    }
-  },
-)
+// 判断是否吸顶
+const isFixed = computed(() => stickyState.state === "sticky")
 
-// Watch external scrollTop prop
-watch(
-  () => useProps.scrollTop,
-  (val) => {
-    if (val !== undefined && !useProps.disabled) {
-      checkStickyState()
-    }
-  },
-)
-
-// Get body element rect
-async function getBodyRect(): Promise<UniApp.NodeInfo | null> {
-  return new Promise((resolve) => {
-    useRect(`#${bodyId}`, instance)
-      .then((rect) => resolve(rect))
-      .catch(() => resolve(null))
-  })
-}
-
-// Get container element rect
-async function getContainerRect(): Promise<UniApp.NodeInfo | null> {
-  return new Promise((resolve) => {
-    useRect(`#${stickyId}`, instance)
-      .then((rect) => resolve(rect))
-      .catch(() => resolve(null))
-  })
-}
-
-// Update content size
-async function updateContentSize() {
-  const rect = await getBodyRect()
-  if (rect) {
-    contentHeight.value = rect.height || 0
-    contentWidth.value = rect.width || 0
+// 清除所有观察器
+function clearObserver() {
+  while (observerList.value.length > 0) {
+    observerList.value.pop()?.disconnect()
   }
 }
 
-// Check sticky state based on element position
-async function checkStickyState() {
+// 创建观察器
+function createObserver() {
+  const observer = uni.createIntersectionObserver(instance, {
+    thresholds: [0, 0.5],
+  })
+  observerList.value.push(observer)
+  return observer
+}
+
+// 处理位置变化
+function handleRelativeTo(result: { boundingClientRect: { top: number; bottom: number } }) {
   if (useProps.disabled) {
-    if (isFixed.value) {
-      isFixed.value = false
+    if (stickyState.state === "sticky") {
+      setNormalState()
     }
     return
   }
 
-  const rect = await getContainerRect()
-  if (!rect) return
+  const { boundingClientRect } = result
+  let shouldFix = boundingClientRect.top <= innerOffsetTop.value
 
-  // Calculate threshold considering navbar height
-  const threshold = offsetTopPx.value + navbarHeight.value
+  // #ifdef H5 || APP-PLUS
+  shouldFix = boundingClientRect.top < innerOffsetTop.value
+  // #endif
 
-  // When element top goes above threshold, fix it
-  const shouldFix = rect.top <= threshold
-
-  if (shouldFix !== isFixed.value) {
-    isFixed.value = shouldFix
+  if (shouldFix) {
+    setStickyState()
+  } else {
+    setNormalState()
   }
-
-  // Emit scroll event with current state
-  emits("scroll", {
-    scrollTop: useProps.scrollTop !== undefined ? Number(useProps.scrollTop) : -rect.top,
-    isFixed: isFixed.value,
-  })
 }
 
-// Throttled scroll handler
-function onScroll() {
+// 设置吸顶状态
+function setStickyState() {
+  if (stickyState.state === "sticky") return // 防止重复触发
+
+  stickyState.state = "sticky"
+  stickyState.position = "fixed"
+  stickyState.top = innerOffsetTop.value
+
+  emits("change", true)
+  emits("scroll", { scrollTop: 0, isFixed: true })
+}
+
+// 设置正常状态
+function setNormalState() {
+  if (stickyState.state === "normal") return // 防止重复触发
+
+  stickyState.state = "normal"
+  stickyState.position = "absolute"
+  stickyState.top = 0
+
+  emits("change", false)
+  emits("scroll", { scrollTop: 0, isFixed: false })
+}
+
+// 监听元素滚动（使用 IntersectionObserver）
+async function observeScroll() {
+  if (stickyState.height === 0 && stickyState.width === 0) return
   if (useProps.disabled) return
 
-  if (scrollTimer) {
-    clearTimeout(scrollTimer)
-  }
+  const offset = innerOffsetTop.value + stickyState.height
+  clearObserver()
 
-  scrollTimer = setTimeout(() => {
-    checkStickyState()
-    scrollTimer = null
-  }, 16) // ~60fps
+  // 创建观察器监听元素与视口的交叉状态
+  createObserver()
+    .relativeToViewport({ top: -offset })
+    .observe(`#${stickyId.value}`, (result) => {
+      handleRelativeTo(result)
+    })
+
+  // 初始化时手动检查一次位置
+  try {
+    const rect = await useRect(`#${stickyId.value}`, instance)
+    if (rect) {
+      let bottom = rect.bottom ?? 0
+      // #ifdef H5
+      bottom = bottom + 44
+      // #endif
+      if (bottom <= offset) {
+        handleRelativeTo({ boundingClientRect: { top: rect.top ?? 0, bottom } })
+      }
+    }
+  } catch {
+    // 忽略错误
+  }
 }
 
-// Initialize navbar height for H5
-async function initNavbarHeight() {
+// 处理内容尺寸变化
+async function handleResize(detail: { width: number; height: number }) {
+  stickyState.width = detail.width
+  stickyState.height = detail.height
   await nextTick()
-  // #ifdef H5
-  const head = document.querySelector(".uni-page-head") as HTMLElement | null
-  if (head) {
-    navbarHeight.value = head.offsetHeight
-  }
-  // #endif
+  observeScroll()
 }
 
-// Reset and recalculate
+// 监听 disabled 变化
+watch(
+  () => useProps.disabled,
+  (disabled) => {
+    if (disabled) {
+      setNormalState()
+      clearObserver()
+    } else {
+      observeScroll()
+    }
+  },
+)
+
+// 手动重新计算
 async function resize() {
   await nextTick()
-  await initNavbarHeight()
-  await updateContentSize()
-  checkStickyState()
+  observeScroll()
 }
-
-// Initialize component
-async function init() {
-  await nextTick()
-  await initNavbarHeight()
-  await updateContentSize()
-  // Check initial state
-  checkStickyState()
-}
-
-onMounted(() => {
-  init()
-})
-
-onPageScroll(onScroll)
 
 onUnmounted(() => {
-  if (scrollTimer) {
-    clearTimeout(scrollTimer)
-  }
+  clearObserver()
 })
 
 defineExpose({
@@ -213,9 +239,8 @@ export default {
 <style lang="scss" scoped>
 .ui-sticky {
   width: 100%;
-  position: relative;
 
-  &__body {
+  &__container {
     width: 100%;
   }
 }

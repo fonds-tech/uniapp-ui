@@ -1,10 +1,6 @@
 /**
  * ui-col 组件单元测试
- * 测试列布局组件的 props、inject 和渲染逻辑
- *
- * 注意：ui-col 在与 ui-row 配合时，会从 row 注入获取 gap/colGap/rowGap，
- * 但由于组件条件编译块 (#ifndef H5 || APP-PLUS || MP-WEIXIN) 的存在，
- * 测试环境（H5）和非 H5 环境的行为不同。
+ * 测试列布局组件的 props 和渲染逻辑
  */
 
 import UiCol from "@/ui/ui-col/ui-col.vue"
@@ -91,35 +87,16 @@ describe("ui-col 列布局组件", () => {
       expect(wrapper.props("offset")).toBe(6)
       expect(wrapper.find(".ui-col").exists()).toBe(true)
     })
-  })
 
-  describe("对齐方式", () => {
-    const justifyValues = ["start", "end", "center", "between", "around"] as const
-
-    justifyValues.forEach((justify) => {
-      it(`应支持 justify=${justify} 水平对齐`, async () => {
-        const wrapper = mount(UiCol, {
-          props: { justify },
-        })
-        await waitForTransition()
-
-        expect(wrapper.props("justify")).toBe(justify)
-        expect(wrapper.find(".ui-col").exists()).toBe(true)
+    it("偏移值应影响样式", async () => {
+      const wrapper = mount(UiCol, {
+        props: { span: 12, offset: 6 },
       })
-    })
+      await waitForTransition()
 
-    const alignValues = ["start", "end", "center", "stretch", "baseline"] as const
-
-    alignValues.forEach((align) => {
-      it(`应支持 align=${align} 垂直对齐`, async () => {
-        const wrapper = mount(UiCol, {
-          props: { align },
-        })
-        await waitForTransition()
-
-        expect(wrapper.props("align")).toBe(align)
-        expect(wrapper.find(".ui-col").exists()).toBe(true)
-      })
+      // 偏移量为 6/24 = 25%
+      const style = wrapper.find(".ui-col").attributes("style")
+      expect(style).toContain("margin-left")
     })
   })
 
@@ -154,41 +131,6 @@ describe("ui-col 列布局组件", () => {
     })
   })
 
-  describe("注入 row 配置", () => {
-    it("应从 row 继承间隔配置", async () => {
-      // 通过手动 provide 模拟 row 的注入
-      // 需要包含 width 属性，因为组件在非 H5 环境下会使用它
-      const wrapper = mount(UiCol, {
-        props: { span: 12 },
-        slots: { default: () => "列" },
-        global: {
-          provide: {
-            "ui-row": {
-              gap: ref("20rpx"),
-              colGap: ref(""),
-              rowGap: ref(""),
-              width: ref(375), // 模拟 row 宽度
-            },
-          },
-        },
-      })
-      await waitForTransition()
-
-      expect(wrapper.find(".ui-col").exists()).toBe(true)
-    })
-
-    it("无 row 注入时应独立渲染", async () => {
-      const wrapper = mount(UiCol, {
-        props: { span: 12 },
-        slots: { default: "独立列" },
-      })
-      await waitForTransition()
-
-      expect(wrapper.find(".ui-col").exists()).toBe(true)
-      expect(wrapper.text()).toContain("独立列")
-    })
-  })
-
   describe("边界情况", () => {
     it("无内容时应正常渲染", async () => {
       const wrapper = mount(UiCol)
@@ -216,6 +158,16 @@ describe("ui-col 列布局组件", () => {
 
       expect(wrapper.find(".ui-col").exists()).toBe(true)
       expect(wrapper.props("span")).toBe(6)
+    })
+
+    it("span 为 0 时宽度应为 0%", async () => {
+      const wrapper = mount(UiCol, {
+        props: { span: 0 },
+      })
+      await waitForTransition()
+
+      const style = wrapper.find(".ui-col").attributes("style")
+      expect(style).toContain("width: 0%")
     })
   })
 })

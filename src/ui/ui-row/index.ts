@@ -4,17 +4,17 @@ import { styleProp, makeStringProp, makeNumericProp } from "../utils/props"
 
 export const [rowProps, useRowProps] = createProps("row", {
   /**
-   * 间隔距离
+   * 统一间距（同时设置行间距和列间距）
    */
-  gap: makeNumericProp(""),
+  gap: makeNumericProp(0),
   /**
-   * 列间隔距离
+   * 列间距（水平方向）
    */
-  colGap: makeNumericProp(""),
+  colGap: makeNumericProp(0),
   /**
-   * 行间隔距离
+   * 行间距（垂直方向）
    */
-  rowGap: makeNumericProp(""),
+  rowGap: makeNumericProp(0),
   /**
    * 垂直对齐方式
    */
@@ -24,6 +24,10 @@ export const [rowProps, useRowProps] = createProps("row", {
    */
   justify: { type: String, default: "start", values: ["start", "end", "center", "between", "around"] },
   /**
+   * 是否允许换行
+   */
+  wrap: { type: Boolean, default: true },
+  /**
    * 自定义类名
    */
   customClass: makeStringProp(""),
@@ -32,12 +36,5 @@ export const [rowProps, useRowProps] = createProps("row", {
    */
   customStyle: styleProp,
 })
-export const rowEmits = {}
-
-export type RowEmits = typeof rowEmits
-export interface RowExpose {
-  name: "ui-row"
-  resize: () => void
-}
 
 export type RowInstance = InstanceType<typeof Row>

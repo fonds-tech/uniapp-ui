@@ -28,7 +28,6 @@ type _LocationUrl =
   "/pages/demo/footer/index" |
   "/pages/demo/form/index" |
   "/pages/demo/form-item/index" |
-  "/pages/demo/grid/index" |
   "/pages/demo/header/index" |
   "/pages/demo/icon/index" |
   "/pages/demo/image/index" |
@@ -36,6 +35,7 @@ type _LocationUrl =
   "/pages/demo/index-bar/index" |
   "/pages/demo/input/index" |
   "/pages/demo/keyboard/index" |
+  "/pages/demo/layout/index" |
   "/pages/demo/line/index" |
   "/pages/demo/loading/index" |
   "/pages/demo/navbar/index" |

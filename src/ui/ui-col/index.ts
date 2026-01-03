@@ -4,19 +4,11 @@ import { styleProp, makeNumberProp, makeStringProp } from "../utils/props"
 
 export const [colProps, useColProps] = createProps("col", {
   /**
-   * 栅格占据的列数
+   * 栅格占据的列数（总共24列）
    */
   span: makeNumberProp(24),
   /**
-   * 垂直对齐方式
-   */
-  align: { type: String, default: "stretch", values: ["start", "end", "center", "stretch", "baseline"] },
-  /**
-   * 水平对齐方式
-   */
-  justify: { type: String, default: "start", values: ["start", "end", "center", "between", "around"] },
-  /**
-   * 栅格左侧的间隔格数
+   * 栅格左侧的偏移格数
    */
   offset: makeNumberProp(0),
   /**
@@ -28,7 +20,5 @@ export const [colProps, useColProps] = createProps("col", {
    */
   customStyle: styleProp,
 })
-export const colEmits = {}
 
-export type ColEmits = typeof colEmits
 export type ColInstance = InstanceType<typeof Col>

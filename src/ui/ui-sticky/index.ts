@@ -13,10 +13,6 @@ export const [stickyProps, useStickyProps] = createProps("sticky", {
    */
   offsetTop: makeNumericProp(0),
   /**
-   * 外部传入的滚动距离，用于子组件场景
-   */
-  scrollTop: numericProp,
-  /**
    * 是否禁用粘性效果
    */
   disabled: Boolean,
@@ -33,6 +29,7 @@ export const [stickyProps, useStickyProps] = createProps("sticky", {
    */
   customStyle: [String, Object] as PropType<string | CSSProperties>,
 })
+
 export const stickyEmits = {
   change: (sticky: boolean) => true,
   scroll: (data: { scrollTop: number; isFixed: boolean }) => true,

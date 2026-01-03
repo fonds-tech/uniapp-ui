@@ -8,9 +8,6 @@ import { mount } from "@vue/test-utils"
 import { waitForTransition } from "../setup"
 import { it, vi, expect, describe, afterEach, beforeEach } from "vitest"
 
-// Mock onPageScroll 全局函数（组件直接使用而非从模块导入）
-vi.stubGlobal("onPageScroll", vi.fn())
-
 describe("uiSticky 组件", () => {
   beforeEach(() => {
     vi.useFakeTimers()
@@ -39,11 +36,11 @@ describe("uiSticky 组件", () => {
       expect(wrapper.find(".custom-content").exists()).toBe(true)
     })
 
-    it("应该渲染 body 容器", async () => {
+    it("应该渲染 container 容器", async () => {
       const wrapper = mount(UiSticky)
       await waitForTransition()
 
-      expect(wrapper.find(".ui-sticky__body").exists()).toBe(true)
+      expect(wrapper.find(".ui-sticky__container").exists()).toBe(true)
     })
   })
 
@@ -72,29 +69,6 @@ describe("uiSticky 组件", () => {
       await waitForTransition()
 
       expect(wrapper.props("offsetTop")).toBe("100rpx")
-    })
-  })
-
-  describe("scrollTop 属性测试", () => {
-    it("应该支持外部传入滚动距离", async () => {
-      const wrapper = mount(UiSticky, {
-        props: { scrollTop: 200 },
-      })
-      await waitForTransition()
-
-      expect(wrapper.props("scrollTop")).toBe(200)
-    })
-
-    it("scrollTop 变化时应触发状态检查", async () => {
-      const wrapper = mount(UiSticky, {
-        props: { scrollTop: 0 },
-      })
-      await waitForTransition()
-
-      await wrapper.setProps({ scrollTop: 100 })
-      await waitForTransition()
-
-      expect(wrapper.props("scrollTop")).toBe(100)
     })
   })
 
@@ -136,7 +110,7 @@ describe("uiSticky 组件", () => {
       expect(wrapper.props("zIndex")).toBe(100)
     })
 
-    it("zIndex 应该应用到根元素样式", async () => {
+    it("zIndex 应该应用到样式", async () => {
       const wrapper = mount(UiSticky, {
         props: { zIndex: 200 },
       })
@@ -166,14 +140,14 @@ describe("uiSticky 组件", () => {
       expect(wrapper.props("background")).toBe("primary")
     })
 
-    it("背景色应该应用到 body 样式", async () => {
+    it("背景色应该应用到 container 样式", async () => {
       const wrapper = mount(UiSticky, {
         props: { background: "#ffffff" },
       })
       await waitForTransition()
 
-      const bodyStyle = wrapper.find(".ui-sticky__body").attributes("style") || ""
-      expect(bodyStyle).toContain("background")
+      const containerStyle = wrapper.find(".ui-sticky__container").attributes("style") || ""
+      expect(containerStyle).toContain("background")
     })
   })
 
@@ -184,7 +158,7 @@ describe("uiSticky 组件", () => {
       })
       await waitForTransition()
 
-      expect(wrapper.find(".ui-sticky__body.my-sticky").exists()).toBe(true)
+      expect(wrapper.find(".ui-sticky__container.my-sticky").exists()).toBe(true)
     })
 
     it("应该支持 customStyle 对象", async () => {
@@ -193,9 +167,9 @@ describe("uiSticky 组件", () => {
       })
       await waitForTransition()
 
-      // customStyle 会合并到 body 样式中
-      const body = wrapper.find(".ui-sticky__body")
-      expect(body.exists()).toBe(true)
+      // customStyle 会合并到 container 样式中
+      const container = wrapper.find(".ui-sticky__container")
+      expect(container.exists()).toBe(true)
     })
   })
 
@@ -265,7 +239,7 @@ describe("uiSticky 组件", () => {
       await waitForTransition()
 
       expect(wrapper.find(".ui-sticky").exists()).toBe(true)
-      expect(wrapper.find(".ui-sticky__body").exists()).toBe(true)
+      expect(wrapper.find(".ui-sticky__container").exists()).toBe(true)
     })
 
     it("多次调用 resize 应正常工作", async () => {

@@ -1,21 +1,12 @@
 /**
  * ui-row 组件单元测试
  * 测试行布局组件的 props、provide 和渲染逻辑
- *
- * 注意：ui-row 组件使用 `useProps.gap || useProps.rowGap` 的逻辑，
- * 当 gap=0 时会被视为 falsy 而回退到 rowGap。
- * 因此测试时建议使用字符串形式的间隔值（如 "0rpx"）或非零数值。
  */
 
 import UiRow from "@/ui/ui-row/ui-row.vue"
 import { mount } from "@vue/test-utils"
 import { waitForTransition } from "../setup"
 import { it, vi, expect, describe, afterEach, beforeEach } from "vitest"
-
-/**
- * 默认有效的 gap 值，使用字符串形式避免 falsy 判断问题
- */
-const defaultGap = "0rpx"
 
 describe("ui-row 行布局组件", () => {
   beforeEach(() => {
@@ -28,9 +19,7 @@ describe("ui-row 行布局组件", () => {
 
   describe("基础渲染", () => {
     it("应正确渲染行布局组件", async () => {
-      const wrapper = mount(UiRow, {
-        props: { gap: defaultGap },
-      })
+      const wrapper = mount(UiRow)
       await waitForTransition()
 
       expect(wrapper.find(".ui-row").exists()).toBe(true)
@@ -38,12 +27,18 @@ describe("ui-row 行布局组件", () => {
 
     it("应正确渲染带插槽内容的行布局", async () => {
       const wrapper = mount(UiRow, {
-        props: { gap: defaultGap },
         slots: { default: "<div class='test-content'>内容</div>" },
       })
       await waitForTransition()
 
       expect(wrapper.find(".test-content").exists()).toBe(true)
+    })
+
+    it("默认应允许换行", async () => {
+      const wrapper = mount(UiRow)
+      await waitForTransition()
+
+      expect(wrapper.classes()).toContain("ui-row--wrap")
     })
   })
 
@@ -68,19 +63,9 @@ describe("ui-row 行布局组件", () => {
       expect(wrapper.find(".ui-row").exists()).toBe(true)
     })
 
-    it("应支持 gap 为 0rpx", async () => {
-      const wrapper = mount(UiRow, {
-        props: { gap: "0rpx" },
-      })
-      await waitForTransition()
-
-      expect(wrapper.props("gap")).toBe("0rpx")
-      expect(wrapper.find(".ui-row").exists()).toBe(true)
-    })
-
     it("应支持 colGap 列间隔", async () => {
       const wrapper = mount(UiRow, {
-        props: { colGap: "10rpx", rowGap: "0rpx" },
+        props: { colGap: "10rpx" },
       })
       await waitForTransition()
 
@@ -89,7 +74,7 @@ describe("ui-row 行布局组件", () => {
 
     it("应支持 rowGap 行间隔", async () => {
       const wrapper = mount(UiRow, {
-        props: { rowGap: "15rpx", colGap: "0rpx" },
+        props: { rowGap: "15rpx" },
       })
       await waitForTransition()
 
@@ -118,13 +103,33 @@ describe("ui-row 行布局组件", () => {
     })
   })
 
+  describe("换行配置", () => {
+    it("wrap 为 true 时应添加换行类", async () => {
+      const wrapper = mount(UiRow, {
+        props: { wrap: true },
+      })
+      await waitForTransition()
+
+      expect(wrapper.classes()).toContain("ui-row--wrap")
+    })
+
+    it("wrap 为 false 时不应添加换行类", async () => {
+      const wrapper = mount(UiRow, {
+        props: { wrap: false },
+      })
+      await waitForTransition()
+
+      expect(wrapper.classes()).not.toContain("ui-row--wrap")
+    })
+  })
+
   describe("对齐方式", () => {
     const justifyValues = ["start", "end", "center", "between", "around"] as const
 
     justifyValues.forEach((justify) => {
       it(`应支持 justify=${justify} 水平对齐`, async () => {
         const wrapper = mount(UiRow, {
-          props: { justify, gap: defaultGap },
+          props: { justify },
         })
         await waitForTransition()
 
@@ -138,7 +143,7 @@ describe("ui-row 行布局组件", () => {
     alignValues.forEach((align) => {
       it(`应支持 align=${align} 垂直对齐`, async () => {
         const wrapper = mount(UiRow, {
-          props: { align, gap: defaultGap },
+          props: { align },
         })
         await waitForTransition()
 
@@ -151,7 +156,7 @@ describe("ui-row 行布局组件", () => {
   describe("自定义样式", () => {
     it("应支持自定义类名", async () => {
       const wrapper = mount(UiRow, {
-        props: { customClass: "my-row", gap: defaultGap },
+        props: { customClass: "my-row" },
       })
       await waitForTransition()
 
@@ -162,7 +167,6 @@ describe("ui-row 行布局组件", () => {
       const wrapper = mount(UiRow, {
         props: {
           customStyle: { marginTop: "10px" },
-          gap: defaultGap,
         },
       })
       await waitForTransition()
@@ -173,47 +177,25 @@ describe("ui-row 行布局组件", () => {
 
   describe("暴露的方法", () => {
     it("应暴露 name 属性", async () => {
-      const wrapper = mount(UiRow, {
-        props: { gap: defaultGap },
-      })
+      const wrapper = mount(UiRow)
       await waitForTransition()
 
       expect(wrapper.vm.name).toBe("ui-row")
     })
-
-    it("应暴露 resize 方法", async () => {
-      const wrapper = mount(UiRow, {
-        props: { gap: defaultGap },
-      })
-      await waitForTransition()
-
-      expect(typeof wrapper.vm.resize).toBe("function")
-    })
-
-    it("resize 方法调用不应抛错", async () => {
-      const wrapper = mount(UiRow, {
-        props: { gap: defaultGap },
-      })
-      await waitForTransition()
-
-      expect(() => wrapper.vm.resize()).not.toThrow()
-    })
   })
 
   describe("边界情况", () => {
-    it("gap 为 0rpx 时应正常渲染", async () => {
+    it("gap 为 0 时应正常渲染", async () => {
       const wrapper = mount(UiRow, {
-        props: { gap: "0rpx" },
+        props: { gap: 0 },
       })
       await waitForTransition()
 
       expect(wrapper.find(".ui-row").exists()).toBe(true)
     })
 
-    it("gap 为 0px 时应正常渲染", async () => {
-      const wrapper = mount(UiRow, {
-        props: { gap: "0px" },
-      })
+    it("无 props 时应正常渲染", async () => {
+      const wrapper = mount(UiRow)
       await waitForTransition()
 
       expect(wrapper.find(".ui-row").exists()).toBe(true)

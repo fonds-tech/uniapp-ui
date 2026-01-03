@@ -138,7 +138,7 @@ const componentCategories = [
     name: "布局组件",
     key: "layout",
     components: [
-      { name: "Grid", path: "grid", icon: "📐", desc: "栅格布局组件" },
+      { name: "Layout", path: "layout", icon: "📐", desc: "栅格布局组件" },
       { name: "Header", path: "header", icon: "🔝", desc: "页头组件" },
       { name: "Footer", path: "footer", icon: "🔚", desc: "页脚组件" },
       { name: "Sticky", path: "sticky", icon: "📌", desc: "粘性布局组件" },

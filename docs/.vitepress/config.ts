@@ -54,8 +54,7 @@ export default defineConfig({
         {
           text: "布局组件",
           items: [
-            { text: "Row 行布局", link: "/components/row" },
-            { text: "Col 列布局", link: "/components/col" },
+            { text: "Layout 布局", link: "/components/layout" },
             { text: "Sticky 粘性布局", link: "/components/sticky" },
             { text: "Line 分割线", link: "/components/line" },
             { text: "SafeAreaTop 顶部安全区", link: "/components/safe-area-top" },

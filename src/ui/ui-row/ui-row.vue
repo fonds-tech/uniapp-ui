@@ -1,24 +1,42 @@
 <template>
-  <view class="ui-row" :class="[useProps.customClass]" :style="[style]">
+  <view class="ui-row" :class="[useProps.customClass, { 'ui-row--wrap': useProps.wrap }]" :style="[style]">
     <slot />
   </view>
 </template>
 
 <script setup lang="ts">
-import { pick } from "lodash-es"
+import type { CSSProperties } from "vue"
+import { useUnit, useStyle } from "../hooks"
 import { rowProps, useRowProps } from "./index"
-import { useRect, useStyle, useUnitToPx } from "../hooks"
 
 defineOptions({ name: "ui-row" })
 
 const props = defineProps(rowProps)
 const useProps = useRowProps(props)
-const rect = ref<UniApp.NodeInfo>({})
-const instance = getCurrentInstance()
 
+// 计算间距值（用于 provide 给 Col）
+const gapInfo = computed(() => {
+  const rowGapVal = useProps.gap || useProps.rowGap
+  const colGapVal = useProps.gap || useProps.colGap
+  return {
+    rowGap: rowGapVal ? useUnit(rowGapVal) : "0px",
+    colGap: colGapVal ? useUnit(colGapVal) : "0px",
+  }
+})
+
+// 计算样式
 const style = computed(() => {
-  const style: any = {}
-  style.margin = `-${useUnitToPx(useProps.gap || useProps.rowGap) / 2}px -${useUnitToPx(useProps.gap || useProps.colGap) / 2}px`
+  const style: CSSProperties = {}
+  const { rowGap, colGap } = gapInfo.value
+
+  // 使用负 margin 抵消子元素的 padding（兼容性更好）
+  if (rowGap !== "0px" || colGap !== "0px") {
+    const rowGapHalf = `calc(${rowGap} / -2)`
+    const colGapHalf = `calc(${colGap} / -2)`
+    style.margin = `${rowGapHalf} ${colGapHalf}`
+  }
+
+  // 水平对齐方式
   switch (useProps.justify) {
     case "start":
     case "end":
@@ -32,6 +50,8 @@ const style = computed(() => {
       style.justifyContent = useProps.justify
       break
   }
+
+  // 垂直对齐方式
   switch (useProps.align) {
     case "start":
     case "end":
@@ -41,29 +61,30 @@ const style = computed(() => {
       style.alignItems = useProps.align
       break
   }
+
   return useStyle({ ...style, ...useStyle(useProps.customStyle) })
 })
 
-function resize() {
-  nextTick(async () => {
-    rect.value = await useRect(".ui-row", instance)
-  })
-}
+// 向子组件提供间距信息
+provide("ui-row", gapInfo)
 
-onMounted(() => resize())
-provide("ui-row", { ...pick(toRefs(props), ["gap", "colGap", "rowGap"]) })
-defineExpose({ name: "ui-row", resize })
+defineExpose({ name: "ui-row" })
 </script>
 
 <script lang="ts">
 export default {
+  name: "ui-row",
   options: { virtualHost: true, multipleSlots: true, styleIsolation: "shared" },
 }
 </script>
 
 <style lang="scss">
 .ui-row {
+  width: 100%;
   display: flex;
-  flex-wrap: wrap;
+
+  &--wrap {
+    flex-wrap: wrap;
+  }
 }
 </style>
