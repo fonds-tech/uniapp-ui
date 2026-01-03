@@ -210,21 +210,24 @@ definePage({
 
 <style lang="scss" scoped>
 .grid-item {
-  height: 60rpx;
+  height: 64rpx;
   display: flex;
   font-size: 24rpx;
+  transition: all 0.3s;
   align-items: center;
+  font-weight: 500;
   border-radius: 8rpx;
   justify-content: center;
 
   &.dark {
     color: #fff;
     background: var(--ui-color-primary);
+    box-shadow: 0 4rpx 12rpx rgba(25, 137, 250, 0.4);
   }
 
   &.light {
     color: var(--ui-color-primary);
-    background: rgba(25, 137, 250, 0.2);
+    background: rgba(25, 137, 250, 0.15);
   }
 
   &.h80 {
@@ -235,8 +238,8 @@ definePage({
 .align-label {
   color: #666;
   font-size: 24rpx;
-  margin-top: 16rpx;
-  margin-bottom: 8rpx;
+  margin-top: 24rpx;
+  margin-bottom: 12rpx;
 
   &:first-child {
     margin-top: 0;
@@ -248,6 +251,6 @@ definePage({
 }
 
 :deep(.ui-row + .ui-row) {
-  margin-top: 16rpx;
+  margin-top: 20rpx;
 }
 </style>
