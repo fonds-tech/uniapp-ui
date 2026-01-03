@@ -6,23 +6,24 @@
         :style="[textareaStyle]"
         :class="[textareaClass]"
         :value="current"
-        :fixed="fixed"
-        :focus="focus"
-        :cursor="+cursor"
-        :disabled="disabled"
-        :maxlength="+maxlength"
-        :placeholder="placeholder"
-        :auto-height="autoHeight"
-        :confirm-type="confirmType"
-        :hold-keyboard="holdKeyboard"
-        :selection-end="+selectionEnd"
-        :cursor-spacing="+cursorSpacing"
-        :adjust-position="adjustPosition"
-        :show-confirm-bar="showConfirmBar"
-        :selection-start="+selectionStart"
+        :fixed="useProps.fixed"
+        :focus="useProps.focus"
+        :cursor="+useProps.cursor"
+        :disabled="useProps.disabled"
+        :maxlength="+useProps.maxlength"
+        :placeholder="useProps.placeholder"
+        :cursor-color="useProps.cursorColor"
+        :auto-height="useProps.autoHeight"
+        :confirm-type="useProps.confirmType"
+        :hold-keyboard="useProps.holdKeyboard"
+        :selection-end="+useProps.selectionEnd"
+        :cursor-spacing="+useProps.cursorSpacing"
+        :adjust-position="useProps.adjustPosition"
+        :show-confirm-bar="useProps.showConfirmBar"
+        :selection-start="+useProps.selectionStart"
         :placeholder-style="placeholderStyle"
-        :disable-default-padding="disableDefaultPadding"
-        :ignore-composition-event="ignoreCompositionEvent"
+        :disable-default-padding="useProps.disableDefaultPadding"
+        :ignore-composition-event="useProps.ignoreCompositionEvent"
         @blur="onBlur"
         @focus="onFocus"
         @input="onInput"
@@ -30,11 +31,11 @@
         @linechange="onLinechange"
         @keyboardheightchange="onKeyboardheightchange"
       />
-      <view v-if="clearable && current && isFocus" class="ui-textarea__clear" :style="[clearStyle]" @click="onClickClear">
-        <ui-icon :name="clearIcon" :size="clearIconSize" :color="clearIconColor" :weight="clearIconWeight" />
+      <view v-if="useProps.clearable && current && isFocus" class="ui-textarea__clear" :style="[clearStyle]" @click="onClickClear">
+        <ui-icon :name="useProps.clearIcon" :size="useProps.clearIconSize" :color="useProps.clearIconColor" :weight="useProps.clearIconWeight" />
       </view>
     </view>
-    <view v-if="showCount" class="ui-textarea__count" :style="[countStyle]">
+    <view v-if="useProps.showCount" class="ui-textarea__count" :style="[countStyle]">
       {{ valueLength }}
     </view>
   </view>
@@ -98,6 +99,7 @@ const clearStyle = computed(() => {
   const style: any = {}
   style.width = useUnit(useProps.clearIconSize)
   style.height = useUnit(useProps.clearIconSize)
+  style.backgroundColor = useColor(useProps.clearIconBackground)
   return useStyle(style)
 })
 
@@ -119,14 +121,15 @@ watch(
   (value) => {
     current.value = value
   },
+  { immediate: true },
 )
 
 function reset(value: any) {
   current.value = value
-  upadteValue(value)
+  updateValue(value)
 }
 
-async function upadteValue(value: string) {
+async function updateValue(value: string) {
   emits("input", value)
   emits("change", value)
   emits("update:modelValue", value)
@@ -157,13 +160,13 @@ function onKeyboardheightchange() {
 
 function onInput(event: any) {
   current.value = event.detail.value
-  upadteValue(event.detail.value)
+  updateValue(event.detail.value)
   parent?.onChange(current.value)
 }
 
 function onClickClear() {
   current.value = ""
-  upadteValue("")
+  updateValue("")
   emits("clear")
   parent?.onBlur(current.value)
 }
@@ -190,7 +193,7 @@ export default {
   }
 
   &__textarea {
-    width: 100%;
+    flex: 1;
     font-size: inherit;
 
     &--center {

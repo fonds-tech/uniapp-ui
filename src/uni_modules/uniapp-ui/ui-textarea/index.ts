@@ -1,5 +1,5 @@
 import type Textarea from "./ui-textarea.vue"
-import type { ExtractPropTypes } from "vue"
+import type { PropType, ExtractPropTypes } from "vue"
 import { createProps } from "../hooks"
 import { styleProp, truthProp, makeStringProp, makeNumericProp } from "../utils/props"
 
@@ -39,7 +39,10 @@ export const [textareaProps, useTextareaProps] = createProps("textarea", {
   /**
    * 设置右下角按钮的文字，兼容性详见uni-app文档
    */
-  confirmType: makeStringProp("done"),
+  confirmType: {
+    type: String as PropType<"send" | "search" | "next" | "go" | "done" | "return">,
+    default: "done",
+  },
   /**
    * 点击键盘右下角按钮时是否保持键盘不收起，H5无效
    */
@@ -151,7 +154,7 @@ export const [textareaProps, useTextareaProps] = createProps("textarea", {
   /**
    * 输入框清除图标
    */
-  clearIcon: makeStringProp("cross"),
+  clearIcon: makeStringProp("close"),
   /**
    * 输入框清除图标大小
    */
