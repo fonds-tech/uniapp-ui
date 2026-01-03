@@ -25,7 +25,7 @@
         </view>
         <view class="form-item">
           <text class="form-label">密码</text>
-          <ui-input v-model="value5" password placeholder="请输入密码" />
+          <ui-input v-model="value5" type="password" placeholder="请输入密码" />
         </view>
       </view>
     </demo-section>
@@ -109,24 +109,6 @@
       </view>
     </demo-section>
 
-    <!-- 新增：尺寸配置 -->
-    <demo-section title="尺寸配置">
-      <view class="form-list">
-        <view class="form-item">
-          <text class="form-label">自定义宽度</text>
-          <ui-input v-model="valueWidth" width="300rpx" background="#f5f6fa" radius="8rpx" placeholder="固定宽度" />
-        </view>
-        <view class="form-item">
-          <text class="form-label">自定义高度</text>
-          <ui-input v-model="valueHeight" height="80rpx" background="#f5f6fa" radius="8rpx" placeholder="自定义高度" />
-        </view>
-        <view class="form-item">
-          <text class="form-label">内边距</text>
-          <ui-input v-model="valuePadding" padding="20rpx" background="#f5f6fa" radius="8rpx" placeholder="自定义内边距" />
-        </view>
-      </view>
-    </demo-section>
-
     <!-- 新增：占位符样式 -->
     <demo-section title="占位符样式">
       <view class="form-list">
@@ -164,49 +146,6 @@
         <view class="form-item">
           <text class="form-label">自动聚焦</text>
           <ui-input v-model="valueFocus" :focus="autoFocus" placeholder="自动获取焦点" />
-        </view>
-      </view>
-    </demo-section>
-
-    <!-- 新增：事件处理 -->
-    <demo-section title="事件处理">
-      <view class="form-list">
-        <view class="form-item">
-          <text class="form-label">事件监听</text>
-          <ui-input
-            v-model="valueEvent"
-            clearable
-            placeholder="输入触发事件"
-            @click="onInputClick"
-            @focus="onInputFocus"
-            @blur="onInputBlur"
-            @input="onInputInput"
-            @change="onInputChange"
-            @clear="onInputClear"
-            @confirm="onInputConfirm"
-          />
-        </view>
-      </view>
-      <view class="event-log">
-        <text class="event-log__title">事件日志：</text>
-        <scroll-view scroll-y class="event-log__content">
-          <text v-for="(log, index) in eventLogs" :key="index" class="event-log__item">{{ log }}</text>
-        </scroll-view>
-        <ui-button size="small" @click="clearLogs">清空日志</ui-button>
-      </view>
-    </demo-section>
-
-    <!-- 新增：自定义类名和样式 -->
-    <demo-section title="自定义类名样式">
-      <view class="form-list">
-        <view class="form-item">
-          <text class="form-label">自定义样式</text>
-          <ui-input
-            v-model="valueCustom"
-            custom-class="my-input"
-            :custom-style="{ border: '2rpx solid #1989fa', borderRadius: '16rpx', padding: '16rpx' }"
-            placeholder="自定义样式输入框"
-          />
         </view>
       </view>
     </demo-section>

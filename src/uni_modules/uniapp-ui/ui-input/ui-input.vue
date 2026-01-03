@@ -88,6 +88,7 @@ const clearStyle = computed(() => {
   const style: any = {}
   style.width = useUnit(useProps.clearIconSize)
   style.height = useUnit(useProps.clearIconSize)
+  style.backgroundColor = useColor(useProps.clearIconBackground)
   return useStyle(style)
 })
 
@@ -102,7 +103,7 @@ const type = computed(() => {
 })
 
 const password = computed(() => {
-  return useProps.type === "password" ? true : useProps.password
+  return useProps.type === "password"
 })
 
 const disabled = computed(() => {
@@ -119,10 +120,10 @@ watch(
 
 function reset(value: any) {
   current.value = value
-  upadteValue(value)
+  updateValue(value)
 }
 
-async function upadteValue(value: string) {
+async function updateValue(value: string) {
   emits("input", value)
   emits("change", value)
   emits("update:modelValue", value)
@@ -153,13 +154,13 @@ function onKeyboardheightchange() {
 
 function onInput(event: any) {
   current.value = event.detail.value
-  upadteValue(event.detail.value)
+  updateValue(event.detail.value)
   parent?.onChange(current.value)
 }
 
 function onClickClear() {
   current.value = ""
-  upadteValue("")
+  updateValue("")
   emits("clear")
   parent?.onBlur(current.value)
 }

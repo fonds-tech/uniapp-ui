@@ -34,10 +34,6 @@ export const [inputProps, useInputProps] = createProps("input", {
    */
   fontWeight: { type: [String, Number], default: "" },
   /**
-   * 是否是密码类型
-   */
-  password: Boolean,
-  /**
    * 是否只读，与disabled不同之处在于disabled会置灰组件，而readonly则不会
    */
   readonly: Boolean,
