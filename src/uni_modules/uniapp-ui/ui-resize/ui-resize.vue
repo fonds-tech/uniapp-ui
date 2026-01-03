@@ -23,19 +23,19 @@ defineOptions({ name: "ui-resize" })
 const props = defineProps(resizeProps)
 const emits = defineEmits(resizeEmits)
 const useProps = useResizeProps(props)
+
+// 响应式状态
 const width = ref(0)
 const height = ref(0)
-const oldWidth = ref(0)
-const oldHeight = ref(0)
 const expandScrollTop = ref(0)
 const shrinkScrollTop = ref(0)
 const expandScrollLeft = ref(0)
 const shrinkScrollLeft = ref(0)
-const scrollEventCount = ref(0)
 
 const id = ref<string>(`resize-${uuid()}`)
 const instance = getCurrentInstance()
 
+// 根容器样式：设置动态宽高
 const style = computed(() => {
   const style: CSSProperties = {}
   style.width = useProps.width ? useUnit(useProps.width) : `${width.value}px`
@@ -43,64 +43,97 @@ const style = computed(() => {
   return useStyle({ ...style, ...useStyle(useProps.customStyle) })
 })
 
+// 内容容器样式：仅在有初始值时设置
 const contentStyle = computed(() => {
   const style: CSSProperties = {}
-  style.width = useProps.width ?? useUnit(useProps.width)
-  style.height = useProps.height ?? useUnit(useProps.height)
+  style.width = useProps.width ? useUnit(useProps.width) : undefined
+  style.height = useProps.height ? useUnit(useProps.height) : undefined
   return useStyle(style)
 })
 
-async function init() {
+// 滚动处理函数（闭包方式，在 onMounted 中初始化）
+let onScrollHandler = () => {}
+
+// 滚动到底部，确保能检测到尺寸变化
+function scrollToBottom(lastWidth: number, lastHeight: number) {
+  expandScrollTop.value = 100000 + lastHeight
+  shrinkScrollTop.value = 2.5 * height.value + lastHeight
+  expandScrollLeft.value = 100000 + lastWidth
+  shrinkScrollLeft.value = 2.5 * width.value + lastWidth
+}
+
+// 触发 resize 事件
+function emitResize(rect: UniApp.NodeInfo) {
+  emits("resize", pick(rect, ["top", "left", "right", "bottom", "width", "height"]))
+}
+
+onMounted(async () => {
+  // 获取初始尺寸
   const rect = await useRect(`#${id.value}`, instance)
-  width.value = rect.width
-  height.value = rect.height
-  oldWidth.value = rect.width
-  oldHeight.value = rect.height
-  scrollToBottom()
-}
 
-async function resize() {
-  if (useProps.disabled) return
-  const rect = await useRect(`#${id.value}`, instance)
-  let isEmit = false
+  // 闭包保存上次尺寸，避免额外的 ref 开销
+  let lastWidth = rect.width
+  let lastHeight = rect.height
+  let scrollEventCount = 0
 
-  if (scrollEventCount.value++ === 0) isEmit = true
+  // 立即填充容器宽高
+  width.value = lastWidth
+  height.value = lastHeight
 
-  if (rect.width !== oldWidth.value) {
-    isEmit = true
-    oldWidth.value = rect.width
+  // 定义滚动处理函数（闭包方式）
+  onScrollHandler = async () => {
+    // 禁用状态下不处理
+    if (useProps.disabled) return
+
+    const rect = await useRect(`#${id.value}`, instance)
+
+    // 首次滚动事件触发时，通知用户初始尺寸
+    if (scrollEventCount++ === 0) {
+      emitResize(rect)
+    }
+
+    // 前两次滚动事件是初始化触发的，跳过处理
+    if (scrollEventCount < 3) return
+
+    // 获取新尺寸
+    const newWidth = rect.width
+    const newHeight = rect.height
+
+    // 更新容器宽高
+    width.value = newWidth
+    height.value = newHeight
+
+    // 检测宽高是否变化，合并触发（宽高同时变化只触发一次）
+    let hasChange = false
+    if (newWidth !== lastWidth) {
+      lastWidth = newWidth
+      hasChange = true
+    }
+    if (newHeight !== lastHeight) {
+      lastHeight = newHeight
+      hasChange = true
+    }
+
+    // 有变化时触发 resize 事件
+    if (hasChange) {
+      emitResize(rect)
+    }
+
+    // 滚动到底部，准备下次检测
+    scrollToBottom(lastWidth, lastHeight)
   }
 
-  if (rect.height !== oldHeight.value) {
-    isEmit = true
-    oldHeight.value = rect.height
-  }
+  // 初始化：滚动到底部
+  scrollToBottom(lastWidth, lastHeight)
+})
 
-  if (isEmit) {
-    width.value = rect.width
-    height.value = rect.height
-    emits("resize", pick(rect, ["top", "left", "right", "bottom", "width", "height"]))
-  }
-
-  scrollToBottom()
+function onExpandScroll() {
+  onScrollHandler()
 }
 
-function scrollToBottom() {
-  expandScrollTop.value = 100000 + oldHeight.value
-  shrinkScrollTop.value = 3 * height.value + oldHeight.value
-  expandScrollLeft.value = 100000 + oldWidth.value
-  shrinkScrollLeft.value = 3 * width.value + oldWidth.value
+function onShrinkScroll() {
+  onScrollHandler()
 }
-
-function onExpandScroll(e: any) {
-  resize()
-}
-
-function onShrinkScroll(e: any) {
-  resize()
-}
-
-onMounted(init)
 </script>
 
 <script lang="ts">
@@ -112,6 +145,7 @@ export default {
 
 <style scoped lang="scss">
 .ui-resize {
+  position: relative;
   &__content {
     position: absolute;
     min-width: 1px;

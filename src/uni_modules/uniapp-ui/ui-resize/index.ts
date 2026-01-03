@@ -27,7 +27,7 @@ export const [resizeProps, useResizeProps] = createProps("resize", {
 })
 
 export const resizeEmits = {
-  resize: (vallue: any) => true,
+  resize: (value: any) => true,
 }
 
 export type ResizeEmits = typeof resizeEmits
