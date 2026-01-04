@@ -1,5 +1,5 @@
 import type Sidebar from "./ui-sidebar.vue"
-import type { PropType, InjectionKey, CSSProperties, ExtractPropTypes } from "vue"
+import type { Ref, PropType, InjectionKey, CSSProperties, ExtractPropTypes } from "vue"
 import { createProps } from "../hooks"
 import { truthProp, numericProp, makeNumericProp } from "../utils/props"
 
@@ -73,7 +73,11 @@ export type SidebarEmits = typeof sidebarEmits
 export type SidebarProps = ExtractPropTypes<typeof sidebarProps>
 export interface SidebarProvide {
   props: SidebarProps
-  clickItem: (name: string | number) => void
-  updateModelValue: (value: string | number) => void
+  useProps: SidebarProps
+  currentName: Ref<string | number | null>
+  clickItem: (name: string | number, index: number) => void
+  setLine: (name: string | number) => void
+  scrollIntoView: (name: string | number) => void
+  setCurrentName: (name: string | number) => void
 }
 export type SidebarInstance = InstanceType<typeof Sidebar>

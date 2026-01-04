@@ -23,7 +23,8 @@
       "Bash(pnpm vitest run:*)",
       "mcp__serena__onboarding",
       "mcp__serena__write_memory",
-      "Bash(pnpm vue-tsc:*)"
+      "Bash(pnpm vue-tsc:*)",
+      "mcp__serena__read_memory"
     ],
     "deny": [],
     "ask": []

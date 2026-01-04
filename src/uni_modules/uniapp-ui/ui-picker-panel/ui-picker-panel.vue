@@ -313,6 +313,7 @@ export default {
         color 0.15s ease,
         font-weight 0.15s ease;
       align-items: center;
+      white-space: nowrap;
       justify-content: center;
     }
   }

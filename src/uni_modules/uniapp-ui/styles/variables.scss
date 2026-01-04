@@ -12,13 +12,28 @@
   --ui-color-success: #07c160; // 成功色 - 微信绿
   --ui-color-warning: #ff976a; // 警告色 - 橙色
   --ui-color-danger: #ee0a24; // 危险色 - 红色
+  --ui-color-error: #ee0a24; // 错误色 - 红色（与 danger 一致）
   --ui-color-info: #1989fa; // 信息色 - 与主色一致
+
+  // 品牌色彩 RGB（用于 rgba() 透明度计算）
+  --ui-color-info-rgb: 25, 137, 250;
+  --ui-color-error-rgb: 238, 10, 36;
+  --ui-color-danger-rgb: 238, 10, 36;
+  --ui-color-primary-rgb: 25, 137, 250;
+  --ui-color-success-rgb: 7, 193, 96;
+  --ui-color-warning-rgb: 255, 151, 106;
 
   // 文本色彩
   --ui-color-text-main: #323233; // 默认文本 - 深灰
   --ui-color-text-secondary: #969799; // 次要文本 - 中灰
+  --ui-color-text-tertiary: #c8c9cc; // 第三级文本 - 浅灰
   --ui-color-text-placeholder: #c8c9cc; // 占位文本 - 浅灰
   --ui-color-text-disabled: #c8c9cc; // 禁用文本 - 浅灰
+
+  // 文本色彩 RGB（用于 rgba() 透明度计算）
+  --ui-color-text-main-rgb: 50, 50, 51;
+  --ui-color-text-tertiary-rgb: 200, 201, 204;
+  --ui-color-text-secondary-rgb: 150, 151, 153;
 
   // 边框色彩
   --ui-color-border: #dcdee0; // 标准边框 - 中灰
@@ -176,22 +191,35 @@
   --ui-color-success: #34d399; // 成功色 - 绿色（暗色适配）
   --ui-color-warning: #ffb088; // 警告色 - 橙色（暗色适配）
   --ui-color-danger: #ff6b6b; // 危险色 - 红色（暗色适配）
+  --ui-color-error: #ff6b6b; // 错误色 - 红色（暗色适配）
   --ui-color-info: #4da3ff; // 信息色 - 与主色一致（暗色适配）
 
+  // 品牌色彩 RGB（暗色适配）
   --ui-color-mask: rgba(0, 0, 0, 0.7);
 
   --ui-color-border: #3a3a3a;
+  --ui-color-info-rgb: 77, 163, 255;
+  --ui-color-error-rgb: 255, 107, 107;
 
   --ui-color-text-main: #e8e8e8;
+  --ui-color-danger-rgb: 255, 107, 107;
+  --ui-color-primary-rgb: 77, 163, 255;
+  --ui-color-success-rgb: 52, 211, 153;
+  --ui-color-warning-rgb: 255, 176, 136;
+  --ui-color-text-tertiary: #686868;
+  --ui-color-text-secondary: #a8a8a8;
 
+  // 文本色彩 RGB（暗色适配）
   --ui-color-background: #1a1a1a;
   --ui-color-mask-heavy: rgba(0, 0, 0, 0.85);
   --ui-color-mask-light: rgba(0, 0, 0, 0.5);
   --ui-color-border-dark: #4a4a4a;
   --ui-color-border-light: #2a2a2a;
   --ui-color-text-disabled: #686868;
-  --ui-color-text-secondary: #a8a8a8;
+  --ui-color-text-main-rgb: 232, 232, 232;
   --ui-color-background-dark: #0f0f0f;
   --ui-color-background-light: #2a2a2a;
   --ui-color-text-placeholder: #686868;
+  --ui-color-text-tertiary-rgb: 104, 104, 104;
+  --ui-color-text-secondary-rgb: 168, 168, 168;
 }

@@ -1,30 +1,9 @@
 <template>
-  <image
-    v-if="isImage(name)"
-    :class="[prefix, `${prefix}-${useProps.name}`, useProps.customClass, isHover ? useProps.hoverClass : '']"
-    :style="[imageStyle]"
-    :src="useProps.name"
-    :mode="imageMode"
-    @touchstart="onTouchStart"
-    @touchend="onTouchEnd"
-    @mousedown="onTouchStart"
-    @mouseup="onTouchEnd"
-    @click="onClick"
-  />
-  <text
-    v-else
-    :class="[prefix, `${prefix}-${useProps.name}`, useProps.customClass, isHover ? useProps.hoverClass : '']"
-    :style="[iconStyle]"
-    @touchstart="onTouchStart"
-    @touchend="onTouchEnd"
-    @mousedown="onTouchStart"
-    @mouseup="onTouchEnd"
-    @click="onClick"
-  />
+  <image v-if="isImage(name)" :class="[prefix, `${prefix}-${useProps.name}`, useProps.customClass]" :style="[imageStyle]" :src="useProps.name" :mode="imageMode" @click="onClick" />
+  <text v-else :class="[prefix, `${prefix}-${useProps.name}`, useProps.customClass]" :style="[iconStyle]" @click="onClick" />
 </template>
 
 <script setup lang="ts">
-import { merge } from "../utils/utils"
 import { isImage } from "../utils/check"
 import { useUnit, useColor, useStyle } from "../hooks"
 import { iconEmits, iconProps, useIconProps } from "./index"
@@ -34,7 +13,6 @@ defineOptions({ name: "ui-icon" })
 const props = defineProps(iconProps)
 const emits = defineEmits(iconEmits)
 const useProps = useIconProps(props)
-const isHover = ref(false)
 
 const prefix = computed(() => {
   return useProps.customPrefix || "ui-icon"
@@ -43,16 +21,13 @@ const prefix = computed(() => {
 const imageMode: any = computed(() => useProps.imageMode)
 
 const iconStyle = computed(() => {
-  let style: any = {}
+  const style: any = {}
   style.color = useColor(useProps.color)
   style.fontSize = useUnit(useProps.size)
   style.fontWeight = useProps.weight
   style.lineHeight = useProps.lineHeight
   style.borderRadius = useUnit(useProps.radius)
   style.background = useColor(useProps.background)
-  if (isHover.value) {
-    style = merge(style, useStyle(useProps.hoverStyle))
-  }
   return useStyle({ ...style, ...useStyle(useProps.customStyle) })
 })
 
@@ -67,14 +42,6 @@ const imageStyle = computed(() => {
 
 function onClick() {
   emits("click")
-}
-
-function onTouchStart() {
-  isHover.value = true
-}
-
-function onTouchEnd() {
-  isHover.value = false
 }
 
 defineExpose({ name: "ui-icon" })

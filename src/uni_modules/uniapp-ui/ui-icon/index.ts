@@ -52,15 +52,7 @@ export const [iconProps, useIconProps] = createProps("icon", {
    */
   customPrefix: makeStringProp("ui-icon"),
   /**
-   * 激活时的类名
-   */
-  hoverClass: makeStringProp("ui-icon--hover"),
-  /**
    * 自定义类名
-   */
-  hoverStyle: styleProp,
-  /**
-   * 激活时的样式
    */
   customClass: makeStringProp(""),
   /**

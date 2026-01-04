@@ -64,6 +64,8 @@ export const tabbarEmits = {
 export type TabbarEmits = typeof tabbarEmits
 export interface TabbarProvide {
   props: TabbarProps
+  useProps: TabbarProps
+  updateValue: (value: string | number) => void
 }
 export type TabbarProps = ExtractPropTypes<typeof tabbarProps>
 export type TabbarInstance = InstanceType<typeof Tabbar>

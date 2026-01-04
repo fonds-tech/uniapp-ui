@@ -101,7 +101,7 @@ const listStyle = computed(() => {
 })
 
 // 计算每个项目的样式
-const itemStyle = computed(() => (index: number) => {
+const itemStyle = computed(() => (index: string | number) => {
   const style: CSSProperties = {}
   style.paddingLeft = useUnit(useProps.prevGap)
   style.paddingRight = useUnit(useProps.nextGap)
@@ -109,11 +109,12 @@ const itemStyle = computed(() => (index: number) => {
 })
 
 // 计算每个项目的类名
-const itemClass = computed(() => (index: number) => {
+const itemClass = computed(() => (index: string | number) => {
   const list: string[] = []
-  if (index < current.value) list.push("ui-swiper__item--prev")
-  if (index > current.value) list.push("ui-swiper__item--next")
-  if (index === current.value) list.push("ui-swiper__item--current")
+  const idx = +index
+  if (idx < current.value) list.push("ui-swiper__item--prev")
+  if (idx > current.value) list.push("ui-swiper__item--next")
+  if (idx === current.value) list.push("ui-swiper__item--current")
   return list
 })
 
@@ -181,8 +182,8 @@ function swiperTo(index: number) {
 }
 
 // 点击事件处理
-function onClick(index: number) {
-  emits("click", index)
+function onClick(index: string | number) {
+  emits("click", +index)
 }
 
 // 滑动改变事件处理

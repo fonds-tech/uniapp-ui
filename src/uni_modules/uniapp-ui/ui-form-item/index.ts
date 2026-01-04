@@ -1,10 +1,9 @@
 import type FormItem from "./ui-form-item.vue"
-import type { PropType, ExtractPropTypes } from "vue"
+import type { PropType, InjectionKey, ExtractPropTypes } from "vue"
 import type { FormLabelPosition, FormValidateError, FormValidateTrigger, FormErrorMessageAlign } from "../ui-form"
 import { createProps } from "../hooks"
 import { styleProp, truthProp, numericProp, makeStringProp } from "../utils/props"
 
-export const formItemKey = Symbol("ui-form-item")
 export const [formItemProps, useFormItemProps] = createProps("formItem", {
   /**
    * model的键名
@@ -117,3 +116,18 @@ export type FormItemContentAlign = "left" | "center" | "right"
 export type FormItemEmits = typeof formItemEmits
 export type FormItemProps = ExtractPropTypes<typeof formItemProps>
 export type FormItemInstance = InstanceType<typeof FormItem>
+
+/**
+ * FormItem 提供给子组件的上下文类型
+ * 用于表单验证触发
+ */
+export interface FormItemProvide {
+  props: FormItemProps
+  prop: string
+  /** 触发 blur 验证 */
+  onBlur: (value?: unknown) => void
+  /** 触发 change 验证 */
+  onChange: (value?: unknown) => void
+}
+
+export const formItemKey: InjectionKey<FormItemProvide> = Symbol("ui-form-item")

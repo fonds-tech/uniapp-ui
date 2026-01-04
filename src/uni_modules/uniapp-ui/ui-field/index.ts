@@ -1,4 +1,5 @@
 import type Field from "./ui-field.vue"
+import type { InputConfirmType } from "@uni-helper/uni-types"
 import type { PropType, ExtractPropTypes } from "vue"
 import { createProps } from "../hooks"
 import { styleProp, truthProp, makeStringProp, makeNumericProp } from "../utils/props"
@@ -148,7 +149,7 @@ export const [fieldProps, useFieldProps] = createProps("field", {
   /**
    * 设置右下角按钮的文字，兼容性详见uni-app文档
    */
-  confirmType: makeStringProp("done"),
+  confirmType: makeStringProp<InputConfirmType>("done"),
   /**
    * 是否忽略组件内对文本合成系统事件的处理。为 false 时将触发 compositionstart、compositionend、compositionupdate 事件，且在文本合成期间会触发 input 事件
    */
@@ -273,6 +274,7 @@ export interface FieldRule {
   formatter?: FieldRuleFormatter
   validateEmpty?: boolean
 }
+export type FieldConfirmType = InputConfirmType
 export type FieldType = "text" | "number" | "idcard" | "digit" | "tel" | "safe-password" | "nickname" | "password" | "textarea"
 export type FieldRuleMessage = string | ((value: any, rule: FieldRule) => string)
 export type FieldRuleFormatter = (value: any, rule: FieldRule) => string

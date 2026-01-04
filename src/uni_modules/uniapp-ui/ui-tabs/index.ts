@@ -1,5 +1,5 @@
 import type Tabs from "./ui-tabs.vue"
-import type { PropType, InjectionKey, CSSProperties, ExtractPropTypes } from "vue"
+import type { Ref, PropType, InjectionKey, CSSProperties, ExtractPropTypes } from "vue"
 import { createProps } from "../hooks"
 import { truthProp, numericProp, makeNumericProp } from "../utils/props"
 
@@ -105,7 +105,9 @@ export type TabsEmits = typeof tabsEmits
 export type TabsProps = ExtractPropTypes<typeof tabsProps>
 export interface TabsProvide {
   props: TabsProps
+  useProps: TabsProps
+  currentName: Ref<string | number | null>
   clickTab: (name: string | number) => void
-  updateModelValue: (value: string | number) => void
+  setCurrentName: (name: string | number) => void
 }
 export type TabsInstance = InstanceType<typeof Tabs>

@@ -139,7 +139,7 @@ function toggle(check?: boolean) {
   if (parent && useProps.bindGroup) {
     const value = parent.useProps.modelValue
     const add = () => {
-      const isMax = parent.useProps.max && value.length >= parent.useProps.max
+      const isMax = parent.useProps.max && value.length >= +parent.useProps.max
       if (!isMax && !value.includes(useProps.name)) {
         value.push(useProps.name)
         parent.updateValue(value)

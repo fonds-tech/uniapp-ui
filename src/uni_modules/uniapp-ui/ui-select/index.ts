@@ -164,7 +164,7 @@ export const [selectProps, useSelectProps] = createProps("select", {
   /**
    * 右侧图标
    */
-  rightIcon: makeStringProp("arrow"),
+  rightIcon: makeStringProp("right"),
   /**
    * 右侧图标大小
    */

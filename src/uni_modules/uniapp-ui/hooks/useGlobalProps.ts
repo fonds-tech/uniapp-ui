@@ -57,16 +57,26 @@ export function useGlobalProps<T extends Record<string, any>>(name: string, prop
         return currentValue
       }
 
+      const globalConfig = getGlobalProps(name)
       const defaultValue = defaults[key]
-      // If prop has no default in our extracted defaults, return as-is
-      if (defaultValue === undefined && !(key in defaults)) {
+
+      // 如果 prop 有提取到的默认值，检查当前值是否等于默认值
+      if (key in defaults) {
+        // 只有当前值等于默认值时，才应用全局配置
+        // 这表示用户没有显式传递该 prop
+        if (currentValue === defaultValue) {
+          const globalValue = globalConfig[key]
+          if (globalValue !== undefined) {
+            return globalValue
+          }
+        }
         return currentValue
       }
 
-      // Only apply global config when current value equals default
-      // This indicates the user didn't explicitly pass this prop
-      if (currentValue === defaultValue) {
-        const globalValue = getGlobalProps(name)[key]
+      // 对于没有默认值的 props（如 numericProp、String 等）
+      // 如果当前值为 undefined，则尝试使用全局配置
+      if (currentValue === undefined) {
+        const globalValue = globalConfig[key]
         if (globalValue !== undefined) {
           return globalValue
         }

@@ -79,7 +79,7 @@ export const [uploadProps, useUploadProps] = createProps("upload", {
   /**
    * 图片显示模式，和image组件mode属性一致
    */
-  imageMode: makeStringProp("aspectFill"),
+  imageMode: makeStringProp<UniHelper.ImageProps["mode"]>("aspectFill"),
   /**
    * 预览区图标大小
    */

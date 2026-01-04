@@ -75,7 +75,7 @@ export const [swiperProps, useSwiperProps] = createProps("swiper", {
   /**
    * 图片模式，可选值：https://uniapp.dcloud.net.cn/component/image.html#image
    */
-  imageMode: makeStringProp("scaleToFill"),
+  imageMode: makeStringProp<UniHelper.ImageProps["mode"]>("scaleToFill"),
   /**
    * 数据字段
    */

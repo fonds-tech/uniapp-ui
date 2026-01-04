@@ -1,5 +1,5 @@
 <template>
-  <view class="ui-upload" :class="[classs, customClass]" :style="[style]">
+  <view class="ui-upload" :class="[classs, useProps.customClass]" :style="[style]">
     <view v-for="(item, index) in renderList" :key="index" class="ui-upload__preview" :style="[previewStyle(index)]" @click="previewImage(item)">
       <view v-if="isShowStatus(item)" class="ui-upload__status">
         <ui-icon v-if="item.status === 'fail'" name="close" color="#fff" size="40rpx" />
@@ -13,13 +13,19 @@
           <ui-icon custom-class="ui-upload__delete__icon" name="cross" color="#fff" size="20rpx" />
         </slot>
       </view>
-      <ui-image v-if="isImage(item.name || item.url)" :src="item.url" :width="width" :height="height" :mode="imageMode" />
-      <ui-icon v-else-if="isDocument(item.name || item.url)" name="document" :size="previewIconSize" :color="previewIconColor" :weight="previewIconWeight" />
-      <ui-icon v-else name="file" :size="previewIconSize" :color="previewIconColor" :weight="previewIconWeight" />
+      <ui-image v-if="isImage(item.name || item.url)" :src="item.url" :width="useProps.width" :height="useProps.height" :mode="useProps.imageMode" />
+      <ui-icon
+        v-else-if="isDocument(item.name || item.url)"
+        name="document"
+        :size="useProps.previewIconSize"
+        :color="useProps.previewIconColor"
+        :weight="useProps.previewIconWeight"
+      />
+      <ui-icon v-else name="file" :size="useProps.previewIconSize" :color="useProps.previewIconColor" :weight="useProps.previewIconWeight" />
     </view>
-    <view v-if="list.length < maxCount" class="ui-upload__trigger" :hover-class="triggerHoverClass" :hover-stay-time="100" :style="[triggerStyle]" @click="triggerUpload">
-      <slot name="icon">
-        <ui-icon :name="icon" :size="iconSize" :color="iconColor" :weight="iconWeight" />
+    <view v-if="list.length < useProps.maxCount" class="ui-upload__trigger" :hover-class="triggerHoverClass" :hover-stay-time="100" :style="[triggerStyle]" @click="triggerUpload">
+      <slot name="trigger">
+        <ui-icon :name="useProps.icon" :size="useProps.iconSize" :color="useProps.iconColor" :weight="useProps.iconWeight" />
       </slot>
     </view>
   </view>

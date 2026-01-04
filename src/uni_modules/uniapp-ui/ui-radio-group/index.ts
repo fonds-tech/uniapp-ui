@@ -1,10 +1,10 @@
 import type RadioGroup from "./ui-radio-group.vue"
-import type { ExtractPropTypes } from "vue"
+import type { InjectionKey, ExtractPropTypes } from "vue"
 import { createProps } from "../hooks"
 import { isString, isBoolean } from "../utils/check"
 import { styleProp, truthProp, makeStringProp, makeNumericProp } from "../utils/props"
 
-export const radioGroupKey = Symbol("ui-radio-group")
+export const radioGroupKey: InjectionKey<RadioGroupProvide> = Symbol("ui-radio-group")
 export const [radioGroupProps, useRadioGroupProps] = createProps("radioGroup", {
   /**
    * 绑定值
@@ -113,4 +113,9 @@ export interface RadioGroupChildrenType {
 }
 export type RadioGroupEmits = typeof radioGroupEmits
 export type RadioGroupProps = ExtractPropTypes<typeof radioGroupProps>
+export interface RadioGroupProvide {
+  props: RadioGroupProps
+  useProps: RadioGroupProps
+  updateValue: (value: RadioGroupValueType) => void
+}
 export type RadioGroupInstance = InstanceType<typeof RadioGroup>

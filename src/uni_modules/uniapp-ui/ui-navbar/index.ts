@@ -19,7 +19,7 @@ export const [navbarProps, useNavbarProps] = createProps("navbar", {
   /**
    * 返回按钮图标名称
    */
-  backIconName: { type: String, default: "arrow-left" },
+  backIconName: { type: String, default: "left" },
   /**
    * 返回按钮图标大小
    */

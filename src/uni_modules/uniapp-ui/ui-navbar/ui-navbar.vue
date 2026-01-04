@@ -33,9 +33,9 @@
 
 <script setup lang="ts">
 import type { CSSProperties } from "vue"
-import { isEmpty, isNumber, isFunction } from "../utils/check"
+import { isNumber } from "../utils/check"
 import { navbarEmits, navbarProps, useNavbarProps } from "./index"
-import { useRgb, useMitt, useRect, useUnit, useColor, useStyle, usePxToRpx, useUnitToPx, useUnitToRpx, useSystemInfo } from "../hooks"
+import { useRgb, useRect, useUnit, useColor, useStyle, usePxToRpx, useUnitToPx, useUnitToRpx, useSystemInfo } from "../hooks"
 
 // 定义组件名称
 defineOptions({ name: "ui-navbar" })
@@ -53,14 +53,14 @@ const systemInfo = useSystemInfo()
 const menuButtonInfo = uni.getMenuButtonBoundingClientRect()
 // #endif
 
-// 使用 mitt 进行事件管理
-const mitt = useMitt()
 // 定义响应式变量，用于存储导航栏的尺寸信息
 const rect = ref<UniApp.NodeInfo>({})
 // 存储当前路由信息
 const routes = ref([])
 // 存储滚动位置，用于渐变效果
 const innerScrollTop = ref(0)
+// IntersectionObserver 观察器列表
+const observerList = ref<UniApp.IntersectionObserver[]>([])
 
 const instance = getCurrentInstance()
 
@@ -175,7 +175,7 @@ const statusBarHeight = computed(() => {
 })
 
 // 计算返回图标，根据路由层级决定显示首页图标还是返回图标
-const backIcon = computed(() => (routes.value.length === 1 ? "wap-home-o" : useProps.backIconName))
+const backIcon = computed(() => (routes.value.length === 1 ? "home" : useProps.backIconName))
 
 watch(
   () => useProps.scrollTop,
@@ -190,24 +190,52 @@ watch(
   { immediate: true },
 )
 
+// 清除所有观察器
+function clearObserver() {
+  while (observerList.value.length > 0) {
+    observerList.value.pop()?.disconnect()
+  }
+}
+
+// 创建观察器
+function createObserver(thresholds: number[] = [0, 1]) {
+  const observer = uni.createIntersectionObserver(instance, { thresholds })
+  observerList.value.push(observer)
+  return observer
+}
+
+/**
+ * 使用 IntersectionObserver 监听滚动，实现渐变效果
+ * 通过监听一个虚拟区域与视口的交叉比例来估算滚动进度
+ */
+function observeGradient() {
+  if (!useProps.gradient || isNumber(useProps.scrollTop)) return
+
+  clearObserver()
+
+  const gradientHeightPx = useUnitToPx(useProps.gradientHeight)
+  // 创建多个阈值点，实现平滑渐变（0, 0.05, 0.1, ..., 1）
+  const thresholds = Array.from({ length: 21 }, (_, i) => i / 20)
+
+  createObserver(thresholds)
+    .relativeToViewport({ bottom: -(systemInfo.windowHeight - gradientHeightPx) })
+    .observe(".ui-navbar__placeholder", (result) => {
+      // 根据交叉比例计算滚动进度
+      // intersectionRatio: 1 表示完全可见（未滚动），0 表示完全不可见（已滚动过渐变区域）
+      const ratio = 1 - (result.intersectionRatio ?? 1)
+      const scrollTop = ratio * gradientHeightPx
+      innerScrollTop.value = Math.max(0, Math.min(scrollTop, gradientHeightPx))
+      emits("gradient", innerScrollTop.value)
+    })
+}
+
 // 设置事件监听
 function onEvent() {
-  // 监听获取导航栏尺寸的事件
-  mitt.on("navbar:rect:get", async (cb: any) => {
-    const result = await useRect(".ui-navbar__content", instance)
-    if (isFunction(cb)) cb(result)
-  })
-
-  const pages = getCurrentPages()
-  const { route } = pages[pages.length - 1]
-
-  // 监听滚动事件，用于渐变效果
-  mitt.on(`scroll:${route}`, (options: { scrollTop: number }) => {
-    if (useProps.gradient && isEmpty(useProps.scrollTop)) {
-      innerScrollTop.value = options.scrollTop
-      emits("gradient", options.scrollTop)
-    }
-  })
+  // 监听获取导航栏尺寸的事件（保留 mitt 用于组件间通信）
+  // 初始化渐变监听
+  if (useProps.gradient) {
+    nextTick(() => observeGradient())
+  }
 }
 
 // 重新计算尺寸
@@ -217,7 +245,6 @@ async function resize() {
   rect.value = await useRect(".ui-navbar__content", instance)
   emits("rect", rect.value)
   emits("height", rect.value.height)
-  mitt.emit("navbar:rect", rect.value)
 }
 
 // 处理返回按钮点击
@@ -247,6 +274,7 @@ function onClickBack() {
 
 onEvent()
 onMounted(resize)
+onUnmounted(() => clearObserver())
 defineExpose({ resize })
 </script>
 
@@ -318,6 +346,10 @@ export default {
     align-items: center;
     flex-shrink: 0;
     margin-right: var(--ui-spacing-md);
+
+    &--hover {
+      opacity: 0.6;
+    }
 
     &__text {
       padding-left: var(--ui-spacing-xs);
