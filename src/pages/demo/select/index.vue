@@ -51,12 +51,7 @@
           <ui-button size="small" @click="showModeSelect('center')">居中</ui-button>
           <ui-button size="small" @click="showModeSelect('top')">顶部</ui-button>
         </demo-block>
-        <ui-select
-          v-model="value8"
-          :columns="cities"
-          placeholder="请选择城市"
-          :mode="currentMode"
-        />
+        <ui-select v-model="value8" :columns="cities" placeholder="请选择城市" :mode="currentMode" />
       </demo-block>
     </demo-section>
 
@@ -69,12 +64,7 @@
           <ui-button size="small" @click="currentBorderRadius = '16rpx'">16rpx</ui-button>
           <ui-button size="small" @click="currentBorderRadius = '32rpx'">32rpx</ui-button>
         </demo-block>
-        <ui-select
-          v-model="value9"
-          :columns="cities"
-          placeholder="请选择城市"
-          :border-radius="currentBorderRadius"
-        />
+        <ui-select v-model="value9" :columns="cities" placeholder="请选择城市" :border-radius="currentBorderRadius" />
       </demo-block>
     </demo-section>
 
@@ -89,13 +79,7 @@
           <ui-switch v-model="closeOnClickOverlay" />
           <text class="switch-label">{{ closeOnClickOverlay ? "点击遮罩关闭" : "禁止点击遮罩关闭" }}</text>
         </demo-block>
-        <ui-select
-          v-model="value10"
-          :columns="cities"
-          placeholder="请选择城市"
-          :overlay="showOverlay"
-          :close-on-click-overlay="closeOnClickOverlay"
-        />
+        <ui-select v-model="value10" :columns="cities" placeholder="请选择城市" :overlay="showOverlay" :close-on-click-overlay="closeOnClickOverlay" />
       </demo-block>
     </demo-section>
 
@@ -108,12 +92,7 @@
           <ui-button size="small" @click="currentDuration = 300">300ms</ui-button>
           <ui-button size="small" @click="currentDuration = 500">500ms</ui-button>
         </demo-block>
-        <ui-select
-          v-model="value11"
-          :columns="cities"
-          placeholder="请选择城市"
-          :duration="currentDuration"
-        />
+        <ui-select v-model="value11" :columns="cities" placeholder="请选择城市" :duration="currentDuration" />
       </demo-block>
     </demo-section>
 
@@ -121,12 +100,7 @@
     <demo-section title="层级设置">
       <demo-block direction="column" align="start" :gap="16">
         <text class="demo-text">z-index 设置弹窗层级</text>
-        <ui-select
-          v-model="value12"
-          :columns="cities"
-          placeholder="请选择城市"
-          :z-index="1000"
-        />
+        <ui-select v-model="value12" :columns="cities" placeholder="请选择城市" :z-index="1000" />
       </demo-block>
     </demo-section>
 
@@ -134,12 +108,7 @@
     <demo-section title="背景色设置">
       <demo-block direction="column" align="start" :gap="16">
         <text class="demo-text">自定义弹窗背景色</text>
-        <ui-select
-          v-model="value13"
-          :columns="cities"
-          placeholder="请选择城市"
-          background="#f7f8fa"
-        />
+        <ui-select v-model="value13" :columns="cities" placeholder="请选择城市" background="#f7f8fa" />
       </demo-block>
     </demo-section>
 
@@ -150,12 +119,7 @@
           <ui-switch v-model="safeAreaInsetBottom" />
           <text class="switch-label">{{ safeAreaInsetBottom ? "开启底部安全区" : "关闭底部安全区" }}</text>
         </demo-block>
-        <ui-select
-          v-model="value14"
-          :columns="cities"
-          placeholder="请选择城市"
-          :safe-area-inset-bottom="safeAreaInsetBottom"
-        />
+        <ui-select v-model="value14" :columns="cities" placeholder="请选择城市" :safe-area-inset-bottom="safeAreaInsetBottom" />
       </demo-block>
     </demo-section>
 
@@ -166,25 +130,14 @@
           <ui-switch v-model="showSelectHeader" />
           <text class="switch-label">{{ showSelectHeader ? "显示头部" : "隐藏头部" }}</text>
         </demo-block>
-        <ui-select
-          v-model="value15"
-          :columns="cities"
-          placeholder="请选择城市"
-          :show-header="showSelectHeader"
-        />
+        <ui-select v-model="value15" :columns="cities" placeholder="请选择城市" :show-header="showSelectHeader" />
       </demo-block>
     </demo-section>
 
     <!-- 新增：自定义按钮文字 -->
     <demo-section title="自定义按钮文字">
       <demo-block>
-        <ui-select
-          v-model="value16"
-          :columns="cities"
-          placeholder="请选择城市"
-          cancel-text="返回"
-          confirm-text="好的"
-        />
+        <ui-select v-model="value16" :columns="cities" placeholder="请选择城市" cancel-text="返回" confirm-text="好的" />
       </demo-block>
     </demo-section>
 
@@ -195,12 +148,7 @@
           <ui-switch v-model="selectLoading" />
           <text class="switch-label">{{ selectLoading ? "加载中" : "正常" }}</text>
         </demo-block>
-        <ui-select
-          v-model="value17"
-          :columns="cities"
-          placeholder="请选择城市"
-          :loading="selectLoading"
-        />
+        <ui-select v-model="value17" :columns="cities" placeholder="请选择城市" :loading="selectLoading" />
       </demo-block>
     </demo-section>
 
@@ -208,13 +156,7 @@
     <demo-section title="选项样式">
       <demo-block direction="column" align="start" :gap="16">
         <text class="demo-text">自定义选项高度和可见数量</text>
-        <ui-select
-          v-model="value18"
-          :columns="cities"
-          placeholder="请选择城市"
-          column-height="100rpx"
-          :visible-column-num="3"
-        />
+        <ui-select v-model="value18" :columns="cities" placeholder="请选择城市" column-height="100rpx" :visible-column-num="3" />
       </demo-block>
     </demo-section>
 
@@ -238,18 +180,8 @@
     <!-- 新增：占位文案样式 -->
     <demo-section title="占位文案样式">
       <demo-block direction="column" align="start" :gap="16">
-        <ui-select
-          v-model="value20"
-          :columns="cities"
-          placeholder="点击选择城市"
-          placeholder-color="#1989fa"
-        />
-        <ui-select
-          v-model="value20b"
-          :columns="cities"
-          placeholder="请选择城市"
-          placeholder-color="#ee0a24"
-        />
+        <ui-select v-model="value20" :columns="cities" placeholder="点击选择城市" placeholder-color="#1989fa" />
+        <ui-select v-model="value20b" :columns="cities" placeholder="请选择城市" placeholder-color="#ee0a24" />
       </demo-block>
     </demo-section>
 
@@ -257,35 +189,15 @@
     <demo-section title="文字样式">
       <demo-block direction="column" align="start" :gap="16">
         <text class="demo-text">设置选中值的显示样式</text>
-        <ui-select
-          v-model="value21"
-          :columns="cities"
-          placeholder="请选择城市"
-          text-size="32rpx"
-          text-color="#1989fa"
-          text-weight="600"
-          text-align="center"
-        />
+        <ui-select v-model="value21" :columns="cities" placeholder="请选择城市" text-size="32rpx" text-color="#1989fa" text-weight="600" text-align="center" />
       </demo-block>
     </demo-section>
 
     <!-- 新增：右侧图标 -->
     <demo-section title="右侧图标">
       <demo-block direction="column" align="start" :gap="16">
-        <ui-select
-          v-model="value22"
-          :columns="cities"
-          placeholder="自定义图标"
-          right-icon="arrow-down"
-          right-icon-size="28rpx"
-          right-icon-color="#1989fa"
-        />
-        <ui-select
-          v-model="value22b"
-          :columns="cities"
-          placeholder="隐藏图标"
-          right-icon=""
-        />
+        <ui-select v-model="value22" :columns="cities" placeholder="自定义图标" right-icon="arrow-down" right-icon-size="28rpx" right-icon-color="#1989fa" />
+        <ui-select v-model="value22b" :columns="cities" placeholder="隐藏图标" right-icon="" />
       </demo-block>
     </demo-section>
 
@@ -293,12 +205,7 @@
     <demo-section title="展示格式化">
       <demo-block direction="column" align="start" :gap="16">
         <text class="demo-text">通过 displayFormatter 自定义展示文案</text>
-        <ui-select
-          v-model="value23"
-          :columns="areaColumns"
-          placeholder="请选择地区"
-          :display-formatter="formatDisplay"
-        />
+        <ui-select v-model="value23" :columns="areaColumns" placeholder="请选择地区" :display-formatter="formatDisplay" />
       </demo-block>
     </demo-section>
 
@@ -306,12 +213,7 @@
     <demo-section title="字段映射">
       <demo-block direction="column" align="start" :gap="16">
         <text class="demo-text">columns-fields 自定义数据字段</text>
-        <ui-select
-          v-model="value24"
-          :columns="customFieldColumns"
-          :columns-fields="{ text: 'label', value: 'id', children: 'nodes' }"
-          placeholder="请选择分类"
-        />
+        <ui-select v-model="value24" :columns="customFieldColumns" :columns-fields="{ text: 'label', value: 'id', children: 'nodes' }" placeholder="请选择分类" />
       </demo-block>
     </demo-section>
 
@@ -344,18 +246,8 @@
     <!-- 新增：自定义样式 -->
     <demo-section title="自定义样式">
       <demo-block direction="column" :gap="16">
-        <ui-select
-          v-model="value26"
-          :columns="cities"
-          placeholder="自定义类名"
-          custom-class="my-select"
-        />
-        <ui-select
-          v-model="value26b"
-          :columns="cities"
-          placeholder="自定义样式"
-          :custom-style="{ background: '#f0f9ff', borderRadius: '16rpx', padding: '16rpx 24rpx' }"
-        />
+        <ui-select v-model="value26" :columns="cities" placeholder="自定义类名" custom-class="my-select" />
+        <ui-select v-model="value26b" :columns="cities" placeholder="自定义样式" :custom-style="{ background: '#f0f9ff', borderRadius: '16rpx', padding: '16rpx 24rpx' }" />
       </demo-block>
     </demo-section>
 
@@ -364,34 +256,15 @@
       <demo-block direction="column" :gap="16">
         <view class="form-item">
           <text class="form-label">出发城市</text>
-          <ui-select
-            v-model="departCity"
-            :columns="cities"
-            placeholder="请选择"
-            text-align="right"
-            right-icon="arrow"
-          />
+          <ui-select v-model="departCity" :columns="cities" placeholder="请选择" text-align="right" right-icon="arrow" />
         </view>
         <view class="form-item">
           <text class="form-label">到达城市</text>
-          <ui-select
-            v-model="arriveCity"
-            :columns="cities"
-            placeholder="请选择"
-            text-align="right"
-            right-icon="arrow"
-          />
+          <ui-select v-model="arriveCity" :columns="cities" placeholder="请选择" text-align="right" right-icon="arrow" />
         </view>
         <view class="form-item">
           <text class="form-label">出发日期</text>
-          <ui-select
-            v-model="departDate"
-            :columns="dateColumns"
-            placeholder="请选择"
-            text-align="right"
-            right-icon="arrow"
-            display-separator=" "
-          />
+          <ui-select v-model="departDate" :columns="dateColumns" placeholder="请选择" text-align="right" right-icon="arrow" display-separator=" " />
         </view>
       </demo-block>
     </demo-section>

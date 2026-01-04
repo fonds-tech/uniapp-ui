@@ -2,32 +2,19 @@
   <view class="demo-container">
     <!-- 搜索栏 -->
     <view class="search-bar">
-      <ui-input
-        v-model="searchText"
-        placeholder="搜索组件..."
-        :clearable="true"
-      />
+      <ui-input v-model="searchText" placeholder="搜索组件..." :clearable="true" />
     </view>
 
     <!-- 组件分类列表 -->
     <view class="component-list">
-      <view
-        v-for="category in filteredCategories"
-        :key="category.name"
-        class="category-block"
-      >
+      <view v-for="category in filteredCategories" :key="category.name" class="category-block">
         <view class="category-header">
           <text class="category-title">{{ category.name }}</text>
           <text class="category-count">{{ category.components.length }} 个组件</text>
         </view>
 
         <view class="component-grid">
-          <view
-            v-for="comp in category.components"
-            :key="comp.name"
-            class="component-card"
-            @click="navigateToDemo(comp.path)"
-          >
+          <view v-for="comp in category.components" :key="comp.name" class="component-card" @click="navigateToDemo(comp.path)">
             <view class="comp-icon">{{ comp.icon }}</view>
             <text class="comp-name">{{ comp.name }}</text>
             <text class="comp-desc">{{ comp.desc }}</text>
@@ -183,11 +170,7 @@ const filteredCategories = computed(() => {
   return componentCategories
     .map((category) => ({
       ...category,
-      components: category.components.filter(
-        (comp) =>
-          comp.name.toLowerCase().includes(keyword) ||
-          comp.desc.includes(searchText.value),
-      ),
+      components: category.components.filter((comp) => comp.name.toLowerCase().includes(keyword) || comp.desc.includes(searchText.value)),
     }))
     .filter((category) => category.components.length > 0)
 })

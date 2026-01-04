@@ -1,10 +1,7 @@
 <template>
   <view class="min-h-screen bg-[#F6F7F9]">
     <!-- 顶部导航栏 -->
-    <view
-      class="fixed left-0 top-0 z-50 w-full bg-white/95 backdrop-blur-md"
-      :style="{ paddingTop: `${safeAreaInsets?.top}px` }"
-    >
+    <view class="fixed left-0 top-0 z-50 w-full bg-white/95 backdrop-blur-md" :style="{ paddingTop: `${safeAreaInsets?.top}px` }">
       <view class="flex h-[88rpx] items-center px-[32rpx]">
         <text class="text-[36rpx] font-bold text-slate-800">关于</text>
       </view>
@@ -25,15 +22,9 @@
         <text class="text-[40rpx] font-bold text-slate-800 mb-[12rpx]">Fonds UI</text>
         <text class="text-[28rpx] text-gray-400">v{{ version }}</text>
         <view class="flex items-center mt-[24rpx] space-x-[16rpx]">
-          <view class="px-[20rpx] py-[8rpx] rounded-full bg-emerald-50 text-[24rpx] text-emerald-600">
-            Vue 3
-          </view>
-          <view class="px-[20rpx] py-[8rpx] rounded-full bg-blue-50 text-[24rpx] text-blue-600">
-            TypeScript
-          </view>
-          <view class="px-[20rpx] py-[8rpx] rounded-full bg-violet-50 text-[24rpx] text-violet-600">
-            UniApp
-          </view>
+          <view class="px-[20rpx] py-[8rpx] rounded-full bg-emerald-50 text-[24rpx] text-emerald-600"> Vue 3 </view>
+          <view class="px-[20rpx] py-[8rpx] rounded-full bg-blue-50 text-[24rpx] text-blue-600"> TypeScript </view>
+          <view class="px-[20rpx] py-[8rpx] rounded-full bg-violet-50 text-[24rpx] text-violet-600"> UniApp </view>
         </view>
       </view>
 
@@ -44,8 +35,7 @@
           <text class="text-[30rpx] font-bold text-slate-800">项目介绍</text>
         </view>
         <text class="text-[28rpx] text-gray-600 leading-relaxed">
-          Fonds UI 是一套基于 Vue 3 + TypeScript 的跨端 UI 组件库，专为 UniApp 生态打造。
-          提供 80+ 高质量组件，覆盖移动端开发常见场景，助力开发者快速构建优雅的应用界面。
+          Fonds UI 是一套基于 Vue 3 + TypeScript 的跨端 UI 组件库，专为 UniApp 生态打造。 提供 80+ 高质量组件，覆盖移动端开发常见场景，助力开发者快速构建优雅的应用界面。
         </text>
       </view>
 
@@ -78,18 +68,13 @@
         <view class="flex flex-col space-y-[24rpx]">
           <view v-for="log in changelog" :key="log.version" class="relative pl-[32rpx]">
             <view class="absolute left-0 top-[8rpx] h-[16rpx] w-[16rpx] rounded-full bg-indigo-500" />
-            <view
-              v-if="changelog.indexOf(log) !== changelog.length - 1"
-              class="absolute left-[6rpx] top-[28rpx] bottom-[-24rpx] w-[4rpx] bg-gray-200"
-            />
+            <view v-if="changelog.indexOf(log) !== changelog.length - 1" class="absolute left-[6rpx] top-[28rpx] bottom-[-24rpx] w-[4rpx] bg-gray-200" />
             <view class="flex items-center mb-[8rpx]">
               <text class="text-[28rpx] font-bold text-slate-800">v{{ log.version }}</text>
               <text class="text-[24rpx] text-gray-400 ml-[16rpx]">{{ log.date }}</text>
             </view>
             <view class="flex flex-col space-y-[8rpx]">
-              <text v-for="(item, index) in log.items" :key="index" class="text-[26rpx] text-gray-600">
-                • {{ item }}
-              </text>
+              <text v-for="(item, index) in log.items" :key="index" class="text-[26rpx] text-gray-600"> • {{ item }} </text>
             </view>
           </view>
         </view>

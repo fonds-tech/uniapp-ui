@@ -49,7 +49,7 @@
           <ui-button size="small" @click="toggleCustomSize(false)">正方形</ui-button>
           <ui-button size="small" @click="toggleCustomSize(true)">长方形</ui-button>
         </demo-block>
-        <text class="demo-text">{{ useCustomSize ? '当前: 160rpx × 80rpx' : '当前: 100rpx × 100rpx' }}</text>
+        <text class="demo-text">{{ useCustomSize ? "当前: 160rpx × 80rpx" : "当前: 100rpx × 100rpx" }}</text>
       </demo-block>
     </demo-section>
 
@@ -183,7 +183,7 @@
           <ui-button size="small" @click="useCustomStyle = false">默认样式</ui-button>
           <ui-button size="small" @click="useCustomStyle = true">自定义样式</ui-button>
         </demo-block>
-        <text class="demo-text">{{ useCustomStyle ? '使用 customClass 和 customStyle' : '默认样式' }}</text>
+        <text class="demo-text">{{ useCustomStyle ? "使用 customClass 和 customStyle" : "默认样式" }}</text>
       </demo-block>
     </demo-section>
 

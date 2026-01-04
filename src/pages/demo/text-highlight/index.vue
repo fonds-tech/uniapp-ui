@@ -27,12 +27,7 @@
 
     <demo-section title="多行文本">
       <demo-block>
-        <ui-text-highlight
-          :text="longText"
-          match="组件"
-          :text-row="3"
-          line-height="1.6"
-        />
+        <ui-text-highlight :text="longText" match="组件" :text-row="3" line-height="1.6" />
       </demo-block>
     </demo-section>
 
@@ -54,5 +49,6 @@ definePage({
 
 const keyword = ref("")
 const searchText = "UniApp UI 是一个基于 Vue 3 的跨端 UI 组件库，提供丰富的组件和工具函数"
-const longText = "组件化开发是现代前端开发的核心理念之一。通过将页面拆分为独立的组件，我们可以更好地复用代码、维护项目。每个组件都有自己的逻辑和样式，组件之间通过 props 和事件进行通信。"
+const longText =
+  "组件化开发是现代前端开发的核心理念之一。通过将页面拆分为独立的组件，我们可以更好地复用代码、维护项目。每个组件都有自己的逻辑和样式，组件之间通过 props 和事件进行通信。"
 </script>

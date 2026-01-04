@@ -132,7 +132,7 @@ export const [uploadProps, useUploadProps] = createProps("upload", {
 
 export const uploadEmits = {
   upload: (event: { files: any }) => true,
-  delete: (event: { inex: number; file: any }) => true,
+  delete: (event: { index: number; file: any }) => true,
   oversize: (files: UploadFile[]) => true,
   "update:modelValue": (value: string | string[]) => true,
 }

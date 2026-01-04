@@ -1,10 +1,7 @@
 <template>
   <view class="min-h-screen bg-[#F6F7F9]">
     <!-- 顶部导航栏占位 -->
-    <view
-      class="fixed left-0 top-0 z-50 w-full bg-white/80 backdrop-blur-md transition-all duration-300"
-      :style="{ paddingTop: `${safeAreaInsets?.top}px` }"
-    >
+    <view class="fixed left-0 top-0 z-50 w-full bg-white/80 backdrop-blur-md transition-all duration-300" :style="{ paddingTop: `${safeAreaInsets?.top}px` }">
       <view class="flex h-[88rpx] items-center px-[32rpx]">
         <text class="text-[36rpx] font-bold text-slate-800">Fonds UI</text>
       </view>
@@ -13,12 +10,8 @@
     <!-- 头部区域 -->
     <view class="relative overflow-hidden bg-white pt-[calc(var(--status-bar-height)+100rpx)] pb-[64rpx]">
       <!-- 装饰背景 -->
-      <view
-        class="absolute right-0 top-0 -mr-[100rpx] -mt-[100rpx] h-[400rpx] w-[400rpx] rounded-full bg-indigo-500/10 blur-[80rpx] opacity-60"
-      />
-      <view
-        class="absolute left-0 top-[200rpx] -ml-[100rpx] h-[300rpx] w-[300rpx] rounded-full bg-fuchsia-500/10 blur-[60rpx] opacity-60"
-      />
+      <view class="absolute right-0 top-0 -mr-[100rpx] -mt-[100rpx] h-[400rpx] w-[400rpx] rounded-full bg-indigo-500/10 blur-[80rpx] opacity-60" />
+      <view class="absolute left-0 top-[200rpx] -ml-[100rpx] h-[300rpx] w-[300rpx] rounded-full bg-fuchsia-500/10 blur-[60rpx] opacity-60" />
 
       <view class="relative px-[40rpx]">
         <view class="flex items-center justify-between">
@@ -29,17 +22,13 @@
             </text>
             <text class="mt-[24rpx] block text-[30rpx] font-medium text-slate-500">构建优雅的跨端应用界面</text>
           </view>
-          <view
-            class="flex h-[112rpx] w-[112rpx] items-center justify-center rounded-[32rpx] bg-indigo-50 border border-indigo-100 shadow-sm rotate-3"
-          >
+          <view class="flex h-[112rpx] w-[112rpx] items-center justify-center rounded-[32rpx] bg-indigo-50 border border-indigo-100 shadow-sm rotate-3">
             <view class="i-lucide-layers text-[56rpx] text-indigo-600" />
           </view>
         </view>
 
         <!-- 统计卡片 -->
-        <view
-          class="mt-[80rpx] relative overflow-hidden rounded-[40rpx] bg-gradient-to-r from-indigo-600 to-violet-600 p-[1rpx] shadow-xl shadow-indigo-500/25"
-        >
+        <view class="mt-[80rpx] relative overflow-hidden rounded-[40rpx] bg-gradient-to-r from-indigo-600 to-violet-600 p-[1rpx] shadow-xl shadow-indigo-500/25">
           <view class="relative h-full w-full bg-gradient-to-br from-white/10 to-transparent p-[48rpx]">
             <view class="flex justify-between text-white relative z-10">
               <view class="flex flex-col items-center">
@@ -59,12 +48,8 @@
             </view>
 
             <!-- 装饰圆环 -->
-            <view
-              class="absolute -right-[40rpx] -top-[40rpx] h-[200rpx] w-[200rpx] rounded-full border-[20rpx] border-white/5 opacity-50"
-            />
-            <view
-              class="absolute -left-[40rpx] -bottom-[40rpx] h-[160rpx] w-[160rpx] rounded-full border-[16rpx] border-white/5 opacity-50"
-            />
+            <view class="absolute -right-[40rpx] -top-[40rpx] h-[200rpx] w-[200rpx] rounded-full border-[20rpx] border-white/5 opacity-50" />
+            <view class="absolute -left-[40rpx] -bottom-[40rpx] h-[160rpx] w-[160rpx] rounded-full border-[16rpx] border-white/5 opacity-50" />
           </view>
         </view>
       </view>
@@ -77,9 +62,7 @@
           class="group flex flex-col justify-center rounded-[32rpx] bg-white p-[36rpx] shadow-[0_8rpx_30rpx_rgba(0,0,0,0.04)] active:scale-[0.98] transition-all duration-200"
           @click="switchToComponents"
         >
-          <view
-            class="mb-[24rpx] flex h-[88rpx] w-[88rpx] items-center justify-center rounded-[24rpx] bg-indigo-50 group-active:bg-indigo-100 transition-colors"
-          >
+          <view class="mb-[24rpx] flex h-[88rpx] w-[88rpx] items-center justify-center rounded-[24rpx] bg-indigo-50 group-active:bg-indigo-100 transition-colors">
             <view class="i-lucide-component text-[44rpx] text-indigo-600" />
           </view>
           <text class="text-[32rpx] font-bold text-slate-800">组件演示</text>
@@ -90,9 +73,7 @@
           class="group flex flex-col justify-center rounded-[32rpx] bg-white p-[36rpx] shadow-[0_8rpx_30rpx_rgba(0,0,0,0.04)] active:scale-[0.98] transition-all duration-200"
           @click="openDocs"
         >
-          <view
-            class="mb-[24rpx] flex h-[88rpx] w-[88rpx] items-center justify-center rounded-[24rpx] bg-emerald-50 group-active:bg-emerald-100 transition-colors"
-          >
+          <view class="mb-[24rpx] flex h-[88rpx] w-[88rpx] items-center justify-center rounded-[24rpx] bg-emerald-50 group-active:bg-emerald-100 transition-colors">
             <view class="i-lucide-book-open text-[44rpx] text-emerald-600" />
           </view>
           <text class="text-[32rpx] font-bold text-slate-800">开发文档</text>
@@ -102,10 +83,7 @@
 
       <!-- 次级入口 -->
       <view class="mt-[24rpx] grid grid-cols-2 gap-[24rpx]">
-        <view
-          class="flex items-center rounded-[28rpx] bg-white p-[24rpx] shadow-sm active:bg-gray-50 transition-colors"
-          @click="switchToTemplates"
-        >
+        <view class="flex items-center rounded-[28rpx] bg-white p-[24rpx] shadow-sm active:bg-gray-50 transition-colors" @click="switchToTemplates">
           <view class="flex h-[72rpx] w-[72rpx] items-center justify-center rounded-[20rpx] bg-amber-50 mr-[20rpx]">
             <view class="i-lucide-layout-template text-[36rpx] text-amber-600" />
           </view>
@@ -115,10 +93,7 @@
           </view>
         </view>
 
-        <view
-          class="flex items-center rounded-[28rpx] bg-white p-[24rpx] shadow-sm active:bg-gray-50 transition-colors"
-          @click="switchToAbout"
-        >
+        <view class="flex items-center rounded-[28rpx] bg-white p-[24rpx] shadow-sm active:bg-gray-50 transition-colors" @click="switchToAbout">
           <view class="flex h-[72rpx] w-[72rpx] items-center justify-center rounded-[20rpx] bg-rose-50 mr-[20rpx]">
             <view class="i-lucide-info text-[36rpx] text-rose-600" />
           </view>
@@ -137,9 +112,7 @@
           <view class="h-[32rpx] w-[8rpx] rounded-full bg-indigo-600 mr-[16rpx]" />
           <text class="text-[36rpx] font-bold text-slate-900">组件分类</text>
         </view>
-        <text class="text-[26rpx] font-medium text-indigo-500 active:opacity-60" @click="switchToComponents">
-          查看全部
-        </text>
+        <text class="text-[26rpx] font-medium text-indigo-500 active:opacity-60" @click="switchToComponents"> 查看全部 </text>
       </view>
 
       <view class="flex flex-col space-y-[24rpx]">
@@ -150,9 +123,7 @@
           @click="navigateToCategory(category.key)"
         >
           <view class="flex items-center z-10">
-            <view
-              :class="`flex h-[96rpx] w-[96rpx] items-center justify-center rounded-[24rpx] ${category.bgClass} transition-transform duration-300`"
-            >
+            <view :class="`flex h-[96rpx] w-[96rpx] items-center justify-center rounded-[24rpx] ${category.bgClass} transition-transform duration-300`">
               <view :class="`${category.icon} text-[44rpx] ${category.textClass}`" />
             </view>
             <view class="ml-[32rpx] flex flex-col">

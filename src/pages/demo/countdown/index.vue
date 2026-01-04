@@ -92,10 +92,7 @@
           <text class="countdown-label">自定义类名</text>
         </view>
         <view class="countdown-item">
-          <ui-count-down
-            :time="time"
-            :custom-style="{ color: '#ee0a24', fontSize: '36rpx', fontWeight: '600' }"
-          />
+          <ui-count-down :time="time" :custom-style="{ color: '#ee0a24', fontSize: '36rpx', fontWeight: '600' }" />
           <text class="countdown-label">自定义样式</text>
         </view>
       </demo-block>
@@ -125,13 +122,7 @@
         <view class="scene-card scene-card--code">
           <text class="scene-card__code-title">验证码倒计时</text>
           <ui-button v-if="!codeCountingDown" type="primary" size="small" @click="sendCode">获取验证码</ui-button>
-          <ui-count-down
-            v-else
-            ref="codeCountDownRef"
-            :time="60000"
-            format="ss"
-            @finish="onCodeFinish"
-          >
+          <ui-count-down v-else ref="codeCountDownRef" :time="60000" format="ss" @finish="onCodeFinish">
             <template #default="{ current }">
               <ui-button type="default" size="small" disabled>{{ current.seconds }}s 后重新获取</ui-button>
             </template>

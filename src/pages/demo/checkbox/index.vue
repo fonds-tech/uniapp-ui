@@ -158,12 +158,7 @@
     <!-- 新增：自定义样式 -->
     <demo-section title="自定义样式">
       <demo-block>
-        <ui-checkbox
-          v-model="customStyle"
-          custom-class="my-checkbox"
-          :custom-style="{ padding: '16rpx', background: '#f5f5f5', borderRadius: '8rpx' }"
-          label="自定义样式复选框"
-        />
+        <ui-checkbox v-model="customStyle" custom-class="my-checkbox" :custom-style="{ padding: '16rpx', background: '#f5f5f5', borderRadius: '8rpx' }" label="自定义样式复选框" />
       </demo-block>
     </demo-section>
   </demo-page>

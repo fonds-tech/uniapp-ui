@@ -53,13 +53,7 @@
       <view class="form-list">
         <view class="form-item form-item--vertical">
           <text class="form-label">备注信息</text>
-          <ui-textarea
-            v-model="value6"
-            placeholder="带边框和圆角的文本域"
-            border="1rpx solid #dcdee0"
-            radius="16rpx"
-            padding="24rpx"
-          />
+          <ui-textarea v-model="value6" placeholder="带边框和圆角的文本域" border="1rpx solid #dcdee0" radius="16rpx" padding="24rpx" />
         </view>
       </view>
     </demo-section>

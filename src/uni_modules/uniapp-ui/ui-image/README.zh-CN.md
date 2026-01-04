@@ -39,6 +39,6 @@ UiImage 组件，属性与事件以源码注释为准。
 
 | 事件名 | 说明 | 回调参数   |
 | ------ | ---- | ---------- |
-| load   | -    | evnet: any |
-| error  | -    | evnet: any |
-| click  | -    | evnet: any |
+| load   | -    | event: any |
+| error  | -    | event: any |
+| click  | -    | event: any |

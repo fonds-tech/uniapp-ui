@@ -98,7 +98,12 @@
           <ui-transition :show="showEase3" :duration="500" enter-timing-function="ease-in-out" leave-timing-function="ease-in-out">
             <view class="demo-content small">ease-in-out</view>
           </ui-transition>
-          <ui-transition :show="showEase4" :duration="500" enter-timing-function="cubic-bezier(0.68, -0.55, 0.265, 1.55)" leave-timing-function="cubic-bezier(0.68, -0.55, 0.265, 1.55)">
+          <ui-transition
+            :show="showEase4"
+            :duration="500"
+            enter-timing-function="cubic-bezier(0.68, -0.55, 0.265, 1.55)"
+            leave-timing-function="cubic-bezier(0.68, -0.55, 0.265, 1.55)"
+          >
             <view class="demo-content small">弹性效果</view>
           </ui-transition>
         </view>
@@ -188,10 +193,7 @@
           <ui-transition :show="showCustom1" custom-class="my-transition">
             <view class="demo-content small">自定义类名</view>
           </ui-transition>
-          <ui-transition
-            :show="showCustom2"
-            :custom-style="{ transform: 'rotate(5deg)', boxShadow: '0 8rpx 32rpx rgba(0,0,0,0.2)' }"
-          >
+          <ui-transition :show="showCustom2" :custom-style="{ transform: 'rotate(5deg)', boxShadow: '0 8rpx 32rpx rgba(0,0,0,0.2)' }">
             <view class="demo-content small">自定义样式</view>
           </ui-transition>
         </view>
@@ -202,24 +204,12 @@
     <demo-section title="综合示例 - 图片切换">
       <demo-block direction="column" align="start" :gap="16">
         <demo-block :cols="4" :gap="16">
-          <ui-button
-            v-for="(anim, index) in animations"
-            :key="anim.name"
-            size="small"
-            :type="currentAnim === index ? 'primary' : 'default'"
-            @click="switchAnimation(index)"
-          >
+          <ui-button v-for="(anim, index) in animations" :key="anim.name" size="small" :type="currentAnim === index ? 'primary' : 'default'" @click="switchAnimation(index)">
             {{ anim.label }}
           </ui-button>
         </demo-block>
         <view class="carousel-box">
-          <ui-transition
-            :show="showImage"
-            :name="animations[currentAnim].name"
-            :duration="400"
-            enter-timing-function="ease-out"
-            leave-timing-function="ease-in"
-          >
+          <ui-transition :show="showImage" :name="animations[currentAnim].name" :duration="400" enter-timing-function="ease-out" leave-timing-function="ease-in">
             <view class="carousel-item" :style="{ background: carouselColors[currentImage] }">
               <text class="carousel-text">图片 {{ currentImage + 1 }}</text>
             </view>
@@ -247,13 +237,7 @@
     <ui-transition :show="showModalOverlay" :duration="300">
       <view class="modal-overlay" @click="closeModal">
         <!-- 弹窗内容嵌套在遮罩内，由遮罩的 flexbox 负责居中 -->
-        <ui-transition
-          :show="showModalContent"
-          :name="modalAnimation"
-          :duration="300"
-          enter-timing-function="ease-out"
-          leave-timing-function="ease-in"
-        >
+        <ui-transition :show="showModalContent" :name="modalAnimation" :duration="300" enter-timing-function="ease-out" leave-timing-function="ease-in">
           <view class="modal-content" @click.stop>
             <view class="modal-header">
               <text class="modal-title">弹窗标题</text>

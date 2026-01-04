@@ -212,11 +212,7 @@
       </view>
     </ui-popup>
 
-    <ui-popup
-      v-model:show="showOverlayStyle"
-      position="center"
-      :overlay-style="{ background: 'rgba(25, 137, 250, 0.3)' }"
-    >
+    <ui-popup v-model:show="showOverlayStyle" position="center" :overlay-style="{ background: 'rgba(25, 137, 250, 0.3)' }">
       <view class="popup-content center-content">
         <text>自定义遮罩层颜色</text>
       </view>

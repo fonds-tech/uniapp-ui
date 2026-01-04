@@ -85,14 +85,7 @@
       <demo-block direction="column">
         <ui-text size="small" color="secondary">自定义字重</ui-text>
         <view class="picker-panel-demo">
-          <ui-picker-panel
-            v-model="value7b"
-            :columns="columns1"
-            column-weight="300"
-            column-color="#666"
-            active-column-weight="700"
-            active-column-color="#ee0a24"
-          />
+          <ui-picker-panel v-model="value7b" :columns="columns1" column-weight="300" column-color="#666" active-column-weight="700" active-column-color="#ee0a24" />
         </view>
       </demo-block>
     </demo-section>

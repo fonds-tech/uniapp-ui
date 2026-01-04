@@ -119,29 +119,38 @@ export function delay(delay: number): Promise<void> {
 
 /**
  * 函数防抖 短时间内多次触发同一事件，只执行最后一次，或者只执行最开始的一次，中间的不执行
- * @param Function func 目标函数
- * @param Number wait 延迟执行毫秒数
- * @param Booleans immediate true - 立即执行， false - 延迟执行
+ * @param func 目标函数
+ * @param wait 延迟执行毫秒数
+ * @param immediate true - 立即执行， false - 延迟执行
+ * @returns 返回防抖后的函数（每次调用返回独立实例）
  */
-let timeout = null
-export function debounce(func: (...args: any[]) => any, wait: number = 500, immediate: boolean = false): void {
-  // 清除定时器
-  if (timeout !== null) clearTimeout(timeout)
-  // 立即执行，此类情况一般用不到
-  if (immediate) {
-    const callNow = !timeout
-    timeout = setTimeout(() => {
-      timeout = null
-    }, wait)
-    if (callNow) typeof func === "function" && func()
-  } else {
-    // 设置定时器，当最后一次操作后，timeout不会再被清除，所以在延时wait毫秒后执行func回调方法
-    timeout = setTimeout(() => {
-      if (typeof func === "function") {
-        func()
+export function debounce<T extends (...args: any[]) => any>(func: T, wait: number = 500, immediate: boolean = false): (...args: Parameters<T>) => void {
+  // 闭包内管理 timeout，确保每次调用 debounce 返回独立实例
+  let timeout: ReturnType<typeof setTimeout> | null = null
+
+  return function (this: unknown, ...args: Parameters<T>): void {
+    // 清除定时器
+    if (timeout !== null) clearTimeout(timeout)
+
+    // 使用 bind 绑定当前 this 上下文
+    const boundFunc = func.bind(this, ...args)
+
+    // 立即执行，此类情况一般用不到
+    if (immediate) {
+      const callNow = !timeout
+      timeout = setTimeout(() => {
         timeout = null
-      }
-    }, wait)
+      }, wait)
+      if (callNow) typeof func === "function" && boundFunc()
+    } else {
+      // 设置定时器，当最后一次操作后，timeout不会再被清除，所以在延时wait毫秒后执行func回调方法
+      timeout = setTimeout(() => {
+        if (typeof func === "function") {
+          boundFunc()
+          timeout = null
+        }
+      }, wait)
+    }
   }
 }
 
@@ -177,25 +186,38 @@ export function createThrottle(wait: number = 500, immediate: boolean = true) {
 }
 
 /**
- * @deprecated Use createThrottle() instead for instance isolation
+ * 函数节流 在一定时间内，无论触发多少次回调，都只执行一次
+ * @deprecated 建议使用 createThrottle() 以获得更好的实例隔离
+ * @param func 目标函数
+ * @param wait 节流间隔毫秒数
+ * @param immediate true - 立即执行， false - 延迟执行
+ * @returns 返回节流后的函数（每次调用返回独立实例）
  */
-let timer: ReturnType<typeof setTimeout> | null, flag: boolean
-export function throttling(func: (...args: any[]) => any, wait: number = 500, immediate: boolean = true): void {
-  if (immediate) {
-    if (!flag) {
-      flag = true
-      typeof func === "function" && func()
-      timer = setTimeout(() => {
-        flag = false
-      }, wait)
-    }
-  } else {
-    if (!flag) {
-      flag = true
-      timer = setTimeout(() => {
-        flag = false
-        typeof func === "function" && func()
-      }, wait)
+export function throttling<T extends (...args: any[]) => any>(func: T, wait: number = 500, immediate: boolean = true): (...args: Parameters<T>) => void {
+  // 闭包内管理 timer 和 flag，确保每次调用 throttling 返回独立实例
+  let timer: ReturnType<typeof setTimeout> | null = null
+  let flag = false
+
+  return function (this: unknown, ...args: Parameters<T>): void {
+    // 使用 bind 绑定当前 this 上下文
+    const boundFunc = func.bind(this, ...args)
+
+    if (immediate) {
+      if (!flag) {
+        flag = true
+        typeof func === "function" && boundFunc()
+        timer = setTimeout(() => {
+          flag = false
+        }, wait)
+      }
+    } else {
+      if (!flag) {
+        flag = true
+        timer = setTimeout(() => {
+          flag = false
+          typeof func === "function" && boundFunc()
+        }, wait)
+      }
     }
   }
 }
@@ -318,9 +340,20 @@ export function getDeepValue(obj: Record<string, any>, keyName: string): any {
 /**
  * 获取链接后缀名
  * @param link 链接
+ * @returns 返回小写的扩展名，如果无法获取则返回空字符串
  */
-export function getLinkExtension(link: string) {
-  return link.match(/\.([^.]+)$/)[1]
+export function getLinkExtension(link: string): string {
+  // 输入验证
+  if (!link || typeof link !== "string") return ""
+
+  // 移除查询参数和锚点
+  const cleanUrl = link.split("?")[0].split("#")[0]
+
+  // 使用正则匹配扩展名
+  const match = cleanUrl.match(/\.([^./]+)$/)
+
+  // 返回小写的扩展名，或空字符串
+  return match ? match[1].toLowerCase() : ""
 }
 
 /**

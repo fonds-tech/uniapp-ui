@@ -114,6 +114,16 @@ export const formEmits = {
 
 export interface FormProvide {
   props: FormProps
+  /** useFormProps 返回的响应式属性 */
+  useProps: ReturnType<typeof useFormProps>
+  /** 表单数据模型 */
+  model: import("vue").WritableComputedRef<Record<string, unknown>>
+  /** 表单验证规则 */
+  rules: FormRules
+  /** 初始表单数据（用于重置） */
+  initialModel: import("vue").Ref<Record<string, unknown>>
+  /** 最大标签宽度（用于自动对齐） */
+  maxLabelWidth: import("vue").ComputedRef<number>
   submit: () => void
   getValues: () => Record<string, unknown>
   validate: (name?: string | string[]) => Promise<void>

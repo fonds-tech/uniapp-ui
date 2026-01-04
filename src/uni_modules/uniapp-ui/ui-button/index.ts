@@ -7,16 +7,7 @@ export type ButtonType = "primary" | "success" | "warning" | "danger" | "info" |
 export type ButtonSize = "mini" | "small" | "normal" | "medium" | "large"
 export type ButtonFormType = "submit" | "reset"
 export type ButtonIconPosition = "left" | "right"
-export type ButtonOpenType =
-  | "contact"
-  | "share"
-  | "getPhoneNumber"
-  | "getUserInfo"
-  | "launchApp"
-  | "openSetting"
-  | "feedback"
-  | "chooseAvatar"
-  | "agreePrivacyAuthorization"
+export type ButtonOpenType = "contact" | "share" | "getPhoneNumber" | "getUserInfo" | "launchApp" | "openSetting" | "feedback" | "chooseAvatar" | "agreePrivacyAuthorization"
 export type ButtonLang = "zh_CN" | "zh_TW" | "en"
 
 export const [buttonProps, useButtonProps] = createProps("button", {

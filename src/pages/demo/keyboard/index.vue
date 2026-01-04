@@ -170,7 +170,7 @@
       <demo-block direction="column" :gap="16">
         <view class="code-box">
           <view v-for="i in 4" :key="i" class="code-item">
-            <text class="code-text">{{ smsCode[i - 1] || '' }}</text>
+            <text class="code-text">{{ smsCode[i - 1] || "" }}</text>
           </view>
         </view>
         <ui-button type="primary" block @click="openKeyboard('sms')">输入验证码</ui-button>
@@ -182,7 +182,7 @@
       <demo-block direction="column" :gap="16">
         <view class="plate-box">
           <view v-for="i in 7" :key="i" class="plate-item" :class="{ 'plate-item--province': i === 1 }">
-            <text class="plate-text">{{ carPlate[i - 1] || (i === 1 ? '省' : '') }}</text>
+            <text class="plate-text">{{ carPlate[i - 1] || (i === 1 ? "省" : "") }}</text>
           </view>
         </view>
         <ui-button type="primary" block @click="openKeyboard('plate')">输入车牌号</ui-button>

@@ -91,13 +91,7 @@
         <!-- 场景6: 快捷导航 -->
         <view v-else-if="currentScene === 5" class="preview-footer" style="background: #fff">
           <view class="footer-nav">
-            <view
-              v-for="(item, index) in navItems"
-              :key="item.icon"
-              class="footer-nav__item"
-              :class="{ active: activeNav === index }"
-              @click="activeNav = index"
-            >
+            <view v-for="(item, index) in navItems" :key="item.icon" class="footer-nav__item" :class="{ active: activeNav === index }" @click="activeNav = index">
               <ui-icon :name="activeNav === index ? item.activeIcon : item.icon" size="40rpx" :color="activeNav === index ? '#1989fa' : '#999'" />
               <text class="footer-nav__text" :class="{ active: activeNav === index }">{{ item.text }}</text>
             </view>
@@ -114,13 +108,7 @@
       </view>
 
       <view class="scene-list__grid">
-        <view
-          v-for="(scene, index) in scenes"
-          :key="scene.title"
-          class="scene-item"
-          :class="{ active: currentScene === index }"
-          @click="currentScene = index"
-        >
+        <view v-for="(scene, index) in scenes" :key="scene.title" class="scene-item" :class="{ active: currentScene === index }" @click="currentScene = index">
           <view class="scene-item__icon" :style="{ background: scene.color }">
             <ui-icon :name="scene.icon" size="36rpx" color="#fff" />
           </view>

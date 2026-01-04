@@ -13,14 +13,9 @@
     <demo-section title="多选模式">
       <demo-block direction="column">
         <ui-dropdown-menu>
-          <ui-dropdown-item
-            v-model="value3"
-            title="筛选标签"
-            mode="multiple"
-            :options="options3"
-          />
+          <ui-dropdown-item v-model="value3" title="筛选标签" mode="multiple" :options="options3" />
         </ui-dropdown-menu>
-        <ui-text size="small" color="secondary">已选：{{ value3.join(', ') || '无' }}</ui-text>
+        <ui-text size="small" color="secondary">已选：{{ value3.join(", ") || "无" }}</ui-text>
       </demo-block>
     </demo-section>
 
@@ -36,12 +31,7 @@
     <demo-section title="自定义菜单高度">
       <demo-block direction="column">
         <ui-dropdown-menu>
-          <ui-dropdown-item
-            v-model="value6"
-            title="更多选项"
-            :options="manyOptions"
-            max-height="300px"
-          />
+          <ui-dropdown-item v-model="value6" title="更多选项" :options="manyOptions" max-height="300px" />
         </ui-dropdown-menu>
       </demo-block>
     </demo-section>
@@ -49,13 +39,7 @@
     <demo-section title="自定义颜色">
       <demo-block direction="column">
         <ui-dropdown-menu>
-          <ui-dropdown-item
-            v-model="value7"
-            title="自定义"
-            :options="options1"
-            active-title-color="#07c160"
-            active-option-color="#07c160"
-          />
+          <ui-dropdown-item v-model="value7" title="自定义" :options="options1" active-title-color="#07c160" active-option-color="#07c160" />
         </ui-dropdown-menu>
       </demo-block>
     </demo-section>
@@ -64,12 +48,7 @@
       <demo-block direction="column">
         <view style="height: 200px" />
         <ui-dropdown-menu>
-          <ui-dropdown-item
-            v-model="value8"
-            title="向上展开"
-            :options="options1"
-            direction="up"
-          />
+          <ui-dropdown-item v-model="value8" title="向上展开" :options="options1" direction="up" />
         </ui-dropdown-menu>
       </demo-block>
     </demo-section>

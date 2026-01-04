@@ -103,7 +103,7 @@ export const [checkboxGroupProps, useCheckboxGroupProps] = createProps("checkbox
   customStyle: styleProp,
 })
 export const checkboxGroupEmits = {
-  click: (evnet: any) => true,
+  click: (event: any) => true,
   change: (value: unknown[]) => true,
   "update:modelValue": (value: unknown[]) => true,
 }

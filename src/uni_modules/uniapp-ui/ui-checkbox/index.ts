@@ -98,7 +98,7 @@ export const [checkboxProps, useCheckboxProps] = createProps("checkbox", {
   customStyle: styleProp,
 })
 export const checkboxEmits = {
-  click: (evnet: any) => true,
+  click: (event: any) => true,
   change: (value: CheckboxValueType) => true,
   "update:modelValue": (value: CheckboxValueType) => true,
 }

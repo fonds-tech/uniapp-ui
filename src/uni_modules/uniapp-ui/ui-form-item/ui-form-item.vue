@@ -301,6 +301,10 @@ function validateWithTrigger(trigger: FormValidateTrigger) {
  * 重置字段状态
  */
 async function resetField() {
+  if (!form) {
+    console.warn("[ui-form-item] resetField: 必须在 ui-form 组件内使用")
+    return
+  }
   const value = form.initialModel.value[useProps.prop]
   form.model.value[useProps.prop] = clone(value)
   await nextTick()
@@ -319,6 +323,10 @@ function resetValidate() {
  * @returns 返回属性值
  */
 function getPropValue() {
+  if (!form) {
+    console.warn("[ui-form-item] getPropValue: 必须在 ui-form 组件内使用")
+    return undefined
+  }
   return getDeepValue(form.model.value, useProps.prop)
 }
 
@@ -327,6 +335,9 @@ function getPropValue() {
  * @returns 返回属性值
  */
 function getPropRules() {
+  if (!form) {
+    return undefined
+  }
   return getDeepValue(form.rules, useProps.prop)
 }
 
@@ -359,7 +370,8 @@ linkChildren({ props, prop: useProps.prop, onBlur, onChange })
 defineExpose({
   useProps,
   prop: useProps.prop,
-  modelValue: form.model.value[useProps.prop],
+  // 安全访问 form.model.value，避免 form 为 null 时报错
+  modelValue: form?.model?.value?.[useProps.prop],
   labelRect,
   validate,
   resetField,

@@ -133,20 +133,8 @@
     <demo-section title="文本样式">
       <demo-block direction="column" :gap="24">
         <text class="demo-text">自定义文本颜色、大小和粗细</text>
-        <ui-progress
-          :percentage="percentage"
-          show-text
-          text-color="#1989fa"
-          text-size="28rpx"
-          text-weight="600"
-        />
-        <ui-progress
-          :percentage="percentage"
-          show-text
-          text-color="#ee0a24"
-          text-size="24rpx"
-          text-weight="500"
-        />
+        <ui-progress :percentage="percentage" show-text text-color="#1989fa" text-size="28rpx" text-weight="600" />
+        <ui-progress :percentage="percentage" show-text text-color="#ee0a24" text-size="24rpx" text-weight="500" />
       </demo-block>
     </demo-section>
 
@@ -179,16 +167,8 @@
     <!-- 新增：自定义样式 -->
     <demo-section title="自定义样式">
       <demo-block direction="column" :gap="24">
-        <ui-progress
-          :percentage="60"
-          show-text
-          custom-class="my-progress"
-        />
-        <ui-progress
-          :percentage="70"
-          show-text
-          :custom-style="{ borderRadius: '0', overflow: 'visible' }"
-        />
+        <ui-progress :percentage="60" show-text custom-class="my-progress" />
+        <ui-progress :percentage="70" show-text :custom-style="{ borderRadius: '0', overflow: 'visible' }" />
       </demo-block>
     </demo-section>
 
@@ -203,12 +183,7 @@
               <text class="upload-size">{{ uploadProgress }}% - {{ (uploadProgress * 1.28).toFixed(1) }}MB / 128MB</text>
             </view>
           </view>
-          <ui-progress
-            :percentage="uploadProgress"
-            height="8rpx"
-            color="linear-gradient(90deg, #1989fa 0%, #07c160 100%)"
-            :show-text="false"
-          />
+          <ui-progress :percentage="uploadProgress" height="8rpx" color="linear-gradient(90deg, #1989fa 0%, #07c160 100%)" :show-text="false" />
         </view>
         <demo-block :gap="24">
           <ui-button v-if="!isUploading" size="small" type="primary" @click="startUpload">开始上传</ui-button>
@@ -226,12 +201,7 @@
             <text class="task-name">{{ task.name }}</text>
             <text class="task-percent" :style="{ color: getTaskColor(task.progress) }">{{ task.progress }}%</text>
           </view>
-          <ui-progress
-            :percentage="task.progress"
-            height="12rpx"
-            :color="getTaskColor(task.progress)"
-            :show-text="false"
-          />
+          <ui-progress :percentage="task.progress" height="12rpx" :color="getTaskColor(task.progress)" :show-text="false" />
         </view>
       </demo-block>
     </demo-section>
@@ -275,13 +245,7 @@
             <text class="skill-name">{{ skill.name }}</text>
             <text class="skill-level">{{ skill.level }}</text>
           </view>
-          <ui-progress
-            :percentage="skill.percentage"
-            height="10rpx"
-            :color="skill.color"
-            background="#f5f5f5"
-            :show-text="false"
-          />
+          <ui-progress :percentage="skill.percentage" height="10rpx" :color="skill.color" background="#f5f5f5" :show-text="false" />
         </view>
       </demo-block>
     </demo-section>

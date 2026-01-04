@@ -153,12 +153,7 @@
           <ui-button size="small" @click="showUploadIcon('plus', '48rpx', '#1989fa')">加号</ui-button>
           <ui-button size="small" @click="showUploadIcon('camera', '64rpx', '#07c160')">相机</ui-button>
         </demo-block>
-        <ui-upload
-          v-model="fileList14"
-          :icon="currentIcon"
-          :icon-size="currentIconSize"
-          :icon-color="currentIconColor"
-        />
+        <ui-upload v-model="fileList14" :icon="currentIcon" :icon-size="currentIconSize" :icon-color="currentIconColor" />
       </demo-block>
     </demo-section>
 
@@ -166,11 +161,7 @@
     <demo-section title="自定义预览图标">
       <demo-block direction="column" align="start" :gap="16">
         <text class="demo-text">通过 preview-icon-size/color 自定义删除图标</text>
-        <ui-upload
-          v-model="fileList15"
-          preview-icon-size="48rpx"
-          preview-icon-color="#ee0a24"
-        />
+        <ui-upload v-model="fileList15" preview-icon-size="48rpx" preview-icon-color="#ee0a24" />
       </demo-block>
     </demo-section>
 
@@ -201,12 +192,7 @@
     <!-- 新增：事件处理 -->
     <demo-section title="事件处理">
       <demo-block direction="column" align="start" :gap="16">
-        <ui-upload
-          v-model="fileList19"
-          @upload="onUpload"
-          @delete="onDelete"
-          @oversize="onOversizeEvent"
-        />
+        <ui-upload v-model="fileList19" @upload="onUpload" @delete="onDelete" @oversize="onOversizeEvent" />
         <text class="demo-text">{{ eventLog }}</text>
         <view class="event-list">
           <view v-for="(log, index) in eventLogs" :key="index" class="event-item">
@@ -223,16 +209,8 @@
           <ui-button size="small" @click="showCustomClass = true">自定义类名</ui-button>
           <ui-button size="small" @click="showCustomStyle = true">自定义样式</ui-button>
         </demo-block>
-        <ui-upload
-          v-if="showCustomClass"
-          v-model="fileList20"
-          custom-class="my-upload"
-        />
-        <ui-upload
-          v-if="showCustomStyle"
-          v-model="fileList21"
-          :custom-style="{ borderStyle: 'solid', borderColor: '#1989fa' }"
-        />
+        <ui-upload v-if="showCustomClass" v-model="fileList20" custom-class="my-upload" />
+        <ui-upload v-if="showCustomStyle" v-model="fileList21" :custom-style="{ borderStyle: 'solid', borderColor: '#1989fa' }" />
       </demo-block>
     </demo-section>
 
@@ -264,29 +242,11 @@
         <view class="id-card-box">
           <view class="id-card-item">
             <text class="id-card-label">身份证正面</text>
-            <ui-upload
-              v-model="idCardFront"
-              :max-count="1"
-              width="300rpx"
-              height="200rpx"
-              icon="photograph"
-              icon-size="48rpx"
-              background="#f7f8fa"
-              preview
-            />
+            <ui-upload v-model="idCardFront" :max-count="1" width="300rpx" height="200rpx" icon="photograph" icon-size="48rpx" background="#f7f8fa" preview />
           </view>
           <view class="id-card-item">
             <text class="id-card-label">身份证反面</text>
-            <ui-upload
-              v-model="idCardBack"
-              :max-count="1"
-              width="300rpx"
-              height="200rpx"
-              icon="photograph"
-              icon-size="48rpx"
-              background="#f7f8fa"
-              preview
-            />
+            <ui-upload v-model="idCardBack" :max-count="1" width="300rpx" height="200rpx" icon="photograph" icon-size="48rpx" background="#f7f8fa" preview />
           </view>
         </view>
       </demo-block>
@@ -313,9 +273,7 @@
           background="#f7f8fa"
           :before-remove="onProductRemove"
         />
-        <text v-if="productImages.length > 0" class="demo-text">
-          已上传 {{ productImages.length }}/5 张
-        </text>
+        <text v-if="productImages.length > 0" class="demo-text"> 已上传 {{ productImages.length }}/5 张 </text>
       </demo-block>
     </demo-section>
   </demo-page>
@@ -342,10 +300,7 @@ const fileList7 = ref<string[]>(["https://picsum.photos/200"])
 const fileList8 = ref<string[]>(["https://picsum.photos/200?random=1"])
 const fileList9 = ref<string[]>([])
 const fileList10 = ref<string[]>(["https://picsum.photos/200?random=2"])
-const fileList11 = ref<string[]>([
-  "https://picsum.photos/200?random=3",
-  "https://picsum.photos/200?random=4",
-])
+const fileList11 = ref<string[]>(["https://picsum.photos/200?random=3", "https://picsum.photos/200?random=4"])
 const fileList12 = ref<string[]>(["https://picsum.photos/200?random=5"])
 const fileList13 = ref<string[]>([])
 const fileList14 = ref<string[]>([])

@@ -179,24 +179,11 @@
       <demo-block direction="column" align="start" :gap="16">
         <demo-block :cols="2" :gap="24">
           <view class="image-item">
-            <ui-image
-              src="https://picsum.photos/226"
-              width="200rpx"
-              height="200rpx"
-              radius="8rpx"
-              @load="onImageLoad"
-              @click="onImageClick"
-            />
+            <ui-image src="https://picsum.photos/226" width="200rpx" height="200rpx" radius="8rpx" @load="onImageLoad" @click="onImageClick" />
             <text class="image-label">点击试试</text>
           </view>
           <view class="image-item">
-            <ui-image
-              src="https://invalid-url.com/error.jpg"
-              width="200rpx"
-              height="200rpx"
-              radius="8rpx"
-              @error="onImageError"
-            />
+            <ui-image src="https://invalid-url.com/error.jpg" width="200rpx" height="200rpx" radius="8rpx" @error="onImageError" />
             <text class="image-label">加载失败事件</text>
           </view>
         </demo-block>
@@ -208,21 +195,11 @@
     <demo-section title="自定义样式">
       <demo-block :cols="2" :gap="24">
         <view class="image-item">
-          <ui-image
-            src="https://picsum.photos/227"
-            width="200rpx"
-            height="200rpx"
-            custom-class="my-image"
-          />
+          <ui-image src="https://picsum.photos/227" width="200rpx" height="200rpx" custom-class="my-image" />
           <text class="image-label">自定义类名</text>
         </view>
         <view class="image-item">
-          <ui-image
-            src="https://picsum.photos/228"
-            width="200rpx"
-            height="200rpx"
-            :custom-style="{ boxShadow: '0 8rpx 24rpx rgba(0,0,0,0.15)', borderRadius: '16rpx' }"
-          />
+          <ui-image src="https://picsum.photos/228" width="200rpx" height="200rpx" :custom-style="{ boxShadow: '0 8rpx 24rpx rgba(0,0,0,0.15)', borderRadius: '16rpx' }" />
           <text class="image-label">自定义样式</text>
         </view>
       </demo-block>

@@ -7,7 +7,7 @@
           <ui-checkbox name="b">选项 B</ui-checkbox>
           <ui-checkbox name="c">选项 C</ui-checkbox>
         </ui-checkbox-group>
-        <ui-text size="small" color="secondary">当前选中：{{ value1.join(', ') || '无' }}</ui-text>
+        <ui-text size="small" color="secondary">当前选中：{{ value1.join(", ") || "无" }}</ui-text>
       </demo-block>
     </demo-section>
 

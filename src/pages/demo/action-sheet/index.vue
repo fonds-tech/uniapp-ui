@@ -132,49 +132,19 @@
     />
 
     <!-- 自定义圆角 -->
-    <ui-action-sheet
-      v-model:show="showBorderRadius"
-      :actions="actions1"
-      title="自定义圆角"
-      :border-radius="32"
-      cancel-text="取消"
-    />
+    <ui-action-sheet v-model:show="showBorderRadius" :actions="actions1" title="自定义圆角" :border-radius="32" cancel-text="取消" />
 
     <!-- 限制最大高度 -->
-    <ui-action-sheet
-      v-model:show="showMaxHeight"
-      :actions="manyActions"
-      title="最大高度限制"
-      max-height="400rpx"
-      cancel-text="取消"
-    />
+    <ui-action-sheet v-model:show="showMaxHeight" :actions="manyActions" title="最大高度限制" max-height="400rpx" cancel-text="取消" />
 
     <!-- 点击遮罩关闭 -->
-    <ui-action-sheet
-      v-model:show="showClickOverlay"
-      :actions="actions1"
-      title="点击遮罩关闭"
-      :close-on-click-overlay="true"
-      @click-overlay="onClickOverlay"
-    />
+    <ui-action-sheet v-model:show="showClickOverlay" :actions="actions1" title="点击遮罩关闭" :close-on-click-overlay="true" @click-overlay="onClickOverlay" />
 
     <!-- 无遮罩层 -->
-    <ui-action-sheet
-      v-model:show="showNoOverlay"
-      :actions="actions1"
-      title="无遮罩层"
-      :overlay="false"
-      cancel-text="取消"
-    />
+    <ui-action-sheet v-model:show="showNoOverlay" :actions="actions1" title="无遮罩层" :overlay="false" cancel-text="取消" />
 
     <!-- 异步关闭 -->
-    <ui-action-sheet
-      v-model:show="showAsync"
-      :actions="actions1"
-      title="异步关闭"
-      :before-close="beforeClose"
-      cancel-text="取消"
-    />
+    <ui-action-sheet v-model:show="showAsync" :actions="actions1" title="异步关闭" :before-close="beforeClose" cancel-text="取消" />
 
     <!-- 事件处理 -->
     <ui-action-sheet

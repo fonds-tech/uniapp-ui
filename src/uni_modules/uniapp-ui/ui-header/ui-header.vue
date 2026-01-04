@@ -1,10 +1,6 @@
 <template>
   <view class="ui-header" :class="[customClass]">
-    <view
-      class="ui-header__content"
-      :class="{ 'safe-area-inset-top': safeAreaInsetTop }"
-      :style="[style]"
-    >
+    <view class="ui-header__content" :class="{ 'safe-area-inset-top': safeAreaInsetTop }" :style="[style]">
       <ui-resize width="100%" @resize="resize">
         <slot />
       </ui-resize>

@@ -168,11 +168,7 @@
           <text class="rate-label">自定义类名</text>
         </view>
         <view class="rate-item">
-          <ui-rate
-            v-model="valueCustom2"
-            :custom-style="{ padding: '16rpx', background: '#fff7e6', borderRadius: '8rpx' }"
-            color="#ff9500"
-          />
+          <ui-rate v-model="valueCustom2" :custom-style="{ padding: '16rpx', background: '#fff7e6', borderRadius: '8rpx' }" color="#ff9500" />
           <text class="rate-label">自定义样式</text>
         </view>
       </demo-block>

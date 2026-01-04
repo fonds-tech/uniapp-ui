@@ -51,9 +51,7 @@
         <ui-tag v-if="showTag1" type="primary" closeable text="点击关闭" @close="showTag1 = false" />
         <ui-tag v-if="showTag2" type="success" closeable text="点击关闭" @close="showTag2 = false" />
         <ui-tag v-if="showTag3" type="warning" closeable text="点击关闭" @close="showTag3 = false" />
-        <ui-button v-if="!showTag1 || !showTag2 || !showTag3" type="primary" size="small" @click="resetTags">
-          重置
-        </ui-button>
+        <ui-button v-if="!showTag1 || !showTag2 || !showTag3" type="primary" size="small" @click="resetTags"> 重置 </ui-button>
       </demo-block>
     </demo-section>
 

@@ -40,11 +40,7 @@ function extractDefaults(propsConfig: Record<string, any>): Record<string, any> 
  * @param props - Props object from defineProps
  * @param propsConfig - Props definition from index.ts
  */
-export function useGlobalProps<T extends Record<string, any>>(
-  name: string,
-  props: T,
-  propsConfig: Record<string, any>,
-): T {
+export function useGlobalProps<T extends Record<string, any>>(name: string, props: T, propsConfig: Record<string, any>): T {
   const defaults = extractDefaults(propsConfig)
 
   return new Proxy(props, {
@@ -105,10 +101,7 @@ export function useGlobalProps<T extends Record<string, any>>(
  * const props = useSwitchProps(defineProps(switchProps))
  * ```
  */
-export function createProps<T extends Record<string, any>>(
-  name: string,
-  propsConfig: T,
-): [T, (rawProps: ExtractPropTypes<T>) => ExtractPropTypes<T>] {
+export function createProps<T extends Record<string, any>>(name: string, propsConfig: T): [T, (rawProps: ExtractPropTypes<T>) => ExtractPropTypes<T>] {
   const useProps = (rawProps: ExtractPropTypes<T>): ExtractPropTypes<T> => {
     return useGlobalProps(name, rawProps as Record<string, any>, propsConfig) as ExtractPropTypes<T>
   }

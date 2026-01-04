@@ -44,32 +44,15 @@
     <demo-section title="图标样式">
       <demo-block direction="column" :gap="16">
         <text class="demo-text">自定义图标大小、颜色和粗细</text>
-        <ui-notice-bar
-          icon="volume-o"
-          icon-size="40rpx"
-          icon-color="#ee0a24"
-          icon-weight="600"
-          text="自定义图标样式的通知栏。"
-        />
+        <ui-notice-bar icon="volume-o" icon-size="40rpx" icon-color="#ee0a24" icon-weight="600" text="自定义图标样式的通知栏。" />
       </demo-block>
     </demo-section>
 
     <!-- 新增：右侧图标 -->
     <demo-section title="右侧图标">
       <demo-block direction="column" :gap="16">
-        <ui-notice-bar
-          icon="volume-o"
-          right-icon="arrow"
-          text="点击查看详情"
-          @click="onNoticeClick"
-        />
-        <ui-notice-bar
-          icon="info"
-          right-icon="cross"
-          right-icon-color="#999"
-          text="可关闭的通知"
-          @click="onCloseClick"
-        />
+        <ui-notice-bar icon="volume-o" right-icon="arrow" text="点击查看详情" @click="onNoticeClick" />
+        <ui-notice-bar icon="info" right-icon="cross" right-icon-color="#999" text="可关闭的通知" @click="onCloseClick" />
       </demo-block>
     </demo-section>
 
@@ -77,14 +60,7 @@
     <demo-section title="右侧图标样式">
       <demo-block direction="column" :gap="16">
         <text class="demo-text">自定义右侧图标大小、颜色和粗细</text>
-        <ui-notice-bar
-          icon="volume-o"
-          right-icon="arrow"
-          right-icon-size="32rpx"
-          right-icon-color="#1989fa"
-          right-icon-weight="600"
-          text="自定义右侧图标样式。"
-        />
+        <ui-notice-bar icon="volume-o" right-icon="arrow" right-icon-size="32rpx" right-icon-color="#1989fa" right-icon-weight="600" text="自定义右侧图标样式。" />
       </demo-block>
     </demo-section>
 
@@ -100,17 +76,8 @@
     <demo-section title="文字样式">
       <demo-block direction="column" :gap="16">
         <text class="demo-text">自定义文字大小和粗细</text>
-        <ui-notice-bar
-          icon="volume-o"
-          font-size="28rpx"
-          text="小号文字通知。"
-        />
-        <ui-notice-bar
-          icon="volume-o"
-          font-size="32rpx"
-          font-weight="600"
-          text="加粗文字通知。"
-        />
+        <ui-notice-bar icon="volume-o" font-size="28rpx" text="小号文字通知。" />
+        <ui-notice-bar icon="volume-o" font-size="32rpx" font-weight="600" text="加粗文字通知。" />
       </demo-block>
     </demo-section>
 
@@ -162,13 +129,7 @@
     <!-- 新增：事件处理 -->
     <demo-section title="事件处理">
       <demo-block direction="column" align="start" :gap="16">
-        <ui-notice-bar
-          :text="notices"
-          mode="vertical"
-          icon="volume-o"
-          right-icon="arrow"
-          @click="onNoticeItemClick"
-        />
+        <ui-notice-bar :text="notices" mode="vertical" icon="volume-o" right-icon="arrow" @click="onNoticeItemClick" />
         <text class="demo-text">{{ eventLog }}</text>
       </demo-block>
     </demo-section>
@@ -176,16 +137,8 @@
     <!-- 新增：自定义类名和样式 -->
     <demo-section title="自定义类名和样式">
       <demo-block direction="column" :gap="16">
-        <ui-notice-bar
-          icon="volume-o"
-          text="自定义类名通知栏。"
-          custom-class="my-notice-bar"
-        />
-        <ui-notice-bar
-          icon="volume-o"
-          text="自定义样式通知栏。"
-          :custom-style="{ borderRadius: '16rpx', margin: '0 16rpx' }"
-        />
+        <ui-notice-bar icon="volume-o" text="自定义类名通知栏。" custom-class="my-notice-bar" />
+        <ui-notice-bar icon="volume-o" text="自定义样式通知栏。" :custom-style="{ borderRadius: '16rpx', margin: '0 16rpx' }" />
       </demo-block>
     </demo-section>
 
@@ -319,24 +272,14 @@ function onNoticeItemClick(index: number) {
 }
 
 // 综合示例 - 活动公告
-const activityNotices = [
-  "🎉 新用户注册即送 100 积分",
-  "🔥 限时特惠：全场商品 8 折起",
-  "🎁 邀请好友各得 50 元红包",
-  "⭐ VIP 会员专享双倍积分",
-]
+const activityNotices = ["🎉 新用户注册即送 100 积分", "🔥 限时特惠：全场商品 8 折起", "🎁 邀请好友各得 50 元红包", "⭐ VIP 会员专享双倍积分"]
 
 function onActivityClick(index: number) {
   toast.success(`查看活动 ${index + 1} 详情`)
 }
 
 // 综合示例 - 多条公告轮播
-const announcements = [
-  "【公告】平台服务协议已更新，请查阅",
-  "【通知】春节期间物流时效可能延迟",
-  "【活动】年货节大促，满 300 减 50",
-  "【提醒】请及时完成实名认证",
-]
+const announcements = ["【公告】平台服务协议已更新，请查阅", "【通知】春节期间物流时效可能延迟", "【活动】年货节大促，满 300 减 50", "【提醒】请及时完成实名认证"]
 
 function onAnnouncementClick(index: number) {
   toast.text(`查看公告 ${index + 1}`)

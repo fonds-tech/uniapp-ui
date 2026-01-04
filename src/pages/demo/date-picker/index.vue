@@ -24,13 +24,7 @@
     <demo-section title="完整日期时间">
       <demo-block>
         <ui-cell title="日期时间" :value="date4 || '请选择'" is-link @click="show4 = true" />
-        <ui-date-picker
-          v-model="date4"
-          v-model:show="show4"
-          title="选择日期时间"
-          :columns="['year', 'month', 'day', 'hour', 'minute']"
-          format="YYYY-MM-DD HH:mm"
-        />
+        <ui-date-picker v-model="date4" v-model:show="show4" title="选择日期时间" :columns="['year', 'month', 'day', 'hour', 'minute']" format="YYYY-MM-DD HH:mm" />
       </demo-block>
     </demo-section>
 

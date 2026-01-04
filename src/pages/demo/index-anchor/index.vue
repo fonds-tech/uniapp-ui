@@ -24,25 +24,11 @@
       <demo-block direction="column">
         <view class="index-bar-demo">
           <ui-index-bar>
-            <ui-index-anchor
-              name="hot"
-              text="热门"
-              color="#ff6b6b"
-              font-size="28rpx"
-              font-weight="600"
-              background="#fff0f0"
-            />
+            <ui-index-anchor name="hot" text="热门" color="#ff6b6b" font-size="28rpx" font-weight="600" background="#fff0f0" />
             <ui-cell title="微信" />
             <ui-cell title="支付宝" />
 
-            <ui-index-anchor
-              name="new"
-              text="最新"
-              color="#1989fa"
-              font-size="28rpx"
-              font-weight="600"
-              background="#e8f4ff"
-            />
+            <ui-index-anchor name="new" text="最新" color="#1989fa" font-size="28rpx" font-weight="600" background="#e8f4ff" />
             <ui-cell title="抖音" />
             <ui-cell title="快手" />
           </ui-index-bar>
@@ -54,25 +40,11 @@
       <demo-block direction="column">
         <view class="index-bar-demo">
           <ui-index-bar>
-            <ui-index-anchor
-              name="A"
-              text="A"
-              sticky-color="#1989fa"
-              sticky-font-size="32rpx"
-              sticky-font-weight="700"
-              sticky-background="#e8f4ff"
-            />
+            <ui-index-anchor name="A" text="A" sticky-color="#1989fa" sticky-font-size="32rpx" sticky-font-weight="700" sticky-background="#e8f4ff" />
             <ui-cell title="苹果 Apple" />
             <ui-cell title="亚马逊 Amazon" />
 
-            <ui-index-anchor
-              name="B"
-              text="B"
-              sticky-color="#1989fa"
-              sticky-font-size="32rpx"
-              sticky-font-weight="700"
-              sticky-background="#e8f4ff"
-            />
+            <ui-index-anchor name="B" text="B" sticky-color="#1989fa" sticky-font-size="32rpx" sticky-font-weight="700" sticky-background="#e8f4ff" />
             <ui-cell title="百度 Baidu" />
             <ui-cell title="字节跳动 ByteDance" />
           </ui-index-bar>

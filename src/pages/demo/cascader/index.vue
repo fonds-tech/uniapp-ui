@@ -9,7 +9,7 @@
     <!-- 新增：双向绑定 -->
     <demo-section title="双向绑定">
       <demo-block direction="column" align="start" :gap="16">
-        <text class="demo-text">当前值: {{ value2 || '未选择' }}</text>
+        <text class="demo-text">当前值: {{ value2 || "未选择" }}</text>
         <demo-block :gap="16">
           <ui-button size="small" @click="value2 = '330106'">设为西湖区</ui-button>
           <ui-button size="small" @click="value2 = '320102'">设为玄武区</ui-button>
@@ -161,72 +161,32 @@
     <!-- Cascader 弹出层 -->
     <!-- 基础用法 -->
     <ui-popup v-model:show="show1" mode="bottom" border-radius="24rpx 24rpx 0 0">
-      <ui-cascader
-        v-model="value1"
-        title="请选择地区"
-        :options="options"
-        @close="show1 = false"
-        @finish="onFinish1"
-      />
+      <ui-cascader v-model="value1" title="请选择地区" :options="options" @close="show1 = false" @finish="onFinish1" />
     </ui-popup>
 
     <!-- 双向绑定 -->
     <ui-popup v-model:show="show2" mode="bottom" border-radius="24rpx 24rpx 0 0">
-      <ui-cascader
-        v-model="value2"
-        title="请选择地区"
-        :options="options"
-        @close="show2 = false"
-        @finish="onFinish2"
-      />
+      <ui-cascader v-model="value2" title="请选择地区" :options="options" @close="show2 = false" @finish="onFinish2" />
     </ui-popup>
 
     <!-- 自定义颜色 -->
     <ui-popup v-model:show="show3" mode="bottom" border-radius="24rpx 24rpx 0 0">
-      <ui-cascader
-        v-model="value3"
-        title="请选择地区"
-        :options="options"
-        color="#666666"
-        active-color="#07c160"
-        @close="show3 = false"
-        @finish="onFinish3"
-      />
+      <ui-cascader v-model="value3" title="请选择地区" :options="options" color="#666666" active-color="#07c160" @close="show3 = false" @finish="onFinish3" />
     </ui-popup>
 
     <!-- 自定义占位符 -->
     <ui-popup v-model:show="show4" mode="bottom" border-radius="24rpx 24rpx 0 0">
-      <ui-cascader
-        v-model="value4"
-        title="请选择地区"
-        :options="options"
-        placeholder="请点击选择"
-        @close="show4 = false"
-        @finish="onFinish4"
-      />
+      <ui-cascader v-model="value4" title="请选择地区" :options="options" placeholder="请点击选择" @close="show4 = false" @finish="onFinish4" />
     </ui-popup>
 
     <!-- 禁用选项 -->
     <ui-popup v-model:show="show5" mode="bottom" border-radius="24rpx 24rpx 0 0">
-      <ui-cascader
-        v-model="value5"
-        title="请选择地区"
-        :options="optionsWithDisabled"
-        @close="show5 = false"
-        @finish="onFinish5"
-      />
+      <ui-cascader v-model="value5" title="请选择地区" :options="optionsWithDisabled" @close="show5 = false" @finish="onFinish5" />
     </ui-popup>
 
     <!-- 关闭图标显示控制 -->
     <ui-popup v-model:show="show6" mode="bottom" border-radius="24rpx 24rpx 0 0">
-      <ui-cascader
-        v-model="value6"
-        title="请选择地区"
-        :options="options"
-        :closeable="currentCloseable"
-        @close="show6 = false"
-        @finish="onFinish6"
-      />
+      <ui-cascader v-model="value6" title="请选择地区" :options="options" :closeable="currentCloseable" @close="show6 = false" @finish="onFinish6" />
     </ui-popup>
 
     <!-- 自定义关闭图标 -->
@@ -245,14 +205,7 @@
 
     <!-- 隐藏头部栏 -->
     <ui-popup v-model:show="show7" mode="bottom" border-radius="24rpx 24rpx 0 0">
-      <ui-cascader
-        v-model="value7"
-        title="请选择地区"
-        :options="options"
-        :show-header="currentShowHeader"
-        @close="show7 = false"
-        @finish="onFinish7"
-      />
+      <ui-cascader v-model="value7" title="请选择地区" :options="options" :show-header="currentShowHeader" @close="show7 = false" @finish="onFinish7" />
     </ui-popup>
 
     <!-- 标题样式 -->
@@ -271,26 +224,12 @@
 
     <!-- 手势滑动 -->
     <ui-popup v-model:show="show9" mode="bottom" border-radius="24rpx 24rpx 0 0">
-      <ui-cascader
-        v-model="value9"
-        title="请选择地区"
-        :options="options"
-        :swipeable="currentSwipeable"
-        @close="show9 = false"
-        @finish="onFinish9"
-      />
+      <ui-cascader v-model="value9" title="请选择地区" :options="options" :swipeable="currentSwipeable" @close="show9 = false" @finish="onFinish9" />
     </ui-popup>
 
     <!-- 异步选项加载 -->
     <ui-popup v-model:show="show10" mode="bottom" border-radius="24rpx 24rpx 0 0">
-      <ui-cascader
-        v-model="value10"
-        title="请选择地区"
-        :options="asyncOptions"
-        :before-change="onBeforeChange"
-        @close="show10 = false"
-        @finish="onFinish10"
-      />
+      <ui-cascader v-model="value10" title="请选择地区" :options="asyncOptions" :before-change="onBeforeChange" @close="show10 = false" @finish="onFinish10" />
     </ui-popup>
 
     <!-- 自定义字段名 -->
@@ -320,14 +259,7 @@
 
     <!-- 自定义类名 -->
     <ui-popup v-model:show="show13" mode="bottom" border-radius="24rpx 24rpx 0 0">
-      <ui-cascader
-        v-model="value13"
-        title="请选择地区"
-        :options="options"
-        custom-class="my-cascader"
-        @close="show13 = false"
-        @finish="onFinish13"
-      />
+      <ui-cascader v-model="value13" title="请选择地区" :options="options" custom-class="my-cascader" @close="show13 = false" @finish="onFinish13" />
     </ui-popup>
 
     <!-- 自定义样式 -->
@@ -344,36 +276,15 @@
 
     <!-- 综合示例 - 省市区选择 -->
     <ui-popup v-model:show="show15" mode="bottom" border-radius="24rpx 24rpx 0 0">
-      <ui-cascader
-        v-model="provinceValue"
-        title="请选择省份"
-        :options="provinceOptions"
-        active-color="#1989fa"
-        @close="show15 = false"
-        @finish="onFinishProvince"
-      />
+      <ui-cascader v-model="provinceValue" title="请选择省份" :options="provinceOptions" active-color="#1989fa" @close="show15 = false" @finish="onFinishProvince" />
     </ui-popup>
 
     <ui-popup v-model:show="show16" mode="bottom" border-radius="24rpx 24rpx 0 0">
-      <ui-cascader
-        v-model="cityValue"
-        title="请选择城市"
-        :options="cityOptions"
-        active-color="#1989fa"
-        @close="show16 = false"
-        @finish="onFinishCity"
-      />
+      <ui-cascader v-model="cityValue" title="请选择城市" :options="cityOptions" active-color="#1989fa" @close="show16 = false" @finish="onFinishCity" />
     </ui-popup>
 
     <ui-popup v-model:show="show17" mode="bottom" border-radius="24rpx 24rpx 0 0">
-      <ui-cascader
-        v-model="districtValue"
-        title="请选择区县"
-        :options="districtOptions"
-        active-color="#1989fa"
-        @close="show17 = false"
-        @finish="onFinishDistrict"
-      />
+      <ui-cascader v-model="districtValue" title="请选择区县" :options="districtOptions" active-color="#1989fa" @close="show17 = false" @finish="onFinishDistrict" />
     </ui-popup>
 
     <!-- 综合示例 - 商品分类选择 -->

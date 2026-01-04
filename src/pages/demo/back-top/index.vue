@@ -56,14 +56,7 @@
     <demo-section v-for="i in 20" :key="i" :title="`占位内容 ${i}`" desc="这是一段占位内容，用于演示滚动效果" />
 
     <!-- 默认样式 -->
-    <ui-back-top
-      v-if="styleType === 'default'"
-      :offset="currentOffset"
-      :duration="currentDuration"
-      right="40rpx"
-      bottom="200rpx"
-      @click="onBackTopClick"
-    />
+    <ui-back-top v-if="styleType === 'default'" :offset="currentOffset" :duration="currentDuration" right="40rpx" bottom="200rpx" @click="onBackTopClick" />
 
     <!-- 主题色样式 -->
     <ui-back-top

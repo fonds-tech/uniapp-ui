@@ -56,10 +56,7 @@ function createToastController(getInstance: () => ToastInstance | null): ToastCo
   /**
    * 通用调用方法，处理实例不存在时的队列逻辑
    */
-  function callMethod<K extends keyof ToastInstance>(
-    method: K,
-    ...args: ToastInstance[K] extends (...args: infer P) => unknown ? P : never
-  ) {
+  function callMethod<K extends keyof ToastInstance>(method: K, ...args: ToastInstance[K] extends (...args: infer P) => unknown ? P : never) {
     const instance = getInstance()
     if (instance) {
       const fn = instance[method]

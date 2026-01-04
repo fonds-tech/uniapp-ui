@@ -50,12 +50,12 @@ UiUpload 组件，属性与事件以源码注释为准。
 
 ## Events
 
-| 事件名   | 说明 | 回调参数                           |
-| -------- | ---- | ---------------------------------- |
-| upload   | -    | event: { files: any }              |
-| delete   | -    | event: { inex: number; file: any } |
-| oversize | -    | files: UploadFile[]                |
-| update   | -    | value: string \| string[]          |
+| 事件名   | 说明 | 回调参数                            |
+| -------- | ---- | ----------------------------------- |
+| upload   | -    | event: { files: any }               |
+| delete   | -    | event: { index: number; file: any } |
+| oversize | -    | files: UploadFile[]                 |
+| update   | -    | value: string \| string[]           |
 
 ## Slots
 

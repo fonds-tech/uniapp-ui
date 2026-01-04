@@ -32,6 +32,8 @@ const useProps = useNotifyProps(props)
 const visible = ref(false)
 const useOptions = ref<NotifyOptions>({})
 const propOptions = ref<NotifyOptions>({})
+// 定时器引用，用于组件卸载时清理
+const closeTimer = ref<ReturnType<typeof setTimeout> | null>(null)
 const baseOptions = ref<NotifyOptions>({
   type: "primary",
   content: "",
@@ -90,15 +92,29 @@ watch(visible, (val) => {
   emits("update:show", val)
 })
 
+// 清理定时器的辅助函数
+function clearCloseTimer() {
+  if (closeTimer.value) {
+    clearTimeout(closeTimer.value)
+    closeTimer.value = null
+  }
+}
+
 function show(options: NotifyOptions = {}) {
   if (visible.value) return
+  // 先清理之前的定时器
+  clearCloseTimer()
+
   useOptions.value = merge(merge(baseOptions.value, propOptions.value), options)
   visible.value = true
 
-  setTimeout(() => close(), +useOptions.value.duration || 3000)
+  // 保存定时器引用以便后续清理
+  closeTimer.value = setTimeout(() => close(), +useOptions.value.duration || 3000)
 }
 
 function close() {
+  // 关闭时清理定时器
+  clearCloseTimer()
   visible.value = false
 }
 
@@ -125,6 +141,11 @@ function onClosed() {
 function noop() {
   return false
 }
+
+// 组件卸载时清理定时器，防止内存泄漏
+onBeforeUnmount(() => {
+  clearCloseTimer()
+})
 
 defineExpose({ name: "ui-notify", show, close })
 </script>

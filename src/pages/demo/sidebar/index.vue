@@ -140,32 +140,14 @@
       <demo-block :cols="2" :gap="24">
         <view class="sidebar-wrap sidebar-wrap--small">
           <ui-sidebar v-model="activeTitle1">
-            <ui-sidebar-item
-              title="自定义颜色"
-              title-color="#666"
-              active-title-color="#1989fa"
-            />
-            <ui-sidebar-item
-              title="标签二"
-              title-color="#666"
-              active-title-color="#1989fa"
-            />
+            <ui-sidebar-item title="自定义颜色" title-color="#666" active-title-color="#1989fa" />
+            <ui-sidebar-item title="标签二" title-color="#666" active-title-color="#1989fa" />
           </ui-sidebar>
         </view>
         <view class="sidebar-wrap sidebar-wrap--small">
           <ui-sidebar v-model="activeTitle2">
-            <ui-sidebar-item
-              title="大号粗体"
-              title-size="32rpx"
-              title-weight="600"
-              active-title-size="36rpx"
-            />
-            <ui-sidebar-item
-              title="标签二"
-              title-size="32rpx"
-              title-weight="600"
-              active-title-size="36rpx"
-            />
+            <ui-sidebar-item title="大号粗体" title-size="32rpx" title-weight="600" active-title-size="36rpx" />
+            <ui-sidebar-item title="标签二" title-size="32rpx" title-weight="600" active-title-size="36rpx" />
           </ui-sidebar>
         </view>
       </demo-block>
@@ -282,22 +264,10 @@
           </ui-sidebar>
         </view>
         <view class="sidebar-wrap sidebar-wrap--small">
-          <ui-sidebar
-            v-model="activeCustom2"
-            :custom-style="{ borderRadius: '16rpx', overflow: 'hidden' }"
-          >
-            <ui-sidebar-item
-              title="圆角样式"
-              custom-class="my-sidebar-item"
-            />
-            <ui-sidebar-item
-              title="标签二"
-              custom-class="my-sidebar-item"
-            />
-            <ui-sidebar-item
-              title="标签三"
-              custom-class="my-sidebar-item"
-            />
+          <ui-sidebar v-model="activeCustom2" :custom-style="{ borderRadius: '16rpx', overflow: 'hidden' }">
+            <ui-sidebar-item title="圆角样式" custom-class="my-sidebar-item" />
+            <ui-sidebar-item title="标签二" custom-class="my-sidebar-item" />
+            <ui-sidebar-item title="标签三" custom-class="my-sidebar-item" />
           </ui-sidebar>
         </view>
       </demo-block>
@@ -306,15 +276,7 @@
     <!-- 新增：综合示例 -->
     <demo-section title="综合示例">
       <demo-block class="sidebar-wrap sidebar-wrap--large">
-        <ui-sidebar
-          v-model="activeComplex"
-          width="220rpx"
-          background="#f7f8fa"
-          line-color="#1989fa"
-          line-width="8rpx"
-          line-radius="4rpx"
-          :duration="200"
-        >
+        <ui-sidebar v-model="activeComplex" width="220rpx" background="#f7f8fa" line-color="#1989fa" line-width="8rpx" line-radius="4rpx" :duration="200">
           <ui-sidebar-item
             v-for="item in categories"
             :key="item.name"

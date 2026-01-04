@@ -7,7 +7,7 @@
           <ui-radio name="b">选项 B</ui-radio>
           <ui-radio name="c">选项 C</ui-radio>
         </ui-radio-group>
-        <ui-text size="small" color="secondary">当前选中：{{ value1 || '无' }}</ui-text>
+        <ui-text size="small" color="secondary">当前选中：{{ value1 || "无" }}</ui-text>
       </demo-block>
     </demo-section>
 

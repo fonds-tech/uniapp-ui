@@ -1,12 +1,5 @@
 <template>
-  <view
-    v-if="inited"
-    class="ui-transition"
-    :class="[transition.classs.value, customClass]"
-    :style="[style]"
-    @transitionend="onTransitionEnd"
-    @click="onClick"
-  >
+  <view v-if="inited" class="ui-transition" :class="[transition.classs.value, customClass]" :style="[style]" @transitionend="onTransitionEnd" @click="onClick">
     <slot />
   </view>
 </template>
@@ -60,11 +53,7 @@ watch(
 )
 
 // 监听配置变化，重新初始化
-watch(
-  () => [useProps.name, useProps.duration, useProps.enterTimingFunction, useProps.leaveTimingFunction],
-  initTransition,
-  { immediate: true },
-)
+watch(() => [useProps.name, useProps.duration, useProps.enterTimingFunction, useProps.leaveTimingFunction], initTransition, { immediate: true })
 
 // 初始化过渡配置
 function initTransition() {

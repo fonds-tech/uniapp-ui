@@ -91,22 +91,13 @@
     <demo-section title="文字样式">
       <demo-block direction="column" :gap="24">
         <text class="demo-text">激活样式（大号粗体）:</text>
-        <ui-tabs
-          v-model="activeTextStyle1"
-          active-size="32rpx"
-          active-weight="600"
-          inactive-size="26rpx"
-        >
+        <ui-tabs v-model="activeTextStyle1" active-size="32rpx" active-weight="600" inactive-size="26rpx">
           <ui-tab title="标签一" />
           <ui-tab title="标签二" />
           <ui-tab title="标签三" />
         </ui-tabs>
         <text class="demo-text">自定义粗细:</text>
-        <ui-tabs
-          v-model="activeTextStyle2"
-          active-weight="700"
-          inactive-weight="300"
-        >
+        <ui-tabs v-model="activeTextStyle2" active-weight="700" inactive-weight="300">
           <ui-tab title="标签一" />
           <ui-tab title="标签二" />
           <ui-tab title="标签三" />
@@ -197,11 +188,7 @@
     <!-- 新增：自定义样式 -->
     <demo-section title="自定义样式">
       <demo-block direction="column" :gap="24">
-        <ui-tabs
-          v-model="activeCustom1"
-          custom-class="my-tabs"
-          :custom-style="{ padding: '16rpx', borderRadius: '16rpx', background: '#f7f8fa' }"
-        >
+        <ui-tabs v-model="activeCustom1" custom-class="my-tabs" :custom-style="{ padding: '16rpx', borderRadius: '16rpx', background: '#f7f8fa' }">
           <ui-tab title="标签一" />
           <ui-tab title="标签二" />
           <ui-tab title="标签三" />
@@ -249,29 +236,11 @@
     <demo-section title="卡片风格">
       <demo-block direction="column">
         <view class="card-tabs-wrap">
-          <ui-tabs
-            v-model="activeCard"
-            :show-line="false"
-            background="transparent"
-            active-color="#fff"
-            inactive-color="#1989fa"
-          >
-            <ui-tab
-              title="全部"
-              :custom-style="activeCard === 0 ? activeTabStyle : inactiveTabStyle"
-            />
-            <ui-tab
-              title="待付款"
-              :custom-style="activeCard === 1 ? activeTabStyle : inactiveTabStyle"
-            />
-            <ui-tab
-              title="待发货"
-              :custom-style="activeCard === 2 ? activeTabStyle : inactiveTabStyle"
-            />
-            <ui-tab
-              title="已完成"
-              :custom-style="activeCard === 3 ? activeTabStyle : inactiveTabStyle"
-            />
+          <ui-tabs v-model="activeCard" :show-line="false" background="transparent" active-color="#fff" inactive-color="#1989fa">
+            <ui-tab title="全部" :custom-style="activeCard === 0 ? activeTabStyle : inactiveTabStyle" />
+            <ui-tab title="待付款" :custom-style="activeCard === 1 ? activeTabStyle : inactiveTabStyle" />
+            <ui-tab title="待发货" :custom-style="activeCard === 2 ? activeTabStyle : inactiveTabStyle" />
+            <ui-tab title="已完成" :custom-style="activeCard === 3 ? activeTabStyle : inactiveTabStyle" />
           </ui-tabs>
         </view>
       </demo-block>

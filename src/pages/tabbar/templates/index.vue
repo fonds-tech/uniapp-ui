@@ -1,10 +1,7 @@
 <template>
   <view class="min-h-screen bg-[#F6F7F9]">
     <!-- 顶部导航栏 -->
-    <view
-      class="fixed left-0 top-0 z-50 w-full bg-white/95 backdrop-blur-md"
-      :style="{ paddingTop: `${safeAreaInsets?.top}px` }"
-    >
+    <view class="fixed left-0 top-0 z-50 w-full bg-white/95 backdrop-blur-md" :style="{ paddingTop: `${safeAreaInsets?.top}px` }">
       <view class="flex h-[88rpx] items-center px-[32rpx]">
         <text class="text-[36rpx] font-bold text-slate-800">业务模板</text>
       </view>
@@ -21,9 +18,7 @@
           <view class="i-lucide-sparkles text-[48rpx] mr-[16rpx]" />
           <text class="text-[36rpx] font-bold">快速开发模板</text>
         </view>
-        <text class="text-[28rpx] opacity-90 leading-relaxed">
-          精选常用业务场景模板，助你快速搭建页面，提升开发效率
-        </text>
+        <text class="text-[28rpx] opacity-90 leading-relaxed"> 精选常用业务场景模板，助你快速搭建页面，提升开发效率 </text>
       </view>
 
       <!-- 模板分类 -->
@@ -42,28 +37,17 @@
             @click="previewTemplate(template)"
           >
             <view class="flex items-start">
-              <view
-                :class="`flex h-[96rpx] w-[96rpx] items-center justify-center rounded-[24rpx] ${template.bgClass} mr-[28rpx]`"
-              >
+              <view :class="`flex h-[96rpx] w-[96rpx] items-center justify-center rounded-[24rpx] ${template.bgClass} mr-[28rpx]`">
                 <view :class="`${template.icon} text-[44rpx] ${template.textClass}`" />
               </view>
               <view class="flex-1">
                 <view class="flex items-center mb-[8rpx]">
                   <text class="text-[30rpx] font-bold text-slate-800">{{ template.name }}</text>
-                  <view
-                    v-if="template.isNew"
-                    class="ml-[12rpx] px-[12rpx] py-[4rpx] rounded-full bg-rose-500 text-white text-[20rpx]"
-                  >
-                    NEW
-                  </view>
+                  <view v-if="template.isNew" class="ml-[12rpx] px-[12rpx] py-[4rpx] rounded-full bg-rose-500 text-white text-[20rpx]"> NEW </view>
                 </view>
                 <text class="text-[26rpx] text-gray-500 leading-relaxed">{{ template.desc }}</text>
                 <view class="flex flex-wrap gap-[12rpx] mt-[16rpx]">
-                  <view
-                    v-for="tag in template.tags"
-                    :key="tag"
-                    class="px-[16rpx] py-[6rpx] rounded-full bg-gray-100 text-[22rpx] text-gray-500"
-                  >
+                  <view v-for="tag in template.tags" :key="tag" class="px-[16rpx] py-[6rpx] rounded-full bg-gray-100 text-[22rpx] text-gray-500">
                     {{ tag }}
                   </view>
                 </view>

@@ -1,16 +1,10 @@
 <template>
   <view class="h-screen flex flex-col bg-[#F7F8FA]">
     <!-- 顶部搜索栏 (固定) -->
-    <view
-      class="bg-white z-50 flex-none"
-      :style="{ paddingTop: `${safeAreaInsets?.top}px` }"
-    >
+    <view class="bg-white z-50 flex-none" :style="{ paddingTop: `${safeAreaInsets?.top}px` }">
       <view class="px-[24rpx] py-[16rpx] flex items-center">
         <!-- 搜索框 -->
-        <view
-          class="flex-1 h-[72rpx] bg-[#F5F7FA] rounded-full flex items-center px-[24rpx] active:bg-[#EFF1F4] transition-colors"
-          @click="showSearch = true"
-        >
+        <view class="flex-1 h-[72rpx] bg-[#F5F7FA] rounded-full flex items-center px-[24rpx] active:bg-[#EFF1F4] transition-colors" @click="showSearch = true">
           <view class="i-lucide-search text-[32rpx] text-[#86909C] mr-[12rpx]" />
           <text class="text-[28rpx] text-[#86909C]">搜索组件...</text>
         </view>
@@ -26,11 +20,7 @@
     <!-- 主体内容区 (左右分栏) -->
     <view class="flex-1 flex overflow-hidden">
       <!-- 左侧分类导航 -->
-      <scroll-view
-        scroll-y
-        class="w-[180rpx] h-full bg-[#F7F8FA]"
-        :show-scrollbar="false"
-      >
+      <scroll-view scroll-y class="w-[180rpx] h-full bg-[#F7F8FA]" :show-scrollbar="false">
         <view class="pb-[180rpx]">
           <!-- 底部垫高，防止被tabbar遮挡 -->
           <view
@@ -41,10 +31,7 @@
             @click="activeCategoryIndex = index"
           >
             <!-- 选中指示条 -->
-            <view
-              v-if="activeCategoryIndex === index"
-              class="absolute left-0 top-[50%] translate-y-[-50%] w-[6rpx] h-[32rpx] rounded-r-full bg-[#2979FF]"
-            />
+            <view v-if="activeCategoryIndex === index" class="absolute left-0 top-[50%] translate-y-[-50%] w-[6rpx] h-[32rpx] rounded-r-full bg-[#2979FF]" />
 
             <text
               class="text-[26rpx] font-medium transition-colors duration-300 text-center"
@@ -57,11 +44,7 @@
       </scroll-view>
 
       <!-- 右侧组件列表 -->
-      <scroll-view
-        scroll-y
-        class="flex-1 h-full bg-white"
-        :show-scrollbar="false"
-      >
+      <scroll-view scroll-y class="flex-1 h-full bg-white" :show-scrollbar="false">
         <view class="px-[24rpx] pt-[24rpx] pb-[180rpx]">
           <!-- 分类标题 -->
           <view class="flex items-center justify-between mb-[32rpx] pl-[8rpx]">
@@ -105,25 +88,10 @@
         <view class="px-[32rpx] py-[24rpx] bg-white border-b border-[#F0F0F2] flex items-center sticky top-0 z-10">
           <view class="flex-1 bg-[#F5F7FA] h-[80rpx] rounded-full flex items-center px-[28rpx]">
             <view class="i-lucide-search text-[36rpx] text-[#86909C] mr-[16rpx]" />
-            <input
-              v-model="searchText"
-              class="flex-1 text-[30rpx] text-[#1D1D1F] h-full"
-              placeholder="搜索组件..."
-              :focus="showSearch"
-              placeholder-style="color: #86909C"
-            />
-            <view
-              v-if="searchText"
-              class="i-lucide-x-circle-fill text-[36rpx] text-[#C0C4CC] p-[8rpx]"
-              @click="searchText = ''"
-            />
+            <input v-model="searchText" class="flex-1 text-[30rpx] text-[#1D1D1F] h-full" placeholder="搜索组件..." :focus="showSearch" placeholder-style="color: #86909C" />
+            <view v-if="searchText" class="i-lucide-x-circle-fill text-[36rpx] text-[#C0C4CC] p-[8rpx]" @click="searchText = ''" />
           </view>
-          <text
-            class="text-[30rpx] text-[#2979FF] font-bold ml-[24rpx]"
-            @click="showSearch = false"
-          >
-            取消
-          </text>
+          <text class="text-[30rpx] text-[#2979FF] font-bold ml-[24rpx]" @click="showSearch = false"> 取消 </text>
         </view>
 
         <scroll-view scroll-y class="flex-1 px-[24rpx] pt-[24rpx]">

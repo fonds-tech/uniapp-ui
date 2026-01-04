@@ -155,26 +155,14 @@
     <demo-section title="事件处理">
       <demo-block direction="column" align="start" :gap="16">
         <text class="demo-text">{{ eventLog }}</text>
-        <ui-swiper
-          :list="images"
-          height="300rpx"
-          :autoplay="false"
-          @click="onSwiperClick"
-          @change="onSwiperChange"
-          @animationfinish="onSwiperAnimationfinish"
-        />
+        <ui-swiper :list="images" height="300rpx" :autoplay="false" @click="onSwiperClick" @change="onSwiperChange" @animationfinish="onSwiperAnimationfinish" />
       </demo-block>
     </demo-section>
 
     <!-- 新增：自定义样式 -->
     <demo-section title="自定义样式">
       <demo-block direction="column" :gap="16">
-        <ui-swiper
-          :list="images"
-          height="300rpx"
-          custom-class="my-swiper"
-          :custom-style="{ boxShadow: '0 8rpx 32rpx rgba(0,0,0,0.15)' }"
-        />
+        <ui-swiper :list="images" height="300rpx" custom-class="my-swiper" :custom-style="{ boxShadow: '0 8rpx 32rpx rgba(0,0,0,0.15)' }" />
       </demo-block>
     </demo-section>
 
@@ -219,14 +207,7 @@
       <demo-block direction="column">
         <view class="notice-swiper">
           <ui-icon name="notice" size="36rpx" color="#ff9500" />
-          <ui-swiper
-            :list="notices"
-            height="60rpx"
-            vertical
-            :indicator="false"
-            :interval="3000"
-            image-mode="aspectFit"
-          >
+          <ui-swiper :list="notices" height="60rpx" vertical :indicator="false" :interval="3000" image-mode="aspectFit">
             <swiper-item v-for="(notice, index) in notices" :key="index">
               <view class="notice-item">
                 <text class="notice-text">{{ notice }}</text>
@@ -315,12 +296,7 @@ function onProductClick(index: number) {
 }
 
 // 公告轮播
-const notices = [
-  "欢迎使用 UniApp UI 组件库",
-  "新版本 v2.0 已发布，快来体验",
-  "所有商品限时特惠，满 300 减 50",
-  "会员日专享福利，积分翻倍",
-]
+const notices = ["欢迎使用 UniApp UI 组件库", "新版本 v2.0 已发布，快来体验", "所有商品限时特惠，满 300 减 50", "会员日专享福利，积分翻倍"]
 </script>
 
 <style lang="scss" scoped>

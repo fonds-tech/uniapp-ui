@@ -51,14 +51,7 @@
     <demo-section title="按钮样式">
       <demo-block direction="column" :gap="16">
         <text class="demo-text">自定义按钮大小、颜色和粗细</text>
-        <ui-search
-          v-model="value7b"
-          action-text="搜索"
-          action-size="30rpx"
-          action-color="#1989fa"
-          action-weight="600"
-          placeholder="自定义按钮样式"
-        />
+        <ui-search v-model="value7b" action-text="搜索" action-size="30rpx" action-color="#1989fa" action-weight="600" placeholder="自定义按钮样式" />
       </demo-block>
     </demo-section>
 
@@ -75,13 +68,7 @@
     <demo-section title="图标样式">
       <demo-block direction="column" :gap="16">
         <text class="demo-text">自定义图标大小、颜色和粗细</text>
-        <ui-search
-          v-model="value9"
-          icon-size="40rpx"
-          icon-color="#1989fa"
-          icon-weight="600"
-          placeholder="自定义图标样式"
-        />
+        <ui-search v-model="value9" icon-size="40rpx" icon-color="#1989fa" icon-weight="600" placeholder="自定义图标样式" />
       </demo-block>
     </demo-section>
 
@@ -208,28 +195,15 @@
     <!-- 新增：自定义样式 -->
     <demo-section title="自定义样式">
       <demo-block direction="column" :gap="16">
-        <ui-search
-          v-model="value21"
-          custom-class="my-search"
-          placeholder="自定义类名"
-        />
-        <ui-search
-          v-model="value21b"
-          :custom-style="{ boxShadow: '0 4rpx 16rpx rgba(0,0,0,0.1)', borderRadius: '16rpx' }"
-          placeholder="自定义样式"
-        />
+        <ui-search v-model="value21" custom-class="my-search" placeholder="自定义类名" />
+        <ui-search v-model="value21b" :custom-style="{ boxShadow: '0 4rpx 16rpx rgba(0,0,0,0.1)', borderRadius: '16rpx' }" placeholder="自定义样式" />
       </demo-block>
     </demo-section>
 
     <!-- 新增：输入框样式 -->
     <demo-section title="输入框样式">
       <demo-block direction="column" :gap="16">
-        <ui-search
-          v-model="value22"
-          :input-style="{ background: '#fff', borderRadius: '8rpx', padding: '0 16rpx' }"
-          background="#f5f5f5"
-          placeholder="自定义输入框样式"
-        />
+        <ui-search v-model="value22" :input-style="{ background: '#fff', borderRadius: '8rpx', padding: '0 16rpx' }" background="#f5f5f5" placeholder="自定义输入框样式" />
       </demo-block>
     </demo-section>
 
@@ -237,14 +211,7 @@
     <demo-section title="综合示例 - 商品搜索">
       <demo-block direction="column" :gap="16">
         <view class="search-header">
-          <ui-search
-            v-model="productSearch"
-            round
-            background="#fff"
-            :action="false"
-            placeholder="搜索商品"
-            @search="onProductSearch"
-          />
+          <ui-search v-model="productSearch" round background="#fff" :action="false" placeholder="搜索商品" @search="onProductSearch" />
           <ui-button size="small" type="primary" @click="onProductSearch(productSearch)">搜索</ui-button>
         </view>
         <view v-if="searchHistory.length" class="search-history">
@@ -264,15 +231,7 @@
       <demo-block direction="column">
         <view class="location-search">
           <ui-icon name="location" size="36rpx" color="#1989fa" />
-          <ui-search
-            v-model="locationSearch"
-            icon=""
-            round
-            :action="false"
-            background="transparent"
-            placeholder="搜索地点"
-            @search="onLocationSearch"
-          />
+          <ui-search v-model="locationSearch" icon="" round :action="false" background="transparent" placeholder="搜索地点" @search="onLocationSearch" />
           <ui-icon name="scan" size="36rpx" color="#666" @click="onScan" />
         </view>
       </demo-block>
@@ -282,14 +241,7 @@
     <demo-section title="综合示例 - 筛选搜索">
       <demo-block direction="column" :gap="16">
         <view class="filter-search">
-          <ui-search
-            v-model="filterSearch"
-            :action="false"
-            round
-            height="64rpx"
-            placeholder="搜索"
-            @search="onFilterSearch"
-          />
+          <ui-search v-model="filterSearch" :action="false" round height="64rpx" placeholder="搜索" @search="onFilterSearch" />
           <view class="filter-btn" @click="showFilter = !showFilter">
             <ui-icon name="filter-o" size="32rpx" />
             <text class="filter-text">筛选</text>

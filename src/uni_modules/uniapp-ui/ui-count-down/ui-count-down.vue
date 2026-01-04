@@ -129,6 +129,11 @@ function useCancelRequestAnimationFrame(id: number) {
   clearTimeout(id)
 }
 
+// 组件卸载时清理定时器，防止内存泄漏
+onBeforeUnmount(() => {
+  pause()
+})
+
 defineExpose({ start, reset, pause })
 </script>
 

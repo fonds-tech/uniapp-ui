@@ -79,13 +79,7 @@
     <!-- 新增：标签样式 -->
     <demo-section title="标签样式">
       <demo-block direction="column" :gap="0">
-        <ui-form
-          :model="formDataLabelStyle"
-          label-width="180rpx"
-          label-size="30rpx"
-          label-color="#1989fa"
-          label-weight="600"
-        >
+        <ui-form :model="formDataLabelStyle" label-width="180rpx" label-size="30rpx" label-color="#1989fa" label-weight="600">
           <ui-form-item label="自定义标签">
             <ui-input v-model="formDataLabelStyle.name" placeholder="标签宽180rpx" />
           </ui-form-item>
@@ -169,12 +163,7 @@
           <ui-button size="small" @click="currentTrigger = 'submit'">提交触发</ui-button>
         </demo-block>
         <text class="demo-text">当前触发时机: {{ currentTrigger }}</text>
-        <ui-form
-          ref="triggerFormRef"
-          :model="formDataTrigger"
-          :rules="triggerRules"
-          :validate-trigger="currentTrigger"
-        >
+        <ui-form ref="triggerFormRef" :model="formDataTrigger" :rules="triggerRules" :validate-trigger="currentTrigger">
           <ui-form-item label="邮箱" prop="email">
             <ui-input v-model="formDataTrigger.email" placeholder="请输入邮箱" />
           </ui-form-item>
@@ -219,14 +208,7 @@
     <!-- 新增：错误信息样式 -->
     <demo-section title="错误信息样式">
       <demo-block direction="column" :gap="0">
-        <ui-form
-          ref="errorFormRef"
-          :model="formDataError"
-          :rules="errorRules"
-          error-message-size="24rpx"
-          error-message-color="#ff9500"
-          error-message-align="right"
-        >
+        <ui-form ref="errorFormRef" :model="formDataError" :rules="errorRules" error-message-size="24rpx" error-message-color="#ff9500" error-message-align="right">
           <ui-form-item label="必填字段" prop="value">
             <ui-input v-model="formDataError.value" placeholder="请输入内容" />
           </ui-form-item>
@@ -239,28 +221,13 @@
     <demo-section title="表单项自定义">
       <demo-block direction="column" :gap="0">
         <ui-form :model="formDataItem">
-          <ui-form-item
-            label="自定义标签"
-            label-width="200rpx"
-            label-color="#ee0a24"
-            label-size="28rpx"
-            label-weight="500"
-            :padding="20"
-          >
+          <ui-form-item label="自定义标签" label-width="200rpx" label-color="#ee0a24" label-size="28rpx" label-weight="500" :padding="20">
             <ui-input v-model="formDataItem.value1" placeholder="请输入" />
           </ui-form-item>
-          <ui-form-item
-            label="标签居顶"
-            label-align="top"
-            label-color="#07c160"
-          >
+          <ui-form-item label="标签居顶" label-align="top" label-color="#07c160">
             <ui-input v-model="formDataItem.value2" placeholder="标签垂直居顶" />
           </ui-form-item>
-          <ui-form-item
-            label="标签居底"
-            label-align="bottom"
-            label-color="#1989fa"
-          >
+          <ui-form-item label="标签居底" label-align="bottom" label-color="#1989fa">
             <ui-input v-model="formDataItem.value3" placeholder="标签垂直居底" />
           </ui-form-item>
         </ui-form>
@@ -271,13 +238,7 @@
     <demo-section title="事件处理">
       <demo-block direction="column" align="start" :gap="16">
         <text class="demo-text">{{ eventLog }}</text>
-        <ui-form
-          ref="eventFormRef"
-          :model="formDataEvent"
-          :rules="eventRules"
-          @submit="onFormSubmit"
-          @failed="onFormFailed"
-        >
+        <ui-form ref="eventFormRef" :model="formDataEvent" :rules="eventRules" @submit="onFormSubmit" @failed="onFormFailed">
           <ui-form-item label="姓名" prop="name">
             <ui-input v-model="formDataEvent.name" placeholder="请输入姓名" />
           </ui-form-item>
@@ -289,16 +250,8 @@
     <!-- 新增：自定义样式 -->
     <demo-section title="自定义样式">
       <demo-block direction="column" :gap="0">
-        <ui-form
-          :model="formDataStyle"
-          custom-class="my-form"
-          :custom-style="{ padding: '24rpx', background: '#f7f8fa', borderRadius: '16rpx' }"
-        >
-          <ui-form-item
-            label="自定义表单"
-            custom-class="my-form-item"
-            :custom-style="{ background: '#fff', borderRadius: '8rpx', marginBottom: '16rpx' }"
-          >
+        <ui-form :model="formDataStyle" custom-class="my-form" :custom-style="{ padding: '24rpx', background: '#f7f8fa', borderRadius: '16rpx' }">
+          <ui-form-item label="自定义表单" custom-class="my-form-item" :custom-style="{ background: '#fff', borderRadius: '8rpx', marginBottom: '16rpx' }">
             <ui-input v-model="formDataStyle.value" placeholder="请输入内容" />
           </ui-form-item>
         </ui-form>
@@ -308,16 +261,7 @@
     <!-- 新增：综合示例 -->
     <demo-section title="综合示例">
       <demo-block direction="column" :gap="0">
-        <ui-form
-          ref="complexFormRef"
-          :model="complexFormData"
-          :rules="complexRules"
-          label-width="160rpx"
-          label-position="left"
-          colon
-          required
-          validate-trigger="change"
-        >
+        <ui-form ref="complexFormRef" :model="complexFormData" :rules="complexRules" label-width="160rpx" label-position="left" colon required validate-trigger="change">
           <ui-form-item label="用户名" prop="username">
             <ui-input v-model="complexFormData.username" placeholder="请输入用户名" />
           </ui-form-item>
@@ -531,10 +475,7 @@ const complexFormData = ref({
   remark: "",
 })
 const complexRules = {
-  username: [
-    { required: true, message: "请输入用户名" },
-    { validator: (value: string) => value.length >= 2 || "用户名至少2个字符" },
-  ],
+  username: [{ required: true, message: "请输入用户名" }, { validator: (value: string) => value.length >= 2 || "用户名至少2个字符" }],
   phone: [
     { required: true, message: "请输入手机号" },
     { pattern: /^1\d{10}$/, message: "手机号格式不正确" },

@@ -136,13 +136,7 @@
     </ui-overlay>
 
     <!-- 动画缓动 -->
-    <ui-overlay
-      v-model:show="showTimingOverlay"
-      :duration="500"
-      :enter-timing-function="currentTiming"
-      :leave-timing-function="currentTiming"
-      @click="showTimingOverlay = false"
-    >
+    <ui-overlay v-model:show="showTimingOverlay" :duration="500" :enter-timing-function="currentTiming" :leave-timing-function="currentTiming" @click="showTimingOverlay = false">
       <view class="overlay-content" @click.stop>
         <text class="overlay-text">缓动: {{ currentTiming }}</text>
       </view>
@@ -163,15 +157,7 @@
     </ui-overlay>
 
     <!-- 事件处理 -->
-    <ui-overlay
-      v-model:show="showEvent"
-      :duration="400"
-      @open="onOverlayOpen"
-      @opened="onOverlayOpened"
-      @close="onOverlayClose"
-      @closed="onOverlayClosed"
-      @click="onOverlayClick"
-    >
+    <ui-overlay v-model:show="showEvent" :duration="400" @open="onOverlayOpen" @opened="onOverlayOpened" @close="onOverlayClose" @closed="onOverlayClosed" @click="onOverlayClick">
       <view class="overlay-content" @click.stop>
         <text class="overlay-text">点击遮罩查看事件</text>
         <ui-button size="small" type="primary" @click="showEvent = false">关闭</ui-button>
@@ -187,11 +173,7 @@
     </ui-overlay>
 
     <!-- 自定义样式 -->
-    <ui-overlay
-      v-model:show="showCustomStyle"
-      :custom-style="{ backdropFilter: 'blur(10px)', background: 'rgba(255,255,255,0.3)' }"
-      @click="showCustomStyle = false"
-    >
+    <ui-overlay v-model:show="showCustomStyle" :custom-style="{ backdropFilter: 'blur(10px)', background: 'rgba(255,255,255,0.3)' }" @click="showCustomStyle = false">
       <view class="overlay-content overlay-content--dark" @click.stop>
         <text class="overlay-text overlay-text--dark">毛玻璃效果</text>
       </view>

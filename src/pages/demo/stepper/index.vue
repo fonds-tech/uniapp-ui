@@ -130,13 +130,7 @@
     <demo-section title="输入框样式">
       <demo-block direction="column" align="start" :gap="16">
         <text class="demo-text">自定义输入框颜色、文字大小和颜色</text>
-        <ui-stepper
-          v-model="value11"
-          input-color="#f0f9ff"
-          input-text-size="32rpx"
-          input-text-color="#1989fa"
-          input-text-weight="600"
-        />
+        <ui-stepper v-model="value11" input-color="#f0f9ff" input-text-size="32rpx" input-text-color="#1989fa" input-text-weight="600" />
       </demo-block>
     </demo-section>
 
@@ -158,13 +152,7 @@
     <demo-section title="按钮样式">
       <demo-block direction="column" align="start" :gap="16">
         <text class="demo-text">自定义加减按钮样式</text>
-        <ui-stepper
-          v-model="value13"
-          minus-color="#f2f3f5"
-          minus-text-color="#ee0a24"
-          plus-color="#1989fa"
-          plus-text-color="#fff"
-        />
+        <ui-stepper v-model="value13" minus-color="#f2f3f5" minus-text-color="#ee0a24" plus-color="#1989fa" plus-text-color="#fff" />
       </demo-block>
     </demo-section>
 
@@ -172,11 +160,7 @@
     <demo-section title="按钮宽度">
       <demo-block direction="column" align="start" :gap="16">
         <text class="demo-text">单独设置加减按钮宽度</text>
-        <ui-stepper
-          v-model="value14"
-          minus-width="64rpx"
-          plus-width="80rpx"
-        />
+        <ui-stepper v-model="value14" minus-width="64rpx" plus-width="80rpx" />
       </demo-block>
     </demo-section>
 
@@ -184,18 +168,8 @@
     <demo-section title="边框样式">
       <demo-block direction="column" align="start" :gap="16">
         <text class="demo-text">border 主题下自定义边框</text>
-        <ui-stepper
-          v-model="value15"
-          theme="border"
-          border-color="#1989fa"
-          border-width="2rpx"
-        />
-        <ui-stepper
-          v-model="value15b"
-          theme="border"
-          minus-border-color="#ee0a24"
-          plus-border-color="#07c160"
-        />
+        <ui-stepper v-model="value15" theme="border" border-color="#1989fa" border-width="2rpx" />
+        <ui-stepper v-model="value15b" theme="border" minus-border-color="#ee0a24" plus-border-color="#07c160" />
       </demo-block>
     </demo-section>
 
@@ -256,10 +230,7 @@
     <demo-section title="自定义样式">
       <demo-block direction="column" :gap="16">
         <ui-stepper v-model="value19" custom-class="my-stepper" />
-        <ui-stepper
-          v-model="value19b"
-          :custom-style="{ background: '#f0f9ff', borderRadius: '16rpx', padding: '8rpx' }"
-        />
+        <ui-stepper v-model="value19b" :custom-style="{ background: '#f0f9ff', borderRadius: '16rpx', padding: '8rpx' }" />
       </demo-block>
     </demo-section>
 
@@ -272,15 +243,7 @@
             <text class="cart-name">{{ item.name }}</text>
             <view class="cart-bottom">
               <text class="cart-price">¥{{ item.price.toFixed(2) }}</text>
-              <ui-stepper
-                v-model="item.count"
-                :min="1"
-                :max="99"
-                height="48rpx"
-                input-width="56rpx"
-                theme="round"
-                @change="onCartChange(index)"
-              />
+              <ui-stepper v-model="item.count" :min="1" :max="99" height="48rpx" input-width="56rpx" theme="round" @change="onCartChange(index)" />
             </view>
           </view>
         </view>
@@ -296,12 +259,7 @@
       <demo-block direction="column" :gap="16">
         <view class="spec-row">
           <text class="spec-label">购买数量</text>
-          <ui-stepper
-            v-model="specCount"
-            :min="1"
-            :max="specStock"
-            long-press
-          />
+          <ui-stepper v-model="specCount" :min="1" :max="specStock" long-press />
         </view>
         <view class="spec-tip">
           <text class="spec-stock">库存 {{ specStock }} 件</text>
@@ -332,14 +290,7 @@
         <view class="price-row">
           <text class="price-label">优惠折扣</text>
           <view class="price-input">
-            <ui-stepper
-              v-model="discountRate"
-              :min="0.1"
-              :max="1"
-              :step="0.1"
-              :decimal-length="1"
-              input-width="80rpx"
-            />
+            <ui-stepper v-model="discountRate" :min="0.1" :max="1" :step="0.1" :decimal-length="1" input-width="80rpx" />
             <text class="discount-text">折</text>
           </view>
         </view>
@@ -483,19 +434,19 @@ const value19b = ref(1)
 const cartItems = ref([
   {
     name: "精选商品 A",
-    price: 99.00,
+    price: 99.0,
     count: 1,
     image: "https://fastly.jsdelivr.net/npm/@vant/assets/apple-1.jpeg",
   },
   {
     name: "精选商品 B",
-    price: 199.00,
+    price: 199.0,
     count: 2,
     image: "https://fastly.jsdelivr.net/npm/@vant/assets/apple-2.jpeg",
   },
   {
     name: "精选商品 C",
-    price: 59.00,
+    price: 59.0,
     count: 1,
     image: "https://fastly.jsdelivr.net/npm/@vant/assets/cat.jpeg",
   },
@@ -514,7 +465,7 @@ const specCount = ref(1)
 const specStock = ref(20)
 
 // 综合示例 - 价格设置
-const productPrice = ref(99.00)
+const productPrice = ref(99.0)
 const discountRate = ref(0.8)
 </script>
 

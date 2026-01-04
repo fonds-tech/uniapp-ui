@@ -24,23 +24,8 @@
     <demo-section title="返回按钮样式">
       <demo-block direction="column" :gap="16">
         <text class="demo-text">自定义返回按钮图标、大小、颜色</text>
-        <ui-navbar
-          title="自定义返回按钮"
-          :fixed="false"
-          is-back
-          back-icon-name="arrow-left"
-          back-icon-size="48rpx"
-          back-icon-color="#1989fa"
-        />
-        <ui-navbar
-          title="带文字的返回"
-          :fixed="false"
-          is-back
-          back-text="返回"
-          back-text-size="28rpx"
-          back-text-color="#1989fa"
-          back-text-weight="500"
-        />
+        <ui-navbar title="自定义返回按钮" :fixed="false" is-back back-icon-name="arrow-left" back-icon-size="48rpx" back-icon-color="#1989fa" />
+        <ui-navbar title="带文字的返回" :fixed="false" is-back back-text="返回" back-text-size="28rpx" back-text-color="#1989fa" back-text-weight="500" />
       </demo-block>
     </demo-section>
 
@@ -97,26 +82,9 @@
     <demo-section title="标题样式">
       <demo-block direction="column" :gap="16">
         <text class="demo-text">自定义标题大小、颜色、粗细、宽度</text>
-        <ui-navbar
-          title="大标题"
-          :fixed="false"
-          is-back
-          title-size="40rpx"
-          title-weight="800"
-        />
-        <ui-navbar
-          title="彩色标题"
-          :fixed="false"
-          is-back
-          title-color="#1989fa"
-          title-weight="600"
-        />
-        <ui-navbar
-          title="这是一个很长很长的标题需要限制宽度"
-          :fixed="false"
-          is-back
-          title-width="300rpx"
-        >
+        <ui-navbar title="大标题" :fixed="false" is-back title-size="40rpx" title-weight="800" />
+        <ui-navbar title="彩色标题" :fixed="false" is-back title-color="#1989fa" title-weight="600" />
+        <ui-navbar title="这是一个很长很长的标题需要限制宽度" :fixed="false" is-back title-width="300rpx">
           <template #right>
             <ui-icon name="search" size="40rpx" />
           </template>
@@ -163,14 +131,7 @@
       <demo-block direction="column" align="start" :gap="16">
         <text class="demo-text">开启 immersive 后导航栏背景透明</text>
         <view class="immersive-demo">
-          <ui-navbar
-            title="沉浸式导航"
-            :fixed="false"
-            is-back
-            immersive
-            title-color="#fff"
-            back-icon-color="#fff"
-          />
+          <ui-navbar title="沉浸式导航" :fixed="false" is-back immersive title-color="#fff" back-icon-color="#fff" />
         </view>
       </demo-block>
     </demo-section>
@@ -181,14 +142,7 @@
         <text class="demo-text">开启 gradient 后，导航栏背景会随滚动渐变</text>
         <text class="demo-text">gradient-height 设置渐变区域高度</text>
         <view class="gradient-demo">
-          <ui-navbar
-            title="渐变导航栏"
-            :fixed="false"
-            is-back
-            gradient
-            gradient-height="150px"
-            :scroll-top="0"
-          />
+          <ui-navbar title="渐变导航栏" :fixed="false" is-back gradient gradient-height="150px" :scroll-top="0" />
         </view>
       </demo-block>
     </demo-section>
@@ -197,12 +151,7 @@
     <demo-section title="自定义返回">
       <demo-block direction="column" align="start" :gap="16">
         <text class="demo-text">通过 custom-back 自定义返回逻辑</text>
-        <ui-navbar
-          title="自定义返回"
-          :fixed="false"
-          is-back
-          :custom-back="onCustomBack"
-        />
+        <ui-navbar title="自定义返回" :fixed="false" is-back :custom-back="onCustomBack" />
       </demo-block>
     </demo-section>
 
@@ -210,45 +159,22 @@
     <demo-section title="事件处理">
       <demo-block direction="column" align="start" :gap="16">
         <text class="demo-text">{{ eventLog }}</text>
-        <ui-navbar
-          title="事件监听"
-          :fixed="false"
-          is-back
-          @back="onNavbarBack"
-          @height="onNavbarHeight"
-          @rect="onNavbarRect"
-        />
+        <ui-navbar title="事件监听" :fixed="false" is-back @back="onNavbarBack" @height="onNavbarHeight" @rect="onNavbarRect" />
       </demo-block>
     </demo-section>
 
     <!-- 新增：自定义样式 -->
     <demo-section title="自定义样式">
       <demo-block direction="column" :gap="16">
-        <ui-navbar
-          title="自定义类名"
-          :fixed="false"
-          is-back
-          custom-class="my-navbar"
-        />
-        <ui-navbar
-          title="自定义样式"
-          :fixed="false"
-          is-back
-          :custom-style="{ boxShadow: '0 4rpx 16rpx rgba(0,0,0,0.1)' }"
-        />
+        <ui-navbar title="自定义类名" :fixed="false" is-back custom-class="my-navbar" />
+        <ui-navbar title="自定义样式" :fixed="false" is-back :custom-style="{ boxShadow: '0 4rpx 16rpx rgba(0,0,0,0.1)' }" />
       </demo-block>
     </demo-section>
 
     <!-- 新增：综合示例 -->
     <demo-section title="综合示例 - 搜索导航栏">
       <demo-block direction="column">
-        <ui-navbar
-          :fixed="false"
-          is-back
-          :title="null"
-          background="#f7f8fa"
-          border-bottom
-        >
+        <ui-navbar :fixed="false" is-back :title="null" background="#f7f8fa" border-bottom>
           <template #title>
             <view class="search-box" @click="onSearchClick">
               <ui-icon name="search" size="32rpx" color="#999" />
@@ -267,14 +193,7 @@
       <demo-block direction="column">
         <view class="transparent-demo">
           <image class="demo-bg" src="https://fastly.jsdelivr.net/npm/@vant/assets/cat.jpeg" mode="aspectFill" />
-          <ui-navbar
-            title="详情页"
-            :fixed="false"
-            is-back
-            background="transparent"
-            title-color="#fff"
-            back-icon-color="#fff"
-          >
+          <ui-navbar title="详情页" :fixed="false" is-back background="transparent" title-color="#fff" back-icon-color="#fff">
             <template #right>
               <view class="navbar-icons">
                 <ui-icon name="share" size="40rpx" color="#fff" />
@@ -289,12 +208,7 @@
     <!-- 新增：综合示例 - 个人中心导航栏 -->
     <demo-section title="综合示例 - 个人中心">
       <demo-block direction="column">
-        <ui-navbar
-          :fixed="false"
-          :is-back="false"
-          title-center
-          background="#1989fa"
-        >
+        <ui-navbar :fixed="false" :is-back="false" title-center background="#1989fa">
           <template #title>
             <view class="user-info">
               <image class="user-avatar" src="https://fastly.jsdelivr.net/npm/@vant/assets/cat.jpeg" />
