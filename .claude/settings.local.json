@@ -20,7 +20,10 @@
       "mcp__serena__search_for_pattern",
       "Bash(pnpm test:*)",
       "Bash(npm test:*)",
-      "Bash(pnpm vitest run:*)"
+      "Bash(pnpm vitest run:*)",
+      "mcp__serena__onboarding",
+      "mcp__serena__write_memory",
+      "Bash(pnpm vue-tsc:*)"
     ],
     "deny": [],
     "ask": []
