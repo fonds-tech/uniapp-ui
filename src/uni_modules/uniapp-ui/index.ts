@@ -55,4 +55,6 @@ const ui = {
 export * from "./hooks"
 export type * from "./types"
 export { setGlobalProps } from "./utils/component"
+export { provideDialog } from "./ui-dialog"
+export type { DialogInstance, DialogOptions, DialogExpose } from "./ui-dialog"
 export default ui

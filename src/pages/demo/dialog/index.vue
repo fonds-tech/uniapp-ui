@@ -1,5 +1,8 @@
 <template>
   <demo-page>
+    <!-- 用于函数式调用的全局 Dialog（不显示，仅用于 useDialog 调用） -->
+    <ui-dialog ref="globalDialogRef" />
+
     <demo-section title="基础用法">
       <demo-block :cols="2" :gap="24">
         <ui-button type="primary" @click="showBasicDialog">提示弹窗</ui-button>
@@ -81,7 +84,7 @@
     </demo-section>
 
     <!-- Dialog Component 基础 -->
-    <ui-dialog v-model:show="showComponentDialog" title="标题" message="这是通过组件方式调用的对话框" show-cancel-button />
+    <ui-dialog v-model:show="showComponentDialog" title="标题" content="这是通过组件方式调用的对话框" show-cancel-button />
 
     <!-- Dialog 自定义内容插槽 -->
     <ui-dialog v-model:show="showSlotDialog" title="自定义内容">
@@ -108,7 +111,7 @@
     <ui-dialog
       v-model:show="showEventDialog"
       title="事件监听"
-      message="点击按钮查看事件触发"
+      content="点击按钮查看事件触发"
       show-cancel-button
       @open="onDialogOpen"
       @opened="onDialogOpened"
@@ -121,11 +124,23 @@
 </template>
 
 <script setup lang="ts">
-import { useToast, useDialog } from "@/uni_modules/uniapp-ui"
+import type { DialogInstance } from "@/uni_modules/uniapp-ui"
+import { ref, onMounted } from "vue"
 import { DemoPage, DemoBlock, DemoSection } from "../components"
+import { useToast, useDialog, provideDialog } from "@/uni_modules/uniapp-ui"
 
 definePage({
   style: { navigationBarTitleText: "Dialog 对话框" },
+})
+
+// 用于函数式调用的全局 Dialog 实例
+const globalDialogRef = ref<DialogInstance | null>(null)
+
+// 注册全局 Dialog 实例（页面级别）
+onMounted(() => {
+  if (globalDialogRef.value) {
+    provideDialog(globalDialogRef)
+  }
 })
 
 const dialog = useDialog()
