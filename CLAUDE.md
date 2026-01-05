@@ -8,15 +8,15 @@
 
 ### 核心技术栈
 
-| 技术 | 版本 | 用途 |
-|------|------|------|
-| Vue | 3.4.21 | 核心框架（Composition API） |
-| TypeScript | 5.9.3 | 类型系统 |
-| UniApp | 3.0 | 跨平台框架 |
-| Vite | 5.2.8 | 构建工具 |
-| SCSS | - | 样式预处理 |
-| Vitest | 2.1.8 | 单元测试 |
-| pnpm | 10.10.0 | 包管理器 |
+| 技术       | 版本    | 用途                        |
+| ---------- | ------- | --------------------------- |
+| Vue        | 3.4.21  | 核心框架（Composition API） |
+| TypeScript | 5.9.3   | 类型系统                    |
+| UniApp     | 3.0     | 跨平台框架                  |
+| Vite       | 5.2.8   | 构建工具                    |
+| SCSS       | -       | 样式预处理                  |
+| Vitest     | 2.1.8   | 单元测试                    |
+| pnpm       | 10.10.0 | 包管理器                    |
 
 ### 项目结构
 
@@ -41,13 +41,13 @@ src/uni_modules/uniapp-ui/
 
 ### 团队成员
 
-| Agent | 文件 | 职责 |
-|-------|------|------|
-| **UI 库架构师** | `ui-library-architect.md` | 架构设计、API 标准、技术路线图 |
-| **Vue 组件开发者** | `vue-uniapp-component-developer.md` | 组件开发、样式主题、交互逻辑 |
-| **Hooks 工具专家** | `hooks-utility-specialist.md` | 组合式函数、工具函数开发 |
-| **测试专家** | `component-testing-specialist.md` | 单元测试、覆盖率、测试工具 |
-| **跨平台兼容专家** | `cross-platform-compatibility-expert.md` | 平台兼容、条件编译、性能优化 |
+| Agent              | 文件                                     | 职责                           |
+| ------------------ | ---------------------------------------- | ------------------------------ |
+| **UI 库架构师**    | `ui-library-architect.md`                | 架构设计、API 标准、技术路线图 |
+| **Vue 组件开发者** | `vue-uniapp-component-developer.md`      | 组件开发、样式主题、交互逻辑   |
+| **Hooks 工具专家** | `hooks-utility-specialist.md`            | 组合式函数、工具函数开发       |
+| **测试专家**       | `component-testing-specialist.md`        | 单元测试、覆盖率、测试工具     |
+| **跨平台兼容专家** | `cross-platform-compatibility-expert.md` | 平台兼容、条件编译、性能优化   |
 
 ### 协作矩阵
 
@@ -76,19 +76,19 @@ src/uni_modules/uniapp-ui/
 
 根据任务类型自动选择合适的 Agent：
 
-| 任务类型 | 推荐 Agent |
-|----------|-----------|
-| 新组件开发 | vue-uniapp-component-developer |
-| 组件 Bug 修复 | vue-uniapp-component-developer |
-| Hook 开发/优化 | hooks-utility-specialist |
-| 工具函数开发 | hooks-utility-specialist |
-| 编写测试用例 | component-testing-specialist |
-| 测试覆盖率提升 | component-testing-specialist |
-| 平台兼容问题 | cross-platform-compatibility-expert |
-| 条件编译实现 | cross-platform-compatibility-expert |
-| 架构设计 | ui-library-architect |
-| API 设计评审 | ui-library-architect |
-| 性能优化 | ui-library-architect + cross-platform-compatibility-expert |
+| 任务类型       | 推荐 Agent                                                 |
+| -------------- | ---------------------------------------------------------- |
+| 新组件开发     | vue-uniapp-component-developer                             |
+| 组件 Bug 修复  | vue-uniapp-component-developer                             |
+| Hook 开发/优化 | hooks-utility-specialist                                   |
+| 工具函数开发   | hooks-utility-specialist                                   |
+| 编写测试用例   | component-testing-specialist                               |
+| 测试覆盖率提升 | component-testing-specialist                               |
+| 平台兼容问题   | cross-platform-compatibility-expert                        |
+| 条件编译实现   | cross-platform-compatibility-expert                        |
+| 架构设计       | ui-library-architect                                       |
+| API 设计评审   | ui-library-architect                                       |
+| 性能优化       | ui-library-architect + cross-platform-compatibility-expert |
 
 ---
 
@@ -147,7 +147,7 @@ onUnmounted(() => {
   // 使用 CSS 变量
   color: var(--ui-color-primary);
   font-size: var(--ui-font-size-md);
-  
+
   &--large {
     font-size: var(--ui-font-size-lg);
   }
@@ -203,12 +203,12 @@ import { webOnlyApi } from 'web-library'
   --ui-color-success: #52c41a;
   --ui-color-warning: #faad14;
   --ui-color-error: #ff4d4f;
-  
+
   // 字体
   --ui-font-size-sm: 12px;
   --ui-font-size-md: 14px;
   --ui-font-size-lg: 16px;
-  
+
   // 间距
   --ui-spacing-xs: 4px;
   --ui-spacing-sm: 8px;
@@ -245,23 +245,27 @@ pnpm docs:dev         # 文档开发服务器
 ## 质量门控
 
 ### 代码质量
+
 - [ ] TypeScript 严格模式通过
 - [ ] 无未经说明的 `any` 类型
 - [ ] 公共 API 有完整文档
 - [ ] 复杂逻辑有中文注释
 
 ### 性能
+
 - [ ] 组件渲染 < 16ms
 - [ ] 单组件 gzip 后 < 5KB
 - [ ] 无内存泄漏
 - [ ] 跨平台性能验证
 
 ### 兼容性
+
 - [ ] H5 验证通过
 - [ ] 微信小程序验证通过
 - [ ] App 平台验证通过
 
 ### 测试
+
 - [ ] 单元测试覆盖关键路径
 - [ ] 测试总执行时间 < 60 秒
 
@@ -269,55 +273,62 @@ pnpm docs:dev         # 文档开发服务器
 
 ## 现有 Hooks 列表
 
-| Hook | 用途 |
-|------|------|
-| useChildren | 父组件管理子组件 |
-| useParent | 子组件访问父组件 |
-| useRect | 获取元素尺寸 |
-| useRects | 批量获取元素尺寸 |
-| useToast | Toast 通知 |
-| useTransition | CSS 过渡管理 |
-| useGlobalZIndex | z-index 管理 |
-| useUnit | 单位转换 |
-| usePxToRpx | px 转 rpx |
-| useUnitToPx | 单位转 px |
-| useColor | 颜色处理 |
-| useStyle | 样式对象生成 |
-| useVar | CSS 变量访问 |
-| useMitt | 事件总线 |
-| useCalendar | 日历计算 |
-| useLockScroll | 滚动锁定 |
-| usePromise | Promise 工具 |
-| useRequestAnimationFrame | 动画帧处理 |
-| useSystemInfo | 系统信息 |
-| useCurrentRouter | 路由状态 |
-| useGlobalProps | 全局 Props 注入 |
-| useRgb | RGB 颜色工具 |
-| useUnitToRpx | 单位转 rpx |
+| Hook                     | 用途             |
+| ------------------------ | ---------------- |
+| useChildren              | 父组件管理子组件 |
+| useParent                | 子组件访问父组件 |
+| useRect                  | 获取元素尺寸     |
+| useRects                 | 批量获取元素尺寸 |
+| useToast                 | Toast 通知       |
+| useTransition            | CSS 过渡管理     |
+| useGlobalZIndex          | z-index 管理     |
+| useUnit                  | 单位转换         |
+| usePxToRpx               | px 转 rpx        |
+| useUnitToPx              | 单位转 px        |
+| useColor                 | 颜色处理         |
+| useStyle                 | 样式对象生成     |
+| useVar                   | CSS 变量访问     |
+| useMitt                  | 事件总线         |
+| useCalendar              | 日历计算         |
+| useLockScroll            | 滚动锁定         |
+| usePromise               | Promise 工具     |
+| useRequestAnimationFrame | 动画帧处理       |
+| useSystemInfo            | 系统信息         |
+| useCurrentRouter         | 路由状态         |
+| useGlobalProps           | 全局 Props 注入  |
+| useRgb                   | RGB 颜色工具     |
+| useUnitToRpx             | 单位转 rpx       |
 
 ---
 
 ## 组件分类
 
 ### 基础组件
+
 ui-button, ui-icon, ui-text, ui-image, ui-tag, ui-badge
 
 ### 表单组件
+
 ui-input, ui-textarea, ui-checkbox, ui-radio, ui-switch, ui-form, ui-form-item, ui-picker, ui-date-picker, ui-slider, ui-rate, ui-stepper, ui-search, ui-upload
 
 ### 布局组件
+
 ui-row, ui-col, ui-cell, ui-cell-group, ui-grid
 
 ### 导航组件
+
 ui-navbar, ui-tabbar, ui-tabs, ui-sidebar, ui-pagination
 
 ### 反馈组件
+
 ui-popup, ui-toast, ui-loading, ui-notify, ui-modal, ui-dialog, ui-action-sheet, ui-overlay
 
 ### 展示组件
+
 ui-skeleton, ui-empty, ui-progress, ui-swiper, ui-notice-bar, ui-countdown, ui-number-roll
 
 ### 特殊组件
+
 ui-qrcode, ui-poster, ui-calendar, ui-keyboard
 
 ---
@@ -333,4 +344,4 @@ ui-qrcode, ui-poster, ui-calendar, ui-keyboard
 
 ---
 
-*此文件由 `/universal:initx` 命令自动生成，最后更新：2026-01-04*
+_此文件由 `/universal:initx` 命令自动生成，最后更新：2026-01-04_

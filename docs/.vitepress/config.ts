@@ -43,6 +43,7 @@ export default defineConfig({
             { text: "Button 按钮", link: "/components/button" },
             { text: "Icon 图标", link: "/components/icon" },
             { text: "Image 图片", link: "/components/image" },
+            { text: "Avatar 头像", link: "/components/avatar" },
             { text: "Text 文本", link: "/components/text" },
             { text: "Tag 标签", link: "/components/tag" },
             { text: "Badge 徽标", link: "/components/badge" },

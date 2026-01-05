@@ -1,5 +1,5 @@
 import type Dialog from "./ui-dialog.vue"
-import type { PropType, CSSProperties, ExtractPropTypes } from "vue"
+import type { Ref, PropType, CSSProperties, ExtractPropTypes } from "vue"
 import { createProps } from "../hooks"
 import { truthProp, numericProp, makeStringProp, makeNumericProp } from "../utils/props"
 
@@ -255,10 +255,114 @@ export interface DialogOptions {
   onOverlay?: (next?: { close: (action?: DialogCloseAction) => void; done: (action?: DialogDoneAction) => void }) => void
 }
 export interface DialogExpose {
+  /**
+   * 打开对话框
+   * @param options 配置选项
+   */
   open: (options?: DialogOptions) => void
+  /**
+   * 关闭对话框
+   */
   close: () => void
+  /**
+   * 显示对话框（Promise 风格）
+   * @param options 配置选项
+   * @returns Promise，确认时 resolve(true)，取消/遮罩时 resolve(false)
+   */
+  show: (options?: DialogOptions) => Promise<boolean>
+  /**
+   * 显示确认对话框（带确认和取消按钮）
+   * @param title 标题
+   * @param content 内容
+   * @param options 可选配置
+   * @returns Promise，确认时 resolve(true)，取消时 resolve(false)
+   */
+  confirm: (title: string, content?: string, options?: DialogOptions) => Promise<boolean>
+  /**
+   * 显示提示对话框（只有确认按钮）
+   * @param title 标题
+   * @param content 内容
+   * @param options 可选配置
+   * @returns Promise，确认时 resolve
+   */
+  alert: (title: string, content?: string, options?: DialogOptions) => Promise<void>
 }
 export type DialogContentAlign = "left" | "center" | "right"
 export type DialogEmits = typeof dialogEmits
 export type DialogProps = ExtractPropTypes<typeof dialogProps>
 export type DialogInstance = InstanceType<typeof Dialog>
+
+/**
+ * 全局 Dialog 实例存储
+ * 使用全局变量而非 provide/inject，因为 uni-app 页面与 App.vue 不是真正的父子关系
+ */
+let globalDialogInstance: Ref<DialogInstance | null> | null = null
+
+/**
+ * 待执行的 dialog 调用队列
+ * 当实例未注册时，将调用放入队列，等实例注册后执行
+ */
+const pendingQueue: Array<{ action: "show" | "close"; options?: DialogOptions }> = []
+
+/**
+ * 注册全局 Dialog 实例（在根组件中调用）
+ * 使任意页面/组件可以通过 useDialog() 获取全局 dialog 控制器
+ *
+ * @param instance Dialog 组件实例的 ref
+ *
+ * @example
+ * ```vue
+ * <template>
+ *   <ui-dialog ref="dialogRef" />
+ * </template>
+ *
+ * <script setup>
+ * import { ref } from "vue"
+ * import { provideDialog } from "@/uni_modules/uniapp-ui/ui-dialog"
+ *
+ * const dialogRef = ref()
+ * provideDialog(dialogRef)
+ * </script>
+ * ```
+ */
+export function provideDialog(instance: Ref<DialogInstance | null>) {
+  globalDialogInstance = instance
+
+  // 实例注册后，执行队列中的待处理调用
+  flushPendingQueue()
+}
+
+/**
+ * 获取全局 Dialog 实例（内部使用）
+ * @returns 全局 Dialog 实例的 ref，可能为 null
+ */
+export function getGlobalDialogInstance(): Ref<DialogInstance | null> | null {
+  return globalDialogInstance
+}
+
+/**
+ * 将调用加入待执行队列
+ * @param action 动作类型
+ * @param options 选项
+ */
+export function enqueuePendingDialog(action: "show" | "close", options?: DialogOptions) {
+  pendingQueue.push({ action, options })
+}
+
+/**
+ * 执行队列中的待处理调用
+ */
+function flushPendingQueue() {
+  if (!globalDialogInstance?.value) return
+
+  while (pendingQueue.length > 0) {
+    const item = pendingQueue.shift()
+    if (!item) continue
+
+    if (item.action === "show") {
+      globalDialogInstance.value.open(item.options)
+    } else if (item.action === "close") {
+      globalDialogInstance.value.close()
+    }
+  }
+}

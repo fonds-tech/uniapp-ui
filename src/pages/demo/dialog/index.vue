@@ -128,7 +128,7 @@ definePage({
   style: { navigationBarTitleText: "Dialog 对话框" },
 })
 
-const { showDialog } = useDialog()
+const dialog = useDialog()
 const toast = useToast()
 
 // 组件方式调用的状态
@@ -139,56 +139,55 @@ const showEventDialog = ref(false)
 
 // 基础用法
 function showBasicDialog() {
-  showDialog({
+  dialog.show({
     title: "提示",
-    message: "这是一个提示弹窗",
+    content: "这是一个提示弹窗",
   })
 }
 
 function showConfirmDialog() {
-  showDialog({
+  dialog.show({
     title: "确认",
-    message: "确定要执行此操作吗？",
+    content: "确定要执行此操作吗？",
     showCancelButton: true,
   })
 }
 
 // 圆角按钮
 function showRoundDialog() {
-  showDialog({
+  dialog.show({
     title: "提示",
-    message: "这是圆角按钮弹窗",
-    theme: "round-button",
+    content: "这是圆角按钮弹窗",
+    borderRadius: "24rpx",
   })
 }
 
 // 异步关闭
 function showAsyncDialog() {
-  showDialog({
+  dialog.show({
     title: "异步关闭",
-    message: "点击确认后延迟1秒关闭",
+    content: "点击确认后延迟1秒关闭",
     showCancelButton: true,
-    beforeClose: (action) => {
-      return new Promise((resolve) => {
-        setTimeout(() => {
-          resolve(action === "confirm")
-        }, 1000)
-      })
+    asyncClose: true,
+    onConfirm: (next) => {
+      setTimeout(() => {
+        next?.close()
+      }, 1000)
     },
   })
 }
 
 // 自定义内容
 function showNoTitleDialog() {
-  showDialog({
-    message: "这是一个没有标题的弹窗",
+  dialog.show({
+    content: "这是一个没有标题的弹窗",
   })
 }
 
 function showLongDialog() {
-  showDialog({
+  dialog.show({
     title: "长内容",
-    message: "这是一段很长的内容，用于测试对话框对长文本的显示效果。当内容过长时，对话框应该能够正确处理滚动或自适应高度。这里是更多的文字内容，让我们看看效果如何。",
+    content: "这是一段很长的内容，用于测试对话框对长文本的显示效果。当内容过长时，对话框应该能够正确处理滚动或自适应高度。这里是更多的文字内容，让我们看看效果如何。",
     showCancelButton: true,
   })
 }
@@ -196,18 +195,18 @@ function showLongDialog() {
 // 内容对齐
 function showAlignDialog(align: "left" | "center" | "right") {
   const alignText = { left: "左对齐", center: "居中对齐", right: "右对齐" }
-  showDialog({
+  dialog.show({
     title: alignText[align],
-    message: "这段文字将按照指定的对齐方式显示。可以看到文字的对齐效果。",
+    content: "这段文字将按照指定的对齐方式显示。可以看到文字的对齐效果。",
     contentAlign: align,
   })
 }
 
 // 按钮样式定制
 function showCustomButtonDialog() {
-  showDialog({
+  dialog.show({
     title: "自定义按钮",
-    message: "可以自定义按钮的文字和颜色",
+    content: "可以自定义按钮的文字和颜色",
     showCancelButton: true,
     confirmButtonText: "好的",
     confirmButtonColor: "#07c160",
@@ -217,9 +216,9 @@ function showCustomButtonDialog() {
 }
 
 function showReverseButtonDialog() {
-  showDialog({
+  dialog.show({
     title: "按钮反转",
-    message: "确认和取消按钮位置对调",
+    content: "确认和取消按钮位置对调",
     showCancelButton: true,
     buttonReverse: true,
   })
@@ -227,35 +226,35 @@ function showReverseButtonDialog() {
 
 // 遮罩层配置
 function showClickOverlayDialog() {
-  showDialog({
+  dialog.show({
     title: "点击遮罩关闭",
-    message: "点击遮罩层可以关闭弹窗",
+    content: "点击遮罩层可以关闭弹窗",
     closeOnClickOverlay: true,
   })
 }
 
 function showNoOverlayDialog() {
-  showDialog({
+  dialog.show({
     title: "无遮罩",
-    message: "这个弹窗没有遮罩层",
+    content: "这个弹窗没有遮罩层",
     overlay: false,
   })
 }
 
 // 样式定制
 function showCustomStyleDialog() {
-  showDialog({
+  dialog.show({
     title: "自定义样式",
-    message: "可以自定义弹窗的背景色和圆角",
+    content: "可以自定义弹窗的背景色和圆角",
     background: "#f0f9eb",
     borderRadius: 32,
   })
 }
 
 function showCustomSizeDialog() {
-  showDialog({
+  dialog.show({
     title: "自定义尺寸",
-    message: "可以自定义弹窗的宽度和内边距",
+    content: "可以自定义弹窗的宽度和内边距",
     width: "70vw",
     padding: "40rpx",
   })

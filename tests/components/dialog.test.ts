@@ -578,7 +578,7 @@ describe("ui-dialog 对话框组件", () => {
 
       await waitForTransition()
 
-      wrapper.vm.close("close")
+      wrapper.vm.close()
       await nextTick()
 
       expect(wrapper.emitted("update:show")).toBeTruthy()

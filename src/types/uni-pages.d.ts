@@ -8,17 +8,24 @@ type _LocationUrl =
   "/pages/demo/index" |
   "/pages/demo/action-sheet/index" |
   "/pages/demo/arc/index" |
+  "/pages/demo/avatar/index" |
+  "/pages/demo/avatar-group/index" |
   "/pages/demo/back-top/index" |
   "/pages/demo/badge/index" |
   "/pages/demo/button/index" |
+  "/pages/demo/calendar/index" |
+  "/pages/demo/card/index" |
   "/pages/demo/cascader/index" |
   "/pages/demo/cell/index" |
   "/pages/demo/cell-group/index" |
   "/pages/demo/checkbox/index" |
   "/pages/demo/checkbox-group/index" |
+  "/pages/demo/collapse/index" |
   "/pages/demo/config-provider/index" |
   "/pages/demo/countdown/index" |
   "/pages/demo/date-picker/index" |
+  "/pages/demo/date-range-select/index" |
+  "/pages/demo/date-select/index" |
   "/pages/demo/dialog/index" |
   "/pages/demo/dropdown-item/index" |
   "/pages/demo/dropdown-menu/index" |
@@ -46,9 +53,11 @@ type _LocationUrl =
   "/pages/demo/pagination/index" |
   "/pages/demo/picker/index" |
   "/pages/demo/picker-panel/index" |
+  "/pages/demo/popover/index" |
   "/pages/demo/popup/index" |
   "/pages/demo/poster/index" |
   "/pages/demo/progress/index" |
+  "/pages/demo/pull-refresh/index" |
   "/pages/demo/qrcode/index" |
   "/pages/demo/radio/index" |
   "/pages/demo/radio-group/index" |
@@ -62,7 +71,9 @@ type _LocationUrl =
   "/pages/demo/skeleton/index" |
   "/pages/demo/skeleton-components/index" |
   "/pages/demo/stepper/index" |
+  "/pages/demo/steps/index" |
   "/pages/demo/sticky/index" |
+  "/pages/demo/swipe-cell/index" |
   "/pages/demo/swiper/index" |
   "/pages/demo/switch/index" |
   "/pages/demo/tab/index" |

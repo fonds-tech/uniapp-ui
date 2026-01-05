@@ -32,45 +32,56 @@ src/uni_modules/uniapp-ui/
 ## 组件分类
 
 ### 基础组件
+
 - ui-button, ui-icon, ui-text, ui-image, ui-tag, ui-badge
 
 ### 表单组件
+
 - ui-input, ui-textarea, ui-checkbox, ui-radio, ui-switch
 - ui-form, ui-form-item, ui-picker, ui-date-picker
 - ui-slider, ui-rate, ui-stepper, ui-search
 
 ### 布局导航组件
+
 - ui-popup, ui-navbar, ui-tabbar, ui-tabs
 - ui-grid, ui-row, ui-col, ui-cell, ui-list
 
 ### 反馈展示组件
+
 - ui-toast, ui-loading, ui-notify, ui-modal, ui-dialog
 - ui-skeleton, ui-empty, ui-progress, ui-swiper
 
 ### 特殊功能组件
+
 - ui-qrcode, ui-poster, ui-signature, ui-calendar
 - ui-count-down, ui-waterfall, ui-virtual-list
 
 ## 核心设计模式
 
 ### 父子组件通信
+
 使用 `useChildren` 和 `useParent` Hooks 实现基于 provide/inject 的通信：
+
 - 父组件通过 `useChildren` 收集并管理子组件实例
 - 子组件通过 `useParent` 获取父组件实例
 
 ### 主题系统
+
 使用 CSS 变量实现主题定制：
+
 - `--ui-color-primary`: 主色
 - `--ui-color-success`: 成功色
 - `--ui-font-size-*`: 字体尺寸
 - `--ui-spacing-*`: 间距
 
 ### 事件总线
+
 使用 Mitt 类实现跨组件通信（注意：存在全局状态共享问题）
 
 ## 已知问题
 
 详见 `COMPONENT_ISSUES_REPORT.md`，主要问题包括：
+
 1. Mitt 全局状态共享
 2. debounce 模块级变量
 3. 定时器内存泄漏

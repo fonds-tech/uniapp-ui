@@ -24,7 +24,10 @@
       "mcp__serena__onboarding",
       "mcp__serena__write_memory",
       "Bash(pnpm vue-tsc:*)",
-      "mcp__serena__read_memory"
+      "mcp__serena__read_memory",
+      "Bash(mkdir:*)",
+      "mcp__serena__find_symbol",
+      "mcp__serena__think_about_collected_information"
     ],
     "deny": [],
     "ask": []
