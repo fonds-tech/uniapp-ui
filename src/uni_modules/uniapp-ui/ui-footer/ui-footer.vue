@@ -36,8 +36,6 @@ const style = computed(() => {
 const placeholderStyle = computed(() => {
   const style: CSSProperties = {}
   style.height = `${usePxToRpx(rect.value.height)}rpx`
-  console.log("🚀 ~ rect.value.height:", rect.value.height)
-  console.log("🚀 ~ style.height:", style.height)
   return useStyle(style)
 })
 
