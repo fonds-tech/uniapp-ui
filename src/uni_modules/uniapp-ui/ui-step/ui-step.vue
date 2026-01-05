@@ -30,9 +30,9 @@
 <script setup lang="ts">
 import type { StepStatus } from "../ui-steps"
 import type { CSSProperties } from "vue"
-import { computed } from "vue"
 import { isDef } from "../utils/check"
 import { stepsKey } from "../ui-steps"
+import { computed } from "vue"
 import { useColor, useStyle, useParent } from "../hooks"
 import { stepEmits, stepProps, useStepProps } from "./index"
 

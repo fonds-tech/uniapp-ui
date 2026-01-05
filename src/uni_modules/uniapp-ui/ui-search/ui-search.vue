@@ -1,5 +1,5 @@
 <template>
-  <view class="ui-search" :class="[customClass]" :style="[style]" @click="onClick">
+  <view class="ui-search" :class="[customClass]" :style="[rootStyle]" role="search" @click="onClick">
     <view class="ui-search__content" :class="[contentClass]" :style="[contentStyle]">
       <view class="ui-search__icon">
         <slot name="icon">
@@ -9,8 +9,8 @@
       <input
         v-model="modelValue"
         class="ui-search__value"
-        :class="[valueClass]"
-        :style="[valueStyle]"
+        :class="[inputClass]"
+        :style="[inputStyle]"
         type="text"
         confirm-type="search"
         :focus="focus"
@@ -18,19 +18,27 @@
         :maxlength="maxlength"
         :placeholder="placeholder"
         :placeholder-style="placeholderStyle"
+        :aria-label="placeholder"
         @blur="onBlur"
         @focus="onFocus"
         @confirm="onConfirm"
       />
-      <view v-if="clearabled" class="ui-search__clear" @click.stop="onClickClear">
+      <view v-if="showClear" class="ui-search__clear" hover-class="ui-search__clear--active" role="button" aria-label="清除" @click.stop="onClickClear">
         <slot name="clear">
-          <ui-icon name="clear" color="#999" size="28rpx" />
+          <ui-icon name="clear" :size="useProps.clearSize" :color="useProps.clearColor" :weight="useProps.clearWeight" />
         </slot>
       </view>
     </view>
     <view v-if="action" class="ui-search__action" @click.stop="onClickAction">
       <slot name="action">
-        <view class="ui-search__action__button" hover-class="ui-search__action__button--active" :style="[actionButtonStyle]">
+        <view
+          class="ui-search__action__button"
+          hover-class="ui-search__action__button--active"
+          role="button"
+          :hover-stay-time="50"
+          :aria-label="actionText"
+          :style="[actionButtonStyle]"
+        >
           {{ actionText }}
         </view>
       </slot>
@@ -39,7 +47,9 @@
 </template>
 
 <script setup lang="ts">
+import type { CSSProperties } from "vue"
 import { useUnit, useColor, useStyle } from "../hooks"
+import { ref, watch, computed, nextTick } from "vue"
 import { searchEmits, searchProps, useSearchProps, searchInputAlign } from "./index"
 
 defineOptions({ name: "ui-search" })
@@ -49,59 +59,67 @@ const emits = defineEmits(searchEmits)
 const useProps = useSearchProps(props)
 const modelValue = ref(useProps.modelValue)
 
-const style = computed(() => {
-  const style: any = {}
-  style.height = useUnit(useProps.height)
-  style.margin = useUnit(useProps.margin)
-  return useStyle({ ...style, ...useStyle(useProps.customStyle) })
+// 根元素样式
+const rootStyle = computed(() => {
+  const styles: CSSProperties = {}
+  styles.height = useUnit(useProps.height)
+  styles.margin = useUnit(useProps.margin)
+  return useStyle({ ...styles, ...useStyle(useProps.customStyle) })
 })
 
+// 搜索框容器样式
 const contentStyle = computed(() => {
-  const style: any = {}
-  style.border = useProps.border
-  style.background = useColor(useProps.background)
-  style.borderRadius = useUnit(useProps.radius)
-  return useStyle(style)
+  const styles: CSSProperties = {}
+  styles.border = useProps.border
+  styles.background = useColor(useProps.background)
+  styles.borderRadius = useUnit(useProps.radius)
+  return useStyle(styles)
 })
 
+// 搜索框容器类名
 const contentClass = computed(() => {
-  const list: string[] = []
-  if (useProps.round) list.push("ui-search__content--round")
-  return list
+  return useProps.round ? ["ui-search__content--round"] : []
 })
 
-const valueStyle = computed(() => {
-  const style: any = {}
-  style.color = useColor(useProps.color)
-  style.fontSize = useUnit(useProps.fontSize)
-  if (searchInputAlign.includes(useProps.inputAlign)) style.textAlign = useProps.inputAlign
-  return useStyle({ ...style, ...useStyle(useProps.inputStyle) })
+// 输入框样式
+const inputStyle = computed(() => {
+  const styles: CSSProperties = {}
+  styles.color = useColor(useProps.color)
+  styles.fontSize = useUnit(useProps.fontSize)
+  if (searchInputAlign.includes(useProps.inputAlign)) {
+    styles.textAlign = useProps.inputAlign as CSSProperties["textAlign"]
+  }
+  return useStyle({ ...styles, ...useStyle(useProps.inputStyle) })
 })
 
-const valueClass = computed(() => {
-  const list: string[] = []
-  if (useProps.disabled) list.push("ui-search__value--disabled")
-  return list
+// 输入框类名
+const inputClass = computed(() => {
+  return useProps.disabled ? ["ui-search__value--disabled"] : []
 })
 
+// 右侧操作按钮样式
 const actionButtonStyle = computed(() => {
-  const style: any = {}
-  style.color = useColor(useProps.actionColor)
-  style.fontSize = useUnit(useProps.actionSize)
-  style.fontWeight = useProps.actionWeight
-  return useStyle(style)
+  const styles: CSSProperties = {}
+  styles.color = useColor(useProps.actionColor)
+  styles.fontSize = useUnit(useProps.actionSize)
+  styles.fontWeight = useProps.actionWeight
+  return useStyle(styles)
 })
 
+// 占位符样式（返回字符串格式，用于 placeholder-style 属性）
 const placeholderStyle = computed(() => {
-  const style: any = {}
-  if (useProps.fontSize) style.fontSize = useUnit(useProps.fontSize)
-  if (useProps.placeholderColor) style.color = useColor(useProps.placeholderColor)
-  return useStyle(style, "string")
+  const styles: CSSProperties = {}
+  if (useProps.fontSize) styles.fontSize = useUnit(useProps.fontSize)
+  if (useProps.placeholderColor) styles.color = useColor(useProps.placeholderColor)
+  return useStyle(styles, "string")
 })
 
-const clearabled = computed(() => {
-  return useProps.clearabled && modelValue.value
+// 是否显示清除按钮
+const showClear = computed(() => {
+  return useProps.clearable && modelValue.value
 })
+
+
 
 watch(() => modelValue.value, updateValue)
 watch(
@@ -126,17 +144,17 @@ function onConfirm() {
   emits("search", modelValue.value)
 }
 
-function onClick(event: any) {
+function onClick(event: Event) {
   emits("click", event)
 }
 
-function onClickClear(event: any) {
+function onClickClear(event: Event) {
   modelValue.value = ""
   updateValue("")
   emits("clear", event)
 }
 
-function onClickAction(event: any) {
+function onClickAction(event: Event) {
   emits("action", event)
 }
 
@@ -152,6 +170,7 @@ export default {
 
 <style lang="scss">
 .ui-search {
+  width: 100%;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -161,8 +180,11 @@ export default {
     height: 100%;
     display: flex;
     padding: 0 var(--ui-spacing-lg);
+    transition:
+      border-color 0.2s ease,
+      box-shadow 0.2s ease;
     align-items: center;
-    border-radius: var(--ui-radius-md);
+    border-radius: var(--ui-radius-lg);
     background-color: var(--ui-color-background-light);
 
     &--round {
@@ -172,27 +194,48 @@ export default {
 
   &__icon {
     display: flex;
+    align-items: center;
     margin-right: var(--ui-spacing-sm);
+    justify-content: center;
   }
 
   &__value {
-    width: 100%;
+    flex: 1;
+    height: 100%;
     font-size: var(--ui-font-size-md);
+
     &--disabled {
+      opacity: 0.6;
       pointer-events: none;
     }
   }
 
+  // 清除按钮 - 视觉紧凑但触摸区域扩展
   &__clear {
-    margin-left: var(--ui-spacing-lg);
+    display: flex;
+    padding: var(--ui-spacing-sm);
+    align-items: center;
+    justify-content: center; // 扩展触摸区域
+    margin: calc(var(--ui-spacing-sm) * -1); // 负 margin 保持视觉紧凑
+    transition: opacity 0.2s ease;
+    margin-left: var(--ui-spacing-xs);
+
+    &--active {
+      opacity: var(--ui-opacity-active);
+    }
   }
 
   &__action {
-    margin-left: var(--ui-spacing-lg);
+    height: 100%;
+    margin-left: var(--ui-spacing-xl); // 高度与输入框同步
+
     &__button {
-      color: var(--ui-color-text-secondary);
-      padding: 0 var(--ui-spacing-lg);
+      color: var(--ui-color-text);
+      height: 100%;
+      display: flex;
       font-size: var(--ui-font-size-md);
+      align-items: center;
+      justify-content: center;
 
       &--active {
         opacity: var(--ui-opacity-active);

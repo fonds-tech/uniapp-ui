@@ -182,49 +182,49 @@ function onRefresh() {
 
 ## Props
 
-| 参数               | 说明                                     | 类型               | 默认值             |
-| ------------------ | ---------------------------------------- | ------------------ | ------------------ |
-| v-model            | 是否处于加载中状态                       | `boolean`          | `false`            |
-| pulling-text       | 下拉过程中（未达阈值）的提示文案         | `string`           | `下拉即可刷新...`  |
-| loosing-text       | 下拉过程中（已达阈值）的提示文案         | `string`           | `释放即可刷新...`  |
-| loading-text       | 加载过程中的提示文案                     | `string`           | `加载中...`        |
-| success-text       | 刷新成功的提示文案                       | `string`           | `刷新成功`         |
-| success-duration   | 刷新成功提示展示时长（毫秒）             | `number \| string` | `500`              |
-| head-height        | 顶部内容高度（单位 px）                  | `number \| string` | `50`               |
-| pull-distance      | 触发刷新的下拉距离阈值（单位 px）        | `number \| string` | 与 `head-height` 相同 |
-| animation-duration | 动画持续时间（毫秒）                     | `number \| string` | `300`              |
-| disabled           | 是否禁用下拉刷新                         | `boolean`          | `false`            |
-| custom-class       | 自定义类名                               | `string`           | -                  |
-| custom-style       | 自定义样式                               | `string \| object` | -                  |
+| 参数               | 说明                              | 类型               | 默认值                |
+| ------------------ | --------------------------------- | ------------------ | --------------------- |
+| v-model            | 是否处于加载中状态                | `boolean`          | `false`               |
+| pulling-text       | 下拉过程中（未达阈值）的提示文案  | `string`           | `下拉即可刷新...`     |
+| loosing-text       | 下拉过程中（已达阈值）的提示文案  | `string`           | `释放即可刷新...`     |
+| loading-text       | 加载过程中的提示文案              | `string`           | `加载中...`           |
+| success-text       | 刷新成功的提示文案                | `string`           | `刷新成功`            |
+| success-duration   | 刷新成功提示展示时长（毫秒）      | `number \| string` | `500`                 |
+| head-height        | 顶部内容高度（单位 px）           | `number \| string` | `50`                  |
+| pull-distance      | 触发刷新的下拉距离阈值（单位 px） | `number \| string` | 与 `head-height` 相同 |
+| animation-duration | 动画持续时间（毫秒）              | `number \| string` | `300`                 |
+| disabled           | 是否禁用下拉刷新                  | `boolean`          | `false`               |
+| custom-class       | 自定义类名                        | `string`           | -                     |
+| custom-style       | 自定义样式                        | `string \| object` | -                     |
 
 ## Events
 
-| 事件名             | 说明                   | 回调参数                                                     |
-| ------------------ | ---------------------- | ------------------------------------------------------------ |
-| refresh            | 下拉刷新触发时         | -                                                            |
-| change             | 状态变化时触发         | `status: PullRefreshStatus`                                  |
-| update:modelValue  | 加载状态变化时触发     | `value: boolean`                                             |
+| 事件名            | 说明               | 回调参数                    |
+| ----------------- | ------------------ | --------------------------- |
+| refresh           | 下拉刷新触发时     | -                           |
+| change            | 状态变化时触发     | `status: PullRefreshStatus` |
+| update:modelValue | 加载状态变化时触发 | `value: boolean`            |
 
 ### PullRefreshStatus 类型说明
 
-| 值        | 说明                     |
-| --------- | ------------------------ |
-| `normal`  | 正常状态                 |
-| `pulling` | 下拉中（未达触发阈值）   |
-| `loosing` | 下拉中（已达触发阈值）   |
-| `loading` | 加载中                   |
-| `success` | 刷新成功                 |
+| 值        | 说明                   |
+| --------- | ---------------------- |
+| `normal`  | 正常状态               |
+| `pulling` | 下拉中（未达触发阈值） |
+| `loosing` | 下拉中（已达触发阈值） |
+| `loading` | 加载中                 |
+| `success` | 刷新成功               |
 
 ## Slots
 
-| 名称    | 说明                             | 参数                      |
-| ------- | -------------------------------- | ------------------------- |
-| default | 自定义内容                       | -                         |
-| normal  | 正常状态时的提示内容             | -                         |
-| pulling | 下拉过程中（未达阈值）的提示内容 | `{ distance: number }`    |
-| loosing | 下拉过程中（已达阈值）的提示内容 | `{ distance: number }`    |
-| loading | 加载过程中的提示内容             | -                         |
-| success | 刷新成功的提示内容               | -                         |
+| 名称    | 说明                             | 参数                   |
+| ------- | -------------------------------- | ---------------------- |
+| default | 自定义内容                       | -                      |
+| normal  | 正常状态时的提示内容             | -                      |
+| pulling | 下拉过程中（未达阈值）的提示内容 | `{ distance: number }` |
+| loosing | 下拉过程中（已达阈值）的提示内容 | `{ distance: number }` |
+| loading | 加载过程中的提示内容             | -                      |
+| success | 刷新成功的提示内容               | -                      |
 
 ## 注意事项
 

@@ -135,48 +135,48 @@ const formRules = {
 
 ## Props
 
-| 参数                   | 说明               | 类型                                           | 默认值                       |
-| ---------------------- | ------------------ | ---------------------------------------------- | ---------------------------- |
-| v-model                | 绑定日期值         | `string \| Date \| number`                     | -                            |
-| columns                | 列类型             | `('year' \| 'month' \| 'day' \| 'hour' \| 'minute' \| 'second')[]` | `['year', 'month', 'day']`   |
-| format                 | 日期格式           | `string`                                       | `YYYY-MM-DD`                 |
-| min-date               | 最小日期           | `string \| Date \| number`                     | 当前日期前 10 年             |
-| max-date               | 最大日期           | `string \| Date \| number`                     | 当前日期后 10 年             |
-| placeholder            | 占位文案           | `string`                                       | `请选择日期`                 |
-| disabled               | 是否禁用           | `boolean`                                      | `false`                      |
-| readonly               | 是否只读           | `boolean`                                      | `false`                      |
-| display-formatter      | 展示文案格式化函数 | `(value: string) => string`                    | -                            |
-| mode                   | 弹窗位置           | `bottom \| top \| left \| right \| center`     | `bottom`                     |
-| border-radius          | 圆角大小           | `string \| number`                             | `16rpx`                      |
-| close-on-click-overlay | 点击遮罩是否关闭   | `boolean`                                      | `true`                       |
-| overlay                | 是否显示遮罩       | `boolean`                                      | `true`                       |
-| duration               | 动画时长           | `string \| number`                             | `300`                        |
-| z-index                | 弹窗层级           | `number`                                       | -                            |
-| background             | 背景色             | `string`                                       | -                            |
-| safe-area-inset-bottom | 底部安全区         | `boolean`                                      | `true`                       |
-| show-header            | 是否显示头部       | `boolean`                                      | `true`                       |
-| title                  | 标题               | `string`                                       | -                            |
-| cancel-text            | 取消按钮文字       | `string`                                       | `取消`                       |
-| confirm-text           | 确认按钮文字       | `string`                                       | `确认`                       |
-| column-height          | 选项高度           | `string \| number`                             | `88rpx`                      |
-| visible-column-num     | 可见选项数         | `string \| number`                             | `5`                          |
-| column-size            | 选项文字大小       | `string \| number`                             | -                            |
-| column-color           | 选项文字颜色       | `string`                                       | -                            |
-| column-weight          | 选项文字字重       | `string \| number`                             | -                            |
-| active-column-size     | 激活选项文字大小   | `string \| number`                             | -                            |
-| active-column-color    | 激活选项文字颜色   | `string`                                       | -                            |
-| active-column-weight   | 激活选项文字字重   | `string \| number`                             | -                            |
-| right-icon             | 右侧图标           | `string`                                       | `right`                      |
-| right-icon-size        | 右侧图标大小       | `string \| number`                             | -                            |
-| right-icon-color       | 右侧图标颜色       | `string`                                       | -                            |
-| right-icon-weight      | 右侧图标粗细       | `string \| number`                             | -                            |
-| text-color             | 文案颜色           | `string`                                       | -                            |
-| placeholder-color      | 占位文案颜色       | `string`                                       | -                            |
-| text-size              | 文案大小           | `string \| number`                             | -                            |
-| text-align             | 文案对齐方向       | `left \| center \| right`                      | `left`                       |
-| text-weight            | 文案字重           | `string \| number`                             | -                            |
-| custom-class           | 自定义类名         | `string`                                       | -                            |
-| custom-style           | 自定义样式         | `string \| object`                             | -                            |
+| 参数                   | 说明               | 类型                                                               | 默认值                     |
+| ---------------------- | ------------------ | ------------------------------------------------------------------ | -------------------------- |
+| v-model                | 绑定日期值         | `string \| Date \| number`                                         | -                          |
+| columns                | 列类型             | `('year' \| 'month' \| 'day' \| 'hour' \| 'minute' \| 'second')[]` | `['year', 'month', 'day']` |
+| format                 | 日期格式           | `string`                                                           | `YYYY-MM-DD`               |
+| min-date               | 最小日期           | `string \| Date \| number`                                         | 当前日期前 10 年           |
+| max-date               | 最大日期           | `string \| Date \| number`                                         | 当前日期后 10 年           |
+| placeholder            | 占位文案           | `string`                                                           | `请选择日期`               |
+| disabled               | 是否禁用           | `boolean`                                                          | `false`                    |
+| readonly               | 是否只读           | `boolean`                                                          | `false`                    |
+| display-formatter      | 展示文案格式化函数 | `(value: string) => string`                                        | -                          |
+| mode                   | 弹窗位置           | `bottom \| top \| left \| right \| center`                         | `bottom`                   |
+| border-radius          | 圆角大小           | `string \| number`                                                 | `16rpx`                    |
+| close-on-click-overlay | 点击遮罩是否关闭   | `boolean`                                                          | `true`                     |
+| overlay                | 是否显示遮罩       | `boolean`                                                          | `true`                     |
+| duration               | 动画时长           | `string \| number`                                                 | `300`                      |
+| z-index                | 弹窗层级           | `number`                                                           | -                          |
+| background             | 背景色             | `string`                                                           | -                          |
+| safe-area-inset-bottom | 底部安全区         | `boolean`                                                          | `true`                     |
+| show-header            | 是否显示头部       | `boolean`                                                          | `true`                     |
+| title                  | 标题               | `string`                                                           | -                          |
+| cancel-text            | 取消按钮文字       | `string`                                                           | `取消`                     |
+| confirm-text           | 确认按钮文字       | `string`                                                           | `确认`                     |
+| column-height          | 选项高度           | `string \| number`                                                 | `88rpx`                    |
+| visible-column-num     | 可见选项数         | `string \| number`                                                 | `5`                        |
+| column-size            | 选项文字大小       | `string \| number`                                                 | -                          |
+| column-color           | 选项文字颜色       | `string`                                                           | -                          |
+| column-weight          | 选项文字字重       | `string \| number`                                                 | -                          |
+| active-column-size     | 激活选项文字大小   | `string \| number`                                                 | -                          |
+| active-column-color    | 激活选项文字颜色   | `string`                                                           | -                          |
+| active-column-weight   | 激活选项文字字重   | `string \| number`                                                 | -                          |
+| right-icon             | 右侧图标           | `string`                                                           | `right`                    |
+| right-icon-size        | 右侧图标大小       | `string \| number`                                                 | -                          |
+| right-icon-color       | 右侧图标颜色       | `string`                                                           | -                          |
+| right-icon-weight      | 右侧图标粗细       | `string \| number`                                                 | -                          |
+| text-color             | 文案颜色           | `string`                                                           | -                          |
+| placeholder-color      | 占位文案颜色       | `string`                                                           | -                          |
+| text-size              | 文案大小           | `string \| number`                                                 | -                          |
+| text-align             | 文案对齐方向       | `left \| center \| right`                                          | `left`                     |
+| text-weight            | 文案字重           | `string \| number`                                                 | -                          |
+| custom-class           | 自定义类名         | `string`                                                           | -                          |
+| custom-style           | 自定义样式         | `string \| object`                                                 | -                          |
 
 ## Events
 
@@ -205,12 +205,12 @@ const formRules = {
 
 ## Methods
 
-| 方法名             | 说明               | 参数 | 返回值     |
-| ------------------ | ------------------ | ---- | ---------- |
-| open               | 打开弹窗           | -    | -          |
-| close              | 关闭弹窗           | -    | -          |
-| confirm            | 确认选择           | -    | -          |
-| cancel             | 取消选择           | -    | -          |
+| 方法名             | 说明                 | 参数 | 返回值     |
+| ------------------ | -------------------- | ---- | ---------- |
+| open               | 打开弹窗             | -    | -          |
+| close              | 关闭弹窗             | -    | -          |
+| confirm            | 确认选择             | -    | -          |
+| cancel             | 取消选择             | -    | -          |
 | getSelectedValue   | 获取格式化后的选中值 | -    | `string`   |
-| getSelectedValues  | 获取选中值数组     | -    | `string[]` |
-| getSelectedIndexes | 获取选中索引数组   | -    | `number[]` |
+| getSelectedValues  | 获取选中值数组       | -    | `string[]` |
+| getSelectedIndexes | 获取选中索引数组     | -    | `number[]` |

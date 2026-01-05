@@ -1,7 +1,10 @@
 <template>
   <view class="demo-section" :class="[sectionClass, customClass]" :style="[customStyle]">
-    <view v-if="title" class="demo-section__header">
-      <text class="demo-section__title">{{ title }}</text>
+    <view v-if="title || extra" class="demo-section__header">
+      <view class="demo-section__header__main">
+        <text class="demo-section__title">{{ title }}</text>
+        <text v-if="extra" class="demo-section__extra">{{ extra }}</text>
+      </view>
       <text v-if="desc" class="demo-section__desc">{{ desc }}</text>
     </view>
     <view v-if="hasContent" class="demo-section__content">
@@ -18,6 +21,8 @@ const props = withDefaults(
   defineProps<{
     /** Section title */
     title?: string
+    /** 标题右侧的额外文案，与 title 垂直居中显示 */
+    extra?: string
     /** Section description */
     desc?: string
     /** Card style with background, padding and border-radius */
@@ -54,13 +59,23 @@ const sectionClass = computed(() => {
 
   &__header {
     margin-bottom: 24rpx;
+
+    &__main {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
   }
 
   &__title {
     color: var(--ui-color-text-main);
-    display: block;
     font-size: 30rpx;
     font-weight: 600;
+  }
+
+  &__extra {
+    color: var(--ui-color-text-secondary);
+    font-size: 24rpx;
   }
 
   &__desc {

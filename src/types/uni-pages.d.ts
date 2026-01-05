@@ -70,6 +70,7 @@ type _LocationUrl =
   "/pages/demo/sidebar-item/index" |
   "/pages/demo/skeleton/index" |
   "/pages/demo/skeleton-components/index" |
+  "/pages/demo/slider/index" |
   "/pages/demo/stepper/index" |
   "/pages/demo/steps/index" |
   "/pages/demo/sticky/index" |
@@ -92,7 +93,7 @@ type _LocationUrl =
   "/pages/tabbar/templates/index";
 
 interface NavigateToOptions {
-  url: _LocationUrl
+  url: _LocationUrl;
 }
 interface RedirectToOptions extends NavigateToOptions {}
 
@@ -100,15 +101,15 @@ interface SwitchTabOptions {
   url: "/pages/tabbar/home/index" | "/pages/tabbar/components/index" | "/pages/tabbar/templates/index" | "/pages/tabbar/about/index"
 }
 
-type ReLaunchOptions = NavigateToOptions | SwitchTabOptions
+type ReLaunchOptions = NavigateToOptions | SwitchTabOptions;
 
 declare interface Uni {
-  navigateTo(options: UniNamespace.NavigateToOptions & NavigateToOptions): void
-  redirectTo(options: UniNamespace.RedirectToOptions & RedirectToOptions): void
-  switchTab(options: UniNamespace.SwitchTabOptions & SwitchTabOptions): void
-  reLaunch(options: UniNamespace.ReLaunchOptions & ReLaunchOptions): void
+  navigateTo(options: UniNamespace.NavigateToOptions & NavigateToOptions): void;
+  redirectTo(options: UniNamespace.RedirectToOptions & RedirectToOptions): void;
+  switchTab(options: UniNamespace.SwitchTabOptions & SwitchTabOptions): void;
+  reLaunch(options: UniNamespace.ReLaunchOptions & ReLaunchOptions): void;
 }
 
 declare module "virtual:uni-pages" {
-  export type LocationUrl = _LocationUrl
+  export type LocationUrl = _LocationUrl;
 }

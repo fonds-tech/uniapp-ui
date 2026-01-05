@@ -20,9 +20,9 @@
 <script setup lang="ts">
 import type { CSSProperties } from "vue"
 import type { SwipeCellPosition } from "./index"
-import { ref, computed, getCurrentInstance, onMounted } from "vue"
 import { isDef } from "../utils/check"
 import { useRect, useStyle } from "../hooks"
+import { ref, computed, onMounted, getCurrentInstance } from "vue"
 import { swipeCellEmits, swipeCellProps, useSwipeCellProps } from "./index"
 
 defineOptions({ name: "ui-swipe-cell" })

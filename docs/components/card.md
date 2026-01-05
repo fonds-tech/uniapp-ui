@@ -217,57 +217,57 @@ Card 组件提供多个插槽用于自定义内容。
 
 ### Props
 
-| 属性名 | 说明 | 类型 | 默认值 |
-| --- | --- | --- | --- |
-| title | 卡片标题 | `string` | - |
-| desc | 卡片描述/副标题 | `string` | - |
-| thumb | 封面图片地址 | `string` | - |
-| thumb-mode | 封面图片填充模式 | `scaleToFill \| aspectFit \| aspectFill \| widthFix \| heightFix \| top \| bottom \| center \| left \| right` | `aspectFill` |
-| thumb-height | 封面图片高度 | `string \| number` | - |
-| border | 是否显示边框 | `boolean` | `false` |
-| shadow | 阴影显示模式 | `always \| hover \| never` | `always` |
-| radius | 卡片圆角 | `string \| number` | - |
-| padding | 卡片内边距 | `string \| number` | - |
-| background | 卡片背景颜色 | `string` | - |
-| title-color | 标题颜色 | `string` | - |
-| title-size | 标题字体大小 | `string \| number` | - |
-| title-weight | 标题字重 | `string \| number` | - |
-| desc-color | 描述颜色 | `string` | - |
-| desc-size | 描述字体大小 | `string \| number` | - |
-| clickable | 是否可点击 | `boolean` | `false` |
-| full | 是否全宽（无圆角） | `boolean` | `false` |
-| custom-class | 自定义类名 | `string` | - |
-| custom-style | 自定义样式 | `string \| CSSProperties` | - |
+| 属性名       | 说明               | 类型                                                                                                          | 默认值       |
+| ------------ | ------------------ | ------------------------------------------------------------------------------------------------------------- | ------------ |
+| title        | 卡片标题           | `string`                                                                                                      | -            |
+| desc         | 卡片描述/副标题    | `string`                                                                                                      | -            |
+| thumb        | 封面图片地址       | `string`                                                                                                      | -            |
+| thumb-mode   | 封面图片填充模式   | `scaleToFill \| aspectFit \| aspectFill \| widthFix \| heightFix \| top \| bottom \| center \| left \| right` | `aspectFill` |
+| thumb-height | 封面图片高度       | `string \| number`                                                                                            | -            |
+| border       | 是否显示边框       | `boolean`                                                                                                     | `false`      |
+| shadow       | 阴影显示模式       | `always \| hover \| never`                                                                                    | `always`     |
+| radius       | 卡片圆角           | `string \| number`                                                                                            | -            |
+| padding      | 卡片内边距         | `string \| number`                                                                                            | -            |
+| background   | 卡片背景颜色       | `string`                                                                                                      | -            |
+| title-color  | 标题颜色           | `string`                                                                                                      | -            |
+| title-size   | 标题字体大小       | `string \| number`                                                                                            | -            |
+| title-weight | 标题字重           | `string \| number`                                                                                            | -            |
+| desc-color   | 描述颜色           | `string`                                                                                                      | -            |
+| desc-size    | 描述字体大小       | `string \| number`                                                                                            | -            |
+| clickable    | 是否可点击         | `boolean`                                                                                                     | `false`      |
+| full         | 是否全宽（无圆角） | `boolean`                                                                                                     | `false`      |
+| custom-class | 自定义类名         | `string`                                                                                                      | -            |
+| custom-style | 自定义样式         | `string \| CSSProperties`                                                                                     | -            |
 
 ### Events
 
-| 事件名 | 说明 | 回调参数 |
-| --- | --- | --- |
-| click | 点击卡片时触发（需设置 clickable） | - |
-| click-thumb | 点击封面图片时触发 | - |
+| 事件名      | 说明                               | 回调参数 |
+| ----------- | ---------------------------------- | -------- |
+| click       | 点击卡片时触发（需设置 clickable） | -        |
+| click-thumb | 点击封面图片时触发                 | -        |
 
 ### Slots
 
-| 名称 | 说明 |
-| --- | --- |
-| default | 卡片主体内容 |
-| cover | 自定义封面区域 |
-| header | 自定义头部区域 |
-| extra | 头部右侧额外内容 |
-| footer | 自定义底部区域 |
+| 名称    | 说明             |
+| ------- | ---------------- |
+| default | 卡片主体内容     |
+| cover   | 自定义封面区域   |
+| header  | 自定义头部区域   |
+| extra   | 头部右侧额外内容 |
+| footer  | 自定义底部区域   |
 
 ## 主题定制
 
 组件提供以下 CSS 变量，可用于自定义样式：
 
-| 变量名 | 说明 | 默认值 |
-| --- | --- | --- |
-| --ui-card-radius | 卡片圆角 | `var(--ui-radius-lg)` |
-| --ui-card-shadow | 卡片阴影 | `var(--ui-shadow-sm)` |
-| --ui-card-padding | 卡片内边距 | `var(--ui-spacing-xl)` |
-| --ui-card-background | 卡片背景色 | `var(--ui-color-background)` |
-| --ui-card-title-size | 标题字体大小 | `var(--ui-font-size-md)` |
-| --ui-card-title-color | 标题颜色 | `var(--ui-color-text-main)` |
-| --ui-card-desc-size | 描述字体大小 | `var(--ui-font-size-sm)` |
-| --ui-card-desc-color | 描述颜色 | `var(--ui-color-text-secondary)` |
-| --ui-card-border-color | 边框颜色 | `var(--ui-color-border-light)` |
+| 变量名                 | 说明         | 默认值                           |
+| ---------------------- | ------------ | -------------------------------- |
+| --ui-card-radius       | 卡片圆角     | `var(--ui-radius-lg)`            |
+| --ui-card-shadow       | 卡片阴影     | `var(--ui-shadow-sm)`            |
+| --ui-card-padding      | 卡片内边距   | `var(--ui-spacing-xl)`           |
+| --ui-card-background   | 卡片背景色   | `var(--ui-color-background)`     |
+| --ui-card-title-size   | 标题字体大小 | `var(--ui-font-size-md)`         |
+| --ui-card-title-color  | 标题颜色     | `var(--ui-color-text-main)`      |
+| --ui-card-desc-size    | 描述字体大小 | `var(--ui-font-size-sm)`         |
+| --ui-card-desc-color   | 描述颜色     | `var(--ui-color-text-secondary)` |
+| --ui-card-border-color | 边框颜色     | `var(--ui-color-border-light)`   |

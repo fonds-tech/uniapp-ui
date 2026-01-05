@@ -185,7 +185,7 @@
 
 <script setup lang="ts">
 import type { FormInstance } from "@/uni_modules/uniapp-ui/ui-form"
-import type { DateRangeSelectActiveType, DateRangeSelectValue } from "@/uni_modules/uniapp-ui/ui-date-range-select"
+import type { DateRangeSelectValue, DateRangeSelectActiveType } from "@/uni_modules/uniapp-ui/ui-date-range-select"
 import { useToast } from "@/uni_modules/uniapp-ui"
 import { DemoPage, DemoBlock, DemoSection } from "../components"
 
@@ -367,8 +367,8 @@ const leaveRange = ref<DateRangeSelectValue>([])
 function calculateLeaveHours(range: DateRangeSelectValue) {
   if (range.length < 2) return 0
   // 简单计算：假设每天工作8小时
-  const start = new Date(range[0].replace(" ", "T") + ":00:00")
-  const end = new Date(range[1].replace(" ", "T") + ":00:00")
+  const start = new Date(`${range[0].replace(" ", "T")}:00:00`)
+  const end = new Date(`${range[1].replace(" ", "T")}:00:00`)
   const diff = end.getTime() - start.getTime()
   return Math.ceil(diff / (1000 * 60 * 60))
 }
@@ -420,9 +420,9 @@ function calculateLeaveHours(range: DateRangeSelectValue) {
 
 // 酒店预订卡片
 .booking-card {
+  overflow: hidden;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   border-radius: 24rpx;
-  overflow: hidden;
 }
 
 .booking-header {
@@ -454,11 +454,11 @@ function calculateLeaveHours(range: DateRangeSelectValue) {
 }
 
 .booking-summary {
-  margin-top: 24rpx;
   padding: 16rpx 24rpx;
   background: #f0f9ff;
-  border-radius: 12rpx;
+  margin-top: 24rpx;
   text-align: center;
+  border-radius: 12rpx;
 }
 
 .booking-nights {
@@ -469,16 +469,16 @@ function calculateLeaveHours(range: DateRangeSelectValue) {
 
 // 请假申请
 .leave-form {
-  background: #fff;
   padding: 24rpx;
-  border-radius: 16rpx;
+  background: #fff;
   box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.05);
+  border-radius: 16rpx;
 }
 
 .leave-summary {
-  margin-top: 24rpx;
   padding: 24rpx;
   background: #fff7e6;
+  margin-top: 24rpx;
   border-radius: 12rpx;
 }
 

@@ -220,45 +220,45 @@ function onClickStep(index) {
 
 ## Steps Props
 
-| 参数           | 说明                         | 类型               | 默认值       |
-| -------------- | ---------------------------- | ------------------ | ------------ |
-| active         | 当前步骤索引（从 0 开始）    | `string \| number` | `0`          |
-| direction      | 步骤条方向                   | `horizontal \| vertical` | `horizontal` |
-| active-color   | 激活状态颜色                 | `string`           | -            |
-| inactive-color | 未激活状态颜色               | `string`           | -            |
-| error-color    | 错误状态颜色                 | `string`           | -            |
-| active-icon    | 激活状态图标                 | `string`           | -            |
-| inactive-icon  | 未激活状态图标               | `string`           | -            |
-| finish-icon    | 完成状态图标                 | `string`           | -            |
-| error-icon     | 错误状态图标                 | `string`           | -            |
-| icon-size      | 图标大小                     | `string \| number` | `40rpx`      |
-| clickable      | 是否可点击步骤               | `boolean`          | `false`      |
-| custom-class   | 自定义类名                   | `string`           | -            |
-| custom-style   | 自定义样式                   | `string \| object` | -            |
+| 参数           | 说明                      | 类型                     | 默认值       |
+| -------------- | ------------------------- | ------------------------ | ------------ |
+| active         | 当前步骤索引（从 0 开始） | `string \| number`       | `0`          |
+| direction      | 步骤条方向                | `horizontal \| vertical` | `horizontal` |
+| active-color   | 激活状态颜色              | `string`                 | -            |
+| inactive-color | 未激活状态颜色            | `string`                 | -            |
+| error-color    | 错误状态颜色              | `string`                 | -            |
+| active-icon    | 激活状态图标              | `string`                 | -            |
+| inactive-icon  | 未激活状态图标            | `string`                 | -            |
+| finish-icon    | 完成状态图标              | `string`                 | -            |
+| error-icon     | 错误状态图标              | `string`                 | -            |
+| icon-size      | 图标大小                  | `string \| number`       | `40rpx`      |
+| clickable      | 是否可点击步骤            | `boolean`                | `false`      |
+| custom-class   | 自定义类名                | `string`                 | -            |
+| custom-style   | 自定义样式                | `string \| object`       | -            |
 
 ## Steps Events
 
-| 事件名     | 说明               | 回调参数         |
-| ---------- | ------------------ | ---------------- |
-| click-step | 点击步骤时触发     | `index: number`  |
+| 事件名     | 说明           | 回调参数        |
+| ---------- | -------------- | --------------- |
+| click-step | 点击步骤时触发 | `index: number` |
 
 ## Steps Slots
 
-| 名称    | 说明           |
-| ------- | -------------- |
-| default | 步骤项内容     |
+| 名称    | 说明       |
+| ------- | ---------- |
+| default | 步骤项内容 |
 
 ## Step Props
 
-| 参数         | 说明                                       | 类型               | 默认值 |
-| ------------ | ------------------------------------------ | ------------------ | ------ |
-| title        | 步骤标题                                   | `string \| number` | -      |
-| description  | 步骤描述                                   | `string`           | -      |
-| icon         | 自定义图标                                 | `string`           | -      |
+| 参数         | 说明                                               | 类型               | 默认值 |
+| ------------ | -------------------------------------------------- | ------------------ | ------ |
+| title        | 步骤标题                                           | `string \| number` | -      |
+| description  | 步骤描述                                           | `string`           | -      |
+| icon         | 自定义图标                                         | `string`           | -      |
 | status       | 步骤状态，可选值 `wait` `process` `finish` `error` | `string`           | -      |
-| icon-size    | 图标大小                                   | `string \| number` | -      |
-| custom-class | 自定义类名                                 | `string`           | -      |
-| custom-style | 自定义样式                                 | `string \| object` | -      |
+| icon-size    | 图标大小                                           | `string \| number` | -      |
+| custom-class | 自定义类名                                         | `string`           | -      |
+| custom-style | 自定义样式                                         | `string \| object` | -      |
 
 ## Step Events
 
@@ -268,10 +268,10 @@ function onClickStep(index) {
 
 ## Step Slots
 
-| 名称    | 说明         | 参数                                           |
-| ------- | ------------ | ---------------------------------------------- |
-| default | 自定义内容   | `{ status: string, index: number, active: boolean }` |
-| icon    | 自定义图标   | `{ status: string, index: number, active: boolean }` |
+| 名称    | 说明       | 参数                                                 |
+| ------- | ---------- | ---------------------------------------------------- |
+| default | 自定义内容 | `{ status: string, index: number, active: boolean }` |
+| icon    | 自定义图标 | `{ status: string, index: number, active: boolean }` |
 
 ## 类型定义
 
@@ -287,12 +287,12 @@ type StepDirection = "horizontal" | "vertical"
 
 组件使用了以下 CSS 变量，可用于自定义样式：
 
-| 变量名                        | 说明         | 默认值                          |
-| ----------------------------- | ------------ | ------------------------------- |
-| --ui-color-primary            | 主题色       | `#1890ff`                       |
-| --ui-color-danger             | 错误颜色     | `#ff4d4f`                       |
-| --ui-color-border             | 边框颜色     | `#ebedf0`                       |
-| --ui-color-text-main          | 主文本颜色   | `#323233`                       |
-| --ui-color-text-secondary     | 次要文本颜色 | `#969799`                       |
-| --ui-color-text-placeholder   | 占位符颜色   | `#c8c9cc`                       |
-| --ui-color-background         | 背景颜色     | `#ffffff`                       |
+| 变量名                      | 说明         | 默认值    |
+| --------------------------- | ------------ | --------- |
+| --ui-color-primary          | 主题色       | `#1890ff` |
+| --ui-color-danger           | 错误颜色     | `#ff4d4f` |
+| --ui-color-border           | 边框颜色     | `#ebedf0` |
+| --ui-color-text-main        | 主文本颜色   | `#323233` |
+| --ui-color-text-secondary   | 次要文本颜色 | `#969799` |
+| --ui-color-text-placeholder | 占位符颜色   | `#c8c9cc` |
+| --ui-color-background       | 背景颜色     | `#ffffff` |

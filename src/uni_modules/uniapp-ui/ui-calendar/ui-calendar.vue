@@ -144,7 +144,7 @@
 import type { CSSProperties } from "vue"
 import type { CalendarDay, CalendarMonthChangeData } from "./index"
 import type { CalendarMode, CalendarDay as UseCalendarDay } from "../hooks/useCalendar"
-import { computed, watch } from "vue"
+import { watch, computed } from "vue"
 import { useColor, useStyle, useCalendar } from "../hooks"
 import { parseDate, formatDate, getDaysDiff } from "../utils/date"
 import { calendarEmits, calendarProps, useCalendarProps } from "./index"

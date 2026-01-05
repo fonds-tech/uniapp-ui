@@ -5,8 +5,8 @@
 
 import UiPullRefresh from "@/uni_modules/uniapp-ui/ui-pull-refresh/ui-pull-refresh.vue"
 import { mount } from "@vue/test-utils"
-import { it, expect, describe, vi, beforeEach, afterEach } from "vitest"
 import { nextTick } from "vue"
+import { it, vi, expect, describe, afterEach, beforeEach } from "vitest"
 
 describe("ui-pull-refresh 下拉刷新组件", () => {
   beforeEach(() => {
@@ -47,7 +47,7 @@ describe("ui-pull-refresh 下拉刷新组件", () => {
     })
   })
 
-  describe("Props 配置", () => {
+  describe("props 配置", () => {
     it("应支持自定义 pullingText 下拉提示文案", async () => {
       const wrapper = mount(UiPullRefresh, {
         props: {
@@ -470,7 +470,7 @@ describe("ui-pull-refresh 下拉刷新组件", () => {
     it("应支持 pulling 状态插槽", async () => {
       const wrapper = mount(UiPullRefresh, {
         slots: {
-          pulling: '<div class="custom-pulling">自定义下拉</div>',
+          pulling: "<div class=\"custom-pulling\">自定义下拉</div>",
         },
       })
 
@@ -485,7 +485,7 @@ describe("ui-pull-refresh 下拉刷新组件", () => {
           headHeight: 50,
         },
         slots: {
-          loosing: '<div class="custom-loosing">自定义释放</div>',
+          loosing: "<div class=\"custom-loosing\">自定义释放</div>",
         },
       })
 
@@ -500,7 +500,7 @@ describe("ui-pull-refresh 下拉刷新组件", () => {
           modelValue: false,
         },
         slots: {
-          loading: '<div class="custom-loading">自定义加载</div>',
+          loading: "<div class=\"custom-loading\">自定义加载</div>",
         },
       })
 
@@ -519,7 +519,7 @@ describe("ui-pull-refresh 下拉刷新组件", () => {
           successDuration: 500,
         },
         slots: {
-          success: '<div class="custom-success">自定义成功</div>',
+          success: "<div class=\"custom-success\">自定义成功</div>",
         },
       })
 
@@ -534,7 +534,7 @@ describe("ui-pull-refresh 下拉刷新组件", () => {
     it("应支持 normal 状态插槽", () => {
       const wrapper = mount(UiPullRefresh, {
         slots: {
-          normal: '<div class="custom-normal">自定义正常状态</div>',
+          normal: "<div class=\"custom-normal\">自定义正常状态</div>",
         },
       })
 
@@ -705,7 +705,7 @@ describe("ui-pull-refresh 下拉刷新组件", () => {
 
       const match = trackStyle.match(/translateY\((\d+(\.\d+)?)px\)/)
       if (match) {
-        const distance = parseFloat(match[1])
+        const distance = Number.parseFloat(match[1])
         expect(distance).toBeLessThanOrEqual(100)
       }
     })

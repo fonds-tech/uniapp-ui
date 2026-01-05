@@ -110,9 +110,9 @@
 
 <script setup lang="ts">
 import type { DatePickerInstance, DatePickerChangeData } from "../ui-date-picker"
-import type { DateRangeSelectValue, DateRangeSelectActiveType, DateRangeSelectChangeData, DateRangeSelectConfirmData, DateRangeSelectCancelData } from "./index"
-import { ref, computed, watch, useSlots } from "vue"
+import type { DateRangeSelectValue, DateRangeSelectActiveType, DateRangeSelectCancelData, DateRangeSelectChangeData, DateRangeSelectConfirmData } from "./index"
 import { formItemKey } from "../ui-form-item"
+import { ref, watch, computed, useSlots } from "vue"
 import { useUnit, useColor, useStyle, useParent } from "../hooks"
 import { dateRangeSelectEmits, dateRangeSelectProps, useDateRangeSelectProps } from "./index"
 
@@ -531,12 +531,12 @@ export default {
   &__item {
     flex: 1;
     display: flex;
-    overflow: hidden;
-    align-items: center;
-    justify-content: center;
     padding: 8rpx 0;
-    border-radius: 8rpx;
+    overflow: hidden;
     transition: background-color 0.2s;
+    align-items: center;
+    border-radius: 8rpx;
+    justify-content: center;
 
     &.is-active {
       background-color: var(--ui-color-primary-light, rgba(25, 137, 250, 0.1));
@@ -571,8 +571,8 @@ export default {
   &__icon {
     display: flex;
     align-items: center;
-    margin-left: var(--ui-spacing-md);
     flex-shrink: 0;
+    margin-left: var(--ui-spacing-md);
   }
 
   // Header 样式
@@ -591,17 +591,17 @@ export default {
 
   // Tabs 样式
   &__tabs {
+    gap: 32rpx;
     flex: 1;
     display: flex;
     justify-content: center;
-    gap: 32rpx;
   }
 
   &__tab {
-    position: relative;
     padding: 8rpx 24rpx;
-    border-radius: 8rpx;
+    position: relative;
     transition: all 0.2s;
+    border-radius: 8rpx;
 
     &.is-active {
       background-color: var(--ui-color-primary-light, rgba(25, 137, 250, 0.1));
@@ -612,15 +612,15 @@ export default {
       }
 
       &::after {
-        content: "";
-        position: absolute;
-        bottom: 0;
         left: 50%;
         width: 40rpx;
+        bottom: 0;
         height: 4rpx;
+        content: "";
+        position: absolute;
+        transform: translateX(-50%);
         background: var(--ui-color-primary);
         border-radius: 2rpx;
-        transform: translateX(-50%);
       }
     }
 

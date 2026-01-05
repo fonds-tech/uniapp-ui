@@ -5,8 +5,8 @@
  * 测试中需要使用 waitForTransition 推进时间以完成动画初始化
  */
 
-import UiPopover from "@/uni_modules/uniapp-ui/ui-popover/ui-popover.vue"
 import type { PopoverAction } from "@/uni_modules/uniapp-ui/ui-popover/index"
+import UiPopover from "@/uni_modules/uniapp-ui/ui-popover/ui-popover.vue"
 import { mount } from "@vue/test-utils"
 import { waitForTransition } from "../setup"
 import { it, vi, expect, describe, afterEach, beforeEach } from "vitest"

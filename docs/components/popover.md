@@ -195,83 +195,83 @@ function onSelect(action, index) {
 
 ## Props
 
-| 参数 | 说明 | 类型 | 默认值 |
-| --- | --- | --- | --- |
-| v-model:show | 是否显示气泡 | `boolean` | `false` |
-| actions | 选项列表 | `PopoverAction[]` | `[]` |
-| placement | 弹出位置 | `PopoverPlacement` | `bottom` |
-| theme | 主题风格 | `light \| dark` | `light` |
-| trigger | 触发方式 | `click \| manual` | `click` |
-| offset | 偏移量 [水平, 垂直] | `number[]` | `[]` |
-| show-arrow | 是否显示箭头 | `boolean` | `true` |
-| close-on-click-action | 点击选项后是否关闭 | `boolean` | `true` |
-| close-on-click-outside | 点击外部区域是否关闭 | `boolean` | `true` |
-| overlay | 是否显示遮罩层 | `boolean` | `false` |
-| overlay-opacity | 遮罩层透明度 | `number` | `0` |
-| duration | 动画时长（毫秒） | `number` | `300` |
-| z-index | 元素层级 | `number` | - |
-| border-radius | 圆角大小 | `string \| number` | `12rpx` |
-| icon-size | 选项图标大小 | `string \| number` | `32rpx` |
-| icon-color | 选项图标颜色 | `string` | - |
-| text-size | 选项文字大小 | `string \| number` | - |
-| text-color | 选项文字颜色 | `string` | - |
-| custom-class | 自定义类名 | `string` | - |
-| custom-style | 自定义样式 | `string \| object` | - |
+| 参数                   | 说明                 | 类型               | 默认值   |
+| ---------------------- | -------------------- | ------------------ | -------- |
+| v-model:show           | 是否显示气泡         | `boolean`          | `false`  |
+| actions                | 选项列表             | `PopoverAction[]`  | `[]`     |
+| placement              | 弹出位置             | `PopoverPlacement` | `bottom` |
+| theme                  | 主题风格             | `light \| dark`    | `light`  |
+| trigger                | 触发方式             | `click \| manual`  | `click`  |
+| offset                 | 偏移量 [水平, 垂直]  | `number[]`         | `[]`     |
+| show-arrow             | 是否显示箭头         | `boolean`          | `true`   |
+| close-on-click-action  | 点击选项后是否关闭   | `boolean`          | `true`   |
+| close-on-click-outside | 点击外部区域是否关闭 | `boolean`          | `true`   |
+| overlay                | 是否显示遮罩层       | `boolean`          | `false`  |
+| overlay-opacity        | 遮罩层透明度         | `number`           | `0`      |
+| duration               | 动画时长（毫秒）     | `number`           | `300`    |
+| z-index                | 元素层级             | `number`           | -        |
+| border-radius          | 圆角大小             | `string \| number` | `12rpx`  |
+| icon-size              | 选项图标大小         | `string \| number` | `32rpx`  |
+| icon-color             | 选项图标颜色         | `string`           | -        |
+| text-size              | 选项文字大小         | `string \| number` | -        |
+| text-color             | 选项文字颜色         | `string`           | -        |
+| custom-class           | 自定义类名           | `string`           | -        |
+| custom-style           | 自定义样式           | `string \| object` | -        |
 
 ### PopoverPlacement 可选值
 
-| 值 | 说明 |
-| --- | --- |
-| top | 顶部居中 |
-| top-start | 顶部左对齐 |
-| top-end | 顶部右对齐 |
-| bottom | 底部居中 |
-| bottom-start | 底部左对齐 |
-| bottom-end | 底部右对齐 |
-| left | 左侧居中 |
-| left-start | 左侧顶部对齐 |
-| left-end | 左侧底部对齐 |
-| right | 右侧居中 |
-| right-start | 右侧顶部对齐 |
-| right-end | 右侧底部对齐 |
+| 值           | 说明         |
+| ------------ | ------------ |
+| top          | 顶部居中     |
+| top-start    | 顶部左对齐   |
+| top-end      | 顶部右对齐   |
+| bottom       | 底部居中     |
+| bottom-start | 底部左对齐   |
+| bottom-end   | 底部右对齐   |
+| left         | 左侧居中     |
+| left-start   | 左侧顶部对齐 |
+| left-end     | 左侧底部对齐 |
+| right        | 右侧居中     |
+| right-start  | 右侧顶部对齐 |
+| right-end    | 右侧底部对齐 |
 
 ### PopoverAction 数据结构
 
-| 属性 | 说明 | 类型 |
-| --- | --- | --- |
-| text | 选项文字 | `string` |
-| icon | 选项图标 | `string` |
-| color | 选项颜色（同时作用于图标和文字） | `string` |
-| disabled | 是否禁用 | `boolean` |
-| className | 自定义类名 | `string` |
+| 属性      | 说明                             | 类型      |
+| --------- | -------------------------------- | --------- |
+| text      | 选项文字                         | `string`  |
+| icon      | 选项图标                         | `string`  |
+| color     | 选项颜色（同时作用于图标和文字） | `string`  |
+| disabled  | 是否禁用                         | `boolean` |
+| className | 自定义类名                       | `string`  |
 
 ## Events
 
-| 事件名 | 说明 | 回调参数 |
-| --- | --- | --- |
-| update:show | 显示状态变更时触发 | `show: boolean` |
-| open | 打开气泡时触发 | - |
-| opened | 打开动画结束时触发 | - |
-| close | 关闭气泡时触发 | - |
-| closed | 关闭动画结束时触发 | - |
-| select | 点击选项时触发 | `action: PopoverAction, index: number` |
-| click-overlay | 点击遮罩层时触发 | - |
+| 事件名        | 说明               | 回调参数                               |
+| ------------- | ------------------ | -------------------------------------- |
+| update:show   | 显示状态变更时触发 | `show: boolean`                        |
+| open          | 打开气泡时触发     | -                                      |
+| opened        | 打开动画结束时触发 | -                                      |
+| close         | 关闭气泡时触发     | -                                      |
+| closed        | 关闭动画结束时触发 | -                                      |
+| select        | 点击选项时触发     | `action: PopoverAction, index: number` |
+| click-overlay | 点击遮罩层时触发   | -                                      |
 
 ## Slots
 
-| 名称 | 说明 |
-| --- | --- |
-| default | 触发气泡显示的元素 |
+| 名称    | 说明                                |
+| ------- | ----------------------------------- |
+| default | 触发气泡显示的元素                  |
 | content | 自定义气泡内容，会覆盖 actions 选项 |
 
 ## 方法
 
 通过 ref 可以获取到 Popover 实例并调用实例方法。
 
-| 方法名 | 说明 | 参数 |
-| --- | --- | --- |
-| open | 打开气泡 | - |
-| close | 关闭气泡 | - |
+| 方法名 | 说明     | 参数 |
+| ------ | -------- | ---- |
+| open   | 打开气泡 | -    |
+| close  | 关闭气泡 | -    |
 
 ```vue
 <template>

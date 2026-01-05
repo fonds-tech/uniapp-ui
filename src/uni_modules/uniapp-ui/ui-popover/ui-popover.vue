@@ -44,9 +44,9 @@
 <script setup lang="ts">
 import type { PopoverAction } from "./index"
 import type { CSSProperties } from "vue"
-import { ref, computed, watch, getCurrentInstance } from "vue"
 import { noop } from "../utils/utils"
 import { isNumber } from "../utils/check"
+import { ref, watch, computed, getCurrentInstance } from "vue"
 import { popoverEmits, popoverProps, usePopoverProps } from "./index"
 import { useRect, useUnit, useColor, useStyle, useTransition, useGlobalZIndex } from "../hooks"
 

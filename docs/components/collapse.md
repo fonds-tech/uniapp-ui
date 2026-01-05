@@ -225,27 +225,27 @@ function collapseAll() {
 
 ### Collapse Props
 
-| 属性名       | 说明                                                         | 类型                                         | 默认值  |
-| ------------ | ------------------------------------------------------------ | -------------------------------------------- | ------- |
-| v-model      | 当前展开的面板名称，多选模式下为数组，手风琴模式下为字符串或数字 | `(string \| number)[] \| string \| number`   | `[]`    |
-| accordion    | 是否开启手风琴模式，开启后同时只能展开一个面板               | `boolean`                                    | `false` |
-| border       | 是否显示外边框                                               | `boolean`                                    | `true`  |
-| custom-class | 自定义类名                                                   | `string`                                     | -       |
-| custom-style | 自定义样式                                                   | `string \| CSSProperties`                    | -       |
+| 属性名       | 说明                                                             | 类型                                       | 默认值  |
+| ------------ | ---------------------------------------------------------------- | ------------------------------------------ | ------- |
+| v-model      | 当前展开的面板名称，多选模式下为数组，手风琴模式下为字符串或数字 | `(string \| number)[] \| string \| number` | `[]`    |
+| accordion    | 是否开启手风琴模式，开启后同时只能展开一个面板                   | `boolean`                                  | `false` |
+| border       | 是否显示外边框                                                   | `boolean`                                  | `true`  |
+| custom-class | 自定义类名                                                       | `string`                                   | -       |
+| custom-style | 自定义样式                                                       | `string \| CSSProperties`                  | -       |
 
 ### Collapse Events
 
-| 事件名 | 说明                   | 回调参数                                              |
-| ------ | ---------------------- | ----------------------------------------------------- |
-| change | 切换面板时触发         | `activeNames: (string \| number)[] \| string \| number` |
+| 事件名 | 说明           | 回调参数                                                |
+| ------ | -------------- | ------------------------------------------------------- |
+| change | 切换面板时触发 | `activeNames: (string \| number)[] \| string \| number` |
 
 ### Collapse Methods
 
 通过 `ref` 获取组件实例后可以调用以下方法：
 
-| 方法名    | 说明                                                         | 参数                 |
-| --------- | ------------------------------------------------------------ | -------------------- |
-| toggleAll | 切换所有面板的展开状态，仅在非手风琴模式下可用               | `expanded?: boolean` |
+| 方法名    | 说明                                           | 参数                 |
+| --------- | ---------------------------------------------- | -------------------- |
+| toggleAll | 切换所有面板的展开状态，仅在非手风琴模式下可用 | `expanded?: boolean` |
 
 ### Collapse Slots
 
@@ -255,39 +255,39 @@ function collapseAll() {
 
 ### CollapseItem Props
 
-| 属性名          | 说明                                 | 类型                      | 默认值    |
-| --------------- | ------------------------------------ | ------------------------- | --------- |
-| name            | 唯一标识符，默认为索引值             | `string \| number`        | 索引值    |
-| title           | 标题文本                             | `string`                  | -         |
-| icon            | 左侧图标名称                         | `string`                  | -         |
-| icon-size       | 图标大小                             | `string \| number`        | -         |
-| icon-color      | 图标颜色                             | `string`                  | -         |
-| icon-weight     | 图标粗细                             | `string \| number`        | -         |
-| arrow-icon      | 右侧箭头图标名称                     | `string`                  | `arrow`   |
-| is-link         | 是否显示右侧箭头                     | `boolean`                 | `true`    |
-| disabled        | 是否禁用                             | `boolean`                 | `false`   |
-| readonly        | 是否只读                             | `boolean`                 | `false`   |
-| border          | 是否显示下边框                       | `boolean`                 | `true`    |
-| value           | 标题右侧内容                         | `string`                  | -         |
-| label           | 标题下方的描述信息                   | `string`                  | -         |
-| content-padding | 内容区域的内边距                     | `string`                  | -         |
-| custom-class    | 自定义类名                           | `string`                  | -         |
-| custom-style    | 自定义样式                           | `string \| CSSProperties` | -         |
+| 属性名          | 说明                     | 类型                      | 默认值  |
+| --------------- | ------------------------ | ------------------------- | ------- |
+| name            | 唯一标识符，默认为索引值 | `string \| number`        | 索引值  |
+| title           | 标题文本                 | `string`                  | -       |
+| icon            | 左侧图标名称             | `string`                  | -       |
+| icon-size       | 图标大小                 | `string \| number`        | -       |
+| icon-color      | 图标颜色                 | `string`                  | -       |
+| icon-weight     | 图标粗细                 | `string \| number`        | -       |
+| arrow-icon      | 右侧箭头图标名称         | `string`                  | `arrow` |
+| is-link         | 是否显示右侧箭头         | `boolean`                 | `true`  |
+| disabled        | 是否禁用                 | `boolean`                 | `false` |
+| readonly        | 是否只读                 | `boolean`                 | `false` |
+| border          | 是否显示下边框           | `boolean`                 | `true`  |
+| value           | 标题右侧内容             | `string`                  | -       |
+| label           | 标题下方的描述信息       | `string`                  | -       |
+| content-padding | 内容区域的内边距         | `string`                  | -       |
+| custom-class    | 自定义类名               | `string`                  | -       |
+| custom-style    | 自定义样式               | `string \| CSSProperties` | -       |
 
 ### CollapseItem Events
 
-| 事件名 | 说明                   | 回调参数             |
-| ------ | ---------------------- | -------------------- |
-| click  | 点击标题区域时触发     | -                    |
-| change | 展开或收起时触发       | `expanded: boolean`  |
+| 事件名 | 说明               | 回调参数            |
+| ------ | ------------------ | ------------------- |
+| click  | 点击标题区域时触发 | -                   |
+| change | 展开或收起时触发   | `expanded: boolean` |
 
 ### CollapseItem Methods
 
 通过 `ref` 获取组件实例后可以调用以下方法：
 
-| 方法名 | 说明                                 | 参数                |
-| ------ | ------------------------------------ | ------------------- |
-| toggle | 切换面板展开状态                     | `expanded?: boolean` |
+| 方法名 | 说明             | 参数                 |
+| ------ | ---------------- | -------------------- |
+| toggle | 切换面板展开状态 | `expanded?: boolean` |
 
 ### CollapseItem Slots
 

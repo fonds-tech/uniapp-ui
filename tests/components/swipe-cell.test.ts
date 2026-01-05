@@ -5,8 +5,8 @@
 
 import UiSwipeCell from "@/uni_modules/uniapp-ui/ui-swipe-cell/ui-swipe-cell.vue"
 import { mount } from "@vue/test-utils"
-import { it, expect, describe, vi, beforeEach, afterEach } from "vitest"
 import { nextTick } from "vue"
+import { it, vi, expect, describe, afterEach, beforeEach } from "vitest"
 
 describe("ui-swipe-cell 滑动单元格组件", () => {
   beforeEach(() => {
@@ -76,7 +76,7 @@ describe("ui-swipe-cell 滑动单元格组件", () => {
     })
   })
 
-  describe("Props 属性", () => {
+  describe("props 属性", () => {
     it("应支持 name 属性标识", () => {
       const wrapper = mount(UiSwipeCell, {
         props: { name: "cell-1" },

@@ -6,8 +6,8 @@
 import UiAvatar from "@/uni_modules/uniapp-ui/ui-avatar/ui-avatar.vue"
 import UiAvatarGroup from "@/uni_modules/uniapp-ui/ui-avatar-group/ui-avatar-group.vue"
 import { mount } from "@vue/test-utils"
-import { it, expect, describe, vi, beforeEach, afterEach } from "vitest"
 import { h, nextTick } from "vue"
+import { it, vi, expect, describe, afterEach, beforeEach } from "vitest"
 
 describe("ui-avatar 头像组件", () => {
   beforeEach(() => {
@@ -415,8 +415,7 @@ describe("ui-avatar-group 头像组组件", () => {
       slots: {
         default: () =>
           Array.from({ length: avatarCount }, (_, i) =>
-            h(UiAvatar, { key: i, text: `用户${i + 1}` })
-          ),
+            h(UiAvatar, { key: i, text: `用户${i + 1}` })),
       },
     })
   }

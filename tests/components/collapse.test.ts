@@ -5,9 +5,9 @@
 
 import UiCollapse from "@/uni_modules/uniapp-ui/ui-collapse/ui-collapse.vue"
 import UiCollapseItem from "@/uni_modules/uniapp-ui/ui-collapse-item/ui-collapse-item.vue"
-import { mount, flushPromises } from "@vue/test-utils"
-import { it, vi, expect, describe, beforeEach, afterEach } from "vitest"
-import { h, nextTick, defineComponent } from "vue"
+import { mount } from "@vue/test-utils"
+import { nextTick, defineComponent } from "vue"
+import { it, vi, expect, describe, afterEach, beforeEach } from "vitest"
 
 /**
  * 创建带有父子组件结构的测试包装器
@@ -75,7 +75,7 @@ describe("ui-collapse 折叠面板组件", () => {
     it("应正确渲染默认插槽内容", () => {
       const wrapper = mount(UiCollapse, {
         slots: {
-          default: '<div class="test-content">测试内容</div>',
+          default: "<div class=\"test-content\">测试内容</div>",
         },
       })
 
@@ -212,7 +212,7 @@ describe("ui-collapse-item 折叠面板项组件", () => {
     })
   })
 
-  describe("Props 渲染", () => {
+  describe("props 渲染", () => {
     it("应正确渲染 label 描述", async () => {
       const wrapper = createCollapseWrapper({}, [{ props: { title: "标题", label: "描述信息", name: "1" } }])
       await nextTick()

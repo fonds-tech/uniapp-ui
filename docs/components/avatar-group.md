@@ -200,19 +200,19 @@ function onClickExcess(event) {
 
 ## Props
 
-| 参数             | 说明                                         | 类型               | 默认值   |
-| ---------------- | -------------------------------------------- | ------------------ | -------- |
-| max              | 最多显示的头像数量                           | `number`           | `5`      |
-| size             | 头像尺寸，可选值为 mini/small/medium/large   | `string \| number` | `medium` |
-| shape            | 头像形状，可选值为 circle/square             | `string`           | `circle` |
-| gap              | 头像间距，负数表示重叠                       | `number`           | `-16`    |
-| direction        | 堆叠方向，left 表示左侧在上，right 表示右侧在上 | `string`        | `right`  |
-| border-color     | 头像边框颜色                                 | `string`           | `#fff`   |
-| border-width     | 头像边框宽度                                 | `string \| number` | `4rpx`   |
-| excess-color     | 超出数量文本颜色                             | `string`           | -        |
-| excess-background| 超出数量背景颜色                             | `string`           | -        |
-| custom-class     | 自定义类名                                   | `string`           | -        |
-| custom-style     | 自定义样式                                   | `string \| object` | -        |
+| 参数              | 说明                                            | 类型               | 默认值   |
+| ----------------- | ----------------------------------------------- | ------------------ | -------- |
+| max               | 最多显示的头像数量                              | `number`           | `5`      |
+| size              | 头像尺寸，可选值为 mini/small/medium/large      | `string \| number` | `medium` |
+| shape             | 头像形状，可选值为 circle/square                | `string`           | `circle` |
+| gap               | 头像间距，负数表示重叠                          | `number`           | `-16`    |
+| direction         | 堆叠方向，left 表示左侧在上，right 表示右侧在上 | `string`           | `right`  |
+| border-color      | 头像边框颜色                                    | `string`           | `#fff`   |
+| border-width      | 头像边框宽度                                    | `string \| number` | `4rpx`   |
+| excess-color      | 超出数量文本颜色                                | `string`           | -        |
+| excess-background | 超出数量背景颜色                                | `string`           | -        |
+| custom-class      | 自定义类名                                      | `string`           | -        |
+| custom-style      | 自定义样式                                      | `string \| object` | -        |
 
 ## Events
 

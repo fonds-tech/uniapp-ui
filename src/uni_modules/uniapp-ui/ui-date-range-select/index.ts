@@ -2,12 +2,12 @@ import type DateRangeSelect from "./ui-date-range-select.vue"
 import type { PropType, CSSProperties, ExtractPropTypes } from "vue"
 import type {
   PopupMode,
+  DatePickerCancelData,
+  DatePickerChangeData,
   DatePickerColumnType,
+  DatePickerConfirmData,
   DatePickerColumnFilter,
   DatePickerColumnFormatter,
-  DatePickerChangeData,
-  DatePickerCancelData,
-  DatePickerConfirmData,
 } from "../ui-date-picker"
 import { createProps } from "../hooks"
 import { truthProp, numericProp, makeStringProp, makeNumericProp } from "../utils/props"
@@ -277,4 +277,4 @@ export type DateRangeSelectProps = ExtractPropTypes<typeof dateRangeSelectProps>
 export type DateRangeSelectInstance = InstanceType<typeof DateRangeSelect>
 
 // 重新导出类型
-export type { DatePickerColumnType, DatePickerChangeData, DatePickerCancelData, DatePickerConfirmData }
+export type { DatePickerCancelData, DatePickerChangeData, DatePickerColumnType, DatePickerConfirmData }

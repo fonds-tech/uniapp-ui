@@ -274,61 +274,61 @@ function onSelect(data) {
 
 ## Props
 
-| 参数 | 说明 | 类型 | 默认值 |
-| --- | --- | --- | --- |
-| v-model:show | 是否显示日历（弹层模式） | `boolean` | `false` |
-| type | 选择类型，可选值为 `single` `multiple` `range` | `string` | `single` |
-| title | 日历标题 | `string` | `日期选择` |
-| min-date | 最小可选日期 | `number \| Date` | - |
-| max-date | 最大可选日期 | `number \| Date` | - |
-| default-date | 默认选中日期 | `number \| Date \| (number \| Date)[]` | - |
-| formatter | 日期格式化函数 | `(day: CalendarDay) => CalendarDay` | - |
-| show-confirm | 是否显示确认按钮 | `boolean` | `true` |
-| confirm-text | 确认按钮文字 | `string` | `确定` |
-| confirm-disabled-text | 确认按钮禁用时的文字 | `string` | `请选择日期` |
-| show-title | 是否显示标题 | `boolean` | `true` |
-| show-subtitle | 是否显示副标题（当前年月） | `boolean` | `true` |
-| first-day-of-week | 周起始日，0-6 代表周日到周六 | `number \| string` | `0` |
-| readonly | 是否只读 | `boolean` | `false` |
-| poppable | 是否以弹层形式展示 | `boolean` | `true` |
-| max-range | 范围选择模式下的最大可选天数 | `number` | - |
-| range-prompt | 超过最大可选天数时的提示文案 | `string` | - |
-| color | 主题色 | `string` | - |
-| show-mark | 是否显示月份背景水印 | `boolean` | `false` |
-| marked-dates | 需要标记的日期数组（YYYY-MM-DD 格式） | `string[]` | `[]` |
-| close-on-click-overlay | 点击遮罩是否关闭弹层 | `boolean` | `true` |
-| closeable | 是否显示关闭按钮 | `boolean` | `false` |
-| border-radius | 弹层圆角 | `number \| string` | `16rpx` |
-| z-index | 弹层层级 | `number \| string` | - |
-| safe-area-inset-bottom | 是否开启底部安全区 | `boolean` | `true` |
-| custom-style | 自定义样式 | `string \| CSSProperties` | - |
-| custom-class | 自定义类名 | `string` | - |
+| 参数                   | 说明                                           | 类型                                   | 默认值       |
+| ---------------------- | ---------------------------------------------- | -------------------------------------- | ------------ |
+| v-model:show           | 是否显示日历（弹层模式）                       | `boolean`                              | `false`      |
+| type                   | 选择类型，可选值为 `single` `multiple` `range` | `string`                               | `single`     |
+| title                  | 日历标题                                       | `string`                               | `日期选择`   |
+| min-date               | 最小可选日期                                   | `number \| Date`                       | -            |
+| max-date               | 最大可选日期                                   | `number \| Date`                       | -            |
+| default-date           | 默认选中日期                                   | `number \| Date \| (number \| Date)[]` | -            |
+| formatter              | 日期格式化函数                                 | `(day: CalendarDay) => CalendarDay`    | -            |
+| show-confirm           | 是否显示确认按钮                               | `boolean`                              | `true`       |
+| confirm-text           | 确认按钮文字                                   | `string`                               | `确定`       |
+| confirm-disabled-text  | 确认按钮禁用时的文字                           | `string`                               | `请选择日期` |
+| show-title             | 是否显示标题                                   | `boolean`                              | `true`       |
+| show-subtitle          | 是否显示副标题（当前年月）                     | `boolean`                              | `true`       |
+| first-day-of-week      | 周起始日，0-6 代表周日到周六                   | `number \| string`                     | `0`          |
+| readonly               | 是否只读                                       | `boolean`                              | `false`      |
+| poppable               | 是否以弹层形式展示                             | `boolean`                              | `true`       |
+| max-range              | 范围选择模式下的最大可选天数                   | `number`                               | -            |
+| range-prompt           | 超过最大可选天数时的提示文案                   | `string`                               | -            |
+| color                  | 主题色                                         | `string`                               | -            |
+| show-mark              | 是否显示月份背景水印                           | `boolean`                              | `false`      |
+| marked-dates           | 需要标记的日期数组（YYYY-MM-DD 格式）          | `string[]`                             | `[]`         |
+| close-on-click-overlay | 点击遮罩是否关闭弹层                           | `boolean`                              | `true`       |
+| closeable              | 是否显示关闭按钮                               | `boolean`                              | `false`      |
+| border-radius          | 弹层圆角                                       | `number \| string`                     | `16rpx`      |
+| z-index                | 弹层层级                                       | `number \| string`                     | -            |
+| safe-area-inset-bottom | 是否开启底部安全区                             | `boolean`                              | `true`       |
+| custom-style           | 自定义样式                                     | `string \| CSSProperties`              | -            |
+| custom-class           | 自定义类名                                     | `string`                               | -            |
 
 ## Events
 
-| 事件名 | 说明 | 回调参数 |
-| --- | --- | --- |
-| select | 选择日期时触发（未确认） | `data: CalendarSelectData` |
-| confirm | 确认选择时触发 | `data: CalendarConfirmData` |
-| month-change | 月份变化时触发 | `data: CalendarMonthChangeData` |
-| over-range | 超过最大可选天数时触发 | - |
-| open | 打开弹层时触发 | - |
-| opened | 弹层打开完成时触发 | - |
-| close | 关闭弹层时触发 | - |
-| closed | 弹层关闭完成时触发 | - |
-| click-overlay | 点击遮罩时触发 | - |
+| 事件名        | 说明                     | 回调参数                        |
+| ------------- | ------------------------ | ------------------------------- |
+| select        | 选择日期时触发（未确认） | `data: CalendarSelectData`      |
+| confirm       | 确认选择时触发           | `data: CalendarConfirmData`     |
+| month-change  | 月份变化时触发           | `data: CalendarMonthChangeData` |
+| over-range    | 超过最大可选天数时触发   | -                               |
+| open          | 打开弹层时触发           | -                               |
+| opened        | 弹层打开完成时触发       | -                               |
+| close         | 关闭弹层时触发           | -                               |
+| closed        | 弹层关闭完成时触发       | -                               |
+| click-overlay | 点击遮罩时触发           | -                               |
 
 ## Methods
 
 通过 ref 可以调用以下方法：
 
-| 方法名 | 说明 | 参数 | 返回值 |
-| --- | --- | --- | --- |
-| reset | 重置选择 | - | - |
-| goToToday | 跳转到今天 | - | - |
-| goToDate | 跳转到指定日期 | `date: Date \| string` | - |
-| selectDate | 选择指定日期 | `date: string` | - |
-| clearSelection | 清除选择 | - | - |
+| 方法名         | 说明           | 参数                   | 返回值 |
+| -------------- | -------------- | ---------------------- | ------ |
+| reset          | 重置选择       | -                      | -      |
+| goToToday      | 跳转到今天     | -                      | -      |
+| goToDate       | 跳转到指定日期 | `date: Date \| string` | -      |
+| selectDate     | 选择指定日期   | `date: string`         | -      |
+| clearSelection | 清除选择       | -                      | -      |
 
 ## 类型定义
 

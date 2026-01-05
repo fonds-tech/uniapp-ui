@@ -48,9 +48,8 @@
     </demo-section>
 
     <!-- 新增：按钮样式 -->
-    <demo-section title="按钮样式">
-      <demo-block direction="column" :gap="16">
-        <text class="demo-text">自定义按钮大小、颜色和粗细</text>
+    <demo-section title="按钮样式" extra="大小/颜色/粗细">
+      <demo-block direction="column">
         <ui-search v-model="value7b" action-text="搜索" action-size="30rpx" action-color="#1989fa" action-weight="600" placeholder="自定义按钮样式" />
       </demo-block>
     </demo-section>
@@ -65,23 +64,17 @@
     </demo-section>
 
     <!-- 新增：图标样式 -->
-    <demo-section title="图标样式">
-      <demo-block direction="column" :gap="16">
-        <text class="demo-text">自定义图标大小、颜色和粗细</text>
+    <demo-section title="图标样式" extra="大小/颜色/粗细">
+      <demo-block direction="column">
         <ui-search v-model="value9" icon-size="40rpx" icon-color="#1989fa" icon-weight="600" placeholder="自定义图标样式" />
       </demo-block>
     </demo-section>
 
     <!-- 新增：输入框高度 -->
-    <demo-section title="输入框高度">
+    <demo-section title="输入框高度" :extra="`${currentHeight}rpx`">
       <demo-block direction="column" :gap="16">
-        <text class="demo-text">当前高度: {{ currentHeight }}</text>
-        <demo-block :cols="3" :gap="16">
-          <ui-button size="small" @click="currentHeight = '56rpx'">56rpx</ui-button>
-          <ui-button size="small" @click="currentHeight = '68rpx'">68rpx</ui-button>
-          <ui-button size="small" @click="currentHeight = '80rpx'">80rpx</ui-button>
-        </demo-block>
-        <ui-search v-model="value10" :height="currentHeight" placeholder="自定义高度" />
+        <ui-search v-model="value10" :height="`${currentHeight}rpx`" placeholder="自定义高度" />
+        <ui-slider v-model="currentHeight" :min="48" :max="120" :step="4" />
       </demo-block>
     </demo-section>
 
@@ -134,9 +127,8 @@
     </demo-section>
 
     <!-- 新增：最大输入长度 -->
-    <demo-section title="最大输入长度">
-      <demo-block direction="column" :gap="16">
-        <text class="demo-text">最多输入 10 个字符</text>
+    <demo-section title="最大输入长度" extra="最多10字符">
+      <demo-block direction="column">
         <ui-search v-model="value17" :maxlength="10" placeholder="最多输入10个字符" />
       </demo-block>
     </demo-section>
@@ -144,22 +136,22 @@
     <!-- 新增：自动聚焦 -->
     <demo-section title="自动聚焦">
       <demo-block direction="column" :gap="16">
+        <ui-search v-model="value18" :focus="autoFocus" placeholder="自动聚焦" />
         <demo-block align="center" :gap="16">
           <ui-switch v-model="autoFocus" />
           <text class="switch-label">{{ autoFocus ? "开启自动聚焦" : "关闭自动聚焦" }}</text>
         </demo-block>
-        <ui-search v-model="value18" :focus="autoFocus" placeholder="自动聚焦" />
       </demo-block>
     </demo-section>
 
     <!-- 新增：清除按钮 -->
     <demo-section title="清除按钮">
       <demo-block direction="column" :gap="16">
+        <ui-search v-model="value19" :clearable="clearable" placeholder="输入内容后显示清除按钮" />
         <demo-block align="center" :gap="16">
           <ui-switch v-model="clearable" />
           <text class="switch-label">{{ clearable ? "显示清除按钮" : "隐藏清除按钮" }}</text>
         </demo-block>
-        <ui-search v-model="value19" :clearabled="clearable" placeholder="输入内容后显示清除按钮" />
       </demo-block>
     </demo-section>
 
@@ -188,70 +180,6 @@
           <view v-for="(log, index) in eventLogs" :key="index" class="event-item">
             <text class="event-text">{{ log }}</text>
           </view>
-        </view>
-      </demo-block>
-    </demo-section>
-
-    <!-- 新增：自定义样式 -->
-    <demo-section title="自定义样式">
-      <demo-block direction="column" :gap="16">
-        <ui-search v-model="value21" custom-class="my-search" placeholder="自定义类名" />
-        <ui-search v-model="value21b" :custom-style="{ boxShadow: '0 4rpx 16rpx rgba(0,0,0,0.1)', borderRadius: '16rpx' }" placeholder="自定义样式" />
-      </demo-block>
-    </demo-section>
-
-    <!-- 新增：输入框样式 -->
-    <demo-section title="输入框样式">
-      <demo-block direction="column" :gap="16">
-        <ui-search v-model="value22" :input-style="{ background: '#fff', borderRadius: '8rpx', padding: '0 16rpx' }" background="#f5f5f5" placeholder="自定义输入框样式" />
-      </demo-block>
-    </demo-section>
-
-    <!-- 综合示例 - 商品搜索 -->
-    <demo-section title="综合示例 - 商品搜索">
-      <demo-block direction="column" :gap="16">
-        <view class="search-header">
-          <ui-search v-model="productSearch" round background="#fff" :action="false" placeholder="搜索商品" @search="onProductSearch" />
-          <ui-button size="small" type="primary" @click="onProductSearch(productSearch)">搜索</ui-button>
-        </view>
-        <view v-if="searchHistory.length" class="search-history">
-          <view class="history-header">
-            <text class="history-title">搜索历史</text>
-            <text class="history-clear" @click="clearHistory">清空</text>
-          </view>
-          <view class="history-tags">
-            <ui-tag v-for="(item, index) in searchHistory" :key="index" size="medium" @click="productSearch = item">{{ item }}</ui-tag>
-          </view>
-        </view>
-      </demo-block>
-    </demo-section>
-
-    <!-- 综合示例 - 位置搜索 -->
-    <demo-section title="综合示例 - 位置搜索">
-      <demo-block direction="column">
-        <view class="location-search">
-          <ui-icon name="location" size="36rpx" color="#1989fa" />
-          <ui-search v-model="locationSearch" icon="" round :action="false" background="transparent" placeholder="搜索地点" @search="onLocationSearch" />
-          <ui-icon name="scan" size="36rpx" color="#666" @click="onScan" />
-        </view>
-      </demo-block>
-    </demo-section>
-
-    <!-- 综合示例 - 筛选搜索 -->
-    <demo-section title="综合示例 - 筛选搜索">
-      <demo-block direction="column" :gap="16">
-        <view class="filter-search">
-          <ui-search v-model="filterSearch" :action="false" round height="64rpx" placeholder="搜索" @search="onFilterSearch" />
-          <view class="filter-btn" @click="showFilter = !showFilter">
-            <ui-icon name="filter-o" size="32rpx" />
-            <text class="filter-text">筛选</text>
-          </view>
-        </view>
-        <view v-if="showFilter" class="filter-panel">
-          <text class="filter-label">排序方式:</text>
-          <demo-block :cols="4" :gap="8">
-            <ui-button v-for="item in sortOptions" :key="item" size="small" :type="currentSort === item ? 'primary' : 'default'" @click="currentSort = item">{{ item }}</ui-button>
-          </demo-block>
         </view>
       </demo-block>
     </demo-section>
@@ -289,7 +217,7 @@ const value9 = ref("")
 
 // 输入框高度
 const value10 = ref("")
-const currentHeight = ref("68rpx")
+const currentHeight = ref(72)
 
 // 字体大小
 const value11 = ref("")
@@ -368,53 +296,8 @@ function onAction() {
   addEventLog("触发 action 事件 - 点击搜索按钮")
 }
 
-// 自定义样式
-const value21 = ref("")
-const value21b = ref("")
-const value22 = ref("")
-
-function onSearch(value: string) {
-  toast.success(`搜索: ${value}`)
-}
-
-// 综合示例 - 商品搜索
-const productSearch = ref("")
-const searchHistory = ref(["手机", "电脑", "耳机", "键盘"])
-
-function onProductSearch(value: string) {
-  if (value && !searchHistory.value.includes(value)) {
-    searchHistory.value.unshift(value)
-    if (searchHistory.value.length > 8) {
-      searchHistory.value.pop()
-    }
-  }
-  toast.success(`搜索商品: ${value}`)
-}
-
-function clearHistory() {
-  searchHistory.value = []
-  toast.text("已清空搜索历史")
-}
-
-// 综合示例 - 位置搜索
-const locationSearch = ref("")
-
-function onLocationSearch(value: string) {
-  toast.text(`搜索地点: ${value}`)
-}
-
-function onScan() {
-  toast.text("打开扫描")
-}
-
-// 综合示例 - 筛选搜索
-const filterSearch = ref("")
-const showFilter = ref(false)
-const currentSort = ref("综合")
-const sortOptions = ["综合", "销量", "价格", "评分"]
-
-function onFilterSearch(value: string) {
-  toast.text(`搜索: ${value}, 排序: ${currentSort.value}`)
+function onSearch() {
+  // toast.success(`搜索: ${value}`)
 }
 </script>
 
@@ -450,86 +333,5 @@ function onFilterSearch(value: string) {
 .event-text {
   color: var(--ui-color-text-secondary);
   font-size: 22rpx;
-}
-
-.search-header {
-  gap: 16rpx;
-  display: flex;
-  align-items: center;
-}
-
-.search-history {
-  margin-top: 16rpx;
-}
-
-.history-header {
-  display: flex;
-  align-items: center;
-  margin-bottom: 16rpx;
-  justify-content: space-between;
-}
-
-.history-title {
-  color: var(--ui-color-text-main);
-  font-size: 28rpx;
-  font-weight: 500;
-}
-
-.history-clear {
-  color: var(--ui-color-text-secondary);
-  font-size: 24rpx;
-}
-
-.history-tags {
-  gap: 16rpx;
-  display: flex;
-  flex-wrap: wrap;
-}
-
-.location-search {
-  gap: 16rpx;
-  display: flex;
-  padding: 16rpx 24rpx;
-  background: #f5f5f5;
-  align-items: center;
-  border-radius: 16rpx;
-}
-
-.filter-search {
-  gap: 16rpx;
-  display: flex;
-  align-items: center;
-}
-
-.filter-btn {
-  gap: 8rpx;
-  display: flex;
-  padding: 12rpx 24rpx;
-  background: #f5f5f5;
-  align-items: center;
-  border-radius: 32rpx;
-}
-
-.filter-text {
-  color: var(--ui-color-text-main);
-  font-size: 26rpx;
-}
-
-.filter-panel {
-  padding: 24rpx;
-  background: #f7f8fa;
-  border-radius: 12rpx;
-}
-
-.filter-label {
-  color: var(--ui-color-text-secondary);
-  display: block;
-  font-size: 26rpx;
-  margin-bottom: 16rpx;
-}
-
-:deep(.my-search) {
-  background: linear-gradient(135deg, #e8f4ff 0%, #f0f9ff 100%);
-  border-radius: 16rpx;
 }
 </style>

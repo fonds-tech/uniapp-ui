@@ -27,7 +27,11 @@
       "mcp__serena__read_memory",
       "Bash(mkdir:*)",
       "mcp__serena__find_symbol",
-      "mcp__serena__think_about_collected_information"
+      "mcp__serena__think_about_collected_information",
+      "mcp__ddg-search__search",
+      "mcp__ddg-search__fetch_content",
+      "WebFetch(domain:m3.material.io)",
+      "mcp__serena__think_about_whether_you_are_done"
     ],
     "deny": [],
     "ask": []

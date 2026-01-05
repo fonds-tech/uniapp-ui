@@ -2,12 +2,12 @@ import type DateSelect from "./ui-date-select.vue"
 import type { PropType, CSSProperties, ExtractPropTypes } from "vue"
 import type {
   PopupMode,
+  DatePickerCancelData,
+  DatePickerChangeData,
   DatePickerColumnType,
+  DatePickerConfirmData,
   DatePickerColumnFilter,
   DatePickerColumnFormatter,
-  DatePickerChangeData,
-  DatePickerCancelData,
-  DatePickerConfirmData,
 } from "../ui-date-picker"
 import { createProps } from "../hooks"
 import { truthProp, numericProp, makeStringProp, makeNumericProp } from "../utils/props"
@@ -237,4 +237,4 @@ export type DateSelectProps = ExtractPropTypes<typeof dateSelectProps>
 export type DateSelectInstance = InstanceType<typeof DateSelect>
 
 // 重新导出 DatePicker 类型，方便外部使用
-export type { DatePickerColumnType, DatePickerChangeData, DatePickerCancelData, DatePickerConfirmData }
+export type { DatePickerCancelData, DatePickerChangeData, DatePickerColumnType, DatePickerConfirmData }

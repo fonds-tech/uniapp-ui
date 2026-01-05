@@ -177,63 +177,63 @@ const formRules = {
 
 ## Props
 
-| 参数                   | 说明                 | 类型                                                                   | 默认值                     |
-| ---------------------- | -------------------- | ---------------------------------------------------------------------- | -------------------------- |
-| v-model                | 绑定日期区间值       | `[string, string] \| []`                                               | `[]`                       |
-| columns                | 列类型               | `('year' \| 'month' \| 'day' \| 'hour' \| 'minute' \| 'second')[]`     | `['year', 'month', 'day']` |
-| format                 | 日期格式             | `string`                                                               | `YYYY-MM-DD`               |
-| min-date               | 最小日期             | `string \| Date \| number`                                             | 当前日期前 10 年           |
-| max-date               | 最大日期             | `string \| Date \| number`                                             | 当前日期后 10 年           |
-| start-placeholder      | 开始日期占位文案     | `string`                                                               | `开始日期`                 |
-| end-placeholder        | 结束日期占位文案     | `string`                                                               | `结束日期`                 |
-| separator              | 分隔符               | `string`                                                               | `至`                       |
-| disabled               | 是否禁用             | `boolean`                                                              | `false`                    |
-| readonly               | 是否只读             | `boolean`                                                              | `false`                    |
-| display-formatter      | 展示文案格式化函数   | `(value: string, type: 'start' \| 'end') => string`                    | -                          |
-| mode                   | 弹窗位置             | `bottom \| top \| left \| right \| center`                             | `bottom`                   |
-| border-radius          | 圆角大小             | `string \| number`                                                     | `16rpx`                    |
-| close-on-click-overlay | 点击遮罩是否关闭     | `boolean`                                                              | `true`                     |
-| overlay                | 是否显示遮罩         | `boolean`                                                              | `true`                     |
-| duration               | 动画时长             | `string \| number`                                                     | `300`                      |
-| z-index                | 弹窗层级             | `number`                                                               | -                          |
-| background             | 背景色               | `string`                                                               | -                          |
-| safe-area-inset-bottom | 底部安全区           | `boolean`                                                              | `true`                     |
-| show-header            | 是否显示头部         | `boolean`                                                              | `true`                     |
-| title                  | 标题                 | `string`                                                               | -                          |
-| cancel-text            | 取消按钮文字         | `string`                                                               | `取消`                     |
-| confirm-text           | 确认按钮文字         | `string`                                                               | `确认`                     |
-| column-height          | 选项高度             | `string \| number`                                                     | `88rpx`                    |
-| visible-column-num     | 可见选项数           | `string \| number`                                                     | `5`                        |
-| column-size            | 选项文字大小         | `string \| number`                                                     | -                          |
-| column-color           | 选项文字颜色         | `string`                                                               | -                          |
-| column-weight          | 选项文字字重         | `string \| number`                                                     | -                          |
-| active-column-size     | 激活选项文字大小     | `string \| number`                                                     | -                          |
-| active-column-color    | 激活选项文字颜色     | `string`                                                               | -                          |
-| active-column-weight   | 激活选项文字字重     | `string \| number`                                                     | -                          |
-| right-icon             | 右侧图标             | `string`                                                               | `right`                    |
-| right-icon-size        | 右侧图标大小         | `string \| number`                                                     | -                          |
-| right-icon-color       | 右侧图标颜色         | `string`                                                               | -                          |
-| right-icon-weight      | 右侧图标粗细         | `string \| number`                                                     | -                          |
-| text-color             | 文案颜色             | `string`                                                               | -                          |
-| placeholder-color      | 占位文案颜色         | `string`                                                               | -                          |
-| text-size              | 文案大小             | `string \| number`                                                     | -                          |
-| text-weight            | 文案字重             | `string \| number`                                                     | -                          |
-| separator-color        | 分隔符颜色           | `string`                                                               | -                          |
-| custom-class           | 自定义类名           | `string`                                                               | -                          |
-| custom-style           | 自定义样式           | `string \| object`                                                     | -                          |
+| 参数                   | 说明               | 类型                                                               | 默认值                     |
+| ---------------------- | ------------------ | ------------------------------------------------------------------ | -------------------------- |
+| v-model                | 绑定日期区间值     | `[string, string] \| []`                                           | `[]`                       |
+| columns                | 列类型             | `('year' \| 'month' \| 'day' \| 'hour' \| 'minute' \| 'second')[]` | `['year', 'month', 'day']` |
+| format                 | 日期格式           | `string`                                                           | `YYYY-MM-DD`               |
+| min-date               | 最小日期           | `string \| Date \| number`                                         | 当前日期前 10 年           |
+| max-date               | 最大日期           | `string \| Date \| number`                                         | 当前日期后 10 年           |
+| start-placeholder      | 开始日期占位文案   | `string`                                                           | `开始日期`                 |
+| end-placeholder        | 结束日期占位文案   | `string`                                                           | `结束日期`                 |
+| separator              | 分隔符             | `string`                                                           | `至`                       |
+| disabled               | 是否禁用           | `boolean`                                                          | `false`                    |
+| readonly               | 是否只读           | `boolean`                                                          | `false`                    |
+| display-formatter      | 展示文案格式化函数 | `(value: string, type: 'start' \| 'end') => string`                | -                          |
+| mode                   | 弹窗位置           | `bottom \| top \| left \| right \| center`                         | `bottom`                   |
+| border-radius          | 圆角大小           | `string \| number`                                                 | `16rpx`                    |
+| close-on-click-overlay | 点击遮罩是否关闭   | `boolean`                                                          | `true`                     |
+| overlay                | 是否显示遮罩       | `boolean`                                                          | `true`                     |
+| duration               | 动画时长           | `string \| number`                                                 | `300`                      |
+| z-index                | 弹窗层级           | `number`                                                           | -                          |
+| background             | 背景色             | `string`                                                           | -                          |
+| safe-area-inset-bottom | 底部安全区         | `boolean`                                                          | `true`                     |
+| show-header            | 是否显示头部       | `boolean`                                                          | `true`                     |
+| title                  | 标题               | `string`                                                           | -                          |
+| cancel-text            | 取消按钮文字       | `string`                                                           | `取消`                     |
+| confirm-text           | 确认按钮文字       | `string`                                                           | `确认`                     |
+| column-height          | 选项高度           | `string \| number`                                                 | `88rpx`                    |
+| visible-column-num     | 可见选项数         | `string \| number`                                                 | `5`                        |
+| column-size            | 选项文字大小       | `string \| number`                                                 | -                          |
+| column-color           | 选项文字颜色       | `string`                                                           | -                          |
+| column-weight          | 选项文字字重       | `string \| number`                                                 | -                          |
+| active-column-size     | 激活选项文字大小   | `string \| number`                                                 | -                          |
+| active-column-color    | 激活选项文字颜色   | `string`                                                           | -                          |
+| active-column-weight   | 激活选项文字字重   | `string \| number`                                                 | -                          |
+| right-icon             | 右侧图标           | `string`                                                           | `right`                    |
+| right-icon-size        | 右侧图标大小       | `string \| number`                                                 | -                          |
+| right-icon-color       | 右侧图标颜色       | `string`                                                           | -                          |
+| right-icon-weight      | 右侧图标粗细       | `string \| number`                                                 | -                          |
+| text-color             | 文案颜色           | `string`                                                           | -                          |
+| placeholder-color      | 占位文案颜色       | `string`                                                           | -                          |
+| text-size              | 文案大小           | `string \| number`                                                 | -                          |
+| text-weight            | 文案字重           | `string \| number`                                                 | -                          |
+| separator-color        | 分隔符颜色         | `string`                                                           | -                          |
+| custom-class           | 自定义类名         | `string`                                                           | -                          |
+| custom-style           | 自定义样式         | `string \| object`                                                 | -                          |
 
 ## Events
 
-| 事件名  | 说明                   | 回调参数                            |
-| ------- | ---------------------- | ----------------------------------- |
-| click   | 点击选择器时触发       | `type: 'start' \| 'end'`            |
-| open    | 打开弹窗时触发         | -                                   |
-| opened  | 打开弹窗动画结束时触发 | -                                   |
-| close   | 关闭弹窗时触发         | `action: string`                    |
-| closed  | 关闭弹窗动画结束时触发 | `action: string`                    |
-| change  | 选项变化时触发         | `data: DateRangeSelectChangeData`   |
-| cancel  | 点击取消按钮时触发     | `data: DateRangeSelectCancelData`   |
-| confirm | 点击确认按钮时触发     | `data: DateRangeSelectConfirmData`  |
+| 事件名  | 说明                   | 回调参数                           |
+| ------- | ---------------------- | ---------------------------------- |
+| click   | 点击选择器时触发       | `type: 'start' \| 'end'`           |
+| open    | 打开弹窗时触发         | -                                  |
+| opened  | 打开弹窗动画结束时触发 | -                                  |
+| close   | 关闭弹窗时触发         | `action: string`                   |
+| closed  | 关闭弹窗动画结束时触发 | `action: string`                   |
+| change  | 选项变化时触发         | `data: DateRangeSelectChangeData`  |
+| cancel  | 点击取消按钮时触发     | `data: DateRangeSelectCancelData`  |
+| confirm | 点击确认按钮时触发     | `data: DateRangeSelectConfirmData` |
 
 ## Slots
 
@@ -251,15 +251,15 @@ const formRules = {
 
 ## Methods
 
-| 方法名           | 说明             | 参数                         | 返回值               |
-| ---------------- | ---------------- | ---------------------------- | -------------------- |
-| open             | 打开弹窗         | `type?: 'start' \| 'end'`    | -                    |
-| close            | 关闭弹窗         | -                            | -                    |
-| confirm          | 确认选择         | -                            | -                    |
-| cancel           | 取消选择         | -                            | -                    |
-| getRange         | 获取日期区间     | -                            | `[string, string]`   |
-| setActiveType    | 设置当前选择类型 | `type: 'start' \| 'end'`     | -                    |
-| getActiveType    | 获取当前选择类型 | -                            | `'start' \| 'end'`   |
+| 方法名        | 说明             | 参数                      | 返回值             |
+| ------------- | ---------------- | ------------------------- | ------------------ |
+| open          | 打开弹窗         | `type?: 'start' \| 'end'` | -                  |
+| close         | 关闭弹窗         | -                         | -                  |
+| confirm       | 确认选择         | -                         | -                  |
+| cancel        | 取消选择         | -                         | -                  |
+| getRange      | 获取日期区间     | -                         | `[string, string]` |
+| setActiveType | 设置当前选择类型 | `type: 'start' \| 'end'`  | -                  |
+| getActiveType | 获取当前选择类型 | -                         | `'start' \| 'end'` |
 
 ## 类型定义
 

@@ -291,42 +291,42 @@ function closeCell() {
 
 ### Props
 
-| 属性名          | 说明                                              | 类型                                                    | 默认值  |
-| --------------- | ------------------------------------------------- | ------------------------------------------------------- | ------- |
-| name            | 标识符，用于在事件中区分不同的滑动单元格          | `string \| number`                                      | -       |
-| disabled        | 是否禁用滑动                                      | `boolean`                                               | `false` |
-| left-width      | 左侧滑动区域宽度，单位为 px                       | `number \| string`                                      | `0`     |
-| right-width     | 右侧滑动区域宽度，单位为 px                       | `number \| string`                                      | `0`     |
-| before-close    | 关闭前的回调函数，返回 false 可阻止关闭           | `(params: SwipeCellBeforeCloseParams) => boolean \| void \| Promise<boolean \| void>` | -       |
-| stop-propagation | 是否阻止滑动事件冒泡                              | `boolean`                                               | `true`  |
-| threshold       | 打开时触发的阈值比例，超过此比例自动打开，范围 0-1 | `number \| string`                                      | `0.3`   |
-| custom-class    | 自定义类名                                        | `string`                                                | -       |
-| custom-style    | 自定义样式                                        | `string \| CSSProperties`                               | -       |
+| 属性名           | 说明                                               | 类型                                                                                  | 默认值  |
+| ---------------- | -------------------------------------------------- | ------------------------------------------------------------------------------------- | ------- |
+| name             | 标识符，用于在事件中区分不同的滑动单元格           | `string \| number`                                                                    | -       |
+| disabled         | 是否禁用滑动                                       | `boolean`                                                                             | `false` |
+| left-width       | 左侧滑动区域宽度，单位为 px                        | `number \| string`                                                                    | `0`     |
+| right-width      | 右侧滑动区域宽度，单位为 px                        | `number \| string`                                                                    | `0`     |
+| before-close     | 关闭前的回调函数，返回 false 可阻止关闭            | `(params: SwipeCellBeforeCloseParams) => boolean \| void \| Promise<boolean \| void>` | -       |
+| stop-propagation | 是否阻止滑动事件冒泡                               | `boolean`                                                                             | `true`  |
+| threshold        | 打开时触发的阈值比例，超过此比例自动打开，范围 0-1 | `number \| string`                                                                    | `0.3`   |
+| custom-class     | 自定义类名                                         | `string`                                                                              | -       |
+| custom-style     | 自定义样式                                         | `string \| CSSProperties`                                                             | -       |
 
 ### Events
 
-| 事件名 | 说明         | 回调参数                                              |
-| ------ | ------------ | ----------------------------------------------------- |
-| open   | 打开时触发   | `{ name: string \| number, position: SwipeCellPosition }` |
-| close  | 关闭时触发   | `{ name: string \| number, position: SwipeCellPosition }` |
-| click  | 点击时触发   | `position: 'left' \| 'right' \| 'cell' \| 'outside'`  |
+| 事件名 | 说明       | 回调参数                                                  |
+| ------ | ---------- | --------------------------------------------------------- |
+| open   | 打开时触发 | `{ name: string \| number, position: SwipeCellPosition }` |
+| close  | 关闭时触发 | `{ name: string \| number, position: SwipeCellPosition }` |
+| click  | 点击时触发 | `position: 'left' \| 'right' \| 'cell' \| 'outside'`      |
 
 ### Slots
 
-| 名称    | 说明           |
-| ------- | -------------- |
-| default | 主内容区域     |
-| left    | 左侧操作区域   |
-| right   | 右侧操作区域   |
+| 名称    | 说明         |
+| ------- | ------------ |
+| default | 主内容区域   |
+| left    | 左侧操作区域 |
+| right   | 右侧操作区域 |
 
 ### Methods
 
 通过 ref 可以获取到 SwipeCell 实例并调用实例方法。
 
-| 方法名 | 说明                          | 参数                              | 返回值 |
-| ------ | ----------------------------- | --------------------------------- | ------ |
-| open   | 打开滑动单元格                | `position: 'left' \| 'right'`     | -      |
-| close  | 关闭滑动单元格                | -                                 | -      |
+| 方法名 | 说明           | 参数                          | 返回值 |
+| ------ | -------------- | ----------------------------- | ------ |
+| open   | 打开滑动单元格 | `position: 'left' \| 'right'` | -      |
+| close  | 关闭滑动单元格 | -                             | -      |
 
 ### 类型定义
 
@@ -355,9 +355,9 @@ type SwipeCellInstance = InstanceType<typeof SwipeCell>
 
 组件使用以下 CSS 变量，可通过修改变量值来自定义样式。
 
-| 变量名                    | 说明           | 默认值  |
-| ------------------------- | -------------- | ------- |
-| --ui-color-background     | 背景颜色       | `#fff`  |
+| 变量名                | 说明     | 默认值 |
+| --------------------- | -------- | ------ |
+| --ui-color-background | 背景颜色 | `#fff` |
 
 ## 注意事项
 

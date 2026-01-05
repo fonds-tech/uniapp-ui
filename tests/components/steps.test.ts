@@ -600,7 +600,7 @@ describe("uiStep 组件", () => {
   })
 })
 
-describe("Steps 和 Step 组件集成测试", () => {
+describe("steps 和 Step 组件集成测试", () => {
   beforeEach(() => {
     vi.useFakeTimers()
   })
@@ -610,7 +610,7 @@ describe("Steps 和 Step 组件集成测试", () => {
   })
 
   describe("父子组件通信", () => {
-    it("Steps 应该正确渲染多个 Step 子组件", async () => {
+    it("steps 应该正确渲染多个 Step 子组件", async () => {
       const wrapper = mountStepsWithChildren(
         { active: 1 },
         [
