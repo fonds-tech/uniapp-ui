@@ -85,6 +85,7 @@ const draggingIndex = ref<number>(-1) // 当前拖动的滑块索引，-1 表示
 const startValue = ref<SliderValue>(0) // 开始拖动时的值
 const startPosition = ref({ x: 0, y: 0 }) // 开始拖动时的触摸位置
 const trackRect = ref<UniApp.NodeInfo>({}) // 轨道区域信息
+const lastTouchEndTime = ref(0) // 上次触摸结束时间，用于防止 click 与 touch 事件冲突
 
 // 内部值状态（用于拖动过程中的实时更新）
 const internalValue = ref<SliderValue>(useProps.modelValue)
@@ -151,20 +152,25 @@ const rootStyle = computed(() => {
   return useStyle({ ...style, ...useStyle(useProps.customStyle) })
 })
 
+// 按钮半径（像素）
+const halfButtonSize = computed(() => useUnitToPx(useProps.buttonSize) / 2)
+
 // 轨道容器样式
 const trackStyle = computed(() => {
   const style: CSSProperties = {}
   const barHeight = useUnit(useProps.barHeight)
-  const buttonSize = useUnitToPx(useProps.buttonSize)
+  const halfButton = halfButtonSize.value
 
   if (useProps.vertical) {
     style.width = barHeight
-    style.paddingLeft = `${buttonSize / 2}px`
-    style.paddingRight = `${buttonSize / 2}px`
+    // 左右 padding 容纳按钮垂直居中（按钮比轨道高度大）
+    style.paddingLeft = `${halfButton}px`
+    style.paddingRight = `${halfButton}px`
   } else {
     style.height = barHeight
-    style.paddingTop = `${buttonSize / 2}px`
-    style.paddingBottom = `${buttonSize / 2}px`
+    // 上下 padding 容纳按钮垂直居中（按钮比轨道高度大）
+    style.paddingTop = `${halfButton}px`
+    style.paddingBottom = `${halfButton}px`
   }
 
   return useStyle(style)
@@ -180,30 +186,36 @@ const trackBgStyle = computed(() => {
 })
 
 // 激活轨道样式
+// 激活轨道需要与按钮位置对齐，所以也要考虑按钮半径
 const activeStyle = computed(() => {
   const style: CSSProperties = {}
   const range = useProps.max - useProps.min
+  const halfButton = halfButtonSize.value
 
   if (useProps.range) {
     // 范围模式：从左值到右值
-    const leftPercent = ((rangeValue.value[0] - useProps.min) / range) * 100
-    const rightPercent = ((rangeValue.value[1] - useProps.min) / range) * 100
+    const leftRatio = (rangeValue.value[0] - useProps.min) / range
+    const rightRatio = (rangeValue.value[1] - useProps.min) / range
 
     if (useProps.vertical) {
-      style.bottom = `${leftPercent}%`
-      style.height = `${rightPercent - leftPercent}%`
+      // 起始位置 = halfButton + (可用高度 * leftRatio)
+      style.bottom = `calc(${halfButton}px + (100% - ${halfButton * 2}px) * ${leftRatio})`
+      // 高度 = 可用高度 * (rightRatio - leftRatio)
+      style.height = `calc((100% - ${halfButton * 2}px) * ${rightRatio - leftRatio})`
     } else {
-      style.left = `${leftPercent}%`
-      style.width = `${rightPercent - leftPercent}%`
+      style.left = `calc(${halfButton}px + (100% - ${halfButton * 2}px) * ${leftRatio})`
+      style.width = `calc((100% - ${halfButton * 2}px) * ${rightRatio - leftRatio})`
     }
   } else {
     // 单值模式：从起点到当前值
-    const percent = ((currentValue.value - useProps.min) / range) * 100
+    const ratio = (currentValue.value - useProps.min) / range
 
     if (useProps.vertical) {
-      style.height = `${percent}%`
+      style.bottom = `${halfButton}px`
+      style.height = `calc((100% - ${halfButton * 2}px) * ${ratio})`
     } else {
-      style.width = `${percent}%`
+      style.left = `${halfButton}px`
+      style.width = `calc((100% - ${halfButton * 2}px) * ${ratio})`
     }
   }
 
@@ -229,10 +241,12 @@ const buttonStyle = computed(() => {
 })
 
 // 按钮包装器样式（用于定位）
+// 按钮可移动范围：从 半径 到 100%-半径，确保按钮不超出轨道
 const buttonWrapperStyle = computed(() => {
   return (index: number) => {
     const style: CSSProperties = {}
     const range = useProps.max - useProps.min
+    const halfButton = halfButtonSize.value
     let value: number
 
     if (useProps.range) {
@@ -241,12 +255,15 @@ const buttonWrapperStyle = computed(() => {
       value = currentValue.value
     }
 
-    const percent = ((value - useProps.min) / range) * 100
+    // 百分比 0~1
+    const ratio = (value - useProps.min) / range
 
     if (useProps.vertical) {
-      style.bottom = `${percent}%`
+      // 垂直模式：从 halfButton 到 100% - halfButton
+      style.bottom = `calc(${halfButton}px + (100% - ${halfButton * 2}px) * ${ratio})`
     } else {
-      style.left = `${percent}%`
+      // 水平模式：从 halfButton 到 100% - halfButton
+      style.left = `calc(${halfButton}px + (100% - ${halfButton * 2}px) * ${ratio})`
     }
 
     return useStyle(style)
@@ -254,16 +271,18 @@ const buttonWrapperStyle = computed(() => {
 })
 
 // 刻度样式
+// 刻度位置与按钮位置计算方式一致
 const markStyle = computed(() => {
   return (mark: { value: number }) => {
     const style: CSSProperties = {}
     const range = useProps.max - useProps.min
-    const percent = ((mark.value - useProps.min) / range) * 100
+    const halfButton = halfButtonSize.value
+    const ratio = (mark.value - useProps.min) / range
 
     if (useProps.vertical) {
-      style.bottom = `${percent}%`
+      style.bottom = `calc(${halfButton}px + (100% - ${halfButton * 2}px) * ${ratio})`
     } else {
-      style.left = `${percent}%`
+      style.left = `calc(${halfButton}px + (100% - ${halfButton * 2}px) * ${ratio})`
     }
 
     return useStyle(style)
@@ -321,22 +340,18 @@ async function updateTrackRect() {
 }
 
 // 轨道点击事件
-async function onTrackClick(event: TouchEvent | MouseEvent) {
+async function onTrackClick(event: MouseEvent) {
   if (useProps.disabled || useProps.readonly) return
+
+  // 防止 touch 结束后触发的合成 click 事件导致值跳变
+  // 在触摸设备上，touchend 后通常会触发一个合成的 click 事件
+  if (Date.now() - lastTouchEndTime.value < 300) return
 
   await updateTrackRect()
 
-  // 获取点击位置
-  let clientX: number
-  let clientY: number
-
-  if ("touches" in event) {
-    clientX = event.touches[0].clientX
-    clientY = event.touches[0].clientY
-  } else {
-    clientX = (event as MouseEvent).clientX
-    clientY = (event as MouseEvent).clientY
-  }
+  // 获取点击位置（click 事件直接使用 clientX/clientY）
+  const clientX = event.clientX
+  const clientY = event.clientY
 
   // 计算相对于轨道的位置
   const rect = trackRect.value
@@ -424,6 +439,9 @@ function onTouchEnd() {
   const index = draggingIndex.value
   draggingIndex.value = -1
 
+  // 记录触摸结束时间，用于防止后续 click 事件误触发
+  lastTouchEndTime.value = Date.now()
+
   emit("dragEnd", internalValue.value, index)
   emit("update:modelValue", internalValue.value)
 }
@@ -439,12 +457,14 @@ function updateSingleValue(value: number) {
 // 更新范围值
 function updateRangeValue(index: number, value: number) {
   const newRange = [...rangeValue.value] as [number, number]
+  newRange[index] = value
 
-  // 确保左值不超过右值，右值不小于左值
-  if (index === 0) {
-    newRange[0] = Math.min(value, newRange[1])
-  } else {
-    newRange[1] = Math.max(value, newRange[0])
+  // 支持滑块穿越交换：当左滑块拖到右边或右滑块拖到左边时，自动交换角色
+  if (newRange[0] > newRange[1]) {
+    // 交换两个值，使 newRange[0] <= newRange[1]
+    ;[newRange[0], newRange[1]] = [newRange[1], newRange[0]]
+    // 同时交换当前拖动的滑块索引
+    draggingIndex.value = index === 0 ? 1 : 0
   }
 
   if (newRange[0] === rangeValue.value[0] && newRange[1] === rangeValue.value[1]) return

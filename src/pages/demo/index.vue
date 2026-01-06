@@ -69,6 +69,7 @@ const componentCategories = [
       { name: "Radio", path: "radio", icon: "🔘", desc: "单选框组件" },
       { name: "Switch", path: "switch", icon: "🔀", desc: "开关组件" },
       { name: "Stepper", path: "stepper", icon: "🔢", desc: "步进器组件" },
+      { name: "Slider", path: "slider", icon: "🎚️", desc: "滑块组件" },
       { name: "Rate", path: "rate", icon: "⭐", desc: "评分组件" },
       { name: "Picker", path: "picker", icon: "📅", desc: "选择器组件" },
       { name: "DatePicker", path: "date-picker", icon: "📆", desc: "日期选择器" },

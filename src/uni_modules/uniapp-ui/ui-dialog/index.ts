@@ -272,20 +272,16 @@ export interface DialogExpose {
   show: (options?: DialogOptions) => Promise<boolean>
   /**
    * 显示确认对话框（带确认和取消按钮）
-   * @param title 标题
-   * @param content 内容
-   * @param options 可选配置
+   * @param options 可以是字符串（作为 title）或配置对象
    * @returns Promise，确认时 resolve(true)，取消时 resolve(false)
    */
-  confirm: (title: string, content?: string, options?: DialogOptions) => Promise<boolean>
+  confirm: (options?: string | DialogOptions) => Promise<boolean>
   /**
    * 显示提示对话框（只有确认按钮）
-   * @param title 标题
-   * @param content 内容
-   * @param options 可选配置
+   * @param options 可以是字符串（作为 title）或配置对象
    * @returns Promise，确认时 resolve
    */
-  alert: (title: string, content?: string, options?: DialogOptions) => Promise<void>
+  alert: (options?: string | DialogOptions) => Promise<void>
 }
 export type DialogContentAlign = "left" | "center" | "right"
 export type DialogEmits = typeof dialogEmits

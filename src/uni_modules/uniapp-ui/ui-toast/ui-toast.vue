@@ -236,8 +236,9 @@ function hide() {
  * @param content 提示内容
  * @param options 可选配置
  */
-function success(content: string, options?: ToastOptions) {
-  show({ ...options, type: "success", content })
+function success(options?: string | ToastOptions) {
+  const opts = typeof options === "string" ? { content: options } : options
+  show({ ...opts, type: "success" })
 }
 
 /**
@@ -245,8 +246,9 @@ function success(content: string, options?: ToastOptions) {
  * @param content 提示内容
  * @param options 可选配置
  */
-function fail(content: string, options?: ToastOptions) {
-  show({ ...options, type: "fail", content })
+function fail(options?: string | ToastOptions) {
+  const opts = typeof options === "string" ? { content: options } : options
+  show({ ...opts, type: "fail" })
 }
 
 /**
@@ -254,8 +256,9 @@ function fail(content: string, options?: ToastOptions) {
  * @param content 提示内容（可选，默认"加载中..."）
  * @param options 可选配置
  */
-function loading(content?: string, options?: ToastOptions) {
-  show({ ...options, type: "loading", content: content ?? "加载中..." })
+function loading(options?: string | ToastOptions) {
+  const opts = typeof options === "string" ? { content: options } : options
+  show({ content: "加载中...", ...opts, type: "loading" })
 }
 
 /**
@@ -263,8 +266,9 @@ function loading(content?: string, options?: ToastOptions) {
  * @param content 提示内容
  * @param options 可选配置
  */
-function awaitFn(content: string, options?: ToastOptions) {
-  show({ ...options, type: "await", content })
+function awaitFn(options?: string | ToastOptions) {
+  const opts = typeof options === "string" ? { content: options } : options
+  show({ ...opts, type: "await" })
 }
 
 /**
@@ -272,8 +276,9 @@ function awaitFn(content: string, options?: ToastOptions) {
  * @param content 提示内容
  * @param options 可选配置
  */
-function text(content: string, options?: ToastOptions) {
-  show({ ...options, type: "default", content })
+function text(options?: string | ToastOptions) {
+  const opts = typeof options === "string" ? { content: options } : options
+  show({ ...opts, type: "default" })
 }
 
 defineExpose({ show, hide, open, close, success, fail, loading, await: awaitFn, text })

@@ -18,20 +18,16 @@ export interface DialogController {
   close: () => void
   /**
    * 显示确认对话框（带确认和取消按钮）
-   * @param title 标题
-   * @param content 内容
-   * @param options 可选配置
+   * @param options 可以是字符串（作为 title）或配置对象
    * @returns Promise，确认时 resolve(true)，取消时 resolve(false)
    */
-  confirm: (title: string, content?: string, options?: DialogOptions) => Promise<boolean>
+  confirm: (options?: string | DialogOptions) => Promise<boolean>
   /**
    * 显示提示对话框（只有确认按钮）
-   * @param title 标题
-   * @param content 内容
-   * @param options 可选配置
+   * @param options 可以是字符串（作为 title）或配置对象
    * @returns Promise，确认时 resolve
    */
-  alert: (title: string, content?: string, options?: DialogOptions) => Promise<void>
+  alert: (options?: string | DialogOptions) => Promise<void>
 }
 
 /**
@@ -70,13 +66,14 @@ function createDialogController(getInstance: () => DialogInstance | null): Dialo
   /**
    * 显示确认对话框
    */
-  function confirm(title: string, content?: string, options?: DialogOptions): Promise<boolean> {
+  function confirm(options?: string | DialogOptions): Promise<boolean> {
     const instance = getInstance()
     if (instance) {
-      return instance.confirm(title, content, options)
+      return instance.confirm(options)
     } else {
       // 实例未注册时，入队列
-      enqueuePendingDialog("show", { ...options, title, content, showCancelButton: true })
+      const opts = typeof options === "string" ? { title: options } : options
+      enqueuePendingDialog("show", { ...opts, showCancelButton: true })
       return Promise.resolve(false)
     }
   }
@@ -84,13 +81,14 @@ function createDialogController(getInstance: () => DialogInstance | null): Dialo
   /**
    * 显示提示对话框
    */
-  function alert(title: string, content?: string, options?: DialogOptions): Promise<void> {
+  function alert(options?: string | DialogOptions): Promise<void> {
     const instance = getInstance()
     if (instance) {
-      return instance.alert(title, content, options)
+      return instance.alert(options)
     } else {
       // 实例未注册时，入队列
-      enqueuePendingDialog("show", { ...options, title, content, showCancelButton: false })
+      const opts = typeof options === "string" ? { title: options } : options
+      enqueuePendingDialog("show", { ...opts, showCancelButton: false })
       return Promise.resolve()
     }
   }

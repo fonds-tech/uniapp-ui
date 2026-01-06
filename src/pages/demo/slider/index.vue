@@ -95,12 +95,7 @@
 
     <demo-section title="格式化显示">
       <demo-block direction="column" align="stretch" :gap="16">
-        <ui-slider
-          v-model="value8"
-          show-value
-          show-value-mode="always"
-          :format-value="(val: number) => `${val}%`"
-        />
+        <ui-slider v-model="value8" show-value show-value-mode="always" :format-value="(val: number) => `${val}%`" />
       </demo-block>
     </demo-section>
 
@@ -138,6 +133,7 @@
 
 <script setup lang="ts">
 import { ref } from "vue"
+import { DemoPage, DemoBlock, DemoSection } from "../components"
 
 definePage({
   style: { navigationBarTitleText: "Slider 滑块" },

@@ -77,6 +77,7 @@ export default defineConfig({
             { text: "Radio 单选框", link: "/components/radio" },
             { text: "RadioGroup 单选框组", link: "/components/radio-group" },
             { text: "Stepper 步进器", link: "/components/stepper" },
+            { text: "Slider 滑块", link: "/components/slider" },
             { text: "Rate 评分", link: "/components/rate" },
             { text: "Select 选择器", link: "/components/select" },
             { text: "Picker 选择器", link: "/components/picker" },

@@ -17,34 +17,29 @@ export interface ToastController {
   hide: () => void
   /**
    * 显示成功提示
-   * @param content 提示内容
-   * @param options 可选配置
+   * @param options 可以是字符串（作为 content）或配置对象
    */
-  success: (content: string, options?: ToastOptions) => void
+  success: (options?: string | ToastOptions) => void
   /**
    * 显示失败提示
-   * @param content 提示内容
-   * @param options 可选配置
+   * @param options 可以是字符串（作为 content）或配置对象
    */
-  fail: (content: string, options?: ToastOptions) => void
+  fail: (options?: string | ToastOptions) => void
   /**
    * 显示加载中提示
-   * @param content 提示内容（可选）
-   * @param options 可选配置
+   * @param options 可以是字符串（作为 content）或配置对象
    */
-  loading: (content?: string, options?: ToastOptions) => void
+  loading: (options?: string | ToastOptions) => void
   /**
    * 显示等待提示
-   * @param content 提示内容
-   * @param options 可选配置
+   * @param options 可以是字符串（作为 content）或配置对象
    */
-  await: (content: string, options?: ToastOptions) => void
+  await: (options?: string | ToastOptions) => void
   /**
    * 显示默认提示（纯文本）
-   * @param content 提示内容
-   * @param options 可选配置
+   * @param options 可以是字符串（作为 content）或配置对象
    */
-  text: (content: string, options?: ToastOptions) => void
+  text: (options?: string | ToastOptions) => void
 }
 
 /**
@@ -72,11 +67,11 @@ function createToastController(getInstance: () => ToastInstance | null): ToastCo
   return {
     show: (options) => callMethod("show", options),
     hide: () => callMethod("hide"),
-    success: (content, options) => callMethod("success", content, options),
-    fail: (content, options) => callMethod("fail", content, options),
-    loading: (content, options) => callMethod("loading", content, options),
-    await: (content, options) => callMethod("await", content, options),
-    text: (content, options) => callMethod("text", content, options),
+    success: (options) => callMethod("success", options),
+    fail: (options) => callMethod("fail", options),
+    loading: (options) => callMethod("loading", options),
+    await: (options) => callMethod("await", options),
+    text: (options) => callMethod("text", options),
   }
 }
 

@@ -31,7 +31,12 @@
       "mcp__ddg-search__search",
       "mcp__ddg-search__fetch_content",
       "WebFetch(domain:m3.material.io)",
-      "mcp__serena__think_about_whether_you_are_done"
+      "mcp__serena__think_about_whether_you_are_done",
+      "Bash(pnpm eslint:*)",
+      "mcp__serena__think_about_task_adherence",
+      "mcp__serena__get_current_config",
+      "mcp__desktop-commander__start_search",
+      "mcp__serena__replace_symbol_body"
     ],
     "deny": [],
     "ask": []

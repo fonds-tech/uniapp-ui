@@ -166,6 +166,7 @@ const componentCategories = [
       { name: "Radio", path: "radio", icon: "i-lucide-circle-dot", desc: "单选框" },
       { name: "Switch", path: "switch", icon: "i-lucide-toggle-right", desc: "开关" },
       { name: "Stepper", path: "stepper", icon: "i-lucide-minus-square", desc: "步进器" },
+      { name: "Slider", path: "slider", icon: "i-lucide-sliders-horizontal", desc: "滑块" },
       { name: "Rate", path: "rate", icon: "i-lucide-star", desc: "评分" },
       { name: "Picker", path: "picker", icon: "i-lucide-list", desc: "选择器" },
       { name: "DatePicker", path: "date-picker", icon: "i-lucide-calendar", desc: "日期" },

@@ -344,26 +344,24 @@ function show(options?: DialogOptions): Promise<boolean> {
 }
 
 /** 确认对话框（带确认和取消按钮） */
-function confirm(title: string, content?: string, options?: DialogOptions): Promise<boolean> {
+function confirm(options?: string | DialogOptions): Promise<boolean> {
+  const opts = typeof options === "string" ? { title: options } : options
   return show({
-    ...options,
-    title,
-    content,
+    ...opts,
     showCancelButton: true,
     showConfirmButton: true,
   })
 }
 
 /** 提示对话框（只有确认按钮） */
-function alert(title: string, content?: string, options?: DialogOptions): Promise<void> {
+function alert(options?: string | DialogOptions): Promise<void> {
+  const opts = typeof options === "string" ? { title: options } : options
   return new Promise((resolve) => {
     open({
-      ...options,
-      title,
-      content,
+      ...opts,
       showCancelButton: false,
       showConfirmButton: true,
-      onConfirm: createPromiseCallbacks(resolve, undefined, options?.onConfirm),
+      onConfirm: createPromiseCallbacks(resolve, undefined, opts?.onConfirm),
     })
   })
 }

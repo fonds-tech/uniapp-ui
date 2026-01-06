@@ -199,6 +199,10 @@ export default {
   background-color: var(--ui-color-background);
   transition-duration: var(--ui-transition-duration);
 
+  &__scroll {
+    max-height: 80vh;
+  }
+
   &__close {
     z-index: var(--ui-z-index-absolute);
     position: absolute;
