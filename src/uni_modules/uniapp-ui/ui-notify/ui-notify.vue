@@ -22,6 +22,7 @@
 import type { NotifyOptions } from "./index"
 import { merge } from "../utils/utils"
 import { useUnit, useColor, useStyle } from "../hooks"
+import { ref, watch, computed, onBeforeUnmount } from "vue"
 import { notifyEmits, notifyProps, useNotifyProps } from "./index"
 
 defineOptions({ name: "ui-notify" })

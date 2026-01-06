@@ -24,6 +24,7 @@ import type { CSSProperties } from "vue"
 import type { TransitionName } from "../hooks"
 import { noop } from "../utils/utils"
 import { isNumber } from "../utils/check"
+import { ref, watch, computed, onMounted } from "vue"
 import { popupEmits, popupProps, usePopupProps } from "./index"
 import { useUnit, useColor, useStyle, useTransition, useGlobalZIndex } from "../hooks"
 

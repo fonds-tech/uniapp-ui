@@ -17,6 +17,7 @@ import type { CSSProperties } from "vue"
 import { pick, uuid } from "../utils/utils"
 import { useRect, useUnit, useStyle } from "../hooks"
 import { resizeEmits, resizeProps, useResizeProps } from "./index"
+import { ref, computed, onMounted, getCurrentInstance } from "vue"
 
 defineOptions({ name: "ui-resize" })
 

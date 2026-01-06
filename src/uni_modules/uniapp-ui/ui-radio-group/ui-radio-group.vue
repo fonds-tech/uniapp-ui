@@ -8,6 +8,7 @@
 import type { CSSProperties } from "vue"
 import type { RadioGroupValueType } from "./index"
 import { useStyle, useChildren } from "../hooks"
+import { toRaw, watch, computed } from "vue"
 import { radioGroupKey, radioGroupEmits, radioGroupProps, useRadioGroupProps } from "./index"
 
 defineOptions({ name: "ui-radio-group" })

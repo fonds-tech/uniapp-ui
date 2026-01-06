@@ -57,6 +57,8 @@
 </template>
 
 <script setup lang="ts">
+import { computed, getCurrentInstance, nextTick, ref, watch } from "vue"
+
 import type { CascaderTab, CascaderOption } from "./index"
 import { clone, merge } from "../utils/utils"
 import { callInterceptor } from "../utils/interceptor"

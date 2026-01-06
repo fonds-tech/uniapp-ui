@@ -7,6 +7,7 @@
 <script setup lang="ts">
 import type { ComputedRef, CSSProperties } from "vue"
 import { useStyle } from "../hooks"
+import { inject, computed } from "vue"
 import { colProps, useColProps } from "./index"
 
 defineOptions({ name: "ui-col" })

@@ -26,6 +26,7 @@ import { formKey } from "../ui-form"
 import { clone, toArray, getDeepValue } from "../utils/utils"
 import { isDef, isEmpty, isNoEmpty, isPromise, isFunction } from "../utils/check"
 import { formItemKey, formItemEmits, formItemProps, useFormItemProps } from "./index"
+import { ref, toRaw, computed, nextTick, reactive, useSlots, onMounted, getCurrentInstance } from "vue"
 import { useRect, useUnit, useColor, useStyle, useParent, usePxToRpx, useChildren, useUnitToPx } from "../hooks"
 
 defineOptions({ name: "ui-form-item" })

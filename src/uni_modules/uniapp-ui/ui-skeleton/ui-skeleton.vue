@@ -6,6 +6,7 @@
 
 <script setup lang="ts">
 import type { CSSProperties } from "vue"
+import { computed } from "vue"
 import { useStyle, useChildren } from "../hooks"
 import { skeletonKey, skeletonProps, useSkeletonProps } from "./index"
 

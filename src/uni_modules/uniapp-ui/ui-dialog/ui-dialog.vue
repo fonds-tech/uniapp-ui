@@ -88,6 +88,7 @@ import type { CSSProperties } from "vue"
 import type { DialogOptions, DialogDoneAction, DialogOpenAction, DialogCloseAction } from "./index"
 import { noop, merge } from "../utils/utils"
 import { isNumber, isFunction } from "../utils/check"
+import { ref, watch, computed } from "vue"
 import { dialogEmits, dialogProps, useDialogProps } from "./index"
 import { useUnit, useColor, useStyle, useTransition, useGlobalZIndex } from "../hooks"
 

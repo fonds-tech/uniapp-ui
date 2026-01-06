@@ -13,6 +13,7 @@
 <script setup lang="ts">
 import type { CSSProperties } from "vue"
 import { isFunction } from "../utils/check"
+import { ref, watch, computed, getCurrentInstance, nextTick } from "vue"
 import { tabbarKey, tabbarEmits, tabbarProps, useTabbarProps } from "./index"
 import { useMitt, useRect, useColor, useStyle, usePxToRpx, useChildren, useUnitToRpx } from "../hooks"
 

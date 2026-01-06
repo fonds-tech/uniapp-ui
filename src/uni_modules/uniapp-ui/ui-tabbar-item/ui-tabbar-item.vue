@@ -17,6 +17,7 @@
 <script setup lang="ts">
 import type { CSSProperties } from "vue"
 import { isDef } from "../utils/check"
+import { computed } from "vue"
 import { tabbarKey } from "../ui-tabbar"
 import { debounce, createUrlParams } from "../utils/utils"
 import { useUnit, useColor, useStyle, useParent } from "../hooks"

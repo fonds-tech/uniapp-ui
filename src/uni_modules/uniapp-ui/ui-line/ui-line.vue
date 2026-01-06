@@ -3,6 +3,8 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from "vue"
+
 import { lineProps, useLineProps } from "./index"
 import { useUnit, useColor, useStyle } from "../hooks"
 

@@ -34,6 +34,8 @@
 </template>
 
 <script setup lang="ts">
+import { computed, getCurrentInstance, onMounted, ref, useSlots } from "vue"
+
 import { delay } from "../utils/utils"
 import { isArray, isString } from "../utils/check"
 import { useRect, useUnit, useColor, useStyle } from "../hooks"

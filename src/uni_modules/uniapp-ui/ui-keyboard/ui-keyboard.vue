@@ -48,6 +48,8 @@
 </template>
 
 <script setup lang="ts">
+import { computed, onMounted, ref, watch } from "vue"
+
 import { useStyle } from "../hooks"
 import { clone, shuffleArray } from "../utils/utils"
 import { keyboardEmits, keyboardProps, useKeyboardProps } from "./index"

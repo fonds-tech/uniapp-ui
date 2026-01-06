@@ -7,6 +7,8 @@
 </template>
 
 <script setup lang="ts">
+import { computed, onBeforeUnmount, ref, watch } from "vue"
+
 import type { CountDownTimeData } from "./index"
 import { padZero } from "../utils/utils"
 import { useStyle } from "../hooks"

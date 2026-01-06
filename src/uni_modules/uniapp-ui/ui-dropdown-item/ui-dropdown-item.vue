@@ -27,6 +27,7 @@ import type { DropdownItemValue, DropdownItemOption } from "./index"
 import { noop } from "../utils/utils"
 import { dropdownMenuKey } from "../ui-dropdown-menu"
 import { isDef, isArray, isEmpty, isNumber, isString } from "../utils/check"
+import { ref, toRaw, watch, computed, nextTick, onMounted } from "vue"
 import { dropdownItemEmits, dropdownItemProps, useDropdownItemProps } from "./index"
 import { useUnit, useColor, useStyle, useParent, useLockScroll, useSystemInfo, useTransition, useGlobalZIndex } from "../hooks"
 

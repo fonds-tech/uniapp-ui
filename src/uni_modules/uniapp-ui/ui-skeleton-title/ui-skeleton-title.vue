@@ -4,6 +4,7 @@
 
 <script setup lang="ts">
 import type { CSSProperties } from "vue"
+import { computed } from "vue"
 import { skeletonKey } from "../ui-skeleton"
 import { isDef, isEmpty } from "../utils/check"
 import { useUnit, useStyle, useParent } from "../hooks"

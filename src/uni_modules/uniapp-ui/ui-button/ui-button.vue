@@ -43,6 +43,7 @@
 <script setup lang="ts">
 import type { CSSProperties } from "vue"
 import { createThrottle } from "../utils/utils"
+import { ref, computed, useSlots } from "vue"
 import { useUnit, useColor, useStyle } from "../hooks"
 import { buttonEmits, buttonProps, useButtonProps } from "./index"
 

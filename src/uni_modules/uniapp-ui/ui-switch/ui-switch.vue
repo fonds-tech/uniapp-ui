@@ -17,6 +17,7 @@
 import { isFunction } from "../utils/check"
 import { switchEmits, switchProps, useSwitchProps } from "./index"
 import { useRect, useUnit, useColor, useStyle, useUnitToPx } from "../hooks"
+import { ref, watch, computed, nextTick, onMounted, getCurrentInstance } from "vue"
 
 defineOptions({ name: "ui-switch" })
 

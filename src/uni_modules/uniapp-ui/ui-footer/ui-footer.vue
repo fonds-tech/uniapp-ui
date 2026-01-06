@@ -12,6 +12,7 @@
 <script setup lang="ts">
 import type { CSSProperties } from "vue"
 import { footerEmits, footerProps, useFooterProps } from "./index"
+import { ref, computed, nextTick, onMounted, getCurrentInstance } from "vue"
 import { useMitt, useRect, useColor, useStyle, usePxToRpx, useUnitToPx } from "../hooks"
 
 defineOptions({ name: "ui-footer" })

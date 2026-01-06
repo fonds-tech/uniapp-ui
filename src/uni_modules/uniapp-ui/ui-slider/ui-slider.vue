@@ -79,6 +79,7 @@ import type { SliderMarks, SliderValue } from "./index"
 import { isArray } from "../utils/check"
 import { useRect, useColor, useStyle, useUnitToPx } from "../hooks"
 import { sliderEmits, sliderProps, useSliderProps } from "./index"
+import { ref, watch, computed, onUnmounted, getCurrentInstance } from "vue"
 
 defineOptions({ name: "ui-slider" })
 

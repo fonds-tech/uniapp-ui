@@ -16,6 +16,7 @@
 import type { CSSProperties } from "vue"
 import { noop } from "../utils/utils"
 import { isNumber } from "../utils/check"
+import { ref, watch, computed } from "vue"
 import { useStyle, useTransition, useGlobalZIndex } from "../hooks"
 import { overlayEmits, overlayProps, useOverlayProps } from "./index"
 

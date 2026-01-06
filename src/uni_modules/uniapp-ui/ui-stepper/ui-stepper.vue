@@ -34,6 +34,7 @@ import { addNumber } from "../utils/utils"
 import { formatNumber } from "../utils/format"
 import { callInterceptor } from "../utils/interceptor"
 import { useUnit, useColor, useStyle } from "../hooks"
+import { ref, watch, computed, nextTick } from "vue"
 import { isEmpty, isEqual, isNumber, isFunction } from "../utils/check"
 import { stepperEmits, stepperProps, useStepperProps } from "./index"
 

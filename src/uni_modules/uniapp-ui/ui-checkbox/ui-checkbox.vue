@@ -19,6 +19,7 @@ import type { CSSProperties } from "vue"
 import type { CheckboxValueType } from "./index"
 import { checkboxGroupKey } from "../ui-checkbox-group"
 import { isDef, isBoolean } from "../utils/check"
+import { toRaw, watch, computed, useSlots } from "vue"
 import { useUnit, useColor, useStyle, useParent } from "../hooks"
 import { checkboxEmits, checkboxProps, useCheckboxProps } from "./index"
 
@@ -72,10 +73,12 @@ const iconWrapStyle = computed(() => {
   style.borderColor = useColor(prop("iconColor"))
   style.borderRadius = useUnit(prop("iconRadius"))
   if (checked.value) {
-    style.color = useColor(prop("checkedIconColor"))
-    style.borderColor = useColor(prop("checkedIconColor"))
+    // checkedColor 作为 checkedIconColor 的别名/兜底
+    const checkedColorValue = useColor(prop("checkedIconColor") || prop("checkedColor"))
+    style.color = checkedColorValue
+    style.borderColor = checkedColorValue
     if (prop("shape") === "dot") {
-      style.backgroundColor = useColor(prop("checkedIconColor"))
+      style.backgroundColor = checkedColorValue
     }
   }
   return useStyle(style)
@@ -125,9 +128,8 @@ function prop(name: string) {
   if (useProps.bindGroup && parent) {
     if (isDef(props[name])) return props[name]
     if (isDef(parent.props[name])) return parent.props[name]
-  } else {
-    return props[name]
   }
+  return props[name]
 }
 
 async function updateValue(value: CheckboxValueType) {
@@ -146,8 +148,9 @@ function toggle(check?: boolean) {
       }
     }
     const remove = () => {
-      if (index.value !== -1) {
-        value.splice(index.value, 1)
+      const valueIndex = value.indexOf(name.value)
+      if (valueIndex !== -1) {
+        value.splice(valueIndex, 1)
         parent.updateValue(value)
       }
     }

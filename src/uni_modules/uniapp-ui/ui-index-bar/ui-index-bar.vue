@@ -12,6 +12,8 @@
 </template>
 
 <script setup lang="ts">
+import { computed, getCurrentInstance, ref, toRef, watch } from "vue"
+
 import { debounce } from "../utils/utils"
 import { useRect, useRects, useStyle, useChildren } from "../hooks"
 import { indexBarKey, indexBarEmits, indexBarProps, useIndexBarProps } from "../ui-index-bar"

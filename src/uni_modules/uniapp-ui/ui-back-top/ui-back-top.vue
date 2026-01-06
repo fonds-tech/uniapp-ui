@@ -9,6 +9,8 @@
 </template>
 
 <script setup lang="ts">
+import { computed, ref } from "vue"
+
 import type { CSSProperties } from "vue"
 import { backTopEmits, backTopProps, useBackTopProps } from "./index"
 import { useMitt, useUnit, useColor, useStyle, useUnitToPx } from "../hooks"

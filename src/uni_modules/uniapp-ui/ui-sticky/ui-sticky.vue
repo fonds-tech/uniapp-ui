@@ -15,6 +15,7 @@ import type { CSSProperties } from "vue"
 import { uuid } from "../utils/utils"
 import { useRect, useColor, useStyle } from "../hooks"
 import { stickyEmits, stickyProps, useStickyProps } from "./index"
+import { ref, watch, computed, reactive, onUnmounted, getCurrentInstance, nextTick } from "vue"
 
 defineOptions({ name: "ui-sticky" })
 

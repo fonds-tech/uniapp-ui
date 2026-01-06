@@ -20,6 +20,8 @@
 </template>
 
 <script setup lang="ts">
+import { computed, nextTick, ref, watch } from "vue"
+
 import type { PickerColumn, PickerChangeEvent, PickerColumnsType, PickerColumnFields } from "./index"
 import { merge } from "../utils/utils"
 import { isNoEmpty } from "../utils/check"

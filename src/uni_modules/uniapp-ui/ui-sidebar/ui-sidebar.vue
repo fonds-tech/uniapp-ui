@@ -19,6 +19,7 @@
 import type { CSSProperties } from "vue"
 import { isEmpty } from "../utils/check"
 import { debounce } from "../utils/utils"
+import { ref, watch, computed, getCurrentInstance, nextTick, toRef } from "vue"
 import { sidebarKey, sidebarEmits, sidebarProps, useSidebarProps } from "./index"
 import { useRect, useUnit, useColor, useStyle, useChildren, useUnitToPx } from "../hooks"
 

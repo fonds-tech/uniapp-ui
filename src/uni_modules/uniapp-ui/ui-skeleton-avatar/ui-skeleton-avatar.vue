@@ -5,6 +5,7 @@
 <script setup lang="ts">
 import type { CSSProperties } from "vue"
 import { isDef } from "../utils/check"
+import { computed } from "vue"
 import { skeletonKey } from "../ui-skeleton"
 import { useUnit, useStyle, useParent } from "../hooks"
 import { skeletonAvatarEmits, skeletonAvatarProps, useSkeletonAvatarProps } from "./index"

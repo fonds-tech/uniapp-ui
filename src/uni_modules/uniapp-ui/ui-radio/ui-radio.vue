@@ -18,6 +18,7 @@
 import type { CSSProperties } from "vue"
 import { isDef } from "../utils/check"
 import { radioGroupKey } from "../ui-radio-group"
+import { computed, useSlots } from "vue"
 import { radioEmits, radioProps, useRadioProps } from "./index"
 import { useUnit, useColor, useStyle, useParent } from "../hooks"
 

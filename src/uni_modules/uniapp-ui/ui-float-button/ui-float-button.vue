@@ -12,6 +12,7 @@
 
 <script setup lang="ts">
 import type { CSSProperties } from "vue"
+import { computed } from "vue"
 import { useUnit, useColor, useStyle } from "../hooks"
 import { floatButtonEmits, floatButtonProps, useFloatButtonProps } from "./index"
 

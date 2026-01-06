@@ -7,7 +7,8 @@
 <script setup lang="ts">
 import type { CSSProperties } from "vue"
 import { isEmpty } from "../utils/check"
-import { useStyle, useChildren } from "../hooks"
+import { useStyle, useUnit, useChildren } from "../hooks"
+import { toRaw, toRef, watch, computed } from "vue"
 import { checkboxGroupKey, checkboxGroupEmits, checkboxGroupProps, useCheckboxGroupProps } from "./index"
 
 defineOptions({ name: "ui-checkbox-group" })
@@ -19,6 +20,7 @@ const { childrens, linkChildren } = useChildren(checkboxGroupKey)
 
 const style = computed(() => {
   const style: CSSProperties = {}
+  if (useProps.gap) style.gap = useUnit(useProps.gap)
   return useStyle({ ...style, ...useStyle(useProps.customStyle) })
 })
 
@@ -60,6 +62,7 @@ export default {
 <style scoped lang="scss">
 .ui-checkbox-group {
   display: flex;
+  flex-wrap: wrap;
 
   &--vertical {
     flex-direction: column;

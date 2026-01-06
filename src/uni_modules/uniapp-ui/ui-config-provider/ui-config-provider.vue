@@ -6,6 +6,7 @@
 
 <script setup lang="ts">
 import type { CSSProperties } from "vue"
+import { ref, computed, onMounted, onUnmounted } from "vue"
 import { useRgb, useMitt, useUnit, useColor, useStyle, useChildren } from "../hooks"
 import { configProviderKey, configProviderEmits, configProviderProps, useConfigProviderProps } from "./index"
 

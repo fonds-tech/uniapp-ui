@@ -15,8 +15,8 @@
 
     <demo-section title="自定义形状">
       <demo-block :cols="2" :gap="32">
-        <ui-checkbox v-model="shape1" shape="square" label="方形" />
-        <ui-checkbox v-model="shape2" shape="round" label="圆形" />
+        <ui-checkbox v-model="shape1" :round="false" label="方形" />
+        <ui-checkbox v-model="shape2" :round="true" label="圆形" />
       </demo-block>
       <demo-block :cols="2" :gap="32" class="mt-16">
         <ui-checkbox v-model="shapeDot" shape="dot" label="点状" />
@@ -35,12 +35,12 @@
     <!-- 新增：图标配置 -->
     <demo-section title="图标配置">
       <demo-block :cols="2" :gap="32">
-        <ui-checkbox v-model="iconConfig1" icon="check" icon-color="#999" checked-icon-color="#1989fa" label="自定义图标颜色" />
-        <ui-checkbox v-model="iconConfig2" icon="check" icon-weight="600" label="粗图标" />
+        <ui-checkbox v-model="iconConfig1" shape="icon" icon="check" icon-color="#999" checked-icon-color="#1989fa" label="自定义图标颜色" />
+        <ui-checkbox v-model="iconConfig2" shape="icon" icon="check" icon-weight="600" label="粗图标" />
       </demo-block>
       <demo-block :cols="2" :gap="32" class="mt-16">
-        <ui-checkbox v-model="iconConfig3" :round="false" icon-radius="4rpx" label="方角图标" />
-        <ui-checkbox v-model="iconConfig4" :round="true" label="圆形图标" />
+        <ui-checkbox v-model="iconConfig3" shape="icon" :round="false" icon-radius="4rpx" label="方角图标" />
+        <ui-checkbox v-model="iconConfig4" shape="icon" :round="true" label="圆形图标" />
       </demo-block>
     </demo-section>
 

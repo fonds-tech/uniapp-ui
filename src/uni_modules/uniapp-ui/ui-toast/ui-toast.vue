@@ -18,6 +18,7 @@
 import type { ToastOptions } from "./index"
 import type { CSSProperties } from "vue"
 import { isImage, isString } from "../utils/check"
+import { ref, watch, computed } from "vue"
 import { toastEmits, toastProps, useToastProps } from "./index"
 import { useUnit, useStyle, useTransition, useGlobalZIndex } from "../hooks"
 

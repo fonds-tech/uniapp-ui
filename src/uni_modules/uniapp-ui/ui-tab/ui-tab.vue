@@ -11,6 +11,7 @@
 import type { CSSProperties } from "vue"
 import { isDef } from "../utils/check"
 import { tabsKey } from "../ui-tabs"
+import { computed } from "vue"
 import { tabEmits, tabProps, useTabProps } from "./index"
 import { useUnit, useColor, useStyle, useParent } from "../hooks"
 

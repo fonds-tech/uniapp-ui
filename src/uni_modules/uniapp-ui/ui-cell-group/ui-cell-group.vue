@@ -6,6 +6,7 @@
 
 <script setup lang="ts">
 import type { CSSProperties } from "vue"
+import { computed } from "vue"
 import { useUnit, useColor, useStyle, useChildren } from "../hooks"
 import { cellGroupKey, cellGroupEmits, cellGroupProps, useCellGroupProps } from "./index"
 

@@ -13,6 +13,7 @@
 <script setup lang="ts">
 import type { CSSProperties } from "vue"
 import { isArray, isNumber } from "../utils/check"
+import { computed, useSlots } from "vue"
 import { useUnit, useColor, useStyle } from "../hooks"
 import { badgeEmits, badgeProps, useBadgeProps } from "./index"
 

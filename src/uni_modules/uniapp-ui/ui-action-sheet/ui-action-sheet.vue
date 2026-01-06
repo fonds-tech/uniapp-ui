@@ -51,6 +51,7 @@ import type { CSSProperties } from "vue"
 import type { ActionSheetAction } from "./index"
 import { callInterceptor } from "../utils/interceptor"
 import { isNumber, isFunction } from "../utils/check"
+import { ref, watch, computed } from "vue"
 import { actionSheetEmits, actionSheetProps, useActionSheetProps } from "./index"
 import { useUnit, useColor, useStyle, useTransition, useGlobalZIndex } from "../hooks"
 

@@ -42,6 +42,8 @@
 </template>
 
 <script setup lang="ts">
+import { computed, ref, watch } from "vue"
+
 import { formItemKey } from "../ui-form-item"
 import { useUnit, useColor, useStyle, useParent } from "../hooks"
 import { textareaEmits, textareaProps, useTextareaProps } from "./index"

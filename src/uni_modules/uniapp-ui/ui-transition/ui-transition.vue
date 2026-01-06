@@ -6,6 +6,7 @@
 
 <script setup lang="ts">
 import { isNumber } from "../utils/check"
+import { ref, watch, computed } from "vue"
 import { useStyle, useTransition, useGlobalZIndex } from "../hooks"
 import { transitionEmits, transitionProps, useTransitionProps } from "./index"
 

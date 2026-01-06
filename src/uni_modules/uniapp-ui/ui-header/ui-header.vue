@@ -14,6 +14,7 @@ import type { CSSProperties } from "vue"
 import { configProviderKey } from "../ui-config-provider"
 import { headerEmits, headerProps, useHeaderProps } from "./index"
 import { useRect, useColor, useStyle, useParent, useUnitToPx } from "../hooks"
+import { ref, toRefs, computed, nextTick, onMounted, onBeforeMount, getCurrentInstance } from "vue"
 
 // 定义组件名称
 defineOptions({ name: "ui-header" })

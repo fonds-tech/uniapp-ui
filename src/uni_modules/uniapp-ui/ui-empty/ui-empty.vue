@@ -14,6 +14,8 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from "vue"
+
 import emptyImg from "./lib/empty.png"
 import { emptyProps, useEmptyProps } from "./index"
 import { useUnit, useColor, useStyle } from "../hooks"

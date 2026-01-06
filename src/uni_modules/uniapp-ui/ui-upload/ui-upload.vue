@@ -38,6 +38,7 @@ import { uuid, clone } from "../utils/utils"
 import { callInterceptor } from "../utils/interceptor"
 import { uploadEmits, uploadProps, useUploadProps } from "./index"
 import { useRect, useUnit, useColor, useRects, useStyle } from "../hooks"
+import { ref, watch, computed, reactive, getCurrentInstance, nextTick } from "vue"
 import { isArray, isNoEmpty, isFunction, isImage as isImageLink, isDocument as isDocumentLink } from "../utils/check"
 
 defineOptions({ name: "ui-upload" })

@@ -39,6 +39,7 @@
 <script setup lang="ts">
 import type { CSSProperties } from "vue"
 import { useUnit, useStyle } from "../hooks"
+import { ref, watch, computed } from "vue"
 import { isArray, isObject, isString } from "../utils/check"
 import { swiperEmits, swiperProps, useSwiperProps } from "./index"
 

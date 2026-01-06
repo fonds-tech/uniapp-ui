@@ -28,6 +28,7 @@
 import type { CSSProperties } from "vue"
 import { isDef } from "../utils/check"
 import { cellGroupKey } from "../ui-cell-group"
+import { computed, useSlots } from "vue"
 import { cellEmits, cellProps, useCellProps } from "./index"
 import { useUnit, useColor, useStyle, useParent } from "../hooks"
 

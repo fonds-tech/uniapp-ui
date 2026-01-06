@@ -6,6 +6,7 @@
 import type { CSSProperties } from "vue"
 import { isDef } from "../utils/check"
 import { skeletonKey } from "../ui-skeleton"
+import { ref, computed, getCurrentInstance, onMounted } from "vue"
 import { useRect, useUnit, useStyle, useParent } from "../hooks"
 import { skeletonImageEmits, skeletonImageProps, useSkeletonImageProps } from "./index"
 

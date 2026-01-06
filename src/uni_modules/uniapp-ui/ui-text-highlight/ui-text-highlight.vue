@@ -14,6 +14,8 @@
 </template>
 
 <script setup lang="ts">
+import { computed, ref, watch } from "vue"
+
 import { isNoEmpty } from "../utils/check"
 import { useUnit, useColor, useStyle } from "../hooks"
 import { textHighlightEmits, textHighlightProps, useTextHighlightProps } from "./index"

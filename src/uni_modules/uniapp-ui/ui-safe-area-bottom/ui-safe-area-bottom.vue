@@ -3,6 +3,8 @@
 </template>
 
 <script setup lang="ts">
+import { computed, onBeforeMount, ref } from "vue"
+
 import { useColor, useStyle, useSystemInfo } from "../hooks"
 import { safeAreaBottomEmits, safeAreaBottomProps, useSafeAreaBottomProps } from "./index"
 

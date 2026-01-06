@@ -7,6 +7,7 @@
 <script setup lang="ts">
 import type { CSSProperties } from "vue"
 import { useUnit, useStyle } from "../hooks"
+import { provide, computed } from "vue"
 import { rowProps, useRowProps } from "./index"
 
 defineOptions({ name: "ui-row" })

@@ -73,6 +73,8 @@
 </template>
 
 <script setup lang="ts">
+import { computed, ref, useSlots, watch } from "vue"
+
 import type { SelectValue, SelectDisplayPayload } from "./index"
 import type { PickerValue, PickerColumn, PickerInstance, PickerCancelData, PickerChangeData, PickerColumnsType, PickerConfirmData, PickerColumnFields } from "../ui-picker"
 import { merge } from "../utils/utils"

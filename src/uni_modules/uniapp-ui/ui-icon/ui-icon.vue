@@ -4,6 +4,8 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from "vue"
+
 import { isImage } from "../utils/check"
 import { useUnit, useColor, useStyle } from "../hooks"
 import { iconEmits, iconProps, useIconProps } from "./index"

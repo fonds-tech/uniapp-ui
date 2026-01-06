@@ -18,6 +18,7 @@
 <script setup lang="ts">
 import type { CSSProperties } from "vue"
 import { useStyle } from "../hooks"
+import { ref, watch, computed } from "vue"
 import { isArray, isEmpty, isNoEmpty } from "../utils/check"
 import { paginationEmits, paginationProps, usePaginationProps } from "./index"
 

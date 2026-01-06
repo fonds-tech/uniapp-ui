@@ -15,6 +15,8 @@
 </template>
 
 <script setup lang="ts">
+import { computed, getCurrentInstance, nextTick, ref, watch } from "vue"
+
 import QRCode from "./qrcode"
 import { uuid } from "../utils/utils"
 import { CODE128AUTO } from "./code128/index"
