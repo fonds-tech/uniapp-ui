@@ -9,6 +9,21 @@ import { nextTick } from "vue"
 import { vi, afterEach } from "vitest"
 
 // ============================================
+// 打破循环依赖：模拟 useDialog 模块
+// hooks/index.ts 按字母顺序导出，useDialog 在 useGlobalProps 之前
+// useDialog 依赖 ui-dialog，ui-dialog 需要 createProps（来自 useGlobalProps）
+// 通过模拟 useDialog 打破这个循环
+// ============================================
+vi.mock("@/uni_modules/uniapp-ui/hooks/useDialog", () => ({
+  useDialog: vi.fn(() => ({
+    show: vi.fn(),
+    close: vi.fn(),
+    confirm: vi.fn(),
+    alert: vi.fn(),
+  })),
+}))
+
+// ============================================
 // 测试辅助函数
 // ============================================
 
