@@ -1,7 +1,7 @@
 import type Slider from "./ui-slider.vue"
 import type { PropType, ExtractPropTypes } from "vue"
 import { createProps } from "../hooks"
-import { styleProp, makeNumberProp, makeStringProp, makeNumericProp } from "../utils/props"
+import { styleProp, truthProp, makeNumberProp, makeStringProp, makeNumericProp } from "../utils/props"
 
 /**
  * 滑块刻度标记配置
@@ -16,6 +16,22 @@ export type SliderMarks = Record<number, string | { label: string; style?: Recor
  * 双滑块（范围选择）: [number, number]
  */
 export type SliderValue = number | [number, number]
+
+/**
+ * 值提示显示模式
+ * always: 始终显示
+ * dragging: 拖动时显示
+ * never: 不显示
+ */
+export type SliderShowValueMode = "always" | "dragging" | "never"
+
+/**
+ * 滑块尺寸预设
+ * small: 小尺寸（适合紧凑布局）
+ * medium: 中等尺寸（默认，适合大多数场景）
+ * large: 大尺寸（适合需要强调的场景）
+ */
+export type SliderSize = "small" | "medium" | "large"
 
 export const [sliderProps, useSliderProps] = createProps("slider", {
   /**
@@ -56,7 +72,7 @@ export const [sliderProps, useSliderProps] = createProps("slider", {
   /**
    * 是否显示当前值提示
    */
-  showValue: Boolean,
+  showValue: truthProp,
   /**
    * 值提示显示模式
    * always: 始终显示
@@ -68,6 +84,16 @@ export const [sliderProps, useSliderProps] = createProps("slider", {
     default: "dragging",
   },
   /**
+   * 滑块尺寸预设
+   * small: 轨道 4px，把手 20px
+   * medium: 轨道 6px，把手 28px（默认）
+   * large: 轨道 8px，把手 36px
+   */
+  size: {
+    type: String as PropType<SliderSize>,
+    default: "medium",
+  },
+  /**
    * 刻度标记，key 为刻度值，value 为标签内容
    */
   marks: {
@@ -76,12 +102,14 @@ export const [sliderProps, useSliderProps] = createProps("slider", {
   },
   /**
    * 轨道高度（水平模式）或宽度（垂直模式）
+   * 传入具体值时会覆盖 size 预设
    */
-  barHeight: makeNumericProp(4),
+  barHeight: makeNumericProp(""),
   /**
-   * 滑块按钮尺寸
+   * 滑块把手尺寸
+   * 传入具体值时会覆盖 size 预设
    */
-  buttonSize: makeNumericProp(24),
+  handleSize: makeNumericProp(""),
   /**
    * 激活状态轨道颜色
    */
@@ -91,9 +119,9 @@ export const [sliderProps, useSliderProps] = createProps("slider", {
    */
   inactiveColor: makeStringProp(""),
   /**
-   * 滑块按钮颜色
+   * 滑块把手颜色
    */
-  buttonColor: makeStringProp(""),
+  handleColor: makeStringProp(""),
   /**
    * 格式化显示值的函数
    */
@@ -130,7 +158,6 @@ export const sliderEmits = {
   dragEnd: (value: SliderValue, index: number) => true,
 }
 
-export type SliderShowValueMode = "always" | "dragging" | "never"
 export type SliderEmits = typeof sliderEmits
 export type SliderProps = ExtractPropTypes<typeof sliderProps>
 export type SliderInstance = InstanceType<typeof Slider>

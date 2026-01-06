@@ -1,64 +1,73 @@
 <template>
-  <view class="ui-slider" :class="[rootClass, customClass]" :style="[rootStyle]">
-    <!-- 滑块轨道 -->
+  <view :class="rootClass" :style="rootStyle">
+    <!-- 轨道容器：包含触摸区域 -->
     <view
-      class="ui-slider__track"
-      :style="[trackStyle]"
+      class="ui-slider__wrapper"
+      :style="wrapperStyle"
       @click="onTrackClick"
       @touchstart.stop="onTouchStart"
       @touchmove.stop.prevent="onTouchMove"
       @touchend.stop="onTouchEnd"
       @touchcancel.stop="onTouchEnd"
+      @mousedown.stop="onMouseDown"
     >
-      <!-- 背景轨道 -->
-      <view class="ui-slider__track-bg" :style="[trackBgStyle]" />
+      <!-- 轨道背景 -->
+      <view class="ui-slider__track" :style="trackStyle">
+        <!-- 非激活轨道 -->
+        <view class="ui-slider__track-inactive" :style="inactiveTrackStyle" />
 
-      <!-- 激活轨道 -->
-      <view class="ui-slider__track-active" :style="[activeStyle]" />
+        <!-- 激活轨道 -->
+        <view class="ui-slider__track-active" :style="activeTrackStyle" />
 
-      <!-- 刻度标记 -->
-      <template v-if="marks">
-        <view v-for="(mark, key) in normalizedMarks" :key="key" class="ui-slider__mark" :style="[markStyle(mark)]">
-          <view class="ui-slider__mark-dot" :class="{ 'ui-slider__mark-dot--active': isMarkActive(mark.value) }" />
-          <view v-if="mark.label" class="ui-slider__mark-label" :style="[mark.labelStyle]">
-            {{ mark.label }}
-          </view>
-        </view>
-      </template>
+        <!-- 刻度标记 -->
+        <template v-if="useProps.marks">
+          <view
+            v-for="(mark, key) in normalizedMarks"
+            :key="key"
+            class="ui-slider__tick"
+            :class="{ 'ui-slider__tick--active': isMarkActive(mark.value) }"
+            :style="getTickStyle(mark.value)"
+          />
+        </template>
 
-      <!-- 左侧滑块按钮（范围模式使用） -->
-      <view
-        v-if="useProps.range"
-        class="ui-slider__button-wrapper"
-        :class="{ 'ui-slider__button-wrapper--dragging': draggingIndex === 0 }"
-        :style="[buttonWrapperStyle(0)]"
-        @touchstart.stop="onButtonTouchStart($event, 0)"
-      >
-        <slot name="left-button" :value="rangeValue[0]" :dragging="draggingIndex === 0">
-          <view class="ui-slider__button" :style="[buttonStyle]">
-            <!-- 值提示 -->
-            <view v-if="shouldShowValue(0)" class="ui-slider__value">
+        <!-- 左侧把手（范围模式）- 放在轨道内部定位 -->
+        <view v-if="useProps.range" class="ui-slider__handle" :class="getHandleClass(0)" :style="getHandleStyle(0)" @touchstart.stop="onHandleTouchStart($event, 0)" @mousedown.stop="onHandleMouseDown($event, 0)">
+          <slot name="left-handle" :value="rangeValue[0]" :dragging="draggingIndex === 0">
+            <!-- 值指示器 -->
+            <view v-if="shouldShowValue(0)" class="ui-slider__indicator" :style="indicatorStyle">
               {{ formatDisplayValue(rangeValue[0]) }}
             </view>
-          </view>
-        </slot>
-      </view>
+          </slot>
+        </view>
 
-      <!-- 右侧/单个滑块按钮 -->
-      <view
-        class="ui-slider__button-wrapper"
-        :class="{ 'ui-slider__button-wrapper--dragging': draggingIndex === (useProps.range ? 1 : 0) }"
-        :style="[buttonWrapperStyle(useProps.range ? 1 : 0)]"
-        @touchstart.stop="onButtonTouchStart($event, useProps.range ? 1 : 0)"
-      >
-        <slot :name="useProps.range ? 'right-button' : 'button'" :value="useProps.range ? rangeValue[1] : currentValue" :dragging="draggingIndex === (useProps.range ? 1 : 0)">
-          <view class="ui-slider__button" :style="[buttonStyle]">
-            <!-- 值提示 -->
-            <view v-if="shouldShowValue(useProps.range ? 1 : 0)" class="ui-slider__value">
+        <!-- 右侧/单个把手 - 放在轨道内部定位 -->
+        <view
+          class="ui-slider__handle"
+          :class="getHandleClass(useProps.range ? 1 : 0)"
+          :style="getHandleStyle(useProps.range ? 1 : 0)"
+          @touchstart.stop="onHandleTouchStart($event, useProps.range ? 1 : 0)"
+          @mousedown.stop="onHandleMouseDown($event, useProps.range ? 1 : 0)"
+        >
+          <slot :name="useProps.range ? 'right-handle' : 'handle'" :value="useProps.range ? rangeValue[1] : currentValue" :dragging="draggingIndex === (useProps.range ? 1 : 0)">
+            <!-- 值指示器 -->
+            <view v-if="shouldShowValue(useProps.range ? 1 : 0)" class="ui-slider__indicator" :style="indicatorStyle">
               {{ formatDisplayValue(useProps.range ? rangeValue[1] : currentValue) }}
             </view>
-          </view>
-        </slot>
+          </slot>
+        </view>
+      </view>
+    </view>
+
+    <!-- 刻度标签（在轨道外部显示） -->
+    <view v-if="useProps.marks && hasMarkLabels" class="ui-slider__labels" :style="labelsStyle">
+      <view
+        v-for="(mark, key) in normalizedMarks"
+        :key="key"
+        class="ui-slider__label"
+        :class="{ 'ui-slider__label--active': isMarkActive(mark.value) }"
+        :style="getLabelStyle(mark)"
+      >
+        {{ mark.label }}
       </view>
     </view>
   </view>
@@ -68,8 +77,8 @@
 import type { CSSProperties } from "vue"
 import type { SliderMarks, SliderValue } from "./index"
 import { isArray } from "../utils/check"
+import { useRect, useColor, useStyle, useUnitToPx } from "../hooks"
 import { sliderEmits, sliderProps, useSliderProps } from "./index"
-import { useRect, useUnit, useColor, useStyle, useUnitToPx } from "../hooks"
 
 defineOptions({ name: "ui-slider" })
 
@@ -80,14 +89,20 @@ const useProps = useSliderProps(props)
 // 组件实例
 const instance = getCurrentInstance()
 
-// 状态
-const draggingIndex = ref<number>(-1) // 当前拖动的滑块索引，-1 表示未拖动
-const startValue = ref<SliderValue>(0) // 开始拖动时的值
-const startPosition = ref({ x: 0, y: 0 }) // 开始拖动时的触摸位置
-const trackRect = ref<UniApp.NodeInfo>({}) // 轨道区域信息
-const lastTouchEndTime = ref(0) // 上次触摸结束时间，用于防止 click 与 touch 事件冲突
+// 尺寸预设配置（px 单位）
+const SIZE_PRESETS = {
+  small: { trackHeight: 4, handleSize: 20 },
+  medium: { trackHeight: 6, handleSize: 28 },
+  large: { trackHeight: 8, handleSize: 36 },
+} as const
 
-// 内部值状态（用于拖动过程中的实时更新）
+// 状态
+const draggingIndex = ref<number>(-1)
+const startPosition = ref({ x: 0, y: 0 })
+const trackRect = ref<UniApp.NodeInfo>({})
+const lastTouchEndTime = ref(0)
+
+// 内部值状态
 const internalValue = ref<SliderValue>(useProps.modelValue)
 
 // 当前值（单滑块模式）
@@ -116,10 +131,18 @@ watch(
   },
 )
 
+// 获取尺寸配置
+const sizeConfig = computed(() => {
+  const preset = SIZE_PRESETS[useProps.size] || SIZE_PRESETS.medium
+  return {
+    trackHeight: useProps.barHeight ? useUnitToPx(useProps.barHeight) : preset.trackHeight,
+    handleSize: useProps.handleSize ? useUnitToPx(useProps.handleSize) : preset.handleSize,
+  }
+})
+
 // 标准化刻度标记
 const normalizedMarks = computed(() => {
   if (!useProps.marks) return []
-
   const result: Array<{ value: number; label: string; labelStyle?: CSSProperties }> = []
   const marksObj = useProps.marks as SliderMarks
 
@@ -136,13 +159,20 @@ const normalizedMarks = computed(() => {
   return result.sort((a, b) => a.value - b.value)
 })
 
+// 是否有刻度标签
+const hasMarkLabels = computed(() => {
+  return normalizedMarks.value.some((mark) => mark.label)
+})
+
 // 根样式类
 const rootClass = computed(() => {
-  const list: string[] = []
+  const list: string[] = ["ui-slider"]
+  list.push(`ui-slider--${useProps.size}`)
   if (useProps.vertical) list.push("ui-slider--vertical")
   if (useProps.disabled) list.push("ui-slider--disabled")
   if (useProps.readonly) list.push("ui-slider--readonly")
   if (draggingIndex.value !== -1) list.push("ui-slider--dragging")
+  if (useProps.customClass) list.push(useProps.customClass)
   return list
 })
 
@@ -152,32 +182,43 @@ const rootStyle = computed(() => {
   return useStyle({ ...style, ...useStyle(useProps.customStyle) })
 })
 
-// 按钮半径（像素）
-const halfButtonSize = computed(() => useUnitToPx(useProps.buttonSize) / 2)
-
-// 轨道容器样式
-const trackStyle = computed(() => {
+// 轨道包装器样式（提供足够的触摸区域）
+const wrapperStyle = computed(() => {
   const style: CSSProperties = {}
-  const barHeight = useUnit(useProps.barHeight)
-  const halfButton = halfButtonSize.value
+  const minTouchSize = 44 // 最小触摸区域 44px
+  const { handleSize } = sizeConfig.value
 
   if (useProps.vertical) {
-    style.width = barHeight
-    // 左右 padding 容纳按钮垂直居中（按钮比轨道高度大）
-    style.paddingLeft = `${halfButton}px`
-    style.paddingRight = `${halfButton}px`
+    // 垂直模式：固定宽度，高度 100%
+    style.width = `${Math.max(minTouchSize, handleSize)}px`
+    style.height = "100%"
   } else {
-    style.height = barHeight
-    // 上下 padding 容纳按钮垂直居中（按钮比轨道高度大）
-    style.paddingTop = `${halfButton}px`
-    style.paddingBottom = `${halfButton}px`
+    // 水平模式：固定高度，宽度 100%
+    style.height = `${Math.max(minTouchSize, handleSize)}px`
+    style.width = "100%"
   }
 
   return useStyle(style)
 })
 
-// 轨道背景样式
-const trackBgStyle = computed(() => {
+// 轨道样式
+const trackStyle = computed(() => {
+  const style: CSSProperties = {}
+  const { trackHeight } = sizeConfig.value
+
+  if (useProps.vertical) {
+    // 垂直模式：宽度固定，高度由 flex: 1 决定（在 CSS 中设置）
+    style.width = `${trackHeight}px`
+  } else {
+    // 水平模式：高度固定，宽度由 flex: 1 决定
+    style.height = `${trackHeight}px`
+  }
+
+  return useStyle(style)
+})
+
+// 非激活轨道样式
+const inactiveTrackStyle = computed(() => {
   const style: CSSProperties = {}
   if (useProps.inactiveColor) {
     style.backgroundColor = useColor(useProps.inactiveColor)
@@ -186,36 +227,30 @@ const trackBgStyle = computed(() => {
 })
 
 // 激活轨道样式
-// 激活轨道需要与按钮位置对齐，所以也要考虑按钮半径
-const activeStyle = computed(() => {
+const activeTrackStyle = computed(() => {
   const style: CSSProperties = {}
   const range = useProps.max - useProps.min
-  const halfButton = halfButtonSize.value
 
   if (useProps.range) {
-    // 范围模式：从左值到右值
-    const leftRatio = (rangeValue.value[0] - useProps.min) / range
-    const rightRatio = (rangeValue.value[1] - useProps.min) / range
+    const leftRatio = ((rangeValue.value[0] - useProps.min) / range) * 100
+    const rightRatio = ((rangeValue.value[1] - useProps.min) / range) * 100
 
     if (useProps.vertical) {
-      // 起始位置 = halfButton + (可用高度 * leftRatio)
-      style.bottom = `calc(${halfButton}px + (100% - ${halfButton * 2}px) * ${leftRatio})`
-      // 高度 = 可用高度 * (rightRatio - leftRatio)
-      style.height = `calc((100% - ${halfButton * 2}px) * ${rightRatio - leftRatio})`
+      style.bottom = `${leftRatio}%`
+      style.height = `${rightRatio - leftRatio}%`
     } else {
-      style.left = `calc(${halfButton}px + (100% - ${halfButton * 2}px) * ${leftRatio})`
-      style.width = `calc((100% - ${halfButton * 2}px) * ${rightRatio - leftRatio})`
+      style.left = `${leftRatio}%`
+      style.width = `${rightRatio - leftRatio}%`
     }
   } else {
-    // 单值模式：从起点到当前值
-    const ratio = (currentValue.value - useProps.min) / range
+    const ratio = ((currentValue.value - useProps.min) / range) * 100
 
     if (useProps.vertical) {
-      style.bottom = `${halfButton}px`
-      style.height = `calc((100% - ${halfButton * 2}px) * ${ratio})`
+      style.bottom = "0"
+      style.height = `${ratio}%`
     } else {
-      style.left = `${halfButton}px`
-      style.width = `calc((100% - ${halfButton * 2}px) * ${ratio})`
+      style.left = "0"
+      style.width = `${ratio}%`
     }
   }
 
@@ -226,68 +261,113 @@ const activeStyle = computed(() => {
   return useStyle(style)
 })
 
-// 按钮样式
-const buttonStyle = computed(() => {
+// 值指示器样式
+const indicatorStyle = computed(() => {
   const style: CSSProperties = {}
-  const size = useUnit(useProps.buttonSize)
-  style.width = size
-  style.height = size
+  if (useProps.activeColor) {
+    style.backgroundColor = useColor(useProps.activeColor)
+  }
+  return useStyle(style)
+})
 
-  if (useProps.buttonColor) {
-    style.backgroundColor = useColor(useProps.buttonColor)
+// 刻度标签容器样式
+const labelsStyle = computed(() => {
+  const style: CSSProperties = {}
+  const { handleSize } = sizeConfig.value
+  const halfHandle = handleSize / 2
+
+  // 标签容器需要与轨道内容区域对齐
+  // 由于把手会溢出轨道两端，标签也需要相同的边距来对齐
+  if (useProps.vertical) {
+    style.paddingTop = `${halfHandle}px`
+    style.paddingBottom = `${halfHandle}px`
+  } else {
+    style.paddingLeft = `${halfHandle}px`
+    style.paddingRight = `${halfHandle}px`
   }
 
   return useStyle(style)
 })
 
-// 按钮包装器样式（用于定位）
-// 按钮可移动范围：从 半径 到 100%-半径，确保按钮不超出轨道
-const buttonWrapperStyle = computed(() => {
-  return (index: number) => {
-    const style: CSSProperties = {}
-    const range = useProps.max - useProps.min
-    const halfButton = halfButtonSize.value
-    let value: number
-
-    if (useProps.range) {
-      value = rangeValue.value[index]
-    } else {
-      value = currentValue.value
-    }
-
-    // 百分比 0~1
-    const ratio = (value - useProps.min) / range
-
-    if (useProps.vertical) {
-      // 垂直模式：从 halfButton 到 100% - halfButton
-      style.bottom = `calc(${halfButton}px + (100% - ${halfButton * 2}px) * ${ratio})`
-    } else {
-      // 水平模式：从 halfButton 到 100% - halfButton
-      style.left = `calc(${halfButton}px + (100% - ${halfButton * 2}px) * ${ratio})`
-    }
-
-    return useStyle(style)
+// 获取把手样式类
+function getHandleClass(index: number): string[] {
+  const classes: string[] = []
+  if (draggingIndex.value === index) {
+    classes.push("ui-slider__handle--dragging")
   }
-})
+  return classes
+}
 
-// 刻度样式
-// 刻度位置与按钮位置计算方式一致
-const markStyle = computed(() => {
-  return (mark: { value: number }) => {
-    const style: CSSProperties = {}
-    const range = useProps.max - useProps.min
-    const halfButton = halfButtonSize.value
-    const ratio = (mark.value - useProps.min) / range
+// 获取把手样式
+function getHandleStyle(index: number): CSSProperties {
+  const style: CSSProperties = {}
+  const range = useProps.max - useProps.min
+  const { handleSize } = sizeConfig.value
+  let value: number
 
-    if (useProps.vertical) {
-      style.bottom = `calc(${halfButton}px + (100% - ${halfButton * 2}px) * ${ratio})`
-    } else {
-      style.left = `calc(${halfButton}px + (100% - ${halfButton * 2}px) * ${ratio})`
-    }
-
-    return useStyle(style)
+  if (useProps.range) {
+    value = rangeValue.value[index]
+  } else {
+    value = currentValue.value
   }
-})
+
+  const ratio = ((value - useProps.min) / range) * 100
+
+  // 设置把手尺寸
+  style.width = `${handleSize}px`
+  style.height = `${handleSize}px`
+
+  if (useProps.vertical) {
+    style.bottom = `${ratio}%`
+  } else {
+    style.left = `${ratio}%`
+  }
+
+  if (useProps.handleColor) {
+    style.backgroundColor = useColor(useProps.handleColor)
+  }
+
+  return useStyle(style)
+}
+
+// 获取刻度样式
+// 使用 calc() 让刻度点始终在轨道内部，不超出边界
+// 0% 时刻度点左边缘对齐轨道左边缘，100% 时刻度点右边缘对齐轨道右边缘
+function getTickStyle(value: number): CSSProperties {
+  const style: CSSProperties = {}
+  const range = useProps.max - useProps.min
+  const ratio = ((value - useProps.min) / range) * 100
+  const tickSize = 4 // 刻度点尺寸 4px
+
+  if (useProps.vertical) {
+    // 垂直模式：bottom 从 0 到 calc(100% - 4px)
+    style.bottom = `calc(${ratio}% - ${(ratio / 100) * tickSize}px)`
+  } else {
+    // 水平模式：left 从 0 到 calc(100% - 4px)
+    style.left = `calc(${ratio}% - ${(ratio / 100) * tickSize}px)`
+  }
+
+  return useStyle(style)
+}
+
+// 获取标签样式
+function getLabelStyle(mark: { value: number; labelStyle?: CSSProperties }): CSSProperties {
+  const style: CSSProperties = {}
+  const range = useProps.max - useProps.min
+  const ratio = ((mark.value - useProps.min) / range) * 100
+
+  if (useProps.vertical) {
+    style.bottom = `${ratio}%`
+  } else {
+    style.left = `${ratio}%`
+  }
+
+  if (mark.labelStyle) {
+    Object.assign(style, mark.labelStyle)
+  }
+
+  return useStyle(style)
+}
 
 // 判断刻度是否在激活范围内
 function isMarkActive(value: number): boolean {
@@ -301,7 +381,6 @@ function isMarkActive(value: number): boolean {
 function shouldShowValue(index: number): boolean {
   if (useProps.showValueMode === "never" || !useProps.showValue) return false
   if (useProps.showValueMode === "always") return true
-  // dragging 模式：仅拖动时显示
   return draggingIndex.value === index
 }
 
@@ -315,18 +394,27 @@ function formatDisplayValue(value: number): string {
 
 // 将位置转换为值
 function positionToValue(position: number, trackLength: number): number {
-  const range = useProps.max - useProps.min
-  let ratio = position / trackLength
+  // 防止除以 0 或无效输入
+  if (!Number.isFinite(position) || !Number.isFinite(trackLength) || trackLength === 0) {
+    return useProps.min
+  }
 
-  // 限制在 0-1 范围内
+  const range = useProps.max - useProps.min
+  // 防止 range 为 0
+  if (range === 0) {
+    return useProps.min
+  }
+
+  let ratio = position / trackLength
   ratio = Math.max(0, Math.min(1, ratio))
 
-  // 计算原始值
   let value = useProps.min + ratio * range
 
   // 根据步长对齐
-  const steps = Math.round((value - useProps.min) / useProps.step)
-  value = useProps.min + steps * useProps.step
+  if (useProps.step > 0) {
+    const steps = Math.round((value - useProps.min) / useProps.step)
+    value = useProps.min + steps * useProps.step
+  }
 
   // 确保在范围内
   value = Math.max(useProps.min, Math.min(useProps.max, value))
@@ -340,21 +428,40 @@ async function updateTrackRect() {
 }
 
 // 轨道点击事件
-async function onTrackClick(event: MouseEvent) {
+async function onTrackClick(event: any) {
   if (useProps.disabled || useProps.readonly) return
-
-  // 防止 touch 结束后触发的合成 click 事件导致值跳变
-  // 在触摸设备上，touchend 后通常会触发一个合成的 click 事件
   if (Date.now() - lastTouchEndTime.value < 300) return
 
   await updateTrackRect()
 
-  // 获取点击位置（click 事件直接使用 clientX/clientY）
-  const clientX = event.clientX
-  const clientY = event.clientY
+  // 兼容 UniApp 和 H5 的事件对象
+  // UniApp tap 事件使用 detail.x/detail.y，H5 click 使用 clientX/clientY
+  let clientX: number
+  let clientY: number
 
-  // 计算相对于轨道的位置
+  if (event.detail && typeof event.detail.x === "number") {
+    // UniApp tap 事件
+    clientX = event.detail.x
+    clientY = event.detail.y
+  } else if (event.touches && event.touches.length > 0) {
+    // touch 事件
+    clientX = event.touches[0].clientX
+    clientY = event.touches[0].clientY
+  } else if (typeof event.clientX === "number") {
+    // H5 click 事件
+    clientX = event.clientX
+    clientY = event.clientY
+  } else {
+    // 无法获取坐标，忽略此次点击
+    return
+  }
+
   const rect = trackRect.value
+  // 确保 rect 有有效值
+  if (!rect.width && !rect.height) {
+    return
+  }
+
   let position: number
   let trackLength: number
 
@@ -366,10 +473,19 @@ async function onTrackClick(event: MouseEvent) {
     trackLength = rect.width || 1
   }
 
+  // 防止 NaN
+  if (!Number.isFinite(position) || !Number.isFinite(trackLength) || trackLength === 0) {
+    return
+  }
+
   const newValue = positionToValue(position, trackLength)
 
+  // 防止 NaN 值
+  if (!Number.isFinite(newValue)) {
+    return
+  }
+
   if (useProps.range) {
-    // 范围模式：判断点击位置更接近哪个滑块
     const leftDist = Math.abs(newValue - rangeValue.value[0])
     const rightDist = Math.abs(newValue - rangeValue.value[1])
 
@@ -381,16 +497,19 @@ async function onTrackClick(event: MouseEvent) {
   } else {
     updateSingleValue(newValue)
   }
+
+  // 触发最终值更新
+  emit("update:modelValue", internalValue.value)
 }
 
 // 触摸开始
-function onTouchStart(event: TouchEvent) {
+function onTouchStart() {
   if (useProps.disabled || useProps.readonly) return
   updateTrackRect()
 }
 
-// 按钮触摸开始
-function onButtonTouchStart(event: TouchEvent, index: number) {
+// 把手触摸开始
+function onHandleTouchStart(event: TouchEvent, index: number) {
   if (useProps.disabled || useProps.readonly) return
 
   draggingIndex.value = index
@@ -398,10 +517,8 @@ function onButtonTouchStart(event: TouchEvent, index: number) {
     x: event.touches[0].clientX,
     y: event.touches[0].clientY,
   }
-  startValue.value = useProps.range ? [...rangeValue.value] : currentValue.value
 
   updateTrackRect()
-
   emit("dragStart", internalValue.value, index)
 }
 
@@ -411,7 +528,14 @@ function onTouchMove(event: TouchEvent) {
   if (draggingIndex.value === -1) return
 
   const touch = event.touches[0]
+  if (!touch) return
+
   const rect = trackRect.value
+  // 确保 rect 有有效值
+  if (!rect.width && !rect.height) {
+    return
+  }
+
   let position: number
   let trackLength: number
 
@@ -423,7 +547,17 @@ function onTouchMove(event: TouchEvent) {
     trackLength = rect.width || 1
   }
 
+  // 防止 NaN
+  if (!Number.isFinite(position) || !Number.isFinite(trackLength) || trackLength === 0) {
+    return
+  }
+
   const newValue = positionToValue(position, trackLength)
+
+  // 防止 NaN 值
+  if (!Number.isFinite(newValue)) {
+    return
+  }
 
   if (useProps.range) {
     updateRangeValue(draggingIndex.value, newValue)
@@ -438,18 +572,106 @@ function onTouchEnd() {
 
   const index = draggingIndex.value
   draggingIndex.value = -1
-
-  // 记录触摸结束时间，用于防止后续 click 事件误触发
   lastTouchEndTime.value = Date.now()
 
   emit("dragEnd", internalValue.value, index)
   emit("update:modelValue", internalValue.value)
 }
 
+// 鼠标按下（PC 端支持）
+function onMouseDown(_event: MouseEvent) {
+  if (useProps.disabled || useProps.readonly) return
+  updateTrackRect()
+}
+
+// 鼠标移动处理函数
+function handleMouseMove(event: MouseEvent) {
+  if (useProps.disabled || useProps.readonly) return
+  if (draggingIndex.value === -1) return
+
+  const rect = trackRect.value
+  if (!rect.width && !rect.height) {
+    return
+  }
+
+  let position: number
+  let trackLength: number
+
+  if (useProps.vertical) {
+    position = (rect.bottom || 0) - event.clientY
+    trackLength = rect.height || 1
+  } else {
+    position = event.clientX - (rect.left || 0)
+    trackLength = rect.width || 1
+  }
+
+  if (!Number.isFinite(position) || !Number.isFinite(trackLength) || trackLength === 0) {
+    return
+  }
+
+  const newValue = positionToValue(position, trackLength)
+
+  if (!Number.isFinite(newValue)) {
+    return
+  }
+
+  if (useProps.range) {
+    updateRangeValue(draggingIndex.value, newValue)
+  } else {
+    updateSingleValue(newValue)
+  }
+}
+
+// 鼠标释放处理函数
+function handleMouseUp() {
+  if (draggingIndex.value === -1) return
+
+  const index = draggingIndex.value
+  draggingIndex.value = -1
+  lastTouchEndTime.value = Date.now()
+
+  emit("dragEnd", internalValue.value, index)
+  emit("update:modelValue", internalValue.value)
+
+  // 移除全局鼠标事件监听（仅在浏览器环境）
+  if (typeof document !== "undefined") {
+    document.removeEventListener("mousemove", handleMouseMove)
+    document.removeEventListener("mouseup", handleMouseUp)
+  }
+}
+
+// 把手鼠标按下
+function onHandleMouseDown(event: MouseEvent, index: number) {
+  if (useProps.disabled || useProps.readonly) return
+
+  event.preventDefault()
+  draggingIndex.value = index
+  startPosition.value = {
+    x: event.clientX,
+    y: event.clientY,
+  }
+
+  updateTrackRect()
+  emit("dragStart", internalValue.value, index)
+
+  // 添加全局鼠标事件监听（仅在浏览器环境）
+  if (typeof document !== "undefined") {
+    document.addEventListener("mousemove", handleMouseMove)
+    document.addEventListener("mouseup", handleMouseUp)
+  }
+}
+
+// 组件卸载时清理事件监听
+onUnmounted(() => {
+  if (typeof document !== "undefined") {
+    document.removeEventListener("mousemove", handleMouseMove)
+    document.removeEventListener("mouseup", handleMouseUp)
+  }
+})
+
 // 更新单值
 function updateSingleValue(value: number) {
   if (value === internalValue.value) return
-
   internalValue.value = value
   emit("change", value)
 }
@@ -459,11 +681,9 @@ function updateRangeValue(index: number, value: number) {
   const newRange = [...rangeValue.value] as [number, number]
   newRange[index] = value
 
-  // 支持滑块穿越交换：当左滑块拖到右边或右滑块拖到左边时，自动交换角色
+  // 支持滑块穿越交换
   if (newRange[0] > newRange[1]) {
-    // 交换两个值，使 newRange[0] <= newRange[1]
     ;[newRange[0], newRange[1]] = [newRange[1], newRange[0]]
-    // 同时交换当前拖动的滑块索引
     draggingIndex.value = index === 0 ? 1 : 0
   }
 
@@ -485,8 +705,20 @@ export default {
 
 <style lang="scss">
 .ui-slider {
+  --slider-tick-color: var(--ui-color-border);
+  --slider-label-color: var(--ui-color-text-secondary);
+  --slider-active-color: var(--ui-color-primary);
+  --slider-handle-color: var(--ui-color-background);
+  --slider-handle-shadow: 0 2px 6px rgba(0, 0, 0, 0.16);
+  --slider-inactive-color: var(--ui-color-background-dark);
+  --slider-indicator-color: var(--ui-color-primary);
+  --slider-tick-active-color: var(--ui-color-primary);
+  --slider-handle-shadow-active: 0 4px 12px rgba(0, 0, 0, 0.24);
+  --slider-indicator-text-color: var(--ui-color-background);
+
   width: 100%;
   position: relative;
+  box-sizing: border-box;
   user-select: none;
   touch-action: none;
 
@@ -501,137 +733,201 @@ export default {
     pointer-events: none;
   }
 
-  // 轨道容器
-  &__track {
-    width: 100%;
+  // 轨道包装器
+  &__wrapper {
     cursor: pointer;
+    display: flex;
+    overflow: visible;
     position: relative;
-    box-sizing: content-box;
+    box-sizing: border-box;
+    align-items: center; // 允许把手超出但不影响布局
   }
 
-  // 轨道背景
-  &__track-bg {
+  // 轨道
+  &__track {
+    flex: 1;
+    overflow: visible;
+    position: relative;
+    border-radius: 9999px;
+  }
+
+  // 非激活轨道（相对于 content-box 定位）
+  &__track-inactive {
     top: 50%;
     left: 0;
-    width: 100%;
+    right: 0;
     height: 100%;
     position: absolute;
     transform: translateY(-50%);
-    border-radius: var(--ui-radius-round);
-    background-color: var(--ui-color-background-dark);
+    border-radius: 9999px;
+    background-color: var(--slider-inactive-color);
   }
 
-  // 激活轨道
+  // 激活轨道（相对于 content-box 定位）
   &__track-active {
     top: 50%;
-    left: 0;
     height: 100%;
     position: absolute;
     transform: translateY(-50%);
-    border-radius: var(--ui-radius-round);
-    background-color: var(--ui-color-primary);
+    transition: none;
+    border-radius: 9999px;
+    background-color: var(--slider-active-color);
   }
 
-  // 滑块按钮包装器
-  &__button-wrapper {
+  // 把手
+  &__handle {
     top: 50%;
     cursor: grab;
+    display: flex;
     z-index: 1;
-    position: absolute;
+    overflow: visible;
+    position: absolute; // 允许涟漪效果超出
     transform: translate(-50%, -50%);
+    box-shadow: var(--slider-handle-shadow);
+    transition:
+      transform 0.15s ease,
+      box-shadow 0.15s ease;
+    align-items: center;
+    border-radius: 50%;
+    justify-content: center;
+    background-color: var(--slider-handle-color);
 
+    &:active,
     &--dragging {
       cursor: grabbing;
-      z-index: 2;
+      transform: translate(-50%, -50%) scale(1.1);
+      box-shadow: var(--slider-handle-shadow-active);
+    }
+
+    // 涟漪效果层（使用固定尺寸避免影响布局）
+    &::before {
+      top: 50%;
+      left: 50%;
+      width: 44px;
+      height: 44px;
+      content: "";
+      opacity: 0;
+      position: absolute;
+      transform: translate(-50%, -50%);
+      transition: opacity 0.2s ease;
+      border-radius: 50%;
+      pointer-events: none;
+      background-color: var(--slider-active-color);
+    }
+
+    &:active::before,
+    &--dragging::before {
+      opacity: 0.12;
     }
   }
 
-  // 滑块按钮
-  &__button {
-    width: 48rpx;
-    height: 48rpx;
-    display: flex;
-    position: relative;
-    box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.15);
-    transition: transform 0.15s ease;
-    align-items: center;
-    border-radius: var(--ui-radius-round);
-    justify-content: center;
-    background-color: var(--ui-color-background);
-
-    &:active {
-      transform: scale(1.1);
-    }
-  }
-
-  // 值提示
-  &__value {
+  // 值指示器
+  &__indicator {
     left: 50%;
-    color: var(--ui-color-background);
-    bottom: 100%;
-    padding: 4rpx 12rpx;
+    color: var(--slider-indicator-text-color);
+    bottom: calc(100% + 8px);
+    opacity: 0;
+    padding: 4px 10px;
     position: absolute;
-    font-size: var(--ui-font-size-xs);
+    animation: slider-indicator-show 0.15s ease forwards;
+    font-size: 12px;
+    min-width: 32px;
     transform: translateX(-50%);
+    text-align: center;
+    font-weight: 500;
+    line-height: 1.4;
     white-space: nowrap;
-    border-radius: var(--ui-radius-sm);
-    margin-bottom: 8rpx;
-    background-color: var(--ui-color-text-main);
+    border-radius: 6px;
+    background-color: var(--slider-indicator-color);
 
+    // 箭头
     &::after {
       top: 100%;
       left: 50%;
-      border: 8rpx solid transparent;
+      border: 5px solid transparent;
       content: "";
       position: absolute;
       transform: translateX(-50%);
-      border-top-color: var(--ui-color-text-main);
+      border-top-color: var(--slider-indicator-color);
     }
   }
 
-  // 刻度标记
-  &__mark {
+  @keyframes slider-indicator-show {
+    from {
+      opacity: 0;
+      transform: translateX(-50%) translateY(4px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+  }
+
+  // 刻度点
+  // 使用 calc() 让刻度点始终在轨道内部，不超出边界
+  &__tick {
     top: 50%;
+    width: 4px;
+    height: 4px;
     z-index: 0;
     position: absolute;
-    transform: translate(-50%, -50%);
-  }
-
-  &__mark-dot {
-    width: 12rpx;
-    border: 2rpx solid var(--ui-color-border);
-    height: 12rpx;
-    border-radius: var(--ui-radius-round);
-    background-color: var(--ui-color-background);
+    transform: translateY(-50%); // 只做垂直居中
+    border-radius: 50%;
+    pointer-events: none;
+    background-color: var(--slider-tick-color);
 
     &--active {
-      border-color: var(--ui-color-primary);
+      background-color: var(--slider-tick-active-color);
     }
   }
 
-  &__mark-label {
-    top: 100%;
-    left: 50%;
-    color: var(--ui-color-text-secondary);
+  // 刻度标签容器
+  &__labels {
+    height: 20px;
+    display: flex;
+    position: relative;
+    box-sizing: border-box;
+    margin-top: 8px;
+  }
+
+  // 刻度标签
+  &__label {
+    color: var(--slider-label-color);
     position: absolute;
-    font-size: var(--ui-font-size-xs);
+    font-size: 12px;
     transform: translateX(-50%);
-    margin-top: 16rpx;
     white-space: nowrap;
+
+    &--active {
+      color: var(--slider-active-color);
+    }
   }
 
   // 垂直模式
   &--vertical {
-    width: max-content;
-    height: 300rpx;
+    width: max-content; // 使用 max-content 保持固定宽度
+    height: 100%; // 自适应父容器高度
+    min-height: 100px; // 最小高度保证可用性
     display: inline-flex;
+    flex-shrink: 0;
+    flex-direction: row; // 防止被压缩
 
-    .ui-slider__track {
-      width: max-content;
+    .ui-slider__wrapper {
       height: 100%;
+      flex-shrink: 0;
+      flex-direction: column; // 垂直布局
+      box-sizing: border-box;
+      justify-content: center; // 居中轨道
     }
 
-    .ui-slider__track-bg {
+    .ui-slider__track {
+      flex: 1; // 填充 padding 之间的剩余空间
+      width: auto; // 由 trackStyle 控制
+      height: auto; // 由 flex 决定
+      min-height: 0; // 允许收缩
+    }
+
+    .ui-slider__track-inactive {
       top: 0;
       left: 50%;
       width: 100%;
@@ -643,47 +939,70 @@ export default {
       top: auto;
       left: 50%;
       width: 100%;
-      bottom: 0;
-      position: absolute;
       transform: translateX(-50%);
     }
 
-    .ui-slider__button-wrapper {
+    .ui-slider__handle {
       top: auto;
       left: 50%;
       transform: translate(-50%, 50%);
+
+      &:active,
+      &--dragging {
+        transform: translate(-50%, 50%) scale(1.1);
+      }
     }
 
-    .ui-slider__mark {
+    .ui-slider__tick {
       top: auto;
       left: 50%;
-      transform: translate(-50%, 50%);
+      transform: translateX(-50%); // 只做水平居中
     }
 
-    .ui-slider__mark-label {
-      top: 50%;
-      left: 100%;
-      transform: translateY(-50%);
-      margin-top: 0;
-      margin-left: 16rpx;
-    }
-
-    .ui-slider__value {
+    .ui-slider__indicator {
       left: auto;
-      right: 100%;
+      right: calc(100% + 8px);
       bottom: 50%;
       transform: translateY(50%);
-      margin-right: 8rpx;
-      margin-bottom: 0;
+      animation-name: slider-indicator-show-vertical;
 
       &::after {
         top: 50%;
         left: 100%;
-        border: 8rpx solid transparent;
+        border: 5px solid transparent;
         transform: translateY(-50%);
         border-top-color: transparent;
-        border-left-color: var(--ui-color-text-main);
+        border-left-color: var(--slider-indicator-color);
       }
+    }
+
+    @keyframes slider-indicator-show-vertical {
+      from {
+        opacity: 0;
+        transform: translateY(50%) translateX(4px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(50%) translateX(0);
+      }
+    }
+
+    .ui-slider__labels {
+      width: 20px;
+      height: 100%;
+      margin-top: 0;
+      margin-left: 8px;
+    }
+
+    .ui-slider__label {
+      transform: translateY(50%);
+    }
+  }
+
+  // 拖动中状态（全局）
+  &--dragging {
+    .ui-slider__track-active {
+      transition: none;
     }
   }
 }

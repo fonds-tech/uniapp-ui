@@ -2,20 +2,52 @@
   <div v-if="showPreview && isLargeScreen" class="preview-container" :class="{ collapsed: !expanded }">
     <div class="preview-header">
       <a v-if="expanded" :href="demoUrl" target="_blank" class="preview-link" title="新窗口打开">
-        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="18"
+          height="18"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
           <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
           <polyline points="15 3 21 3 21 9" />
           <line x1="10" y1="14" x2="21" y2="3" />
         </svg>
       </a>
       <button class="preview-toggle" type="button" :title="expanded ? '收起预览' : '展开预览'" @click="toggleExpanded">
-        <svg v-if="expanded" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <svg
+          v-if="expanded"
+          xmlns="http://www.w3.org/2000/svg"
+          width="18"
+          height="18"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
           <polyline points="15 3 21 3 21 9" />
           <polyline points="9 21 3 21 3 15" />
           <line x1="21" y1="3" x2="14" y2="10" />
           <line x1="3" y1="21" x2="10" y2="14" />
         </svg>
-        <svg v-else xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <svg
+          v-else
+          xmlns="http://www.w3.org/2000/svg"
+          width="18"
+          height="18"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
           <polyline points="4 14 10 14 10 20" />
           <polyline points="20 10 14 10 14 4" />
           <line x1="14" y1="10" x2="21" y2="3" />
@@ -29,7 +61,17 @@
   </div>
 
   <button v-if="showPreview && isMediumScreen" class="preview-trigger" type="button" title="打开预览" @click="openDrawer">
-    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="22"
+      height="22"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
       <rect x="5" y="2" width="14" height="20" rx="2" ry="2" />
       <line x1="12" y1="18" x2="12.01" y2="18" />
     </svg>
@@ -45,14 +87,34 @@
           <span class="drawer-title">组件预览</span>
           <div class="drawer-actions">
             <a :href="demoUrl" target="_blank" class="drawer-link" title="新窗口打开">
-              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
                 <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
                 <polyline points="15 3 21 3 21 9" />
                 <line x1="10" y1="14" x2="21" y2="3" />
               </svg>
             </a>
             <button class="drawer-close" type="button" title="关闭" @click="closeDrawer">
-              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
                 <line x1="18" y1="6" x2="6" y2="18" />
                 <line x1="6" y1="6" x2="18" y2="18" />
               </svg>
@@ -90,7 +152,7 @@ const demoPathMap: Record<string, string> = {
   "skeleton-image": "skeleton-components",
   "skeleton-paragraph": "skeleton-components",
   "skeleton-title": "skeleton-components",
-  "grid": "layout",
+  grid: "layout",
 }
 
 const componentName = computed(() => {
@@ -106,10 +168,7 @@ const showPreview = computed(() => componentName.value && componentName.value !=
 const demoUrl = computed(() => {
   if (!componentName.value) return ""
   const theme = isDark.value ? "dark" : "light"
-  const baseUrl =
-    typeof window !== "undefined" && window.location.hostname !== "localhost"
-      ? `${window.location.origin}/demo/#/`
-      : "http://localhost:9300/#/"
+  const baseUrl = typeof window !== "undefined" && window.location.hostname !== "localhost" ? `${window.location.origin}/demo/#/` : "http://localhost:9200/#/"
   return `${baseUrl}pages/demo/${componentName.value}/index?theme=${theme}`
 })
 
@@ -150,10 +209,13 @@ watch(drawerIframeRef, (el) => {
     el.addEventListener("load", sendThemeMessage)
   }
 })
-watch(() => route.path, () => {
-  expanded.value = true
-  closeDrawer()
-})
+watch(
+  () => route.path,
+  () => {
+    expanded.value = true
+    closeDrawer()
+  },
+)
 
 onMounted(() => {
   updateScreen()

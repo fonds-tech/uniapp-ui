@@ -144,41 +144,41 @@ const rangeValue = ref([20, 80])
 
 ## Props
 
-| 参数            | 说明                           | 类型                                                        | 默认值     |
-| --------------- | ------------------------------ | ----------------------------------------------------------- | ---------- |
-| v-model         | 绑定值，范围模式时为数组       | `number \| [number, number]`                                | `0`        |
-| min             | 最小值                         | `number`                                                    | `0`        |
-| max             | 最大值                         | `number`                                                    | `100`      |
-| step            | 步长                           | `number`                                                    | `1`        |
-| range           | 是否为范围选择（双滑块模式）   | `boolean`                                                   | `false`    |
-| vertical        | 是否垂直展示                   | `boolean`                                                   | `false`    |
-| disabled        | 是否禁用                       | `boolean`                                                   | `false`    |
-| readonly        | 是否只读                       | `boolean`                                                   | `false`    |
-| show-value      | 是否显示值提示                 | `boolean`                                                   | `false`    |
-| show-value-mode | 值提示显示模式                 | `always \| dragging \| never`                               | `dragging` |
-| marks           | 刻度标记                       | `Record<number, string \| { label: string; style?: object }>` | -          |
-| bar-height      | 轨道高度                       | `number \| string`                                          | `4`        |
-| button-size     | 滑块按钮尺寸                   | `number \| string`                                          | `24`       |
-| active-color    | 激活轨道颜色                   | `string`                                                    | -          |
-| inactive-color  | 非激活轨道颜色                 | `string`                                                    | -          |
-| button-color    | 滑块按钮颜色                   | `string`                                                    | -          |
-| format-value    | 格式化显示值函数               | `(value: number) => string`                                 | -          |
-| custom-class    | 自定义类名                     | `string`                                                    | -          |
-| custom-style    | 自定义样式                     | `string \| object`                                          | -          |
+| 参数            | 说明                         | 类型                                                          | 默认值     |
+| --------------- | ---------------------------- | ------------------------------------------------------------- | ---------- |
+| v-model         | 绑定值，范围模式时为数组     | `number \| [number, number]`                                  | `0`        |
+| min             | 最小值                       | `number`                                                      | `0`        |
+| max             | 最大值                       | `number`                                                      | `100`      |
+| step            | 步长                         | `number`                                                      | `1`        |
+| range           | 是否为范围选择（双滑块模式） | `boolean`                                                     | `false`    |
+| vertical        | 是否垂直展示                 | `boolean`                                                     | `false`    |
+| disabled        | 是否禁用                     | `boolean`                                                     | `false`    |
+| readonly        | 是否只读                     | `boolean`                                                     | `false`    |
+| show-value      | 是否显示值提示               | `boolean`                                                     | `false`    |
+| show-value-mode | 值提示显示模式               | `always \| dragging \| never`                                 | `dragging` |
+| marks           | 刻度标记                     | `Record<number, string \| { label: string; style?: object }>` | -          |
+| bar-height      | 轨道高度                     | `number \| string`                                            | `4`        |
+| button-size     | 滑块按钮尺寸                 | `number \| string`                                            | `24`       |
+| active-color    | 激活轨道颜色                 | `string`                                                      | -          |
+| inactive-color  | 非激活轨道颜色               | `string`                                                      | -          |
+| button-color    | 滑块按钮颜色                 | `string`                                                      | -          |
+| format-value    | 格式化显示值函数             | `(value: number) => string`                                   | -          |
+| custom-class    | 自定义类名                   | `string`                                                      | -          |
+| custom-style    | 自定义样式                   | `string \| object`                                            | -          |
 
 ## Events
 
-| 事件名            | 说明                     | 回调参数                                      |
-| ----------------- | ------------------------ | --------------------------------------------- |
-| update:modelValue | 值变化完成时触发         | `value: number \| [number, number]`           |
-| change            | 拖动过程中值变化时触发   | `value: number \| [number, number]`           |
-| drag-start        | 开始拖动时触发           | `value: number \| [number, number], index: number` |
-| drag-end          | 拖动结束时触发           | `value: number \| [number, number], index: number` |
+| 事件名            | 说明                   | 回调参数                                           |
+| ----------------- | ---------------------- | -------------------------------------------------- |
+| update:modelValue | 值变化完成时触发       | `value: number \| [number, number]`                |
+| change            | 拖动过程中值变化时触发 | `value: number \| [number, number]`                |
+| drag-start        | 开始拖动时触发         | `value: number \| [number, number], index: number` |
+| drag-end          | 拖动结束时触发         | `value: number \| [number, number], index: number` |
 
 ## Slots
 
-| 名称         | 说明                           | 参数                                  |
-| ------------ | ------------------------------ | ------------------------------------- |
+| 名称         | 说明                           | 参数                                   |
+| ------------ | ------------------------------ | -------------------------------------- |
 | button       | 自定义单滑块按钮（非范围模式） | `{ value: number, dragging: boolean }` |
 | left-button  | 自定义左侧滑块按钮（范围模式） | `{ value: number, dragging: boolean }` |
 | right-button | 自定义右侧滑块按钮（范围模式） | `{ value: number, dragging: boolean }` |
@@ -189,14 +189,14 @@ const rangeValue = ref([20, 80])
 
 组件提供了以下 CSS 变量，可用于自定义样式：
 
-| 名称                       | 默认值 | 说明             |
-| -------------------------- | ------ | ---------------- |
-| --ui-color-primary         | -      | 激活轨道颜色     |
-| --ui-color-background      | -      | 滑块按钮颜色     |
-| --ui-color-background-dark | -      | 非激活轨道颜色   |
-| --ui-color-text-main       | -      | 值提示背景颜色   |
-| --ui-font-size-xs          | -      | 值提示文字大小   |
-| --ui-radius-round          | -      | 圆角大小         |
+| 名称                       | 默认值 | 说明           |
+| -------------------------- | ------ | -------------- |
+| --ui-color-primary         | -      | 激活轨道颜色   |
+| --ui-color-background      | -      | 滑块按钮颜色   |
+| --ui-color-background-dark | -      | 非激活轨道颜色 |
+| --ui-color-text-main       | -      | 值提示背景颜色 |
+| --ui-font-size-xs          | -      | 值提示文字大小 |
+| --ui-radius-round          | -      | 圆角大小       |
 
 ## 注意事项
 

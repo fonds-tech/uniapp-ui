@@ -119,8 +119,6 @@ const showClear = computed(() => {
   return useProps.clearable && modelValue.value
 })
 
-
-
 watch(() => modelValue.value, updateValue)
 watch(
   () => useProps.modelValue,

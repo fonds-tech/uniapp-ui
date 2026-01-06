@@ -58,7 +58,7 @@
           <text class="slider-value">绿色主题</text>
         </view>
         <view class="slider-item">
-          <ui-slider v-model="value5c" active-color="#7232dd" button-color="#7232dd" />
+          <ui-slider v-model="value5c" active-color="#7232dd" handle-color="#7232dd" />
           <text class="slider-value">紫色主题</text>
         </view>
       </demo-block>
@@ -67,12 +67,12 @@
     <demo-section title="自定义尺寸">
       <demo-block direction="column" align="stretch" :gap="24">
         <view class="slider-item">
-          <ui-slider v-model="value6a" :bar-height="2" :button-size="20" />
-          <text class="slider-value">小尺寸</text>
+          <ui-slider v-model="value6a" size="small" />
+          <text class="slider-value">小尺寸 (size="small")</text>
         </view>
         <view class="slider-item">
-          <ui-slider v-model="value6b" :bar-height="6" :button-size="28" />
-          <text class="slider-value">大尺寸</text>
+          <ui-slider v-model="value6b" size="large" />
+          <text class="slider-value">大尺寸 (size="large")</text>
         </view>
       </demo-block>
     </demo-section>
@@ -203,7 +203,7 @@ const value10b = ref(50)
 
 .vertical-slider-item {
   gap: 16rpx;
-  height: 300rpx;
+  height: 400rpx; // 增加高度以容纳把手和值指示器
   display: flex;
   align-items: center;
   flex-direction: column;

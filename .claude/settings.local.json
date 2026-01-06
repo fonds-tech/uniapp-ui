@@ -36,7 +36,10 @@
       "mcp__serena__think_about_task_adherence",
       "mcp__serena__get_current_config",
       "mcp__desktop-commander__start_search",
-      "mcp__serena__replace_symbol_body"
+      "mcp__serena__replace_symbol_body",
+      "mcp__playwright__browser_navigate",
+      "mcp__playwright__browser_close",
+      "mcp__serena__list_memories"
     ],
     "deny": [],
     "ask": []
