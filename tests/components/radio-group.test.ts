@@ -135,18 +135,18 @@ describe("ui-radio-group 单选框组组件", () => {
       expect(wrapper.props("icon")).toBe("success")
     })
 
-    it("默认形状应为 icon", () => {
+    it("默认形状应为 dot", () => {
       const wrapper = mount(UiRadioGroup)
 
-      expect(wrapper.props("shape")).toBe("icon")
+      expect(wrapper.props("shape")).toBe("dot")
     })
 
-    it("应支持设置形状为 dot", () => {
+    it("应支持设置形状为 icon", () => {
       const wrapper = mount(UiRadioGroup, {
-        props: { shape: "dot" },
+        props: { shape: "icon" },
       })
 
-      expect(wrapper.props("shape")).toBe("dot")
+      expect(wrapper.props("shape")).toBe("icon")
     })
 
     it("默认应为圆形图标", () => {

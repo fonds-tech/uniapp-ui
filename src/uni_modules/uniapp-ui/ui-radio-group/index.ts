@@ -1,7 +1,7 @@
 import type RadioGroup from "./ui-radio-group.vue"
 import type { InjectionKey, ExtractPropTypes } from "vue"
 import { createProps } from "../hooks"
-import { isString, isBoolean } from "../utils/check"
+import { isNumber, isString } from "../utils/check"
 import { styleProp, truthProp, makeStringProp, makeNumericProp } from "../utils/props"
 
 export const radioGroupKey: InjectionKey<RadioGroupProvide> = Symbol("ui-radio-group")
@@ -11,11 +11,7 @@ export const [radioGroupProps, useRadioGroupProps] = createProps("radioGroup", {
    */
   modelValue: makeNumericProp(""),
   /**
-   * 最大可选数量
-   */
-  max: makeNumericProp(Infinity),
-  /**
-   * 复选框之间的间距
+   * 单选框之间的间距
    */
   gap: makeNumericProp(0),
   /**
@@ -33,7 +29,7 @@ export const [radioGroupProps, useRadioGroupProps] = createProps("radioGroup", {
   /**
    * 形状，icon 或 dot
    */
-  shape: makeStringProp("icon"),
+  shape: makeStringProp("dot"),
   /**
    * 是否圆形图标
    */
@@ -45,11 +41,11 @@ export const [radioGroupProps, useRadioGroupProps] = createProps("radioGroup", {
   /**
    * 图标大小
    */
-  iconSize: makeNumericProp("28rpx"),
+  iconSize: makeNumericProp("36rpx"),
   /**
    * 图标颜色
    */
-  iconColor: makeStringProp("#BFBFBF"),
+  iconColor: makeStringProp(""),
   /**
    * 图标粗细
    */
@@ -101,8 +97,8 @@ export const [radioGroupProps, useRadioGroupProps] = createProps("radioGroup", {
 })
 export const radioGroupEmits = {
   click: () => true,
-  change: (value: string | number) => isBoolean(value) || isString(value),
-  "update:modelValue": (value: string | number) => isBoolean(value) || isString(value),
+  change: (value: string | number) => isString(value) || isNumber(value),
+  "update:modelValue": (value: string | number) => isString(value) || isNumber(value),
 }
 
 export type RadioGroupValueType = string | number

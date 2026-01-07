@@ -1,3 +1,4 @@
+import type { EmptyProps } from "../ui-empty"
 import type { InputProps } from "../ui-input"
 import type { NavbarProps } from "../ui-navbar"
 import type { PickerProps } from "../ui-picker"
@@ -28,6 +29,10 @@ export interface Components {
    * select 组件默认值
    */
   select?: Partial<SelectProps>
+  /**
+   * empty 组件默认值
+   */
+  empty?: Partial<EmptyProps>
 }
 
 // 重新导出组件类型

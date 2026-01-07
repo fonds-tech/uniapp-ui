@@ -1,5 +1,5 @@
 <template>
-  <view class="ui-radio-group" :class="[classs, customClass]" :style="[style]">
+  <view class="ui-radio-group" :class="[rootClass, customClass]" :style="[rootStyle]">
     <slot />
   </view>
 </template>
@@ -18,12 +18,12 @@ const emits = defineEmits(radioGroupEmits)
 const useProps = useRadioGroupProps(props)
 const { linkChildren } = useChildren(radioGroupKey)
 
-const style = computed(() => {
+const rootStyle = computed(() => {
   const style: CSSProperties = {}
   return useStyle({ ...style, ...useStyle(useProps.customStyle) })
 })
 
-const classs = computed(() => {
+const rootClass = computed(() => {
   const list: string[] = []
   if (useProps.vertical) list.push("ui-radio-group--vertical")
   return list
@@ -51,6 +51,7 @@ export default {
 <style scoped lang="scss">
 .ui-radio-group {
   display: flex;
+  flex-wrap: wrap;
 
   &--vertical {
     flex-direction: column;

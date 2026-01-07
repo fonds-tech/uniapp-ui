@@ -9,6 +9,10 @@ export const [radioProps, useRadioProps] = createProps("radio", {
    */
   name: { type: [Number, String], required: true, default: "" },
   /**
+   * 当前选中的值（独立使用时）
+   */
+  modelValue: { type: [Number, String, Boolean], default: "" },
+  /**
    * 标签文本内容
    */
   label: makeNumericProp(""),
@@ -17,13 +21,21 @@ export const [radioProps, useRadioProps] = createProps("radio", {
    */
   disabled: Boolean,
   /**
+   * 是否只读
+   */
+  readonly: Boolean,
+  /**
+   * 是否与 radio-group 绑定
+   */
+  bindGroup: truthProp,
+  /**
    * 图标名称
    */
   icon: makeStringProp("check"),
   /**
    * 形状，icon 或 dot
    */
-  shape: makeStringProp("dot"),
+  shape: makeStringProp(""),
   /**
    * 是否圆形图标
    */
@@ -91,8 +103,11 @@ export const [radioProps, useRadioProps] = createProps("radio", {
 })
 export const radioEmits = {
   click: () => true,
+  change: (value: RadioValueType) => true,
+  "update:modelValue": (value: RadioValueType) => true,
 }
 
+export type RadioValueType = string | number | boolean
 export type RadioNameType = string | number
 export type RadioEmits = typeof radioEmits
 export type RadioProps = ExtractPropTypes<typeof radioProps>

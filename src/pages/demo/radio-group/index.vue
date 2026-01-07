@@ -2,7 +2,7 @@
   <demo-page>
     <demo-section title="基础用法">
       <demo-block direction="column">
-        <ui-radio-group v-model="value1">
+        <ui-radio-group v-model="value1" gap="12">
           <ui-radio name="a">选项 A</ui-radio>
           <ui-radio name="b">选项 B</ui-radio>
           <ui-radio name="c">选项 C</ui-radio>
