@@ -1,4 +1,5 @@
 import type Col from "./ui-col.vue"
+import type { ExtractPropTypes } from "vue"
 import { createProps } from "../hooks"
 import { styleProp, makeNumberProp, makeStringProp } from "../utils/props"
 
@@ -21,4 +22,8 @@ export const [colProps, useColProps] = createProps("col", {
   customStyle: styleProp,
 })
 
+export const colEmits = {}
+
+export type ColEmits = typeof colEmits
+export type ColProps = ExtractPropTypes<typeof colProps>
 export type ColInstance = InstanceType<typeof Col>

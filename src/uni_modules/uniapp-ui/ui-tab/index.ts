@@ -1,5 +1,5 @@
 import type Tab from "./ui-tab.vue"
-import type { PropType, CSSProperties } from "vue"
+import type { PropType, CSSProperties, ExtractPropTypes } from "vue"
 import { createProps } from "../hooks"
 import { numericProp } from "../utils/props"
 
@@ -30,5 +30,6 @@ export const tabEmits = {
   click: (name: number | string) => true,
 }
 
-export type TabEmits = typeof tabProps
+export type TabEmits = typeof tabEmits
+export type TabProps = ExtractPropTypes<typeof tabProps>
 export type TabInstance = InstanceType<typeof Tab>

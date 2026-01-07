@@ -1,4 +1,5 @@
 import type SafeAreaTop from "./ui-safe-area-top.vue"
+import type { ExtractPropTypes } from "vue"
 import { isNumber } from "../utils/check"
 import { createProps } from "../hooks"
 import { styleProp, makeStringProp } from "../utils/props"
@@ -22,6 +23,7 @@ export const safeAreaTopEmits = {
 }
 
 export type SafeAreaTopEmits = typeof safeAreaTopEmits
+export type SafeAreaTopProps = ExtractPropTypes<typeof safeAreaTopProps>
 export interface SafeAreaTopExpose {
   name: "ui-safe-area-top"
 }

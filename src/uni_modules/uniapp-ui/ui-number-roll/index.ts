@@ -1,4 +1,5 @@
 import type NumberRoll from "./ui-number-roll.vue"
+import type { ExtractPropTypes } from "vue"
 import { createProps } from "../hooks"
 import { styleProp, truthProp, makeNumberProp, makeStringProp, makeNumericProp } from "../utils/props"
 
@@ -51,6 +52,7 @@ export const [numberRollProps, useNumberRollProps] = createProps("numberRoll", {
 export const numberRollEmits = {}
 
 export type NumberRollEmits = typeof numberRollEmits
+export type NumberRollProps = ExtractPropTypes<typeof numberRollProps>
 export interface NumberRollExpose {
   name: "ui-number-roll"
 }

@@ -1,4 +1,5 @@
 import type SafeAreaBottom from "./ui-safe-area-bottom.vue"
+import type { ExtractPropTypes } from "vue"
 import { isNumber } from "../utils/check"
 import { createProps } from "../hooks"
 import { styleProp, makeStringProp } from "../utils/props"
@@ -22,6 +23,7 @@ export const safeAreaBottomEmits = {
 }
 
 export type SafeAreaBottomEmits = typeof safeAreaBottomEmits
+export type SafeAreaBottomProps = ExtractPropTypes<typeof safeAreaBottomProps>
 export interface SafeAreaBottomExpose {
   name: "ui-safe-area-bottom"
 }

@@ -1,4 +1,5 @@
 import type TabbarItem from "./ui-tabbar-item.vue"
+import type { ExtractPropTypes } from "vue"
 import { createProps } from "../hooks"
 import { styleProp, makeStringProp, makeNumericProp } from "../utils/props"
 
@@ -49,4 +50,5 @@ export const tabbarItemEmits = {
   click: (name: string | number) => true,
 }
 export type TabbarItemEmits = typeof tabbarItemEmits
+export type TabbarItemProps = ExtractPropTypes<typeof tabbarItemProps>
 export type TabbarItemInstance = InstanceType<typeof TabbarItem>

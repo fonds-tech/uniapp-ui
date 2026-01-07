@@ -1,4 +1,5 @@
 import type TextHighlight from "./ui-text-highlight.vue"
+import type { ExtractPropTypes } from "vue"
 import { createProps } from "../hooks"
 import { styleProp, makeStringProp, makeNumericProp } from "../utils/props"
 
@@ -51,6 +52,7 @@ export const textHighlightEmits = {
 }
 
 export type TextHighlightEmits = typeof textHighlightEmits
+export type TextHighlightProps = ExtractPropTypes<typeof textHighlightProps>
 export interface TextHighlightExpose {
   name: "ui-text-highlight"
   match: () => void

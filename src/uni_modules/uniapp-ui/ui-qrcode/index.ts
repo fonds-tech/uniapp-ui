@@ -1,4 +1,5 @@
 import type Qrcode from "./ui-qrcode.vue"
+import type { ExtractPropTypes } from "vue"
 import { createProps } from "../hooks"
 import { styleProp, truthProp, makeNumberProp, makeStringProp, makeNumericProp } from "../utils/props"
 
@@ -75,6 +76,7 @@ export const qrcodeEmits = {
 }
 
 export type QrcodeEmits = typeof qrcodeEmits
+export type QrcodeProps = ExtractPropTypes<typeof qrcodeProps>
 export interface QrcodeExpose {
   name: "ui-qrcode"
   makeCode: () => void

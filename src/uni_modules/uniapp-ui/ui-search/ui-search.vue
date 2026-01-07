@@ -25,7 +25,7 @@
       />
       <view v-if="showClear" class="ui-search__clear" hover-class="ui-search__clear--active" role="button" aria-label="清除" @click.stop="onClickClear">
         <slot name="clear">
-          <ui-icon name="clear" :size="useProps.clearSize" :color="useProps.clearColor" :weight="useProps.clearWeight" />
+          <ui-icon name="close-circle" :size="useProps.clearSize" :color="useProps.clearColor" :weight="useProps.clearWeight" />
         </slot>
       </view>
     </view>
@@ -168,7 +168,7 @@ export default {
 
 <style lang="scss">
 .ui-search {
-  width: 100%;
+  flex: 1;
   display: flex;
   align-items: center;
   justify-content: space-between;

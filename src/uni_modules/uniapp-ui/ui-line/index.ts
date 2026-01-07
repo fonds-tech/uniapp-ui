@@ -1,4 +1,5 @@
 import type Line from "./ui-line.vue"
+import type { ExtractPropTypes } from "vue"
 import { createProps } from "../hooks"
 import { styleProp, makeStringProp, makeNumericProp } from "../utils/props"
 
@@ -39,6 +40,7 @@ export const [lineProps, useLineProps] = createProps("line", {
 export const lineEmits = {}
 
 export type LineEmits = typeof lineEmits
+export type LineProps = ExtractPropTypes<typeof lineProps>
 export interface LineExpose {
   name: "ui-line"
 }

@@ -1,4 +1,5 @@
 import type Icon from "./ui-icon.vue"
+import type { ExtractPropTypes } from "vue"
 import { createProps } from "../hooks"
 import { styleProp, makeStringProp, makeNumericProp } from "../utils/props"
 
@@ -65,6 +66,7 @@ export const iconEmits = {
 }
 
 export type IconEmits = typeof iconEmits
+export type IconProps = ExtractPropTypes<typeof iconProps>
 export interface IconExpose {
   name: "ui-icon"
 }

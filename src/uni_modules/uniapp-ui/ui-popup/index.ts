@@ -1,5 +1,5 @@
 import type Popup from "./ui-popup.vue"
-import type { PropType, CSSProperties } from "vue"
+import type { PropType, CSSProperties, ExtractPropTypes } from "vue"
 import { createProps } from "../hooks"
 import { truthProp, numericProp, makeStringProp, makeNumericProp } from "../utils/props"
 
@@ -104,5 +104,5 @@ export const popupEmits = {
 export type PopupMode = "top" | "bottom" | "left" | "right" | "center"
 export type PopupCloseIconPosition = "" | "top-left" | "top-right" | "bottom-left" | "bottom-right"
 export type PopupEmits = typeof popupEmits
-export type PopupProps = typeof popupProps
+export type PopupProps = ExtractPropTypes<typeof popupProps>
 export type PopupInstance = InstanceType<typeof Popup>

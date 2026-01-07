@@ -1,4 +1,5 @@
 import type Row from "./ui-row.vue"
+import type { ExtractPropTypes } from "vue"
 import { createProps } from "../hooks"
 import { styleProp, makeStringProp, makeNumericProp } from "../utils/props"
 
@@ -37,4 +38,8 @@ export const [rowProps, useRowProps] = createProps("row", {
   customStyle: styleProp,
 })
 
+export const rowEmits = {}
+
+export type RowEmits = typeof rowEmits
+export type RowProps = ExtractPropTypes<typeof rowProps>
 export type RowInstance = InstanceType<typeof Row>
