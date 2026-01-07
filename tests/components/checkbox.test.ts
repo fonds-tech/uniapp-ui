@@ -151,6 +151,41 @@ describe("ui-checkbox 复选框组件", () => {
     })
   })
 
+  describe("只读状态", () => {
+    it("readonly 为 true 时应添加只读类名", async () => {
+      const wrapper = mount(UiCheckbox, {
+        props: { readonly: true },
+      })
+      await waitForTransition()
+
+      expect(wrapper.classes()).toContain("ui-checkbox--readonly")
+    })
+
+    it("只读状态下点击不应切换状态", async () => {
+      const wrapper = mount(UiCheckbox, {
+        props: { readonly: true, modelValue: false },
+      })
+      await waitForTransition()
+
+      await wrapper.find(".ui-checkbox").trigger("click")
+      await waitForTransition()
+
+      expect(wrapper.emitted("update:modelValue")).toBeFalsy()
+    })
+
+    it("只读状态下点击图标不应切换状态", async () => {
+      const wrapper = mount(UiCheckbox, {
+        props: { readonly: true, modelValue: false },
+      })
+      await waitForTransition()
+
+      await wrapper.find(".ui-checkbox__icon").trigger("click")
+      await waitForTransition()
+
+      expect(wrapper.emitted("update:modelValue")).toBeFalsy()
+    })
+  })
+
   describe("标签禁用", () => {
     it("labelDisabled 为 true 时点击标签不应切换状态", async () => {
       const wrapper = mount(UiCheckbox, {
@@ -455,6 +490,89 @@ describe("ui-checkbox 复选框组件", () => {
       await waitForTransition()
 
       expect(wrapper.emitted("update:modelValue")!.length).toBe(2)
+    })
+  })
+
+  describe("不确定状态", () => {
+    it("indeterminate 为 true 时应添加不确定状态类名", async () => {
+      const wrapper = mount(UiCheckbox, {
+        props: { indeterminate: true },
+      })
+      await waitForTransition()
+
+      expect(wrapper.classes()).toContain("ui-checkbox--indeterminate")
+    })
+
+    it("indeterminate 为 true 时图标应有不确定状态类名", async () => {
+      const wrapper = mount(UiCheckbox, {
+        props: { indeterminate: true },
+      })
+      await waitForTransition()
+
+      expect(wrapper.find(".ui-checkbox__icon").classes()).toContain("ui-checkbox__icon--indeterminate")
+    })
+
+    it("indeterminate 优先于 checked 显示（icon 形状）", async () => {
+      const wrapper = mount(UiCheckbox, {
+        props: { modelValue: true, indeterminate: true, shape: "icon" },
+      })
+      await waitForTransition()
+
+      const iconClasses = wrapper.find(".ui-checkbox__icon").classes()
+      expect(iconClasses).toContain("ui-checkbox__icon--indeterminate")
+      expect(iconClasses).not.toContain("ui-checkbox__icon--check")
+    })
+
+    it("indeterminate 优先于 checked 显示（dot 形状）", async () => {
+      const wrapper = mount(UiCheckbox, {
+        props: { modelValue: true, indeterminate: true, shape: "dot" },
+      })
+      await waitForTransition()
+
+      expect(wrapper.find(".ui-checkbox__icon").classes()).toContain("ui-checkbox__icon--indeterminate")
+      expect(wrapper.find(".ui-checkbox__dot").exists()).toBe(false)
+    })
+
+    it("indeterminate 为 false 且 checked 为 true 时应显示勾选图标", async () => {
+      const wrapper = mount(UiCheckbox, {
+        props: { modelValue: true, indeterminate: false, shape: "icon" },
+      })
+      await waitForTransition()
+
+      const iconClasses = wrapper.find(".ui-checkbox__icon").classes()
+      expect(iconClasses).toContain("ui-checkbox__icon--check")
+      expect(iconClasses).not.toContain("ui-checkbox__icon--indeterminate")
+    })
+
+    it("indeterminate 为 false 且 checked 为 true 时应显示圆点（dot 形状）", async () => {
+      const wrapper = mount(UiCheckbox, {
+        props: { modelValue: true, indeterminate: false, shape: "dot" },
+      })
+      await waitForTransition()
+
+      expect(wrapper.find(".ui-checkbox__dot").exists()).toBe(true)
+    })
+
+    it("indeterminate 状态下背景色应改变", async () => {
+      const wrapper = mount(UiCheckbox, {
+        props: { indeterminate: true },
+      })
+      await waitForTransition()
+
+      const iconStyle = wrapper.find(".ui-checkbox__icon").attributes("style")
+      expect(iconStyle).toContain("background-color")
+    })
+
+    it("icon 插槽应接收 indeterminate 参数", async () => {
+      const wrapper = mount(UiCheckbox, {
+        props: { indeterminate: true },
+        slots: {
+          icon: ({ indeterminate }: { indeterminate: boolean }) => `<span>${indeterminate ? "不确定" : "确定"}</span>`,
+        },
+      })
+      await waitForTransition()
+
+      expect(wrapper.find(".ui-checkbox__icon").text()).toContain("不确定")
     })
   })
 })

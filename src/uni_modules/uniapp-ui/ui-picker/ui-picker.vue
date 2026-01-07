@@ -1,8 +1,15 @@
 <template>
   <view class="ui-picker">
     <ui-popup
-      v-bind="popupProps"
       :show="show"
+      :mode="useProps.mode"
+      :border-radius="useProps.borderRadius"
+      :close-on-click-overlay="useProps.closeOnClickOverlay"
+      :overlay="useProps.overlay"
+      :duration="useProps.duration"
+      :z-index="useProps.zIndex"
+      :background="useProps.background"
+      :safe-area-inset-bottom="useProps.safeAreaInsetBottom"
       @update:show="handleUpdateShow"
       @open="emits('open')"
       @opened="emits('opened')"
@@ -98,25 +105,9 @@ const columnsType = computed<PickerColumnsType>(() => {
   return "default"
 })
 
-/**
- * 是否为单值模式
- * 单值模式条件：单列选择器
- */
 const isSingleValueMode = computed(() => {
   return columnsType.value === "default"
 })
-
-// 提取给 popup 的 props
-const popupProps = computed(() => ({
-  mode: useProps.mode,
-  borderRadius: useProps.borderRadius,
-  closeOnClickOverlay: useProps.closeOnClickOverlay,
-  overlay: useProps.overlay,
-  duration: useProps.duration,
-  zIndex: useProps.zIndex,
-  background: useProps.background,
-  safeAreaInsetBottom: useProps.safeAreaInsetBottom,
-}))
 
 /**
  * 将外部传入的值解析为内部数组格式

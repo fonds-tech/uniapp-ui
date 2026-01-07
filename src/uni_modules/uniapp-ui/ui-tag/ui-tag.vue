@@ -35,9 +35,16 @@ const style = computed(() => {
   style.color = useColor(useProps.textColor)
   style.height = useUnit(useProps.height)
   style.background = useColor(useProps.background)
-  style.borderColor = useColor(useProps.borderColor)
-  style.borderWidth = useUnit(useProps.borderWidth)
   style.borderRadius = useUnit(useProps.borderRadius)
+
+  if (useProps.borderColor) {
+    style.borderColor = useColor(useProps.borderColor)
+    style.borderStyle = "solid"
+    style.borderWidth = useUnit(useProps.borderWidth) || "1rpx"
+  } else if (useProps.borderWidth) {
+    style.borderWidth = useUnit(useProps.borderWidth)
+  }
+
   return useStyle({ ...style, ...useStyle(useProps.customStyle) })
 })
 
@@ -99,9 +106,6 @@ export default {
   box-sizing: border-box;
   align-items: center;
   flex-shrink: 0;
-  border-color: currentcolor;
-  border-style: solid;
-  border-width: 1rpx;
   border-radius: 4rpx;
   justify-content: center;
   background-color: var(--ui-color-primary);
@@ -128,17 +132,19 @@ export default {
   }
 
   &--plain {
+    border-style: solid;
+    border-width: 1rpx;
     background-color: var(--ui-color-background);
   }
 
   @each $type in (primary, success, warning, danger, info) {
     &--#{$type} {
       color: var(--ui-color-background);
-      border-color: var(--ui-color-#{$type});
       background-color: var(--ui-color-#{$type});
 
       &.ui-tag--plain {
         color: var(--ui-color-#{$type});
+        border-color: var(--ui-color-#{$type});
         background-color: var(--ui-color-background);
       }
     }

@@ -2,7 +2,7 @@
   <view class="ui-checkbox" :class="[rootClass, customClass]" :style="[rootStyle]" @click.stop="onClick">
     <view class="ui-checkbox__icon" :class="[iconClass]" :style="[iconContainerStyle]" @click.stop="onClickIcon">
       <slot name="icon" :checked="checked" :disabled="disabled" :indeterminate="isIndeterminate">
-        <view v-if="checked && actualShape === 'dot'" class="ui-checkbox__dot" :style="[dotStyle]" />
+        <view v-if="checked && !isIndeterminate && actualShape === 'dot'" class="ui-checkbox__dot" :style="[dotStyle]" />
       </slot>
     </view>
     <view v-if="hasLabel" class="ui-checkbox__content" :class="[contentClass]">
@@ -98,8 +98,12 @@ const iconContainerStyle = computed(() => {
 const iconClass = computed(() => {
   const list: string[] = []
   if (prop("round")) list.push("ui-checkbox__icon--round")
-  if (checked.value && actualShape.value === "icon") list.push("ui-checkbox__icon--check")
-  if (isIndeterminate.value) list.push("ui-checkbox__icon--indeterminate")
+  // 不确定状态优先于选中状态
+  if (isIndeterminate.value) {
+    list.push("ui-checkbox__icon--indeterminate")
+  } else if (checked.value && actualShape.value === "icon") {
+    list.push("ui-checkbox__icon--check")
+  }
   if (disabled.value) list.push("ui-checkbox__icon--disabled")
   return list
 })

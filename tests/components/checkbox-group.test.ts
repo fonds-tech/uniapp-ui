@@ -316,4 +316,420 @@ describe("ui-checkbox-group 复选框组组件", () => {
       expect(wrapper.props("modelValue")).toEqual([])
     })
   })
+
+  describe("子 checkbox 交互", () => {
+    it("点击子 checkbox 应触发 group 的 change 事件", async () => {
+      const wrapper = mount(UiCheckboxGroup, {
+        props: { modelValue: [] },
+        slots: {
+          default: () => [h(UiCheckbox, { name: "a", label: "选项A" }), h(UiCheckbox, { name: "b", label: "选项B" })],
+        },
+        global: {
+          components: { UiCheckbox },
+        },
+      })
+      await waitForTransition()
+
+      const checkboxes = wrapper.findAllComponents(UiCheckbox)
+      await checkboxes[0].trigger("click")
+      await waitForTransition()
+
+      expect(wrapper.emitted("change")).toBeTruthy()
+    })
+
+    it("勾选所有子 checkbox 后应触发 change 事件", async () => {
+      const modelValue: string[] = []
+      const wrapper = mount(UiCheckboxGroup, {
+        props: { modelValue },
+        slots: {
+          default: () => [h(UiCheckbox, { name: "a", label: "选项A" }), h(UiCheckbox, { name: "b", label: "选项B" })],
+        },
+        global: {
+          components: { UiCheckbox },
+        },
+      })
+      await waitForTransition()
+
+      const checkboxes = wrapper.findAllComponents(UiCheckbox)
+
+      await checkboxes[0].trigger("click")
+      await waitForTransition()
+
+      await checkboxes[1].trigger("click")
+      await waitForTransition()
+
+      const changeEvents = wrapper.emitted("change")
+      expect(changeEvents).toBeTruthy()
+      expect(changeEvents!.length).toBeGreaterThanOrEqual(2)
+    })
+
+    it("取消勾选子 checkbox 应触发 change 事件", async () => {
+      const wrapper = mount(UiCheckboxGroup, {
+        props: { modelValue: ["a", "b"] },
+        slots: {
+          default: () => [h(UiCheckbox, { name: "a", label: "选项A" }), h(UiCheckbox, { name: "b", label: "选项B" })],
+        },
+        global: {
+          components: { UiCheckbox },
+        },
+      })
+      await waitForTransition()
+
+      const checkboxes = wrapper.findAllComponents(UiCheckbox)
+      await checkboxes[0].trigger("click")
+      await waitForTransition()
+
+      expect(wrapper.emitted("change")).toBeTruthy()
+    })
+  })
+
+  describe("deep watch 数组变化", () => {
+    it("数组内容变化应触发 change 事件", async () => {
+      const modelValue = ["a"]
+      const wrapper = mount(UiCheckboxGroup, {
+        props: { modelValue },
+      })
+      await waitForTransition()
+
+      modelValue.push("b")
+      await wrapper.setProps({ modelValue: [...modelValue] })
+      await waitForTransition()
+
+      expect(wrapper.emitted("change")).toBeTruthy()
+    })
+  })
+
+  describe("max 限制交互行为", () => {
+    it("达到 max 后点击未选中选项应被阻止", async () => {
+      const wrapper = mount(UiCheckboxGroup, {
+        props: { modelValue: ["a", "b"], max: 2 },
+        slots: {
+          default: () => [h(UiCheckbox, { name: "a", label: "选项A" }), h(UiCheckbox, { name: "b", label: "选项B" }), h(UiCheckbox, { name: "c", label: "选项C" })],
+        },
+        global: { components: { UiCheckbox } },
+      })
+      await waitForTransition()
+
+      // 点击第三个未选中的选项
+      const checkboxes = wrapper.findAllComponents(UiCheckbox)
+      await checkboxes[2].trigger("click")
+      await waitForTransition()
+
+      // update:modelValue 不应包含 "c"
+      const updateEvents = wrapper.emitted("update:modelValue")
+      if (updateEvents) {
+        const lastPayload = updateEvents[updateEvents.length - 1][0] as string[]
+        expect(lastPayload).not.toContain("c")
+      }
+    })
+
+    it("未达到 max 时点击未选中选项应正常添加", async () => {
+      const wrapper = mount(UiCheckboxGroup, {
+        props: { modelValue: ["a"], max: 2 },
+        slots: {
+          default: () => [h(UiCheckbox, { name: "a", label: "选项A" }), h(UiCheckbox, { name: "b", label: "选项B" })],
+        },
+        global: { components: { UiCheckbox } },
+      })
+      await waitForTransition()
+
+      const checkboxes = wrapper.findAllComponents(UiCheckbox)
+      await checkboxes[1].trigger("click")
+      await waitForTransition()
+
+      const updateEvents = wrapper.emitted("update:modelValue")
+      expect(updateEvents).toBeTruthy()
+      const lastPayload = updateEvents![updateEvents!.length - 1][0] as string[]
+      expect(lastPayload).toContain("b")
+    })
+  })
+
+  describe("min 限制交互行为", () => {
+    it("达到 min 后点击已选中选项应被阻止", async () => {
+      const wrapper = mount(UiCheckboxGroup, {
+        props: { modelValue: ["a"], min: 1 },
+        slots: {
+          default: () => [h(UiCheckbox, { name: "a", label: "选项A" }), h(UiCheckbox, { name: "b", label: "选项B" })],
+        },
+        global: { components: { UiCheckbox } },
+      })
+      await waitForTransition()
+
+      // 点击已选中的选项尝试取消
+      const checkboxes = wrapper.findAllComponents(UiCheckbox)
+      await checkboxes[0].trigger("click")
+      await waitForTransition()
+
+      // 不应触发 update:modelValue 移除 "a"
+      const updateEvents = wrapper.emitted("update:modelValue")
+      if (updateEvents) {
+        const lastPayload = updateEvents[updateEvents.length - 1][0] as string[]
+        expect(lastPayload).toContain("a")
+      }
+    })
+
+    it("超过 min 时点击已选中选项应正常移除", async () => {
+      const wrapper = mount(UiCheckboxGroup, {
+        props: { modelValue: ["a", "b"], min: 1 },
+        slots: {
+          default: () => [h(UiCheckbox, { name: "a", label: "选项A" }), h(UiCheckbox, { name: "b", label: "选项B" })],
+        },
+        global: { components: { UiCheckbox } },
+      })
+      await waitForTransition()
+
+      const checkboxes = wrapper.findAllComponents(UiCheckbox)
+      await checkboxes[0].trigger("click")
+      await waitForTransition()
+
+      const updateEvents = wrapper.emitted("update:modelValue")
+      expect(updateEvents).toBeTruthy()
+      const lastPayload = updateEvents![updateEvents!.length - 1][0] as string[]
+      expect(lastPayload).not.toContain("a")
+      expect(lastPayload).toContain("b")
+    })
+  })
+
+  describe("toggleAll 方法行为", () => {
+    it("toggleAll(true) 应全选所有选项", async () => {
+      const wrapper = mount(UiCheckboxGroup, {
+        props: { modelValue: [] },
+        slots: {
+          default: () => [h(UiCheckbox, { name: "a", label: "选项A" }), h(UiCheckbox, { name: "b", label: "选项B" }), h(UiCheckbox, { name: "c", label: "选项C" })],
+        },
+        global: { components: { UiCheckbox } },
+      })
+      await waitForTransition()
+
+      wrapper.vm.toggleAll(true)
+      await waitForTransition()
+
+      const updateEvents = wrapper.emitted("update:modelValue")
+      expect(updateEvents).toBeTruthy()
+      const lastPayload = updateEvents![updateEvents!.length - 1][0] as string[]
+      expect(lastPayload).toContain("a")
+      expect(lastPayload).toContain("b")
+      expect(lastPayload).toContain("c")
+    })
+
+    it("toggleAll(true) 应受 max 限制", async () => {
+      const wrapper = mount(UiCheckboxGroup, {
+        props: { modelValue: [], max: 2 },
+        slots: {
+          default: () => [h(UiCheckbox, { name: "a", label: "选项A" }), h(UiCheckbox, { name: "b", label: "选项B" }), h(UiCheckbox, { name: "c", label: "选项C" })],
+        },
+        global: { components: { UiCheckbox } },
+      })
+      await waitForTransition()
+
+      wrapper.vm.toggleAll(true)
+      await waitForTransition()
+
+      const updateEvents = wrapper.emitted("update:modelValue")
+      expect(updateEvents).toBeTruthy()
+      const lastPayload = updateEvents![updateEvents!.length - 1][0] as string[]
+      // 只能选中前两个
+      expect(lastPayload.length).toBe(2)
+    })
+
+    it("toggleAll(false) 应取消全选", async () => {
+      const wrapper = mount(UiCheckboxGroup, {
+        props: { modelValue: ["a", "b", "c"] },
+        slots: {
+          default: () => [h(UiCheckbox, { name: "a", label: "选项A" }), h(UiCheckbox, { name: "b", label: "选项B" }), h(UiCheckbox, { name: "c", label: "选项C" })],
+        },
+        global: { components: { UiCheckbox } },
+      })
+      await waitForTransition()
+
+      wrapper.vm.toggleAll(false)
+      await waitForTransition()
+
+      const updateEvents = wrapper.emitted("update:modelValue")
+      expect(updateEvents).toBeTruthy()
+      const lastPayload = updateEvents![updateEvents!.length - 1][0] as string[]
+      expect(lastPayload.length).toBe(0)
+    })
+
+    it("toggleAll(false) 应受 min 限制", async () => {
+      const wrapper = mount(UiCheckboxGroup, {
+        props: { modelValue: ["a", "b", "c"], min: 2 },
+        slots: {
+          default: () => [h(UiCheckbox, { name: "a", label: "选项A" }), h(UiCheckbox, { name: "b", label: "选项B" }), h(UiCheckbox, { name: "c", label: "选项C" })],
+        },
+        global: { components: { UiCheckbox } },
+      })
+      await waitForTransition()
+
+      wrapper.vm.toggleAll(false)
+      await waitForTransition()
+
+      const updateEvents = wrapper.emitted("update:modelValue")
+      expect(updateEvents).toBeTruthy()
+      const lastPayload = updateEvents![updateEvents!.length - 1][0] as string[]
+      // 应保留前两个
+      expect(lastPayload.length).toBe(2)
+    })
+
+    it("toggleAll() 无参数应切换状态", async () => {
+      const wrapper = mount(UiCheckboxGroup, {
+        props: { modelValue: ["a"] },
+        slots: {
+          default: () => [h(UiCheckbox, { name: "a", label: "选项A" }), h(UiCheckbox, { name: "b", label: "选项B" })],
+        },
+        global: { components: { UiCheckbox } },
+      })
+      await waitForTransition()
+
+      // 切换：未选中的变选中
+      wrapper.vm.toggleAll()
+      await waitForTransition()
+
+      const updateEvents = wrapper.emitted("update:modelValue")
+      expect(updateEvents).toBeTruthy()
+    })
+  })
+
+  describe("change 事件 payload 校验", () => {
+    it("点击选中应返回包含该值的数组", async () => {
+      const wrapper = mount(UiCheckboxGroup, {
+        props: { modelValue: [] },
+        slots: {
+          default: () => [h(UiCheckbox, { name: "a", label: "选项A" }), h(UiCheckbox, { name: "b", label: "选项B" })],
+        },
+        global: { components: { UiCheckbox } },
+      })
+      await waitForTransition()
+
+      const checkboxes = wrapper.findAllComponents(UiCheckbox)
+      await checkboxes[0].trigger("click")
+      await waitForTransition()
+
+      const updateEvents = wrapper.emitted("update:modelValue")
+      expect(updateEvents).toBeTruthy()
+      expect(updateEvents![0][0]).toEqual(["a"])
+    })
+
+    it("点击取消应返回不包含该值的数组", async () => {
+      const wrapper = mount(UiCheckboxGroup, {
+        props: { modelValue: ["a", "b"] },
+        slots: {
+          default: () => [h(UiCheckbox, { name: "a", label: "选项A" }), h(UiCheckbox, { name: "b", label: "选项B" })],
+        },
+        global: { components: { UiCheckbox } },
+      })
+      await waitForTransition()
+
+      const checkboxes = wrapper.findAllComponents(UiCheckbox)
+      await checkboxes[0].trigger("click")
+      await waitForTransition()
+
+      const updateEvents = wrapper.emitted("update:modelValue")
+      expect(updateEvents).toBeTruthy()
+      expect(updateEvents![0][0]).toEqual(["b"])
+    })
+
+    it("连续点击多个选项应累加到数组", async () => {
+      const wrapper = mount(UiCheckboxGroup, {
+        props: { modelValue: [] },
+        slots: {
+          default: () => [h(UiCheckbox, { name: "a", label: "选项A" }), h(UiCheckbox, { name: "b", label: "选项B" })],
+        },
+        global: { components: { UiCheckbox } },
+      })
+      await waitForTransition()
+
+      const checkboxes = wrapper.findAllComponents(UiCheckbox)
+      await checkboxes[0].trigger("click")
+      await waitForTransition()
+      await checkboxes[1].trigger("click")
+      await waitForTransition()
+
+      const updateEvents = wrapper.emitted("update:modelValue")
+      expect(updateEvents).toBeTruthy()
+      expect(updateEvents!.length).toBe(2)
+      const lastPayload = updateEvents![updateEvents!.length - 1][0] as string[]
+      expect(lastPayload).toContain("a")
+      expect(lastPayload).toContain("b")
+      expect(lastPayload.length).toBe(2)
+    })
+  })
+
+  describe("expose 方法测试", () => {
+    it("getCheckedCount 应返回当前选中数量", async () => {
+      const wrapper = mount(UiCheckboxGroup, {
+        props: { modelValue: ["a", "b"] },
+        slots: {
+          default: () => [h(UiCheckbox, { name: "a", label: "选项A" }), h(UiCheckbox, { name: "b", label: "选项B" }), h(UiCheckbox, { name: "c", label: "选项C" })],
+        },
+        global: { components: { UiCheckbox } },
+      })
+      await waitForTransition()
+
+      expect(wrapper.vm.getCheckedCount()).toBe(2)
+    })
+
+    it("getCheckedCount 空选中时返回 0", async () => {
+      const wrapper = mount(UiCheckboxGroup, {
+        props: { modelValue: [] },
+      })
+      await waitForTransition()
+
+      expect(wrapper.vm.getCheckedCount()).toBe(0)
+    })
+
+    it("isAtMinimum 达到最小值时返回 true", async () => {
+      const wrapper = mount(UiCheckboxGroup, {
+        props: { modelValue: ["a"], min: 1 },
+      })
+      await waitForTransition()
+
+      expect(wrapper.vm.isAtMinimum()).toBe(true)
+    })
+
+    it("isAtMinimum 超过最小值时返回 false", async () => {
+      const wrapper = mount(UiCheckboxGroup, {
+        props: { modelValue: ["a", "b"], min: 1 },
+      })
+      await waitForTransition()
+
+      expect(wrapper.vm.isAtMinimum()).toBe(false)
+    })
+
+    it("isAtMinimum 无 min 限制时应返回 true（0 <= 0）", async () => {
+      const wrapper = mount(UiCheckboxGroup, {
+        props: { modelValue: [] },
+      })
+      await waitForTransition()
+
+      expect(wrapper.vm.isAtMinimum()).toBe(true)
+    })
+
+    it("isAtMaximum 达到最大值时返回 true", async () => {
+      const wrapper = mount(UiCheckboxGroup, {
+        props: { modelValue: ["a", "b"], max: 2 },
+      })
+      await waitForTransition()
+
+      expect(wrapper.vm.isAtMaximum()).toBe(true)
+    })
+
+    it("isAtMaximum 未达到最大值时返回 false", async () => {
+      const wrapper = mount(UiCheckboxGroup, {
+        props: { modelValue: ["a"], max: 2 },
+      })
+      await waitForTransition()
+
+      expect(wrapper.vm.isAtMaximum()).toBe(false)
+    })
+
+    it("isAtMaximum 无 max 限制时应返回 false", async () => {
+      const wrapper = mount(UiCheckboxGroup, {
+        props: { modelValue: ["a", "b", "c"] },
+      })
+      await waitForTransition()
+
+      expect(wrapper.vm.isAtMaximum()).toBe(false)
+    })
+  })
 })

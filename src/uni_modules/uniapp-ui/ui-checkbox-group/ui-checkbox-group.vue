@@ -33,6 +33,7 @@ const rootClass = computed(() => {
 watch(
   () => useProps.modelValue,
   (value) => emits("change", value),
+  { deep: true },
 )
 
 function toggleAll(checked?: boolean) {
