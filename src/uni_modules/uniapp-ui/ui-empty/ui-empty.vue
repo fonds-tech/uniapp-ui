@@ -44,8 +44,6 @@ const iconStyle = computed(() => {
 const textStyle = computed(() => {
   const style: any = {}
   style.color = useColor(useProps.iconColor)
-  style.width = useUnit(useProps.iconSize || useProps.iconWidth)
-  style.height = useUnit(useProps.iconSize || useProps.iconHeight)
   style.fontWeight = useProps.iconWeight
   return useStyle(style)
 })

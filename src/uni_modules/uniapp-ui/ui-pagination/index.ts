@@ -29,6 +29,10 @@ export const [paginationProps, usePaginationProps] = createProps("pagination", {
    */
   pagination: { type: Object, default: () => ({}) },
   /**
+   * 空数据提示图标
+   */
+  emptyIcon: makeStringProp(""),
+  /**
    * 空数据提示文字
    */
   emptyText: makeStringProp("暂无数据～"),
