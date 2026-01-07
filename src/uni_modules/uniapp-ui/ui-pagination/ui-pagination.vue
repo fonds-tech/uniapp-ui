@@ -2,7 +2,9 @@
   <view class="ui-pagination" :style="[style]">
     <slot />
     <view v-if="isShowEmpty" class="ui-pagination__empty">
-      <ui-empty :icon="emptyIcon" :text="emptyText" />
+      <slot name="empty">
+        <ui-empty :icon="emptyIcon" :text="emptyText" />
+      </slot>
     </view>
     <view v-else class="ui-pagination__loading">
       <view v-if="loading" class="loading-icon">
