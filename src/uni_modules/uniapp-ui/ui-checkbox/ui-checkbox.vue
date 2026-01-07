@@ -1,15 +1,14 @@
 <template>
-  <view class="ui-checkbox" :class="[classs, customClass]" :style="[style]" @click.stop="onClick">
-    <view class="ui-checkbox__icon" :class="[iconClass]" @click.stop="onClickIcon">
-      <slot name="icon" :checked="checked" :disabled="disabled">
-        <view class="ui-checkbox__icon__wrap" :style="[iconWrapStyle]">
-          <view v-if="prop('shape') === 'dot'" class="ui-checkbox__dot" :style="[dotStyle]" />
-          <ui-icon v-else :name="icon" :color="iconColor" :weight="iconWeight" :custom-style="iconStyle" />
-        </view>
+  <view class="ui-checkbox" :class="[rootClass, customClass]" :style="[rootStyle]" @click.stop="onClick">
+    <view class="ui-checkbox__icon" :class="[iconClass]" :style="[iconContainerStyle]" @click.stop="onClickIcon">
+      <slot name="icon" :checked="checked" :disabled="disabled" :indeterminate="isIndeterminate">
+        <view v-if="checked && actualShape === 'dot'" class="ui-checkbox__dot" :style="[dotStyle]" />
       </slot>
     </view>
-    <view v-if="labelVisible" class="ui-checkbox__label" :class="[labelClass]" :style="[labelStyle]" @click.stop="onClickLabel">
-      <slot>{{ label }}</slot>
+    <view v-if="hasLabel" class="ui-checkbox__content" :class="[contentClass]">
+      <view class="ui-checkbox__label" :class="[labelClass]" :style="[labelStyle]" @click.stop="onClickLabel">
+        <slot>{{ label }}</slot>
+      </view>
     </view>
   </view>
 </template>
@@ -32,56 +31,77 @@ const slots = useSlots()
 
 const { index, parent } = useParent(checkboxGroupKey)
 
-const style = computed(() => {
+const DEFAULT_ICON_SIZE = "36rpx"
+const DEFAULT_LABEL_SIZE = "28rpx"
+
+const actualIconSize = computed(() => {
+  const iconSize = prop("iconSize")
+  if (iconSize) return useUnit(iconSize)
+  const size = prop("size")
+  if (size) return useUnit(size)
+  return DEFAULT_ICON_SIZE
+})
+
+const actualLabelSize = computed(() => {
+  const labelSize = prop("labelSize")
+  if (labelSize) return useUnit(labelSize)
+  return DEFAULT_LABEL_SIZE
+})
+
+const isLabelLeft = computed(() => prop("labelPosition") === "left")
+
+const primaryColor = computed(() => {
+  const color = prop("color")
+  if (color) return useColor(color)
+  const checkedIconColor = prop("checkedIconColor")
+  if (checkedIconColor) return useColor(checkedIconColor)
+  const checkedColor = prop("checkedColor")
+  if (checkedColor) return useColor(checkedColor)
+  return ""
+})
+
+const isIndeterminate = computed(() => prop("indeterminate"))
+
+const actualShape = computed(() => prop("shape") || "dot")
+
+const rootStyle = computed(() => {
   const style: CSSProperties = {}
-  style.fontSize = useUnit(prop("iconSize"))
   return useStyle({ ...style, ...useStyle(useProps.customStyle) })
 })
 
-const classs = computed(() => {
+const rootClass = computed(() => {
   const list: string[] = []
   if (checked.value) list.push("ui-checkbox--checked")
+  if (isIndeterminate.value) list.push("ui-checkbox--indeterminate")
   if (prop("disabled")) list.push("ui-checkbox--disabled")
-  if (prop("labelLeft")) list.push("ui-checkbox--left")
+  if (prop("readonly")) list.push("ui-checkbox--readonly")
+  if (isLabelLeft.value) list.push("ui-checkbox--left")
   return list
 })
 
-const iconColor = computed(() => {
-  return checked.value ? "#ffffff" : "transparent"
-})
-
-const iconStyle = computed(() => {
+const iconContainerStyle = computed(() => {
   const style: CSSProperties = {}
-  style.fontSize = "0.8em"
-  style.transition = "color 0.1s linear"
+  style.width = actualIconSize.value
+  style.height = actualIconSize.value
+  style.borderColor = useColor(prop("iconColor")) || undefined
+  style.borderRadius = useUnit(prop("iconRadius")) || undefined
+
+  if (checked.value || isIndeterminate.value) {
+    const color = primaryColor.value || "var(--ui-color-primary)"
+    style.borderColor = color
+    style.backgroundColor = color
+  }
+
   return useStyle(style)
 })
 
 const iconClass = computed(() => {
   const list: string[] = []
   if (prop("round")) list.push("ui-checkbox__icon--round")
-  if (checked.value) list.push("ui-checkbox__icon--checked")
+  if (checked.value && actualShape.value === "icon") list.push("ui-checkbox__icon--check")
+  if (isIndeterminate.value) list.push("ui-checkbox__icon--indeterminate")
   if (disabled.value) list.push("ui-checkbox__icon--disabled")
   return list
-})
-
-const iconWrapStyle = computed(() => {
-  const style: CSSProperties = {}
-  style.width = useUnit(prop("iconSize"))
-  style.height = useUnit(prop("iconSize"))
-  style.fontSize = useUnit(prop("iconSize"))
-  style.borderColor = useColor(prop("iconColor"))
-  style.borderRadius = useUnit(prop("iconRadius"))
-  if (checked.value) {
-    // checkedColor 作为 checkedIconColor 的别名/兜底
-    const checkedColorValue = useColor(prop("checkedIconColor") || prop("checkedColor"))
-    style.color = checkedColorValue
-    style.borderColor = checkedColorValue
-    if (prop("shape") === "dot") {
-      style.backgroundColor = checkedColorValue
-    }
-  }
-  return useStyle(style)
 })
 
 const dotStyle = computed(() => {
@@ -90,14 +110,24 @@ const dotStyle = computed(() => {
   return useStyle(style)
 })
 
+const hasLabel = computed(() => slots.default || useProps.label)
+
+const contentClass = computed(() => {
+  const list: string[] = []
+  if (isLabelLeft.value) list.push("ui-checkbox__content--left")
+  return list
+})
+
 const labelStyle = computed(() => {
   const style: CSSProperties = {}
-  style.color = useColor(prop("labelColor"))
-  style.fontSize = useUnit(prop("labelSize"))
-  style.fontWeight = prop("labelWeight")
-  if (prop("checkedLabelColor") && checked.value) style.color = useColor(prop("checkedLabelColor"))
+  style.color = useColor(prop("labelColor")) || undefined
+  style.fontSize = actualLabelSize.value
+  style.fontWeight = prop("labelWeight") || undefined
+  if (prop("checkedLabelColor") && checked.value) {
+    style.color = useColor(prop("checkedLabelColor"))
+  }
   if (prop("labelGap")) {
-    if (prop("labelLeft")) {
+    if (isLabelLeft.value) {
       style.marginRight = useUnit(prop("labelGap"))
     } else {
       style.marginLeft = useUnit(prop("labelGap"))
@@ -110,14 +140,14 @@ const labelClass = computed(() => {
   const list: string[] = []
   if (checked.value) list.push("ui-checkbox__label--checked")
   if (disabled.value) list.push("ui-checkbox__label--disabled")
-  if (prop("labelLeft")) list.push("ui-checkbox__label--left")
+  if (isLabelLeft.value) list.push("ui-checkbox__label--left")
   return list
 })
 
 const name = computed(() => useProps.name || index.value)
 const checked = computed(() => (useProps.bindGroup && parent ? parent.useProps.modelValue.includes(name.value) : !!useProps.modelValue))
 const disabled = computed(() => prop("disabled"))
-const labelVisible = computed(() => slots.default || useProps.label)
+const label = computed(() => useProps.label)
 
 watch(
   () => useProps.modelValue,
@@ -126,7 +156,9 @@ watch(
 
 function prop(name: string) {
   if (useProps.bindGroup && parent) {
+    // 子组件有显式定义的值时使用子组件的
     if (isDef(props[name])) return props[name]
+    // 否则使用父组件的值
     if (isDef(parent.props[name])) return parent.props[name]
   }
   return props[name]
@@ -137,9 +169,12 @@ async function updateValue(value: CheckboxValueType) {
 }
 
 function toggle(check?: boolean) {
-  if (prop("disabled")) return
+  if (prop("disabled") || prop("readonly")) return
+
   if (parent && useProps.bindGroup) {
     const value = parent.useProps.modelValue
+    const min = parent.useProps.min ?? 0
+
     const add = () => {
       const isMax = parent.useProps.max && value.length >= +parent.useProps.max
       if (!isMax && !value.includes(useProps.name)) {
@@ -147,17 +182,20 @@ function toggle(check?: boolean) {
         parent.updateValue(value)
       }
     }
+
     const remove = () => {
+      if (value.length <= +min) return
       const valueIndex = value.indexOf(name.value)
       if (valueIndex !== -1) {
         value.splice(valueIndex, 1)
         parent.updateValue(value)
       }
     }
+
     if (isBoolean(check)) {
       if (check) add()
       else remove()
-    } else if (index.value >= 0) {
+    } else if (checked.value) {
       remove()
     } else {
       add()
@@ -194,37 +232,56 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+$check-icon: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none'%3E%3Cpolyline points='4,12 9,17 20,6' stroke='white' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E";
+$indeterminate-icon: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none'%3E%3Cline x1='5' y1='12' x2='19' y2='12' stroke='white' stroke-width='2.5' stroke-linecap='round'/%3E%3C/svg%3E";
+
 .ui-checkbox {
+  gap: 12rpx;
+  cursor: pointer;
   display: flex;
+  align-items: center;
   user-select: none;
 
+  &--disabled {
+    cursor: not-allowed;
+    opacity: var(--ui-opacity-disabled);
+  }
+
+  &--readonly {
+    cursor: default;
+  }
+
+  &--left {
+    flex-direction: row-reverse;
+  }
+
   &__icon {
+    border: var(--ui-border-width-thick) solid var(--ui-color-border-dark);
     display: flex;
-    position: relative;
     align-items: center;
+    flex-shrink: 0;
+    border-radius: var(--ui-radius-sm);
+    background-size: 65% 65%;
+    justify-content: center;
+    background-color: transparent;
+    background-repeat: no-repeat;
+    background-position: center;
+    transition-duration: var(--ui-transition-fast);
+    transition-property: border-color, background-color;
 
-    &__wrap {
-      border: var(--ui-border-width-thick) solid var(--ui-color-border-dark);
-      display: flex;
-      align-items: center;
-      border-radius: var(--ui-radius-sm);
-      justify-content: center;
-      transition-duration: var(--ui-transition-fast);
-      transition-property: color, border-color, background-color;
-    }
-
-    &--round > &__wrap {
+    &--round {
       border-radius: var(--ui-radius-round);
     }
 
-    &--checked > &__wrap {
-      color: var(--ui-color-background);
-      border-color: var(--ui-color-primary);
-      background-color: var(--ui-color-primary);
+    &--check {
+      background-image: url($check-icon);
     }
 
-    &--disabled > &__wrap {
-      color: var(--ui-color-background);
+    &--indeterminate {
+      background-image: url($indeterminate-icon);
+    }
+
+    &--disabled {
       border-color: var(--ui-color-border-dark);
       background-color: var(--ui-color-background-dark);
     }
@@ -233,21 +290,30 @@ export default {
   &__dot {
     width: 40%;
     height: 40%;
-    transition: border-radius var(--ui-transition-fast);
-    background-color: var(--ui-color-background);
+    border-radius: 2rpx;
+    background-color: #fff;
+  }
+
+  &__content {
+    flex: 1;
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+
+    &--left {
+      align-items: flex-end;
+    }
   }
 
   &__label {
     flex: 1;
-    margin-left: var(--ui-spacing-sm);
-    &--left {
-      margin-left: 0;
-      margin-right: var(--ui-spacing-sm);
-    }
-  }
+    color: var(--ui-color-text-main);
+    word-break: break-word;
+    line-height: 1.4;
 
-  &--left {
-    flex-direction: row-reverse;
+    &--disabled {
+      color: var(--ui-color-text-disabled);
+    }
   }
 }
 </style>

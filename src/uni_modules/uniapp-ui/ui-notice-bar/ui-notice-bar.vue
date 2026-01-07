@@ -34,12 +34,11 @@
 </template>
 
 <script setup lang="ts">
-import { computed, getCurrentInstance, onMounted, ref, useSlots } from "vue"
-
 import { delay } from "../utils/utils"
 import { isArray, isString } from "../utils/check"
 import { useRect, useUnit, useColor, useStyle } from "../hooks"
 import { noticeBarEmits, noticeBarProps, useNoticeBarProps } from "./index"
+import { ref, computed, useSlots, onMounted, getCurrentInstance } from "vue"
 
 defineOptions({ name: "ui-notice-bar" })
 

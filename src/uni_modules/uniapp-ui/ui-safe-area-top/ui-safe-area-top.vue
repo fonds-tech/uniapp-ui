@@ -3,7 +3,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onBeforeMount, ref } from "vue"
+import { ref, computed, onBeforeMount } from "vue"
 
 import { useColor, useStyle, useSystemInfo } from "../hooks"
 import { safeAreaTopEmits, safeAreaTopProps, useSafeAreaTopProps } from "./index"

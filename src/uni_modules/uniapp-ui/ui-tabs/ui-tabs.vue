@@ -11,7 +11,7 @@
 <script setup lang="ts">
 import type { CSSProperties } from "vue"
 import { isEmpty } from "../utils/check"
-import { ref, watch, computed, toRef } from "vue"
+import { ref, toRef, watch, computed } from "vue"
 import { useUnit, useColor, useStyle, useChildren } from "../hooks"
 import { tabsKey, tabsEmits, tabsProps, useTabsProps } from "./index"
 

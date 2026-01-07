@@ -7,11 +7,10 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onBeforeUnmount, ref, watch } from "vue"
-
 import type { CountDownTimeData } from "./index"
 import { padZero } from "../utils/utils"
 import { useStyle } from "../hooks"
+import { ref, watch, computed, onBeforeUnmount } from "vue"
 import { countDownEmits, countDownProps, useCountDownProps } from "./index"
 
 defineOptions({ name: "ui-count-down" })

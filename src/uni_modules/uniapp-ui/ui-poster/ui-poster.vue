@@ -3,8 +3,6 @@
 </template>
 
 <script>
-import { nextTick, watch } from "vue"
-
 import { uuid } from "../utils/utils"
 import { useUnitToPx, useSystemInfo } from "../hooks"
 import { isArray, isNumber, isString } from "../utils/check"

@@ -1,46 +1,85 @@
 import type CheckboxGroup from "./ui-checkbox-group.vue"
+import type { CheckboxShape, CheckboxLabelPosition } from "../ui-checkbox"
 import type { PropType, InjectionKey, ExtractPropTypes } from "vue"
 import { createProps } from "../hooks"
 import { styleProp, makeStringProp, makeNumericProp } from "../utils/props"
 
 export const checkboxGroupKey: InjectionKey<CheckboxGroupProvide> = Symbol("ui-checkbox-group")
+
 export const [checkboxGroupProps, useCheckboxGroupProps] = createProps("checkboxGroup", {
   /**
    * 绑定值
    */
   modelValue: { type: Array as PropType<unknown[]>, default: () => [] },
+
+  // ============ 数量限制 ============
+
   /**
    * 最大可选数量
    */
   max: makeNumericProp(Infinity),
   /**
+   * 最小可选数量（新增）
+   * 设置后，当选中数量达到最小值时，无法继续取消选择
+   */
+  min: makeNumericProp(0),
+
+  // ============ 布局 ============
+
+  /**
    * 复选框之间的间距
    */
   gap: makeNumericProp(0),
   /**
-   * 是否禁用
-   */
-  disabled: Boolean,
-  /**
    * 是否垂直布局
    */
   vertical: Boolean,
+
+  // ============ 状态 ============
+
   /**
-   * 图标名称
+   * 是否禁用
    */
-  icon: makeStringProp(""),
+  disabled: Boolean,
+
+  // ============ 尺寸与形状（继承给子组件） ============
+
   /**
-   * 形状，icon 或 dot
+   * 复选框图标大小（继承给子组件）
    */
-  shape: makeStringProp("dot"),
+  size: makeNumericProp("36rpx"),
+  /**
+   * 形状：dot（圆点）或 icon（勾选图标）
+   */
+  shape: makeStringProp<CheckboxShape>("dot"),
   /**
    * 是否圆形图标
    */
   round: Boolean,
+
+  // ============ 颜色配置 ============
+
   /**
-   * 选中的颜色
+   * 主色（选中状态的颜色，继承给子组件）
+   */
+  color: makeStringProp(""),
+  /**
+   * @deprecated 使用 color 替代
+   * 选中的颜色（向后兼容别名）
    */
   checkedColor: makeStringProp(""),
+  /**
+   * @deprecated 使用 color 替代
+   * 选中的图标颜色（向后兼容别名）
+   */
+  checkedIconColor: makeStringProp(""),
+
+  // ============ 图标配置 ============
+
+  /**
+   * 图标名称
+   */
+  icon: makeStringProp(""),
   /**
    * 图标大小
    */
@@ -61,6 +100,18 @@ export const [checkboxGroupProps, useCheckboxGroupProps] = createProps("checkbox
    * 图标前缀
    */
   iconPrefix: makeStringProp("ui-icon"),
+
+  // ============ 标签配置 ============
+
+  /**
+   * 标签位置
+   */
+  labelPosition: makeStringProp<CheckboxLabelPosition>("right"),
+  /**
+   * @deprecated 使用 labelPosition="left" 替代
+   * 标签是否在图标左侧（向后兼容别名）
+   */
+  labelLeft: Boolean,
   /**
    * 标签文本大小
    */
@@ -78,21 +129,16 @@ export const [checkboxGroupProps, useCheckboxGroupProps] = createProps("checkbox
    */
   labelGap: makeNumericProp(""),
   /**
-   * 标签是否在图标左侧
-   */
-  labelLeft: Boolean,
-  /**
    * 是否禁用标签点击
    */
   labelDisabled: { type: Boolean },
   /**
-   * 选中的图标颜色
-   */
-  checkedIconColor: makeStringProp(""),
-  /**
    * 选中的标签颜色
    */
   checkedLabelColor: makeStringProp(""),
+
+  // ============ 自定义样式 ============
+
   /**
    * 自定义类名
    */
@@ -102,6 +148,7 @@ export const [checkboxGroupProps, useCheckboxGroupProps] = createProps("checkbox
    */
   customStyle: styleProp,
 })
+
 export const checkboxGroupEmits = {
   click: (event: any) => true,
   change: (value: unknown[]) => true,
@@ -113,15 +160,26 @@ export interface CheckboxGroupChildrenType {
   name: number | string
   index: number
 }
+
 export type CheckboxGroupEmits = typeof checkboxGroupEmits
 export type CheckboxGroupProps = ExtractPropTypes<typeof checkboxGroupProps>
+
 export interface CheckboxGroupProvide {
   props: CheckboxGroupProps
   useProps: CheckboxGroupProps
   updateValue: (value: unknown[]) => void
 }
+
 export interface CheckboxGroupExpose {
   name: "ui-checkbox-group"
-  toggleAll: (value: unknown[]) => void
+  /** 全选/全不选 */
+  toggleAll: (checked?: boolean) => void
+  /** 获取当前选中数量 */
+  getCheckedCount: () => number
+  /** 检查是否达到最小选择数量 */
+  isAtMinimum: () => boolean
+  /** 检查是否达到最大选择数量 */
+  isAtMaximum: () => boolean
 }
+
 export type CheckboxGroupInstance = InstanceType<typeof CheckboxGroup>

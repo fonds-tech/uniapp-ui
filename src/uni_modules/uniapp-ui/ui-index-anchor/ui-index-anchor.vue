@@ -9,10 +9,9 @@
 </template>
 
 <script setup lang="ts">
-import { computed, getCurrentInstance, ref } from "vue"
-
 import { isDef } from "../utils/check"
 import { indexBarKey } from "../ui-index-bar"
+import { ref, computed, getCurrentInstance } from "vue"
 import { indexAnchorProps, useIndexAnchorProps } from "./index"
 import { useRect, useUnit, useColor, useStyle, useParent } from "../hooks"
 

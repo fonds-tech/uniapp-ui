@@ -39,7 +39,10 @@
       "mcp__serena__replace_symbol_body",
       "mcp__playwright__browser_navigate",
       "mcp__playwright__browser_close",
-      "mcp__serena__list_memories"
+      "mcp__serena__list_memories",
+      "mcp__playwright__browser_wait_for",
+      "mcp__playwright__browser_click",
+      "Bash(pnpm type-check:*)"
     ],
     "deny": [],
     "ask": []

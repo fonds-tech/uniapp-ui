@@ -7,11 +7,10 @@
 </template>
 
 <script setup lang="ts">
-import { computed, getCurrentInstance, nextTick, onMounted, onUpdated, ref, watch } from "vue"
-
 import { formatDigit } from "../utils/format"
 import { numberRollProps, useNumberRollProps } from "./index"
 import { useRect, useUnit, useColor, useStyle } from "../hooks"
+import { ref, watch, computed, nextTick, onMounted, onUpdated, getCurrentInstance } from "vue"
 
 defineOptions({ name: "ui-number-roll" })
 

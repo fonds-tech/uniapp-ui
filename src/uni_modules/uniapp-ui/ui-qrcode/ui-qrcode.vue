@@ -15,13 +15,12 @@
 </template>
 
 <script setup lang="ts">
-import { computed, getCurrentInstance, nextTick, ref, watch } from "vue"
-
 import QRCode from "./qrcode"
 import { uuid } from "../utils/utils"
 import { CODE128AUTO } from "./code128/index"
 import { useUnit, useStyle, useUnitToPx } from "../hooks"
 import { qrcodeEmits, qrcodeProps, useQrcodeProps } from "./index"
+import { ref, watch, computed, nextTick, getCurrentInstance } from "vue"
 
 defineOptions({ name: "ui-qrcode" })
 

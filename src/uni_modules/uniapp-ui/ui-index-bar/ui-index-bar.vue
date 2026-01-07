@@ -12,10 +12,9 @@
 </template>
 
 <script setup lang="ts">
-import { computed, getCurrentInstance, ref, toRef, watch } from "vue"
-
 import { debounce } from "../utils/utils"
 import { useRect, useRects, useStyle, useChildren } from "../hooks"
+import { ref, toRef, watch, computed, getCurrentInstance } from "vue"
 import { indexBarKey, indexBarEmits, indexBarProps, useIndexBarProps } from "../ui-index-bar"
 
 defineOptions({ name: "ui-index-bar" })

@@ -48,10 +48,9 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, ref, watch } from "vue"
-
 import { useStyle } from "../hooks"
 import { clone, shuffleArray } from "../utils/utils"
+import { ref, watch, computed, onMounted } from "vue"
 import { keyboardEmits, keyboardProps, useKeyboardProps } from "./index"
 
 defineOptions({ name: "ui-keyboard" })

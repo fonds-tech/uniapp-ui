@@ -12,9 +12,9 @@
 import type { CSSProperties } from "vue"
 import { isDef } from "../utils/check"
 import { sidebarKey } from "../ui-sidebar"
-import { ref, computed, getCurrentInstance, nextTick, onMounted, watch } from "vue"
 import { useRect, useUnit, useColor, useStyle, useParent } from "../hooks"
 import { sidebarItemEmits, sidebarItemProps, useSidebarItemProps } from "./index"
+import { ref, watch, computed, nextTick, onMounted, getCurrentInstance } from "vue"
 
 defineOptions({ name: "ui-sidebar-item" })
 

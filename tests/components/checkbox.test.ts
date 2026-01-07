@@ -55,7 +55,7 @@ describe("ui-checkbox 复选框组件", () => {
       await waitForTransition()
 
       expect(wrapper.classes()).toContain("ui-checkbox--checked")
-      expect(wrapper.find(".ui-checkbox__icon").classes()).toContain("ui-checkbox__icon--checked")
+      expect(wrapper.find(".ui-checkbox__dot").exists()).toBe(true)
     })
 
     it("modelValue 为 false 时应显示未选中状态", async () => {
@@ -187,13 +187,13 @@ describe("ui-checkbox 复选框组件", () => {
       expect(wrapper.find(".ui-checkbox__dot").exists()).toBe(true)
     })
 
-    it("shape 为 icon 时应显示图标", async () => {
+    it("shape 为 icon 时应显示勾选符号", async () => {
       const wrapper = mount(UiCheckbox, {
         props: { shape: "icon", modelValue: true },
       })
       await waitForTransition()
 
-      expect(wrapper.findComponent({ name: "ui-icon" }).exists()).toBe(true)
+      expect(wrapper.find(".ui-checkbox__icon").classes()).toContain("ui-checkbox__icon--check")
     })
 
     it("round 为 true 时应添加圆形类名", async () => {
@@ -281,9 +281,9 @@ describe("ui-checkbox 复选框组件", () => {
       expect(wrapper.props("labelGap")).toBe("16rpx")
     })
 
-    it("labelLeft 为 true 时标签应在左侧", async () => {
+    it("labelPosition 为 left 时标签应在左侧", async () => {
       const wrapper = mount(UiCheckbox, {
-        props: { label: "选项", labelLeft: true },
+        props: { label: "选项", labelPosition: "left" },
       })
       await waitForTransition()
 

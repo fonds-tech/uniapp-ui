@@ -57,14 +57,13 @@
 </template>
 
 <script setup lang="ts">
-import { computed, getCurrentInstance, nextTick, ref, watch } from "vue"
-
 import type { CascaderTab, CascaderOption } from "./index"
 import { clone, merge } from "../utils/utils"
 import { callInterceptor } from "../utils/interceptor"
 import { useRects, useStyle } from "../hooks"
 import { isDef, isEmpty, isNoEmpty, isFunction } from "../utils/check"
 import { cascaderEmits, cascaderProps, useCascaderProps } from "./index"
+import { ref, watch, computed, nextTick, getCurrentInstance } from "vue"
 
 // 定义组件名称
 defineOptions({ name: "ui-cascader" })

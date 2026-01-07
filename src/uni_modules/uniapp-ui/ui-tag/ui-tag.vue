@@ -17,9 +17,8 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, useSlots, watch } from "vue"
-
 import { useUnit, useColor, useStyle } from "../hooks"
+import { ref, watch, computed, useSlots } from "vue"
 import { tagEmits, tagProps, useTagProps } from "./index"
 
 defineOptions({ name: "ui-tag" })

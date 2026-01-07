@@ -1,5 +1,5 @@
 <template>
-  <view class="ui-checkbox-group" :class="[classs, customClass]" :style="[style]">
+  <view class="ui-checkbox-group" :class="[rootClass, customClass]" :style="[rootStyle]">
     <slot />
   </view>
 </template>
@@ -7,8 +7,8 @@
 <script setup lang="ts">
 import type { CSSProperties } from "vue"
 import { isEmpty } from "../utils/check"
-import { useStyle, useUnit, useChildren } from "../hooks"
 import { toRaw, toRef, watch, computed } from "vue"
+import { useUnit, useStyle, useChildren } from "../hooks"
 import { checkboxGroupKey, checkboxGroupEmits, checkboxGroupProps, useCheckboxGroupProps } from "./index"
 
 defineOptions({ name: "ui-checkbox-group" })
@@ -18,13 +18,13 @@ const emits = defineEmits(checkboxGroupEmits)
 const useProps = useCheckboxGroupProps(props)
 const { childrens, linkChildren } = useChildren(checkboxGroupKey)
 
-const style = computed(() => {
+const rootStyle = computed(() => {
   const style: CSSProperties = {}
   if (useProps.gap) style.gap = useUnit(useProps.gap)
   return useStyle({ ...style, ...useStyle(useProps.customStyle) })
 })
 
-const classs = computed(() => {
+const rootClass = computed(() => {
   const list: string[] = []
   if (useProps.vertical) list.push("ui-checkbox-group--vertical")
   return list
@@ -35,13 +35,38 @@ watch(
   (value) => emits("change", value),
 )
 
-function toggleAll(checked: boolean) {
+function toggleAll(checked?: boolean) {
   const checkeds = childrens.filter((children) => {
-    if (isEmpty(children.exposed.useProps.bindGroup)) return false
-    return checked ?? !toRef(children.exposed.checked).value
+    if (isEmpty(children.exposed?.useProps?.bindGroup)) return false
+    return checked ?? !toRef(children.exposed?.checked).value
   })
-  const value = checkeds.map((children) => toRef(children.exposed.name).value)
+
+  let value = checkeds.map((children) => toRef(children.exposed?.name).value)
+
+  if (checked === true && useProps.max && useProps.max !== Infinity) {
+    value = value.slice(0, +useProps.max)
+  }
+
+  if (checked === false && useProps.min && +useProps.min > 0) {
+    const currentValue = [...useProps.modelValue]
+    value = currentValue.slice(0, +useProps.min)
+  }
+
   updateValue(value)
+}
+
+function getCheckedCount(): number {
+  return useProps.modelValue.length
+}
+
+function isAtMinimum(): boolean {
+  const min = useProps.min ?? 0
+  return useProps.modelValue.length <= +min
+}
+
+function isAtMaximum(): boolean {
+  const max = useProps.max ?? Infinity
+  return useProps.modelValue.length >= +max
 }
 
 async function updateValue(value: unknown[]) {
@@ -49,7 +74,13 @@ async function updateValue(value: unknown[]) {
 }
 
 linkChildren({ props, useProps, updateValue })
-defineExpose({ toggleAll })
+
+defineExpose({
+  toggleAll,
+  getCheckedCount,
+  isAtMinimum,
+  isAtMaximum,
+})
 </script>
 
 <script lang="ts">

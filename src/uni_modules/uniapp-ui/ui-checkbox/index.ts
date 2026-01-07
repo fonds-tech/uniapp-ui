@@ -3,6 +3,16 @@ import type { ExtractPropTypes } from "vue"
 import { createProps } from "../hooks"
 import { styleProp, truthProp, makeStringProp, makeNumericProp } from "../utils/props"
 
+/**
+ * 复选框形状类型
+ */
+export type CheckboxShape = "dot" | "icon" | ""
+
+/**
+ * 标签位置类型
+ */
+export type CheckboxLabelPosition = "left" | "right"
+
 export const [checkboxProps, useCheckboxProps] = createProps("checkbox", {
   /**
    * 绑定值
@@ -25,27 +35,63 @@ export const [checkboxProps, useCheckboxProps] = createProps("checkbox", {
    */
   disabled: Boolean,
   /**
-   * 图标名称
+   * 是否只读（可点击但不改变状态）
    */
-  icon: makeStringProp("check"),
+  readonly: Boolean,
+
+  // ============ 尺寸与形状 ============
+
   /**
-   * 形状，icon 或 dot
+   * 复选框图标大小，支持任意尺寸值如 "36rpx"、"20px"
    */
-  shape: makeStringProp("dot"),
+  size: makeNumericProp("36rpx"),
   /**
-   * 圆形的
+   * 形状：dot（圆点）或 icon（勾选图标）
+   * 默认为 dot，作为项目特色保留
+   */
+  shape: makeStringProp<CheckboxShape>(""),
+  /**
+   * 是否圆形
    */
   round: truthProp,
+
+  // ============ 状态 ============
+
   /**
-   * 选中的颜色
+   * 不确定状态（用于父子关系场景）
+   */
+  indeterminate: Boolean,
+
+  // ============ 颜色配置（简化版） ============
+
+  /**
+   * 主色（选中状态的颜色，简化 API）
+   * 同时影响图标边框色和背景色
+   */
+  color: makeStringProp(""),
+  /**
+   * @deprecated 使用 color 替代
+   * 选中的颜色（向后兼容别名）
    */
   checkedColor: makeStringProp(""),
   /**
-   * 图标大小
+   * @deprecated 使用 color 替代
+   * 选中时的图标颜色（向后兼容别名）
+   */
+  checkedIconColor: makeStringProp(""),
+
+  // ============ 图标配置 ============
+
+  /**
+   * 图标名称（shape="icon" 时使用）
+   */
+  icon: makeStringProp("check"),
+  /**
+   * 图标大小（覆盖 size 预设）
    */
   iconSize: makeNumericProp(""),
   /**
-   * 图标颜色
+   * 图标颜色（未选中状态）
    */
   iconColor: makeStringProp(""),
   /**
@@ -56,8 +102,15 @@ export const [checkboxProps, useCheckboxProps] = createProps("checkbox", {
    * 图标圆角值
    */
   iconRadius: makeNumericProp(""),
+
+  // ============ 标签配置 ============
+
   /**
-   * 标签文本大小
+   * 标签位置：left | right
+   */
+  labelPosition: makeStringProp<CheckboxLabelPosition>("right"),
+  /**
+   * 标签文本大小（覆盖 size 预设）
    */
   labelSize: makeNumericProp(""),
   /**
@@ -73,21 +126,16 @@ export const [checkboxProps, useCheckboxProps] = createProps("checkbox", {
    */
   labelGap: makeNumericProp(""),
   /**
-   * 标签文本是否在图标左侧
-   */
-  labelLeft: Boolean,
-  /**
    * 是否禁用标签文本点击
    */
   labelDisabled: { type: Boolean },
   /**
-   * 选中时的图标颜色
-   */
-  checkedIconColor: makeStringProp(""),
-  /**
    * 选中时的标签文本颜色
    */
   checkedLabelColor: makeStringProp(""),
+
+  // ============ 自定义样式 ============
+
   /**
    * 自定义类名
    */
@@ -97,6 +145,7 @@ export const [checkboxProps, useCheckboxProps] = createProps("checkbox", {
    */
   customStyle: styleProp,
 })
+
 export const checkboxEmits = {
   click: (event: any) => true,
   change: (value: CheckboxValueType) => true,
@@ -108,5 +157,9 @@ export type CheckboxEmits = typeof checkboxEmits
 export type CheckboxProps = ExtractPropTypes<typeof checkboxProps>
 export interface CheckboxExpose {
   name: "ui-checkbox"
+  /** 切换选中状态 */
+  toggle: (check?: boolean) => void
+  /** 当前是否选中 */
+  checked: boolean
 }
 export type CheckboxInstance = InstanceType<typeof Checkbox>

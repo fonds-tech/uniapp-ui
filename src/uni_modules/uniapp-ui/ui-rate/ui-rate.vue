@@ -12,10 +12,9 @@
 </template>
 
 <script setup lang="ts">
-import { computed, getCurrentInstance, nextTick, onMounted, ref } from "vue"
-
 import { rateEmits, rateProps, useRateProps } from "./index"
 import { useRect, useRects, useStyle, useUnitToPx } from "../hooks"
+import { ref, computed, nextTick, onMounted, getCurrentInstance } from "vue"
 
 defineOptions({ name: "ui-rate" })
 
