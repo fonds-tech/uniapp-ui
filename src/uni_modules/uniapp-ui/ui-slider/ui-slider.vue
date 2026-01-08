@@ -31,7 +31,14 @@
         </template>
 
         <!-- 左侧把手（范围模式）- 放在轨道内部定位 -->
-        <view v-if="useProps.range" class="ui-slider__handle" :class="getHandleClass(0)" :style="getHandleStyle(0)" @touchstart.stop="onHandleTouchStart($event, 0)" @mousedown.stop="onHandleMouseDown($event, 0)">
+        <view
+          v-if="useProps.range"
+          class="ui-slider__handle"
+          :class="getHandleClass(0)"
+          :style="getHandleStyle(0)"
+          @touchstart.stop="onHandleTouchStart($event, 0)"
+          @mousedown.stop="onHandleMouseDown($event, 0)"
+        >
           <slot name="left-handle" :value="rangeValue[0]" :dragging="draggingIndex === 0">
             <!-- 值指示器 -->
             <view v-if="shouldShowValue(0)" class="ui-slider__indicator" :style="indicatorStyle">

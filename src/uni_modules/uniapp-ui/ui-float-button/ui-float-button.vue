@@ -148,25 +148,17 @@ function getDragRect(offX = dragOffset.value.x, offY = dragOffset.value.y): Drag
   const size = useUnitToPx(useProps.size)
   const baseOffsetX = useUnitToPx(resolveOffsetX())
   const baseOffsetY = useUnitToPx(resolveOffsetY())
-  const left = useProps.position.includes("right")
-    ? windowWidth - (baseOffsetX - offX) - size
-    : baseOffsetX + offX
-  const top = useProps.position.includes("bottom")
-    ? windowHeight - (baseOffsetY - offY) - size
-    : baseOffsetY + offY
+  const left = useProps.position.includes("right") ? windowWidth - (baseOffsetX - offX) - size : baseOffsetX + offX
+  const top = useProps.position.includes("bottom") ? windowHeight - (baseOffsetY - offY) - size : baseOffsetY + offY
   return { left, top, size, windowWidth, windowHeight, baseOffsetX, baseOffsetY }
 }
 
 function getOffsetXByLeft(left: number, rect: DragRect) {
-  return useProps.position.includes("right")
-    ? left - (rect.windowWidth - rect.baseOffsetX - rect.size)
-    : left - rect.baseOffsetX
+  return useProps.position.includes("right") ? left - (rect.windowWidth - rect.baseOffsetX - rect.size) : left - rect.baseOffsetX
 }
 
 function getOffsetYByTop(top: number, rect: DragRect) {
-  return useProps.position.includes("bottom")
-    ? top - (rect.windowHeight - rect.baseOffsetY - rect.size)
-    : top - rect.baseOffsetY
+  return useProps.position.includes("bottom") ? top - (rect.windowHeight - rect.baseOffsetY - rect.size) : top - rect.baseOffsetY
 }
 
 function buildDragDetail(): FloatButtonDragDetail {

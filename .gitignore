@@ -29,5 +29,3 @@ docs/.vitepress/cache
 
 src/pages.json
 
-# Claude Code
-.claude/settings.local.json

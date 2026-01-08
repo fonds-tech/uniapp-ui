@@ -1,77 +1,46 @@
 {
+  "env": {},
   "permissions": {
     "allow": [
-      "mcp__serena__activate_project",
-      "mcp__serena__check_onboarding_performed",
-      "mcp__serena__list_dir",
+      "Bash(chmod:*)",
+      "Bash(*task-analysis.sh*)",
+      "Bash(pnpm run *)",
+      "Bash(./.claude/hooks/*)",
+      "Skill(*)",
+      "mcp__serena__*",
       "mcp__desktop-commander__list_directory",
-      "mcp__desktop-commander__read_file",
-      "Bash(pnpm test:run:*)",
-      "Bash(pnpm lint)",
-      "Bash(pnpm lint:*)",
-      "Bash(ls:*)",
-      "Bash(cat:*)",
-      "mcp__serena__read_file",
-      "mcp__serena__create_text_file",
-      "mcp__serena__get_symbols_overview",
-      "mcp__serena__find_file",
-      "mcp__serena__replace_content",
-      "Bash(timeout:*)",
-      "mcp__serena__search_for_pattern",
-      "Bash(pnpm test:*)",
-      "Bash(npm test:*)",
-      "Bash(pnpm vitest run:*)",
-      "mcp__serena__onboarding",
-      "mcp__serena__write_memory",
-      "Bash(pnpm vue-tsc:*)",
-      "mcp__serena__read_memory",
-      "Bash(mkdir:*)",
-      "mcp__serena__find_symbol",
-      "mcp__serena__think_about_collected_information",
-      "mcp__ddg-search__search",
-      "mcp__ddg-search__fetch_content",
-      "WebFetch(domain:m3.material.io)",
-      "mcp__serena__think_about_whether_you_are_done",
-      "Bash(pnpm eslint:*)",
-      "mcp__serena__think_about_task_adherence",
-      "mcp__serena__get_current_config",
-      "mcp__desktop-commander__start_search",
-      "mcp__serena__replace_symbol_body",
-      "mcp__playwright__browser_navigate",
-      "mcp__playwright__browser_close",
-      "mcp__serena__list_memories",
-      "mcp__playwright__browser_wait_for",
-      "mcp__playwright__browser_click",
-      "Bash(pnpm type-check:*)",
-      "Bash(node:*)",
-      "Bash(npm --version)",
-      "mcp__auggie-mcp__codebase-retrieval",
-      "Skill(collaborating-with-codex)",
-      "Skill(collaborating-with-gemini)"
+      "mcp__auggie-mcp__codebase-retrieval"
     ],
     "deny": [],
     "ask": []
   },
   "hooks": {
-    "PostToolUse": [
+    "Stop": [
       {
-        "matcher": "Write",
         "hooks": [
           {
             "type": "command",
-            "command": "pnpm run lint:fix"
+            "command": ".claude/hooks/stop-notify.sh"
           }
         ]
-      },
+      }
+    ],
+    "PreToolUse": [],
+    "PostToolUse": [],
+    "Notification": [],
+    "UserPromptSubmit": [
       {
-        "matcher": "Edit",
         "hooks": [
           {
             "type": "command",
-            "command": "pnpm run lint:fix"
+            "command": ".claude/hooks/task-analysis.sh"
           }
         ]
       }
     ]
-  }
+  },
+  "mcpServers": {},
+  "contextProviders": [],
+  "cleanupTempFilesOnExit": true,
+  "enableTerminalShiftEnter": false
 }
