@@ -221,6 +221,7 @@
 </template>
 
 <script setup lang="ts">
+import type { SwiperEasingFunction, SwiperIndicatorPosition } from "@/uni_modules/uniapp-ui/ui-swiper"
 import { useToast } from "@/uni_modules/uniapp-ui"
 import { DemoPage, DemoBlock, DemoSection } from "../components"
 
@@ -242,7 +243,7 @@ const images = [
 const currentIndex = ref(0)
 
 // 指示器位置
-const currentPosition = ref("bottom-right")
+const currentPosition = ref<SwiperIndicatorPosition>("bottom-right")
 
 // 自定义间隔
 const currentInterval = ref(3000)
@@ -251,7 +252,7 @@ const currentInterval = ref(3000)
 const currentDuration = ref(500)
 
 // 缓动函数
-const currentEasing = ref("default")
+const currentEasing = ref<SwiperEasingFunction>("default")
 
 // 循环播放
 const isCircular = ref(true)
@@ -263,7 +264,7 @@ const isDisableTouch = ref(false)
 const currentRadius = ref(0)
 
 // 图片模式
-const currentImageMode = ref("scaleToFill")
+const currentImageMode = ref<UniHelper.ImageProps["mode"]>("scaleToFill")
 
 // 事件处理
 const eventLog = ref("滑动轮播图触发事件")

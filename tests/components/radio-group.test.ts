@@ -75,20 +75,21 @@ describe("ui-radio-group 单选框组组件", () => {
   })
 
   describe("布局方向", () => {
-    it("默认应为水平布局", async () => {
+    it("默认应为水平布局（flex wrap）", async () => {
       const wrapper = mount(UiRadioGroup)
       await waitForTransition()
 
       expect(wrapper.classes()).not.toContain("ui-radio-group--vertical")
     })
 
-    it("vertical 为 true 时应添加垂直类名", async () => {
+    it("columns 设置后应启用网格布局", async () => {
       const wrapper = mount(UiRadioGroup, {
-        props: { vertical: true },
+        props: { columns: 2 },
       })
       await waitForTransition()
 
-      expect(wrapper.classes()).toContain("ui-radio-group--vertical")
+      expect(wrapper.attributes("style")).toContain("grid")
+      expect(wrapper.attributes("style")).toContain("repeat(2, 1fr)")
     })
   })
 

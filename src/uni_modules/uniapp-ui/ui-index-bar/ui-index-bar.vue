@@ -1,7 +1,14 @@
 <template>
   <view class="ui-index-bar" :class="[customClass]" :style="[style]">
     <view class="ui-index-bar__list">
-      <view v-for="(item, index) in indexs" :key="index" class="ui-index-bar__index" :class="[itemClass(item)]" @click.stop="onClick(item)" @touchmove.stop.prevent="onTouchMove">
+      <view
+        v-for="(item, index) in indexList"
+        :key="index"
+        class="ui-index-bar__index"
+        :class="[itemClass(item)]"
+        @click.stop="onClick(item)"
+        @touchmove.stop.prevent="onTouchMove"
+      >
         {{ item }}
       </view>
     </view>
@@ -41,6 +48,13 @@ const style = computed(() => {
 
 const itemClass = computed(() => (item: string | number) => (currentName.value === item ? "is-active" : ""))
 
+const indexList = computed(() => {
+  if (useProps.indexs && useProps.indexs.length) {
+    return useProps.indexs
+  }
+  return childrens.map((child) => toRef(child.exposed?.name).value)
+})
+
 watch(() => childrens.length, resize)
 
 async function resize() {
@@ -69,7 +83,7 @@ function onTouchMove(event: any) {
   itemsRect.value?.forEach((item, index) => {
     const { top, bottom } = item
     if (y >= top && y <= bottom) {
-      onClick(useProps.indexs[index])
+      onClick(indexList.value[index])
     }
   })
 }

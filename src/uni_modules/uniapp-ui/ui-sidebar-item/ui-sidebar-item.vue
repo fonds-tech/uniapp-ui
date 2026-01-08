@@ -3,6 +3,8 @@
     <slot :active="active" :disabled="disabled">
       <view class="ui-sidebar-item__title" :style="[titleStyle]">
         {{ title }}
+        <view v-if="useProps.dot" class="ui-sidebar-item__dot" />
+        <view v-else-if="isDef(useProps.badge)" class="ui-sidebar-item__badge">{{ useProps.badge }}</view>
       </view>
     </slot>
   </view>
@@ -39,6 +41,7 @@ const style = computed(() => {
 const classs = computed(() => {
   const list: string[] = []
   if (active.value) list.push("ui-sidebar-item--active")
+  if (useProps.disabled) list.push("ui-sidebar-item--disabled")
   return list
 })
 
@@ -50,8 +53,8 @@ const titleStyle = computed(() => {
   style.fontWeight = prop("titleWeight")
   if (active.value) {
     style.color = useColor(prop("activeTitleColor"))
-    style.fontSize = useColor(prop("activeTitleSize") || prop("titleSize"))
-    style.fontWeight = useColor(prop("activeTitleWeight"))
+    style.fontSize = useUnit(prop("activeTitleSize") || prop("titleSize"))
+    style.fontWeight = prop("activeTitleWeight") || prop("titleWeight")
   }
   return useStyle(style)
 })
@@ -105,6 +108,11 @@ export default {
     background-color: var(--ui-color-background);
   }
 
+  &--disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+
   &__title {
     flex: 1;
     padding: 0 var(--ui-spacing-xl);
@@ -112,6 +120,34 @@ export default {
     position: relative;
     white-space: nowrap;
     text-overflow: ellipsis;
+  }
+
+  &__dot {
+    top: 50%;
+    right: var(--ui-spacing-md);
+    width: 16rpx;
+    height: 16rpx;
+    position: absolute;
+    transform: translateY(-50%);
+    background: var(--ui-color-danger);
+    border-radius: 50%;
+  }
+
+  &__badge {
+    top: 50%;
+    color: #fff;
+    right: var(--ui-spacing-md);
+    height: 32rpx;
+    display: flex;
+    padding: 0 8rpx;
+    position: absolute;
+    font-size: 20rpx;
+    min-width: 32rpx;
+    transform: translateY(-50%);
+    background: var(--ui-color-danger);
+    align-items: center;
+    border-radius: 32rpx;
+    justify-content: center;
   }
 }
 </style>

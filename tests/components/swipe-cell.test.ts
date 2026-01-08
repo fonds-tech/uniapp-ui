@@ -447,7 +447,7 @@ describe("ui-swipe-cell 滑动单元格组件", () => {
 
       const openEvents = wrapper.emitted("open")
       expect(openEvents).toBeTruthy()
-      expect(openEvents![0][0].position).toBe("right")
+      expect((openEvents![0][0] as { position: string }).position).toBe("right")
     })
 
     it("调用 open('left') 应打开左侧", async () => {
@@ -463,7 +463,7 @@ describe("ui-swipe-cell 滑动单元格组件", () => {
 
       const openEvents = wrapper.emitted("open")
       expect(openEvents).toBeTruthy()
-      expect(openEvents![0][0].position).toBe("left")
+      expect((openEvents![0][0] as { position: string }).position).toBe("left")
     })
 
     it("调用 close 应关闭滑动单元格", async () => {
@@ -484,7 +484,7 @@ describe("ui-swipe-cell 滑动单元格组件", () => {
 
       const closeEvents = wrapper.emitted("close")
       expect(closeEvents).toBeTruthy()
-      expect(closeEvents![0][0].position).toBe("right")
+      expect((closeEvents![0][0] as { position: string }).position).toBe("right")
     })
   })
 
@@ -682,7 +682,7 @@ describe("ui-swipe-cell 滑动单元格组件", () => {
 
       const openEvents = wrapper.emitted("open")
       expect(openEvents).toBeTruthy()
-      expect(openEvents![0][0].name).toBe("")
+      expect((openEvents![0][0] as { name: string }).name).toBe("")
     })
 
     it("open 方法传入空字符串不应执行打开", async () => {

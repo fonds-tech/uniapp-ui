@@ -1,15 +1,19 @@
 import type FloatButton from "./ui-float-button.vue"
 import type { ExtractPropTypes } from "vue"
 import { createProps } from "../hooks"
-import { styleProp, numericProp, makeStringProp, makeNumericProp } from "../utils/props"
+import { styleProp, truthProp, makeStringProp, makeNumericProp } from "../utils/props"
 
 export const [floatButtonProps, useFloatButtonProps] = createProps("floatButton", {
+  /**
+   * 是否显示
+   */
+  show: truthProp,
   /**
    * 图标名称
    */
   icon: makeStringProp("plus"),
   /**
-   * 按钮文本，为空时只显示图标
+   * 按钮文本
    */
   text: { type: String, default: "" },
   /**
@@ -25,14 +29,6 @@ export const [floatButtonProps, useFloatButtonProps] = createProps("floatButton"
    */
   size: makeNumericProp("100rpx"),
   /**
-   * 按钮宽度，优先级高于size
-   */
-  width: numericProp,
-  /**
-   * 按钮高度，优先级高于size
-   */
-  height: numericProp,
-  /**
    * 位置
    */
   position: {
@@ -41,21 +37,21 @@ export const [floatButtonProps, useFloatButtonProps] = createProps("floatButton"
     validator: (v: string) => ["left-bottom", "right-bottom", "left-top", "right-top"].includes(v),
   },
   /**
-   * 距离右侧的距离
+   * 横向偏移（推荐使用，替代 right）
+   */
+  offsetX: makeNumericProp(""),
+  /**
+   * 纵向偏移（推荐使用，替代 bottom）
+   */
+  offsetY: makeNumericProp(""),
+  /**
+   * 距离右侧/左侧的距离（向后兼容，推荐使用 offsetX）
    */
   right: makeNumericProp("24rpx"),
   /**
-   * 距离底部的距离
+   * 距离底部/顶部的距离（向后兼容，推荐使用 offsetY）
    */
   bottom: makeNumericProp("100rpx"),
-  /**
-   * 距离左侧的距离
-   */
-  left: numericProp,
-  /**
-   * 距离顶部的距离
-   */
-  top: numericProp,
   /**
    * 元素层级
    */
@@ -65,29 +61,13 @@ export const [floatButtonProps, useFloatButtonProps] = createProps("floatButton"
    */
   color: { type: String, default: "" },
   /**
-   * 图标颜色
+   * 前景色（图标和文字颜色）
    */
-  iconColor: makeStringProp("#fff"),
+  foregroundColor: makeStringProp("#fff"),
   /**
    * 图标大小
    */
   iconSize: makeNumericProp("40rpx"),
-  /**
-   * 文本颜色
-   */
-  textColor: makeStringProp("#fff"),
-  /**
-   * 文本大小
-   */
-  textSize: numericProp,
-  /**
-   * 阴影样式，传入box-shadow值
-   */
-  shadow: { type: String, default: "0 4rpx 16rpx 0 rgba(0, 0, 0, 0.2)" },
-  /**
-   * 圆角大小
-   */
-  borderRadius: numericProp,
   /**
    * 是否禁用
    */
@@ -96,6 +76,26 @@ export const [floatButtonProps, useFloatButtonProps] = createProps("floatButton"
    * 是否加载中
    */
   loading: Boolean,
+  /**
+   * 徽标（true 显示小红点，数字显示徽标）
+   */
+  badge: { type: [Boolean, String, Number], default: false },
+  /**
+   * 是否可拖拽
+   */
+  draggable: Boolean,
+  /**
+   * 拖拽边界（是否限制在屏幕内）
+   */
+  dragBoundary: truthProp,
+  /**
+   * 拖拽结束后是否吸附屏幕边缘
+   */
+  magnetic: {
+    type: [Boolean, String],
+    default: false,
+    validator: (v: boolean | string) => typeof v === "boolean" || ["x", "y", "both"].includes(v),
+  },
   /**
    * 是否适配底部安全区域
    */
@@ -110,8 +110,18 @@ export const [floatButtonProps, useFloatButtonProps] = createProps("floatButton"
   customStyle: styleProp,
 })
 
+export interface FloatButtonDragDetail {
+  offsetX: number
+  offsetY: number
+  position: string
+}
+
 export const floatButtonEmits = {
   click: () => true,
+  "update:show": (show: boolean) => typeof show === "boolean",
+  dragStart: (_detail: FloatButtonDragDetail) => true,
+  dragMove: (_detail: FloatButtonDragDetail) => true,
+  dragEnd: (_detail: FloatButtonDragDetail) => true,
 }
 
 export type FloatButtonEmits = typeof floatButtonEmits

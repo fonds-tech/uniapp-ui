@@ -356,7 +356,7 @@ const activeCustom2 = ref(0)
 
 // 综合示例
 const activeComplex = ref("fruits")
-const categories = ref([
+const categories = ref<Array<{ name: string; title: string; disabled?: boolean }>>([
   { name: "fruits", title: "水果" },
   { name: "vegetables", title: "蔬菜" },
   { name: "meat", title: "肉禽蛋" },

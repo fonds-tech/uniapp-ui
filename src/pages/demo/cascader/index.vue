@@ -512,7 +512,7 @@ const asyncOptions = ref([
 ])
 
 // 自定义字段名选项数据
-const customFieldOptions = [
+const customFieldOptions: any = [
   {
     name: "电子产品",
     id: "1",

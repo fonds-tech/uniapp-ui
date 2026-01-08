@@ -616,7 +616,7 @@ describe("ui-pull-refresh 下拉刷新组件", () => {
     })
 
     it("组件卸载时应清理定时器", async () => {
-      const clearTimeoutSpy = vi.spyOn(global, "clearTimeout")
+      const clearTimeoutSpy = vi.spyOn(globalThis, "clearTimeout")
 
       const wrapper = mount(UiPullRefresh, {
         props: {

@@ -15,13 +15,13 @@ export const [radioGroupProps, useRadioGroupProps] = createProps("radioGroup", {
    */
   gap: makeNumericProp(0),
   /**
+   * 网格布局列数，设置后启用 grid 布局
+   */
+  columns: makeNumericProp(""),
+  /**
    * 是否禁用
    */
   disabled: Boolean,
-  /**
-   * 是否垂直布局
-   */
-  vertical: Boolean,
   /**
    * 图标名称
    */

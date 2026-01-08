@@ -103,12 +103,7 @@ describe("ui-input 输入框组件", () => {
         })
         await waitForTransition()
 
-        if (type === "password") {
-          expect(wrapper.find("input").attributes("type")).toBe("text")
-          expect(wrapper.find("input").attributes("password")).toBe("true")
-        } else {
-          expect(wrapper.find("input").attributes("type")).toBe(type)
-        }
+        expect(wrapper.find("input").attributes("type")).toBe(type)
       })
     })
 

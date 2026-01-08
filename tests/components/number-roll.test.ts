@@ -74,10 +74,10 @@ describe("ui-number-roll 数字滚动组件", () => {
 
     it("应支持千分位分隔符", () => {
       const wrapper = mount(UiNumberRoll, {
-        props: { value: 1234567, thousandsSep: true },
+        props: { value: 1234567, thousandsSep: "," },
       })
 
-      expect(wrapper.props("thousandsSep")).toBe(true)
+      expect(wrapper.props("thousandsSep")).toBe(",")
     })
   })
 
@@ -100,10 +100,10 @@ describe("ui-number-roll 数字滚动组件", () => {
 
     it("应支持文字粗细", () => {
       const wrapper = mount(UiNumberRoll, {
-        props: { fontWeight: 600 },
+        props: { fontWeight: "600" },
       })
 
-      expect(wrapper.props("fontWeight")).toBe(600)
+      expect(wrapper.props("fontWeight")).toBe("600")
     })
 
     it("应支持自定义样式对象", async () => {

@@ -44,7 +44,7 @@ function createMockTabsProvide() {
 }
 
 // 辅助函数：挂载 tab 组件，自动添加 provide
-function mountTab(props: Record<string, unknown> = {}, options: { slots?: Record<string, unknown> } = {}) {
+function mountTab(props: Record<string, unknown> = {}, options: { slots?: Record<string, string | (() => string)> } = {}) {
   return mount(UiTab, {
     props,
     slots: options.slots,
@@ -638,11 +638,14 @@ describe("uiTab 组件（集成于 tabs.test.ts）", () => {
 
   describe("插槽测试", () => {
     it("应该支持默认插槽", async () => {
-      const wrapper = mountTab({ title: "标签" }, {
-        slots: {
-          default: "<span class=\"custom-content\">自定义内容</span>",
+      const wrapper = mountTab(
+        { title: "标签" },
+        {
+          slots: {
+            default: "<span class=\"custom-content\">自定义内容</span>",
+          },
         },
-      })
+      )
       await waitForTransition()
       expect(wrapper.find(".custom-content").exists()).toBe(true)
     })

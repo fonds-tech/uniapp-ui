@@ -17,7 +17,6 @@
 
 <script setup lang="ts">
 import type { CSSProperties } from "vue"
-import { isEmpty } from "../utils/check"
 import { debounce } from "../utils/utils"
 import { sidebarKey, sidebarEmits, sidebarProps, useSidebarProps } from "./index"
 import { ref, toRef, watch, computed, nextTick, getCurrentInstance } from "vue"
@@ -94,7 +93,7 @@ function clickItem(name: string | number, index: number) {
 }
 
 function findItemByName(name: string | number) {
-  return childrens.find((item) => toRef(item.exposed.name).value === name) || childrens.find((item) => isEmpty(item.exposed.useProps.disabled))
+  return childrens.find((item) => toRef(item.exposed.name).value === name) || childrens.find((item) => !item.exposed.useProps.disabled)
 }
 
 async function setCurrentName(name: string | number) {

@@ -3,7 +3,7 @@ import type { Ref, PropType, InjectionKey, CSSProperties, ExtractPropTypes } fro
 import { createProps } from "../hooks"
 import { truthProp, numericProp, makeNumericProp } from "../utils/props"
 
-export const sidebarKey: InjectionKey<SidebarProvide> = Symbol("ui-tabs")
+export const sidebarKey: InjectionKey<SidebarProvide> = Symbol("ui-sidebar")
 export const [sidebarProps, useSidebarProps] = createProps("sidebar", {
   /**
    * 绑定值

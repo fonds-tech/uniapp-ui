@@ -156,8 +156,6 @@ const componentCategories = [
     key: "composite",
     components: [
       { name: "CellGroup", path: "cell-group", icon: "📦", desc: "单元格分组" },
-      { name: "CheckboxGroup", path: "checkbox-group", icon: "☑️", desc: "复选框组" },
-      { name: "RadioGroup", path: "radio-group", icon: "🔘", desc: "单选框组" },
       { name: "FormItem", path: "form-item", icon: "📝", desc: "表单项组件" },
       { name: "Tab", path: "tab", icon: "📂", desc: "标签页子项" },
       { name: "TabbarItem", path: "tabbar-item", icon: "📑", desc: "标签栏子项" },

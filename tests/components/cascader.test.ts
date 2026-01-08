@@ -291,6 +291,8 @@ describe("uiCascader 组件", () => {
           name: "浙江省",
           id: "zhejiang",
           items: [],
+          text: "",
+          value: "",
         },
       ]
       const fieldKeys = { text: "name", value: "id", children: "items" }

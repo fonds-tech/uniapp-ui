@@ -316,7 +316,7 @@
 </template>
 
 <script setup lang="ts">
-import type { PopupMode } from "@/uni_modules/uniapp-ui"
+import type { PopupMode } from "@/uni_modules/uniapp-ui/ui-popup"
 import { useToast } from "@/uni_modules/uniapp-ui"
 import { DemoPage, DemoBlock, DemoSection } from "../components"
 

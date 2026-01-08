@@ -23,7 +23,7 @@
     <demo-section title="自定义样式">
       <demo-block>
         <ui-count-down :time="time">
-          <template #default="{ current }">
+          <template #default="{ time: current }">
             <text class="countdown-block">{{ current.hours }}</text>
             <text class="countdown-colon">:</text>
             <text class="countdown-block">{{ current.minutes }}</text>
@@ -40,7 +40,7 @@
         <view class="countdown-row">
           <text class="countdown-row__label">圆形样式:</text>
           <ui-count-down :time="time">
-            <template #default="{ current }">
+            <template #default="{ time: current }">
               <text class="countdown-circle">{{ current.hours }}</text>
               <text class="countdown-separator">:</text>
               <text class="countdown-circle">{{ current.minutes }}</text>
@@ -52,7 +52,7 @@
         <view class="countdown-row">
           <text class="countdown-row__label">渐变样式:</text>
           <ui-count-down :time="time">
-            <template #default="{ current }">
+            <template #default="{ time: current }">
               <text class="countdown-gradient">{{ current.hours }}</text>
               <text class="countdown-gradient-separator">时</text>
               <text class="countdown-gradient">{{ current.minutes }}</text>
@@ -106,7 +106,7 @@
           <view class="scene-card__header">
             <text class="scene-card__title">限时秒杀</text>
             <ui-count-down :time="saleTime">
-              <template #default="{ current }">
+              <template #default="{ time: current }">
                 <text class="sale-countdown-block">{{ padZero(current.hours) }}</text>
                 <text class="sale-countdown-colon">:</text>
                 <text class="sale-countdown-block">{{ padZero(current.minutes) }}</text>
@@ -123,7 +123,7 @@
           <text class="scene-card__code-title">验证码倒计时</text>
           <ui-button v-if="!codeCountingDown" type="primary" size="small" @click="sendCode">获取验证码</ui-button>
           <ui-count-down v-else ref="codeCountDownRef" :time="60000" format="ss" @finish="onCodeFinish">
-            <template #default="{ current }">
+            <template #default="{ time: current }">
               <ui-button type="default" size="small" disabled>{{ current.seconds }}s 后重新获取</ui-button>
             </template>
           </ui-count-down>

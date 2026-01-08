@@ -42,7 +42,12 @@
       "mcp__serena__list_memories",
       "mcp__playwright__browser_wait_for",
       "mcp__playwright__browser_click",
-      "Bash(pnpm type-check:*)"
+      "Bash(pnpm type-check:*)",
+      "Bash(node:*)",
+      "Bash(npm --version)",
+      "mcp__auggie-mcp__codebase-retrieval",
+      "Skill(collaborating-with-codex)",
+      "Skill(collaborating-with-gemini)"
     ],
     "deny": [],
     "ask": []

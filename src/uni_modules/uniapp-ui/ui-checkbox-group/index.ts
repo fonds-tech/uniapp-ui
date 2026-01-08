@@ -31,9 +31,9 @@ export const [checkboxGroupProps, useCheckboxGroupProps] = createProps("checkbox
    */
   gap: makeNumericProp(0),
   /**
-   * 是否垂直布局
+   * 网格布局列数，设置后启用 grid 布局
    */
-  vertical: Boolean,
+  columns: makeNumericProp(""),
 
   // ============ 状态 ============
 

@@ -269,6 +269,7 @@
 </template>
 
 <script setup lang="ts">
+import type { TransitionName } from "@/uni_modules/uniapp-ui/ui-transition"
 import { useToast } from "@/uni_modules/uniapp-ui"
 import { DemoPage, DemoBlock, DemoSection } from "../components"
 
@@ -290,8 +291,8 @@ const show7 = ref(true)
 const slideDirection = ref("up")
 const fadeDirection = ref("up")
 
-const slideName = computed(() => `slide-${slideDirection.value}`)
-const fadeName = computed(() => `fade-${fadeDirection.value}`)
+const slideName = computed(() => `slide-${slideDirection.value}` as TransitionName)
+const fadeName = computed(() => `fade-${fadeDirection.value}` as TransitionName)
 
 function toggleSlide(direction: string) {
   slideDirection.value = direction
@@ -376,7 +377,7 @@ const showImage = ref(true)
 const currentImage = ref(0)
 const currentAnim = ref(0)
 
-const animations = [
+const animations: Array<{ name: TransitionName; label: string }> = [
   { name: "fade", label: "淡入" },
   { name: "zoom-in", label: "缩放" },
   { name: "slide-left", label: "左滑" },
@@ -408,9 +409,9 @@ function nextImage() {
 // 综合示例 - 弹窗
 const showModalOverlay = ref(false)
 const showModalContent = ref(false)
-const modalAnimation = ref<string>("fade")
+const modalAnimation = ref<TransitionName>("fade")
 
-function showModal(animation: string) {
+function showModal(animation: TransitionName) {
   modalAnimation.value = animation
   showModalOverlay.value = true
   setTimeout(() => {

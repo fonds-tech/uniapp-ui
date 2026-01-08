@@ -95,10 +95,22 @@ function onChange(index) {
 
 ## SidebarItem Props
 
-| 参数     | 说明                   | 类型               | 默认值   |
-| -------- | ---------------------- | ------------------ | -------- |
-| title    | 标题                   | `string`           | -        |
-| name     | 标识符，用于匹配选中项 | `string \| number` | 当前索引 |
-| disabled | 是否禁用               | `boolean`          | `false`  |
-| dot      | 是否显示圆点徽标       | `boolean`          | `false`  |
-| badge    | 徽标内容               | `string \| number` | -        |
+| 参数                | 说明                   | 类型               | 默认值   |
+| ------------------- | ---------------------- | ------------------ | -------- |
+| name                | 标识符，用于匹配选中项 | `string \| number` | 当前索引 |
+| title               | 标题                   | `string`           | -        |
+| height              | 高度                   | `string \| number` | -        |
+| disabled            | 是否禁用               | `boolean`          | `false`  |
+| dot                 | 是否显示圆点徽标       | `boolean`          | `false`  |
+| badge               | 徽标内容               | `string \| number` | -        |
+| title-color         | 标题颜色               | `string`           | -        |
+| title-size          | 标题大小               | `string \| number` | -        |
+| title-weight        | 标题粗细               | `string \| number` | -        |
+| title-align         | 文字对齐方式           | `string`           | `center` |
+| active-title-color  | 激活标题颜色           | `string`           | -        |
+| active-title-size   | 激活标题大小           | `string \| number` | -        |
+| active-title-weight | 激活标题粗细           | `string \| number` | -        |
+| background          | 背景颜色               | `string`           | -        |
+| active-background   | 激活背景颜色           | `string`           | -        |
+| custom-class        | 自定义类名             | `string`           | -        |
+| custom-style        | 自定义样式             | `string \| object` | -        |

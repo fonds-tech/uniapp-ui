@@ -149,7 +149,6 @@ export default defineConfig({
             { text: "FloatButton 浮动按钮", link: "/components/float-button" },
             { text: "Pagination 分页", link: "/components/pagination" },
             { text: "Sidebar 侧边导航", link: "/components/sidebar" },
-            { text: "SidebarItem 侧边导航项", link: "/components/sidebar-item" },
             { text: "IndexBar 索引栏", link: "/components/index-bar" },
             { text: "IndexAnchor 索引锚点", link: "/components/index-anchor" },
           ],

@@ -1,302 +1,389 @@
 <template>
   <demo-page>
-    <!-- ==================== 形状对比 ==================== -->
-    <demo-section title="形状对比">
-      <demo-block :cols="2" :gap="32">
-        <ui-radio-group v-model="shapeDot">
-          <ui-radio name="1" shape="dot" label="圆点 (dot)" />
-        </ui-radio-group>
-        <ui-radio-group v-model="shapeIcon">
-          <ui-radio name="1" shape="icon" label="勾选 (icon)" />
-        </ui-radio-group>
+    <demo-section title="Radio 单选框" desc="用于在多个选项中选择单个结果" :card="false" />
+
+    <!-- ==================== 基础用法 ==================== -->
+    <demo-section title="基础用法">
+      <demo-block :cols="2" :gap="40">
+        <view class="shape-group">
+          <ui-text size="small" color="secondary" class="group-label">dot 形状</ui-text>
+          <ui-radio-group v-model="basicDot" shape="dot" vertical :gap="12">
+            <ui-radio name="a">选项 A</ui-radio>
+            <ui-radio name="b">选项 B</ui-radio>
+            <ui-radio name="c">选项 C</ui-radio>
+          </ui-radio-group>
+        </view>
+        <view class="shape-group">
+          <ui-text size="small" color="secondary" class="group-label">icon 形状</ui-text>
+          <ui-radio-group v-model="basicIcon" shape="icon" vertical :gap="12">
+            <ui-radio name="a">选项 A</ui-radio>
+            <ui-radio name="b">选项 B</ui-radio>
+            <ui-radio name="c">选项 C</ui-radio>
+          </ui-radio-group>
+        </view>
       </demo-block>
     </demo-section>
 
-    <!-- ==================== 形状 × 圆角 ==================== -->
-    <demo-section title="形状 × 圆角">
-      <demo-block :cols="2" :gap="32">
-        <ui-radio-group v-model="dotSquare">
-          <ui-radio name="1" shape="dot" :round="false" label="dot + 方形" />
-        </ui-radio-group>
-        <ui-radio-group v-model="dotRound">
-          <ui-radio name="1" shape="dot" :round="true" label="dot + 圆形" />
-        </ui-radio-group>
-      </demo-block>
-      <demo-block :cols="2" :gap="32" class="mt-16">
-        <ui-radio-group v-model="iconSquare">
-          <ui-radio name="1" shape="icon" :round="false" label="icon + 方形" />
-        </ui-radio-group>
-        <ui-radio-group v-model="iconRound">
-          <ui-radio name="1" shape="icon" :round="true" label="icon + 圆形" />
-        </ui-radio-group>
-      </demo-block>
-    </demo-section>
-
-    <!-- ==================== 形状 × 尺寸 ==================== -->
-    <demo-section title="形状 × 尺寸">
-      <demo-block :cols="3" :gap="24">
-        <ui-radio-group v-model="dotSmall">
-          <ui-radio name="1" shape="dot" icon-size="28rpx" label="dot 小" />
-        </ui-radio-group>
-        <ui-radio-group v-model="dotMedium">
-          <ui-radio name="1" shape="dot" icon-size="36rpx" label="dot 中" />
-        </ui-radio-group>
-        <ui-radio-group v-model="dotLarge">
-          <ui-radio name="1" shape="dot" icon-size="48rpx" label="dot 大" />
-        </ui-radio-group>
-      </demo-block>
-      <demo-block :cols="3" :gap="24" class="mt-16">
-        <ui-radio-group v-model="iconSmall">
-          <ui-radio name="1" shape="icon" icon-size="28rpx" label="icon 小" />
-        </ui-radio-group>
-        <ui-radio-group v-model="iconMedium">
-          <ui-radio name="1" shape="icon" icon-size="36rpx" label="icon 中" />
-        </ui-radio-group>
-        <ui-radio-group v-model="iconLarge">
-          <ui-radio name="1" shape="icon" icon-size="48rpx" label="icon 大" />
-        </ui-radio-group>
+    <!-- ==================== 圆角设置 ==================== -->
+    <demo-section title="圆角设置">
+      <demo-block :cols="2" :gap="40">
+        <view class="shape-group">
+          <ui-text size="small" color="secondary" class="group-label">dot 形状</ui-text>
+          <ui-radio-group v-model="roundDot" shape="dot" vertical :gap="12">
+            <ui-radio name="round" :round="true">圆形</ui-radio>
+            <ui-radio name="square" :round="false">方形</ui-radio>
+          </ui-radio-group>
+        </view>
+        <view class="shape-group">
+          <ui-text size="small" color="secondary" class="group-label">icon 形状</ui-text>
+          <ui-radio-group v-model="roundIcon" shape="icon" vertical :gap="12">
+            <ui-radio name="round" :round="true">圆形</ui-radio>
+            <ui-radio name="square" :round="false">方形</ui-radio>
+          </ui-radio-group>
+        </view>
       </demo-block>
     </demo-section>
 
-    <!-- ==================== 形状 × 颜色 ==================== -->
-    <demo-section title="形状 × 颜色">
-      <demo-block :cols="3" :gap="24">
-        <ui-radio-group v-model="dotRed">
-          <ui-radio name="1" shape="dot" checked-color="#ee0a24" label="dot 红" />
-        </ui-radio-group>
-        <ui-radio-group v-model="dotGreen">
-          <ui-radio name="1" shape="dot" checked-color="#07c160" label="dot 绿" />
-        </ui-radio-group>
-        <ui-radio-group v-model="dotPurple">
-          <ui-radio name="1" shape="dot" checked-color="#7232dd" label="dot 紫" />
-        </ui-radio-group>
-      </demo-block>
-      <demo-block :cols="3" :gap="24" class="mt-16">
-        <ui-radio-group v-model="iconRed">
-          <ui-radio name="1" shape="icon" checked-color="#ee0a24" label="icon 红" />
-        </ui-radio-group>
-        <ui-radio-group v-model="iconGreen">
-          <ui-radio name="1" shape="icon" checked-color="#07c160" label="icon 绿" />
-        </ui-radio-group>
-        <ui-radio-group v-model="iconPurple">
-          <ui-radio name="1" shape="icon" checked-color="#7232dd" label="icon 紫" />
-        </ui-radio-group>
+    <!-- ==================== 尺寸设置 ==================== -->
+    <demo-section title="尺寸设置">
+      <demo-block :cols="2" :gap="40">
+        <view class="shape-group">
+          <ui-text size="small" color="secondary" class="group-label">dot 形状</ui-text>
+          <ui-radio-group v-model="sizeDot" shape="dot" vertical :gap="12">
+            <ui-radio name="s" icon-size="24rpx">小 (24rpx)</ui-radio>
+            <ui-radio name="m" icon-size="36rpx">中 (36rpx)</ui-radio>
+            <ui-radio name="l" icon-size="48rpx">大 (48rpx)</ui-radio>
+          </ui-radio-group>
+        </view>
+        <view class="shape-group">
+          <ui-text size="small" color="secondary" class="group-label">icon 形状</ui-text>
+          <ui-radio-group v-model="sizeIcon" shape="icon" vertical :gap="12">
+            <ui-radio name="s" icon-size="24rpx">小 (24rpx)</ui-radio>
+            <ui-radio name="m" icon-size="36rpx">中 (36rpx)</ui-radio>
+            <ui-radio name="l" icon-size="48rpx">大 (48rpx)</ui-radio>
+          </ui-radio-group>
+        </view>
       </demo-block>
     </demo-section>
 
-    <!-- ==================== 形状 × 禁用状态 ==================== -->
-    <demo-section title="形状 × 禁用状态">
-      <demo-block :cols="2" :gap="32">
-        <ui-radio-group model-value="">
-          <ui-radio name="1" shape="dot" disabled label="dot 禁用未选" />
-        </ui-radio-group>
-        <ui-radio-group model-value="1">
-          <ui-radio name="1" shape="dot" disabled label="dot 禁用已选" />
-        </ui-radio-group>
-      </demo-block>
-      <demo-block :cols="2" :gap="32" class="mt-16">
-        <ui-radio-group model-value="">
-          <ui-radio name="1" shape="icon" disabled label="icon 禁用未选" />
-        </ui-radio-group>
-        <ui-radio-group model-value="1">
-          <ui-radio name="1" shape="icon" disabled label="icon 禁用已选" />
-        </ui-radio-group>
-      </demo-block>
-    </demo-section>
-
-    <!-- ==================== 形状 × 只读状态 ==================== -->
-    <demo-section title="形状 × 只读状态">
-      <demo-block :cols="2" :gap="32">
-        <ui-radio-group model-value="">
-          <ui-radio name="1" shape="dot" readonly label="dot 只读未选" />
-        </ui-radio-group>
-        <ui-radio-group model-value="1">
-          <ui-radio name="1" shape="dot" readonly label="dot 只读已选" />
-        </ui-radio-group>
-      </demo-block>
-      <demo-block :cols="2" :gap="32" class="mt-16">
-        <ui-radio-group model-value="">
-          <ui-radio name="1" shape="icon" readonly label="icon 只读未选" />
-        </ui-radio-group>
-        <ui-radio-group model-value="1">
-          <ui-radio name="1" shape="icon" readonly label="icon 只读已选" />
-        </ui-radio-group>
+    <!-- ==================== 颜色主题 ==================== -->
+    <demo-section title="颜色主题">
+      <demo-block :cols="2" :gap="40">
+        <view class="shape-group">
+          <ui-text size="small" color="secondary" class="group-label">dot 形状</ui-text>
+          <ui-radio-group v-model="colorDot" shape="dot" vertical :gap="12">
+            <ui-radio name="red" checked-color="#ee0a24">红色</ui-radio>
+            <ui-radio name="green" checked-color="#07c160">绿色</ui-radio>
+            <ui-radio name="purple" checked-color="#7232dd">紫色</ui-radio>
+          </ui-radio-group>
+        </view>
+        <view class="shape-group">
+          <ui-text size="small" color="secondary" class="group-label">icon 形状</ui-text>
+          <ui-radio-group v-model="colorIcon" shape="icon" vertical :gap="12">
+            <ui-radio name="red" checked-color="#ee0a24">红色</ui-radio>
+            <ui-radio name="green" checked-color="#07c160">绿色</ui-radio>
+            <ui-radio name="purple" checked-color="#7232dd">紫色</ui-radio>
+          </ui-radio-group>
+        </view>
       </demo-block>
     </demo-section>
 
-    <!-- ==================== 标签配置 ==================== -->
-    <demo-section title="标签配置">
-      <demo-block direction="column" align="start" :gap="24">
-        <ui-radio-group v-model="labelSize1">
-          <ui-radio name="1" label-size="24rpx" label="小号标签" />
-        </ui-radio-group>
-        <ui-radio-group v-model="labelSize2">
-          <ui-radio name="1" label-size="32rpx" label="大号标签" />
-        </ui-radio-group>
-        <ui-radio-group v-model="labelColor1">
-          <ui-radio name="1" label-color="#1989fa" label="蓝色标签" />
-        </ui-radio-group>
-        <ui-radio-group v-model="labelWeight1">
-          <ui-radio name="1" label-weight="600" label="粗体标签" />
-        </ui-radio-group>
-        <ui-radio-group v-model="labelGap1">
-          <ui-radio name="1" label-gap="24rpx" label="大间距标签" />
-        </ui-radio-group>
-        <ui-radio-group v-model="labelCheckedColor">
-          <ui-radio name="1" checked-label-color="#07c160" label="选中变色标签" />
-        </ui-radio-group>
+    <!-- ==================== 图标样式 ==================== -->
+    <demo-section title="图标样式">
+      <demo-block :cols="2" :gap="40">
+        <view class="shape-group">
+          <ui-text size="small" color="secondary" class="group-label">dot 形状</ui-text>
+          <ui-radio-group v-model="iconStyleDot" shape="dot" vertical :gap="12">
+            <ui-radio name="color" icon-color="#1989fa">边框蓝色</ui-radio>
+            <ui-radio name="weight" icon-weight="3">边框加粗</ui-radio>
+            <ui-radio name="radius" :round="false" icon-radius="4rpx">小圆角</ui-radio>
+          </ui-radio-group>
+        </view>
+        <view class="shape-group">
+          <ui-text size="small" color="secondary" class="group-label">icon 形状</ui-text>
+          <ui-radio-group v-model="iconStyleIcon" shape="icon" vertical :gap="12">
+            <ui-radio name="color" icon-color="#1989fa">边框蓝色</ui-radio>
+            <ui-radio name="weight" icon-weight="3">边框加粗</ui-radio>
+            <ui-radio name="radius" :round="false" icon-radius="4rpx">小圆角</ui-radio>
+          </ui-radio-group>
+        </view>
+      </demo-block>
+    </demo-section>
+
+    <!-- ==================== 禁用状态 ==================== -->
+    <demo-section title="禁用状态">
+      <demo-block :cols="2" :gap="40">
+        <view class="shape-group">
+          <ui-text size="small" color="secondary" class="group-label">dot 形状</ui-text>
+          <ui-radio-group model-value="checked" shape="dot" vertical :gap="12">
+            <ui-radio name="checked" disabled>已选禁用</ui-radio>
+            <ui-radio name="unchecked" disabled>未选禁用</ui-radio>
+          </ui-radio-group>
+        </view>
+        <view class="shape-group">
+          <ui-text size="small" color="secondary" class="group-label">icon 形状</ui-text>
+          <ui-radio-group model-value="checked" shape="icon" vertical :gap="12">
+            <ui-radio name="checked" disabled>已选禁用</ui-radio>
+            <ui-radio name="unchecked" disabled>未选禁用</ui-radio>
+          </ui-radio-group>
+        </view>
+      </demo-block>
+      <!-- 整组禁用 -->
+      <demo-block :cols="2" :gap="40" class="mt-20">
+        <view class="shape-group">
+          <ui-text size="small" color="secondary" class="group-label">整组禁用 (dot)</ui-text>
+          <ui-radio-group v-model="disabledGroupDot" shape="dot" disabled vertical :gap="12">
+            <ui-radio name="a">选项 A</ui-radio>
+            <ui-radio name="b">选项 B</ui-radio>
+          </ui-radio-group>
+        </view>
+        <view class="shape-group">
+          <ui-text size="small" color="secondary" class="group-label">整组禁用 (icon)</ui-text>
+          <ui-radio-group v-model="disabledGroupIcon" shape="icon" disabled vertical :gap="12">
+            <ui-radio name="a">选项 A</ui-radio>
+            <ui-radio name="b">选项 B</ui-radio>
+          </ui-radio-group>
+        </view>
+      </demo-block>
+    </demo-section>
+
+    <!-- ==================== 只读状态 ==================== -->
+    <demo-section title="只读状态">
+      <demo-block :cols="2" :gap="40">
+        <view class="shape-group">
+          <ui-text size="small" color="secondary" class="group-label">dot 形状</ui-text>
+          <ui-radio-group model-value="checked" shape="dot" vertical :gap="12">
+            <ui-radio name="checked" readonly>已选只读</ui-radio>
+            <ui-radio name="unchecked" readonly>未选只读</ui-radio>
+          </ui-radio-group>
+        </view>
+        <view class="shape-group">
+          <ui-text size="small" color="secondary" class="group-label">icon 形状</ui-text>
+          <ui-radio-group model-value="checked" shape="icon" vertical :gap="12">
+            <ui-radio name="checked" readonly>已选只读</ui-radio>
+            <ui-radio name="unchecked" readonly>未选只读</ui-radio>
+          </ui-radio-group>
+        </view>
+      </demo-block>
+    </demo-section>
+
+    <!-- ==================== 标签样式 ==================== -->
+    <demo-section title="标签样式">
+      <demo-block :cols="2" :gap="40">
+        <view class="shape-group">
+          <ui-text size="small" color="secondary" class="group-label">dot 形状</ui-text>
+          <ui-radio-group v-model="labelStyleDot" shape="dot" vertical :gap="12">
+            <ui-radio name="size" label-size="24rpx">小号标签</ui-radio>
+            <ui-radio name="color" label-color="#1989fa">蓝色标签</ui-radio>
+            <ui-radio name="weight" label-weight="600">粗体标签</ui-radio>
+            <ui-radio name="gap" label-gap="20rpx">大间距</ui-radio>
+            <ui-radio name="checked" checked-label-color="#07c160">选中变色</ui-radio>
+          </ui-radio-group>
+        </view>
+        <view class="shape-group">
+          <ui-text size="small" color="secondary" class="group-label">icon 形状</ui-text>
+          <ui-radio-group v-model="labelStyleIcon" shape="icon" vertical :gap="12">
+            <ui-radio name="size" label-size="24rpx">小号标签</ui-radio>
+            <ui-radio name="color" label-color="#1989fa">蓝色标签</ui-radio>
+            <ui-radio name="weight" label-weight="600">粗体标签</ui-radio>
+            <ui-radio name="gap" label-gap="20rpx">大间距</ui-radio>
+            <ui-radio name="checked" checked-label-color="#07c160">选中变色</ui-radio>
+          </ui-radio-group>
+        </view>
       </demo-block>
     </demo-section>
 
     <!-- ==================== 标签位置 ==================== -->
     <demo-section title="标签位置">
-      <demo-block :cols="2" :gap="32">
-        <ui-radio-group v-model="labelPosRight">
-          <ui-radio name="1" label="右侧标签" />
-        </ui-radio-group>
-        <ui-radio-group v-model="labelPosLeft">
-          <ui-radio name="1" label-left label="左侧标签" />
-        </ui-radio-group>
+      <demo-block :cols="2" :gap="40">
+        <view class="shape-group">
+          <ui-text size="small" color="secondary" class="group-label">dot 形状</ui-text>
+          <ui-radio-group v-model="labelPosDot" shape="dot" vertical :gap="12">
+            <ui-radio name="right">标签在右</ui-radio>
+            <ui-radio name="left" label-left>标签在左</ui-radio>
+          </ui-radio-group>
+        </view>
+        <view class="shape-group">
+          <ui-text size="small" color="secondary" class="group-label">icon 形状</ui-text>
+          <ui-radio-group v-model="labelPosIcon" shape="icon" vertical :gap="12">
+            <ui-radio name="right">标签在右</ui-radio>
+            <ui-radio name="left" label-left>标签在左</ui-radio>
+          </ui-radio-group>
+        </view>
       </demo-block>
-      <demo-block :cols="2" :gap="32" class="mt-16">
-        <ui-radio-group v-model="labelPosRightIcon">
-          <ui-radio name="1" shape="icon" label="icon 右侧" />
-        </ui-radio-group>
-        <ui-radio-group v-model="labelPosLeftIcon">
-          <ui-radio name="1" shape="icon" label-left label="icon 左侧" />
-        </ui-radio-group>
+      <!-- 整组标签位置 -->
+      <demo-block :cols="2" :gap="40" class="mt-20">
+        <view class="shape-group">
+          <ui-text size="small" color="secondary" class="group-label">整组左侧 (dot)</ui-text>
+          <ui-radio-group v-model="labelLeftGroupDot" shape="dot" label-left vertical :gap="12">
+            <ui-radio name="a">选项 A</ui-radio>
+            <ui-radio name="b">选项 B</ui-radio>
+          </ui-radio-group>
+        </view>
+        <view class="shape-group">
+          <ui-text size="small" color="secondary" class="group-label">整组左侧 (icon)</ui-text>
+          <ui-radio-group v-model="labelLeftGroupIcon" shape="icon" label-left vertical :gap="12">
+            <ui-radio name="a">选项 A</ui-radio>
+            <ui-radio name="b">选项 B</ui-radio>
+          </ui-radio-group>
+        </view>
       </demo-block>
     </demo-section>
 
-    <!-- ==================== 禁用标签点击 ==================== -->
-    <demo-section title="禁用标签点击">
-      <demo-block :cols="2" :gap="32">
-        <ui-radio-group v-model="labelDisabledDot">
-          <ui-radio name="1" shape="dot" label-disabled label="dot 禁用标签" />
-        </ui-radio-group>
-        <ui-radio-group v-model="labelDisabledIcon">
-          <ui-radio name="1" shape="icon" label-disabled label="icon 禁用标签" />
-        </ui-radio-group>
+    <!-- ==================== 交互限制 ==================== -->
+    <demo-section title="交互限制">
+      <demo-block :cols="2" :gap="40">
+        <view class="shape-group">
+          <ui-text size="small" color="secondary" class="group-label">dot 形状</ui-text>
+          <ui-radio-group v-model="labelDisabledDot" shape="dot" vertical :gap="12">
+            <ui-radio name="a" label-disabled>仅图标可点</ui-radio>
+            <ui-radio name="b" label-disabled>标签不可点</ui-radio>
+          </ui-radio-group>
+        </view>
+        <view class="shape-group">
+          <ui-text size="small" color="secondary" class="group-label">icon 形状</ui-text>
+          <ui-radio-group v-model="labelDisabledIcon" shape="icon" vertical :gap="12">
+            <ui-radio name="a" label-disabled>仅图标可点</ui-radio>
+            <ui-radio name="b" label-disabled>标签不可点</ui-radio>
+          </ui-radio-group>
+        </view>
       </demo-block>
-      <text class="demo-text">只有点击图标才能切换状态</text>
     </demo-section>
 
-    <!-- ==================== 单选框组 ==================== -->
-    <demo-section title="单选框组">
+    <!-- ==================== 排列方式 ==================== -->
+    <demo-section title="排列方式">
       <demo-block direction="column" :gap="24">
-        <view>
-          <ui-text size="small" color="secondary" class="mb-8">dot 样式</ui-text>
-          <ui-radio-group v-model="groupValueDot" shape="dot" :gap="32" @change="onGroupChange">
-            <ui-radio name="a" label="选项 A" />
-            <ui-radio name="b" label="选项 B" />
-            <ui-radio name="c" label="选项 C" />
+        <view class="layout-group">
+          <ui-text size="small" color="secondary" class="group-label">水平排列（默认）</ui-text>
+          <ui-radio-group v-model="layoutH" :gap="24">
+            <ui-radio name="a">选项 A</ui-radio>
+            <ui-radio name="b">选项 B</ui-radio>
+            <ui-radio name="c">选项 C</ui-radio>
           </ui-radio-group>
         </view>
-        <view>
-          <ui-text size="small" color="secondary" class="mb-8">icon 样式</ui-text>
-          <ui-radio-group v-model="groupValueIcon" shape="icon" :gap="32" @change="onGroupChange">
-            <ui-radio name="a" label="选项 A" />
-            <ui-radio name="b" label="选项 B" />
-            <ui-radio name="c" label="选项 C" />
+        <view class="layout-group">
+          <ui-text size="small" color="secondary" class="group-label">垂直排列</ui-text>
+          <ui-radio-group v-model="layoutV" vertical :gap="12">
+            <ui-radio name="a">选项 A</ui-radio>
+            <ui-radio name="b">选项 B</ui-radio>
+            <ui-radio name="c">选项 C</ui-radio>
           </ui-radio-group>
         </view>
-        <text class="demo-text">当前选中: dot={{ groupValueDot || "无" }}, icon={{ groupValueIcon || "无" }}</text>
-      </demo-block>
-    </demo-section>
-
-    <!-- ==================== 单选框组 - 垂直排列 ==================== -->
-    <demo-section title="单选框组 - 垂直排列">
-      <demo-block direction="column" :gap="24">
-        <view>
-          <ui-text size="small" color="secondary" class="mb-8">dot 样式</ui-text>
-          <ui-radio-group v-model="verticalValueDot" shape="dot" vertical :gap="16">
-            <ui-radio name="a" label="选项 A" />
-            <ui-radio name="b" label="选项 B" />
-            <ui-radio name="c" label="选项 C" />
-          </ui-radio-group>
-        </view>
-        <view>
-          <ui-text size="small" color="secondary" class="mb-8">icon 样式</ui-text>
-          <ui-radio-group v-model="verticalValueIcon" shape="icon" vertical :gap="16">
-            <ui-radio name="a" label="选项 A" />
-            <ui-radio name="b" label="选项 B" />
-            <ui-radio name="c" label="选项 C" />
+        <view class="layout-group">
+          <ui-text size="small" color="secondary" class="group-label">自定义间距 (gap="48rpx")</ui-text>
+          <ui-radio-group v-model="layoutGap" gap="48rpx">
+            <ui-radio name="a">选项 A</ui-radio>
+            <ui-radio name="b">选项 B</ui-radio>
+            <ui-radio name="c">选项 C</ui-radio>
           </ui-radio-group>
         </view>
       </demo-block>
     </demo-section>
 
-    <!-- ==================== 单选框组 - 统一样式 ==================== -->
-    <demo-section title="单选框组 - 统一样式">
-      <demo-block direction="column" align="start" :gap="24">
-        <ui-radio-group v-model="groupStyleDot" shape="dot" checked-color="#ee0a24" icon-size="44rpx" :gap="32">
-          <ui-radio name="a" label="选项 A" />
-          <ui-radio name="b" label="选项 B" />
-          <ui-radio name="c" label="选项 C" />
-        </ui-radio-group>
-        <text class="demo-text">统一 dot 样式 + 红色 + 大尺寸</text>
-      </demo-block>
-      <demo-block direction="column" align="start" :gap="24" class="mt-16">
-        <ui-radio-group v-model="groupStyleIcon" shape="icon" checked-color="#07c160" icon-size="44rpx" :gap="32">
-          <ui-radio name="a" label="选项 A" />
-          <ui-radio name="b" label="选项 B" />
-          <ui-radio name="c" label="选项 C" />
-        </ui-radio-group>
-        <text class="demo-text">统一 icon 样式 + 绿色 + 大尺寸</text>
+    <!-- ==================== Group 统一配置 ==================== -->
+    <demo-section title="Group 统一配置">
+      <demo-block :cols="2" :gap="40">
+        <view class="shape-group">
+          <ui-text size="small" color="secondary" class="group-label">统一尺寸 + 颜色</ui-text>
+          <ui-radio-group v-model="groupConfigDot" shape="dot" icon-size="44rpx" checked-color="#7232dd" vertical :gap="12">
+            <ui-radio name="a">选项 A</ui-radio>
+            <ui-radio name="b">选项 B</ui-radio>
+          </ui-radio-group>
+        </view>
+        <view class="shape-group">
+          <ui-text size="small" color="secondary" class="group-label">统一尺寸 + 颜色</ui-text>
+          <ui-radio-group v-model="groupConfigIcon" shape="icon" icon-size="44rpx" checked-color="#07c160" vertical :gap="12">
+            <ui-radio name="a">选项 A</ui-radio>
+            <ui-radio name="b">选项 B</ui-radio>
+          </ui-radio-group>
+        </view>
       </demo-block>
     </demo-section>
 
     <!-- ==================== 自定义插槽 ==================== -->
     <demo-section title="自定义插槽">
-      <demo-block direction="column" align="start" :gap="24">
-        <ui-radio-group v-model="slotIcon">
-          <ui-radio name="1">
-            <template #icon="{ checked }">
-              <ui-icon :name="checked ? 'check-circle-fill' : 'circle'" :color="checked ? '#07c160' : '#999'" size="44rpx" />
-            </template>
-            自定义图标插槽
-          </ui-radio>
-        </ui-radio-group>
-        <ui-radio-group v-model="slotDefault">
-          <ui-radio name="1">
-            <view class="custom-label">
-              <text class="custom-label__title">自定义内容</text>
-              <text class="custom-label__desc">通过默认插槽自定义标签内容</text>
-            </view>
-          </ui-radio>
-        </ui-radio-group>
+      <demo-block :cols="2" :gap="40">
+        <view class="shape-group">
+          <ui-text size="small" color="secondary" class="group-label">自定义图标</ui-text>
+          <ui-radio-group v-model="slotValue" vertical :gap="16">
+            <ui-radio name="heart">
+              <template #icon="{ checked }">
+                <ui-icon :name="checked ? 'heart-fill' : 'heart'" :color="checked ? '#ee0a24' : '#999'" size="40rpx" />
+              </template>
+              喜欢
+            </ui-radio>
+            <ui-radio name="star">
+              <template #icon="{ checked }">
+                <ui-icon :name="checked ? 'star-fill' : 'star'" :color="checked ? '#faad14' : '#999'" size="40rpx" />
+              </template>
+              收藏
+            </ui-radio>
+          </ui-radio-group>
+        </view>
+        <view class="shape-group">
+          <ui-text size="small" color="secondary" class="group-label">自定义内容</ui-text>
+          <ui-radio-group v-model="slotContentValue" vertical :gap="16">
+            <ui-radio name="vip">
+              <view class="custom-content">
+                <text class="custom-content__title">VIP 会员</text>
+                <text class="custom-content__desc">享专属权益</text>
+              </view>
+            </ui-radio>
+            <ui-radio name="svip">
+              <view class="custom-content">
+                <text class="custom-content__title">SVIP 会员</text>
+                <text class="custom-content__desc">享全部权益</text>
+              </view>
+            </ui-radio>
+          </ui-radio-group>
+        </view>
       </demo-block>
     </demo-section>
 
-    <!-- ==================== 事件处理 ==================== -->
-    <demo-section title="事件处理">
-      <demo-block direction="column" :gap="24">
-        <view>
-          <ui-text size="small" color="secondary" class="mb-8">dot 样式</ui-text>
-          <ui-radio-group v-model="eventValueDot" shape="dot" :gap="32" @change="onEventChange">
-            <ui-radio name="a" label="选项 A" />
-            <ui-radio name="b" label="选项 B" />
-            <ui-radio name="c" label="选项 C" />
+    <!-- ==================== 事件监听 ==================== -->
+    <demo-section title="事件监听">
+      <demo-block :cols="2" :gap="40">
+        <view class="shape-group">
+          <ui-text size="small" color="secondary" class="group-label">dot 形状</ui-text>
+          <ui-radio-group v-model="eventDot" shape="dot" vertical :gap="12" @change="onChangeDot">
+            <ui-radio name="a">选项 A</ui-radio>
+            <ui-radio name="b">选项 B</ui-radio>
           </ui-radio-group>
+          <ui-text size="small" color="secondary" class="mt-8">{{ eventLogDot }}</ui-text>
         </view>
-        <view>
-          <ui-text size="small" color="secondary" class="mb-8">icon 样式</ui-text>
-          <ui-radio-group v-model="eventValueIcon" shape="icon" :gap="32" @change="onEventChange">
-            <ui-radio name="a" label="选项 A" />
-            <ui-radio name="b" label="选项 B" />
-            <ui-radio name="c" label="选项 C" />
+        <view class="shape-group">
+          <ui-text size="small" color="secondary" class="group-label">icon 形状</ui-text>
+          <ui-radio-group v-model="eventIcon" shape="icon" vertical :gap="12" @change="onChangeIcon">
+            <ui-radio name="a">选项 A</ui-radio>
+            <ui-radio name="b">选项 B</ui-radio>
           </ui-radio-group>
+          <ui-text size="small" color="secondary" class="mt-8">{{ eventLogIcon }}</ui-text>
         </view>
-        <text class="demo-text">{{ eventLog }}</text>
       </demo-block>
     </demo-section>
 
-    <!-- ==================== 自定义样式 ==================== -->
-    <demo-section title="自定义样式">
-      <demo-block>
-        <ui-radio-group v-model="customStyleValue">
-          <ui-radio name="1" custom-class="my-radio" :custom-style="{ padding: '16rpx', background: '#f5f5f5', borderRadius: '8rpx' }" label="自定义样式单选框" />
-        </ui-radio-group>
+    <!-- ==================== 搭配单元格 ==================== -->
+    <demo-section title="搭配单元格">
+      <demo-block direction="column">
+        <ui-cell-group :radius="12">
+          <ui-radio-group v-model="cellValue" vertical>
+            <ui-cell title="微信支付" icon="wechat">
+              <template #right>
+                <ui-radio name="wechat" />
+              </template>
+            </ui-cell>
+            <ui-cell title="支付宝" icon="alipay">
+              <template #right>
+                <ui-radio name="alipay" />
+              </template>
+            </ui-cell>
+            <ui-cell title="银行卡" icon="bank-card">
+              <template #right>
+                <ui-radio name="bank" />
+              </template>
+            </ui-cell>
+          </ui-radio-group>
+        </ui-cell-group>
       </demo-block>
     </demo-section>
   </demo-page>
@@ -312,96 +399,103 @@ definePage({
 
 const toast = useToast()
 
-// ==================== 形状对比 ====================
-const shapeDot = ref("1")
-const shapeIcon = ref("1")
+// ==================== 基础用法 ====================
+const basicDot = ref("a")
+const basicIcon = ref("a")
 
-// ==================== 形状 × 圆角 ====================
-const dotSquare = ref("1")
-const dotRound = ref("1")
-const iconSquare = ref("1")
-const iconRound = ref("1")
+// ==================== 圆角设置 ====================
+const roundDot = ref("round")
+const roundIcon = ref("round")
 
-// ==================== 形状 × 尺寸 ====================
-const dotSmall = ref("1")
-const dotMedium = ref("1")
-const dotLarge = ref("1")
-const iconSmall = ref("1")
-const iconMedium = ref("1")
-const iconLarge = ref("1")
+// ==================== 尺寸设置 ====================
+const sizeDot = ref("m")
+const sizeIcon = ref("m")
 
-// ==================== 形状 × 颜色 ====================
-const dotRed = ref("1")
-const dotGreen = ref("1")
-const dotPurple = ref("1")
-const iconRed = ref("1")
-const iconGreen = ref("1")
-const iconPurple = ref("1")
+// ==================== 颜色主题 ====================
+const colorDot = ref("green")
+const colorIcon = ref("green")
 
-// ==================== 标签配置 ====================
-const labelSize1 = ref("1")
-const labelSize2 = ref("1")
-const labelColor1 = ref("1")
-const labelWeight1 = ref("1")
-const labelGap1 = ref("1")
-const labelCheckedColor = ref("1")
+// ==================== 图标样式 ====================
+const iconStyleDot = ref("color")
+const iconStyleIcon = ref("color")
+
+// ==================== 禁用状态 ====================
+const disabledGroupDot = ref("a")
+const disabledGroupIcon = ref("a")
+
+// ==================== 标签样式 ====================
+const labelStyleDot = ref("size")
+const labelStyleIcon = ref("size")
 
 // ==================== 标签位置 ====================
-const labelPosRight = ref("1")
-const labelPosLeft = ref("1")
-const labelPosRightIcon = ref("1")
-const labelPosLeftIcon = ref("1")
+const labelPosDot = ref("right")
+const labelPosIcon = ref("right")
+const labelLeftGroupDot = ref("a")
+const labelLeftGroupIcon = ref("a")
 
-// ==================== 禁用标签点击 ====================
-const labelDisabledDot = ref("")
-const labelDisabledIcon = ref("")
+// ==================== 交互限制 ====================
+const labelDisabledDot = ref("a")
+const labelDisabledIcon = ref("a")
 
-// ==================== 单选框组 ====================
-const groupValueDot = ref("a")
-const groupValueIcon = ref("a")
-const verticalValueDot = ref("a")
-const verticalValueIcon = ref("a")
-const groupStyleDot = ref("a")
-const groupStyleIcon = ref("a")
+// ==================== 排列方式 ====================
+const layoutH = ref("a")
+const layoutV = ref("a")
+const layoutGap = ref("a")
 
-function onGroupChange(value: string | number) {
-  toast.text(`选中: ${value}`)
-}
+// ==================== Group 统一配置 ====================
+const groupConfigDot = ref("a")
+const groupConfigIcon = ref("a")
 
 // ==================== 自定义插槽 ====================
-const slotIcon = ref("1")
-const slotDefault = ref("1")
+const slotValue = ref("heart")
+const slotContentValue = ref("vip")
 
-// ==================== 事件处理 ====================
-const eventValueDot = ref("a")
-const eventValueIcon = ref("a")
-const eventLog = ref("点击单选框查看事件")
+// ==================== 事件监听 ====================
+const eventDot = ref("a")
+const eventIcon = ref("a")
+const eventLogDot = ref("点击查看事件")
+const eventLogIcon = ref("点击查看事件")
 
-function onEventChange(value: string | number) {
-  eventLog.value = `change 事件触发，当前值: ${value}`
+function onChangeDot(value: string | number) {
+  eventLogDot.value = `change → ${value}`
+  toast.text(`dot: ${value}`)
 }
 
-// ==================== 自定义样式 ====================
-const customStyleValue = ref("1")
+function onChangeIcon(value: string | number) {
+  eventLogIcon.value = `change → ${value}`
+  toast.text(`icon: ${value}`)
+}
+
+// ==================== 搭配单元格 ====================
+const cellValue = ref("wechat")
 </script>
 
 <style lang="scss" scoped>
-.mt-16 {
-  margin-top: 16rpx;
+.shape-group {
+  display: flex;
+  flex-direction: column;
 }
 
-.mb-8 {
-  margin-bottom: 8rpx;
+.layout-group {
+  display: flex;
+  flex-direction: column;
 }
 
-.demo-text {
-  color: var(--ui-color-text-secondary);
-  font-size: 24rpx;
-  margin-top: 16rpx;
+.group-label {
+  display: block;
+  margin-bottom: 12rpx;
 }
 
-.custom-label {
-  gap: 8rpx;
+.mt-8 {
+  margin-top: 8rpx;
+}
+
+.mt-20 {
+  margin-top: 20rpx;
+}
+
+.custom-content {
+  gap: 4rpx;
   display: flex;
   flex-direction: column;
 
@@ -415,9 +509,5 @@ const customStyleValue = ref("1")
     color: var(--ui-color-text-secondary);
     font-size: 24rpx;
   }
-}
-
-:deep(.my-radio) {
-  border: 2rpx solid #eee;
 }
 </style>

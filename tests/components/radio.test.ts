@@ -376,16 +376,17 @@ describe("ui-radio-group 单选框组组件", () => {
       expect(wrapper.classes()).not.toContain("ui-radio-group--vertical")
     })
 
-    it("vertical 为 true 时应为垂直布局", async () => {
+    it("columns 设置后应启用网格布局", async () => {
       const wrapper = mount(UiRadioGroup, {
-        props: { modelValue: "", vertical: true },
+        props: { modelValue: "", columns: 2 },
         slots: {
           default: () => [h(UiRadio, { name: "option1", label: "选项一" })],
         },
       })
       await waitForTransition()
 
-      expect(wrapper.classes()).toContain("ui-radio-group--vertical")
+      expect(wrapper.attributes("style")).toContain("grid")
+      expect(wrapper.attributes("style")).toContain("repeat(2, 1fr)")
     })
   })
 
@@ -459,8 +460,7 @@ describe("ui-radio-group 单选框组组件", () => {
       const wrapper = mount(UiRadioGroup, {
         props: { modelValue: "" },
         slots: {
-          default: () =>
-            h(UiRadio, { name: "option1" }, { default: () => "自定义标签内容" }),
+          default: () => h(UiRadio, { name: "option1" }, { default: () => "自定义标签内容" }),
         },
       })
       await waitForTransition()

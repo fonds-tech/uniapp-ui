@@ -21,12 +21,15 @@ const { childrens, linkChildren } = useChildren(checkboxGroupKey)
 const rootStyle = computed(() => {
   const style: CSSProperties = {}
   if (useProps.gap) style.gap = useUnit(useProps.gap)
+  if (useProps.columns) {
+    style.display = "grid"
+    style.gridTemplateColumns = `repeat(${useProps.columns}, 1fr)`
+  }
   return useStyle({ ...style, ...useStyle(useProps.customStyle) })
 })
 
 const rootClass = computed(() => {
   const list: string[] = []
-  if (useProps.vertical) list.push("ui-checkbox-group--vertical")
   return list
 })
 
@@ -95,9 +98,5 @@ export default {
 .ui-checkbox-group {
   display: flex;
   flex-wrap: wrap;
-
-  &--vertical {
-    flex-direction: column;
-  }
 }
 </style>

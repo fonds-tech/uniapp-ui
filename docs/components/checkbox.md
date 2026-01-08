@@ -2,6 +2,12 @@
 
 复选框组件，支持单独使用和组合使用。
 
+## 演示页面
+
+Checkbox 与 CheckboxGroup 已合并在同一演示页，路径：`/pages/demo/checkbox/index`。
+
+该页面按“基础 → 视觉 → 状态 → 组合 → 场景”顺序覆盖所有配置。
+
 ## 基础用法
 
 ```vue
@@ -63,6 +69,34 @@ const result = ref(["a"])
 </ui-checkbox-group>
 ```
 
+## 选项间距
+
+通过 `gap` 属性设置选项之间的间距。
+
+```vue
+<ui-checkbox-group v-model="result" gap="24rpx">
+  <ui-checkbox name="a" label="选项 A" />
+  <ui-checkbox name="b" label="选项 B" />
+  <ui-checkbox name="c" label="选项 C" />
+</ui-checkbox-group>
+```
+
+## 网格布局
+
+通过 `columns` 属性设置列数，启用网格布局，每项等宽排列。
+
+```vue
+<template>
+  <!-- 2 列网格布局 -->
+  <ui-checkbox-group v-model="result" :columns="2" gap="20rpx">
+    <ui-checkbox name="a" label="选项 A" />
+    <ui-checkbox name="b" label="选项 B" />
+    <ui-checkbox name="c" label="选项 C" />
+    <ui-checkbox name="d" label="选项 D" />
+  </ui-checkbox-group>
+</template>
+```
+
 ## API
 
 ### Checkbox Props
@@ -86,12 +120,13 @@ const result = ref(["a"])
 
 ### CheckboxGroup Props
 
-| 属性名    | 说明               | 类型                     | 默认值     |
-| --------- | ------------------ | ------------------------ | ---------- |
-| v-model   | 选中的标识符数组   | `string[]`               | `[]`       |
-| disabled  | 是否禁用所有复选框 | `boolean`                | `false`    |
-| max       | 最大可选数         | `number`                 | -          |
-| direction | 排列方向           | `horizontal \| vertical` | `vertical` |
+| 属性名   | 说明                               | 类型               | 默认值  |
+| -------- | ---------------------------------- | ------------------ | ------- |
+| v-model  | 选中的标识符数组                   | `string[]`         | `[]`    |
+| disabled | 是否禁用所有复选框                 | `boolean`          | `false` |
+| max      | 最大可选数                         | `number`           | -       |
+| gap      | 选项间距                           | `string \| number` | `0`     |
+| columns  | 网格布局列数，设置后启用 grid 布局 | `number`           | -       |
 
 ### CheckboxGroup Events
 

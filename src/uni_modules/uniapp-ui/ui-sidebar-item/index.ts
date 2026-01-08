@@ -11,7 +11,7 @@ export const [sidebarItemProps, useSidebarItemProps] = createProps("sidebarItem"
   /**
    * 标题
    */
-  title: numericProp,
+  title: String,
   /**
    * 高度
    */
@@ -20,6 +20,14 @@ export const [sidebarItemProps, useSidebarItemProps] = createProps("sidebarItem"
    * 是否禁用
    */
   disabled: Boolean,
+  /**
+   * 是否显示圆点徽标
+   */
+  dot: Boolean,
+  /**
+   * 徽标内容
+   */
+  badge: numericProp,
   /**
    * 标题颜色
    */

@@ -7,8 +7,8 @@
 <script setup lang="ts">
 import type { CSSProperties } from "vue"
 import type { RadioGroupValueType } from "./index"
-import { useStyle, useChildren } from "../hooks"
 import { toRaw, watch, computed } from "vue"
+import { useUnit, useStyle, useChildren } from "../hooks"
 import { radioGroupKey, radioGroupEmits, radioGroupProps, useRadioGroupProps } from "./index"
 
 defineOptions({ name: "ui-radio-group" })
@@ -20,12 +20,16 @@ const { linkChildren } = useChildren(radioGroupKey)
 
 const rootStyle = computed(() => {
   const style: CSSProperties = {}
+  if (useProps.gap) style.gap = useUnit(useProps.gap)
+  if (useProps.columns) {
+    style.display = "grid"
+    style.gridTemplateColumns = `repeat(${useProps.columns}, 1fr)`
+  }
   return useStyle({ ...style, ...useStyle(useProps.customStyle) })
 })
 
 const rootClass = computed(() => {
   const list: string[] = []
-  if (useProps.vertical) list.push("ui-radio-group--vertical")
   return list
 })
 
@@ -52,9 +56,5 @@ export default {
 .ui-radio-group {
   display: flex;
   flex-wrap: wrap;
-
-  &--vertical {
-    flex-direction: column;
-  }
 }
 </style>

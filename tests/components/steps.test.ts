@@ -15,19 +15,21 @@ import { it, vi, expect, describe, afterEach, beforeEach } from "vitest"
  * 创建 steps 父组件上下文 Mock
  * 用于单独测试 ui-step 子组件
  */
-function createMockStepsProvide(options: {
-  active?: number
-  direction?: "horizontal" | "vertical"
-  clickable?: boolean
-  activeColor?: string
-  inactiveColor?: string
-  errorColor?: string
-  activeIcon?: string
-  inactiveIcon?: string
-  finishIcon?: string
-  errorIcon?: string
-  iconSize?: string | number
-} = {}) {
+function createMockStepsProvide(
+  options: {
+    active?: number
+    direction?: "horizontal" | "vertical"
+    clickable?: boolean
+    activeColor?: string
+    inactiveColor?: string
+    errorColor?: string
+    activeIcon?: string
+    inactiveIcon?: string
+    finishIcon?: string
+    errorIcon?: string
+    iconSize?: string | number
+  } = {},
+) {
   const childrens: any[] = []
   const active = ref(options.active ?? 0)
   const count = ref(0)
@@ -83,7 +85,7 @@ function createMockStepsProvide(options: {
 function mountStep(
   props: Record<string, unknown> = {},
   options: {
-    slots?: Record<string, unknown>
+    slots?: Record<string, string | (() => string)>
     provideOptions?: Parameters<typeof createMockStepsProvide>[0]
   } = {},
 ) {
@@ -105,16 +107,17 @@ function mountStep(
 /**
  * 辅助函数：挂载 steps 组件及其子 step 组件
  */
-function mountStepsWithChildren(
-  stepsProps: Record<string, unknown> = {},
-  stepItems: Array<{ title?: string; description?: string; status?: string; icon?: string }> = [],
-) {
+function mountStepsWithChildren(stepsProps: Record<string, unknown> = {}, stepItems: Array<{ title?: string; description?: string; status?: string; icon?: string }> = []) {
   // 创建步骤项内容
-  const stepsContent = stepItems.length > 0
-    ? stepItems.map((item, index) =>
-        `<ui-step key="${index}" title="${item.title || ""}" description="${item.description || ""}" ${item.status ? `status="${item.status}"` : ""} ${item.icon ? `icon="${item.icon}"` : ""} />`,
-      ).join("")
-    : ""
+  const stepsContent =
+    stepItems.length > 0
+      ? stepItems
+          .map(
+            (item, index) =>
+              `<ui-step key="${index}" title="${item.title || ""}" description="${item.description || ""}" ${item.status ? `status="${item.status}"` : ""} ${item.icon ? `icon="${item.icon}"` : ""} />`,
+          )
+          .join("")
+      : ""
 
   return mount(UiSteps, {
     props: stepsProps,
@@ -296,10 +299,7 @@ describe("uiSteps 组件", () => {
 
   describe("事件测试", () => {
     it("clickable 为 true 时点击 step 应触发 clickStep 事件", async () => {
-      const wrapper = mountStepsWithChildren(
-        { clickable: true, active: 0 },
-        [{ title: "步骤1" }, { title: "步骤2" }, { title: "步骤3" }],
-      )
+      const wrapper = mountStepsWithChildren({ clickable: true, active: 0 }, [{ title: "步骤1" }, { title: "步骤2" }, { title: "步骤3" }])
       await waitForTransition()
       const stepItems = wrapper.findAll(".ui-step")
       if (stepItems.length > 0) {
@@ -510,21 +510,27 @@ describe("uiStep 组件", () => {
 
   describe("插槽测试", () => {
     it("应该支持默认插槽", async () => {
-      const { wrapper } = mountStep({ title: "步骤" }, {
-        slots: {
-          default: "<span class=\"custom-content\">自定义内容</span>",
+      const { wrapper } = mountStep(
+        { title: "步骤" },
+        {
+          slots: {
+            default: "<span class=\"custom-content\">自定义内容</span>",
+          },
         },
-      })
+      )
       await waitForTransition()
       expect(wrapper.find(".custom-content").exists()).toBe(true)
     })
 
     it("应该支持 icon 插槽", async () => {
-      const { wrapper } = mountStep({ title: "步骤" }, {
-        slots: {
-          icon: "<span class=\"custom-icon\">自定义图标</span>",
+      const { wrapper } = mountStep(
+        { title: "步骤" },
+        {
+          slots: {
+            icon: "<span class=\"custom-icon\">自定义图标</span>",
+          },
         },
-      })
+      )
       await waitForTransition()
       expect(wrapper.find(".custom-icon").exists()).toBe(true)
     })
@@ -611,24 +617,18 @@ describe("steps 和 Step 组件集成测试", () => {
 
   describe("父子组件通信", () => {
     it("steps 应该正确渲染多个 Step 子组件", async () => {
-      const wrapper = mountStepsWithChildren(
-        { active: 1 },
-        [
-          { title: "步骤1", description: "描述1" },
-          { title: "步骤2", description: "描述2" },
-          { title: "步骤3", description: "描述3" },
-        ],
-      )
+      const wrapper = mountStepsWithChildren({ active: 1 }, [
+        { title: "步骤1", description: "描述1" },
+        { title: "步骤2", description: "描述2" },
+        { title: "步骤3", description: "描述3" },
+      ])
       await waitForTransition()
       const steps = wrapper.findAll(".ui-step")
       expect(steps.length).toBe(3)
     })
 
     it("垂直方向的 Steps 应该正确传递给 Step", async () => {
-      const wrapper = mountStepsWithChildren(
-        { direction: "vertical", active: 0 },
-        [{ title: "步骤1" }, { title: "步骤2" }],
-      )
+      const wrapper = mountStepsWithChildren({ direction: "vertical", active: 0 }, [{ title: "步骤1" }, { title: "步骤2" }])
       await waitForTransition()
       expect(wrapper.find(".ui-steps--vertical").exists()).toBe(true)
     })
@@ -636,10 +636,7 @@ describe("steps 和 Step 组件集成测试", () => {
 
   describe("步骤状态联动", () => {
     it("active 变化时 Step 状态应该正确更新", async () => {
-      const wrapper = mountStepsWithChildren(
-        { active: 0 },
-        [{ title: "步骤1" }, { title: "步骤2" }, { title: "步骤3" }],
-      )
+      const wrapper = mountStepsWithChildren({ active: 0 }, [{ title: "步骤1" }, { title: "步骤2" }, { title: "步骤3" }])
       await waitForTransition()
 
       // 更新 active 值
@@ -652,10 +649,7 @@ describe("steps 和 Step 组件集成测试", () => {
 
   describe("可点击步骤", () => {
     it("clickable 为 true 时所有 Step 应该可点击", async () => {
-      const wrapper = mountStepsWithChildren(
-        { clickable: true, active: 0 },
-        [{ title: "步骤1" }, { title: "步骤2" }],
-      )
+      const wrapper = mountStepsWithChildren({ clickable: true, active: 0 }, [{ title: "步骤1" }, { title: "步骤2" }])
       await waitForTransition()
       expect(wrapper.find(".ui-steps--clickable").exists()).toBe(true)
     })
@@ -663,14 +657,7 @@ describe("steps 和 Step 组件集成测试", () => {
 
   describe("混合状态测试", () => {
     it("应该支持手动设置单个 Step 的 status", async () => {
-      const wrapper = mountStepsWithChildren(
-        { active: 1 },
-        [
-          { title: "步骤1", status: "finish" },
-          { title: "步骤2", status: "error" },
-          { title: "步骤3" },
-        ],
-      )
+      const wrapper = mountStepsWithChildren({ active: 1 }, [{ title: "步骤1", status: "finish" }, { title: "步骤2", status: "error" }, { title: "步骤3" }])
       await waitForTransition()
 
       const steps = wrapper.findAll(".ui-step")
@@ -680,14 +667,7 @@ describe("steps 和 Step 组件集成测试", () => {
 
   describe("连接线集成测试", () => {
     it("多个步骤时非最后一个步骤应该显示连接线", async () => {
-      const wrapper = mountStepsWithChildren(
-        { active: 1 },
-        [
-          { title: "步骤1" },
-          { title: "步骤2" },
-          { title: "步骤3" },
-        ],
-      )
+      const wrapper = mountStepsWithChildren({ active: 1 }, [{ title: "步骤1" }, { title: "步骤2" }, { title: "步骤3" }])
       await waitForTransition()
 
       const lines = wrapper.findAll(".ui-step__line")
@@ -696,10 +676,7 @@ describe("steps 和 Step 组件集成测试", () => {
     })
 
     it("最后一个步骤应该有 last 类名", async () => {
-      const wrapper = mountStepsWithChildren(
-        { active: 0 },
-        [{ title: "步骤1" }, { title: "步骤2" }],
-      )
+      const wrapper = mountStepsWithChildren({ active: 0 }, [{ title: "步骤1" }, { title: "步骤2" }])
       await waitForTransition()
 
       const steps = wrapper.findAll(".ui-step")

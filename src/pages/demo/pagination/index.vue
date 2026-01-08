@@ -5,12 +5,10 @@
     <demo-section title="模拟列表">
       <demo-block direction="column">
         <ui-pagination :list="list" :page="page" :page-size="pageSize" :total="total" :loading="loading" @load="onLoad" @refresh="onRefresh">
-          <template #default="{ data }">
-            <view v-for="item in data" :key="item.id" class="list-item">
-              <text class="item-title">{{ item.title }}</text>
-              <text class="item-desc">{{ item.desc }}</text>
-            </view>
-          </template>
+          <view v-for="item in list" :key="item.id" class="list-item">
+            <text class="item-title">{{ item.title }}</text>
+            <text class="item-desc">{{ item.desc }}</text>
+          </view>
         </ui-pagination>
       </demo-block>
     </demo-section>

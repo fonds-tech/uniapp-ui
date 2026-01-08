@@ -38,7 +38,7 @@
     </demo-section>
 
     <demo-section title="金额展示">
-      <demo-block justify="center" align="baseline" class="money-display">
+      <demo-block justify="center" align="end" class="money-display">
         <text class="money-symbol">¥</text>
         <ui-number-roll :value="moneyValue" thousands-sep="," :decimal-places="2" :trim-zero="false" :font-size="56" color="#ee0a24" font-weight="600" />
       </demo-block>

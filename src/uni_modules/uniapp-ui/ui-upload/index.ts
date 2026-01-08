@@ -23,7 +23,7 @@ export const [uploadProps, useUploadProps] = createProps("upload", {
   /**
    * 允许上传的文件类型, https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/Input/file
    */
-  accept: { type: String as PropType<UniApp.ChooseMessageFileOption["type"] | "media">, default: "" },
+  accept: { type: String as PropType<UniApp.ChooseMessageFileOption["type"] | "media" | "">, default: "" },
   /**
    * 图片或视频拾取模式，当accept为image类型时，设置capture为camera可以直接调起摄像头，默认值["album", "camera"]
    */

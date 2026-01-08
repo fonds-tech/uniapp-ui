@@ -22,7 +22,7 @@ const { childrens, linkChildren } = useChildren(stepsKey)
  */
 const active = computed(() => {
   const val = Number(useProps.active)
-  return isNaN(val) ? 0 : val
+  return Number.isNaN(val) ? 0 : val
 })
 
 /**
