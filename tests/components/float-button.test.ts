@@ -6,9 +6,6 @@ import { it, vi, expect, describe, afterEach, beforeEach } from "vitest"
 const commonStubs = {
   "ui-icon": true,
   "ui-loading": true,
-  "ui-badge": {
-    template: "<div class=\"ui-badge-stub\"><slot /></div>",
-  },
 }
 
 describe("uiFloatButton 组件", () => {
@@ -121,24 +118,24 @@ describe("uiFloatButton 组件", () => {
     })
   })
 
-  describe("距离属性测试", () => {
-    it("默认 right 应该是 24rpx", () => {
+  describe("偏移属性测试", () => {
+    it("默认 offsetX 应该是 24rpx", () => {
       const wrapper = mount(UiFloatButton, { global: { stubs: commonStubs } })
-      expect(wrapper.props("right")).toBe("24rpx")
+      expect(wrapper.props("offsetX")).toBe("24rpx")
     })
 
-    it("默认 bottom 应该是 100rpx", () => {
+    it("默认 offsetY 应该是 100rpx", () => {
       const wrapper = mount(UiFloatButton, { global: { stubs: commonStubs } })
-      expect(wrapper.props("bottom")).toBe("100rpx")
+      expect(wrapper.props("offsetY")).toBe("100rpx")
     })
 
-    it("应该支持自定义距离", () => {
+    it("应该支持自定义偏移", () => {
       const wrapper = mount(UiFloatButton, {
-        props: { right: "40rpx", bottom: "200rpx" },
+        props: { offsetX: "40rpx", offsetY: "200rpx" },
         global: { stubs: commonStubs },
       })
-      expect(wrapper.props("right")).toBe("40rpx")
-      expect(wrapper.props("bottom")).toBe("200rpx")
+      expect(wrapper.props("offsetX")).toBe("40rpx")
+      expect(wrapper.props("offsetY")).toBe("200rpx")
     })
   })
 
@@ -201,30 +198,6 @@ describe("uiFloatButton 组件", () => {
     })
   })
 
-  describe("loading 属性测试", () => {
-    it("默认不加载", () => {
-      const wrapper = mount(UiFloatButton, { global: { stubs: commonStubs } })
-      expect(wrapper.props("loading")).toBe(false)
-    })
-
-    it("应该支持加载状态", () => {
-      const wrapper = mount(UiFloatButton, {
-        props: { loading: true },
-        global: { stubs: commonStubs },
-      })
-      expect(wrapper.props("loading")).toBe(true)
-    })
-
-    it("加载时应添加 loading class", async () => {
-      const wrapper = mount(UiFloatButton, {
-        props: { loading: true },
-        global: { stubs: commonStubs },
-      })
-      await waitForTransition()
-      expect(wrapper.find(".ui-float-button--loading").exists()).toBe(true)
-    })
-  })
-
   describe("show 属性测试", () => {
     it("默认显示", () => {
       const wrapper = mount(UiFloatButton, { global: { stubs: commonStubs } })
@@ -238,37 +211,6 @@ describe("uiFloatButton 组件", () => {
       })
       await waitForTransition()
       expect(wrapper.find(".ui-float-button-wrapper--hidden").exists()).toBe(true)
-    })
-  })
-
-  describe("badge 属性测试", () => {
-    it("默认 badge 应该是 false", () => {
-      const wrapper = mount(UiFloatButton, { global: { stubs: commonStubs } })
-      expect(wrapper.props("badge")).toBe(false)
-    })
-
-    it("badge 为 true 时应显示小红点", () => {
-      const wrapper = mount(UiFloatButton, {
-        props: { badge: true },
-        global: { stubs: commonStubs },
-      })
-      expect(wrapper.props("badge")).toBe(true)
-    })
-
-    it("应该支持数字徽标", () => {
-      const wrapper = mount(UiFloatButton, {
-        props: { badge: 5 },
-        global: { stubs: commonStubs },
-      })
-      expect(wrapper.props("badge")).toBe(5)
-    })
-
-    it("应该支持字符串徽标", () => {
-      const wrapper = mount(UiFloatButton, {
-        props: { badge: "new" },
-        global: { stubs: commonStubs },
-      })
-      expect(wrapper.props("badge")).toBe("new")
     })
   })
 
@@ -292,21 +234,6 @@ describe("uiFloatButton 组件", () => {
     })
   })
 
-  describe("safeAreaBottom 属性测试", () => {
-    it("默认应该适配底部安全区域", () => {
-      const wrapper = mount(UiFloatButton, { global: { stubs: commonStubs } })
-      expect(wrapper.props("safeAreaBottom")).toBe(true)
-    })
-
-    it("应该支持禁用底部安全区适配", () => {
-      const wrapper = mount(UiFloatButton, {
-        props: { safeAreaBottom: false },
-        global: { stubs: commonStubs },
-      })
-      expect(wrapper.props("safeAreaBottom")).toBe(false)
-    })
-  })
-
   describe("事件测试", () => {
     it("点击时应该触发 click 事件", async () => {
       const wrapper = mount(UiFloatButton, { global: { stubs: commonStubs } })
@@ -318,16 +245,6 @@ describe("uiFloatButton 组件", () => {
     it("禁用时点击不应触发 click 事件", async () => {
       const wrapper = mount(UiFloatButton, {
         props: { disabled: true },
-        global: { stubs: commonStubs },
-      })
-      await waitForTransition()
-      await wrapper.find(".ui-float-button").trigger("click")
-      expect(wrapper.emitted("click")).toBeFalsy()
-    })
-
-    it("加载时点击不应触发 click 事件", async () => {
-      const wrapper = mount(UiFloatButton, {
-        props: { loading: true },
         global: { stubs: commonStubs },
       })
       await waitForTransition()

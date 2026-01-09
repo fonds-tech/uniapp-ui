@@ -68,8 +68,8 @@
       <template #confirm>
         <slot name="confirm" />
       </template>
-      <template #footer="slotProps">
-        <slot name="footer" v-bind="slotProps" />
+      <template #footer>
+        <slot name="footer" />
       </template>
     </ui-date-picker>
   </view>

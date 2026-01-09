@@ -24,32 +24,32 @@ user_invocable: true
 
 ## Type 类型
 
-| 类型 | 说明 | 示例 |
-|------|------|------|
-| `feat` | 新功能 | feat(ui-button): 新增 loading 状态 |
-| `fix` | Bug 修复 | fix(ui-input): 修复小程序聚焦问题 |
-| `docs` | 文档更新 | docs: 更新 README 安装说明 |
-| `style` | 代码格式（不影响逻辑） | style: 格式化代码 |
+| 类型       | 说明                     | 示例                               |
+| ---------- | ------------------------ | ---------------------------------- |
+| `feat`     | 新功能                   | feat(ui-button): 新增 loading 状态 |
+| `fix`      | Bug 修复                 | fix(ui-input): 修复小程序聚焦问题  |
+| `docs`     | 文档更新                 | docs: 更新 README 安装说明         |
+| `style`    | 代码格式（不影响逻辑）   | style: 格式化代码                  |
 | `refactor` | 重构（非新功能、非修复） | refactor(hooks): 优化 useRect 实现 |
-| `perf` | 性能优化 | perf(ui-list): 优化虚拟列表渲染 |
-| `test` | 测试相关 | test(ui-button): 添加单元测试 |
-| `chore` | 构建/工具/依赖 | chore: 升级 vite 到 5.x |
-| `revert` | 回滚提交 | revert: 回滚 feat(ui-button) |
+| `perf`     | 性能优化                 | perf(ui-list): 优化虚拟列表渲染    |
+| `test`     | 测试相关                 | test(ui-button): 添加单元测试      |
+| `chore`    | 构建/工具/依赖           | chore: 升级 vite 到 5.x            |
+| `revert`   | 回滚提交                 | revert: 回滚 feat(ui-button)       |
 
 ---
 
 ## Scope 作用域
 
-| 作用域 | 说明 |
-|--------|------|
+| 作用域   | 说明       |
+| -------- | ---------- |
 | `ui-xxx` | 具体组件名 |
-| `hooks` | 组合式函数 |
-| `utils` | 工具函数 |
-| `styles` | 全局样式 |
-| `types` | 类型定义 |
-| `docs` | 文档 |
-| `build` | 构建配置 |
-| `deps` | 依赖更新 |
+| `hooks`  | 组合式函数 |
+| `utils`  | 工具函数   |
+| `styles` | 全局样式   |
+| `types`  | 类型定义   |
+| `docs`   | 文档       |
+| `build`  | 构建配置   |
+| `deps`   | 依赖更新   |
 
 ---
 

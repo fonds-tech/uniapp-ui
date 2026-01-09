@@ -3,7 +3,7 @@
     <demo-section title="基础用法" desc="右下角显示一个浮动按钮" />
 
     <demo-section title="按钮类型">
-      <demo-block :cols="5" :gap="16">
+      <demo-block :cols="3" :gap="12">
         <ui-button size="small" :type="currentType === 'primary' ? 'primary' : 'default'" @click="currentType = 'primary'">Primary</ui-button>
         <ui-button size="small" :type="currentType === 'success' ? 'primary' : 'default'" @click="currentType = 'success'">Success</ui-button>
         <ui-button size="small" :type="currentType === 'warning' ? 'primary' : 'default'" @click="currentType = 'warning'">Warning</ui-button>
@@ -35,24 +35,23 @@
       </demo-block>
     </demo-section>
 
-    <demo-section title="徽标功能">
-      <demo-block direction="column" align="start" :gap="16">
-        <demo-block :cols="3" :gap="16">
-          <ui-button size="small" @click="badgeType = 'none'">无徽标</ui-button>
-          <ui-button size="small" @click="badgeType = 'dot'">小红点</ui-button>
-          <ui-button size="small" @click="badgeType = 'number'">数字徽标</ui-button>
-        </demo-block>
-        <demo-block v-if="badgeType === 'number'" align="center" :gap="16">
-          <text class="demo-text">徽标数值:</text>
-          <ui-stepper v-model="badgeValue" :min="0" :max="200" />
-        </demo-block>
-      </demo-block>
-    </demo-section>
-
     <demo-section title="可拖拽">
-      <demo-block align="center" :gap="16">
-        <ui-switch v-model="draggable" />
-        <text class="switch-label">{{ draggable ? "可拖拽" : "固定位置" }}</text>
+      <demo-block direction="column" align="start" :gap="16">
+        <demo-block align="center" :gap="16">
+          <ui-switch v-model="draggable" />
+          <text class="switch-label">{{ draggable ? "可拖拽" : "固定位置" }}</text>
+        </demo-block>
+        <demo-block v-if="draggable" :cols="4" :gap="12">
+          <ui-button size="small" :type="magnetic === false ? 'primary' : 'default'" @click="magnetic = false">无吸附</ui-button>
+          <ui-button size="small" :type="magnetic === 'x' ? 'primary' : 'default'" @click="magnetic = 'x'">X轴吸附</ui-button>
+          <ui-button size="small" :type="magnetic === 'y' ? 'primary' : 'default'" @click="magnetic = 'y'">Y轴吸附</ui-button>
+          <ui-button size="small" :type="magnetic === 'both' ? 'primary' : 'default'" @click="magnetic = 'both'">双向吸附</ui-button>
+        </demo-block>
+        <demo-block v-if="draggable" align="center" :gap="16">
+          <ui-switch v-model="dragBoundary" />
+          <text class="switch-label">{{ dragBoundary ? "限制在屏幕内" : "无边界限制" }}</text>
+        </demo-block>
+        <text v-if="dragInfo" class="demo-text">{{ dragInfo }}</text>
       </demo-block>
     </demo-section>
 
@@ -81,12 +80,28 @@
 
     <demo-section title="自定义颜色">
       <demo-block direction="column" align="start" :gap="16">
+        <text class="demo-text">背景色:</text>
         <demo-block :cols="4" :gap="16">
           <ui-button size="small" @click="customColor = ''">默认</ui-button>
           <ui-button size="small" @click="customColor = '#ff6b6b'">红色</ui-button>
           <ui-button size="small" @click="customColor = '#4ecdc4'">青色</ui-button>
           <ui-button size="small" @click="customColor = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'">渐变</ui-button>
         </demo-block>
+        <text class="demo-text">前景色 (图标/文字):</text>
+        <demo-block :cols="4" :gap="16">
+          <ui-button size="small" @click="foregroundColor = '#fff'">白色</ui-button>
+          <ui-button size="small" @click="foregroundColor = '#333'">黑色</ui-button>
+          <ui-button size="small" @click="foregroundColor = '#ffd700'">金色</ui-button>
+          <ui-button size="small" @click="foregroundColor = '#ff69b4'">粉色</ui-button>
+        </demo-block>
+      </demo-block>
+    </demo-section>
+
+    <demo-section title="图标大小">
+      <demo-block :cols="3" :gap="16">
+        <ui-button size="small" @click="iconSize = '32rpx'">小 (32rpx)</ui-button>
+        <ui-button size="small" @click="iconSize = '40rpx'">中 (40rpx)</ui-button>
+        <ui-button size="small" @click="iconSize = '52rpx'">大 (52rpx)</ui-button>
       </demo-block>
     </demo-section>
 
@@ -94,13 +109,6 @@
       <demo-block align="center" :gap="16">
         <ui-switch v-model="isDisabled" />
         <text class="switch-label">{{ isDisabled ? "已禁用" : "正常" }}</text>
-      </demo-block>
-    </demo-section>
-
-    <demo-section title="加载状态">
-      <demo-block align="center" :gap="16">
-        <ui-switch v-model="isLoading" />
-        <text class="switch-label">{{ isLoading ? "加载中" : "正常" }}</text>
       </demo-block>
     </demo-section>
 
@@ -113,14 +121,19 @@
       :text="showText ? '添加' : ''"
       :size="currentSize"
       :position="currentPosition"
-      :right="currentPosition.includes('right') ? '24rpx' : '24rpx'"
-      :bottom="currentPosition.includes('bottom') ? '150rpx' : '150rpx'"
+      :offset-x="24"
+      :offset-y="150"
       :color="customColor"
+      :foreground-color="foregroundColor"
+      :icon-size="iconSize"
       :disabled="isDisabled"
-      :loading="isLoading"
-      :badge="badgeComputed"
       :draggable="draggable"
+      :drag-boundary="dragBoundary"
+      :magnetic="magnetic"
       @click="onClick"
+      @drag-start="onDragStart"
+      @drag-move="onDragMove"
+      @drag-end="onDragEnd"
     />
   </demo-page>
 </template>
@@ -140,27 +153,31 @@ const currentIcon = ref("plus")
 const showText = ref(false)
 const showButton = ref(true)
 
-const badgeType = ref<"none" | "dot" | "number">("none")
-const badgeValue = ref(5)
-const badgeComputed = computed(() => {
-  if (badgeType.value === "dot") return true
-  if (badgeType.value === "number") return badgeValue.value
-  return false
-})
-
 const draggable = ref(false)
+const dragBoundary = ref(true)
+const magnetic = ref<false | "x" | "y" | "both">(false)
+const dragInfo = ref("")
 const currentSize = ref("100rpx")
 const currentPosition = ref("right-bottom")
 const customColor = ref("")
+const foregroundColor = ref("#fff")
+const iconSize = ref("40rpx")
 const isDisabled = ref(false)
-const isLoading = ref(false)
 
 function onClick() {
-  if (isLoading.value) {
-    toast.text("加载中，请稍候...")
-    return
-  }
   toast.success("点击了浮动按钮")
+}
+
+function onDragStart() {
+  dragInfo.value = "拖拽开始"
+}
+
+function onDragMove(detail: { left: number; top: number }) {
+  dragInfo.value = `移动中: X=${detail.left.toFixed(0)}, Y=${detail.top.toFixed(0)}`
+}
+
+function onDragEnd(detail: { left: number; top: number }) {
+  dragInfo.value = `拖拽结束: X=${detail.left.toFixed(0)}, Y=${detail.top.toFixed(0)}`
 }
 </script>
 

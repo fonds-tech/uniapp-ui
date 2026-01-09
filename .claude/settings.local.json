@@ -2,14 +2,9 @@
   "env": {},
   "permissions": {
     "allow": [
-      "Bash(chmod:*)",
-      "Bash(*task-analysis.sh*)",
-      "Bash(pnpm run *)",
-      "Bash(./.claude/hooks/*)",
-      "Skill(*)",
-      "mcp__serena__*",
-      "mcp__desktop-commander__list_directory",
-      "mcp__auggie-mcp__codebase-retrieval"
+      "Bash(pnpm type-check:*)",
+      "Bash(pnpm type-check:h5:*)",
+      "Bash(pnpm test:*)"
     ],
     "deny": [],
     "ask": []

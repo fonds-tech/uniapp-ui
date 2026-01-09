@@ -34,16 +34,16 @@ createElement         // DOM 创建
 
 ### 2. 替代方案
 
-| Web API | UniApp 替代方案 |
-|---------|-----------------|
-| `localStorage` | `uni.setStorageSync` / `uni.getStorageSync` |
-| `fetch` | `uni.request` |
-| `location.href` | `uni.navigateTo` / `uni.redirectTo` |
-| `navigator.userAgent` | `uni.getSystemInfoSync()` |
-| `document.querySelector` | `uni.createSelectorQuery()` |
-| `window.scrollTo` | `uni.pageScrollTo` |
-| `alert` | `uni.showToast` / `uni.showModal` |
-| `confirm` | `uni.showModal` |
+| Web API                  | UniApp 替代方案                             |
+| ------------------------ | ------------------------------------------- |
+| `localStorage`           | `uni.setStorageSync` / `uni.getStorageSync` |
+| `fetch`                  | `uni.request`                               |
+| `location.href`          | `uni.navigateTo` / `uni.redirectTo`         |
+| `navigator.userAgent`    | `uni.getSystemInfoSync()`                   |
+| `document.querySelector` | `uni.createSelectorQuery()`                 |
+| `window.scrollTo`        | `uni.pageScrollTo`                          |
+| `alert`                  | `uni.showToast` / `uni.showModal`           |
+| `confirm`                | `uni.showModal`                             |
 
 ---
 
@@ -93,23 +93,23 @@ const wxApi = wx.getSystemInfoSync()
 
 ### 条件编译语法
 
-| 语法 | 说明 |
-|------|------|
-| `#ifdef PLATFORM` | 仅在指定平台编译 |
+| 语法               | 说明             |
+| ------------------ | ---------------- |
+| `#ifdef PLATFORM`  | 仅在指定平台编译 |
 | `#ifndef PLATFORM` | 在指定平台外编译 |
-| `#endif` | 结束条件 |
+| `#endif`           | 结束条件         |
 
 ### 平台标识符
 
-| 标识符 | 平台 |
-|--------|------|
-| `H5` | Web |
-| `MP-WEIXIN` | 微信小程序 |
-| `MP-ALIPAY` | 支付宝小程序 |
-| `MP-BAIDU` | 百度小程序 |
-| `MP-TOUTIAO` | 字节小程序 |
-| `APP-PLUS` | App (iOS/Android) |
-| `APP-NVUE` | App nvue 页面 |
+| 标识符       | 平台              |
+| ------------ | ----------------- |
+| `H5`         | Web               |
+| `MP-WEIXIN`  | 微信小程序        |
+| `MP-ALIPAY`  | 支付宝小程序      |
+| `MP-BAIDU`   | 百度小程序        |
+| `MP-TOUTIAO` | 字节小程序        |
+| `APP-PLUS`   | App (iOS/Android) |
+| `APP-NVUE`   | App nvue 页面     |
 
 ---
 

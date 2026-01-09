@@ -13,6 +13,7 @@ user_invocable: true
 ## 使用方式
 
 用户输入示例：
+
 - "为 ui-button 生成 API 文档"
 - "生成 button 组件文档"
 - "/api-docs-generator ui-button"
@@ -103,20 +104,20 @@ user_invocable: true
 
 从 `index.ts` 提取 Props 定义并转换：
 
-| Props 工具函数 | 文档类型 | 默认值 |
-|----------------|----------|--------|
-| `Boolean` | `boolean` | `false` |
-| `truthProp` | `boolean` | `true` |
-| `String` | `string` | - |
-| `Number` | `number` | - |
-| `numericProp` | `string \| number` | - |
-| `makeStringProp<T>(val)` | `T` | `val` |
-| `makeNumericProp(val)` | `string \| number` | `val` |
-| `makeNumberProp(val)` | `number` | `val` |
-| `styleProp` | `string \| CSSProperties` | - |
-| `Array as PropType<T[]>` | `T[]` | `[]` |
-| `Object as PropType<T>` | `T` | - |
-| `Function as PropType<T>` | `T` | - |
+| Props 工具函数            | 文档类型                  | 默认值  |
+| ------------------------- | ------------------------- | ------- |
+| `Boolean`                 | `boolean`                 | `false` |
+| `truthProp`               | `boolean`                 | `true`  |
+| `String`                  | `string`                  | -       |
+| `Number`                  | `number`                  | -       |
+| `numericProp`             | `string \| number`        | -       |
+| `makeStringProp<T>(val)`  | `T`                       | `val`   |
+| `makeNumericProp(val)`    | `string \| number`        | `val`   |
+| `makeNumberProp(val)`     | `number`                  | `val`   |
+| `styleProp`               | `string \| CSSProperties` | -       |
+| `Array as PropType<T[]>`  | `T[]`                     | `[]`    |
+| `Object as PropType<T>`   | `T`                       | -       |
+| `Function as PropType<T>` | `T`                       | -       |
 
 ---
 

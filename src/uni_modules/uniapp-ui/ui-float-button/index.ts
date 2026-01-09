@@ -37,21 +37,13 @@ export const [floatButtonProps, useFloatButtonProps] = createProps("floatButton"
     validator: (v: string) => ["left-bottom", "right-bottom", "left-top", "right-top"].includes(v),
   },
   /**
-   * 横向偏移（推荐使用，替代 right）
+   * 横向偏移
    */
-  offsetX: makeNumericProp(""),
+  offsetX: makeNumericProp("24rpx"),
   /**
-   * 纵向偏移（推荐使用，替代 bottom）
+   * 纵向偏移
    */
-  offsetY: makeNumericProp(""),
-  /**
-   * 距离右侧/左侧的距离（向后兼容，推荐使用 offsetX）
-   */
-  right: makeNumericProp("24rpx"),
-  /**
-   * 距离底部/顶部的距离（向后兼容，推荐使用 offsetY）
-   */
-  bottom: makeNumericProp("100rpx"),
+  offsetY: makeNumericProp("100rpx"),
   /**
    * 元素层级
    */
@@ -73,14 +65,6 @@ export const [floatButtonProps, useFloatButtonProps] = createProps("floatButton"
    */
   disabled: Boolean,
   /**
-   * 是否加载中
-   */
-  loading: Boolean,
-  /**
-   * 徽标（true 显示小红点，数字显示徽标）
-   */
-  badge: { type: [Boolean, String, Number], default: false },
-  /**
    * 是否可拖拽
    */
   draggable: Boolean,
@@ -97,10 +81,6 @@ export const [floatButtonProps, useFloatButtonProps] = createProps("floatButton"
     validator: (v: boolean | string) => typeof v === "boolean" || ["x", "y", "both"].includes(v),
   },
   /**
-   * 是否适配底部安全区域
-   */
-  safeAreaBottom: { type: Boolean, default: true },
-  /**
    * 自定义类名
    */
   customClass: makeStringProp(""),
@@ -111,8 +91,8 @@ export const [floatButtonProps, useFloatButtonProps] = createProps("floatButton"
 })
 
 export interface FloatButtonDragDetail {
-  offsetX: number
-  offsetY: number
+  left: number
+  top: number
   position: string
 }
 

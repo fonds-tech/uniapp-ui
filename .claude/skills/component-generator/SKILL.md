@@ -13,6 +13,7 @@ user_invocable: true
 ## 使用方式
 
 用户输入示例：
+
 - "创建一个 ui-avatar 组件"
 - "新建 avatar 组件"
 - "/component-generator avatar"
@@ -180,9 +181,9 @@ export default {
 
 ## 命名转换规则
 
-| 输入 | kebab-case | PascalCase | camelCase |
-|------|------------|------------|-----------|
-| avatar | avatar | Avatar | avatar |
+| 输入        | kebab-case  | PascalCase | camelCase  |
+| ----------- | ----------- | ---------- | ---------- |
+| avatar      | avatar      | Avatar     | avatar     |
 | date-picker | date-picker | DatePicker | datePicker |
 | number-roll | number-roll | NumberRoll | numberRoll |
 
