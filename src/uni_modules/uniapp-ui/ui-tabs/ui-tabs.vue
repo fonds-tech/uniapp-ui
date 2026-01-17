@@ -1,5 +1,5 @@
 <template>
-  <view class="ui-tabs" :class="[classs, customClass]" :style="[style]">
+  <view class="ui-tabs" :class="[classes, customClass]" :style="[style]">
     <scroll-view class="ui-tabs__scroll" :scroll-x="scrollable" enable-flex :scroll-with-animation="inited" :scroll-left="scrollLeft">
       <view class="ui-tabs__list" :style="[listStyle]">
         <slot />
@@ -34,7 +34,7 @@ const style = computed(() => {
   return useStyle({ ...style, ...useStyle(useProps.customStyle) })
 })
 
-const classs = computed(() => {
+const classes = computed(() => {
   const list = []
   if (useProps.borderBottom) list.push("ui-tabs--border")
   return list
@@ -84,7 +84,7 @@ async function setCurrentName(name: string | number) {
 }
 
 function clickTab(name: string | number) {
-  emits("clickTab", name)
+  emits("tabClick", name)
 }
 
 linkChildren({ props, useProps, currentName, clickTab, setCurrentName })

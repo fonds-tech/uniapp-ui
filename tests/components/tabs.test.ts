@@ -17,19 +17,19 @@ function createMockTabsProvide() {
   return {
     props: {
       scrollable: false,
-      tabWidth: "auto",
-      tabMaxWidth: "",
-      showLine: true,
-      lineWidth: "40rpx",
-      lineHeight: "6rpx",
-      lineColor: "primary",
-      lineRadius: "9999rpx",
+      itemWidth: "auto",
+      itemMaxWidth: "",
+      showIndicator: true,
+      indicatorWidth: "40rpx",
+      indicatorHeight: "6rpx",
+      indicatorColor: "primary",
+      indicatorRadius: "9999rpx",
       activeColor: "#1989fa",
-      activeSize: "28rpx",
-      activeWeight: 600,
+      activeFontSize: "28rpx",
+      activeFontWeight: 600,
       inactiveColor: "#646566",
-      inactiveSize: "28rpx",
-      inactiveWeight: 400,
+      inactiveFontSize: "28rpx",
+      inactiveFontWeight: 400,
     },
     currentName: ref(0),
     clickTab: vi.fn(),
@@ -232,7 +232,7 @@ describe("uiTabs 组件", () => {
 
     it("应该支持 lineColor 属性", () => {
       const wrapper = mount(UiTabs, {
-        props: { lineColor: "#1989fa" },
+        props: { indicatorColor: "#1989fa" },
         global: {
           stubs: {
             "scroll-view": {
@@ -241,14 +241,14 @@ describe("uiTabs 组件", () => {
           },
         },
       })
-      expect(wrapper.props("lineColor")).toBe("#1989fa")
+      expect(wrapper.props("indicatorColor")).toBe("#1989fa")
     })
   })
 
   describe("尺寸属性测试", () => {
     it("应该支持 activeSize 属性", () => {
       const wrapper = mount(UiTabs, {
-        props: { activeSize: "32rpx" },
+        props: { activeFontSize: "32rpx" },
         global: {
           stubs: {
             "scroll-view": {
@@ -257,12 +257,12 @@ describe("uiTabs 组件", () => {
           },
         },
       })
-      expect(wrapper.props("activeSize")).toBe("32rpx")
+      expect(wrapper.props("activeFontSize")).toBe("32rpx")
     })
 
     it("应该支持 inactiveSize 属性", () => {
       const wrapper = mount(UiTabs, {
-        props: { inactiveSize: "28rpx" },
+        props: { inactiveFontSize: "28rpx" },
         global: {
           stubs: {
             "scroll-view": {
@@ -271,14 +271,14 @@ describe("uiTabs 组件", () => {
           },
         },
       })
-      expect(wrapper.props("inactiveSize")).toBe("28rpx")
+      expect(wrapper.props("inactiveFontSize")).toBe("28rpx")
     })
   })
 
   describe("粗细属性测试", () => {
     it("应该支持 activeWeight 属性", () => {
       const wrapper = mount(UiTabs, {
-        props: { activeWeight: "bold" },
+        props: { activeFontWeight: "bold" },
         global: {
           stubs: {
             "scroll-view": {
@@ -287,12 +287,12 @@ describe("uiTabs 组件", () => {
           },
         },
       })
-      expect(wrapper.props("activeWeight")).toBe("bold")
+      expect(wrapper.props("activeFontWeight")).toBe("bold")
     })
 
     it("应该支持 inactiveWeight 属性", () => {
       const wrapper = mount(UiTabs, {
-        props: { inactiveWeight: "normal" },
+        props: { inactiveFontWeight: "normal" },
         global: {
           stubs: {
             "scroll-view": {
@@ -301,12 +301,12 @@ describe("uiTabs 组件", () => {
           },
         },
       })
-      expect(wrapper.props("inactiveWeight")).toBe("normal")
+      expect(wrapper.props("inactiveFontWeight")).toBe("normal")
     })
   })
 
-  describe("线条属性测试", () => {
-    it("默认应该显示线条", () => {
+  describe("指示器属性测试", () => {
+    it("默认应该显示指示器", () => {
       const wrapper = mount(UiTabs, {
         global: {
           stubs: {
@@ -316,12 +316,12 @@ describe("uiTabs 组件", () => {
           },
         },
       })
-      expect(wrapper.props("showLine")).toBe(true)
+      expect(wrapper.props("showIndicator")).toBe(true)
     })
 
-    it("应该支持隐藏线条", () => {
+    it("应该支持隐藏指示器", () => {
       const wrapper = mount(UiTabs, {
-        props: { showLine: false },
+        props: { showIndicator: false },
         global: {
           stubs: {
             "scroll-view": {
@@ -330,12 +330,12 @@ describe("uiTabs 组件", () => {
           },
         },
       })
-      expect(wrapper.props("showLine")).toBe(false)
+      expect(wrapper.props("showIndicator")).toBe(false)
     })
 
     it("应该支持 lineWidth 属性", () => {
       const wrapper = mount(UiTabs, {
-        props: { lineWidth: "60rpx" },
+        props: { indicatorWidth: "60rpx" },
         global: {
           stubs: {
             "scroll-view": {
@@ -344,7 +344,7 @@ describe("uiTabs 组件", () => {
           },
         },
       })
-      expect(wrapper.props("lineWidth")).toBe("60rpx")
+      expect(wrapper.props("indicatorWidth")).toBe("60rpx")
     })
 
     it("默认 lineWidth 应该是 40rpx", () => {
@@ -357,12 +357,12 @@ describe("uiTabs 组件", () => {
           },
         },
       })
-      expect(wrapper.props("lineWidth")).toBe("40rpx")
+      expect(wrapper.props("indicatorWidth")).toBe("40rpx")
     })
 
     it("应该支持 lineHeight 属性", () => {
       const wrapper = mount(UiTabs, {
-        props: { lineHeight: "8rpx" },
+        props: { indicatorHeight: "8rpx" },
         global: {
           stubs: {
             "scroll-view": {
@@ -371,12 +371,12 @@ describe("uiTabs 组件", () => {
           },
         },
       })
-      expect(wrapper.props("lineHeight")).toBe("8rpx")
+      expect(wrapper.props("indicatorHeight")).toBe("8rpx")
     })
 
     it("应该支持 lineRadius 属性", () => {
       const wrapper = mount(UiTabs, {
-        props: { lineRadius: "4rpx" },
+        props: { indicatorRadius: "4rpx" },
         global: {
           stubs: {
             "scroll-view": {
@@ -385,14 +385,14 @@ describe("uiTabs 组件", () => {
           },
         },
       })
-      expect(wrapper.props("lineRadius")).toBe("4rpx")
+      expect(wrapper.props("indicatorRadius")).toBe("4rpx")
     })
   })
 
-  describe("tab 尺寸属性测试", () => {
+  describe("单项尺寸属性测试", () => {
     it("应该支持 tabWidth 属性", () => {
       const wrapper = mount(UiTabs, {
-        props: { tabWidth: "200rpx" },
+        props: { itemWidth: "200rpx" },
         global: {
           stubs: {
             "scroll-view": {
@@ -401,12 +401,12 @@ describe("uiTabs 组件", () => {
           },
         },
       })
-      expect(wrapper.props("tabWidth")).toBe("200rpx")
+      expect(wrapper.props("itemWidth")).toBe("200rpx")
     })
 
     it("应该支持 tabMaxWidth 属性", () => {
       const wrapper = mount(UiTabs, {
-        props: { tabMaxWidth: "300rpx" },
+        props: { itemMaxWidth: "300rpx" },
         global: {
           stubs: {
             "scroll-view": {
@@ -415,7 +415,7 @@ describe("uiTabs 组件", () => {
           },
         },
       })
-      expect(wrapper.props("tabMaxWidth")).toBe("300rpx")
+      expect(wrapper.props("itemMaxWidth")).toBe("300rpx")
     })
   })
 

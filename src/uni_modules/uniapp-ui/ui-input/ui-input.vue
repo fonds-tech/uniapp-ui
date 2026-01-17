@@ -100,11 +100,11 @@ const placeholderStyle = computed(() => {
 })
 
 const type = computed(() => {
-  return useProps.type === "password" ? "text" : useProps.type
+  return useProps.type === "password" || useProps.password ? "text" : useProps.type
 })
 
 const password = computed(() => {
-  return useProps.type === "password"
+  return useProps.password || useProps.type === "password"
 })
 
 const disabled = computed(() => {

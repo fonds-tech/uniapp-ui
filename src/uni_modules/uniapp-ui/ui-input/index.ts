@@ -14,6 +14,10 @@ export const [inputProps, useInputProps] = createProps("input", {
    */
   type: { type: [String] as PropType<InputType | "password">, default: () => "text" },
   /**
+   * 是否启用密码模式（兼容 uni-app password 属性）
+   */
+  password: Boolean,
+  /**
    * 输入框字体颜色
    */
   color: { type: String, default: "" },

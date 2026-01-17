@@ -127,30 +127,31 @@ export function delay(delay: number): Promise<void> {
 export function debounce<T extends (...args: any[]) => any>(func: T, wait: number = 500, immediate: boolean = false): (...args: Parameters<T>) => void {
   // 闭包内管理 timeout，确保每次调用 debounce 返回独立实例
   let timeout: ReturnType<typeof setTimeout> | null = null
+  let callToken = 0
 
   return function (this: unknown, ...args: Parameters<T>): void {
-    // 清除定时器
-    if (timeout !== null) clearTimeout(timeout)
+    const context = this
+    callToken += 1
+    const token = callToken
 
-    // 使用 bind 绑定当前 this 上下文
-    const boundFunc = func.bind(this, ...args)
-
-    // 立即执行，此类情况一般用不到
+    // 立即执行模式
     if (immediate) {
       const callNow = !timeout
+      if (timeout !== null) clearTimeout(timeout)
       timeout = setTimeout(() => {
         timeout = null
       }, wait)
-      if (callNow) typeof func === "function" && boundFunc()
-    } else {
-      // 设置定时器，当最后一次操作后，timeout不会再被清除，所以在延时wait毫秒后执行func回调方法
-      timeout = setTimeout(() => {
-        if (typeof func === "function") {
-          boundFunc()
-          timeout = null
-        }
-      }, wait)
+      if (callNow) func.apply(context, args)
+      return
     }
+
+    // 延迟执行模式（始终只执行最后一次）
+    if (timeout !== null) clearTimeout(timeout)
+    timeout = setTimeout(() => {
+      if (token !== callToken) return
+      func.apply(context, args)
+      timeout = null
+    }, wait)
   }
 }
 

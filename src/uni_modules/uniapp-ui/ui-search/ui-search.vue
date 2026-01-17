@@ -116,7 +116,8 @@ const placeholderStyle = computed(() => {
 
 // 是否显示清除按钮
 const showClear = computed(() => {
-  return useProps.clearable && modelValue.value
+  const clearable = useProps.clearabled !== undefined ? useProps.clearabled : useProps.clearable
+  return clearable && modelValue.value
 })
 
 watch(() => modelValue.value, updateValue)

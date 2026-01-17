@@ -16,19 +16,19 @@ function createMockTabsProvide() {
   return {
     props: {
       scrollable: false,
-      tabWidth: "auto",
-      tabMaxWidth: "",
-      showLine: true,
-      lineWidth: "40rpx",
-      lineHeight: "6rpx",
-      lineColor: "primary",
-      lineRadius: "9999rpx",
+      itemWidth: "auto",
+      itemMaxWidth: "",
+      showIndicator: true,
+      indicatorWidth: "40rpx",
+      indicatorHeight: "6rpx",
+      indicatorColor: "primary",
+      indicatorRadius: "9999rpx",
       activeColor: "#1989fa",
-      activeSize: "28rpx",
-      activeWeight: 600,
+      activeFontSize: "28rpx",
+      activeFontWeight: 600,
       inactiveColor: "#646566",
-      inactiveSize: "28rpx",
-      inactiveWeight: 400,
+      inactiveFontSize: "28rpx",
+      inactiveFontWeight: 400,
     },
     currentName: ref(0),
     clickTab: () => {},
@@ -93,16 +93,16 @@ describe("ui-tab 标签页项组件", () => {
       expect(wrapper.props("title")).toBe("首页")
     })
 
-    it("应支持数字类型标题", () => {
+    it("应支持空字符串标题", () => {
       const wrapper = mount(UiTab, {
-        props: { title: 1 },
+        props: { title: "" },
         global: {
           provide: {
             [tabsKey]: mockTabsProvide,
           },
         },
       })
-      expect(wrapper.props("title")).toBe(1)
+      expect(wrapper.props("title")).toBe("")
     })
   })
 
@@ -191,7 +191,7 @@ describe("ui-tab 标签页项组件", () => {
       expect(wrapper.classes()).not.toContain("ui-tab--active")
     })
 
-    it("激活时应显示下划线", async () => {
+    it("激活时应显示指示器", async () => {
       const wrapper = mount(UiTab, {
         props: { name: 0 },
         global: {
@@ -204,7 +204,7 @@ describe("ui-tab 标签页项组件", () => {
         },
       })
       await waitForTransition()
-      expect(wrapper.find(".ui-tab__line").exists()).toBe(true)
+      expect(wrapper.find(".ui-tab__indicator").exists()).toBe(true)
     })
   })
 

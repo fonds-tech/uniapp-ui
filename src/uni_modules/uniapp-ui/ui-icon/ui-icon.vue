@@ -1,11 +1,35 @@
 <template>
-  <image v-if="isImage(name)" :class="[prefix, `${prefix}-${useProps.name}`, useProps.customClass]" :style="[imageStyle]" :src="useProps.name" :mode="imageMode" @click="onClick" />
-  <text v-else :class="[prefix, `${prefix}-${useProps.name}`, useProps.customClass]" :style="[iconStyle]" @click="onClick" />
+  <image
+    v-if="isImage(name)"
+    :class="[prefix, `${prefix}-${useProps.name}`, useProps.customClass, hoverClass]"
+    :style="[imageStyle]"
+    :src="useProps.name"
+    :mode="imageMode"
+    @click="onClick"
+    @touchstart="onHoverStart"
+    @touchend="onHoverEnd"
+    @touchcancel="onHoverEnd"
+    @mousedown="onHoverStart"
+    @mouseup="onHoverEnd"
+    @mouseleave="onHoverEnd"
+  />
+  <text
+    v-else
+    :class="[prefix, `${prefix}-${useProps.name}`, useProps.customClass, hoverClass]"
+    :style="[iconStyle]"
+    @click="onClick"
+    @touchstart="onHoverStart"
+    @touchend="onHoverEnd"
+    @touchcancel="onHoverEnd"
+    @mousedown="onHoverStart"
+    @mouseup="onHoverEnd"
+    @mouseleave="onHoverEnd"
+  />
 </template>
 
 <script setup lang="ts">
 import { isImage } from "../utils/check"
-import { computed } from "vue"
+import { ref, computed } from "vue"
 import { useUnit, useColor, useStyle } from "../hooks"
 import { iconEmits, iconProps, useIconProps } from "./index"
 
@@ -14,9 +38,14 @@ defineOptions({ name: "ui-icon" })
 const props = defineProps(iconProps)
 const emits = defineEmits(iconEmits)
 const useProps = useIconProps(props)
+const isHover = ref(false)
 
 const prefix = computed(() => {
   return useProps.customPrefix || "ui-icon"
+})
+
+const hoverClass = computed(() => {
+  return useProps.hoverClass && isHover.value ? useProps.hoverClass : ""
 })
 
 const imageMode: any = computed(() => useProps.imageMode)
@@ -43,6 +72,16 @@ const imageStyle = computed(() => {
 
 function onClick() {
   emits("click")
+}
+
+function onHoverStart() {
+  if (!useProps.hoverClass) return
+  isHover.value = true
+}
+
+function onHoverEnd() {
+  if (!useProps.hoverClass) return
+  isHover.value = false
 }
 
 defineExpose({ name: "ui-icon" })

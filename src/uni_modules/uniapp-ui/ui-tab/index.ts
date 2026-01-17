@@ -7,7 +7,7 @@ export const [tabProps, useTabProps] = createProps("tab", {
   /**
    * 标题
    */
-  title: numericProp,
+  title: String,
   /**
    * 标识符
    */

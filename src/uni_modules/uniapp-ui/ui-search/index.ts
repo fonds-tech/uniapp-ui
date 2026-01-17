@@ -17,6 +17,8 @@ export const [searchProps, useSearchProps] = createProps("search", {
   focus: Boolean,
   /** 是否显示清除按钮（有内容时显示） */
   clearable: truthProp,
+  /** 是否显示清除按钮（兼容历史 clearabled） */
+  clearabled: { type: Boolean, default: undefined },
 
   // ==================== 尺寸与布局 ====================
   /** 输入框高度，支持 rpx/px 单位 */

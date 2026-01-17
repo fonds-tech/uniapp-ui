@@ -1,9 +1,9 @@
 <template>
-  <view class="ui-tab" :class="[classs, customClass]" :style="[style]" @click="onClick">
+  <view class="ui-tab" :class="[classes, useProps.customClass]" :style="[style]" @click="onClick">
     <slot :active="active" :disabled="useProps.disabled">
-      <text class="ui-tab__title" :style="[titleStyle]">{{ title }}</text>
+      <text class="ui-tab__title" :style="[titleStyle]">{{ titleText }}</text>
     </slot>
-    <view v-if="prop('showLine') && active" class="ui-tab__line" :style="[lineStyle]" />
+    <view v-if="resolveProp('showIndicator') && active" class="ui-tab__indicator" :style="[indicatorStyle]" />
   </view>
 </template>
 
@@ -24,13 +24,13 @@ const { parent, index } = useParent(tabsKey)
 
 const style = computed(() => {
   const style: CSSProperties = {}
-  style.flex = prop("scrollable") ? "" : "1"
-  style.width = useUnit(prop("tabWidth"))
-  style.maxWidth = useUnit(prop("tabMaxWidth"))
+  style.flex = resolveProp("scrollable") ? "" : "1"
+  style.width = useUnit(resolveProp("itemWidth"))
+  style.maxWidth = useUnit(resolveProp("itemMaxWidth"))
   return useStyle({ ...style, ...useStyle(useProps.customStyle) })
 })
 
-const classs = computed(() => {
+const classes = computed(() => {
   const list: string[] = []
   if (active.value) list.push("ui-tab--active")
   if (useProps.disabled) list.push("ui-tab--disabled")
@@ -39,24 +39,28 @@ const classs = computed(() => {
 
 const titleStyle = computed(() => {
   const style: CSSProperties = {}
-  style.color = useColor(prop("inactiveColor"))
-  style.fontSize = useUnit(prop("inactiveSize"))
-  style.fontWeight = prop("inactiveWeight")
+  style.color = useColor(resolveProp("inactiveColor"))
+  style.fontSize = useUnit(resolveProp("inactiveFontSize"))
+  style.fontWeight = resolveProp("inactiveFontWeight")
   if (active.value) {
-    style.color = useColor(prop("activeColor"))
-    style.fontSize = useUnit(prop("activeSize"))
-    style.fontWeight = prop("activeWeight")
+    style.color = useColor(resolveProp("activeColor"))
+    style.fontSize = useUnit(resolveProp("activeFontSize"))
+    style.fontWeight = resolveProp("activeFontWeight")
   }
   return useStyle(style)
 })
 
-const lineStyle = computed(() => {
+const titleText = computed(() => {
+  return isDef(useProps.title) ? String(useProps.title) : ""
+})
+
+const indicatorStyle = computed(() => {
   const style: CSSProperties = {}
-  const duration = prop("duration")
-  style.width = useUnit(prop("lineWidth"))
-  style.height = useUnit(prop("lineHeight"))
-  style.background = useColor(prop("lineColor"))
-  style.borderRadius = useUnit(prop("lineRadius"))
+  const duration = resolveProp("duration")
+  style.width = useUnit(resolveProp("indicatorWidth"))
+  style.height = useUnit(resolveProp("indicatorHeight"))
+  style.background = useColor(resolveProp("indicatorColor"))
+  style.borderRadius = useUnit(resolveProp("indicatorRadius"))
   style.transition = `all ${duration}ms`
   return useStyle(style)
 })
@@ -64,9 +68,11 @@ const lineStyle = computed(() => {
 const name = computed(() => useProps.name ?? index.value)
 const active = computed(() => parent?.currentName.value === name.value)
 
-function prop(name: string) {
-  if (isDef(props[name])) return props[name]
-  if (parent && isDef(parent.props[name])) return parent.props[name]
+function resolveProp(name: string) {
+  if (isDef((useProps as Record<string, any>)[name])) return (useProps as Record<string, any>)[name]
+  if (parent?.useProps && isDef((parent.useProps as Record<string, any>)[name])) return (parent.useProps as Record<string, any>)[name]
+  if (parent?.props && isDef((parent.props as Record<string, any>)[name])) return (parent.props as Record<string, any>)[name]
+  if (isDef((props as Record<string, any>)[name])) return (props as Record<string, any>)[name]
   return ""
 }
 
@@ -110,7 +116,7 @@ export default {
     -webkit-line-clamp: 1;
   }
 
-  &__line {
+  &__indicator {
     left: 50%;
     bottom: 0;
     height: 6rpx;

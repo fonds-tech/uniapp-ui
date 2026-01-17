@@ -25,7 +25,9 @@
     </view>
     <view v-if="list.length < useProps.maxCount" class="ui-upload__trigger" :hover-class="triggerHoverClass" :hover-stay-time="100" :style="[triggerStyle]" @click="triggerUpload">
       <slot name="trigger">
-        <ui-icon :name="useProps.icon" :size="useProps.iconSize" :color="useProps.iconColor" :weight="useProps.iconWeight" />
+        <slot name="icon">
+          <ui-icon :name="useProps.icon" :size="useProps.iconSize" :color="useProps.iconColor" :weight="useProps.iconWeight" />
+        </slot>
       </slot>
     </view>
   </view>

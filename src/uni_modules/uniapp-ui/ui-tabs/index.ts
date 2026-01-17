@@ -20,7 +20,7 @@ export const [tabsProps, useTabsProps] = createProps("tabs", {
   /**
    * 激活文字大小
    */
-  activeSize: numericProp,
+  activeFontSize: numericProp,
   /**
    * 激活文字颜色
    */
@@ -28,11 +28,11 @@ export const [tabsProps, useTabsProps] = createProps("tabs", {
   /**
    * 激活文字粗细
    */
-  activeWeight: numericProp,
+  activeFontWeight: numericProp,
   /**
    * 未激活文字大小
    */
-  inactiveSize: numericProp,
+  inactiveFontSize: numericProp,
   /**
    * 未激活文字颜色
    */
@@ -40,41 +40,41 @@ export const [tabsProps, useTabsProps] = createProps("tabs", {
   /**
    * 未激活文字粗细
    */
-  inactiveWeight: numericProp,
+  inactiveFontWeight: numericProp,
   /**
-   * 激活线条颜色
+   * 指示器颜色
    */
-  lineColor: String,
+  indicatorColor: String,
   /**
-   * 激活线条宽度
+   * 指示器宽度
    */
-  lineWidth: makeNumericProp("40rpx"),
+  indicatorWidth: makeNumericProp("40rpx"),
   /**
-   * 激活线条高度
+   * 指示器高度
    */
-  lineHeight: numericProp,
+  indicatorHeight: numericProp,
   /**
-   * 激活线条圆角
+   * 指示器圆角
    */
-  lineRadius: numericProp,
+  indicatorRadius: numericProp,
   /**
-   * 是否显示线条
+   * 是否显示指示器
    */
-  showLine: truthProp,
+  showIndicator: truthProp,
   /**
-   * 宽度
+   * 单项宽度
    */
-  tabWidth: numericProp,
+  itemWidth: numericProp,
   /**
-   * 最大宽度
+   * 单项最大宽度
    */
-  tabMaxWidth: numericProp,
+  itemMaxWidth: numericProp,
   /**
    * 背景颜色
    */
   background: String,
   /**
-   * 激活线条动画过渡时间，单位ms
+   * 指示器动画过渡时间，单位ms
    */
   duration: makeNumericProp(300),
   /**
@@ -97,7 +97,7 @@ export const [tabsProps, useTabsProps] = createProps("tabs", {
 
 export const tabsEmits = {
   change: (name: string | number) => true,
-  clickTab: (name: string | number) => true,
+  tabClick: (name: string | number) => true,
   "update:modelValue": (name: string | number) => true,
 }
 

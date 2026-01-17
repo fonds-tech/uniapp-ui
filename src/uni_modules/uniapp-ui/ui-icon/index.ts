@@ -57,6 +57,10 @@ export const [iconProps, useIconProps] = createProps("icon", {
    */
   customClass: makeStringProp(""),
   /**
+   * 悬停时附加的类名
+   */
+  hoverClass: makeStringProp(""),
+  /**
    * 自定义样式
    */
   customStyle: styleProp,

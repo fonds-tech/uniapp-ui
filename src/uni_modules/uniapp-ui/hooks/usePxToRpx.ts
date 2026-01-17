@@ -16,22 +16,35 @@ import { isNumber } from "../utils/check"
  * usePxToRpx(50)       // 在 375px 宽度屏幕上返回 100（rpx）
  */
 export function usePxToRpx(value: string | number): number {
+  if (value === null || value === undefined) return 0
+
+  const raw = String(value).trim()
+  if (!raw) return 0
+
+  const normalized = raw.replace(/\s+/g, "")
+  const warnInvalid = () => {
+    console.warn(`[usePxToRpx] ${value} 不是有效值`)
+  }
+
   // 处理 rpx 单位：使用 uni.upx2px 转换为 px
-  if (String(value).includes("rpx")) {
-    const val = String(value).split("rpx")[0]
+  if (normalized.includes("rpx")) {
+    const val = normalized.split("rpx")[0]
     if (isNumber(val)) return uni.upx2px(Number(val))
-    else throw new Error(`${value} 不是有效值`)
+    warnInvalid()
+    return 0
   }
 
   // 处理 px 单位：直接提取数值
-  if (String(value).includes("px")) {
-    const val = String(value).split("px")[0]
+  if (normalized.includes("px")) {
+    const val = normalized.split("px")[0]
     if (isNumber(val)) return Number(val)
-    else throw new Error(`${value} 不是有效值`)
+    warnInvalid()
+    return 0
   }
 
-  // 处理纯数字：视为 px 值，转换为 rpx
-  if (isNumber(value)) return Number(value) / (uni.upx2px(100) / 100)
+  // 处理纯数字：视为 rpx，转换为 px
+  if (isNumber(normalized)) return uni.upx2px(Number(normalized))
 
-  throw new Error(`${value} 不是有效值`)
+  warnInvalid()
+  return 0
 }

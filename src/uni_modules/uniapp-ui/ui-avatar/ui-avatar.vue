@@ -1,5 +1,5 @@
 <template>
-  <view v-if="isVisible" class="ui-avatar" :class="[classNames, customClass]" :style="[rootStyle]" @click="onClick">
+  <view v-if="isVisible" class="ui-avatar" :class="[classNames, customClass]" :style="rootStyle" @click="onClick">
     <!-- 图片头像 -->
     <image
       v-if="useProps.src && !hasError"
@@ -119,16 +119,18 @@ const actualShape = computed(() => {
 // 计算尺寸值
 const sizeValue = computed(() => {
   const size = actualSize.value
-  if (typeof size === "string" && size in sizeMap) {
-    return sizeMap[size]
+  if (typeof size === "string") {
+    if (size in sizeMap) return useUnit(sizeMap[size], "px")
+    const normalized = size.trim()
+    if (normalized.endsWith("px") || normalized.endsWith("rpx")) return useUnit(normalized, "px")
   }
-  return useUnit(size)
+  return useUnit(size, "px")
 })
 
 // 计算图标大小（默认为头像尺寸的 50%）
 const iconSizeValue = computed(() => {
   if (useProps.iconSize) {
-    return useUnit(useProps.iconSize)
+    return useUnit(useProps.iconSize, "px")
   }
   const size = actualSize.value
   if (typeof size === "string" && size in sizeMap) {
@@ -139,16 +141,16 @@ const iconSizeValue = computed(() => {
       medium: "40rpx",
       large: "60rpx",
     }
-    return iconSizeMap[size]
+    return useUnit(iconSizeMap[size], "px")
   }
   // 自定义尺寸时，图标为头像的 50%
-  return `calc(${useUnit(size)} * 0.5)`
+  return `calc(${sizeValue.value} * 0.5)`
 })
 
 // 计算文字大小（默认为头像尺寸的 40%）
 const textSizeValue = computed(() => {
   if (useProps.textSize) {
-    return useUnit(useProps.textSize)
+    return useUnit(useProps.textSize, "px")
   }
   const size = actualSize.value
   if (typeof size === "string" && size in sizeMap) {
@@ -158,9 +160,9 @@ const textSizeValue = computed(() => {
       medium: "28rpx",
       large: "40rpx",
     }
-    return textSizeMap[size]
+    return useUnit(textSizeMap[size], "px")
   }
-  return `calc(${useUnit(size)} * 0.4)`
+  return `calc(${sizeValue.value} * 0.4)`
 })
 
 // 显示的文字（截取前两个字符）
@@ -196,7 +198,7 @@ const rootStyle = computed(() => {
 
   if (borderColor) {
     style.borderColor = useColor(borderColor)
-    style.borderWidth = useUnit(borderWidth) || "2rpx"
+    style.borderWidth = useUnit(borderWidth, "px") || "2px"
     style.borderStyle = "solid"
   }
 
@@ -226,7 +228,9 @@ const rootStyle = computed(() => {
     }
   }
 
-  return useStyle({ ...style, ...useStyle(useProps.customStyle) })
+  const customStyle = useStyle(useProps.customStyle)
+  const mergedStyle = useStyle({ ...style, ...(customStyle && typeof customStyle === "object" ? customStyle : {}) })
+  return useStyle(mergedStyle, "string")
 })
 
 // 计算文字样式
@@ -236,7 +240,7 @@ const textStyle = computed(() => {
   if (useProps.textColor) {
     style.color = useColor(useProps.textColor)
   }
-  return style
+  return useStyle(style, "string")
 })
 
 // 计算类名
