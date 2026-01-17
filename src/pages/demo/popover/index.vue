@@ -108,7 +108,6 @@
 <script setup lang="ts">
 import type { PopoverAction } from "@/uni_modules/uniapp-ui/ui-popover"
 import { ref } from "vue"
-import { DemoPage, DemoBlock, DemoSection } from "../components"
 
 definePage({
   style: { navigationBarTitleText: "Popover 气泡弹框" },

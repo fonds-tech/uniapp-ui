@@ -98,8 +98,6 @@
 </template>
 
 <script setup lang="ts">
-import { DemoPage, DemoBlock, DemoSection } from "../components"
-
 definePage({
   style: { navigationBarTitleText: "Switch 开关" },
 })

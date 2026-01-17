@@ -333,7 +333,7 @@ describe("uiTabs 组件", () => {
       expect(wrapper.props("showIndicator")).toBe(false)
     })
 
-    it("应该支持 lineWidth 属性", () => {
+    it("应该支持 indicatorWidth 属性", () => {
       const wrapper = mount(UiTabs, {
         props: { indicatorWidth: "60rpx" },
         global: {
@@ -347,7 +347,7 @@ describe("uiTabs 组件", () => {
       expect(wrapper.props("indicatorWidth")).toBe("60rpx")
     })
 
-    it("默认 lineWidth 应该是 40rpx", () => {
+    it("默认 indicatorWidth 应该是 40rpx", () => {
       const wrapper = mount(UiTabs, {
         global: {
           stubs: {
@@ -360,7 +360,7 @@ describe("uiTabs 组件", () => {
       expect(wrapper.props("indicatorWidth")).toBe("40rpx")
     })
 
-    it("应该支持 lineHeight 属性", () => {
+    it("应该支持 indicatorHeight 属性", () => {
       const wrapper = mount(UiTabs, {
         props: { indicatorHeight: "8rpx" },
         global: {
@@ -374,7 +374,7 @@ describe("uiTabs 组件", () => {
       expect(wrapper.props("indicatorHeight")).toBe("8rpx")
     })
 
-    it("应该支持 lineRadius 属性", () => {
+    it("应该支持 indicatorRadius 属性", () => {
       const wrapper = mount(UiTabs, {
         props: { indicatorRadius: "4rpx" },
         global: {
@@ -386,6 +386,63 @@ describe("uiTabs 组件", () => {
         },
       })
       expect(wrapper.props("indicatorRadius")).toBe("4rpx")
+    })
+
+    it("应该支持 autoIndicatorWidth 属性", () => {
+      const wrapper = mount(UiTabs, {
+        props: { autoIndicatorWidth: true },
+        global: {
+          stubs: {
+            "scroll-view": {
+              template: "<div class=\"scroll-view\"><slot /></div>",
+            },
+          },
+        },
+      })
+      expect(wrapper.props("autoIndicatorWidth")).toBe(true)
+    })
+
+    it("默认 autoIndicatorWidth 应该是 false", () => {
+      const wrapper = mount(UiTabs, {
+        global: {
+          stubs: {
+            "scroll-view": {
+              template: "<div class=\"scroll-view\"><slot /></div>",
+            },
+          },
+        },
+      })
+      expect(wrapper.props("autoIndicatorWidth")).toBe(false)
+    })
+
+    it("showIndicator 为 true 时应该渲染指示器元素", async () => {
+      const wrapper = mount(UiTabs, {
+        props: { showIndicator: true },
+        global: {
+          stubs: {
+            "scroll-view": {
+              template: "<div class=\"scroll-view\"><slot /></div>",
+            },
+          },
+        },
+      })
+      await waitForTransition()
+      expect(wrapper.find(".ui-tabs__indicator").exists()).toBe(true)
+    })
+
+    it("showIndicator 为 false 时不应该渲染指示器元素", async () => {
+      const wrapper = mount(UiTabs, {
+        props: { showIndicator: false },
+        global: {
+          stubs: {
+            "scroll-view": {
+              template: "<div class=\"scroll-view\"><slot /></div>",
+            },
+          },
+        },
+      })
+      await waitForTransition()
+      expect(wrapper.find(".ui-tabs__indicator").exists()).toBe(false)
     })
   })
 

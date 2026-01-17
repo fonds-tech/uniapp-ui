@@ -6,12 +6,12 @@
   </view>
 </template>
 
+<script lang="ts"></script>
+
 <script setup lang="ts">
 import type { ToastInstance } from "@/uni_modules/uniapp-ui/ui-toast"
 import { provideToast } from "@/uni_modules/uniapp-ui/ui-toast"
 import { ref, onMounted } from "vue"
-
-defineOptions({ name: "demo-page" })
 
 defineProps<{
   customClass?: string
@@ -25,6 +25,13 @@ const toastRef = ref<ToastInstance | null>(null)
 onMounted(() => {
   provideToast(toastRef)
 })
+</script>
+
+<script lang="ts">
+export default {
+  name: "demo-page",
+  options: { virtualHost: true, multipleSlots: true, styleIsolation: "shared" },
+}
 </script>
 
 <style lang="scss">

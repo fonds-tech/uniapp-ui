@@ -71,8 +71,6 @@
 </template>
 
 <script setup lang="ts">
-import { DemoPage, DemoBlock, DemoSection } from "../components"
-
 definePage({
   style: { navigationBarTitleText: "DropdownItem 下拉菜单子项" },
 })

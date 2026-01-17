@@ -41,7 +41,6 @@
 import type { ToastInstance } from "@/uni_modules/uniapp-ui/ui-toast"
 import iconsData from "@/uni_modules/uniapp-ui/ui-icon/icons.json"
 import { ref, computed } from "vue"
-import { DemoPage, DemoBlock } from "../components"
 
 definePage({ style: { navigationBarTitleText: "Icon 图标" } })
 

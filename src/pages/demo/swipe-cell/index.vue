@@ -93,7 +93,6 @@
 <script setup lang="ts">
 import type { SwipeCellBeforeCloseParams } from "@/uni_modules/uniapp-ui/ui-swipe-cell"
 import { ref } from "vue"
-import { DemoPage, DemoSection } from "../components"
 
 definePage({
   style: { navigationBarTitleText: "SwipeCell 滑动单元格" },

@@ -86,7 +86,6 @@
 
 <script setup lang="ts">
 import type { CalendarDay, CalendarSelectData, CalendarConfirmData } from "@/uni_modules/uniapp-ui/ui-calendar"
-import { DemoPage, DemoBlock, DemoSection } from "../components"
 
 definePage({
   style: { navigationBarTitleText: "Calendar 日历" },

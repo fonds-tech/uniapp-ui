@@ -92,8 +92,6 @@
 </template>
 
 <script setup lang="ts">
-import { DemoPage, DemoBlock, DemoSection } from "../components"
-
 definePage({
   style: { navigationBarTitleText: "TabbarItem 标签栏子项" },
 })

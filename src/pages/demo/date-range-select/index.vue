@@ -187,7 +187,6 @@
 import type { FormInstance } from "@/uni_modules/uniapp-ui/ui-form"
 import type { DateRangeSelectValue, DateRangeSelectActiveType } from "@/uni_modules/uniapp-ui/ui-date-range-select"
 import { useToast } from "@/uni_modules/uniapp-ui"
-import { DemoPage, DemoBlock, DemoSection } from "../components"
 
 definePage({
   style: { navigationBarTitleText: "DateRangeSelect 日期区间" },

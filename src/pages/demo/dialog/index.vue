@@ -126,7 +126,7 @@
 <script setup lang="ts">
 import type { DialogInstance } from "@/uni_modules/uniapp-ui"
 import { ref, onMounted } from "vue"
-import { DemoPage, DemoBlock, DemoSection } from "../components"
+
 import { useToast, useDialog, provideDialog } from "@/uni_modules/uniapp-ui"
 
 definePage({

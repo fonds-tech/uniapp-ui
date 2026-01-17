@@ -85,7 +85,6 @@
 
 <script setup lang="ts">
 import { ref } from "vue"
-import { DemoPage, DemoSection } from "../components"
 
 definePage({
   style: { navigationBarTitleText: "Collapse 折叠面板" },

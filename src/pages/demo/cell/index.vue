@@ -42,8 +42,6 @@
 </template>
 
 <script setup lang="ts">
-import { DemoPage, DemoSection } from "../components"
-
 definePage({
   style: { navigationBarTitleText: "Cell 单元格" },
 })

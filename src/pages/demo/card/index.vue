@@ -109,8 +109,6 @@
 </template>
 
 <script setup lang="ts">
-import { DemoPage, DemoSection } from "../components"
-
 definePage({
   style: { navigationBarTitleText: "Card 卡片" },
 })

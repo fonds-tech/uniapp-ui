@@ -299,7 +299,6 @@
 
 <script setup lang="ts">
 import { useToast } from "@/uni_modules/uniapp-ui"
-import { DemoPage, DemoBlock, DemoSection } from "../components"
 
 definePage({
   style: { navigationBarTitleText: "Sidebar 侧边栏" },

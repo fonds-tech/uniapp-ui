@@ -3,7 +3,6 @@
     <slot :active="active" :disabled="useProps.disabled">
       <text class="ui-tab__title" :style="[titleStyle]">{{ titleText }}</text>
     </slot>
-    <view v-if="resolveProp('showIndicator') && active" class="ui-tab__indicator" :style="[indicatorStyle]" />
   </view>
 </template>
 
@@ -11,9 +10,9 @@
 import type { CSSProperties } from "vue"
 import { isDef } from "../utils/check"
 import { tabsKey } from "../ui-tabs"
-import { computed } from "vue"
 import { tabEmits, tabProps, useTabProps } from "./index"
-import { useUnit, useColor, useStyle, useParent } from "../hooks"
+import { useRect, useUnit, useColor, useStyle, useParent } from "../hooks"
+import { computed, nextTick, onMounted, getCurrentInstance } from "vue"
 
 defineOptions({ name: "ui-tab" })
 
@@ -21,6 +20,7 @@ const props = defineProps(tabProps)
 const emits = defineEmits(tabEmits)
 const useProps = useTabProps(props)
 const { parent, index } = useParent(tabsKey)
+const instance = getCurrentInstance()!
 
 const style = computed(() => {
   const style: CSSProperties = {}
@@ -40,29 +40,18 @@ const classes = computed(() => {
 const titleStyle = computed(() => {
   const style: CSSProperties = {}
   style.color = useColor(resolveProp("inactiveColor"))
-  style.fontSize = useUnit(resolveProp("inactiveFontSize"))
-  style.fontWeight = resolveProp("inactiveFontWeight")
+  style.fontSize = useUnit(resolveProp("inactiveSize"))
+  style.fontWeight = resolveProp("inactiveWeight")
   if (active.value) {
     style.color = useColor(resolveProp("activeColor"))
-    style.fontSize = useUnit(resolveProp("activeFontSize"))
-    style.fontWeight = resolveProp("activeFontWeight")
+    style.fontSize = useUnit(resolveProp("activeSize"))
+    style.fontWeight = resolveProp("activeWeight")
   }
   return useStyle(style)
 })
 
 const titleText = computed(() => {
   return isDef(useProps.title) ? String(useProps.title) : ""
-})
-
-const indicatorStyle = computed(() => {
-  const style: CSSProperties = {}
-  const duration = resolveProp("duration")
-  style.width = useUnit(resolveProp("indicatorWidth"))
-  style.height = useUnit(resolveProp("indicatorHeight"))
-  style.background = useColor(resolveProp("indicatorColor"))
-  style.borderRadius = useUnit(resolveProp("indicatorRadius"))
-  style.transition = `all ${duration}ms`
-  return useStyle(style)
 })
 
 const name = computed(() => useProps.name ?? index.value)
@@ -79,9 +68,32 @@ function resolveProp(name: string) {
 async function onClick() {
   emits("click", name.value)
   if (useProps.disabled || !parent) return
+  // 点击时更新尺寸信息，确保位置准确
+  await reportRect()
   parent.clickTab(name.value)
   parent.setCurrentName(name.value)
 }
+
+/**
+ * 获取并上报尺寸信息给父组件
+ */
+async function reportRect() {
+  if (!parent) return
+  await nextTick()
+  const [tabRect, titleRect] = await Promise.all([useRect(".ui-tab", instance), useRect(".ui-tab__title", instance)])
+  if (tabRect) {
+    parent.updateTabRect(index.value, {
+      width: tabRect.width || 0,
+      height: tabRect.height || 0,
+      titleWidth: titleRect?.width || 0,
+    })
+  }
+}
+
+onMounted(async () => {
+  await nextTick()
+  reportRect()
+})
 
 defineExpose({ useProps, name, index })
 </script>
@@ -114,16 +126,6 @@ export default {
     line-clamp: 1;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 1;
-  }
-
-  &__indicator {
-    left: 50%;
-    bottom: 0;
-    height: 6rpx;
-    position: absolute;
-    transform: translateX(-50%);
-    border-radius: 9999rpx;
-    background-color: var(--ui-color-primary);
   }
 }
 </style>

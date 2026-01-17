@@ -147,7 +147,6 @@
 <script setup lang="ts">
 import type { FormInstance } from "@/uni_modules/uniapp-ui/ui-form"
 import { useToast } from "@/uni_modules/uniapp-ui"
-import { DemoPage, DemoBlock, DemoSection } from "../components"
 
 definePage({
   style: { navigationBarTitleText: "DateSelect 日期选择" },

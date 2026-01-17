@@ -121,6 +121,18 @@
       </demo-block>
     </demo-section>
 
+    <!-- autoIndicatorWidth -->
+    <demo-section title="autoIndicatorWidth 自动宽度">
+      <demo-block direction="column" align="start" :gap="12">
+        <text class="demo-text">autoIndicatorWidth</text>
+        <ui-tabs v-model="activeAutoWidth" auto-indicator-width>
+          <ui-tab title="短" />
+          <ui-tab title="中等长度" />
+          <ui-tab title="这是一个很长的标签" />
+        </ui-tabs>
+      </demo-block>
+    </demo-section>
+
     <!-- indicatorHeight -->
     <demo-section title="indicatorHeight 指示器高度">
       <demo-block direction="column" align="start" :gap="12">
@@ -277,7 +289,6 @@
 
 <script setup lang="ts">
 import { useToast } from "@/uni_modules/uniapp-ui"
-import { DemoPage, DemoBlock, DemoSection } from "../components"
 
 definePage({
   style: { navigationBarTitleText: "Tabs 标签页" },
@@ -309,6 +320,7 @@ const activeWeight1 = ref(0)
 // 线条样式
 const activeLineColor = ref(0)
 const activeLineWidth = ref(0)
+const activeAutoWidth = ref(0)
 const activeLineHeight = ref(0)
 const activeLineRadius = ref(0)
 const activeShowLine = ref(0)

@@ -78,8 +78,6 @@
 </template>
 
 <script setup lang="ts">
-import { DemoPage, DemoSection } from "../components"
-
 definePage({
   style: { navigationBarTitleText: "Textarea 文本域" },
 })

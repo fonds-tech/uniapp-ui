@@ -14,9 +14,14 @@
   </view>
 </template>
 
-<script setup lang="ts">
-defineOptions({ name: "demo-section" })
+<script lang="ts">
+export default {
+  name: "demo-section",
+  options: { virtualHost: true, multipleSlots: true, styleIsolation: "shared" },
+}
+</script>
 
+<script setup lang="ts">
 const props = withDefaults(
   defineProps<{
     /** Section title */

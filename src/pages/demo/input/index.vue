@@ -154,7 +154,6 @@
 
 <script setup lang="ts">
 import { useToast } from "@/uni_modules/uniapp-ui"
-import { DemoPage, DemoSection } from "../components"
 
 definePage({
   style: { navigationBarTitleText: "Input 输入框" },

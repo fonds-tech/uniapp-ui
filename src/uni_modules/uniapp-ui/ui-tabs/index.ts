@@ -20,7 +20,7 @@ export const [tabsProps, useTabsProps] = createProps("tabs", {
   /**
    * 激活文字大小
    */
-  activeFontSize: numericProp,
+  activeSize: numericProp,
   /**
    * 激活文字颜色
    */
@@ -28,11 +28,11 @@ export const [tabsProps, useTabsProps] = createProps("tabs", {
   /**
    * 激活文字粗细
    */
-  activeFontWeight: numericProp,
+  activeWeight: numericProp,
   /**
    * 未激活文字大小
    */
-  inactiveFontSize: numericProp,
+  inactiveSize: numericProp,
   /**
    * 未激活文字颜色
    */
@@ -40,7 +40,7 @@ export const [tabsProps, useTabsProps] = createProps("tabs", {
   /**
    * 未激活文字粗细
    */
-  inactiveFontWeight: numericProp,
+  inactiveWeight: numericProp,
   /**
    * 指示器颜色
    */
@@ -61,6 +61,10 @@ export const [tabsProps, useTabsProps] = createProps("tabs", {
    * 是否显示指示器
    */
   showIndicator: truthProp,
+  /**
+   * 指示器宽度是否自动匹配文字宽度
+   */
+  autoIndicatorWidth: Boolean,
   /**
    * 单项宽度
    */
@@ -97,17 +101,25 @@ export const [tabsProps, useTabsProps] = createProps("tabs", {
 
 export const tabsEmits = {
   change: (name: string | number) => true,
-  tabClick: (name: string | number) => true,
+  "tabClick": (name: string | number) => true,
   "update:modelValue": (name: string | number) => true,
 }
 
 export type TabsEmits = typeof tabsEmits
 export type TabsProps = ExtractPropTypes<typeof tabsProps>
+export interface TabRect {
+  width: number
+  height: number
+  titleWidth: number
+}
+
 export interface TabsProvide {
   props: TabsProps
   useProps: TabsProps
   currentName: Ref<string | number | null>
+  tabRects: Ref<Map<number, TabRect>>
   clickTab: (name: string | number) => void
   setCurrentName: (name: string | number) => void
+  updateTabRect: (index: number, rect: TabRect) => void
 }
 export type TabsInstance = InstanceType<typeof Tabs>

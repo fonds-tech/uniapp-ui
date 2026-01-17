@@ -223,7 +223,6 @@
 <script setup lang="ts">
 import type { SwiperEasingFunction, SwiperIndicatorPosition } from "@/uni_modules/uniapp-ui/ui-swiper"
 import { useToast } from "@/uni_modules/uniapp-ui"
-import { DemoPage, DemoBlock, DemoSection } from "../components"
 
 definePage({
   style: { navigationBarTitleText: "Swiper 轮播" },

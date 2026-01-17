@@ -58,6 +58,7 @@ const style = computed(() => {
   style.padding = useUnit(useProps.padding)
   style.background = useColor(useProps.background)
   style.borderRadius = useUnit(useProps.radius)
+  console.log("🚀 ~ useStyle({ ...style, ...useStyle(useProps.customStyle) }):", useStyle({ ...style, ...useStyle(useProps.customStyle) }))
   return useStyle({ ...style, ...useStyle(useProps.customStyle) })
 })
 

@@ -5,7 +5,12 @@
 </template>
 
 <script setup lang="ts">
-defineOptions({ name: "demo-block" })
+defineOptions({
+  name: "demo-block",
+  virtualHost: true,
+  multipleSlots: true,
+  styleIsolation: "shared",
+})
 
 const props = withDefaults(
   defineProps<{
@@ -54,6 +59,13 @@ const blockStyle = computed(() => {
   }
   return style
 })
+</script>
+
+<script lang="ts">
+export default {
+  name: "demo-block",
+  options: { virtualHost: true, multipleSlots: true, styleIsolation: "shared" },
+}
 </script>
 
 <style lang="scss">

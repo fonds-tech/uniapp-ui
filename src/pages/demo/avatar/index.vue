@@ -140,7 +140,6 @@
 
 <script setup lang="ts">
 import { ref } from "vue"
-import { DemoPage, DemoBlock, DemoSection } from "../components"
 
 definePage({
   style: { navigationBarTitleText: "Avatar 头像" },

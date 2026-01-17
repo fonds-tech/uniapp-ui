@@ -10,8 +10,6 @@
 </template>
 
 <script setup lang="ts">
-import { DemoPage } from "../components"
-
 definePage({
   style: { navigationBarTitleText: "IndexBar 索引栏" },
 })

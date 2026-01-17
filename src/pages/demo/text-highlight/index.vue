@@ -41,8 +41,6 @@
 </template>
 
 <script setup lang="ts">
-import { DemoPage, DemoBlock, DemoSection } from "../components"
-
 definePage({
   style: { navigationBarTitleText: "TextHighlight 文本高亮" },
 })

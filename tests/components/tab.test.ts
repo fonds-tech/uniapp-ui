@@ -190,22 +190,6 @@ describe("ui-tab 标签页项组件", () => {
       await waitForTransition()
       expect(wrapper.classes()).not.toContain("ui-tab--active")
     })
-
-    it("激活时应显示指示器", async () => {
-      const wrapper = mount(UiTab, {
-        props: { name: 0 },
-        global: {
-          provide: {
-            [tabsKey]: {
-              ...mockTabsProvide,
-              currentName: ref(0),
-            },
-          },
-        },
-      })
-      await waitForTransition()
-      expect(wrapper.find(".ui-tab__indicator").exists()).toBe(true)
-    })
   })
 
   describe("点击事件", () => {

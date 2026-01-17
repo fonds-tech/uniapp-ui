@@ -47,8 +47,6 @@
 </template>
 
 <script setup lang="ts">
-import { DemoPage, DemoBlock, DemoSection } from "../components"
-
 definePage({
   style: { navigationBarTitleText: "DropdownMenu 下拉菜单" },
 })

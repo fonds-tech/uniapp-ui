@@ -206,7 +206,6 @@
 <script setup lang="ts">
 import type { StepStatus } from "@/uni_modules/uniapp-ui/ui-steps"
 import { useToast } from "@/uni_modules/uniapp-ui"
-import { DemoPage, DemoBlock, DemoSection } from "../components"
 
 definePage({
   style: { navigationBarTitleText: "Steps 步骤条" },
