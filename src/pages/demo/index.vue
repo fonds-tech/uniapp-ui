@@ -157,9 +157,7 @@ const componentCategories = [
     components: [
       { name: "CellGroup", path: "cell-group", icon: "📦", desc: "单元格分组" },
       { name: "FormItem", path: "form-item", icon: "📝", desc: "表单项组件" },
-      { name: "Tab", path: "tab", icon: "📂", desc: "标签页子项" },
       { name: "TabbarItem", path: "tabbar-item", icon: "📑", desc: "标签栏子项" },
-      { name: "SidebarItem", path: "sidebar-item", icon: "📚", desc: "侧边栏子项" },
       { name: "DropdownItem", path: "dropdown-item", icon: "📋", desc: "下拉菜单子项" },
       { name: "IndexAnchor", path: "index-anchor", icon: "🔤", desc: "索引锚点" },
       { name: "SkeletonParts", path: "skeleton-components", icon: "💀", desc: "骨架屏子组件" },

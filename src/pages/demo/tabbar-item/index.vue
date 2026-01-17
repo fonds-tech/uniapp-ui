@@ -18,16 +18,10 @@
       <demo-block direction="column">
         <view class="tabbar-demo">
           <ui-tabbar v-model="active2">
-            <ui-tabbar-item name="home">
-              <template #icon>
-                <image class="tab-icon" src="/static/icons/home.png" mode="aspectFit" />
-              </template>
+            <ui-tabbar-item name="home" icon="/static/tabbar/home.png" active-icon="/static/tabbar/home-active.png">
               首页
             </ui-tabbar-item>
-            <ui-tabbar-item name="profile">
-              <template #icon>
-                <image class="tab-icon" src="/static/icons/user.png" mode="aspectFit" />
-              </template>
+            <ui-tabbar-item name="profile" icon="/static/tabbar/person.png" active-icon="/static/tabbar/person-active.png">
               我的
             </ui-tabbar-item>
           </ui-tabbar>
@@ -107,10 +101,5 @@ const active4 = ref("home")
   border: 1px solid #eee;
   overflow: hidden;
   border-radius: 12px;
-}
-
-.tab-icon {
-  width: 44rpx;
-  height: 44rpx;
 }
 </style>

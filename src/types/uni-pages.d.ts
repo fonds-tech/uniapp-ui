@@ -46,6 +46,7 @@ type _LocationUrl =
   "/pages/demo/line/index" |
   "/pages/demo/loading/index" |
   "/pages/demo/navbar/index" |
+  "/pages/demo/navbar-gradient/index" |
   "/pages/demo/noticebar/index" |
   "/pages/demo/notify/index" |
   "/pages/demo/number-roll/index" |

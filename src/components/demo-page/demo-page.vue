@@ -1,5 +1,5 @@
 <template>
-  <view class="demo-page" :class="[customClass]" :style="[customStyle]">
+  <view class="demo-page" :class="[customClass]" :style="[style]">
     <slot />
     <!-- 全局 Toast 组件，供 useToast() 使用 -->
     <ui-toast ref="toastRef" />
@@ -9,14 +9,29 @@
 <script lang="ts"></script>
 
 <script setup lang="ts">
+import type { CSSProperties } from "vue"
 import type { ToastInstance } from "@/uni_modules/uniapp-ui/ui-toast"
 import { provideToast } from "@/uni_modules/uniapp-ui/ui-toast"
-import { ref, onMounted } from "vue"
+import { useUnit, useStyle } from "@/uni_modules/uniapp-ui/hooks"
+import { ref, computed, onMounted } from "vue"
 
-defineProps<{
-  customClass?: string
-  customStyle?: string | Record<string, any>
-}>()
+const props = withDefaults(
+  defineProps<{
+    padding?: string | number
+    customClass?: string
+    customStyle?: string | Record<string, any>
+  }>(),
+  { padding: "24rpx" },
+)
+
+const style = computed(() => {
+  const padding = useUnit(props.padding)
+  const s: CSSProperties = {
+    padding,
+    paddingBottom: `calc(${padding} + env(safe-area-inset-bottom))`,
+  }
+  return useStyle({ ...s, ...useStyle(props.customStyle) })
+})
 
 // Toast 组件实例引用
 const toastRef = ref<ToastInstance | null>(null)
@@ -36,9 +51,8 @@ export default {
 
 <style lang="scss">
 .demo-page {
-  padding: 24rpx;
   background: var(--ui-color-background-light);
+  box-sizing: border-box;
   min-height: 100vh;
-  padding-bottom: env(safe-area-inset-bottom);
 }
 </style>

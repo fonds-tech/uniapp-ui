@@ -1,119 +1,126 @@
 import type Navbar from "./ui-navbar.vue"
-import type { ExtractPropTypes } from "vue"
+import type { PropType, ExtractPropTypes } from "vue"
 import { createProps } from "../hooks"
-import { styleProp, makeStringProp } from "../utils/props"
+import { styleProp, truthProp, makeStringProp, makeNumericProp } from "../utils/props"
 
 export const [navbarProps, useNavbarProps] = createProps("navbar", {
   /**
    * 高度
    */
-  height: { type: [String, Number], default: "" },
+  height: makeNumericProp(""),
   /**
    * 左右内边距
    */
-  padding: { type: [String, Number], default: "20rpx" },
+  padding: makeNumericProp("20rpx"),
   /**
    * 返回按钮图标颜色
    */
-  backIconColor: { type: String, default: "#333333" },
+  backIconColor: makeStringProp("#333333"),
   /**
    * 返回按钮图标名称
    */
-  backIconName: { type: String, default: "left" },
+  backIconName: makeStringProp("left"),
   /**
    * 返回按钮图标大小
    */
-  backIconSize: { type: [String, Number], default: "44rpx" },
+  backIconSize: makeNumericProp("44rpx"),
   /**
    * 返回按钮文字
    */
-  backText: { type: String, default: "" },
+  backText: makeStringProp(""),
   /**
    * 返回按钮文字大小
    */
-  backTextSize: { type: String, default: "30rpx" },
+  backTextSize: makeStringProp("30rpx"),
   /**
    * 返回按钮文字颜色
    */
-  backTextColor: { type: String, default: "#333333" },
+  backTextColor: makeStringProp("#333333"),
   /**
-   * 返回按钮文字颜色
+   * 返回按钮文字粗细
    */
-  backTextWeight: { type: [String, Number], default: "" },
+  backTextWeight: makeNumericProp(""),
   /**
    * 标题内容
    */
-  title: { type: [String, null], default: "" },
+  title: makeStringProp(""),
   /**
    * 标题是否居中显示
    */
-  titleCenter: { type: Boolean, default: true },
+  centerTitle: truthProp,
   /**
    * 标题文字大小
    */
-  titleSize: { type: [String, Number], default: "32rpx" },
-  /**
-   * 标题宽度
-   */
-  titleWidth: { type: [String, Number] },
+  titleSize: makeNumericProp("32rpx"),
   /**
    * 标题文字颜色
    */
-  titleColor: { type: String, default: "#333333" },
+  titleColor: makeStringProp("#333333"),
   /**
    * 标题文字粗细
    */
-  titleWeight: { type: [String, Number], default: 700 },
+  titleWeight: makeNumericProp(700),
   /**
    * 是否显示返回按钮
    */
-  isBack: { type: [Boolean, String], default: true },
+  showBack: Boolean,
+  /**
+   * 固定定位时是否生成占位元素
+   */
+  placeholder: truthProp,
   /**
    * 是否显示渐变背景
    */
-  gradient: Boolean,
+  gradient: { type: Boolean, default: false },
   /**
    * 渐变背景高度
    */
-  gradientHeight: { type: [String, Number], default: "200px" },
+  gradientHeight: makeNumericProp("200px"),
   /**
    * 背景颜色
    */
-  background: { type: String, default: "#ffffff" },
+  background: makeStringProp("#ffffff"),
   /**
    * 是否固定在顶部
    */
-  fixed: { type: Boolean, default: true },
+  fixed: truthProp,
   /**
    * 是否沉浸式模式
    */
-  immersive: Boolean,
+  immersive: { type: Boolean, default: false },
   /**
    * 是否显示底部边框
    */
-  borderBottom: Boolean,
+  borderBottom: { type: Boolean, default: false },
   /**
    * 滚动位置
    */
-  scrollTop: { type: [Number] },
+  scrollTop: Number,
   /**
    * 元素层级
    */
-  zIndex: { type: [String, Number], default: "" },
+  zIndex: makeNumericProp(""),
   /**
    * 自定义返回
    */
-  customBack: { type: Function },
+  customBack: Function as PropType<() => void>,
   /**
    * 首页路径，当页面栈只有一个页面时，点击返回会跳转到此路径
    */
-  homePath: { type: String, default: "/pages/tabbar/home/index" },
+  homePath: makeStringProp("/pages/tabbar/home/index"),
+  /**
+   * 首页图标名称，当页面栈只有一个页面时显示此图标
+   */
+  homeIconName: makeStringProp("home"),
   /**
    * 首页类型
    * - 'tab': 使用 switchTab 跳转（适用于 tabBar 页面）
    * - 'page': 使用 reLaunch 跳转（适用于普通页面）
    */
-  homeType: { type: String, default: "tab" },
+  homeType: {
+    type: String as PropType<"tab" | "page">,
+    default: "tab",
+  },
   /**
    * 自定义类名
    */
@@ -129,6 +136,7 @@ export const navbarEmits = {
   rect: (rect: UniApp.NodeInfo) => true,
   height: (height: number) => true,
   gradient: (scrollTop: number) => true,
+  "titleClick": () => true,
 }
 
 export type NavbarEmits = typeof navbarEmits

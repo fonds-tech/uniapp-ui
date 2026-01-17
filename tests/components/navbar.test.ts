@@ -49,9 +49,9 @@ describe("ui-navbar 导航栏组件", () => {
       expect(wrapper.find(".ui-navbar__back").exists()).toBe(true)
     })
 
-    it("isBack 为 false 时不应显示返回按钮", async () => {
+    it("showBack 为 false 时不应显示返回按钮", async () => {
       const wrapper = mount(UiNavbar, {
-        props: { isBack: false },
+        props: { showBack: false },
       })
       await waitForTransition()
       expect(wrapper.find(".ui-navbar__back").exists()).toBe(false)
@@ -115,18 +115,18 @@ describe("ui-navbar 导航栏组件", () => {
   describe("标题配置", () => {
     it("默认标题居中", async () => {
       const wrapper = mount(UiNavbar, {
-        props: { title: "标题", titleCenter: true },
+        props: { title: "标题", centerTitle: true },
       })
       await waitForTransition()
-      expect(wrapper.props("titleCenter")).toBe(true)
+      expect(wrapper.props("centerTitle")).toBe(true)
     })
 
-    it("titleCenter 为 false 时标题不居中", async () => {
+    it("centerTitle 为 false 时标题不居中", async () => {
       const wrapper = mount(UiNavbar, {
-        props: { title: "标题", titleCenter: false },
+        props: { title: "标题", centerTitle: false },
       })
       await waitForTransition()
-      expect(wrapper.props("titleCenter")).toBe(false)
+      expect(wrapper.props("centerTitle")).toBe(false)
     })
 
     it("应支持自定义标题大小", async () => {
@@ -153,12 +153,12 @@ describe("ui-navbar 导航栏组件", () => {
       expect(wrapper.props("titleWeight")).toBe(600)
     })
 
-    it("应支持自定义标题宽度", async () => {
+    it("应支持自定义标题粗细", async () => {
       const wrapper = mount(UiNavbar, {
-        props: { title: "标题", titleWidth: "200rpx" },
+        props: { title: "标题", titleWeight: 600 },
       })
       await waitForTransition()
-      expect(wrapper.props("titleWidth")).toBe("200rpx")
+      expect(wrapper.props("titleWeight")).toBe(600)
     })
   })
 
