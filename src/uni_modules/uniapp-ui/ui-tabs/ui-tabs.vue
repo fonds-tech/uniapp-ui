@@ -10,10 +10,9 @@
 
 <script setup lang="ts">
 import type { CSSProperties } from "vue"
-import { isEmpty } from "../utils/check"
-import { ref, toRef, watch, computed } from "vue"
-import { useUnit, useColor, useStyle, useChildren } from "../hooks"
 import { tabsKey, tabsEmits, tabsProps, useTabsProps } from "./index"
+import { ref, toRef, watch, computed, nextTick, getCurrentInstance } from "vue"
+import { useRect, useUnit, useColor, useRects, useStyle, useChildren } from "../hooks"
 
 defineOptions({ name: "ui-tabs" })
 
@@ -21,6 +20,7 @@ const props = defineProps(tabsProps)
 const emits = defineEmits(tabsEmits)
 const useProps = useTabsProps(props)
 const { childrens, linkChildren } = useChildren(tabsKey)
+const instance = getCurrentInstance()!
 
 const inited = ref(false)
 const scrollLeft = ref(0)
@@ -53,17 +53,31 @@ watch(
 )
 
 function findTabByName(name: string | number) {
-  return childrens.find((tab) => toRef(tab.exposed.name).value === name) || childrens.find((tab) => isEmpty(tab.exposed.useProps.disabled))
+  return childrens.find((tab) => toRef(tab.exposed.name).value === name) || childrens.find((tab) => !tab.exposed.useProps.disabled)
+}
+
+async function scrollToTab(index: number) {
+  if (!useProps.scrollable) return
+  await nextTick()
+  const [tabsRect, tabRects] = await Promise.all([useRect(".ui-tabs__scroll", instance), useRects(".ui-tab", instance)])
+  if (!tabsRect || !tabRects.length || !tabRects[index]) return
+  const tabRect = tabRects[index]
+  const offset = tabRects.slice(0, index).reduce((acc, rect) => acc + (rect.width || 0), 0)
+  const tabCenter = offset + (tabRect.width || 0) / 2
+  const scrollCenter = (tabsRect.width || 0) / 2
+  scrollLeft.value = Math.max(0, tabCenter - scrollCenter)
 }
 
 async function setCurrentName(name: string | number) {
   const tab = findTabByName(name)
   if (tab) {
-    const name = toRef(tab.exposed.name).value
-    if (name !== currentName.value) {
-      currentName.value = name
-      emits("update:modelValue", name)
-      emits("change", name)
+    const tabName = toRef(tab.exposed.name).value
+    if (tabName !== currentName.value) {
+      currentName.value = tabName
+      emits("update:modelValue", tabName)
+      emits("change", tabName)
+      const tabIndex = toRef(tab.exposed.index).value
+      scrollToTab(tabIndex)
       setTimeout(() => (inited.value = true), 30)
     }
   }

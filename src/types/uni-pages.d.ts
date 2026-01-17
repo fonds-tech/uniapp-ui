@@ -76,7 +76,6 @@ type _LocationUrl =
   "/pages/demo/swipe-cell/index" |
   "/pages/demo/swiper/index" |
   "/pages/demo/switch/index" |
-  "/pages/demo/tab/index" |
   "/pages/demo/tabbar/index" |
   "/pages/demo/tabbar-item/index" |
   "/pages/demo/tabs/index" |

@@ -144,7 +144,6 @@ export default defineConfig({
             { text: "Tabbar 标签栏", link: "/components/tabbar" },
             { text: "TabbarItem 标签栏项", link: "/components/tabbar-item" },
             { text: "Tabs 标签页", link: "/components/tabs" },
-            { text: "Tab 标签项", link: "/components/tab" },
             { text: "BackTop 返回顶部", link: "/components/back-top" },
             { text: "FloatButton 浮动按钮", link: "/components/float-button" },
             { text: "Pagination 分页", link: "/components/pagination" },

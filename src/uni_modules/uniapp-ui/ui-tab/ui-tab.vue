@@ -1,6 +1,6 @@
 <template>
   <view class="ui-tab" :class="[classs, customClass]" :style="[style]" @click="onClick">
-    <slot :active="active" :disabled="disabled">
+    <slot :active="active" :disabled="useProps.disabled">
       <text class="ui-tab__title" :style="[titleStyle]">{{ title }}</text>
     </slot>
     <view v-if="prop('showLine') && active" class="ui-tab__line" :style="[lineStyle]" />
@@ -45,17 +45,19 @@ const titleStyle = computed(() => {
   if (active.value) {
     style.color = useColor(prop("activeColor"))
     style.fontSize = useUnit(prop("activeSize"))
-    style.fontWeight = useUnit(prop("activeWeight"))
+    style.fontWeight = prop("activeWeight")
   }
   return useStyle(style)
 })
 
 const lineStyle = computed(() => {
   const style: CSSProperties = {}
+  const duration = prop("duration")
   style.width = useUnit(prop("lineWidth"))
   style.height = useUnit(prop("lineHeight"))
   style.background = useColor(prop("lineColor"))
   style.borderRadius = useUnit(prop("lineRadius"))
+  style.transition = `all ${duration}ms`
   return useStyle(style)
 })
 
@@ -64,13 +66,13 @@ const active = computed(() => parent?.currentName.value === name.value)
 
 function prop(name: string) {
   if (isDef(props[name])) return props[name]
-  if (isDef(parent.props[name])) return parent.props[name]
+  if (parent && isDef(parent.props[name])) return parent.props[name]
   return ""
 }
 
 async function onClick() {
   emits("click", name.value)
-  if (useProps.disabled) return
+  if (useProps.disabled || !parent) return
   parent.clickTab(name.value)
   parent.setCurrentName(name.value)
 }
@@ -93,6 +95,12 @@ export default {
   position: relative;
   align-items: center;
   justify-content: center;
+
+  &--disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+    pointer-events: none;
+  }
 
   &__title {
     display: -webkit-box;

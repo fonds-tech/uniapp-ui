@@ -1,5 +1,6 @@
 <template>
   <demo-page>
+    <!-- 基础用法 -->
     <demo-section title="基础用法">
       <demo-block direction="column">
         <ui-tabs v-model="active1">
@@ -10,10 +11,11 @@
       </demo-block>
     </demo-section>
 
-    <demo-section title="通过名称匹配">
-      <demo-block direction="column" align="start" :gap="16">
-        <text class="demo-text">当前选中: {{ active2 }}</text>
-        <ui-tabs v-model="active2">
+    <!-- Tab: name -->
+    <demo-section title="name 标识符">
+      <demo-block direction="column" align="start" :gap="12">
+        <text class="demo-text">当前选中: {{ activeName }}</text>
+        <ui-tabs v-model="activeName">
           <ui-tab title="标签一" name="a" />
           <ui-tab title="标签二" name="b" />
           <ui-tab title="标签三" name="c" />
@@ -21,9 +23,10 @@
       </demo-block>
     </demo-section>
 
-    <demo-section title="禁用标签">
+    <!-- Tab: disabled -->
+    <demo-section title="disabled 禁用">
       <demo-block direction="column">
-        <ui-tabs v-model="active3">
+        <ui-tabs v-model="activeDisabled">
           <ui-tab title="标签一" />
           <ui-tab title="标签二" disabled />
           <ui-tab title="标签三" />
@@ -31,22 +34,16 @@
       </demo-block>
     </demo-section>
 
-    <demo-section title="滑动标签">
-      <demo-block direction="column">
-        <ui-tabs v-model="active4" scrollable>
-          <ui-tab v-for="i in 8" :key="i" :title="`标签 ${i}`" />
-        </ui-tabs>
-      </demo-block>
-    </demo-section>
-
-    <!-- 新增：自定义高度 -->
-    <demo-section title="自定义高度">
-      <demo-block direction="column" :gap="24">
-        <ui-tabs v-model="activeHeight1" height="80rpx">
+    <!-- height -->
+    <demo-section title="height 高度">
+      <demo-block direction="column" align="start" :gap="16">
+        <text class="demo-text">height="70rpx"</text>
+        <ui-tabs v-model="activeHeight1" height="70rpx">
           <ui-tab title="标签一" />
           <ui-tab title="标签二" />
           <ui-tab title="标签三" />
         </ui-tabs>
+        <text class="demo-text">height="120rpx"</text>
         <ui-tabs v-model="activeHeight2" height="120rpx">
           <ui-tab title="标签一" />
           <ui-tab title="标签二" />
@@ -55,89 +52,161 @@
       </demo-block>
     </demo-section>
 
-    <!-- 新增：标签宽度 -->
-    <demo-section title="标签宽度">
-      <demo-block direction="column" :gap="24">
-        <text class="demo-text">固定宽度:</text>
-        <ui-tabs v-model="activeWidth1" :tab-width="200">
+    <!-- scrollable -->
+    <demo-section title="scrollable 滚动">
+      <demo-block direction="column">
+        <ui-tabs v-model="activeScrollable" scrollable>
+          <ui-tab v-for="i in 12" :key="i" :title="`标签 ${i}`" />
+        </ui-tabs>
+      </demo-block>
+    </demo-section>
+
+    <!-- activeSize / inactiveSize -->
+    <demo-section title="activeSize / inactiveSize 文字大小">
+      <demo-block direction="column" align="start" :gap="12">
+        <text class="demo-text">activeSize="34rpx" inactiveSize="26rpx"</text>
+        <ui-tabs v-model="activeSize1" active-size="34rpx" inactive-size="26rpx">
+          <ui-tab title="标签一" />
+          <ui-tab title="标签二" />
+          <ui-tab title="标签三" />
+        </ui-tabs>
+      </demo-block>
+    </demo-section>
+
+    <!-- activeColor / inactiveColor -->
+    <demo-section title="activeColor / inactiveColor 文字颜色">
+      <demo-block direction="column" align="start" :gap="12">
+        <text class="demo-text">activeColor="#07c160" inactiveColor="#999"</text>
+        <ui-tabs v-model="activeColor1" active-color="#07c160" inactive-color="#999">
+          <ui-tab title="标签一" />
+          <ui-tab title="标签二" />
+          <ui-tab title="标签三" />
+        </ui-tabs>
+      </demo-block>
+    </demo-section>
+
+    <!-- activeWeight / inactiveWeight -->
+    <demo-section title="activeWeight / inactiveWeight 文字粗细">
+      <demo-block direction="column" align="start" :gap="12">
+        <text class="demo-text">activeWeight="700" inactiveWeight="400"</text>
+        <ui-tabs v-model="activeWeight1" active-weight="700" inactive-weight="400">
+          <ui-tab title="标签一" />
+          <ui-tab title="标签二" />
+          <ui-tab title="标签三" />
+        </ui-tabs>
+      </demo-block>
+    </demo-section>
+
+    <!-- lineColor -->
+    <demo-section title="lineColor 线条颜色">
+      <demo-block direction="column" align="start" :gap="12">
+        <text class="demo-text">lineColor="#ee0a24"</text>
+        <ui-tabs v-model="activeLineColor" line-color="#ee0a24">
+          <ui-tab title="标签一" />
+          <ui-tab title="标签二" />
+          <ui-tab title="标签三" />
+        </ui-tabs>
+      </demo-block>
+    </demo-section>
+
+    <!-- lineWidth -->
+    <demo-section title="lineWidth 线条宽度">
+      <demo-block direction="column" align="start" :gap="12">
+        <text class="demo-text">lineWidth="80rpx"</text>
+        <ui-tabs v-model="activeLineWidth" line-width="80rpx">
+          <ui-tab title="标签一" />
+          <ui-tab title="标签二" />
+          <ui-tab title="标签三" />
+        </ui-tabs>
+      </demo-block>
+    </demo-section>
+
+    <!-- lineHeight -->
+    <demo-section title="lineHeight 线条高度">
+      <demo-block direction="column" align="start" :gap="12">
+        <text class="demo-text">lineHeight="8rpx"</text>
+        <ui-tabs v-model="activeLineHeight" line-height="8rpx">
+          <ui-tab title="标签一" />
+          <ui-tab title="标签二" />
+          <ui-tab title="标签三" />
+        </ui-tabs>
+      </demo-block>
+    </demo-section>
+
+    <!-- lineRadius -->
+    <demo-section title="lineRadius 线条圆角">
+      <demo-block direction="column" align="start" :gap="12">
+        <text class="demo-text">lineRadius="0"</text>
+        <ui-tabs v-model="activeLineRadius" line-radius="0" line-height="6rpx">
+          <ui-tab title="标签一" />
+          <ui-tab title="标签二" />
+          <ui-tab title="标签三" />
+        </ui-tabs>
+      </demo-block>
+    </demo-section>
+
+    <!-- showLine -->
+    <demo-section title="showLine 显示线条">
+      <demo-block direction="column" align="start" :gap="12">
+        <text class="demo-text">:showLine="false"</text>
+        <ui-tabs v-model="activeShowLine" :show-line="false" active-color="#1989fa">
+          <ui-tab title="标签一" />
+          <ui-tab title="标签二" />
+          <ui-tab title="标签三" />
+        </ui-tabs>
+      </demo-block>
+    </demo-section>
+
+    <!-- tabWidth -->
+    <demo-section title="tabWidth 标签宽度">
+      <demo-block direction="column" align="start" :gap="12">
+        <text class="demo-text">tabWidth="200rpx"</text>
+        <ui-tabs v-model="activeTabWidth" tab-width="200rpx">
           <ui-tab title="标签一" />
           <ui-tab title="标签二" />
         </ui-tabs>
-        <text class="demo-text">最大宽度:</text>
-        <ui-tabs v-model="activeWidth2" :tab-max-width="150">
-          <ui-tab title="这是一个很长的标签标题" />
+      </demo-block>
+    </demo-section>
+
+    <!-- tabMaxWidth -->
+    <demo-section title="tabMaxWidth 标签最大宽度">
+      <demo-block direction="column" align="start" :gap="12">
+        <text class="demo-text">tabMaxWidth="180rpx"</text>
+        <ui-tabs v-model="activeTabMaxWidth" tab-max-width="180rpx">
+          <ui-tab title="这是一个很长的标签" />
           <ui-tab title="短标签" />
-          <ui-tab title="中等长度标签" />
+          <ui-tab title="中等长度" />
         </ui-tabs>
       </demo-block>
     </demo-section>
 
-    <demo-section title="自定义颜色">
-      <demo-block direction="column" :gap="24">
-        <ui-tabs v-model="active5" active-color="#07c160" inactive-color="#999">
-          <ui-tab title="标签一" />
-          <ui-tab title="标签二" />
-          <ui-tab title="标签三" />
-        </ui-tabs>
-        <ui-tabs v-model="active5b" active-color="#ee0a24" inactive-color="#666">
-          <ui-tab title="标签一" />
-          <ui-tab title="标签二" />
-          <ui-tab title="标签三" />
-        </ui-tabs>
-      </demo-block>
-    </demo-section>
-
-    <!-- 新增：文字样式 -->
-    <demo-section title="文字样式">
-      <demo-block direction="column" :gap="24">
-        <text class="demo-text">激活样式（大号粗体）:</text>
-        <ui-tabs v-model="activeTextStyle1" active-size="32rpx" active-weight="600" inactive-size="26rpx">
-          <ui-tab title="标签一" />
-          <ui-tab title="标签二" />
-          <ui-tab title="标签三" />
-        </ui-tabs>
-        <text class="demo-text">自定义粗细:</text>
-        <ui-tabs v-model="activeTextStyle2" active-weight="700" inactive-weight="300">
-          <ui-tab title="标签一" />
-          <ui-tab title="标签二" />
-          <ui-tab title="标签三" />
-        </ui-tabs>
-      </demo-block>
-    </demo-section>
-
-    <!-- 新增：线条样式 -->
-    <demo-section title="线条样式">
-      <demo-block direction="column" :gap="24">
-        <text class="demo-text">自定义颜色和宽度:</text>
-        <ui-tabs v-model="activeLine1" line-color="#ee0a24" line-width="60rpx">
-          <ui-tab title="标签一" />
-          <ui-tab title="标签二" />
-          <ui-tab title="标签三" />
-        </ui-tabs>
-        <text class="demo-text">自定义高度和圆角:</text>
-        <ui-tabs v-model="activeLine2" line-color="#07c160" line-height="8rpx" line-radius="4rpx">
-          <ui-tab title="标签一" />
-          <ui-tab title="标签二" />
-          <ui-tab title="标签三" />
-        </ui-tabs>
-        <text class="demo-text">隐藏线条:</text>
-        <ui-tabs v-model="activeLine3" :show-line="false" active-color="#1989fa">
-          <ui-tab title="标签一" />
-          <ui-tab title="标签二" />
-          <ui-tab title="标签三" />
-        </ui-tabs>
-      </demo-block>
-    </demo-section>
-
-    <!-- 新增：动画时长 -->
-    <demo-section title="动画时长">
+    <!-- background -->
+    <demo-section title="background 背景颜色">
       <demo-block direction="column" align="start" :gap="16">
-        <demo-block :cols="3" :gap="16">
-          <ui-button size="small" @click="currentDuration = 0">无动画</ui-button>
+        <text class="demo-text">background="#f7f8fa"</text>
+        <ui-tabs v-model="activeBg1" background="#f7f8fa">
+          <ui-tab title="标签一" />
+          <ui-tab title="标签二" />
+          <ui-tab title="标签三" />
+        </ui-tabs>
+        <text class="demo-text">background="#e8f4ff"</text>
+        <ui-tabs v-model="activeBg2" background="#e8f4ff" active-color="#1989fa" line-color="#1989fa">
+          <ui-tab title="标签一" />
+          <ui-tab title="标签二" />
+          <ui-tab title="标签三" />
+        </ui-tabs>
+      </demo-block>
+    </demo-section>
+
+    <!-- duration -->
+    <demo-section title="duration 动画时长">
+      <demo-block direction="column" align="start" :gap="12">
+        <demo-block :gap="16">
+          <ui-button size="small" @click="currentDuration = 0">0ms</ui-button>
           <ui-button size="small" @click="currentDuration = 300">300ms</ui-button>
-          <ui-button size="small" @click="currentDuration = 600">600ms</ui-button>
+          <ui-button size="small" @click="currentDuration = 800">800ms</ui-button>
         </demo-block>
-        <text class="demo-text">当前动画时长: {{ currentDuration }}ms</text>
+        <text class="demo-text">duration="{{ currentDuration }}"</text>
         <ui-tabs v-model="activeDuration" :duration="currentDuration">
           <ui-tab title="标签一" />
           <ui-tab title="标签二" />
@@ -147,25 +216,10 @@
       </demo-block>
     </demo-section>
 
-    <!-- 新增：背景颜色 -->
-    <demo-section title="背景颜色">
-      <demo-block direction="column" :gap="24">
-        <ui-tabs v-model="activeBg1" background="#f7f8fa">
-          <ui-tab title="标签一" />
-          <ui-tab title="标签二" />
-          <ui-tab title="标签三" />
-        </ui-tabs>
-        <ui-tabs v-model="activeBg2" background="#e8f4ff" active-color="#1989fa">
-          <ui-tab title="标签一" />
-          <ui-tab title="标签二" />
-          <ui-tab title="标签三" />
-        </ui-tabs>
-      </demo-block>
-    </demo-section>
-
-    <demo-section title="底部边框">
+    <!-- borderBottom -->
+    <demo-section title="borderBottom 底部边框">
       <demo-block direction="column">
-        <ui-tabs v-model="active6" border-bottom>
+        <ui-tabs v-model="activeBorder" border-bottom>
           <ui-tab title="标签一" />
           <ui-tab title="标签二" />
           <ui-tab title="标签三" />
@@ -173,76 +227,49 @@
       </demo-block>
     </demo-section>
 
-    <!-- 新增：事件处理 -->
-    <demo-section title="事件处理">
-      <demo-block direction="column" align="start" :gap="16">
-        <text class="demo-text">{{ eventLog }}</text>
-        <ui-tabs v-model="activeEvent" @change="onTabChange" @click-tab="onClickTab">
+    <!-- zIndex -->
+    <demo-section title="zIndex 层级">
+      <demo-block direction="column" align="start" :gap="12">
+        <text class="demo-text">zIndex="100"</text>
+        <ui-tabs v-model="activeZIndex" :z-index="100">
+          <ui-tab title="标签一" />
+          <ui-tab title="标签二" />
+          <ui-tab title="标签三" />
+        </ui-tabs>
+      </demo-block>
+    </demo-section>
+
+    <!-- Events -->
+    <demo-section title="change 事件">
+      <demo-block direction="column" align="start" :gap="12">
+        <text class="demo-text">{{ changeLog }}</text>
+        <ui-tabs v-model="activeChange" @change="onTabChange">
+          <ui-tab title="标签一" />
+          <ui-tab title="标签二" />
+          <ui-tab title="标签三" />
+        </ui-tabs>
+      </demo-block>
+    </demo-section>
+
+    <demo-section title="clickTab 事件">
+      <demo-block direction="column" align="start" :gap="12">
+        <text class="demo-text">{{ clickTabLog }}</text>
+        <ui-tabs v-model="activeClickTab" @click-tab="onClickTab">
+          <ui-tab title="标签一" />
+          <ui-tab title="标签二" />
+          <ui-tab title="标签三" />
+        </ui-tabs>
+      </demo-block>
+    </demo-section>
+
+    <demo-section title="Tab click 事件">
+      <demo-block direction="column" align="start" :gap="12">
+        <text class="demo-text">{{ tabClickLog }}</text>
+        <ui-tabs v-model="activeTabClick">
           <ui-tab title="标签一" @click="onTabClick(0)" />
           <ui-tab title="标签二" @click="onTabClick(1)" />
           <ui-tab title="标签三" @click="onTabClick(2)" />
         </ui-tabs>
-      </demo-block>
-    </demo-section>
-
-    <!-- 新增：自定义样式 -->
-    <demo-section title="自定义样式">
-      <demo-block direction="column" :gap="24">
-        <ui-tabs v-model="activeCustom1" custom-class="my-tabs" :custom-style="{ padding: '16rpx', borderRadius: '16rpx', background: '#f7f8fa' }">
-          <ui-tab title="标签一" />
-          <ui-tab title="标签二" />
-          <ui-tab title="标签三" />
-        </ui-tabs>
-        <ui-tabs v-model="activeCustom2">
-          <ui-tab title="自定义1" custom-class="my-tab" />
-          <ui-tab title="自定义2" custom-class="my-tab" />
-          <ui-tab title="自定义3" custom-class="my-tab" />
-        </ui-tabs>
-      </demo-block>
-    </demo-section>
-
-    <!-- 新增：综合示例 -->
-    <demo-section title="综合示例">
-      <demo-block direction="column" :gap="16">
-        <ui-tabs
-          v-model="activeComplex"
-          height="100rpx"
-          background="#fff"
-          active-color="#1989fa"
-          active-size="30rpx"
-          active-weight="600"
-          inactive-color="#646566"
-          inactive-size="26rpx"
-          line-color="#1989fa"
-          line-width="48rpx"
-          line-height="6rpx"
-          line-radius="3rpx"
-          :duration="200"
-          border-bottom
-          custom-class="complex-tabs"
-        >
-          <ui-tab title="首页" name="home" />
-          <ui-tab title="分类" name="category" />
-          <ui-tab title="购物车" name="cart" />
-          <ui-tab title="我的" name="mine" />
-        </ui-tabs>
-        <view class="tab-content">
-          <text class="tab-content__text">当前页面: {{ activeComplex }}</text>
-        </view>
-      </demo-block>
-    </demo-section>
-
-    <!-- 新增：卡片风格 -->
-    <demo-section title="卡片风格">
-      <demo-block direction="column">
-        <view class="card-tabs-wrap">
-          <ui-tabs v-model="activeCard" :show-line="false" background="transparent" active-color="#fff" inactive-color="#1989fa">
-            <ui-tab title="全部" :custom-style="activeCard === 0 ? activeTabStyle : inactiveTabStyle" />
-            <ui-tab title="待付款" :custom-style="activeCard === 1 ? activeTabStyle : inactiveTabStyle" />
-            <ui-tab title="待发货" :custom-style="activeCard === 2 ? activeTabStyle : inactiveTabStyle" />
-            <ui-tab title="已完成" :custom-style="activeCard === 3 ? activeTabStyle : inactiveTabStyle" />
-          </ui-tabs>
-        </view>
       </demo-block>
     </demo-section>
   </demo-page>
@@ -258,76 +285,63 @@ definePage({
 
 const toast = useToast()
 
-// 基础示例
+// 基础用法
 const active1 = ref(0)
-const active2 = ref("a")
-const active3 = ref(0)
-const active4 = ref(0)
-const active5 = ref(0)
-const active5b = ref(0)
-const active6 = ref(0)
 
-// 自定义高度
+// Tab Props
+const activeName = ref("a")
+const activeDisabled = ref(0)
+
+// 尺寸
 const activeHeight1 = ref(0)
 const activeHeight2 = ref(0)
+const activeTabWidth = ref(0)
+const activeTabMaxWidth = ref(0)
 
-// 标签宽度
-const activeWidth1 = ref(0)
-const activeWidth2 = ref(0)
+// 滚动
+const activeScrollable = ref(0)
 
 // 文字样式
-const activeTextStyle1 = ref(0)
-const activeTextStyle2 = ref(0)
+const activeColor1 = ref(0)
+const activeSize1 = ref(0)
+const activeWeight1 = ref(0)
 
 // 线条样式
-const activeLine1 = ref(0)
-const activeLine2 = ref(0)
-const activeLine3 = ref(0)
+const activeLineColor = ref(0)
+const activeLineWidth = ref(0)
+const activeLineHeight = ref(0)
+const activeLineRadius = ref(0)
+const activeShowLine = ref(0)
 
-// 动画时长
+// 外观
+const activeBg1 = ref(0)
+const activeBg2 = ref(0)
+const activeBorder = ref(0)
+const activeZIndex = ref(0)
+
+// 动画
 const activeDuration = ref(0)
 const currentDuration = ref(300)
 
-// 背景颜色
-const activeBg1 = ref(0)
-const activeBg2 = ref(0)
+// 事件
+const activeChange = ref(0)
+const activeClickTab = ref(0)
+const activeTabClick = ref(0)
+const changeLog = ref("切换标签触发")
+const clickTabLog = ref("点击标签触发")
+const tabClickLog = ref("点击 Tab 组件触发")
 
-// 事件处理
-const activeEvent = ref(0)
-const eventLog = ref("点击标签触发事件")
-
-// 自定义样式
-const activeCustom1 = ref(0)
-const activeCustom2 = ref(0)
-
-// 综合示例
-const activeComplex = ref("home")
-
-// 卡片风格
-const activeCard = ref(0)
-const activeTabStyle = {
-  background: "#1989fa",
-  borderRadius: "8rpx",
-  padding: "12rpx 24rpx",
-}
-const inactiveTabStyle = {
-  background: "#e8f4ff",
-  borderRadius: "8rpx",
-  padding: "12rpx 24rpx",
-}
-
-// 事件处理
 function onTabChange(name: string | number) {
-  eventLog.value = `触发 change 事件，切换到: ${name}`
-  toast.success(`切换到第 ${Number(name) + 1} 项`)
+  changeLog.value = `change: ${name}`
+  toast.success(`切换到 ${name}`)
 }
 
 function onClickTab(name: string | number) {
-  eventLog.value = `触发 click-tab 事件，点击: ${name}`
+  clickTabLog.value = `clickTab: ${name}`
 }
 
 function onTabClick(index: number) {
-  eventLog.value = `触发 tab 的 click 事件，索引: ${index}`
+  tabClickLog.value = `Tab click: ${index}`
 }
 </script>
 
@@ -335,35 +349,5 @@ function onTabClick(index: number) {
 .demo-text {
   color: var(--ui-color-text-secondary);
   font-size: 24rpx;
-}
-
-.tab-content {
-  padding: 32rpx;
-  background: #f7f8fa;
-  text-align: center;
-  border-radius: 12rpx;
-
-  &__text {
-    color: var(--ui-color-text-main);
-    font-size: 28rpx;
-  }
-}
-
-.card-tabs-wrap {
-  padding: 16rpx;
-  background: #fff;
-  border-radius: 12rpx;
-}
-
-:deep(.my-tabs) {
-  box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.08);
-}
-
-:deep(.my-tab) {
-  font-style: italic;
-}
-
-:deep(.complex-tabs) {
-  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.06);
 }
 </style>

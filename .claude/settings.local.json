@@ -17,7 +17,9 @@
       "mcp__desktop-commander__list_directory",
       "mcp__desktop-commander__read_multiple_files",
       "mcp__serena__search_for_pattern",
-      "mcp__serena__get_symbols_overview"
+      "mcp__serena__get_symbols_overview",
+      "Bash(rm:*)",
+      "mcp__serena__think_about_collected_information"
     ],
     "deny": [],
     "ask": []

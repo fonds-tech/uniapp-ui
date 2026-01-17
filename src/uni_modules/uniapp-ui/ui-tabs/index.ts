@@ -16,7 +16,7 @@ export const [tabsProps, useTabsProps] = createProps("tabs", {
   /**
    * 是否可以滚动
    */
-  scrollable: truthProp,
+  scrollable: Boolean,
   /**
    * 激活文字大小
    */
