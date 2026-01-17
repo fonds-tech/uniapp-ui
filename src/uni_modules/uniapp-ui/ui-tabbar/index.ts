@@ -1,5 +1,5 @@
 import type Tabbar from "./ui-tabbar.vue"
-import type { InjectionKey, ExtractPropTypes } from "vue"
+import type { PropType, InjectionKey, ExtractPropTypes } from "vue"
 import { createProps } from "../hooks"
 import { styleProp, truthProp, makeStringProp, makeNumericProp } from "../utils/props"
 
@@ -12,11 +12,11 @@ export const [tabbarProps, useTabbarProps] = createProps("tabbar", {
   /**
    * 是否固定定位
    */
-  fixed: Boolean,
+  fixed: truthProp,
   /**
    * 是否显示边框线
    */
-  border: truthProp,
+  border: Boolean,
   /**
    * 元素层级
    */
@@ -46,6 +46,10 @@ export const [tabbarProps, useTabbarProps] = createProps("tabbar", {
    */
   safeAreaInsetBottom: truthProp,
   /**
+   * 固定定位时是否生成占位元素
+   */
+  placeholder: truthProp,
+  /**
    * 自定义类名
    */
   customClass: makeStringProp(""),
@@ -53,6 +57,13 @@ export const [tabbarProps, useTabbarProps] = createProps("tabbar", {
    * 自定义样式
    */
   customStyle: styleProp,
+  /**
+   * 切换前的回调函数，返回 false 或 Promise.reject 可阻止切换
+   */
+  beforeChange: {
+    type: Function as PropType<(name: string | number) => boolean | Promise<boolean>>,
+    default: null,
+  },
 })
 export const tabbarEmits = {
   rect: (rect: UniApp.NodeInfo) => true,

@@ -114,13 +114,13 @@ page {
   --ui-z-index-content: 10; // 内容层级
   --ui-z-index-dropdown: 100; // 下拉层级
   --ui-z-index-sticky: 500; // 粘性层级
-  --ui-z-index-fixed: 1000; // 固定层级
+  --ui-z-index-fixed: 900; // 固定层级 (tabbar/navbar，低于 uni 原生 999)
   --ui-z-index-mask: 1000; // 遮罩层级
   --ui-z-index-popup: 1001; // 弹窗层级
   --ui-z-index-modal: 1002; // 模态层级
-  --ui-z-index-toast: 2000; // 提示层级
-  --ui-z-index-loading: 2001; // 加载层级
-  --ui-z-index-max: 9999; // 最大层级
+  --ui-z-index-toast: 10000; // 提示层级 (高于一切)
+  --ui-z-index-loading: 10001; // 加载层级 (最高优先)
+  --ui-z-index-max: 99999; // 预留最高层级
 
   // 透明度
   --ui-opacity-disabled: 0.5; // 禁用透明度

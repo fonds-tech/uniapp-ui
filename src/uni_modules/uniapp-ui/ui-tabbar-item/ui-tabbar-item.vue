@@ -1,14 +1,15 @@
 <template>
-  <view class="ui-tabbar-item" :style="[style]" :class="[classs]" @click="onClick">
+  <view class="ui-tabbar-item" :style="[style, useProps.customStyle]" :class="[classs, useProps.customClass]" @click="onClick">
     <view class="ui-tabbar-item__icon" :style="[iconStyle]">
-      <view class="ui-tabbar-item__icon__absolute">
+      <ui-badge :dot="useProps.dot" :value="useProps.badge">
         <slot name="icon">
-          <ui-icon :name="icon" :size="iconSize" :weight="iconWeight" :custom-prefix="iconPrefix" />
+          <image v-if="isImageIcon" :src="currentIcon" class="ui-tabbar-item__image" mode="aspectFit" />
+          <ui-icon v-else :name="currentIcon" :size="useProps.iconSize" :weight="useProps.iconWeight" :custom-prefix="useProps.iconPrefix" />
         </slot>
-      </view>
+      </ui-badge>
     </view>
-    <view class="ui-tabbar-item__text" :style="[testStyle]">
-      <slot />
+    <view v-if="useProps.text || $slots.default" class="ui-tabbar-item__text" :style="[textStyle]">
+      <slot>{{ useProps.text }}</slot>
     </view>
     <slot name="extra" />
   </view>
@@ -19,7 +20,7 @@ import type { CSSProperties } from "vue"
 import { isDef } from "../utils/check"
 import { computed } from "vue"
 import { tabbarKey } from "../ui-tabbar"
-import { debounce, createUrlParams } from "../utils/utils"
+import { createUrlParams } from "../utils/utils"
 import { useUnit, useColor, useStyle, useParent } from "../hooks"
 import { tabbarItemEmits, tabbarItemProps, useTabbarItemProps } from "./index"
 
@@ -30,6 +31,8 @@ const emits = defineEmits(tabbarItemEmits)
 const useProps = useTabbarItemProps(props)
 const { parent, index } = useParent(tabbarKey)
 
+let navigating = false
+
 const style = computed(() => {
   const style: CSSProperties = {}
   return useStyle(style)
@@ -38,6 +41,7 @@ const style = computed(() => {
 const classs = computed(() => {
   const list: string[] = []
   if (active.value) list.push("ui-tabbar-item--active")
+  if (useProps.disabled) list.push("ui-tabbar-item--disabled")
   return list
 })
 
@@ -48,14 +52,25 @@ const iconStyle = computed(() => {
   return useStyle(style)
 })
 
-const testStyle = computed(() => {
+const textStyle = computed(() => {
   const style: CSSProperties = {}
   style.color = active.value ? useColor(prop("activeColor")) : useColor(prop("inactiveColor"))
   return useStyle(style)
 })
 
-const name = computed(() => useProps.name || index.value)
+const name = computed(() => (isDef(useProps.name) ? useProps.name : index.value))
 const active = computed(() => parent?.useProps.modelValue === name.value)
+const currentIcon = computed(() => {
+  if (active.value && useProps.activeIcon) return useProps.activeIcon
+  return useProps.icon
+})
+
+const isImageIcon = computed(() => {
+  const icon = currentIcon.value
+  if (!icon) return false
+  if (/^(?:https?:|data:|\/|\.\.?\/)/.test(icon)) return true
+  return /\.(?:png|jpe?g|gif|svg|webp|ico|bmp)$/i.test(icon)
+})
 
 function prop(name: string) {
   if (isDef(props[name])) return props[name]
@@ -63,33 +78,36 @@ function prop(name: string) {
   return ""
 }
 
+function normalizeRoute(route: string) {
+  return route.replace(/^\//, "")
+}
+
 function onClick() {
+  if (useProps.disabled) return
   emits("click", name.value)
-  if (parent) {
+  if (!parent) return
+
+  if (parent.useProps.route) {
+    if (!useProps.route) {
+      console.error("ui-tabbar-item: route is required")
+      return
+    }
     const pages = getCurrentPages()
     const page = pages[pages.length - 1]
-    if (parent.useProps.route) {
-      if (!useProps.route) {
-        console.error("ui-tabbar-item: route is required")
-        return
-      } else if (useProps.route === page.route) {
-        return
-      }
-      debounce(
-        () => {
-          uni[useProps.routeType]({
-            url: `${useProps.route}${createUrlParams(useProps.routeParams)}`,
-            fail: (err: any) => {
-              throw err
-            },
-          })
-        },
-        300,
-        true,
-      )
-    } else {
-      parent.updateValue(name.value)
+    if (normalizeRoute(useProps.route) === normalizeRoute(page.route || "")) {
+      return
     }
+    if (navigating) return
+    navigating = true
+    parent.updateValue(name.value)
+    uni[useProps.routeType]({
+      url: useProps.routeType === "switchTab" ? useProps.route : `${useProps.route}${createUrlParams(useProps.routeParams)}`,
+      complete: () => {
+        navigating = false
+      },
+    })
+  } else {
+    parent.updateValue(name.value)
   }
 }
 
@@ -118,27 +136,30 @@ export default {
     color: var(--ui-color-primary);
   }
 
+  &--disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+    pointer-events: none;
+  }
+
   &__icon {
-    height: 44rpx;
+    height: var(--ui-icon-size-md);
     display: flex;
     position: relative;
     align-items: center;
     margin-bottom: var(--ui-spacing-sm);
     justify-content: center;
+  }
 
-    &__absolute {
-      left: 50%;
-      bottom: 0;
-      display: flex;
-      z-index: var(--ui-z-index-base);
-      position: absolute;
-      transform: translateX(-50%);
-    }
+  &__image {
+    width: var(--ui-icon-size-md);
+    height: var(--ui-icon-size-md);
   }
 
   &__text {
     display: -webkit-box;
     overflow: hidden;
+    line-clamp: 1;
     align-items: center;
     text-overflow: ellipsis;
     justify-content: center;

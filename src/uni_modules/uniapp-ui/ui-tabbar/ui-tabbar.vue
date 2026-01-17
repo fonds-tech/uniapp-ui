@@ -4,17 +4,17 @@
       <view class="ui-tabbar__list">
         <slot />
       </view>
-      <ui-safe-area-bottom @height="onSafeAreaBottomHeight" />
+      <ui-safe-area-bottom v-if="useProps.safeAreaInsetBottom" @height="onSafeAreaBottomHeight" />
     </view>
-    <view class="ui-tabbar__placeholder" :style="[placeholderStyle]" />
+    <view v-if="useProps.fixed && useProps.placeholder" class="ui-tabbar__placeholder" :style="[placeholderStyle]" />
   </view>
 </template>
 
 <script setup lang="ts">
 import type { CSSProperties } from "vue"
 import { isFunction } from "../utils/check"
-import { ref, watch, computed, nextTick, getCurrentInstance } from "vue"
 import { tabbarKey, tabbarEmits, tabbarProps, useTabbarProps } from "./index"
+import { ref, watch, computed, nextTick, onUnmounted, getCurrentInstance } from "vue"
 import { useMitt, useRect, useColor, useStyle, usePxToRpx, useChildren, useUnitToRpx } from "../hooks"
 
 defineOptions({ name: "ui-tabbar" })
@@ -33,13 +33,15 @@ const style = computed(() => {
   const style: CSSProperties = {}
   style.height = `${useUnitToRpx(useProps.height) + usePxToRpx(offsetHeight.value)}rpx`
   style.background = useColor(useProps.background)
-  style.paddingBottom = `${useUnitToRpx(offsetHeight.value)}rpx`
+  style.paddingBottom = `${usePxToRpx(offsetHeight.value)}rpx`
+  if (useProps.zIndex) style.zIndex = +useProps.zIndex
   return useStyle({ ...useStyle(useProps.customStyle), ...style })
 })
 
 const classs = computed(() => {
   const list: string[] = []
   if (useProps.border) list.push("ui-tabbar__content--border")
+  if (useProps.fixed) list.push("ui-tabbar__content--fixed")
   return list
 })
 
@@ -56,12 +58,18 @@ watch(
 
 watch(() => childrens.length, resize)
 
-function onEvent() {
-  mitt.on("ui-tabbar:rect:get", async (cb: any) => {
-    const result = await useRect(".ui-tabbar__content", instance)
-    isFunction(cb) && cb(result)
-  })
+async function rectGetHandler(cb: any) {
+  const result = await useRect(".ui-tabbar__content", instance)
+  isFunction(cb) && cb(result)
 }
+
+function onEvent() {
+  mitt.on("ui-tabbar:rect:get", rectGetHandler)
+}
+
+onUnmounted(() => {
+  mitt.off("ui-tabbar:rect:get", rectGetHandler)
+})
 
 async function resize() {
   await nextTick()
@@ -74,6 +82,14 @@ async function resize() {
 }
 
 async function updateValue(value: string | number) {
+  if (useProps.beforeChange) {
+    try {
+      const result = await useProps.beforeChange(value)
+      if (result === false) return
+    } catch {
+      return
+    }
+  }
   emits("update:modelValue", value)
 }
 
@@ -96,6 +112,7 @@ export default {
 
 <style lang="scss" scoped>
 .ui-tabbar {
+  width: 100%;
   display: flex;
   z-index: var(--ui-z-index-fixed);
   position: relative;
@@ -112,8 +129,12 @@ export default {
     right: 0;
     bottom: 0;
     display: flex;
-    position: fixed;
+    position: relative;
     flex-direction: column;
+
+    &--fixed {
+      position: fixed;
+    }
 
     &--border::after {
       inset: -50%;

@@ -9,13 +9,41 @@ export const [tabbarItemProps, useTabbarItemProps] = createProps("tabbarItem", {
    */
   name: makeNumericProp(""),
   /**
+   * 文字内容
+   */
+  text: makeStringProp(""),
+  /**
    * 图标名称或图片链接
    */
   icon: makeStringProp(""),
   /**
+   * 激活时的图标
+   */
+  activeIcon: makeStringProp(""),
+  /**
    * 图标大小
    */
-  iconSize: makeNumericProp("44rpx"),
+  iconSize: makeNumericProp("48rpx"),
+  /**
+   * 是否显示小红点
+   */
+  dot: Boolean,
+  /**
+   * 徽标内容
+   */
+  badge: makeStringProp(""),
+  /**
+   * 是否禁用
+   */
+  disabled: Boolean,
+  /**
+   * 激活颜色
+   */
+  activeColor: makeStringProp(""),
+  /**
+   * 未激活颜色
+   */
+  inactiveColor: makeStringProp(""),
   /**
    * 图标粗细
    */

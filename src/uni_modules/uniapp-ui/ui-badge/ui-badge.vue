@@ -63,6 +63,10 @@ const innerStyle = computed(() => {
   if (isShowIcon.value) {
     style.padding = "4rpx"
   }
+  // 单个字符显示为圆形，多个字符显示为药丸形
+  if (!useProps.dot && !isShowIcon.value && String(formatValue.value).length > 1) {
+    style.padding = "0 8rpx"
+  }
   return useStyle({ ...style, ...useStyle(useProps.customStyle) })
 })
 
@@ -137,12 +141,15 @@ export default {
   position: relative;
 
   &__inner {
-    color: var(--ui-color-background);
+    color: #fff;
+    height: 32rpx;
     display: flex;
-    padding: var(--ui-spacing-xs) var(--ui-spacing-sm);
-    font-size: var(--ui-font-size-sm);
-    min-width: var(--ui-spacing-xxl);
+    padding: 0;
+    font-size: var(--ui-font-size-xs);
+    min-width: 32rpx;
+    box-sizing: border-box;
     align-items: center;
+    line-height: 1;
     border-radius: var(--ui-radius-round);
     justify-content: center;
     background-color: var(--ui-color-danger);
@@ -202,6 +209,7 @@ export default {
 
   &__value {
     line-height: 1;
+    white-space: nowrap;
   }
 }
 </style>

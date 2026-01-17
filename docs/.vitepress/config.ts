@@ -142,7 +142,6 @@ export default defineConfig({
           items: [
             { text: "Navbar 导航栏", link: "/components/navbar" },
             { text: "Tabbar 标签栏", link: "/components/tabbar" },
-            { text: "TabbarItem 标签栏项", link: "/components/tabbar-item" },
             { text: "Tabs 标签页", link: "/components/tabs" },
             { text: "BackTop 返回顶部", link: "/components/back-top" },
             { text: "FloatButton 浮动按钮", link: "/components/float-button" },
