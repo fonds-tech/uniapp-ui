@@ -110,7 +110,9 @@ const contentClass = computed(() => {
 // 计算状态栏样式
 const statusBarStyle = computed(() => {
   const style: CSSProperties = {}
-  style.height = `${statusBarHeight.value}px`
+  if (useProps.fixed) {
+    style.height = `${statusBarHeight.value}px`
+  }
   return useStyle(style)
 })
 

@@ -18,20 +18,11 @@
       </demo-block>
     </demo-section>
 
-    <!-- 新增：返回按钮样式 -->
-    <demo-section title="返回按钮样式">
-      <demo-block direction="column" :gap="16">
-        <text class="demo-text">自定义返回按钮图标、大小、颜色</text>
-        <ui-navbar title="自定义返回按钮" :fixed="false" show-back back-icon-name="arrow-left" back-icon-size="48rpx" back-icon-color="#1989fa" />
-        <ui-navbar title="带文字的返回" :fixed="false" show-back back-text="返回" back-text-size="28rpx" back-text-color="#1989fa" back-text-weight="500" />
-      </demo-block>
-    </demo-section>
-
     <demo-section title="自定义左侧">
       <demo-block direction="column">
         <ui-navbar title="标题" :fixed="false">
           <template #left>
-            <ui-icon name="close" size="40rpx" />
+            <ui-icon name="search" size="40rpx" />
           </template>
         </ui-navbar>
       </demo-block>
