@@ -43,7 +43,12 @@ export function formatDigit(digit: number = 0, options: { decimalPlaces?: number
   let decimalPortion = ""
   if (decimalPlaces > 0) {
     const formattedDecimal = decimalPart.padEnd(decimalPlaces, "0").slice(0, decimalPlaces)
-    decimalPortion = trimZero && Number.parseInt(formattedDecimal) === 0 ? "" : `.${formattedDecimal}`
+    if (trimZero) {
+      const trimmed = formattedDecimal.replace(/0+$/, "")
+      decimalPortion = trimmed ? `.${trimmed}` : ""
+    } else {
+      decimalPortion = `.${formattedDecimal}`
+    }
   }
 
   return decimalPortion ? formattedInteger + decimalPortion : formattedInteger

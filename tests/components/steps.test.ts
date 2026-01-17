@@ -672,8 +672,8 @@ describe("steps 和 Step 组件集成测试", () => {
       await waitForTransition()
 
       const lines = wrapper.findAll(".ui-step__line")
-      // 三个步骤都有连接线元素（最后一个通过 CSS 宽度为0隐藏）
-      expect(lines.length).toBe(3)
+      // 每个步骤有两条连接线（before + after），3 个步骤共 6 条
+      expect(lines.length).toBe(6)
     })
 
     it("最后一个步骤应该有 last 类名", async () => {

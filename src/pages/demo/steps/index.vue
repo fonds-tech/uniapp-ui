@@ -25,6 +25,10 @@
           <ui-step title="发货" description="2024-01-01 12:00" />
           <ui-step title="收货" description="等待收货" />
         </ui-steps>
+        <demo-block :cols="2" :gap="16">
+          <ui-button size="small" :disabled="active2 === 0" @click="active2--">上一步</ui-button>
+          <ui-button size="small" :disabled="active2 >= 3" @click="active2++">下一步</ui-button>
+        </demo-block>
       </demo-block>
     </demo-section>
 
@@ -37,6 +41,10 @@
           <ui-step title="商品已发货" description="2024-01-01 12:00:00" />
           <ui-step title="等待收货" description="预计 2024-01-03 送达" />
         </ui-steps>
+        <demo-block :cols="2" :gap="16">
+          <ui-button size="small" :disabled="active3 === 0" @click="active3--">上一步</ui-button>
+          <ui-button size="small" :disabled="active3 >= 3" @click="active3++">下一步</ui-button>
+        </demo-block>
       </demo-block>
     </demo-section>
 
@@ -44,17 +52,25 @@
     <demo-section title="自定义颜色">
       <demo-block direction="column" :gap="24">
         <text class="demo-text">自定义激活颜色:</text>
-        <ui-steps :active="1" active-color="#07c160" inactive-color="#999">
+        <ui-steps :active="colorActive1" active-color="#07c160" inactive-color="#999">
           <ui-step title="步骤一" />
           <ui-step title="步骤二" />
           <ui-step title="步骤三" />
         </ui-steps>
+        <demo-block :cols="2" :gap="16">
+          <ui-button size="small" :disabled="colorActive1 === 0" @click="colorActive1--">上一步</ui-button>
+          <ui-button size="small" :disabled="colorActive1 >= 2" @click="colorActive1++">下一步</ui-button>
+        </demo-block>
         <text class="demo-text">自定义其他颜色:</text>
-        <ui-steps :active="1" active-color="#ee0a24" inactive-color="#c8c9cc">
+        <ui-steps :active="colorActive2" active-color="#ee0a24" inactive-color="#c8c9cc">
           <ui-step title="步骤一" />
           <ui-step title="步骤二" />
           <ui-step title="步骤三" />
         </ui-steps>
+        <demo-block :cols="2" :gap="16">
+          <ui-button size="small" :disabled="colorActive2 === 0" @click="colorActive2--">上一步</ui-button>
+          <ui-button size="small" :disabled="colorActive2 >= 2" @click="colorActive2++">下一步</ui-button>
+        </demo-block>
       </demo-block>
     </demo-section>
 
@@ -62,17 +78,25 @@
     <demo-section title="自定义图标">
       <demo-block direction="column" :gap="24">
         <text class="demo-text">统一设置图标:</text>
-        <ui-steps :active="1" active-icon="check-circle" inactive-icon="time-circle" finish-icon="check-circle">
+        <ui-steps :active="iconActive1" active-icon="check-circle" inactive-icon="time-circle" finish-icon="check-circle">
           <ui-step title="步骤一" />
           <ui-step title="步骤二" />
           <ui-step title="步骤三" />
         </ui-steps>
+        <demo-block :cols="2" :gap="16">
+          <ui-button size="small" :disabled="iconActive1 === 0" @click="iconActive1--">上一步</ui-button>
+          <ui-button size="small" :disabled="iconActive1 >= 2" @click="iconActive1++">下一步</ui-button>
+        </demo-block>
         <text class="demo-text">单独设置图标:</text>
-        <ui-steps :active="1">
+        <ui-steps :active="iconActive2">
           <ui-step title="购物车" icon="shopping" />
           <ui-step title="填写地址" icon="location" />
           <ui-step title="付款" icon="creditcard" />
         </ui-steps>
+        <demo-block :cols="2" :gap="16">
+          <ui-button size="small" :disabled="iconActive2 === 0" @click="iconActive2--">上一步</ui-button>
+          <ui-button size="small" :disabled="iconActive2 >= 2" @click="iconActive2++">下一步</ui-button>
+        </demo-block>
       </demo-block>
     </demo-section>
 
@@ -80,18 +104,26 @@
     <demo-section title="步骤状态">
       <demo-block direction="column" :gap="24">
         <text class="demo-text">错误状态:</text>
-        <ui-steps :active="1" error-color="#ee0a24">
+        <ui-steps :active="statusActive1" error-color="#ee0a24">
           <ui-step title="步骤一" />
           <ui-step title="步骤二" status="error" />
           <ui-step title="步骤三" />
         </ui-steps>
+        <demo-block :cols="2" :gap="16">
+          <ui-button size="small" :disabled="statusActive1 === 0" @click="statusActive1--">上一步</ui-button>
+          <ui-button size="small" :disabled="statusActive1 >= 2" @click="statusActive1++">下一步</ui-button>
+        </demo-block>
         <text class="demo-text">自定义状态:</text>
-        <ui-steps :active="2">
+        <ui-steps :active="statusActive2">
           <ui-step title="步骤一" status="finish" />
           <ui-step title="步骤二" status="finish" />
           <ui-step title="步骤三" status="process" />
           <ui-step title="步骤四" status="wait" />
         </ui-steps>
+        <demo-block :cols="2" :gap="16">
+          <ui-button size="small" :disabled="statusActive2 === 0" @click="statusActive2--">上一步</ui-button>
+          <ui-button size="small" :disabled="statusActive2 >= 3" @click="statusActive2++">下一步</ui-button>
+        </demo-block>
       </demo-block>
     </demo-section>
 
@@ -105,6 +137,10 @@
           <ui-step title="步骤三" @click="onStepClick(2)" />
           <ui-step title="步骤四" @click="onStepClick(3)" />
         </ui-steps>
+        <demo-block :cols="2" :gap="16">
+          <ui-button size="small" :disabled="active4 === 0" @click="active4--">上一步</ui-button>
+          <ui-button size="small" :disabled="active4 >= 3" @click="active4++">下一步</ui-button>
+        </demo-block>
       </demo-block>
     </demo-section>
 
@@ -112,12 +148,16 @@
     <demo-section title="简洁模式">
       <demo-block direction="column" :gap="24">
         <text class="demo-text">只显示图标，隐藏标题和描述:</text>
-        <ui-steps :active="1" simple>
+        <ui-steps :active="simpleActive" simple>
           <ui-step title="步骤一" />
           <ui-step title="步骤二" />
           <ui-step title="步骤三" />
           <ui-step title="步骤四" />
         </ui-steps>
+        <demo-block :cols="2" :gap="16">
+          <ui-button size="small" :disabled="simpleActive === 0" @click="simpleActive--">上一步</ui-button>
+          <ui-button size="small" :disabled="simpleActive >= 3" @click="simpleActive++">下一步</ui-button>
+        </demo-block>
       </demo-block>
     </demo-section>
 
@@ -141,18 +181,22 @@
     <!-- 垂直居中对齐 -->
     <demo-section title="垂直居中对齐">
       <demo-block direction="column">
-        <ui-steps :active="1" direction="vertical" center>
+        <ui-steps :active="centerActive" direction="vertical" center>
           <ui-step title="订单提交成功" description="2024-01-01 10:00:00" />
           <ui-step title="订单已付款" description="2024-01-01 10:05:30" />
           <ui-step title="商品已发货" description="2024-01-01 12:00:00" />
         </ui-steps>
+        <demo-block :cols="2" :gap="16">
+          <ui-button size="small" :disabled="centerActive === 0" @click="centerActive--">上一步</ui-button>
+          <ui-button size="small" :disabled="centerActive >= 2" @click="centerActive++">下一步</ui-button>
+        </demo-block>
       </demo-block>
     </demo-section>
 
     <!-- 垂直带图标 -->
     <demo-section title="垂直带图标">
       <demo-block direction="column">
-        <ui-steps :active="2" direction="vertical" active-icon="check-circle" icon-size="44rpx">
+        <ui-steps :active="verticalIconActive" direction="vertical" active-icon="check-circle" icon-size="44rpx">
           <ui-step title="订单提交成功" description="您的订单已提交，等待系统确认">
             <template #icon="{ status }">
               <ui-icon :name="status === 'finish' ? 'check-circle-fill' : 'time-circle'" :size="44" :color="status === 'finish' ? '#07c160' : '#999'" />
@@ -162,13 +206,17 @@
           <ui-step title="商品配送中" description="快递员正在配送中，请保持电话畅通" />
           <ui-step title="等待收货" description="预计明天送达" />
         </ui-steps>
+        <demo-block :cols="2" :gap="16">
+          <ui-button size="small" :disabled="verticalIconActive === 0" @click="verticalIconActive--">上一步</ui-button>
+          <ui-button size="small" :disabled="verticalIconActive >= 3" @click="verticalIconActive++">下一步</ui-button>
+        </demo-block>
       </demo-block>
     </demo-section>
 
     <!-- 自定义内容插槽 -->
     <demo-section title="自定义内容">
       <demo-block direction="column">
-        <ui-steps :active="1" direction="vertical">
+        <ui-steps :active="customContentActive" direction="vertical">
           <ui-step>
             <template #default="{ status, index }">
               <view class="custom-content">
@@ -195,6 +243,10 @@
             </template>
           </ui-step>
         </ui-steps>
+        <demo-block :cols="2" :gap="16">
+          <ui-button size="small" :disabled="customContentActive === 0" @click="customContentActive--">上一步</ui-button>
+          <ui-button size="small" :disabled="customContentActive >= 2" @click="customContentActive++">下一步</ui-button>
+        </demo-block>
       </demo-block>
     </demo-section>
 
@@ -210,6 +262,10 @@
             <ui-step v-for="(item, idx) in orderSteps" :key="idx" :title="item.title" :description="item.time" />
           </ui-steps>
         </view>
+        <demo-block :cols="2" :gap="16">
+          <ui-button size="small" :disabled="orderActive === 0" @click="orderActive--">上一步</ui-button>
+          <ui-button size="small" :disabled="orderActive >= orderSteps.length - 1" @click="orderActive++">下一步</ui-button>
+        </demo-block>
       </demo-block>
     </demo-section>
 
@@ -263,12 +319,36 @@ const active2 = ref(2)
 // 垂直方向
 const active3 = ref(2)
 
+// 自定义颜色
+const colorActive1 = ref(1)
+const colorActive2 = ref(1)
+
+// 自定义图标
+const iconActive1 = ref(1)
+const iconActive2 = ref(1)
+
+// 步骤状态
+const statusActive1 = ref(1)
+const statusActive2 = ref(2)
+
 // 可点击
 const active4 = ref(1)
 const clickLog = ref("点击步骤触发事件")
 
+// 简洁模式
+const simpleActive = ref(1)
+
 // 点状模式
 const dotActive = ref(1)
+
+// 垂直居中对齐
+const centerActive = ref(1)
+
+// 垂直带图标
+const verticalIconActive = ref(2)
+
+// 自定义内容
+const customContentActive = ref(1)
 
 // 订单跟踪
 const orderActive = ref(2)

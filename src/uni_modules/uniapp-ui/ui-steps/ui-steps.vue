@@ -1,5 +1,5 @@
 <template>
-  <view class="ui-steps" :class="[classs, customClass]" :style="[style]">
+  <view class="ui-steps" :class="[classes, customClass]" :style="[style]">
     <slot />
   </view>
 </template>
@@ -43,7 +43,7 @@ const style = computed(() => {
 /**
  * 组件容器类名
  */
-const classs = computed(() => {
+const classes = computed(() => {
   const list: string[] = []
   if (useProps.direction === "vertical") {
     list.push("ui-steps--vertical")
@@ -83,10 +83,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-// 图标尺寸变量（与 ui-step 保持同步）
-$step-dot-size: 16rpx;
-$step-icon-size: 48rpx;
-
 .ui-steps {
   width: 100%;
   display: flex;
@@ -101,48 +97,13 @@ $step-icon-size: 48rpx;
 
   // 垂直方向
   &--vertical {
-    padding: 0 20rpx;
+    padding: 0 20rpx 0 60rpx;
     flex-direction: column;
   }
 
   // 可点击状态
-  &--clickable :deep(.ui-step) {
+  &--clickable {
     cursor: pointer;
-  }
-
-  // 简洁模式 - 只显示图标
-  &--simple :deep(.ui-step__content) {
-    display: none;
-  }
-
-  // 点状模式
-  &--dot :deep(.ui-step__circle) {
-    width: $step-dot-size;
-    border: none;
-    height: $step-dot-size;
-  }
-
-  &--dot :deep(.ui-step__index) {
-    display: none;
-  }
-
-  &--dot :deep(.ui-step__icon) {
-    width: $step-dot-size;
-    height: $step-dot-size;
-  }
-
-  // 点状模式 - 调整线条位置
-  &--dot:not(.ui-steps--vertical) :deep(.ui-step__line) {
-    top: calc($step-dot-size / 2);
-  }
-
-  &--dot.ui-steps--vertical :deep(.ui-step__line) {
-    left: calc($step-dot-size / 2);
-  }
-
-  // 垂直居中对齐模式
-  &--center.ui-steps--vertical :deep(.ui-step) {
-    align-items: center;
   }
 }
 </style>

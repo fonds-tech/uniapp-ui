@@ -8,6 +8,17 @@ import { mount } from "@vue/test-utils"
 import { waitForTransition } from "../setup"
 import { it, vi, expect, describe, afterEach, beforeEach } from "vitest"
 
+function getColumnPattern(wrapper: ReturnType<typeof mount>) {
+  return wrapper
+    .findAll(".ui-number-roll__column")
+    .map((column) => {
+      const rows = column.findAll(".ui-number-roll__row")
+      if (rows.length === 1) return rows[0].text()
+      return "d"
+    })
+    .join("")
+}
+
 describe("ui-number-roll 数字滚动组件", () => {
   // 启用 fake timers
   beforeEach(() => {
@@ -79,6 +90,111 @@ describe("ui-number-roll 数字滚动组件", () => {
 
       expect(wrapper.props("thousandsSep")).toBe(",")
     })
+
+    it("应保留前导零字符串", async () => {
+      const wrapper = mount(UiNumberRoll, {
+        props: { value: "0012" },
+      })
+
+      await waitForTransition()
+
+      expect(getColumnPattern(wrapper)).toBe("dddd")
+    })
+
+    it("应正确渲染千分位与小数", async () => {
+      const wrapper = mount(UiNumberRoll, {
+        props: { value: 12345.67, thousandsSep: ",", decimalPlaces: 2, trimZero: false },
+      })
+
+      await waitForTransition()
+
+      expect(getColumnPattern(wrapper)).toBe("dd,ddd.dd")
+    })
+
+    it("应支持字符串输入的千分位格式化", async () => {
+      const wrapper = mount(UiNumberRoll, {
+        props: { value: "12345", thousandsSep: "," },
+      })
+
+      await waitForTransition()
+
+      expect(getColumnPattern(wrapper)).toBe("dd,ddd")
+    })
+
+    it("应保留包含逗号的原始字符串", async () => {
+      const wrapper = mount(UiNumberRoll, {
+        props: { value: "1,234" },
+      })
+
+      await waitForTransition()
+
+      expect(getColumnPattern(wrapper)).toBe("d,ddd")
+    })
+
+    it("NaN 数值应回退为 0", async () => {
+      const wrapper = mount(UiNumberRoll, {
+        props: { value: Number.NaN },
+      })
+
+      await waitForTransition()
+
+      expect(getColumnPattern(wrapper)).toBe("d")
+    })
+
+    it("空字符串应回退为 0", async () => {
+      const wrapper = mount(UiNumberRoll, {
+        props: { value: "  " },
+      })
+
+      await waitForTransition()
+
+      expect(getColumnPattern(wrapper)).toBe("d")
+    })
+
+    it("非法数字字符串应保留原始值", async () => {
+      const wrapper = mount(UiNumberRoll, {
+        props: { value: "-" },
+      })
+
+      await waitForTransition()
+
+      expect(getColumnPattern(wrapper)).toBe("-")
+    })
+
+    it("千分位字符串解析失败应保留原始值", async () => {
+      const wrapper = mount(UiNumberRoll, {
+        props: { value: "--1,234", thousandsSep: "," },
+      })
+
+      await waitForTransition()
+
+      expect(getColumnPattern(wrapper)).toBe("--d,ddd")
+    })
+
+    it("应保留包含非数字字符的原始字符串", async () => {
+      const wrapper = mount(UiNumberRoll, {
+        props: { value: "12ab" },
+      })
+
+      await waitForTransition()
+
+      expect(getColumnPattern(wrapper)).toBe("ddab")
+    })
+
+    it("格式化参数变更应触发重新渲染", async () => {
+      const wrapper = mount(UiNumberRoll, {
+        props: { value: 1.2, decimalPlaces: 0 },
+      })
+
+      await waitForTransition()
+
+      expect(getColumnPattern(wrapper)).toBe("d")
+
+      await wrapper.setProps({ decimalPlaces: 2, trimZero: false })
+      await waitForTransition()
+
+      expect(getColumnPattern(wrapper)).toBe("d.dd")
+    })
   })
 
   describe("样式配置", () => {
@@ -117,6 +233,18 @@ describe("ui-number-roll 数字滚动组件", () => {
 
       expect(wrapper.find(".ui-number-roll").exists()).toBe(true)
     })
+
+    it("字体大小为空时应使用测量高度", async () => {
+      const wrapper = mount(UiNumberRoll, {
+        props: { fontSize: "" },
+      })
+
+      expect(wrapper.find(".ui-number-roll").attributes("style")).toMatch(/height:\s*auto/)
+
+      await waitForTransition()
+
+      expect(wrapper.find(".ui-number-roll").attributes("style")).toMatch(/height:\s*100px/)
+    })
   })
 
   describe("动画配置", () => {
@@ -126,6 +254,14 @@ describe("ui-number-roll 数字滚动组件", () => {
       })
 
       expect(wrapper.props("duration")).toBe(2000)
+    })
+
+    it("应支持关闭动画时长", () => {
+      const wrapper = mount(UiNumberRoll, {
+        props: { duration: 0 },
+      })
+
+      expect(wrapper.props("duration")).toBe(0)
     })
 
     it("应支持缓动函数", () => {

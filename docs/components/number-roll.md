@@ -82,7 +82,7 @@ function randomValue() {
 | --------------- | --------------- | ------------------ | ------ |
 | value           | 数据值          | `string \| number` | `0`    |
 | color           | 字体颜色        | `string`           | -      |
-| font-size       | 字体大小        | `string \| number` | `24`   |
+| font-size       | 字体大小        | `string \| number` | `32`   |
 | font-weight     | 字体粗细        | `string`           | -      |
 | trim-zero       | 去除小数末尾的0 | `boolean`          | `true` |
 | thousands-sep   | 千位分隔符      | `string`           | -      |

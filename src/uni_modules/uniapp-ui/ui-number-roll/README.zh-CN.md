@@ -18,7 +18,7 @@ UiNumberRoll 组件，属性与事件以源码注释为准。
 | -------------- | ---------- | ---------------- | ------ | ------ |
 | value          | 数据值     | string \| number | 0      | -      |
 | color          | 字体颜色   | string           | ""     | -      |
-| fontSize       | 字体大小   | string \| number | 24     | -      |
+| fontSize       | 字体大小   | string \| number | 32     | -      |
 | fontWeight     | 字体粗细   | string           | ""     | -      |
 | trimZero       | 去除0      | boolean          | true   | -      |
 | thousandsSep   | 千位分隔符 | string           | ""     | -      |

@@ -1,20 +1,24 @@
 <template>
-  <view class="ui-step" :class="[classs, customClass]" :style="[style]" @click="onClick">
-    <!-- 连接线 -->
-    <view class="ui-step__line" :class="lineClasss" :style="[lineStyle]" />
-
-    <!-- 图标容器（绝对定位，遮住线条） -->
-    <view class="ui-step__circle-container">
-      <slot name="icon" :status="currentStatus" :index="safeIndex" :active="isActive">
-        <!-- 自定义图标 -->
-        <ui-icon v-if="currentIcon" :name="currentIcon" :size="currentIconSize" :color="currentColor" />
-        <!-- 默认圆圈 -->
-        <view v-else class="ui-step__circle" :style="[circleStyle]">
-          <ui-icon v-if="isFinish" name="check" :size="circleIconSize" color="#fff" />
-          <ui-icon v-else-if="isError" name="close" :size="circleIconSize" color="#fff" />
-          <text v-else class="ui-step__index" :style="[indexStyle]">{{ safeIndex + 1 }}</text>
+  <view class="ui-step" :class="[classes, customClass]" :style="[style]" @click="onClick">
+    <!-- 头部区域：连接线 + 图标 -->
+    <view class="ui-step__head">
+      <!-- 前连接线 -->
+      <view class="ui-step__line ui-step__line--before" :style="[lineBeforeStyle]" />
+      <!-- 图标容器 -->
+      <view class="ui-step__icon-wrapper">
+        <slot name="icon" :status="currentStatus" :index="safeIndex" :active="isActive">
+          <!-- 自定义图标 -->
+          <ui-icon v-if="currentIcon" :name="currentIcon" :size="currentIconSize" :color="currentColor" />
+          <!-- 默认圆圈 -->
+          <view v-else class="ui-step__circle" :style="[circleStyle]">
+          <ui-icon v-if="!isDot && isFinish" name="check" :size="circleIconSize" color="#fff" />
+          <ui-icon v-else-if="!isDot && isError" name="close" :size="circleIconSize" color="#fff" />
+          <text v-else-if="!isDot" class="ui-step__index" :style="[indexStyle]">{{ safeIndex + 1 }}</text>
         </view>
       </slot>
+      </view>
+      <!-- 后连接线 -->
+      <view class="ui-step__line ui-step__line--after" :style="[lineAfterStyle]" />
     </view>
 
     <!-- 内容区域 -->
@@ -190,6 +194,25 @@ const inactiveColor = computed(() => {
 })
 
 /**
+ * 连接线颜色（用于垂直模式连续线条）
+ */
+const lineBeforeColor = computed(() => {
+  if (isFirst.value) return "transparent"
+  const prevFinish = parent && index.value <= parent.active.value
+  const actColor = getInheritProp("activeColor")
+  if (prevFinish) {
+    return useColor(actColor ? String(actColor) : undefined) || "var(--ui-color-primary)"
+  }
+  return inactiveColor.value
+})
+
+const lineAfterColor = computed(() => {
+  if (isLast.value) return "transparent"
+  if (isFinish.value) return currentColor.value
+  return inactiveColor.value
+})
+
+/**
  * 组件容器样式
  */
 const style = computed(() => {
@@ -200,7 +223,7 @@ const style = computed(() => {
 /**
  * 组件容器类名
  */
-const classs = computed(() => {
+const classes = computed(() => {
   const list: string[] = []
   list.push(`ui-step--${currentStatus.value}`)
   if (parent?.useProps.direction === "vertical") {
@@ -211,6 +234,12 @@ const classs = computed(() => {
   }
   if (isLast.value) {
     list.push("ui-step--last")
+  }
+  if (isDot.value) {
+    list.push("ui-step--dot")
+  }
+  if (isSimple.value) {
+    list.push("ui-step--simple")
   }
   return list
 })
@@ -232,24 +261,37 @@ const circleStyle = computed(() => {
 /**
  * 连接线类名
  */
-const lineClasss = computed(() => {
-  const list: string[] = []
-  if (isFinish.value) {
-    list.push("ui-step__line--finish")
+/**
+ * 是否为点状模式
+ */
+const isDot = computed(() => parent?.useProps.dot ?? false)
+
+/**
+ * 是否为简洁模式
+ */
+const isSimple = computed(() => parent?.useProps.simple ?? false)
+
+/**
+ * 前连接线样式（第一个步骤隐藏）
+ */
+const lineBeforeStyle = computed(() => {
+  const style: CSSProperties = {}
+  if (isFirst.value) {
+    style.visibility = "hidden"
   }
-  return list
+  style.backgroundColor = lineBeforeColor.value
+  return useStyle(style)
 })
 
 /**
- * 连接线样式
+ * 后连接线样式（最后一个步骤隐藏）
  */
-const lineStyle = computed(() => {
+const lineAfterStyle = computed(() => {
   const style: CSSProperties = {}
-  if (isFinish.value) {
-    style.backgroundColor = currentColor.value
-  } else {
-    style.backgroundColor = inactiveColor.value
+  if (isLast.value) {
+    style.visibility = "hidden"
   }
+  style.backgroundColor = lineAfterColor.value
   return useStyle(style)
 })
 
@@ -303,32 +345,41 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-// 过渡动画时长
-$step-transition-duration: 0.3s;
-// 图标尺寸
+// CSS 变量
+$step-dot-size: 16rpx;
 $step-icon-size: 48rpx;
-// 图标容器内边距（用于遮罩线条）
-$step-icon-padding: 8rpx;
+$step-content-gap: 16rpx;
+$step-line-height: 2rpx;
+$step-transition-duration: 0.3s;
 
-// 步骤项基础样式（水平方向）
 .ui-step {
   flex: 1;
   color: var(--ui-color-text-secondary);
-  position: relative;
+  display: flex;
   font-size: 28rpx;
+  flex-direction: column;
 
-  // 图标容器（绝对定位，用背景遮住线条）
-  &__circle-container {
-    top: 30rpx;
-    left: calc($step-icon-padding * -1);
+  // 头部区域：前线条 + 图标 + 后线条
+  &__head {
     display: flex;
-    padding: 0 $step-icon-padding;
-    z-index: 1;
-    position: absolute;
-    transform: translateY(-50%);
     align-items: center;
+  }
+
+  // 连接线基础样式
+  &__line {
+    flex: 1;
+    height: $step-line-height;
+    transition: background-color $step-transition-duration ease;
+    background-color: var(--ui-color-border);
+  }
+
+  // 图标容器
+  &__icon-wrapper {
+    display: flex;
+    padding: 0 8rpx;
+    align-items: center;
+    flex-shrink: 0;
     justify-content: center;
-    background-color: var(--ui-color-background);
   }
 
   // 默认圆圈
@@ -358,27 +409,12 @@ $step-icon-padding: 8rpx;
     line-height: 1;
   }
 
-  // 连接线（全宽，靠圆圈容器背景遮罩）
-  &__line {
-    top: 30rpx;
-    left: 0;
-    width: 100%;
-    height: 2rpx;
-    position: absolute;
-    transform: translateY(-50%);
-    transition: background-color $step-transition-duration ease;
-    background-color: var(--ui-color-border);
-
-    &--finish {
-      background-color: var(--ui-color-primary);
-    }
-  }
-
   // 内容区域
   &__content {
-    display: block;
-    font-size: 24rpx;
-    padding-top: calc(30rpx + $step-icon-size / 2 + 16rpx);
+    display: flex;
+    text-align: center;
+    padding-top: $step-content-gap;
+    flex-direction: column;
   }
 
   // 标题
@@ -401,93 +437,47 @@ $step-icon-padding: 8rpx;
     line-height: 1.4;
   }
 
-  // 第一个步骤
-  &--first {
-    .ui-step__content {
-      text-align: left;
-    }
-  }
+  // === 边界情况 ===
 
-  // 最后一个步骤：绝对定位到右边，隐藏线条
-  &--last:not(.ui-step--first) {
-    right: 1rpx;
-    width: auto;
-    position: absolute;
+  // === 垂直模式 ===
 
-    .ui-step__content {
-      text-align: right;
-    }
-
-    .ui-step__circle-container {
-      left: auto;
-      right: calc($step-icon-padding * -1);
-    }
-
-    .ui-step__line {
-      width: 0;
-    }
-  }
-
-  // 中间步骤：居中对齐
-  &:not(.ui-step--first):not(.ui-step--last) {
-    .ui-step__content {
-      text-align: center;
-    }
-  }
-
-  // 只有一个步骤时
-  &--first.ui-step--last {
-    width: auto;
-    position: relative;
-
-    .ui-step__circle-container {
-      left: calc($step-icon-padding * -1);
-      right: auto;
-    }
-  }
-
-  // 垂直方向布局
   &--vertical {
-    display: block;
-    padding: 20rpx 20rpx 20rpx 0;
-    line-height: 1.5;
+    padding: 0;
+    min-height: 100rpx;
+    flex-direction: row;
 
-    .ui-step__circle-container {
-      top: 38rpx;
-      left: -30rpx;
-      transform: translate(-50%, -50%);
+    .ui-step__head {
+      width: $step-icon-size;
+      flex-shrink: 0;
+      margin-right: 24rpx;
+      flex-direction: column;
     }
 
     .ui-step__line {
-      top: 32rpx;
-      left: -30rpx;
-      width: 2rpx;
-      height: 100%;
+      flex: 1;
+      width: $step-line-height;
+      height: auto;
+      min-height: 24rpx;
+    }
+
+    .ui-step__icon-wrapper {
+      padding: 8rpx 0;
     }
 
     .ui-step__content {
-      display: block;
-      transform: none;
+      flex: 1;
       text-align: left;
-      margin-left: 0;
       padding-top: 0;
+      justify-content: center;
     }
 
-    &.ui-step--last {
-      right: auto;
-      width: 100%;
-      position: relative;
-
-      .ui-step__circle-container {
-        left: -30rpx;
-        right: auto;
-      }
-
-      .ui-step__line {
-        height: 0;
-      }
+    // 最后一个垂直步骤也左对齐
+    &.ui-step--last .ui-step__content {
+      text-align: left;
     }
   }
+
+  // === 状态样式 ===
 
   // 等待状态
   &--wait {
@@ -520,6 +510,28 @@ $step-icon-padding: 8rpx;
     .ui-step__circle {
       border-color: var(--ui-color-danger);
       background-color: var(--ui-color-danger);
+    }
+  }
+
+  // === 点状模式 ===
+
+  &--dot {
+    .ui-step__circle {
+      width: $step-dot-size;
+      border: none;
+      height: $step-dot-size;
+    }
+
+    .ui-step__index {
+      display: none;
+    }
+  }
+
+  // === 简洁模式 ===
+
+  &--simple {
+    .ui-step__content {
+      display: none;
     }
   }
 }

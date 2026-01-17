@@ -1,5 +1,5 @@
 <template>
-  <view class="ui-number-roll" :style="[style]">
+  <view class="ui-number-roll" :class="useProps.customClass" :style="[style]">
     <view v-for="(column, index) in columns" :key="index" class="ui-number-roll__column" :style="[columnStyle(index)]">
       <text v-for="(v, valueIndex) in column" :key="valueIndex" class="ui-number-roll__row" :style="[columnItemStyle]">{{ v }}</text>
     </view>
@@ -7,10 +7,11 @@
 </template>
 
 <script setup lang="ts">
+import { isDef } from "../utils/check"
 import { formatDigit } from "../utils/format"
 import { numberRollProps, useNumberRollProps } from "./index"
 import { useRect, useUnit, useColor, useStyle } from "../hooks"
-import { ref, watch, computed, nextTick, onMounted, onUpdated, getCurrentInstance } from "vue"
+import { ref, watch, computed, nextTick, onMounted, getCurrentInstance } from "vue"
 
 defineOptions({ name: "ui-number-roll" })
 
@@ -19,42 +20,88 @@ const useProps = useNumberRollProps(props)
 
 const instance = getCurrentInstance()
 const isInit = ref(false)
-const height = ref("auto")
-const indexs = ref([])
-const columns = ref([])
+const height = ref(0)
+const indexs = ref<number[]>([])
+const columns = ref<string[][]>([])
 const arab = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
+
+function escapeRegExp(value: string) {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")
+}
+
+// 兼容字符串输入，避免 NaN，并在必要时保留原始格式
+function formatValue(value: string | number) {
+  const options = {
+    decimalPlaces: useProps.decimalPlaces,
+    trimZero: useProps.trimZero,
+    thousandsSep: useProps.thousandsSep,
+  }
+
+  if (typeof value === "number") {
+    if (!Number.isFinite(value)) return "0"
+    return String(formatDigit(value, options))
+  }
+
+  const rawValue = String(value).trim()
+  if (!rawValue) return "0"
+
+  const { thousandsSep } = options
+  const escapedSep = thousandsSep ? escapeRegExp(thousandsSep) : ""
+  const allowedPattern = new RegExp(`^[0-9\\-\\.,${escapedSep}]+$`)
+  if (!allowedPattern.test(rawValue)) return rawValue
+
+  if (/^-?0\d+$/.test(rawValue)) return rawValue
+
+  if (thousandsSep) {
+    const parsed = Number(rawValue.split(thousandsSep).join(""))
+    if (Number.isFinite(parsed)) return String(formatDigit(parsed, options))
+    return rawValue
+  }
+
+  if (rawValue.includes(",")) return rawValue
+
+  const parsed = Number(rawValue)
+  if (!Number.isFinite(parsed)) return rawValue
+  return String(formatDigit(parsed, options))
+}
+
+const heightValue = computed(() => {
+  if (useProps.fontSize) return useUnit(useProps.fontSize)
+  return height.value > 0 ? `${height.value}px` : "auto"
+})
 
 const style = computed(() => {
   const style: any = {}
-  style.height = useProps.fontSize ? useUnit(useProps.fontSize) : `${height.value}px`
+  style.height = heightValue.value
   return useStyle({ ...style, ...useStyle(useProps.customStyle) })
 })
 const columnStyle = computed(() => {
   return (index: number) => {
     const style: any = {}
-    const h = useProps.fontSize ? useUnit(useProps.fontSize) : `${height.value}px`
-    style.transform = `translate3d(0, calc(${indexs.value[index]} * ${h} * -1), 0)`
-    style.transitionTimingFunction = useProps.timingFunction
-    if (useProps.duration) style.transitionDuration = `${useProps.duration}ms`
+    const h = heightValue.value
+    const translateValue = `calc(${indexs.value[index]} * ${h} * -1)`
+    style.transform = `translateY(${translateValue})`
+    if (useProps.timingFunction) style.transitionTimingFunction = useProps.timingFunction
+    if (isDef(useProps.duration)) style.transitionDuration = `${useProps.duration}ms`
     return useStyle(style)
   }
 })
 const columnItemStyle = computed(() => {
   const style: any = {}
+  const h = heightValue.value
   style.color = useColor(useProps.color)
-  style.height = useProps.fontSize ? useUnit(useProps.fontSize) : `${height.value}px`
-  style.fontSize = useProps.fontSize ? useUnit(useProps.fontSize) : `${height.value}px`
-  style.lineHeight = useProps.fontSize ? useUnit(useProps.fontSize) : `${height.value}px`
+  style.height = h
+  style.fontSize = h
+  style.lineHeight = h
   style.fontWeight = useProps.fontWeight
   return useStyle(style)
 })
 
-watch(() => useProps.value, resize)
+watch(() => [useProps.value, useProps.decimalPlaces, useProps.trimZero, useProps.thousandsSep, useProps.fontSize], resize)
 
 async function resize() {
   await nextTick()
-  let value: string | number = Number(isInit.value ? useProps.value : 0)
-  value = formatDigit(value, { decimalPlaces: useProps.decimalPlaces, trimZero: useProps.trimZero, thousandsSep: useProps.thousandsSep })
+  const value = formatValue(isInit.value ? useProps.value : 0)
   const formatValueArr = String(value).split("")
   columns.value = formatValueArr.map((val) => (~arab.indexOf(val) ? arab : [val]))
   indexs.value = formatValueArr
@@ -76,7 +123,6 @@ function initRect() {
 }
 
 onMounted(() => resize())
-onUpdated(() => initRect())
 defineExpose({ name: "ui-number-roll" })
 </script>
 

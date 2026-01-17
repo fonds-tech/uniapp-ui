@@ -13,11 +13,24 @@
     <ui-step title="步骤二" />
     <ui-step title="步骤三" />
   </ui-steps>
+  <view style="margin-top: 16rpx; display: flex;">
+    <ui-button size="small" @click="onPrev" custom-style="margin-right: 12rpx;">上一步</ui-button>
+    <ui-button size="small" type="primary" @click="onNext">下一步</ui-button>
+  </view>
 </template>
 
 <script setup>
 import { ref } from "vue"
 const active = ref(1)
+const maxIndex = 2
+
+function onPrev() {
+  active.value = Math.max(0, active.value - 1)
+}
+
+function onNext() {
+  active.value = Math.min(maxIndex, active.value + 1)
+}
 </script>
 ```
 
@@ -33,11 +46,24 @@ const active = ref(1)
     <ui-step title="发货" description="等待商家发货" />
     <ui-step title="收货" description="预计 3-5 天送达" />
   </ui-steps>
+  <view style="margin-top: 16rpx; display: flex;">
+    <ui-button size="small" @click="onPrev" custom-style="margin-right: 12rpx;">上一步</ui-button>
+    <ui-button size="small" type="primary" @click="onNext">下一步</ui-button>
+  </view>
 </template>
 
 <script setup>
 import { ref } from "vue"
 const active = ref(1)
+const maxIndex = 3
+
+function onPrev() {
+  active.value = Math.max(0, active.value - 1)
+}
+
+function onNext() {
+  active.value = Math.min(maxIndex, active.value + 1)
+}
 </script>
 ```
 
@@ -53,11 +79,24 @@ const active = ref(1)
     <ui-step title="快件已发出" description="2024-01-03 08:45" />
     <ui-step title="等待揽收" description="2024-01-03 15:20" />
   </ui-steps>
+  <view style="margin-top: 16rpx; display: flex;">
+    <ui-button size="small" @click="onPrev" custom-style="margin-right: 12rpx;">上一步</ui-button>
+    <ui-button size="small" type="primary" @click="onNext">下一步</ui-button>
+  </view>
 </template>
 
 <script setup>
 import { ref } from "vue"
 const active = ref(1)
+const maxIndex = 3
+
+function onPrev() {
+  active.value = Math.max(0, active.value - 1)
+}
+
+function onNext() {
+  active.value = Math.min(maxIndex, active.value + 1)
+}
 </script>
 ```
 
@@ -77,11 +116,24 @@ const active = ref(1)
     <ui-step title="步骤二" />
     <ui-step title="步骤三" />
   </ui-steps>
+  <view style="margin-top: 16rpx; display: flex;">
+    <ui-button size="small" @click="onPrev" custom-style="margin-right: 12rpx;">上一步</ui-button>
+    <ui-button size="small" type="primary" @click="onNext">下一步</ui-button>
+  </view>
 </template>
 
 <script setup>
 import { ref } from "vue"
 const active = ref(1)
+const maxIndex = 2
+
+function onPrev() {
+  active.value = Math.max(0, active.value - 1)
+}
+
+function onNext() {
+  active.value = Math.min(maxIndex, active.value + 1)
+}
 </script>
 ```
 
@@ -95,7 +147,25 @@ const active = ref(1)
     <ui-step title="发货" icon="logistics" />
     <ui-step title="完成" icon="success" />
   </ui-steps>
+  <view style="margin-top: 16rpx; display: flex;">
+    <ui-button size="small" @click="onPrev" custom-style="margin-right: 12rpx;">上一步</ui-button>
+    <ui-button size="small" type="primary" @click="onNext">下一步</ui-button>
+  </view>
 </template>
+
+<script setup>
+import { ref } from "vue"
+const active = ref(1)
+const maxIndex = 3
+
+function onPrev() {
+  active.value = Math.max(0, active.value - 1)
+}
+
+function onNext() {
+  active.value = Math.min(maxIndex, active.value + 1)
+}
+</script>
 ```
 
 ## 自定义颜色
@@ -113,11 +183,24 @@ const active = ref(1)
     <ui-step title="步骤二" />
     <ui-step title="步骤三" />
   </ui-steps>
+  <view style="margin-top: 16rpx; display: flex;">
+    <ui-button size="small" @click="onPrev" custom-style="margin-right: 12rpx;">上一步</ui-button>
+    <ui-button size="small" type="primary" @click="onNext">下一步</ui-button>
+  </view>
 </template>
 
 <script setup>
 import { ref } from "vue"
 const active = ref(1)
+const maxIndex = 2
+
+function onPrev() {
+  active.value = Math.max(0, active.value - 1)
+}
+
+function onNext() {
+  active.value = Math.min(maxIndex, active.value + 1)
+}
 </script>
 ```
 
@@ -133,11 +216,24 @@ const active = ref(1)
     <ui-step title="步骤三" status="error" />
     <ui-step title="步骤四" status="wait" />
   </ui-steps>
+  <view style="margin-top: 16rpx; display: flex;">
+    <ui-button size="small" @click="onPrev" custom-style="margin-right: 12rpx;">上一步</ui-button>
+    <ui-button size="small" type="primary" @click="onNext">下一步</ui-button>
+  </view>
 </template>
 
 <script setup>
 import { ref } from "vue"
 const active = ref(1)
+const maxIndex = 3
+
+function onPrev() {
+  active.value = Math.max(0, active.value - 1)
+}
+
+function onNext() {
+  active.value = Math.min(maxIndex, active.value + 1)
+}
 </script>
 ```
 
@@ -152,14 +248,27 @@ const active = ref(1)
     <ui-step title="步骤二" />
     <ui-step title="步骤三" />
   </ui-steps>
+  <view style="margin-top: 16rpx; display: flex;">
+    <ui-button size="small" @click="onPrev" custom-style="margin-right: 12rpx;">上一步</ui-button>
+    <ui-button size="small" type="primary" @click="onNext">下一步</ui-button>
+  </view>
 </template>
 
 <script setup>
 import { ref } from "vue"
 const active = ref(0)
+const maxIndex = 2
 
 function onClickStep(index) {
   active.value = index
+}
+
+function onPrev() {
+  active.value = Math.max(0, active.value - 1)
+}
+
+function onNext() {
+  active.value = Math.min(maxIndex, active.value + 1)
 }
 </script>
 ```
@@ -188,7 +297,25 @@ function onClickStep(index) {
       </template>
     </ui-step>
   </ui-steps>
+  <view style="margin-top: 16rpx; display: flex;">
+    <ui-button size="small" @click="onPrev" custom-style="margin-right: 12rpx;">上一步</ui-button>
+    <ui-button size="small" type="primary" @click="onNext">下一步</ui-button>
+  </view>
 </template>
+
+<script setup>
+import { ref } from "vue"
+const active = ref(0)
+const maxIndex = 1
+
+function onPrev() {
+  active.value = Math.max(0, active.value - 1)
+}
+
+function onNext() {
+  active.value = Math.min(maxIndex, active.value + 1)
+}
+</script>
 ```
 
 ## 自定义图标插槽
@@ -215,7 +342,25 @@ function onClickStep(index) {
       </template>
     </ui-step>
   </ui-steps>
+  <view style="margin-top: 16rpx; display: flex;">
+    <ui-button size="small" @click="onPrev" custom-style="margin-right: 12rpx;">上一步</ui-button>
+    <ui-button size="small" type="primary" @click="onNext">下一步</ui-button>
+  </view>
 </template>
+
+<script setup>
+import { ref } from "vue"
+const active = ref(0)
+const maxIndex = 1
+
+function onPrev() {
+  active.value = Math.max(0, active.value - 1)
+}
+
+function onNext() {
+  active.value = Math.min(maxIndex, active.value + 1)
+}
+</script>
 ```
 
 ## Steps Props
