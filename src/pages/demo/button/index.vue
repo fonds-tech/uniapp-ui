@@ -250,7 +250,9 @@ function onThrottleClick() {
 
 function onButtonClick(event: any) {
   clickLog.value = `触发了 click 事件，时间: ${new Date().toLocaleTimeString()}`
-  toast.success("按钮被点击")
+  toast.success({
+    content: "按钮被点击",
+  })
 }
 </script>
 

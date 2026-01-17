@@ -89,12 +89,6 @@ const bodyStyle = computed(() => {
   const style: CSSProperties = {}
   style.maxWidth = useUnit(mergedOptions.value.width)
   style.background = mergedOptions.value.background
-  if (isShowIcon.value) {
-    style.padding = "32rpx"
-    style.minWidth = "200rpx"
-    style.maxWidth = useUnit(mergedOptions.value.width) || "250rpx"
-    style.aspectRatio = "1 / 1"
-  }
   return useStyle({ ...style, ...useStyle(useProps.customStyle) })
 })
 
@@ -234,8 +228,7 @@ function hide() {
 
 /**
  * 显示成功提示
- * @param content 提示内容
- * @param options 可选配置
+ * @param options 提示内容或配置对象
  */
 function success(options?: string | ToastOptions) {
   const opts = typeof options === "string" ? { content: options } : options
@@ -244,8 +237,7 @@ function success(options?: string | ToastOptions) {
 
 /**
  * 显示失败提示
- * @param content 提示内容
- * @param options 可选配置
+ * @param options 提示内容或配置对象
  */
 function fail(options?: string | ToastOptions) {
   const opts = typeof options === "string" ? { content: options } : options
@@ -254,8 +246,7 @@ function fail(options?: string | ToastOptions) {
 
 /**
  * 显示加载中提示
- * @param content 提示内容（可选，默认"加载中..."）
- * @param options 可选配置
+ * @param options 提示内容或配置对象，默认内容为"加载中..."
  */
 function loading(options?: string | ToastOptions) {
   const opts = typeof options === "string" ? { content: options } : options
@@ -264,8 +255,7 @@ function loading(options?: string | ToastOptions) {
 
 /**
  * 显示等待提示
- * @param content 提示内容
- * @param options 可选配置
+ * @param options 提示内容或配置对象
  */
 function awaitFn(options?: string | ToastOptions) {
   const opts = typeof options === "string" ? { content: options } : options
@@ -274,8 +264,7 @@ function awaitFn(options?: string | ToastOptions) {
 
 /**
  * 显示默认提示（纯文本）
- * @param content 提示内容
- * @param options 可选配置
+ * @param options 提示内容或配置对象
  */
 function text(options?: string | ToastOptions) {
   const opts = typeof options === "string" ? { content: options } : options
@@ -303,7 +292,7 @@ export default {
   display: flex;
   position: fixed;
   align-items: center;
-  pointer-events: none;
+  // pointer-events: none;
   justify-content: center;
 
   &--mask {
@@ -312,7 +301,7 @@ export default {
 
   &__body {
     display: flex;
-    padding: var(--ui-spacing-xxl) var(--ui-spacing-xxxl);
+    padding: var(--ui-spacing-md);
     max-width: calc(100% - 160rpx);
     align-items: center;
     border-radius: var(--ui-radius-lg);
@@ -324,7 +313,7 @@ export default {
     width: 60rpx;
     height: 60rpx;
     display: flex;
-    margin-bottom: var(--ui-spacing-xl);
+    margin-bottom: var(--ui-spacing-sm);
     justify-content: center;
     .image {
       width: 100%;
