@@ -4,7 +4,20 @@
     "allow": [
       "Bash(pnpm type-check:*)",
       "Bash(pnpm type-check:h5:*)",
-      "Bash(pnpm test:*)"
+      "Bash(pnpm test:*)",
+      "mcp__serena__list_dir",
+      "mcp__serena__activate_project",
+      "mcp__serena__read_file",
+      "mcp__serena__replace_content",
+      "Bash(bash:*)",
+      "mcp__serena__find_file",
+      "mcp__serena__find_symbol",
+      "mcp__serena__replace_symbol_body",
+      "mcp__serena__create_text_file",
+      "mcp__desktop-commander__list_directory",
+      "mcp__desktop-commander__read_multiple_files",
+      "mcp__serena__search_for_pattern",
+      "mcp__serena__get_symbols_overview"
     ],
     "deny": [],
     "ask": []
@@ -21,7 +34,26 @@
       }
     ],
     "PreToolUse": [],
-    "PostToolUse": [],
+    "PostToolUse": [
+      {
+        "matcher": "Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "pnpm run lint:fix"
+          }
+        ]
+      },
+      {
+        "matcher": "Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "pnpm run lint:fix"
+          }
+        ]
+      }
+    ],
     "Notification": [],
     "UserPromptSubmit": [
       {

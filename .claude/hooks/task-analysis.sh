@@ -4,37 +4,44 @@
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 CLAUDE_DIR="$(dirname "$SCRIPT_DIR")"
 SKILLS_DIR="$CLAUDE_DIR/skills"
-
-# 检查技能目录是否存在
-if [ ! -d "$SKILLS_DIR" ]; then
-    exit 0
-fi
-
-# 获取技能列表
-SKILLS=$(find "$SKILLS_DIR" -name "SKILL.md" -type f 2>/dev/null | sort)
-
-if [ -z "$SKILLS" ]; then
-    exit 0
-fi
+AGENTS_DIR="$CLAUDE_DIR/agents"
 
 # 解析 YAML frontmatter 中的 description
 parse_description() {
     local file="$1"
-    # 提取 --- 之间的 YAML，然后获取 description 字段
     awk '/^---$/{p=!p; next} p && /^description:/{sub(/^description:[[:space:]]*/, ""); print; exit}' "$file"
 }
 
-echo "## 可用技能"
-echo ""
+# 输出技能列表
+if [ -d "$SKILLS_DIR" ]; then
+    SKILLS=$(find "$SKILLS_DIR" -name "SKILL.md" -type f 2>/dev/null | sort)
+    if [ -n "$SKILLS" ]; then
+        echo "## 可用技能 (Skills)"
+        echo ""
+        while IFS= read -r skill_path; do
+            skill_name=$(basename "$(dirname "$skill_path")")
+            description=$(parse_description "$skill_path")
+            echo "- **$skill_name**: $description"
+        done <<< "$SKILLS"
+        echo ""
+    fi
+fi
 
-while IFS= read -r skill_path; do
-    skill_name=$(basename "$(dirname "$skill_path")")
-    description=$(parse_description "$skill_path")
-
-    echo "- **$skill_name**: $description"
-done <<< "$SKILLS"
+# 输出代理列表
+if [ -d "$AGENTS_DIR" ]; then
+    AGENTS=$(find "$AGENTS_DIR" -name "*.md" -type f 2>/dev/null | sort)
+    if [ -n "$AGENTS" ]; then
+        echo "## 可用代理 (Agents)"
+        echo ""
+        while IFS= read -r agent_path; do
+            agent_name=$(basename "$agent_path" .md)
+            description=$(parse_description "$agent_path")
+            echo "- **$agent_name**: $description"
+        done <<< "$AGENTS"
+        echo ""
+    fi
+fi
 
 cat << 'EOF'
-
-> 强制根据用户任务匹配技能，若启用请在回复开头注明：`🔧 已启用技能: xxx`
+> 根据任务匹配合适的技能或代理，启用时在回复开头注明：`🔧 已启用技能: xxx` 或 `🔧 已启用代理: xxx`
 EOF

@@ -1,12 +1,9 @@
-import { Mitt } from "../utils/mitt"
+import { globalMitt } from "../utils/mitt"
 
 /**
- * 使用事件监听器
+ * 使用事件监听器（全局单例）
  * @returns Mitt 实例
  */
 export function useMitt() {
-  const pages = getCurrentPages()
-  const { route } = pages[pages.length - 1]
-  const mitt = new Mitt(route)
-  return mitt
+  return globalMitt
 }

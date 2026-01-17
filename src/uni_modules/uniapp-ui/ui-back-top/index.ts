@@ -1,9 +1,15 @@
 import type BackTop from "./ui-back-top.vue"
 import type { PropType, CSSProperties, ExtractPropTypes } from "vue"
 import { createProps } from "../hooks"
-import { numericProp, makeNumericProp } from "../utils/props"
+import { numericProp, makeStringProp, makeNumericProp } from "../utils/props"
 
 export const [backTopProps, useBackTopProps] = createProps("backTop", {
+  /**
+   * 页面滚动距离，可选。
+   * - 不传：组件自动监听页面滚动事件
+   * - 传入：使用外部传入的滚动位置
+   */
+  scrollTop: numericProp,
   /**
    * 滚动高度达到此参数值时才显示组件
    */
@@ -32,6 +38,22 @@ export const [backTopProps, useBackTopProps] = createProps("backTop", {
    * 圆角值
    */
   borderRadius: numericProp,
+  /**
+   * 图标名称
+   */
+  icon: makeStringProp("arrowup"),
+  /**
+   * 图标颜色
+   */
+  iconColor: makeStringProp("#fff"),
+  /**
+   * 图标大小
+   */
+  iconSize: makeNumericProp("40rpx"),
+  /**
+   * 图标粗细
+   */
+  iconWeight: makeNumericProp(""),
   /**
    * 自定义类名
    */

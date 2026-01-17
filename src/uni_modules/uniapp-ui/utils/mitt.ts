@@ -130,4 +130,7 @@ export class Mitt {
   }
 }
 
+// 全局单例实例，用于跨组件通信
+export const globalMitt = new Mitt()
+
 export default Mitt

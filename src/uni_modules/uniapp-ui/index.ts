@@ -1,10 +1,11 @@
+import type { App } from "vue"
 import type { Config } from "./types"
-import { Mitt } from "./utils/mitt"
+import { globalMitt } from "./utils/mitt"
 import { initGlobalProps } from "./utils/component"
 
 const ui = {
-  install(app: any, options: Config = {}): void {
-    const mitt = new Mitt()
+  install(app: App, options: Config = {}): void {
+    const mitt = globalMitt
 
     // 初始化组件默认值
     if (options.components) {

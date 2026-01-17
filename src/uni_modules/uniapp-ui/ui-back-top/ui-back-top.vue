@@ -1,41 +1,42 @@
 <template>
-  <view class="ui-back-top" hover-class="ui-back-top--hover" :hover-stay-time="100" :class="[classs, customClass]" :style="[style]" @click="onClick">
-    <slot>
-      <view class="ui-back-top__content">
-        <ui-icon name="back-top" size="40rpx" color="#fff" weight="bold" />
-      </view>
-    </slot>
-  </view>
+  <ui-transition :show="visible" name="fade">
+    <view class="ui-back-top" hover-class="ui-back-top--hover" :hover-stay-time="100" :class="[customClass]" :style="[style]" @click="onClick">
+      <slot>
+        <view class="ui-back-top__content">
+          <ui-icon :name="useProps.icon" :size="useProps.iconSize" :color="useProps.iconColor" :weight="useProps.iconWeight" />
+        </view>
+      </slot>
+    </view>
+  </ui-transition>
 </template>
 
 <script setup lang="ts">
 import type { CSSProperties } from "vue"
-import { ref, computed } from "vue"
+import { isDef } from "../utils/check"
 import { backTopEmits, backTopProps, useBackTopProps } from "./index"
 import { useMitt, useUnit, useColor, useStyle, useUnitToPx } from "../hooks"
+import { ref, watch, computed, nextTick, onMounted, onUnmounted } from "vue"
 
-// 定义组件名称
-defineOptions({ name: "ui-back-top" })
-
-// 定义props和emits
+// ===================== Props/Emits =====================
 const props = defineProps(backTopProps)
 const emits = defineEmits(backTopEmits)
 const useProps = useBackTopProps(props)
 
-// 使用mitt事件总线
+// ===================== 响应式状态 =====================
 const mitt = useMitt()
-// 控制组件是否可见的响应式变量
-const visible = ref(false)
+const innerScrollTop = ref(0)
+let bindRoute = ""
 
-// 计算组件的class列表
-const classs = computed(() => {
-  const list: string[] = []
-  // 当visible为true时,添加active类
-  if (visible.value) list.push("ui-back-top--active")
-  return list
+// ===================== 计算属性 =====================
+const useExternalScrollTop = computed(() => isDef(useProps.scrollTop))
+
+const currentScrollTop = computed(() => (useExternalScrollTop.value ? Number(useProps.scrollTop) : innerScrollTop.value))
+
+const visible = computed(() => {
+  const offset = useUnitToPx(useProps.offset)
+  return currentScrollTop.value >= offset
 })
 
-// 计算组件的样式
 const style = computed(() => {
   const style: CSSProperties = {}
   style.zIndex = useProps.zIndex
@@ -43,27 +44,57 @@ const style = computed(() => {
   style.bottom = useUnit(useProps.bottom)
   style.background = useColor(useProps.background)
   style.borderRadius = useUnit(useProps.borderRadius)
-  // 合并自定义样式
   return useStyle({ ...style, ...useStyle(useProps.customStyle) })
 })
 
-// 监听滚动事件
-function onEvent() {
-  mitt.on("scroll", (options: { scrollTop: number }) => {
-    // 当滚动位置超过设定的偏移量时,显示组件
-    visible.value = options.scrollTop >= useUnitToPx(useProps.offset)
-  })
+// ===================== 侦听器 =====================
+watch(useExternalScrollTop, (useExternal) => {
+  if (useExternal) {
+    clearAutoListener()
+  } else {
+    nextTick(initAutoListener)
+  }
+})
+
+// ===================== 生命周期 =====================
+onMounted(() => {
+  nextTick(initAutoListener)
+})
+
+onUnmounted(() => {
+  clearAutoListener()
+})
+
+// ===================== 方法 =====================
+function handleScroll(options: { scrollTop: number }) {
+  innerScrollTop.value = options.scrollTop
 }
 
-// 点击事件处理函数
+function getCurrentRoute() {
+  const pages = getCurrentPages()
+  return pages[pages.length - 1]?.route || ""
+}
+
+function initAutoListener() {
+  if (useExternalScrollTop.value || bindRoute) return
+
+  bindRoute = getCurrentRoute()
+  if (bindRoute) {
+    mitt.on(`scroll:${bindRoute}`, handleScroll)
+  }
+}
+
+function clearAutoListener() {
+  if (bindRoute) {
+    mitt.off(`scroll:${bindRoute}`, handleScroll)
+    bindRoute = ""
+  }
+}
+
 function onClick() {
-  // 滚动到页面顶部
   uni.pageScrollTo({ scrollTop: 0, duration: +useProps.duration })
-  // 触发click事件
   emits("click")
 }
-
-onEvent()
 </script>
 
 <script lang="ts">
@@ -79,17 +110,11 @@ export default {
   bottom: 200rpx;
   display: flex;
   position: fixed;
-  transform: scale(0);
-  transition: var(--ui-transition-duration) cubic-bezier(0.25, 0.8, 0.5, 1);
   border-radius: var(--ui-radius-round);
   background-color: var(--ui-color-primary);
 
   &--hover {
     opacity: var(--ui-opacity-active);
-  }
-
-  &--active {
-    transform: scale(1);
   }
 
   &__content {
