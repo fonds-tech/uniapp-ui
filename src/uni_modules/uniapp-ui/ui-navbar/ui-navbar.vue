@@ -45,7 +45,7 @@ import { isNumber } from "../utils/check"
 import { configProviderKey } from "../ui-config-provider"
 import { navbarEmits, navbarProps, useNavbarProps } from "./index"
 import { ref, watch, computed, nextTick, useSlots, onMounted, onUnmounted, getCurrentInstance } from "vue"
-import { useRgb, useRect, useUnit, useColor, useStyle, useParent, usePxToRpx, useUnitToPx, useUnitToRpx, useSystemInfo } from "../hooks"
+import { useRgb, useRect, useUnit, useColor, useStyle, useParent, useUnitToPx, useUnitToRpx, useSystemInfo } from "../hooks"
 
 // 定义组件名称
 defineOptions({ name: "ui-navbar" })
@@ -66,8 +66,10 @@ const menuButtonInfo = uni.getMenuButtonBoundingClientRect()
 
 // 定义响应式变量，用于存储导航栏的尺寸信息
 const rect = ref<UniApp.NodeInfo>({})
-// 左右侧最大宽度，用于限制标题宽度避免重叠
-const sideMaxWidth = ref(0)
+// 左侧偏移量（用于标题居中计算）
+const leftOffset = ref(0)
+// 右侧偏移量（用于标题居中计算）
+const rightOffset = ref(0)
 // 存储当前路由信息
 const routes = ref<Page.PageInstance[]>([])
 // 存储滚动位置，用于渐变效果
@@ -115,15 +117,9 @@ const statusBarStyle = computed(() => {
 // 计算导航栏主体样式
 const bodyStyle = computed(() => {
   const style: CSSProperties = {}
-  style.height = `${navbarHeight.value}rpx`
+  style.height = `${navbarHeight.value}px`
   style.paddingLeft = useUnit(useProps.padding)
   style.paddingRight = useUnit(useProps.padding)
-
-  // #ifdef MP
-  // 在小程序中，调整右侧边距以适应胶囊按钮
-  style.marginRight = `${systemInfo.windowWidth - (menuButtonInfo.left || 0)}px`
-
-  // #endif
   if (useProps.height) style.alignItems = "flex-start"
   return useStyle({ ...style, ...useStyle(useProps.customStyle) })
 })
@@ -148,12 +144,13 @@ const titleClass = computed(() => {
 const titleStyle = computed(() => {
   const style: CSSProperties = {}
   // 居中模式下，通过 left/right 限制标题区域避免与左右内容重叠
-  if (useProps.centerTitle && sideMaxWidth.value > 0) {
-    const paddingPx = useUnitToPx(useProps.padding) || 0
-    const marginPx = useUnitToPx("16rpx") // 对应 --ui-spacing-sm
-    const offset = sideMaxWidth.value + paddingPx + marginPx
-    style.left = `${offset}px`
-    style.right = `${offset}px`
+  if (useProps.centerTitle) {
+    // 取左右偏移的最大值，确保标题真正居中
+    const maxOffset = Math.max(leftOffset.value, rightOffset.value)
+    if (maxOffset > 0) {
+      style.left = `${maxOffset}px`
+      style.right = `${maxOffset}px`
+    }
   }
   style.color = useColor(useProps.titleColor)
   style.fontSize = useUnit(useProps.titleSize)
@@ -164,38 +161,36 @@ const titleStyle = computed(() => {
 // 计算占位符样式，用于固定定位时
 const placeholderStyle = computed(() => {
   const style: CSSProperties = {}
-  style.height = `${navbarHeight.value + usePxToRpx(statusBarHeight.value)}rpx`
+  style.height = `${navbarHeight.value + statusBarHeight.value}px`
   return useStyle(style)
 })
 
 // 计算渐变触发区样式
 const gradientTriggerStyle = computed(() => {
   const style: CSSProperties = {}
-  const gradientHeightPx = useUnitToPx(useProps.gradientHeight) || 200
+  const gradientHeightPx = useUnitToPx(useProps.gradientHeight)
   style.height = `${gradientHeightPx}px`
   // 使用负 margin 抵消高度，避免影响页面布局
   style.marginBottom = `-${gradientHeightPx}px`
   return useStyle(style)
 })
 
+// 计算状态栏高度（所有平台统一使用系统信息）
+const statusBarHeight = computed(() => systemInfo.statusBarHeight)
+
 // 计算导航栏高度
 const navbarHeight = computed(() => {
-  let height = 88
+  if (useProps.height) return useUnitToRpx(useProps.height)
   // #ifdef MP
-  // 小程序中，根据胶囊按钮高度计算
-  height = usePxToRpx(menuButtonInfo.height + 1) + 24
+  // 小程序中，计算间隙确保与胶囊按钮垂直对齐
+  // 间隙 = 胶囊顶部 - 状态栏底部
+  const gap = menuButtonInfo.top - statusBarHeight.value
+  // body 高度 = 胶囊高度 + 间隙 * 2（上下对称）
+  return menuButtonInfo.height + gap * 2
   // #endif
-  return useProps.height ? useUnitToRpx(useProps.height) : height
-})
-
-// 计算状态栏高度
-const statusBarHeight = computed(() => {
-  let height = systemInfo.statusBarHeight
-  // #ifdef MP
-  // 小程序中，根据胶囊按钮位置计算
-  height = menuButtonInfo.top - 1 - useUnitToPx(12)
+  // #ifndef MP
+  return 44
   // #endif
-  return height
 })
 
 // 计算返回图标，根据路由层级决定显示首页图标还是返回图标
@@ -262,12 +257,30 @@ function onEvent() {
   }
 }
 
-// 更新左右区域最大宽度
+// 更新左右区域偏移量
 async function updateSideWidth() {
   if (!useProps.centerTitle) return
   await nextTick()
+
+  const paddingPx = useUnitToPx(useProps.padding) || 0
+  const marginPx = useUnitToPx("16rpx") // 对应 --ui-spacing-sm
+
   const [leftRect, rightRect] = await Promise.all([useRect(".ui-navbar__left", instance), useRect(".ui-navbar__right", instance)])
-  sideMaxWidth.value = Math.max(leftRect?.width || 0, rightRect?.width || 0)
+
+  // 左侧偏移 = 左侧内容宽度 + padding + margin
+  leftOffset.value = (leftRect?.width || 0) + paddingPx + marginPx
+
+  // 右侧偏移 = 右侧内容宽度 + padding + margin
+  const rightContentOffset = (rightRect?.width || 0) + paddingPx + marginPx
+
+  // #ifdef MP
+  // 小程序下需要考虑胶囊按钮的位置
+  const menuOffset = systemInfo.windowWidth - (menuButtonInfo.left || 0)
+  rightOffset.value = Math.max(rightContentOffset, menuOffset)
+  // #endif
+  // #ifndef MP
+  rightOffset.value = rightContentOffset
+  // #endif
 }
 
 // 重新计算尺寸
@@ -418,7 +431,7 @@ export default {
       justify-content: center;
 
       // 允许内部内容响应点击
-      > * {
+      .ui-navbar__title__text {
         pointer-events: auto;
       }
     }

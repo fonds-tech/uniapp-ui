@@ -75,7 +75,7 @@ export const [navbarProps, useNavbarProps] = createProps("navbar", {
   /**
    * 渐变背景高度
    */
-  gradientHeight: makeNumericProp("200px"),
+  gradientHeight: makeNumericProp("100"),
   /**
    * 背景颜色
    */
