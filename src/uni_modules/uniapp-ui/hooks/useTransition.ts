@@ -79,7 +79,15 @@ export function useTransition() {
    */
   const init = (initOptions: Options = {}) => {
     if (isObject(initOptions)) {
-      options.value = merge(options.value, initOptions)
+      // 过滤掉 undefined 值，避免覆盖默认配置
+      const filtered: Options = {}
+      for (const key in initOptions) {
+        const value = initOptions[key as keyof Options]
+        if (value !== undefined) {
+          ;(filtered as Record<string, unknown>)[key] = value
+        }
+      }
+      options.value = merge(options.value, filtered)
     }
   }
 

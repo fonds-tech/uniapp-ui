@@ -1,4 +1,5 @@
 import type BackTop from "./ui-back-top.vue"
+import type { TransitionName } from "../ui-transition"
 import type { PropType, CSSProperties, ExtractPropTypes } from "vue"
 import { createProps } from "../hooks"
 import { numericProp, makeStringProp, makeNumericProp } from "../utils/props"
@@ -54,6 +55,38 @@ export const [backTopProps, useBackTopProps] = createProps("backTop", {
    * 图标粗细
    */
   iconWeight: makeNumericProp(""),
+  /**
+   * 按钮文字
+   */
+  text: makeStringProp(""),
+  /**
+   * 文字颜色
+   */
+  textColor: makeStringProp("#fff"),
+  /**
+   * 文字大小
+   */
+  textSize: makeNumericProp("20rpx"),
+  /**
+   * 文字粗细
+   */
+  textWeight: makeNumericProp(""),
+  /**
+   * 按钮尺寸（宽高相等）
+   */
+  size: makeNumericProp("80rpx"),
+  /**
+   * 按钮宽度（优先于 size）
+   */
+  width: numericProp,
+  /**
+   * 按钮高度（优先于 size）
+   */
+  height: numericProp,
+  /**
+   * 过渡动画类型
+   */
+  transition: { type: String as PropType<TransitionName>, default: "fade" },
   /**
    * 自定义类名
    */

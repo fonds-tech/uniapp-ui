@@ -130,6 +130,88 @@
       </demo-block>
     </demo-section>
 
+    <demo-section title="text 按钮文字">
+      <demo-block direction="column" align="start" :gap="16">
+        <text class="demo-text">按钮显示的文字</text>
+        <demo-block :cols="3" :gap="16">
+          <ui-button size="small" @click="currentText = ''">无</ui-button>
+          <ui-button size="small" @click="currentText = '顶部'">顶部</ui-button>
+          <ui-button size="small" @click="currentText = 'TOP'">TOP</ui-button>
+        </demo-block>
+        <text class="demo-text">当前: {{ currentText || "无" }}</text>
+      </demo-block>
+    </demo-section>
+
+    <demo-section title="textColor 文字颜色">
+      <demo-block direction="column" align="start" :gap="16">
+        <text class="demo-text">文字的颜色</text>
+        <demo-block :cols="3" :gap="16">
+          <ui-button size="small" @click="currentTextColor = undefined">默认</ui-button>
+          <ui-button size="small" @click="currentTextColor = '#ffeb3b'">黄色</ui-button>
+          <ui-button size="small" @click="currentTextColor = '#4caf50'">绿色</ui-button>
+        </demo-block>
+        <text class="demo-text">当前: {{ currentTextColor || "#fff (默认)" }}</text>
+      </demo-block>
+    </demo-section>
+
+    <demo-section title="textSize 文字大小">
+      <demo-block direction="column" align="start" :gap="16">
+        <text class="demo-text">文字的大小</text>
+        <demo-block :cols="3" :gap="16">
+          <ui-button size="small" @click="currentTextSize = undefined">默认</ui-button>
+          <ui-button size="small" @click="currentTextSize = '16rpx'">16rpx</ui-button>
+          <ui-button size="small" @click="currentTextSize = '24rpx'">24rpx</ui-button>
+        </demo-block>
+        <text class="demo-text">当前: {{ currentTextSize || "20rpx (默认)" }}</text>
+      </demo-block>
+    </demo-section>
+
+    <demo-section title="textWeight 文字粗细">
+      <demo-block direction="column" align="start" :gap="16">
+        <text class="demo-text">文字的粗细</text>
+        <demo-block :cols="2" :gap="16">
+          <ui-button size="small" @click="currentTextWeight = undefined">默认</ui-button>
+          <ui-button size="small" @click="currentTextWeight = 'bold'">加粗</ui-button>
+        </demo-block>
+        <text class="demo-text">当前: {{ currentTextWeight || "默认" }}</text>
+      </demo-block>
+    </demo-section>
+
+    <demo-section title="size 按钮尺寸">
+      <demo-block direction="column" align="start" :gap="16">
+        <text class="demo-text">按钮的尺寸（宽高相等）</text>
+        <demo-block :cols="3" :gap="16">
+          <ui-button size="small" @click="currentSize = undefined">默认</ui-button>
+          <ui-button size="small" @click="currentSize = '60rpx'">60rpx</ui-button>
+          <ui-button size="small" @click="currentSize = '100rpx'">100rpx</ui-button>
+        </demo-block>
+        <text class="demo-text">当前: {{ currentSize || "80rpx (默认)" }}</text>
+      </demo-block>
+    </demo-section>
+
+    <demo-section title="width/height 宽高">
+      <demo-block direction="column" align="start" :gap="16">
+        <text class="demo-text">单独设置宽高（优先于 size）</text>
+        <demo-block :cols="2" :gap="16">
+          <ui-button size="small" @click="resetWidthHeight">默认</ui-button>
+          <ui-button size="small" @click="setWidthHeight">120x80</ui-button>
+        </demo-block>
+        <text class="demo-text">当前: {{ currentWidth ? `${currentWidth} x ${currentHeight}` : "使用 size" }}</text>
+      </demo-block>
+    </demo-section>
+
+    <demo-section title="transition 过渡动画">
+      <demo-block direction="column" align="start" :gap="16">
+        <text class="demo-text">按钮显示/隐藏的过渡动画</text>
+        <demo-block :cols="3" :gap="16">
+          <ui-button size="small" @click="currentTransition = undefined">fade</ui-button>
+          <ui-button size="small" @click="currentTransition = 'slide-up'">slide-up</ui-button>
+          <ui-button size="small" @click="currentTransition = 'zoom-in'">zoom-in</ui-button>
+        </demo-block>
+        <text class="demo-text">当前: {{ currentTransition || "fade (默认)" }}</text>
+      </demo-block>
+    </demo-section>
+
     <demo-section title="click 事件">
       <demo-block direction="column" align="start" :gap="16">
         <text class="demo-text">{{ clickLog }}</text>
@@ -152,15 +234,20 @@
       :icon-color="currentIconColor"
       :icon-size="currentIconSize"
       :icon-weight="currentIconWeight"
-      :custom-class="currentCustomClass"
-      :custom-style="currentCustomStyle"
+      :text="currentText"
+      :text-color="currentTextColor"
+      :text-size="currentTextSize"
+      :text-weight="currentTextWeight"
+      :size="currentSize"
+      :width="currentWidth"
+      :height="currentHeight"
+      :transition="currentTransition"
       @click="onBackTopClick"
     />
   </demo-page>
 </template>
 
 <script setup lang="ts">
-import type { CSSProperties } from "vue"
 import { useToast } from "@/uni_modules/uniapp-ui"
 import { DemoPage, DemoBlock, DemoSection } from "../components"
 
@@ -182,11 +269,28 @@ const currentIcon = ref<string | undefined>(undefined)
 const currentIconColor = ref<string | undefined>(undefined)
 const currentIconSize = ref<string | undefined>(undefined)
 const currentIconWeight = ref<string | undefined>(undefined)
-const currentCustomClass = ref("")
-const currentCustomStyle = ref<CSSProperties | undefined>(undefined)
+const currentText = ref("")
+const currentTextColor = ref<string | undefined>(undefined)
+const currentTextSize = ref<string | undefined>(undefined)
+const currentTextWeight = ref<string | undefined>(undefined)
+const currentSize = ref<string | undefined>(undefined)
+const currentWidth = ref<string | undefined>(undefined)
+const currentHeight = ref<string | undefined>(undefined)
+const currentTransition = ref<"fade" | "slide-up" | "zoom-in" | undefined>(undefined)
 
 // 点击日志
 const clickLog = ref("点击返回顶部按钮触发 click 事件")
+
+// 宽高设置
+function setWidthHeight() {
+  currentWidth.value = "120rpx"
+  currentHeight.value = "80rpx"
+}
+
+function resetWidthHeight() {
+  currentWidth.value = undefined
+  currentHeight.value = undefined
+}
 
 // 事件处理
 function onBackTopClick() {
@@ -195,4 +299,13 @@ function onBackTopClick() {
 }
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.demo-text {
+  color: var(--ui-color-text-secondary);
+  font-size: 24rpx;
+}
+
+:deep(.my-back-top) {
+  border: 2rpx solid #fff;
+}
+</style>

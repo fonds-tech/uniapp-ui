@@ -104,9 +104,8 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 @use "../styles/animation.scss";
-
 .ui-transition {
   position: relative;
 }

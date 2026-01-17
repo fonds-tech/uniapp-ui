@@ -1,9 +1,10 @@
 <template>
-  <ui-transition :show="visible" name="fade">
+  <ui-transition :show="visible" :name="useProps.transition" :custom-style="transitionStyle">
     <view class="ui-back-top" hover-class="ui-back-top--hover" :hover-stay-time="100" :class="[customClass]" :style="[style]" @click="onClick">
       <slot>
-        <view class="ui-back-top__content">
+        <view class="ui-back-top__content" :style="contentStyle">
           <ui-icon :name="useProps.icon" :size="useProps.iconSize" :color="useProps.iconColor" :weight="useProps.iconWeight" />
+          <text v-if="useProps.text" class="ui-back-top__text" :style="textStyle">{{ useProps.text }}</text>
         </view>
       </slot>
     </view>
@@ -37,14 +38,36 @@ const visible = computed(() => {
   return currentScrollTop.value >= offset
 })
 
-const style = computed(() => {
+// 传递给 ui-transition 的样式（fixed 定位相关）
+const transitionStyle = computed(() => {
   const style: CSSProperties = {}
+  style.position = "fixed"
   style.zIndex = useProps.zIndex
   style.right = useUnit(useProps.right)
   style.bottom = useUnit(useProps.bottom)
+  return useStyle(style)
+})
+
+const style = computed(() => {
+  const style: CSSProperties = {}
   style.background = useColor(useProps.background)
   style.borderRadius = useUnit(useProps.borderRadius)
   return useStyle({ ...style, ...useStyle(useProps.customStyle) })
+})
+
+const contentStyle = computed(() => {
+  const style: CSSProperties = {}
+  style.width = useUnit(useProps.width) || useUnit(useProps.size)
+  style.height = useUnit(useProps.height) || useUnit(useProps.size)
+  return useStyle(style)
+})
+
+const textStyle = computed(() => {
+  const style: CSSProperties = {}
+  style.color = useColor(useProps.textColor)
+  style.fontSize = useUnit(useProps.textSize)
+  if (useProps.textWeight) style.fontWeight = useProps.textWeight
+  return useStyle(style)
 })
 
 // ===================== 侦听器 =====================
@@ -106,10 +129,7 @@ export default {
 
 <style lang="scss">
 .ui-back-top {
-  right: var(--ui-spacing-xl);
-  bottom: 200rpx;
   display: flex;
-  position: fixed;
   border-radius: var(--ui-radius-round);
   background-color: var(--ui-color-primary);
 
@@ -118,13 +138,16 @@ export default {
   }
 
   &__content {
-    width: 80rpx;
-    height: 80rpx;
     display: flex;
     box-shadow: var(--ui-shadow-md);
     align-items: center;
     border-radius: var(--ui-radius-round);
+    flex-direction: column;
     justify-content: center;
+  }
+
+  &__text {
+    line-height: 1.2;
   }
 }
 </style>
