@@ -13,6 +13,7 @@ import { it, vi, expect, describe, afterEach, beforeEach } from "vitest"
 // Mock tabs parent context
 function createMockTabsProvide() {
   const childrens: any[] = []
+  const tabRects = ref(new Map())
   return {
     props: {
       scrollable: false,
@@ -30,9 +31,18 @@ function createMockTabsProvide() {
       inactiveFontSize: "28rpx",
       inactiveFontWeight: 400,
     },
+    useProps: {
+      scrollable: false,
+      itemWidth: "auto",
+      itemMaxWidth: "",
+    },
     currentName: ref(0),
+    tabRects,
     clickTab: () => {},
     setCurrentName: () => {},
+    updateTabRect: (index: number, rect: any) => {
+      tabRects.value.set(index, rect)
+    },
     link: (child: any) => childrens.push(child),
     unlink: (child: any) => {
       const index = childrens.indexOf(child)

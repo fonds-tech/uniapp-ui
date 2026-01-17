@@ -25,8 +25,6 @@ export const [skeletonTitleProps, useSkeletonTitleProps] = createProps("skeleton
    */
   customStyle: [String, Object] as PropType<string | CSSProperties>,
 })
-export const skeletonTitleEmits = {}
 
-export type SkeletonTitleEmits = typeof skeletonTitleEmits
 export type SkeletonTitleProps = ExtractPropTypes<typeof skeletonTitleProps>
 export type SkeletonTitleInstance = InstanceType<typeof SkeletonTitle>

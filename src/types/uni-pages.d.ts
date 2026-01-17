@@ -69,7 +69,6 @@ type _LocationUrl =
   "/pages/demo/select/index" |
   "/pages/demo/sidebar/index" |
   "/pages/demo/skeleton/index" |
-  "/pages/demo/skeleton-components/index" |
   "/pages/demo/slider/index" |
   "/pages/demo/stepper/index" |
   "/pages/demo/steps/index" |

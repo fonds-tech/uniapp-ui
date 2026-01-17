@@ -4,6 +4,17 @@ import type { PropType, CSSProperties, ExtractPropTypes } from "vue"
 import { createProps } from "../hooks"
 import { numericProp } from "../utils/props"
 
+/** 可从父组件继承的属性键 */
+export type InheritableStepPropKeys =
+  | "activeColor"
+  | "inactiveColor"
+  | "errorColor"
+  | "activeIcon"
+  | "inactiveIcon"
+  | "finishIcon"
+  | "errorIcon"
+  | "iconSize"
+
 /**
  * 步骤项 Props 定义
  */
@@ -11,7 +22,7 @@ export const [stepProps, useStepProps] = createProps("step", {
   /**
    * 步骤标题
    */
-  title: numericProp,
+  title: String,
   /**
    * 步骤描述
    */

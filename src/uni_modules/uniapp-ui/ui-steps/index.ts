@@ -31,6 +31,18 @@ export const [stepsProps, useStepsProps] = createProps("steps", {
    */
   direction: makeStringProp<StepDirection>("horizontal"),
   /**
+   * 简洁模式（只显示图标，不显示标题和描述）
+   */
+  simple: Boolean,
+  /**
+   * 点状模式（用小圆点代替数字）
+   */
+  dot: Boolean,
+  /**
+   * 垂直模式下图标与内容是否居中对齐
+   */
+  center: Boolean,
+  /**
    * 激活状态颜色
    */
   activeColor: String,

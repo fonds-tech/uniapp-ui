@@ -130,7 +130,6 @@ export function debounce<T extends (...args: any[]) => any>(func: T, wait: numbe
   let callToken = 0
 
   return function (this: unknown, ...args: Parameters<T>): void {
-    const context = this
     callToken += 1
     const token = callToken
 
@@ -141,15 +140,16 @@ export function debounce<T extends (...args: any[]) => any>(func: T, wait: numbe
       timeout = setTimeout(() => {
         timeout = null
       }, wait)
-      if (callNow) func.apply(context, args)
+      if (callNow) func.apply(this, args)
       return
     }
 
     // 延迟执行模式（始终只执行最后一次）
     if (timeout !== null) clearTimeout(timeout)
+    const boundFunc = func.bind(this, ...args)
     timeout = setTimeout(() => {
       if (token !== callToken) return
-      func.apply(context, args)
+      boundFunc()
       timeout = null
     }, wait)
   }

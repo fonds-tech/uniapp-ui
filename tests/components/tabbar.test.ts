@@ -250,8 +250,8 @@ describe("uiTabbarItem 组件", () => {
       expect(wrapper.find(".ui-tabbar-item__icon").exists()).toBe(true)
     })
 
-    it("应该包含文本容器", async () => {
-      const wrapper = mountTabbarItem()
+    it("应该包含文本容器（当有 text 时）", async () => {
+      const wrapper = mountTabbarItem({ text: "首页" })
       await waitForTransition()
       expect(wrapper.find(".ui-tabbar-item__text").exists()).toBe(true)
     })
@@ -361,19 +361,13 @@ describe("uiTabbarItem 组件", () => {
     })
 
     it("应该支持 icon 插槽", async () => {
-      const wrapper = mountTabbarItem(
-        {},
-        { icon: "<span class=\"custom-icon\">🏠</span>" },
-      )
+      const wrapper = mountTabbarItem({}, { icon: "<span class=\"custom-icon\">🏠</span>" })
       await waitForTransition()
       expect(wrapper.find(".custom-icon").exists()).toBe(true)
     })
 
     it("应该支持 extra 插槽", async () => {
-      const wrapper = mountTabbarItem(
-        {},
-        { extra: "<span class=\"extra-content\">99+</span>" },
-      )
+      const wrapper = mountTabbarItem({}, { extra: "<span class=\"extra-content\">99+</span>" })
       await waitForTransition()
       expect(wrapper.find(".extra-content").exists()).toBe(true)
       expect(wrapper.find(".extra-content").text()).toBe("99+")
@@ -447,7 +441,7 @@ describe("边界情况测试", () => {
     })
     await waitForTransition()
     expect(wrapper.find(".ui-tabbar").exists()).toBe(true)
-    expect(wrapper.find(".ui-tabbar__content--border").exists()).toBe(true) // 默认显示边框
+    expect(wrapper.find(".ui-tabbar__content--border").exists()).toBe(false) // 默认不显示边框
   })
 
   it("uiTabbarItem 不设置任何 props 时应该使用默认值", async () => {

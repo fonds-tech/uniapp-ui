@@ -14,6 +14,7 @@ import { it, vi, expect, describe, afterEach, beforeEach } from "vitest"
 // Mock tabs parent context for tab tests
 function createMockTabsProvide() {
   const childrens: any[] = []
+  const tabRects = ref(new Map())
   return {
     props: {
       scrollable: false,
@@ -31,9 +32,18 @@ function createMockTabsProvide() {
       inactiveSize: "28rpx",
       inactiveWeight: 400,
     },
+    useProps: {
+      scrollable: false,
+      itemWidth: "auto",
+      itemMaxWidth: "",
+    },
     currentName: ref(0),
+    tabRects,
     clickTab: vi.fn(),
     setCurrentName: vi.fn(),
+    updateTabRect: (index: number, rect: any) => {
+      tabRects.value.set(index, rect)
+    },
     link: (child: any) => childrens.push(child),
     unlink: (child: any) => {
       const index = childrens.indexOf(child)
@@ -173,7 +183,7 @@ describe("uiTabs 组件", () => {
   })
 
   describe("scrollable 属性测试", () => {
-    it("默认应该可以滚动", () => {
+    it("默认不应该可以滚动", () => {
       const wrapper = mount(UiTabs, {
         global: {
           stubs: {
@@ -183,7 +193,7 @@ describe("uiTabs 组件", () => {
           },
         },
       })
-      expect(wrapper.props("scrollable")).toBe(true)
+      expect(wrapper.props("scrollable")).toBe(false)
     })
 
     it("应该支持禁用滚动", () => {
@@ -616,7 +626,7 @@ describe("uiTabs 组件", () => {
       await waitForTransition()
       expect(wrapper.find(".ui-tabs").exists()).toBe(true)
       expect(wrapper.props("modelValue")).toBe(0)
-      expect(wrapper.props("scrollable")).toBe(true)
+      expect(wrapper.props("scrollable")).toBe(false)
     })
   })
 })

@@ -123,7 +123,7 @@ describe("ui-config-provider 全局配置组件", () => {
       await waitForTransition()
 
       const style = wrapper.find(".ui-config-provider").attributes("style") || ""
-      expect(style).toContain("--ui-color-text-primary")
+      expect(style).toContain("--ui-color-text-main")
     })
 
     it("应生成 RGB 变量", async () => {

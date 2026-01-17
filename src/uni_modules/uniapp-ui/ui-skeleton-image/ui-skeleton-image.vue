@@ -1,56 +1,36 @@
 <template>
-  <view class="ui-skeleton-image" :class="[classs, customClass]" :style="[style]" />
+  <view class="ui-skeleton-image" :class="[classes, customClass]" :style="[style]" />
 </template>
 
 <script setup lang="ts">
 import type { CSSProperties } from "vue"
-import { isDef } from "../utils/check"
+import { computed } from "vue"
 import { skeletonKey } from "../ui-skeleton"
-import { useRect, useUnit, useStyle, useParent } from "../hooks"
-import { ref, computed, onMounted, getCurrentInstance } from "vue"
-import { skeletonImageEmits, skeletonImageProps, useSkeletonImageProps } from "./index"
+import { useUnit, useStyle, useParent } from "../hooks"
+import { skeletonImageProps, useSkeletonImageProps } from "./index"
 
 defineOptions({ name: "ui-skeleton-image" })
 
 const props = defineProps(skeletonImageProps)
-const emits = defineEmits(skeletonImageEmits)
 const useProps = useSkeletonImageProps(props)
 const { parent } = useParent(skeletonKey)
 
-const instance = getCurrentInstance()
-
-const rect = ref<UniApp.NodeInfo>({ width: 0, height: 0 })
-
 const style = computed(() => {
   const style: CSSProperties = {}
-  style.width = useUnit(useProps.width ?? useProps.size)
-  style.height = useUnit(useProps.height ?? useProps.size)
-
-  if (prop("square")) {
-    style.height = `${rect.value.width}px`
-  }
-  style.borderRadius = useUnit(useProps.radius)
+  const width = useProps.width ?? useProps.size
+  const height = useProps.height ?? useProps.size
+  if (width) style.width = useUnit(width)
+  if (!useProps.square && height) style.height = useUnit(height)
+  if (useProps.radius) style.borderRadius = useUnit(useProps.radius)
   return useStyle({ ...style, ...useStyle(useProps.customStyle) })
 })
 
-const classs = computed(() => {
+const classes = computed(() => {
   const list: string[] = []
-  if (prop("square")) list.push("ui-skeleton-image--square")
-  if (prop("animate")) list.push("ui-skeleton-image--animate")
+  if (useProps.square) list.push("ui-skeleton-image--square")
+  if (parent?.props?.animate) list.push("ui-skeleton-image--animate")
   return list
 })
-
-function prop(name: string) {
-  if (isDef(props[name])) return props[name]
-  if (isDef(parent.props[name])) return parent.props[name]
-  return ""
-}
-
-async function init() {
-  rect.value = await useRect(".ui-skeleton-image", instance)
-}
-
-onMounted(init)
 </script>
 
 <script lang="ts">
@@ -65,23 +45,23 @@ export default {
   width: 100rpx;
   height: 100rpx;
   position: relative;
+  flex-shrink: 0;
   border-radius: 16rpx;
   background-color: #f2f3f5;
 
-  &--animate {
-    animation: skeleton-blink 2s ease-in-out infinite;
+  &--square {
+    height: auto;
+    aspect-ratio: 1;
   }
 
-  @keyframes skeleton-blink {
-    0% {
-      opacity: 1;
-    }
-    50% {
-      opacity: 0.3;
-    }
-    100% {
-      opacity: 01;
-    }
+  &--animate {
+    animation: ui-skeleton-blink 1.5s ease-in-out infinite;
+  }
+}
+
+@keyframes ui-skeleton-blink {
+  50% {
+    opacity: 0.4;
   }
 }
 </style>

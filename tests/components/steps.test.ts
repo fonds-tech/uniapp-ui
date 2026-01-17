@@ -550,13 +550,14 @@ describe("uiStep 组件", () => {
   })
 
   describe("连接线测试", () => {
-    it("最后一个步骤不应该显示连接线", async () => {
+    it("最后一个步骤的连接线应该通过CSS隐藏", async () => {
       // 当只有一个步骤时，useParent 将其加入 childrens
-      // isLast = index(0) === count(1) - 1 = true，所以不显示连接线
+      // isLast = index(0) === count(1) - 1 = true，所以通过 CSS 隐藏连接线
       const { wrapper } = mountStep({ title: "步骤" })
       await waitForTransition()
-      // 单个步骤默认是最后一个，不显示连接线
-      expect(wrapper.find(".ui-step__line").exists()).toBe(false)
+      // 单个步骤默认是最后一个，连接线元素存在但宽度为0（CSS隐藏）
+      expect(wrapper.find(".ui-step__line").exists()).toBe(true)
+      expect(wrapper.find(".ui-step--last").exists()).toBe(true)
     })
 
     it("last 类名应该在最后一个步骤时添加", async () => {
@@ -666,13 +667,13 @@ describe("steps 和 Step 组件集成测试", () => {
   })
 
   describe("连接线集成测试", () => {
-    it("多个步骤时非最后一个步骤应该显示连接线", async () => {
+    it("多个步骤时每个步骤都应该有连接线元素", async () => {
       const wrapper = mountStepsWithChildren({ active: 1 }, [{ title: "步骤1" }, { title: "步骤2" }, { title: "步骤3" }])
       await waitForTransition()
 
       const lines = wrapper.findAll(".ui-step__line")
-      // 三个步骤应该有两条连接线（最后一个步骤没有）
-      expect(lines.length).toBe(2)
+      // 三个步骤都有连接线元素（最后一个通过 CSS 宽度为0隐藏）
+      expect(lines.length).toBe(3)
     })
 
     it("最后一个步骤应该有 last 类名", async () => {

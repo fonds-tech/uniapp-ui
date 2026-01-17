@@ -43,22 +43,24 @@ describe("ui-navbar 导航栏组件", () => {
   })
 
   describe("返回按钮", () => {
-    it("默认应显示返回按钮", async () => {
+    it("默认不应显示返回按钮", async () => {
       const wrapper = mount(UiNavbar)
-      await waitForTransition()
-      expect(wrapper.find(".ui-navbar__back").exists()).toBe(true)
-    })
-
-    it("showBack 为 false 时不应显示返回按钮", async () => {
-      const wrapper = mount(UiNavbar, {
-        props: { showBack: false },
-      })
       await waitForTransition()
       expect(wrapper.find(".ui-navbar__back").exists()).toBe(false)
     })
 
+    it("showBack 为 true 时应显示返回按钮", async () => {
+      const wrapper = mount(UiNavbar, {
+        props: { showBack: true },
+      })
+      await waitForTransition()
+      expect(wrapper.find(".ui-navbar__back").exists()).toBe(true)
+    })
+
     it("点击返回按钮应触发 back 事件", async () => {
-      const wrapper = mount(UiNavbar)
+      const wrapper = mount(UiNavbar, {
+        props: { showBack: true },
+      })
       await waitForTransition()
       await wrapper.find(".ui-navbar__back").trigger("click")
       expect(wrapper.emitted("back")).toBeTruthy()
@@ -90,7 +92,7 @@ describe("ui-navbar 导航栏组件", () => {
 
     it("应支持返回按钮文字", async () => {
       const wrapper = mount(UiNavbar, {
-        props: { backText: "返回" },
+        props: { showBack: true, backText: "返回" },
       })
       await waitForTransition()
       expect(wrapper.text()).toContain("返回")
@@ -143,14 +145,6 @@ describe("ui-navbar 导航栏组件", () => {
       })
       await waitForTransition()
       expect(wrapper.props("titleColor")).toBe("#ffffff")
-    })
-
-    it("应支持自定义标题粗细", async () => {
-      const wrapper = mount(UiNavbar, {
-        props: { title: "标题", titleWeight: 600 },
-      })
-      await waitForTransition()
-      expect(wrapper.props("titleWeight")).toBe(600)
     })
 
     it("应支持自定义标题粗细", async () => {
@@ -273,7 +267,7 @@ describe("ui-navbar 导航栏组件", () => {
       const customBack = vi.fn()
 
       const wrapper = mount(UiNavbar, {
-        props: { customBack },
+        props: { showBack: true, customBack },
       })
       await waitForTransition()
       await wrapper.find(".ui-navbar__back").trigger("click")
@@ -299,7 +293,9 @@ describe("ui-navbar 导航栏组件", () => {
 
   describe("事件处理", () => {
     it("点击返回应触发 back 事件", async () => {
-      const wrapper = mount(UiNavbar)
+      const wrapper = mount(UiNavbar, {
+        props: { showBack: true },
+      })
       await waitForTransition()
       await wrapper.find(".ui-navbar__back").trigger("click")
       expect(wrapper.emitted("back")).toBeTruthy()

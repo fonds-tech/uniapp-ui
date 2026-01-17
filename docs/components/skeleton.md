@@ -71,49 +71,71 @@
 </template>
 ```
 
+## 显示加载状态
+
+通过 `loading` 属性控制显示骨架屏还是实际内容。
+
+```vue
+<template>
+  <ui-skeleton :loading="loading">
+    <ui-skeleton-title />
+    <ui-skeleton-paragraph />
+
+    <template #content>
+      <view>实际内容</view>
+    </template>
+  </ui-skeleton>
+</template>
+```
+
 ## Skeleton Props
 
-| 参数         | 说明         | 类型               | 默认值 |
-| ------------ | ------------ | ------------------ | ------ |
-| animate      | 是否开启动画 | `boolean`          | `true` |
-| background   | 背景颜色     | `string`           | -      |
-| custom-class | 自定义类名   | `string`           | -      |
-| custom-style | 自定义样式   | `string \| object` | -      |
+| 参数         | 说明                             | 类型               | 默认值 |
+| ------------ | -------------------------------- | ------------------ | ------ |
+| loading      | 是否显示骨架屏，false 时显示内容 | `boolean`          | `true` |
+| animate      | 是否开启动画                     | `boolean`          | `true` |
+| gap          | 子元素间距                       | `string \| number` | -      |
+| background   | 背景颜色                         | `string`           | -      |
+| custom-class | 自定义类名                       | `string`           | -      |
+| custom-style | 自定义样式                       | `string \| object` | -      |
 
 ## Skeleton Slots
 
-| 名称    | 说明       |
-| ------- | ---------- |
-| default | 骨架屏内容 |
+| 名称    | 说明                         |
+| ------- | ---------------------------- |
+| default | 骨架屏内容                   |
+| content | 实际内容（loading=false 时） |
 
 ## SkeletonTitle Props
 
-| 参数   | 说明 | 类型               | 默认值  |
-| ------ | ---- | ------------------ | ------- |
-| width  | 宽度 | `string \| number` | `40%`   |
-| height | 高度 | `string \| number` | `32rpx` |
-| radius | 圆角 | `string \| number` | `8rpx`  |
+| 参数   | 说明 | 类型               | 默认值 |
+| ------ | ---- | ------------------ | ------ |
+| width  | 宽度 | `string \| number` | -      |
+| height | 高度 | `string \| number` | -      |
+| radius | 圆角 | `string \| number` | -      |
 
 ## SkeletonParagraph Props
 
-| 参数       | 说明     | 类型                        | 默认值  |
-| ---------- | -------- | --------------------------- | ------- |
-| rows       | 行数     | `number`                    | `3`     |
-| row-width  | 每行宽度 | `string \| number \| array` | `100%`  |
-| row-height | 行高     | `string \| number`          | `28rpx` |
-| row-gap    | 行间距   | `string \| number`          | `16rpx` |
+| 参数       | 说明     | 类型                        | 默认值 |
+| ---------- | -------- | --------------------------- | ------ |
+| row        | 行数     | `number`                    | `3`    |
+| row-width  | 每行宽度 | `string \| number \| array` | `100%` |
+| row-height | 行高     | `string \| number`          | -      |
+| row-gap    | 行间距   | `string \| number`          | -      |
 
 ## SkeletonAvatar Props
 
 | 参数  | 说明     | 类型               | 默认值  |
 | ----- | -------- | ------------------ | ------- |
-| size  | 头像大小 | `string \| number` | `64rpx` |
+| size  | 头像大小 | `string \| number` | -       |
 | shape | 头像形状 | `round \| square`  | `round` |
 
 ## SkeletonImage Props
 
-| 参数   | 说明     | 类型               | 默认值   |
-| ------ | -------- | ------------------ | -------- |
-| width  | 图片宽度 | `string \| number` | `100%`   |
-| height | 图片高度 | `string \| number` | `200rpx` |
-| radius | 圆角     | `string \| number` | `8rpx`   |
+| 参数   | 说明     | 类型               | 默认值 |
+| ------ | -------- | ------------------ | ------ |
+| size   | 图片大小 | `string \| number` | -      |
+| width  | 图片宽度 | `string \| number` | -      |
+| height | 图片高度 | `string \| number` | -      |
+| radius | 圆角     | `string \| number` | -      |
+| square | 是否正方 | `boolean`          | -      |

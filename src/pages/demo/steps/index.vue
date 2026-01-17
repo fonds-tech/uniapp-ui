@@ -69,9 +69,9 @@
         </ui-steps>
         <text class="demo-text">单独设置图标:</text>
         <ui-steps :active="1">
-          <ui-step title="购物车" icon="cart" />
+          <ui-step title="购物车" icon="shopping" />
           <ui-step title="填写地址" icon="location" />
-          <ui-step title="付款" icon="card" />
+          <ui-step title="付款" icon="creditcard" />
         </ui-steps>
       </demo-block>
     </demo-section>
@@ -104,6 +104,47 @@
           <ui-step title="步骤二" @click="onStepClick(1)" />
           <ui-step title="步骤三" @click="onStepClick(2)" />
           <ui-step title="步骤四" @click="onStepClick(3)" />
+        </ui-steps>
+      </demo-block>
+    </demo-section>
+
+    <!-- 简洁模式 -->
+    <demo-section title="简洁模式">
+      <demo-block direction="column" :gap="24">
+        <text class="demo-text">只显示图标，隐藏标题和描述:</text>
+        <ui-steps :active="1" simple>
+          <ui-step title="步骤一" />
+          <ui-step title="步骤二" />
+          <ui-step title="步骤三" />
+          <ui-step title="步骤四" />
+        </ui-steps>
+      </demo-block>
+    </demo-section>
+
+    <!-- 点状模式 -->
+    <demo-section title="点状模式">
+      <demo-block direction="column" :gap="24">
+        <text class="demo-text">用小圆点代替数字，更加简洁:</text>
+        <ui-steps :active="dotActive" dot>
+          <ui-step title="步骤一" />
+          <ui-step title="步骤二" />
+          <ui-step title="步骤三" />
+          <ui-step title="步骤四" />
+        </ui-steps>
+        <demo-block :cols="2" :gap="16">
+          <ui-button size="small" :disabled="dotActive === 0" @click="dotActive--">上一步</ui-button>
+          <ui-button size="small" :disabled="dotActive >= 3" @click="dotActive++">下一步</ui-button>
+        </demo-block>
+      </demo-block>
+    </demo-section>
+
+    <!-- 垂直居中对齐 -->
+    <demo-section title="垂直居中对齐">
+      <demo-block direction="column">
+        <ui-steps :active="1" direction="vertical" center>
+          <ui-step title="订单提交成功" description="2024-01-01 10:00:00" />
+          <ui-step title="订单已付款" description="2024-01-01 10:05:30" />
+          <ui-step title="商品已发货" description="2024-01-01 12:00:00" />
         </ui-steps>
       </demo-block>
     </demo-section>
@@ -225,6 +266,9 @@ const active3 = ref(2)
 // 可点击
 const active4 = ref(1)
 const clickLog = ref("点击步骤触发事件")
+
+// 点状模式
+const dotActive = ref(1)
 
 // 订单跟踪
 const orderActive = ref(2)

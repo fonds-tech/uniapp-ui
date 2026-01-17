@@ -33,8 +33,6 @@ export const [skeletonImageProps, useSkeletonImageProps] = createProps("skeleton
    */
   customStyle: [String, Object] as PropType<string | CSSProperties>,
 })
-export const skeletonImageEmits = {}
 
-export type SkeletonImageEmits = typeof skeletonImageEmits
 export type SkeletonImageProps = ExtractPropTypes<typeof skeletonImageProps>
 export type SkeletonImageInstance = InstanceType<typeof SkeletonImage>
