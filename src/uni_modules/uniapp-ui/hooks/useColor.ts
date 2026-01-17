@@ -9,9 +9,11 @@ const colorMap: Record<string, string> = {
   danger: "--ui-color-danger",
   info: "--ui-color-info",
 
-  // 文本色彩
-  "text-main": "--ui-color-text-main",
+  // 文本色彩（4 级梯度）
+  "text-primary": "--ui-color-text-primary",
+  "text-main": "--ui-color-text-primary", // 别名，兼容旧代码
   "text-secondary": "--ui-color-text-secondary",
+  "text-tertiary": "--ui-color-text-tertiary",
   "text-placeholder": "--ui-color-text-placeholder",
   "text-disabled": "--ui-color-text-disabled",
 
@@ -38,7 +40,8 @@ const colorMap: Record<string, string> = {
  *
  * @example
  * useColor('primary')        // -> var(--ui-color-primary)
- * useColor('text-main')      // -> var(--ui-color-text-main)
+ * useColor('text-primary')   // -> var(--ui-color-text-primary)
+ * useColor('text-main')      // -> var(--ui-color-text-primary) // 别名
  * useColor('#ff0000')        // -> #ff0000
  * useColor('rgb(255,0,0)')   // -> rgb(255,0,0)
  */

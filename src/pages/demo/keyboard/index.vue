@@ -603,7 +603,7 @@ function onKeyboardChange(value: string) {
 }
 
 .switch-label {
-  color: var(--ui-color-text-main);
+  color: var(--ui-color-text-primary);
   font-size: 28rpx;
 }
 
@@ -674,7 +674,7 @@ function onKeyboardChange(value: string) {
 }
 
 .code-text {
-  color: var(--ui-color-text-main);
+  color: var(--ui-color-text-primary);
   font-size: 56rpx;
   font-weight: 600;
 }
@@ -701,7 +701,7 @@ function onKeyboardChange(value: string) {
 }
 
 .plate-text {
-  color: var(--ui-color-text-main);
+  color: var(--ui-color-text-primary);
   font-size: 32rpx;
   font-weight: 600;
 }

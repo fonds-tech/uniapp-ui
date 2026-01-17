@@ -446,7 +446,7 @@ function onProductRemove(): Promise<boolean> {
 }
 
 .switch-label {
-  color: var(--ui-color-text-main);
+  color: var(--ui-color-text-primary);
   font-size: 28rpx;
 }
 
@@ -503,7 +503,7 @@ function onProductRemove(): Promise<boolean> {
 }
 
 .product-upload-title {
-  color: var(--ui-color-text-main);
+  color: var(--ui-color-text-primary);
   font-size: 28rpx;
   font-weight: 600;
 }

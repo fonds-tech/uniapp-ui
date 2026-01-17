@@ -73,7 +73,7 @@ const sectionClass = computed(() => {
   }
 
   &__title {
-    color: var(--ui-color-text-main);
+    color: var(--ui-color-text-primary);
     font-size: 30rpx;
     font-weight: 600;
   }

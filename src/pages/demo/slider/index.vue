@@ -195,7 +195,7 @@ const value10b = ref(50)
 }
 
 .slider-label {
-  color: var(--ui-color-text-main);
+  color: var(--ui-color-text-primary);
   font-size: 24rpx;
   margin-bottom: 8rpx;
 }

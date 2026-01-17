@@ -120,7 +120,7 @@ const formAddress = ref("")
 }
 
 .form-label {
-  color: var(--ui-color-text-main);
+  color: var(--ui-color-text-primary);
   width: 160rpx;
   font-size: var(--ui-font-size-md);
   flex-shrink: 0;

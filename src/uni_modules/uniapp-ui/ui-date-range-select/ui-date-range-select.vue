@@ -556,7 +556,7 @@ export default {
   }
 
   &__text {
-    color: var(--ui-color-text-main);
+    color: var(--ui-color-text-primary);
     overflow: hidden;
     font-size: var(--ui-font-size-md);
     white-space: nowrap;
@@ -625,7 +625,7 @@ export default {
     }
 
     &-text {
-      color: var(--ui-color-text-main);
+      color: var(--ui-color-text-primary);
       font-size: 28rpx;
       transition: color 0.2s;
     }

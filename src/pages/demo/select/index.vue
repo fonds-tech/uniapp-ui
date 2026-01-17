@@ -639,7 +639,7 @@ const specColumns = [
 }
 
 .switch-label {
-  color: var(--ui-color-text-main);
+  color: var(--ui-color-text-primary);
   font-size: 28rpx;
 }
 
@@ -675,7 +675,7 @@ const specColumns = [
 }
 
 .form-label {
-  color: var(--ui-color-text-main);
+  color: var(--ui-color-text-primary);
   font-size: 28rpx;
 }
 
@@ -712,7 +712,7 @@ const specColumns = [
 }
 
 .product-name {
-  color: var(--ui-color-text-main);
+  color: var(--ui-color-text-primary);
   font-size: 30rpx;
   font-weight: 600;
 }

@@ -848,7 +848,7 @@ function onFinishCategory(data: FinishData) {
 }
 
 .switch-label {
-  color: var(--ui-color-text-main);
+  color: var(--ui-color-text-primary);
   font-size: 28rpx;
 }
 
@@ -890,7 +890,7 @@ function onFinishCategory(data: FinishData) {
 }
 
 .address-text {
-  color: var(--ui-color-text-main);
+  color: var(--ui-color-text-primary);
   font-size: 28rpx;
   font-weight: 600;
 }

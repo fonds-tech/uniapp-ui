@@ -30,12 +30,6 @@
         <ui-button type="danger" text>危险</ui-button>
         <ui-button type="info" text>信息</ui-button>
         <ui-button type="default" text>默认</ui-button>
-        <ui-button type="primary" text disabled>禁用</ui-button>
-        <ui-button type="success" text disabled>禁用</ui-button>
-        <ui-button type="warning" text disabled>禁用</ui-button>
-        <ui-button type="danger" text disabled>禁用</ui-button>
-        <ui-button type="info" text disabled>禁用</ui-button>
-        <ui-button type="default" text disabled>禁用</ui-button>
       </demo-block>
     </demo-section>
 
@@ -47,6 +41,13 @@
         <ui-button type="danger" disabled>危险</ui-button>
         <ui-button type="info" disabled>信息</ui-button>
         <ui-button type="default" disabled>默认</ui-button>
+
+        <ui-button type="primary" text disabled>禁用</ui-button>
+        <ui-button type="success" text disabled>禁用</ui-button>
+        <ui-button type="warning" text disabled>禁用</ui-button>
+        <ui-button type="danger" text disabled>禁用</ui-button>
+        <ui-button type="info" text disabled>禁用</ui-button>
+        <ui-button type="default" text disabled>禁用</ui-button>
       </demo-block>
     </demo-section>
 
@@ -82,19 +83,19 @@
 
     <demo-section title="按钮尺寸">
       <demo-block align="end" :cols="5">
-        <ui-button type="primary" size="large">大号</ui-button>
-        <ui-button type="success" size="medium">中号</ui-button>
-        <ui-button type="warning" size="normal">普通</ui-button>
-        <ui-button type="danger" size="small">小型</ui-button>
-        <ui-button type="info" size="mini">迷你</ui-button>
+        <ui-button size="mini">迷你</ui-button>
+        <ui-button size="small">小型</ui-button>
+        <ui-button size="normal">普通</ui-button>
+        <ui-button size="medium">中号</ui-button>
+        <ui-button size="large">大号</ui-button>
       </demo-block>
     </demo-section>
 
     <!-- 新增：自定义尺寸 -->
     <demo-section title="自定义尺寸">
-      <demo-block :cols="2">
+      <demo-block :cols="1">
         <ui-button type="primary" width="200rpx">固定宽度</ui-button>
-        <ui-button type="success" height="80rpx">自定义高度</ui-button>
+        <ui-button type="success" height="100rpx">自定义高度</ui-button>
       </demo-block>
     </demo-section>
 

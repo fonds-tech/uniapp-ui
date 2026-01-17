@@ -226,7 +226,7 @@ export default {
   }
 
   &__title {
-    color: var(--ui-color-text-main);
+    color: var(--ui-color-text-primary);
     font-size: var(--ui-font-size-lg);
     text-align: center;
   }
@@ -281,7 +281,7 @@ export default {
     }
 
     &__title {
-      color: var(--ui-color-text-main);
+      color: var(--ui-color-text-primary);
       font-size: var(--ui-font-size-lg);
       text-align: center;
     }
@@ -299,7 +299,7 @@ export default {
   }
 
   &__cancel {
-    color: var(--ui-color-text-main);
+    color: var(--ui-color-text-primary);
     height: var(--ui-size-large);
     margin: 0;
     display: flex;
@@ -322,9 +322,9 @@ export default {
       opacity: 0;
       position: absolute;
       transform: translate3d(-50%, -50%, -1px);
-      background: var(--ui-color-text-main);
+      background: var(--ui-color-text-primary);
       user-select: none;
-      border-color: var(--ui-color-text-main);
+      border-color: var(--ui-color-text-primary);
       border-radius: inherit;
     }
 

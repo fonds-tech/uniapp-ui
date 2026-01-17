@@ -1060,7 +1060,7 @@ const contentStyle = computed(() =&gt; {
     style["--ui-popover-arrow-color"] = "#4a4a4a"
   } else {
     style["--ui-popover-bg"] = "#ffffff"
-    style["--ui-popover-text-color"] = "var(--ui-color-text-main)"
+    style["--ui-popover-text-color"] = "var(--ui-color-text-primary)"
     style["--ui-popover-arrow-color"] = "#ffffff"
   }
 &nbsp;
@@ -1159,7 +1159,7 @@ function getActionIconColor(action: PopoverAction): string {
   if (action.color) <span class="branch-0 cbranch-no" title="branch not covered" >return action.color</span>
   if (useProps.iconColor) <span class="branch-0 cbranch-no" title="branch not covered" >return useProps.iconColor</span>
   if (useProps.theme === "dark") <span class="branch-0 cbranch-no" title="branch not covered" >return "#ffffff"</span>
-  return "var(--ui-color-text-main)"
+  return "var(--ui-color-text-primary)"
 }
 &nbsp;
 // 获取选项文字样式
@@ -1308,7 +1308,7 @@ export default {
 &nbsp;
   &amp;__content {
     --ui-popover-bg: #ffffff;
-    --ui-popover-text-color: var(--ui-color-text-main);
+    --ui-popover-text-color: var(--ui-color-text-primary);
     --ui-popover-arrow-color: #ffffff;
     --ui-popover-border-radius: var(--ui-radius-lg);
     overflow: visible;

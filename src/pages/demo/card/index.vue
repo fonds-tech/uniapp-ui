@@ -142,7 +142,7 @@ function onClickProduct() {
   }
 
   &__name {
-    color: var(--ui-color-text-main);
+    color: var(--ui-color-text-primary);
     font-size: 28rpx;
     font-weight: 600;
   }
@@ -189,7 +189,7 @@ function onClickProduct() {
   }
 
   &__title {
-    color: var(--ui-color-text-main);
+    color: var(--ui-color-text-primary);
     font-size: 30rpx;
     font-weight: 600;
     line-height: 1.4;

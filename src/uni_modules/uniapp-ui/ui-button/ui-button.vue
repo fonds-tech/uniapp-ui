@@ -158,8 +158,37 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+// 按钮类型样式 mixin
+@mixin button-type($color) {
+  color: var(--ui-color-background);
+  background: $color;
+
+  &.ui-button--plain {
+    color: $color;
+    border: var(--ui-border-width) solid currentcolor;
+    background-color: var(--ui-color-background);
+
+    &::before {
+      background: currentcolor;
+    }
+  }
+
+  &.ui-button--text {
+    color: $color;
+    border-width: 0;
+    background-color: transparent;
+  }
+}
+
+// 按钮尺寸样式 mixin
+@mixin button-size($height, $font-size) {
+  height: $height;
+  font-size: $font-size;
+}
+
 .ui-button {
-  height: var(--ui-size-normal);
+  // 基础样式
+  height: var(--ui-size-medium);
   margin: 0;
   display: flex;
   overflow: visible;
@@ -172,11 +201,12 @@ export default {
   align-items: center;
   line-height: 1;
   white-space: nowrap;
-  border-radius: var(--ui-radius-md);
+  border-radius: var(--ui-radius-sm);
   justify-content: center;
   -webkit-appearance: none;
   -webkit-font-smoothing: auto;
 
+  // 点击态遮罩层
   &::before {
     top: 50%;
     left: 50%;
@@ -186,16 +216,18 @@ export default {
     opacity: 0;
     position: absolute;
     transform: translate(-50%, -50%);
-    background: var(--ui-color-text-main);
+    background: var(--ui-color-text-primary);
     transition: opacity var(--ui-transition-fast) var(--ui-transition-timing);
     user-select: none;
     border-radius: inherit;
   }
 
+  // 移除原生按钮边框
   &::after {
     content: none;
   }
 
+  // ========== 内容区域 ==========
   &__content {
     display: flex;
     align-items: center;
@@ -206,12 +238,7 @@ export default {
     }
   }
 
-  &__loading {
-    color: inherit;
-    display: flex;
-    font-size: inherit;
-  }
-
+  &__loading,
   &__icon {
     color: inherit;
     display: flex;
@@ -222,10 +249,13 @@ export default {
     display: flex;
   }
 
-  &__icon + &__text {
+  // 图标与文字间距
+  &__icon + &__text,
+  &--loading &__loading + &__text {
     margin-left: var(--ui-spacing-sm);
   }
 
+  // 反向布局时的间距
   &__content--reverse &__icon {
     margin-left: var(--ui-spacing-sm);
   }
@@ -234,60 +264,48 @@ export default {
     margin-left: 0;
   }
 
+  // ========== 尺寸变体 ==========
   &--mini {
-    height: var(--ui-size-mini);
-    font-size: var(--ui-font-size-sm);
+    @include button-size(var(--ui-size-mini), var(--ui-font-size-sm));
   }
-
   &--small {
-    height: var(--ui-size-small);
-    font-size: var(--ui-font-size-sm);
+    @include button-size(var(--ui-size-small), var(--ui-font-size-sm));
   }
-
   &--normal {
-    height: var(--ui-size-normal);
-    font-size: var(--ui-font-size-md);
+    @include button-size(var(--ui-size-normal), var(--ui-font-size-md));
   }
-
   &--medium {
-    height: var(--ui-size-medium);
-    font-size: var(--ui-font-size-md);
+    @include button-size(var(--ui-size-medium), var(--ui-font-size-md));
   }
-
   &--large {
-    height: var(--ui-size-large);
-    font-size: var(--ui-font-size-lg);
+    @include button-size(var(--ui-size-large), var(--ui-font-size-lg));
   }
 
+  // ========== 类型变体 ==========
   &--primary {
-    color: var(--ui-color-background);
-    background: var(--ui-color-primary);
-
-    &.ui-button--plain {
-      color: var(--ui-color-primary);
-      border: var(--ui-border-width-thick) solid currentcolor;
-      background-color: var(--ui-color-background);
-
-      &::before {
-        background: currentcolor;
-      }
-    }
-
-    &.ui-button--text {
-      color: var(--ui-color-primary);
-      border-width: 0;
-      background-color: transparent;
-    }
+    @include button-type(var(--ui-color-primary));
+  }
+  &--success {
+    @include button-type(var(--ui-color-success));
+  }
+  &--warning {
+    @include button-type(var(--ui-color-warning));
+  }
+  &--danger {
+    @include button-type(var(--ui-color-danger));
+  }
+  &--info {
+    @include button-type(var(--ui-color-info));
   }
 
+  // default 类型特殊处理
   &--default {
-    color: var(--ui-color-text-main);
+    color: var(--ui-color-text-primary);
     border: var(--ui-border-width) solid var(--ui-color-border);
     background: var(--ui-color-background);
 
     &.ui-button--plain {
-      color: var(--ui-color-text-main);
-      border: var(--ui-border-width-thick) solid var(--ui-color-border);
+      border: var(--ui-border-width) solid var(--ui-color-border);
       background-color: var(--ui-color-background);
 
       &::before {
@@ -301,90 +319,7 @@ export default {
     }
   }
 
-  &--success {
-    color: var(--ui-color-background);
-    background: var(--ui-color-success);
-
-    &.ui-button--plain {
-      color: var(--ui-color-success);
-      border: var(--ui-border-width-thick) solid currentcolor;
-      background-color: var(--ui-color-background);
-
-      &::before {
-        background: currentcolor;
-      }
-    }
-
-    &.ui-button--text {
-      color: var(--ui-color-success);
-      border-width: 0;
-      background-color: transparent;
-    }
-  }
-
-  &--warning {
-    color: var(--ui-color-background);
-    background: var(--ui-color-warning);
-
-    &.ui-button--plain {
-      color: var(--ui-color-warning);
-      border: var(--ui-border-width-thick) solid currentcolor;
-      background-color: var(--ui-color-background);
-
-      &::before {
-        background: currentcolor;
-      }
-    }
-
-    &.ui-button--text {
-      color: var(--ui-color-warning);
-      border-width: 0;
-      background-color: transparent;
-    }
-  }
-
-  &--danger {
-    color: var(--ui-color-background);
-    background: var(--ui-color-danger);
-
-    &.ui-button--plain {
-      color: var(--ui-color-danger);
-      border: var(--ui-border-width-thick) solid currentcolor;
-      background-color: var(--ui-color-background);
-
-      &::before {
-        background: currentcolor;
-      }
-    }
-
-    &.ui-button--text {
-      color: var(--ui-color-danger);
-      border-width: 0;
-      background-color: transparent;
-    }
-  }
-
-  &--info {
-    color: var(--ui-color-background);
-    background: var(--ui-color-info);
-
-    &.ui-button--plain {
-      color: var(--ui-color-info);
-      border: var(--ui-border-width-thick) solid currentcolor;
-      background-color: var(--ui-color-background);
-
-      &::before {
-        background: currentcolor;
-      }
-    }
-
-    &.ui-button--text {
-      color: var(--ui-color-info);
-      border-width: 0;
-      background-color: transparent;
-    }
-  }
-
+  // ========== 形态变体 ==========
   &--text {
     height: fit-content;
     display: inline-flex;
@@ -401,12 +336,7 @@ export default {
     border-radius: var(--ui-radius-round);
   }
 
-  &--loading {
-    .ui-button__loading + .ui-button__text {
-      margin-left: var(--ui-spacing-sm);
-    }
-  }
-
+  // ========== 状态变体 ==========
   &--disabled {
     opacity: var(--ui-opacity-disabled);
     pointer-events: none;

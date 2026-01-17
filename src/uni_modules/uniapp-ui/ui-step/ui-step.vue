@@ -335,7 +335,7 @@ export default {
 
   // 标题
   &__title {
-    color: var(--ui-color-text-main);
+    color: var(--ui-color-text-primary);
     font-size: 28rpx;
     transition: color 0.3s ease;
     word-break: break-word;

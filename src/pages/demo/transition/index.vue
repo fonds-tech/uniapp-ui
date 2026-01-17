@@ -559,7 +559,7 @@ function closeModal() {
 }
 
 .modal-title {
-  color: var(--ui-color-text-main);
+  color: var(--ui-color-text-primary);
   font-size: 32rpx;
   font-weight: 600;
 }

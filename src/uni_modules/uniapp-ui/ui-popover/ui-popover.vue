@@ -95,7 +95,7 @@ const contentStyle = computed(() => {
     style["--ui-popover-arrow-color"] = "#4a4a4a"
   } else {
     style["--ui-popover-bg"] = "#ffffff"
-    style["--ui-popover-text-color"] = "var(--ui-color-text-main)"
+    style["--ui-popover-text-color"] = "var(--ui-color-text-primary)"
     style["--ui-popover-arrow-color"] = "#ffffff"
   }
 
@@ -194,7 +194,7 @@ function getActionIconColor(action: PopoverAction): string {
   if (action.color) return action.color
   if (useProps.iconColor) return useProps.iconColor
   if (useProps.theme === "dark") return "#ffffff"
-  return "var(--ui-color-text-main)"
+  return "var(--ui-color-text-primary)"
 }
 
 // 获取选项文字样式
@@ -343,7 +343,7 @@ export default {
 
   &__content {
     --ui-popover-bg: #ffffff;
-    --ui-popover-text-color: var(--ui-color-text-main);
+    --ui-popover-text-color: var(--ui-color-text-primary);
     --ui-popover-arrow-color: #ffffff;
     --ui-popover-border-radius: var(--ui-radius-lg);
     overflow: visible;

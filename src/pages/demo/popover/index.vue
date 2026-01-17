@@ -167,7 +167,7 @@ function onSelect(action: PopoverAction, index: number) {
   min-width: 300rpx;
 
   &__header {
-    color: var(--ui-color-text-main);
+    color: var(--ui-color-text-primary);
     font-size: 32rpx;
     font-weight: bold;
     margin-bottom: 16rpx;

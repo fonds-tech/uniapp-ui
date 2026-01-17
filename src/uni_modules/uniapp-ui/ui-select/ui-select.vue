@@ -526,7 +526,7 @@ export default {
   }
 
   &__text {
-    color: var(--ui-color-text-main);
+    color: var(--ui-color-text-primary);
     overflow: hidden;
     font-size: var(--ui-font-size-md);
     white-space: nowrap;

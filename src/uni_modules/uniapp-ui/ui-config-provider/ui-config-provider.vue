@@ -136,7 +136,7 @@ export default {
 
 <style scoped lang="scss">
 .ui-config-provider {
-  color: var(--ui-color-text-main);
+  color: var(--ui-color-text-primary);
   width: 100%;
   display: flex;
   position: relative;

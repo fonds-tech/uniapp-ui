@@ -267,7 +267,7 @@ Card 组件提供多个插槽用于自定义内容。
 | --ui-card-padding      | 卡片内边距   | `var(--ui-spacing-xl)`           |
 | --ui-card-background   | 卡片背景色   | `var(--ui-color-background)`     |
 | --ui-card-title-size   | 标题字体大小 | `var(--ui-font-size-md)`         |
-| --ui-card-title-color  | 标题颜色     | `var(--ui-color-text-main)`      |
+| --ui-card-title-color  | 标题颜色     | `var(--ui-color-text-primary)`   |
 | --ui-card-desc-size    | 描述字体大小 | `var(--ui-font-size-sm)`         |
 | --ui-card-desc-color   | 描述颜色     | `var(--ui-color-text-secondary)` |
 | --ui-card-border-color | 边框颜色     | `var(--ui-color-border-light)`   |

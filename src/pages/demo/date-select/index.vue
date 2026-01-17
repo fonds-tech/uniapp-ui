@@ -322,7 +322,7 @@ const bookingTime = ref("")
 }
 
 .form-label {
-  color: var(--ui-color-text-main);
+  color: var(--ui-color-text-primary);
   font-size: 28rpx;
 }
 

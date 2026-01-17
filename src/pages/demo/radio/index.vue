@@ -499,7 +499,7 @@ const cellValue = ref("wechat")
   flex-direction: column;
 
   &__title {
-    color: var(--ui-color-text-main);
+    color: var(--ui-color-text-primary);
     font-size: 28rpx;
     font-weight: 500;
   }

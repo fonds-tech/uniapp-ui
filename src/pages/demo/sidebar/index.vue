@@ -409,7 +409,7 @@ function onClickItem(name: number | string, index: number) {
   align-items: center;
 
   &__label {
-    color: var(--ui-color-text-main);
+    color: var(--ui-color-text-primary);
     width: 160rpx;
     font-size: 28rpx;
   }
@@ -471,7 +471,7 @@ function onClickItem(name: number | string, index: number) {
   justify-content: center;
 
   &__title {
-    color: var(--ui-color-text-main);
+    color: var(--ui-color-text-primary);
     font-size: 36rpx;
     font-weight: 600;
   }

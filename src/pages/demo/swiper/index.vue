@@ -306,7 +306,7 @@ const notices = ["欢迎使用 UniApp UI 组件库", "新版本 v2.0 已发布�
 }
 
 .switch-label {
-  color: var(--ui-color-text-main);
+  color: var(--ui-color-text-primary);
   font-size: 28rpx;
 }
 
@@ -339,7 +339,7 @@ const notices = ["欢迎使用 UniApp UI 组件库", "新版本 v2.0 已发布�
 }
 
 .product-name {
-  color: var(--ui-color-text-main);
+  color: var(--ui-color-text-primary);
   font-size: 30rpx;
   font-weight: 600;
 }

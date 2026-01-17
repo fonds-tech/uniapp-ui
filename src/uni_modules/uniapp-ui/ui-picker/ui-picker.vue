@@ -223,7 +223,7 @@ export default {
     justify-content: space-between;
 
     &__title {
-      color: var(--ui-color-text-main);
+      color: var(--ui-color-text-primary);
       font-size: var(--ui-font-size-lg);
       font-weight: var(--ui-font-weight-bold);
     }

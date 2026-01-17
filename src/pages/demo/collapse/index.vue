@@ -140,7 +140,7 @@ function onItemChange(expanded: boolean) {
   align-items: center;
 
   &-text {
-    color: var(--ui-color-text-main);
+    color: var(--ui-color-text-primary);
     font-size: 28rpx;
   }
 }

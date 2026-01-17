@@ -319,7 +319,7 @@ Collapse 组件提供了以下 CSS 变量，可用于自定义样式：
   --ui-collapse-item-value-size: var(--ui-font-size-md);
   --ui-collapse-item-arrow-color: var(--ui-color-text-secondary);
   --ui-collapse-item-label-color: var(--ui-color-text-secondary);
-  --ui-collapse-item-title-color: var(--ui-color-text-main);
+  --ui-collapse-item-title-color: var(--ui-color-text-primary);
   --ui-collapse-item-value-color: var(--ui-color-text-secondary);
   --ui-collapse-item-border-color: var(--ui-color-border-light);
   --ui-collapse-item-disabled-color: var(--ui-color-text-disabled);

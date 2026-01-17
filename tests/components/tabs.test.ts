@@ -25,11 +25,11 @@ function createMockTabsProvide() {
       indicatorColor: "primary",
       indicatorRadius: "9999rpx",
       activeColor: "#1989fa",
-      activeFontSize: "28rpx",
-      activeFontWeight: 600,
+      activeSize: "28rpx",
+      activeWeight: 600,
       inactiveColor: "#646566",
-      inactiveFontSize: "28rpx",
-      inactiveFontWeight: 400,
+      inactiveSize: "28rpx",
+      inactiveWeight: 400,
     },
     currentName: ref(0),
     clickTab: vi.fn(),
@@ -248,7 +248,7 @@ describe("uiTabs 组件", () => {
   describe("尺寸属性测试", () => {
     it("应该支持 activeSize 属性", () => {
       const wrapper = mount(UiTabs, {
-        props: { activeFontSize: "32rpx" },
+        props: { activeSize: "32rpx" },
         global: {
           stubs: {
             "scroll-view": {
@@ -257,12 +257,12 @@ describe("uiTabs 组件", () => {
           },
         },
       })
-      expect(wrapper.props("activeFontSize")).toBe("32rpx")
+      expect(wrapper.props("activeSize")).toBe("32rpx")
     })
 
     it("应该支持 inactiveSize 属性", () => {
       const wrapper = mount(UiTabs, {
-        props: { inactiveFontSize: "28rpx" },
+        props: { inactiveSize: "28rpx" },
         global: {
           stubs: {
             "scroll-view": {
@@ -271,14 +271,14 @@ describe("uiTabs 组件", () => {
           },
         },
       })
-      expect(wrapper.props("inactiveFontSize")).toBe("28rpx")
+      expect(wrapper.props("inactiveSize")).toBe("28rpx")
     })
   })
 
   describe("粗细属性测试", () => {
     it("应该支持 activeWeight 属性", () => {
       const wrapper = mount(UiTabs, {
-        props: { activeFontWeight: "bold" },
+        props: { activeWeight: "bold" },
         global: {
           stubs: {
             "scroll-view": {
@@ -287,12 +287,12 @@ describe("uiTabs 组件", () => {
           },
         },
       })
-      expect(wrapper.props("activeFontWeight")).toBe("bold")
+      expect(wrapper.props("activeWeight")).toBe("bold")
     })
 
     it("应该支持 inactiveWeight 属性", () => {
       const wrapper = mount(UiTabs, {
-        props: { inactiveFontWeight: "normal" },
+        props: { inactiveWeight: "normal" },
         global: {
           stubs: {
             "scroll-view": {
@@ -301,7 +301,7 @@ describe("uiTabs 组件", () => {
           },
         },
       })
-      expect(wrapper.props("inactiveFontWeight")).toBe("normal")
+      expect(wrapper.props("inactiveWeight")).toBe("normal")
     })
   })
 

@@ -114,6 +114,11 @@ export default {
   align-items: center;
   justify-content: center;
 
+  &--active {
+    color: var(--ui-color-text-primary);
+    font-weight: bold;
+  }
+
   &--disabled {
     cursor: not-allowed;
     opacity: 0.5;

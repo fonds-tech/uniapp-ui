@@ -601,7 +601,7 @@ if (typeof document !== "undefined") {
       --ui-color-danger: #ee0a24;
       --ui-color-info: #909399;
       --ui-color-background: #ffffff;
-      --ui-color-text-main: #323233;
+      --ui-color-text-primary: #323233;
       --ui-color-text-secondary: #969799;
       --ui-color-border: #ebedf0;
       --ui-size-mini: 48rpx;

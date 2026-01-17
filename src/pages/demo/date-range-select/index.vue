@@ -411,7 +411,7 @@ function calculateLeaveHours(range: DateRangeSelectValue) {
 }
 
 .form-label {
-  color: var(--ui-color-text-main);
+  color: var(--ui-color-text-primary);
   font-size: 28rpx;
   flex-shrink: 0;
   margin-right: 24rpx;

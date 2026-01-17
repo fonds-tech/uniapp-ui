@@ -259,7 +259,7 @@ $check-icon: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewB
 
   &__label {
     flex: 1;
-    color: var(--ui-color-text-main);
+    color: var(--ui-color-text-primary);
     font-size: 28rpx;
     word-break: break-word;
     line-height: 1.4;

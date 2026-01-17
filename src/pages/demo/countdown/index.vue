@@ -262,7 +262,7 @@ function padZero(num: number): string {
   align-items: center;
 
   &__label {
-    color: var(--ui-color-text-main);
+    color: var(--ui-color-text-primary);
     width: 140rpx;
     font-size: 28rpx;
   }
@@ -320,7 +320,7 @@ function padZero(num: number): string {
   }
 
   &__code-title {
-    color: var(--ui-color-text-main);
+    color: var(--ui-color-text-primary);
     font-size: 28rpx;
   }
 }

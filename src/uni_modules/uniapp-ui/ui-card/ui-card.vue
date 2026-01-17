@@ -164,7 +164,7 @@ export default {
   --ui-card-background: var(--ui-color-background);
   --ui-card-desc-color: var(--ui-color-text-secondary);
   --ui-card-title-size: var(--ui-font-size-md);
-  --ui-card-title-color: var(--ui-color-text-main);
+  --ui-card-title-color: var(--ui-color-text-primary);
   --ui-card-border-color: var(--ui-color-border-light);
 
   display: flex;
@@ -252,7 +252,7 @@ export default {
 
   // 内容区域
   &__body {
-    color: var(--ui-color-text-main);
+    color: var(--ui-color-text-primary);
     padding: 0 var(--ui-card-padding) var(--ui-card-padding);
     font-size: var(--ui-font-size-md);
     line-height: 1.6;

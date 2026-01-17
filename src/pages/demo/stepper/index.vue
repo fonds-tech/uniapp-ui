@@ -532,7 +532,7 @@ const discountRate = ref(0.8)
 }
 
 .cart-name {
-  color: var(--ui-color-text-main);
+  color: var(--ui-color-text-primary);
   font-size: 28rpx;
   font-weight: 500;
 }
@@ -559,7 +559,7 @@ const discountRate = ref(0.8)
 }
 
 .cart-total-label {
-  color: var(--ui-color-text-main);
+  color: var(--ui-color-text-primary);
   font-size: 28rpx;
 }
 
@@ -576,7 +576,7 @@ const discountRate = ref(0.8)
 }
 
 .spec-label {
-  color: var(--ui-color-text-main);
+  color: var(--ui-color-text-primary);
   font-size: 28rpx;
 }
 
@@ -604,7 +604,7 @@ const discountRate = ref(0.8)
 }
 
 .price-label {
-  color: var(--ui-color-text-main);
+  color: var(--ui-color-text-primary);
   font-size: 28rpx;
 }
 
@@ -634,7 +634,7 @@ const discountRate = ref(0.8)
 }
 
 .price-result-label {
-  color: var(--ui-color-text-main);
+  color: var(--ui-color-text-primary);
   font-size: 28rpx;
 }
 

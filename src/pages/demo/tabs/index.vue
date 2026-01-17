@@ -61,11 +61,11 @@
       </demo-block>
     </demo-section>
 
-    <!-- activeFontSize / inactiveFontSize -->
-    <demo-section title="activeFontSize / inactiveFontSize 文字大小">
+    <!-- activeSize / inactiveSize -->
+    <demo-section title="activeSize / inactiveSize 文字大小">
       <demo-block direction="column" align="start" :gap="12">
-        <text class="demo-text">activeFontSize="34rpx" inactiveFontSize="26rpx"</text>
-        <ui-tabs v-model="activeSize1" active-font-size="34rpx" inactive-font-size="26rpx">
+        <text class="demo-text">activeSize="34rpx" inactiveSize="26rpx"</text>
+        <ui-tabs v-model="activeSize1" active-size="34rpx" inactive-size="26rpx">
           <ui-tab title="标签一" />
           <ui-tab title="标签二" />
           <ui-tab title="标签三" />
@@ -85,11 +85,11 @@
       </demo-block>
     </demo-section>
 
-    <!-- activeFontWeight / inactiveFontWeight -->
-    <demo-section title="activeFontWeight / inactiveFontWeight 文字粗细">
+    <!-- activeWeight / inactiveWeight -->
+    <demo-section title="activeWeight / inactiveWeight 文字粗细">
       <demo-block direction="column" align="start" :gap="12">
-        <text class="demo-text">activeFontWeight="700" inactiveFontWeight="400"</text>
-        <ui-tabs v-model="activeWeight1" active-font-weight="700" inactive-font-weight="400">
+        <text class="demo-text">activeWeight="700" inactiveWeight="400"</text>
+        <ui-tabs v-model="activeWeight1" active-weight="700" inactive-weight="400">
           <ui-tab title="标签一" />
           <ui-tab title="标签二" />
           <ui-tab title="标签三" />

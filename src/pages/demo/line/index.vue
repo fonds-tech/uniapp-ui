@@ -60,7 +60,7 @@ definePage({
 
 <style lang="scss" scoped>
 .demo-text {
-  color: var(--ui-color-text-main);
+  color: var(--ui-color-text-primary);
   display: block;
   padding: 16rpx 0;
   font-size: 28rpx;

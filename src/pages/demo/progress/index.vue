@@ -392,7 +392,7 @@ const skills = ref([
 }
 
 .upload-name {
-  color: var(--ui-color-text-main);
+  color: var(--ui-color-text-primary);
   font-size: 28rpx;
   font-weight: 500;
 }
@@ -414,7 +414,7 @@ const skills = ref([
 }
 
 .task-name {
-  color: var(--ui-color-text-main);
+  color: var(--ui-color-text-primary);
   font-size: 28rpx;
 }
 
@@ -437,7 +437,7 @@ const skills = ref([
 }
 
 .step-title {
-  color: var(--ui-color-text-main);
+  color: var(--ui-color-text-primary);
   font-size: 28rpx;
   font-weight: 600;
 }
@@ -475,7 +475,7 @@ const skills = ref([
 }
 
 .skill-name {
-  color: var(--ui-color-text-main);
+  color: var(--ui-color-text-primary);
   font-size: 28rpx;
   font-weight: 500;
 }

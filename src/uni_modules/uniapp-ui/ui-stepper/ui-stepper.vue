@@ -340,7 +340,7 @@ export default {
       content: "";
       position: absolute;
       transform: translate(-50%, -50%);
-      background-color: var(--ui-color-text-main);
+      background-color: var(--ui-color-text-primary);
     }
 
     &--disabled {

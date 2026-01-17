@@ -265,7 +265,7 @@ function onInputConfirm(value: string) {
 }
 
 .form-label {
-  color: var(--ui-color-text-main);
+  color: var(--ui-color-text-primary);
   width: 160rpx;
   font-size: var(--ui-font-size-md);
   flex-shrink: 0;
@@ -278,7 +278,7 @@ function onInputConfirm(value: string) {
   border-radius: var(--ui-radius-xl);
 
   &__title {
-    color: var(--ui-color-text-main);
+    color: var(--ui-color-text-primary);
     display: block;
     font-size: var(--ui-font-size-md);
     font-weight: 500;

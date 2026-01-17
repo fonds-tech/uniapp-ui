@@ -85,7 +85,7 @@ onMounted(() => {
 }
 
 .item-title {
-  color: var(--ui-color-text-main);
+  color: var(--ui-color-text-primary);
   display: block;
   font-size: 30rpx;
 }

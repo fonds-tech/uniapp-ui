@@ -182,7 +182,7 @@ function onDragEnd(detail: { left: number; top: number }) {
 
 <style lang="scss" scoped>
 .switch-label {
-  color: var(--ui-color-text-main);
+  color: var(--ui-color-text-primary);
   font-size: 28rpx;
   margin-left: 16rpx;
 }

@@ -168,8 +168,8 @@ export default {
     opacity: 0;
     position: absolute;
     transform: translate(-50%, -50%);
-    background: var(--ui-color-text-main);
-    border-color: var(--ui-color-text-main);
+    background: var(--ui-color-text-primary);
+    border-color: var(--ui-color-text-primary);
     border-radius: inherit;
   }
 
