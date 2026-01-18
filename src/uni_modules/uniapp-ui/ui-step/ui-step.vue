@@ -11,11 +11,11 @@
           <ui-icon v-if="currentIcon" :name="currentIcon" :size="currentIconSize" :color="currentColor" />
           <!-- 默认圆圈 -->
           <view v-else class="ui-step__circle" :style="[circleStyle]">
-          <ui-icon v-if="!isDot && isFinish" name="check" :size="circleIconSize" color="#fff" />
-          <ui-icon v-else-if="!isDot && isError" name="close" :size="circleIconSize" color="#fff" />
-          <text v-else-if="!isDot" class="ui-step__index" :style="[indexStyle]">{{ safeIndex + 1 }}</text>
-        </view>
-      </slot>
+            <ui-icon v-if="!isDot && isFinish" name="check" :size="circleIconSize" color="#fff" />
+            <ui-icon v-else-if="!isDot && isError" name="close" :size="circleIconSize" color="#fff" />
+            <text v-else-if="!isDot" class="ui-step__index" :style="[indexStyle]">{{ safeIndex + 1 }}</text>
+          </view>
+        </slot>
       </view>
       <!-- 后连接线 -->
       <view class="ui-step__line ui-step__line--after" :style="[lineAfterStyle]" />
@@ -125,9 +125,20 @@ const currentStatus = computed<StepStatus>(() => {
 })
 
 /**
+ * 是否为点状模式
+ */
+const isDot = computed(() => parent?.useProps.dot ?? false)
+
+/**
+ * 是否为简洁模式
+ */
+const isSimple = computed(() => parent?.useProps.simple ?? false)
+
+/**
  * 当前图标
  */
 const currentIcon = computed<string>(() => {
+  if (isDot.value) return ""
   if (useProps.icon) return useProps.icon
   const finishIcon = getInheritProp("finishIcon")
   if (isFinish.value && finishIcon) return String(finishIcon)
@@ -252,24 +263,11 @@ const circleStyle = computed(() => {
   style.backgroundColor = currentColor.value
   style.borderColor = currentColor.value
   if (isWait.value) {
-    style.backgroundColor = "transparent"
+    style.backgroundColor = isDot.value ? inactiveColor.value : "transparent"
     style.color = inactiveColor.value
   }
   return useStyle(style)
 })
-
-/**
- * 连接线类名
- */
-/**
- * 是否为点状模式
- */
-const isDot = computed(() => parent?.useProps.dot ?? false)
-
-/**
- * 是否为简洁模式
- */
-const isSimple = computed(() => parent?.useProps.simple ?? false)
 
 /**
  * 前连接线样式（第一个步骤隐藏）

@@ -196,7 +196,14 @@
     <!-- 垂直带图标 -->
     <demo-section title="垂直带图标">
       <demo-block direction="column">
-        <ui-steps :active="verticalIconActive" direction="vertical" active-icon="check-circle" icon-size="44rpx">
+        <ui-steps
+          :active="verticalIconActive"
+          direction="vertical"
+          active-icon="check-circle-fill"
+          inactive-icon="time-circle"
+          finish-icon="check-circle-fill"
+          icon-size="44rpx"
+        >
           <ui-step title="订单提交成功" description="您的订单已提交，等待系统确认">
             <template #icon="{ status }">
               <ui-icon :name="status === 'finish' ? 'check-circle-fill' : 'time-circle'" :size="44" :color="status === 'finish' ? '#07c160' : '#999'" />
@@ -293,7 +300,7 @@
         </view>
         <demo-block :cols="2" :gap="16">
           <ui-button size="small" :disabled="formStep === 0" @click="formStep--">上一步</ui-button>
-          <ui-button size="small" type="primary" @click="handleFormNext">{{ formStep === 2 ? "提交" : "下一步" }}</ui-button>
+          <ui-button size="small" type="primary" @click="handleFormNext">{{ formStep === formStepMax ? "提交" : "下一步" }}</ui-button>
         </demo-block>
       </demo-block>
     </demo-section>
@@ -311,47 +318,47 @@ definePage({
 const toast = useToast()
 
 // 基础用法
-const active1 = ref(1)
+const active1 = ref(0)
 
 // 带描述
-const active2 = ref(2)
+const active2 = ref(0)
 
 // 垂直方向
-const active3 = ref(2)
+const active3 = ref(0)
 
 // 自定义颜色
-const colorActive1 = ref(1)
-const colorActive2 = ref(1)
+const colorActive1 = ref(0)
+const colorActive2 = ref(0)
 
 // 自定义图标
-const iconActive1 = ref(1)
-const iconActive2 = ref(1)
+const iconActive1 = ref(0)
+const iconActive2 = ref(0)
 
 // 步骤状态
-const statusActive1 = ref(1)
-const statusActive2 = ref(2)
+const statusActive1 = ref(0)
+const statusActive2 = ref(0)
 
 // 可点击
-const active4 = ref(1)
+const active4 = ref(0)
 const clickLog = ref("点击步骤触发事件")
 
 // 简洁模式
-const simpleActive = ref(1)
+const simpleActive = ref(0)
 
 // 点状模式
-const dotActive = ref(1)
+const dotActive = ref(0)
 
 // 垂直居中对齐
-const centerActive = ref(1)
+const centerActive = ref(0)
 
 // 垂直带图标
-const verticalIconActive = ref(2)
+const verticalIconActive = ref(0)
 
 // 自定义内容
-const customContentActive = ref(1)
+const customContentActive = ref(0)
 
 // 订单跟踪
-const orderActive = ref(2)
+const orderActive = ref(0)
 const orderSteps = [
   { title: "已签收", time: "2024-01-03 14:30:00" },
   { title: "派送中", time: "2024-01-03 09:00:00" },
@@ -362,6 +369,7 @@ const orderSteps = [
 
 // 表单步骤
 const formStep = ref(0)
+const formStepMax = 2
 
 /**
  * 点击步骤事件（通过 clickable 触发）
@@ -396,7 +404,7 @@ function getStatusText(status: StepStatus): string {
  * 表单下一步处理
  */
 function handleFormNext() {
-  if (formStep.value === 2) {
+  if (formStep.value === formStepMax) {
     toast.success("提交成功！")
     formStep.value = 0
   } else {

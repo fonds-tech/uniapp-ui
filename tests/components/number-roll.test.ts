@@ -131,7 +131,7 @@ describe("ui-number-roll 数字滚动组件", () => {
       expect(getColumnPattern(wrapper)).toBe("d,ddd")
     })
 
-    it("NaN 数值应回退为 0", async () => {
+    it("naN 数值应回退为 0", async () => {
       const wrapper = mount(UiNumberRoll, {
         props: { value: Number.NaN },
       })
