@@ -125,6 +125,7 @@ const indicatorClass = computed(() => {
   const list: string[] = []
   list.push(`ui-swiper__indicator--${useProps.indicatorType}`)
   list.push(`ui-swiper__indicator--${useProps.indicatorPosition}`)
+  if (useProps.vertical) list.push("ui-swiper__indicator--vertical")
   return list
 })
 
@@ -231,13 +232,13 @@ export default {
 
 <style lang="scss" scoped>
 .ui-swiper {
-  flex: 1;
-  display: flex;
+  width: 100%;
+  display: block;
   overflow: hidden;
   position: relative;
 
   &__list {
-    flex: 1;
+    width: 100%;
   }
 
   &__item {
@@ -251,13 +252,16 @@ export default {
   }
 
   &__indicator {
-    right: 24rpx;
-    bottom: 24rpx;
     position: absolute;
 
     &--dot {
+      gap: 8rpx;
       display: flex;
       align-items: center;
+    }
+
+    &--vertical#{&}--dot {
+      flex-direction: column;
     }
 
     &--number {
@@ -272,44 +276,60 @@ export default {
     &--left {
       top: 50%;
       left: 24rpx;
+      right: auto;
+      bottom: auto;
       transform: translateY(-50%);
     }
 
     &--top-left {
       top: 24rpx;
       left: 24rpx;
+      right: auto;
+      bottom: auto;
     }
 
     &--top {
       top: 24rpx;
       left: 50%;
+      right: auto;
+      bottom: auto;
       transform: translateX(-50%);
     }
 
     &--top-right {
       top: 24rpx;
+      left: auto;
       right: 24rpx;
+      bottom: auto;
     }
 
     &--bottom-left {
+      top: auto;
       left: 24rpx;
+      right: auto;
       bottom: 24rpx;
     }
 
     &--bottom {
+      top: auto;
       left: 50%;
+      right: auto;
       bottom: 24rpx;
       transform: translateX(-50%);
     }
 
     &--bottom-right {
+      top: auto;
+      left: auto;
       right: 24rpx;
       bottom: 24rpx;
     }
 
     &--right {
       top: 50%;
+      left: auto;
       right: 24rpx;
+      bottom: auto;
       transform: translateY(-50%);
     }
 
@@ -318,13 +338,16 @@ export default {
       height: 12rpx;
       opacity: 0.3;
       transition: all 0.3s ease;
-      margin-left: 8rpx;
       border-radius: 50%;
       background-color: #fff;
 
       &--active {
         opacity: 1;
       }
+    }
+
+    &__number {
+      color: #fff;
     }
   }
 }

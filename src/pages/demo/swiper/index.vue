@@ -46,8 +46,15 @@
     </demo-section>
 
     <demo-section title="垂直滚动">
-      <demo-block direction="column">
-        <ui-swiper :list="images" height="300rpx" vertical indicator-position="right" />
+      <demo-block direction="column" align="start" :gap="16">
+        <text class="demo-text">当前位置: {{ verticalPosition }}</text>
+        <demo-block :cols="4" :gap="16">
+          <ui-button size="small" @click="verticalPosition = 'left'">左侧</ui-button>
+          <ui-button size="small" @click="verticalPosition = 'right'">右侧</ui-button>
+          <ui-button size="small" @click="verticalPosition = 'top'">顶部</ui-button>
+          <ui-button size="small" @click="verticalPosition = 'bottom'">底部</ui-button>
+        </demo-block>
+        <ui-swiper :list="images" height="300rpx" vertical :indicator-position="verticalPosition" />
       </demo-block>
     </demo-section>
 
@@ -200,12 +207,12 @@ definePage({
 
 const toast = useToast()
 
-// 基础数据
+// 基础数据 - 使用稳定的图片源
 const images = [
-  "https://picsum.photos/750/300?random=1",
-  "https://picsum.photos/750/300?random=2",
-  "https://picsum.photos/750/300?random=3",
-  "https://picsum.photos/750/300?random=4",
+  "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=750&h=300&fit=crop",
+  "https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=750&h=300&fit=crop",
+  "https://images.unsplash.com/photo-1447752875215-b2761acb3c5d?w=750&h=300&fit=crop",
+  "https://images.unsplash.com/photo-1433086966358-54859d0ed716?w=750&h=300&fit=crop",
 ]
 
 // 双向绑定
@@ -213,6 +220,9 @@ const currentIndex = ref(0)
 
 // 指示器位置
 const currentPosition = ref<SwiperIndicatorPosition>("bottom-right")
+
+// 垂直滚动指示器位置
+const verticalPosition = ref<SwiperIndicatorPosition>("right")
 
 // 自定义间隔
 const currentInterval = ref(3000)
