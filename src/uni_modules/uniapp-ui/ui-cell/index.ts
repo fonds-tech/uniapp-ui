@@ -79,15 +79,15 @@ export const [cellProps, useCellProps] = createProps("cell", {
   /**
    * 内容大小
    */
-  valueSize: numericProp,
+  contentSize: numericProp,
   /**
    * 内容颜色
    */
-  valueColor: String,
+  contentColor: String,
   /**
    * 内容粗细
    */
-  valueWeight: numericProp,
+  contentWeight: numericProp,
   /**
    * 右侧图标
    */

@@ -3,7 +3,6 @@ import type { ColProps } from "../ui-col"
 import type { RowProps } from "../ui-row"
 import type { TabProps } from "../ui-tab"
 import type { TagProps } from "../ui-tag"
-import type { CardProps } from "../ui-card"
 import type { CellProps } from "../ui-cell"
 import type { FormProps } from "../ui-form"
 import type { IconProps } from "../ui-icon"
@@ -48,7 +47,6 @@ import type { StepperProps } from "../ui-stepper"
 import type { CalendarProps } from "../ui-calendar"
 import type { CascaderProps } from "../ui-cascader"
 import type { CheckboxProps } from "../ui-checkbox"
-import type { CollapseProps } from "../ui-collapse"
 import type { FormItemProps } from "../ui-form-item"
 import type { IndexBarProps } from "../ui-index-bar"
 import type { KeyboardProps } from "../ui-keyboard"
@@ -74,7 +72,6 @@ import type { PickerPanelProps } from "../ui-picker-panel"
 import type { PullRefreshProps } from "../ui-pull-refresh"
 import type { SafeAreaTopProps } from "../ui-safe-area-top"
 import type { SidebarItemProps } from "../ui-sidebar-item"
-import type { CollapseItemProps } from "../ui-collapse-item"
 import type { DropdownItemProps } from "../ui-dropdown-item"
 import type { DropdownMenuProps } from "../ui-dropdown-menu"
 import type { CheckboxGroupProps } from "../ui-checkbox-group"
@@ -124,10 +121,6 @@ export interface Components {
    */
   calendar?: Partial<CalendarProps>
   /**
-   * card 组件默认值
-   */
-  card?: Partial<CardProps>
-  /**
    * cascader 组件默认值
    */
   cascader?: Partial<CascaderProps>
@@ -151,14 +144,6 @@ export interface Components {
    * col 组件默认值
    */
   col?: Partial<ColProps>
-  /**
-   * collapse 组件默认值
-   */
-  collapse?: Partial<CollapseProps>
-  /**
-   * collapse-item 组件默认值
-   */
-  "collapse-item"?: Partial<CollapseItemProps>
   /**
    * config-provider 组件默认值
    */
@@ -455,14 +440,11 @@ export type {
   BadgeProps,
   ButtonProps,
   CalendarProps,
-  CardProps,
   CascaderProps,
   CellGroupProps,
   CellProps,
   CheckboxGroupProps,
   CheckboxProps,
-  CollapseItemProps,
-  CollapseProps,
   ColProps,
   ConfigProviderProps,
   CountDownProps,

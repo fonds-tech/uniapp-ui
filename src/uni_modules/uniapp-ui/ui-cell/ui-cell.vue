@@ -27,8 +27,8 @@
 <script setup lang="ts">
 import type { CSSProperties } from "vue"
 import { isDef } from "../utils/check"
+import { computed } from "vue"
 import { cellGroupKey } from "../ui-cell-group"
-import { computed, useSlots } from "vue"
 import { cellEmits, cellProps, useCellProps } from "./index"
 import { useUnit, useColor, useStyle, useParent } from "../hooks"
 
@@ -38,7 +38,6 @@ defineOptions({ name: "ui-cell" })
 const props = defineProps(cellProps)
 const emits = defineEmits(cellEmits)
 const useProps = useCellProps(props)
-const slots = useSlots()
 
 // 使用useParent hook获取父组件信息
 const { index, parent: cellGroup } = useParent(cellGroupKey)
@@ -57,10 +56,17 @@ const style = computed(() => {
   return useStyle({ ...style, ...useStyle(useProps.customStyle) })
 })
 
+// 判断是否是最后一个 cell
+const isLastCell = computed(() => {
+  if (!cellGroup?.childrens) return false
+  return index.value === cellGroup.childrens.length - 1
+})
+
 // 计算class列表
 const classs = computed(() => {
   const list: string[] = []
-  if (useProps.border) list.push("ui-cell--border")
+  // 最后一个 cell 不显示边框
+  if (useProps.border && !isLastCell.value) list.push("ui-cell--border")
   if (useProps.center) list.push("ui-cell--center")
   if (useProps.clickable) list.push("ui-cell--clickable")
   return list
@@ -123,15 +129,16 @@ const isShowRightIcon = computed(() => useProps.isLink && isDef(useProps.rightIc
 // 获取属性值，优先使用props中的值，如果没有则使用cellGroup中的值
 function prop(name: string) {
   if (isDef(props[name])) return props[name]
-  if (isDef(cellGroup.props[name])) return cellGroup.props[name]
+  if (cellGroup?.props && isDef(cellGroup.props[name])) return cellGroup.props[name]
   return ""
 }
 
 // 点击事件处理
 function onClick() {
   if (useProps.url) {
-    if (uni[useProps.linkType]) {
-      uni[useProps.linkType]({ url: useProps.url })
+    const linkType = useProps.linkType || "navigateTo"
+    if (uni[linkType]) {
+      uni[linkType]({ url: useProps.url })
     }
   } else {
     emits("click")
@@ -174,32 +181,51 @@ export default {
   }
 
   &__icon {
-    height: 100%;
     display: flex;
     font-size: var(--ui-font-size-md);
     align-items: center;
-    margin-right: var(--ui-spacing-lg);
+    flex-shrink: 0;
+    margin-right: var(--ui-spacing-xs);
   }
 
   &__body {
     flex: 1;
     display: flex;
+    min-width: 0;
     flex-direction: column;
+    justify-content: center;
   }
 
   &__title {
-    font-size: var(--ui-font-size-md);
+    color: var(--ui-color-text-primary);
+    font-size: var(--ui-font-size-sm);
   }
 
   &__label {
     color: var(--ui-color-text-secondary);
-    margin-top: var(--ui-spacing-sm);
+    font-size: var(--ui-font-size-xs);
+    margin-top: var(--ui-spacing-xs);
   }
 
   &__value {
+    color: var(--ui-color-text-secondary);
     display: flex;
+    font-size: var(--ui-font-size-sm);
+    align-items: center;
     flex-shrink: 0;
-    white-space: nowrap;
+    margin-left: var(--ui-spacing-md);
+  }
+
+  &__right-icon {
+    color: var(--ui-color-text-placeholder);
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+    margin-left: var(--ui-spacing-xs);
+  }
+
+  &--center {
+    align-items: center;
   }
 
   &--border::after {

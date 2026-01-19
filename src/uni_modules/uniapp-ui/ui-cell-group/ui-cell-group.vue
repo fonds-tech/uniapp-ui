@@ -39,7 +39,7 @@ export default {
   display: flex;
   overflow: hidden;
   position: relative;
-  border-radius: var(--ui-radius-xl);
+  border-radius: var(--ui-radius-md);
   flex-direction: column;
   background-color: var(--ui-color-background);
 }
