@@ -35,7 +35,7 @@ export const [noticeBarProps, useNoticeBarProps] = createProps("noticeBar", {
   /**
    * 最小高度
    */
-  minHeight: makeNumericProp("80rpx"),
+  minHeight: makeNumericProp("72rpx"),
   /**
    * 内容文本大小
    */
@@ -47,15 +47,15 @@ export const [noticeBarProps, useNoticeBarProps] = createProps("noticeBar", {
   /**
    * 左侧图标名称
    */
-  icon: { type: [String], default: "volume-o" },
+  icon: { type: [String], default: "sound" },
   /**
-   * 左侧图标名称
+   * 左侧图标大小
    */
   iconSize: makeNumericProp(""),
   /**
    * 左侧图标颜色
    */
-  iconColor: makeStringProp("primary"),
+  iconColor: makeStringProp("warning"),
   /**
    * 左侧图标粗细
    */
@@ -65,13 +65,13 @@ export const [noticeBarProps, useNoticeBarProps] = createProps("noticeBar", {
    */
   rightIcon: { type: [String], default: "" },
   /**
-   * 右侧图标名称
+   * 右侧图标大小
    */
   rightIconSize: makeNumericProp(""),
   /**
    * 右侧图标颜色
    */
-  rightIconColor: makeStringProp("primary"),
+  rightIconColor: makeStringProp("warning"),
   /**
    * 右侧图标粗细
    */

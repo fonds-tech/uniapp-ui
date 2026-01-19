@@ -101,7 +101,7 @@ export const [tabsProps, useTabsProps] = createProps("tabs", {
 
 export const tabsEmits = {
   change: (name: string | number) => true,
-  "tabClick": (name: string | number) => true,
+  tabClick: (name: string | number) => true,
   "update:modelValue": (name: string | number) => true,
 }
 

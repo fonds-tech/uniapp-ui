@@ -481,6 +481,33 @@ describe("uiDateRangeSelect 组件", () => {
     })
   })
 
+  describe("autoSwitchToEnd 属性测试", () => {
+    it("默认 autoSwitchToEnd 应该是 true", () => {
+      const wrapper = mount(UiDateRangeSelect, {
+        global: {
+          stubs: {
+            "ui-icon": true,
+            "ui-date-picker": true,
+          },
+        },
+      })
+      expect(wrapper.props("autoSwitchToEnd")).toBe(true)
+    })
+
+    it("应该支持关闭自动切换", () => {
+      const wrapper = mount(UiDateRangeSelect, {
+        props: { autoSwitchToEnd: false },
+        global: {
+          stubs: {
+            "ui-icon": true,
+            "ui-date-picker": true,
+          },
+        },
+      })
+      expect(wrapper.props("autoSwitchToEnd")).toBe(false)
+    })
+  })
+
   describe("边界情况测试", () => {
     it("不设置任何 props 时应该使用默认值", async () => {
       const wrapper = mount(UiDateRangeSelect, {

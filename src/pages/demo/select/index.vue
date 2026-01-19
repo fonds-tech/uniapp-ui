@@ -256,15 +256,15 @@
       <demo-block direction="column" :gap="16">
         <view class="form-item">
           <text class="form-label">出发城市</text>
-          <ui-select v-model="departCity" :columns="cities" placeholder="请选择" text-align="right" right-icon="arrow" />
+          <ui-select v-model="departCity" :columns="cities" placeholder="请选择" text-align="right" right-icon="right" />
         </view>
         <view class="form-item">
           <text class="form-label">到达城市</text>
-          <ui-select v-model="arriveCity" :columns="cities" placeholder="请选择" text-align="right" right-icon="arrow" />
+          <ui-select v-model="arriveCity" :columns="cities" placeholder="请选择" text-align="right" right-icon="right" />
         </view>
         <view class="form-item">
           <text class="form-label">出发日期</text>
-          <ui-select v-model="departDate" :columns="dateColumns" placeholder="请选择" text-align="right" right-icon="arrow" display-separator=" " />
+          <ui-select v-model="departDate" :columns="dateColumns" placeholder="请选择" text-align="right" right-icon="right" display-separator=" " />
         </view>
       </demo-block>
     </demo-section>

@@ -205,7 +205,7 @@ export default {
   }
 
   &__close {
-    z-index: var(--ui-z-index-absolute);
+    z-index: var(--ui-z-index-content);
     position: absolute;
 
     &--top-left {

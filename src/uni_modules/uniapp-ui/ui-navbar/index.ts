@@ -136,7 +136,7 @@ export const navbarEmits = {
   rect: (rect: UniApp.NodeInfo) => true,
   height: (height: number) => true,
   gradient: (scrollTop: number) => true,
-  "titleClick": () => true,
+  titleClick: () => true,
 }
 
 export type NavbarEmits = typeof navbarEmits

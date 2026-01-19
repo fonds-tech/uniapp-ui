@@ -34,9 +34,9 @@
 
     <demo-section title="左侧图标">
       <demo-block direction="column" :gap="16">
-        <ui-notice-bar icon="volume-o" text="在代码阅读过程中人们说脏话的频率是衡量代码质量的唯一标准。" />
-        <ui-notice-bar icon="info" text="这是一条信息通知。" />
-        <ui-notice-bar icon="warning" text="这是一条警告通知。" />
+        <ui-notice-bar icon="sound" text="在代码阅读过程中人们说脏话的频率是衡量代码质量的唯一标准。" />
+        <ui-notice-bar icon="info-circle" text="这是一条信息通知。" />
+        <ui-notice-bar icon="warning-circle" text="这是一条警告通知。" />
       </demo-block>
     </demo-section>
 
@@ -44,15 +44,15 @@
     <demo-section title="图标样式">
       <demo-block direction="column" :gap="16">
         <text class="demo-text">自定义图标大小、颜色和粗细</text>
-        <ui-notice-bar icon="volume-o" icon-size="40rpx" icon-color="#ee0a24" icon-weight="600" text="自定义图标样式的通知栏。" />
+        <ui-notice-bar icon="sound" icon-size="40rpx" icon-color="#ee0a24" icon-weight="600" text="自定义图标样式的通知栏。" />
       </demo-block>
     </demo-section>
 
     <!-- 新增：右侧图标 -->
     <demo-section title="右侧图标">
       <demo-block direction="column" :gap="16">
-        <ui-notice-bar icon="volume-o" right-icon="arrow" text="点击查看详情" @click="onNoticeClick" />
-        <ui-notice-bar icon="info" right-icon="cross" right-icon-color="#999" text="可关闭的通知" @click="onCloseClick" />
+        <ui-notice-bar icon="sound" right-icon="right" text="点击查看详情" @click="onNoticeClick" />
+        <ui-notice-bar icon="info-circle" right-icon="close" right-icon-color="#999" text="可关闭的通知" @click="onCloseClick" />
       </demo-block>
     </demo-section>
 
@@ -60,15 +60,15 @@
     <demo-section title="右侧图标样式">
       <demo-block direction="column" :gap="16">
         <text class="demo-text">自定义右侧图标大小、颜色和粗细</text>
-        <ui-notice-bar icon="volume-o" right-icon="arrow" right-icon-size="32rpx" right-icon-color="#1989fa" right-icon-weight="600" text="自定义右侧图标样式。" />
+        <ui-notice-bar icon="sound" right-icon="right" right-icon-size="32rpx" right-icon-color="#1989fa" right-icon-weight="600" text="自定义右侧图标样式。" />
       </demo-block>
     </demo-section>
 
     <demo-section title="自定义样式">
       <demo-block direction="column" :gap="16">
-        <ui-notice-bar background="#ecf9ff" color="#1989fa" icon="info" text="技术是开发它的人的共同灵魂。" />
-        <ui-notice-bar background="#fff7e6" color="#ff9500" icon="warning" text="请注意查看重要通知。" />
-        <ui-notice-bar background="#ffece8" color="#ee0a24" icon="warning" text="紧急通知：系统将于今晚维护。" />
+        <ui-notice-bar background="#ecf9ff" color="#1989fa" icon="info-circle" text="技术是开发它的人的共同灵魂。" />
+        <ui-notice-bar background="#fff7e6" color="#ff9500" icon="warning-circle" text="请注意查看重要通知。" />
+        <ui-notice-bar background="#ffece8" color="#ee0a24" icon="warning-circle" text="紧急通知：系统将于今晚维护。" />
       </demo-block>
     </demo-section>
 
@@ -76,8 +76,8 @@
     <demo-section title="文字样式">
       <demo-block direction="column" :gap="16">
         <text class="demo-text">自定义文字大小和粗细</text>
-        <ui-notice-bar icon="volume-o" font-size="28rpx" text="小号文字通知。" />
-        <ui-notice-bar icon="volume-o" font-size="32rpx" font-weight="600" text="加粗文字通知。" />
+        <ui-notice-bar icon="sound" font-size="28rpx" text="小号文字通知。" />
+        <ui-notice-bar icon="sound" font-size="32rpx" font-weight="600" text="加粗文字通知。" />
       </demo-block>
     </demo-section>
 
@@ -90,13 +90,13 @@
           <ui-button size="small" @click="currentMinHeight = '80rpx'">80rpx</ui-button>
           <ui-button size="small" @click="currentMinHeight = '100rpx'">100rpx</ui-button>
         </demo-block>
-        <ui-notice-bar icon="volume-o" :min-height="currentMinHeight" text="自定义高度的通知栏。" />
+        <ui-notice-bar icon="sound" :min-height="currentMinHeight" text="自定义高度的通知栏。" />
       </demo-block>
     </demo-section>
 
     <demo-section title="垂直滚动">
       <demo-block direction="column">
-        <ui-notice-bar :text="notices" mode="vertical" icon="volume-o" />
+        <ui-notice-bar :text="notices" mode="vertical" icon="sound" />
       </demo-block>
     </demo-section>
 
@@ -109,7 +109,7 @@
           <ui-button size="small" @click="currentInterval = 3000">3秒</ui-button>
           <ui-button size="small" @click="currentInterval = 5000">5秒</ui-button>
         </demo-block>
-        <ui-notice-bar :text="notices" mode="vertical" icon="volume-o" :interval="currentInterval" />
+        <ui-notice-bar :text="notices" mode="vertical" icon="sound" :interval="currentInterval" />
       </demo-block>
     </demo-section>
 
@@ -122,14 +122,14 @@
           <ui-button size="small" @click="currentDuration = 500">500ms</ui-button>
           <ui-button size="small" @click="currentDuration = 1000">1000ms</ui-button>
         </demo-block>
-        <ui-notice-bar :text="notices" mode="vertical" icon="volume-o" :duration="currentDuration" />
+        <ui-notice-bar :text="notices" mode="vertical" icon="sound" :duration="currentDuration" />
       </demo-block>
     </demo-section>
 
     <!-- 新增：事件处理 -->
     <demo-section title="事件处理">
       <demo-block direction="column" align="start" :gap="16">
-        <ui-notice-bar :text="notices" mode="vertical" icon="volume-o" right-icon="arrow" @click="onNoticeItemClick" />
+        <ui-notice-bar :text="notices" mode="vertical" icon="sound" right-icon="right" @click="onNoticeItemClick" />
         <text class="demo-text">{{ eventLog }}</text>
       </demo-block>
     </demo-section>
@@ -137,8 +137,8 @@
     <!-- 新增：自定义类名和样式 -->
     <demo-section title="自定义类名和样式">
       <demo-block direction="column" :gap="16">
-        <ui-notice-bar icon="volume-o" text="自定义类名通知栏。" custom-class="my-notice-bar" />
-        <ui-notice-bar icon="volume-o" text="自定义样式通知栏。" :custom-style="{ borderRadius: '16rpx', margin: '0 16rpx' }" />
+        <ui-notice-bar icon="sound" text="自定义类名通知栏。" custom-class="my-notice-bar" />
+        <ui-notice-bar icon="sound" text="自定义样式通知栏。" :custom-style="{ borderRadius: '16rpx', margin: '0 16rpx' }" />
       </demo-block>
     </demo-section>
 
@@ -151,7 +151,7 @@
           icon="gift"
           icon-size="36rpx"
           icon-color="#ee0a24"
-          right-icon="arrow"
+          right-icon="right"
           right-icon-color="#ee0a24"
           background="#fff0f0"
           color="#ee0a24"
@@ -167,7 +167,7 @@
       <demo-block direction="column">
         <ui-notice-bar
           scrollable
-          icon="info"
+          icon="info-circle"
           icon-size="32rpx"
           icon-color="#1989fa"
           background="#e8f4ff"
@@ -184,11 +184,11 @@
         <view class="warning-notice">
           <ui-notice-bar
             scrollable
-            icon="warning"
+            icon="warning-circle"
             icon-size="36rpx"
             icon-color="#fff"
             icon-weight="600"
-            right-icon="cross"
+            right-icon="close"
             right-icon-color="rgba(255,255,255,0.8)"
             background="linear-gradient(135deg, #ee0a24 0%, #ff6034 100%)"
             color="#fff"
@@ -208,7 +208,7 @@
       <demo-block direction="column">
         <view class="announcement-box">
           <view class="announcement-header">
-            <ui-icon name="notice" size="32rpx" color="#ff9500" />
+            <ui-icon name="bell" size="32rpx" color="#ff9500" />
             <text class="announcement-title">最新公告</text>
           </view>
           <ui-notice-bar
@@ -216,7 +216,7 @@
             mode="vertical"
             :scrollable="false"
             icon=""
-            right-icon="arrow"
+            right-icon="right"
             background="transparent"
             color="#333"
             font-size="26rpx"

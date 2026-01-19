@@ -130,11 +130,11 @@
       <demo-block direction="column" :gap="16">
         <view class="form-item">
           <text class="form-label">预约日期</text>
-          <ui-date-select v-model="bookingDate" :min-date="today" placeholder="请选择" text-align="right" right-icon="arrow" />
+          <ui-date-select v-model="bookingDate" :min-date="today" placeholder="请选择" text-align="right" right-icon="right" />
         </view>
         <view class="form-item">
           <text class="form-label">预约时间</text>
-          <ui-date-select v-model="bookingTime" :columns="['hour', 'minute']" format="HH:mm" placeholder="请选择" text-align="right" right-icon="arrow" />
+          <ui-date-select v-model="bookingTime" :columns="['hour', 'minute']" format="HH:mm" placeholder="请选择" text-align="right" right-icon="right" />
         </view>
         <view v-if="bookingDate && bookingTime" class="result-box">
           <text class="result-text">预约时间: {{ bookingDate }} {{ bookingTime }}</text>

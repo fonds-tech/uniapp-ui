@@ -11,13 +11,14 @@
       :autoplay="autoplay"
       :indicator-dots="false"
       :disable-touch="disableTouch"
+      :easing-function="useProps.easingFunction"
       @change="onChange"
       @transition="onTransition"
       @animationfinish="onAnimationFinish"
     >
       <swiper-item v-for="(item, index) in list" :key="forKey ? item[forKey] : index" @click="onClick(index)">
         <view class="ui-swiper__item" :class="[itemClass(index)]" :style="[itemStyle(index)]">
-          <video v-if="item.type === 'video'" :src="item.url" controls />
+          <video v-if="item.type === 'video'" class="ui-swiper__video" :src="item.url" :poster="item.poster" controls />
           <ui-image v-else :src="item.url" width="100%" :height="useProps.height" :radius="useProps.radius" :mode="imageMode" />
         </view>
       </swiper-item>
@@ -206,7 +207,9 @@ function onAnimationFinish(event: any) {
 // 根据文件链接获取文件类型
 function getFileType(link: string) {
   if (link) {
-    const extension = link.match(/\.([^.]+)$/)[1]
+    const match = link.match(/\.([^.]+)$/)
+    if (!match) return "image"
+    const extension = match[1].toLowerCase()
     const imageExtensions = ["jpg", "jpeg", "gif", "png", "bmp", "webp"]
     const videoExtensions = ["mp4", "wmv", "avi", "mov"]
     if (imageExtensions.includes(extension)) return "image"
@@ -226,7 +229,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .ui-swiper {
   flex: 1;
   display: flex;
@@ -239,6 +242,12 @@ export default {
 
   &__item {
     transition: all 0.3s ease;
+  }
+
+  &__video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
 
   &__indicator {

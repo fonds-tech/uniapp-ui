@@ -196,14 +196,7 @@
     <!-- 垂直带图标 -->
     <demo-section title="垂直带图标">
       <demo-block direction="column">
-        <ui-steps
-          :active="verticalIconActive"
-          direction="vertical"
-          active-icon="check-circle-fill"
-          inactive-icon="time-circle"
-          finish-icon="check-circle-fill"
-          icon-size="44rpx"
-        >
+        <ui-steps :active="verticalIconActive" direction="vertical" active-icon="check-circle-fill" inactive-icon="time-circle" finish-icon="check-circle-fill" icon-size="44rpx">
           <ui-step title="订单提交成功" description="您的订单已提交，等待系统确认">
             <template #icon="{ status }">
               <ui-icon :name="status === 'finish' ? 'check-circle-fill' : 'time-circle'" :size="44" :color="status === 'finish' ? '#07c160' : '#999'" />

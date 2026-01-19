@@ -1,4 +1,4 @@
-let globalZIndex = 500
+let globalZIndex = 999
 
 /**
  * 获取全局z-index

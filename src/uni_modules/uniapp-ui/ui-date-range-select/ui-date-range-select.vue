@@ -11,7 +11,7 @@
       </view>
 
       <!-- 分隔符 -->
-      <view class="ui-date-range-select__separator">
+      <view class="ui-date-range-select__separator" @click="handleClick('start')">
         <slot name="separator">
           <text class="ui-date-range-select__separator-text" :style="[separatorStyle]">{{ useProps.separator }}</text>
         </slot>
@@ -26,7 +26,7 @@
       </view>
 
       <!-- 右侧图标 -->
-      <view v-if="showRightIcon" class="ui-date-range-select__icon">
+      <view v-if="showRightIcon" class="ui-date-range-select__icon" @click="handleClick('start')">
         <slot name="right-icon">
           <ui-icon :name="useProps.rightIcon" :size="useProps.rightIconSize" :color="useProps.rightIconColor" :weight="useProps.rightIconWeight" />
         </slot>
@@ -194,7 +194,11 @@ const minBound = computed(() => {
     if (useProps.minDate) {
       const minParsed = parseDate(useProps.minDate)
       // 取较大者
-      if (startParsed.y > minParsed.y || (startParsed.y === minParsed.y && startParsed.m > minParsed.m) || (startParsed.y === minParsed.y && startParsed.m === minParsed.m && startParsed.d > minParsed.d)) {
+      if (
+        startParsed.y > minParsed.y ||
+        (startParsed.y === minParsed.y && startParsed.m > minParsed.m) ||
+        (startParsed.y === minParsed.y && startParsed.m === minParsed.m && startParsed.d > minParsed.d)
+      ) {
         return startParsed
       }
       return minParsed
@@ -216,7 +220,11 @@ const maxBound = computed(() => {
     if (useProps.maxDate) {
       const maxParsed = parseDate(useProps.maxDate)
       // 取较小者
-      if (endParsed.y < maxParsed.y || (endParsed.y === maxParsed.y && endParsed.m < maxParsed.m) || (endParsed.y === maxParsed.y && endParsed.m === maxParsed.m && endParsed.d < maxParsed.d)) {
+      if (
+        endParsed.y < maxParsed.y ||
+        (endParsed.y === maxParsed.y && endParsed.m < maxParsed.m) ||
+        (endParsed.y === maxParsed.y && endParsed.m === maxParsed.m && endParsed.d < maxParsed.d)
+      ) {
         return endParsed
       }
       return maxParsed
@@ -590,7 +598,10 @@ const endTabText = computed(() => {
 function formatDisplayText(value: string): string {
   if (!value) return ""
 
-  const parts = value.replace("T", " ").replace("Z", "").split(/[\s/:-]/)
+  const parts = value
+    .replace("T", " ")
+    .replace("Z", "")
+    .split(/[\s/:-]/)
   if (parts.length < 3) return value
 
   const year = parts[0]
@@ -698,6 +709,12 @@ function handleCancel() {
 }
 
 function handleConfirm() {
+  // 自动切换：当前是开始日期且开启了自动切换，则切换到结束日期而非关闭
+  if (useProps.autoSwitchToEnd && activeType.value === "start") {
+    switchTab("end")
+    return
+  }
+
   startValue.value = tempStartValue.value
   endValue.value = tempEndValue.value
 
@@ -837,8 +854,9 @@ export default {
 
   // Header 样式
   &__header {
+    height: 96rpx;
     display: flex;
-    padding: 24rpx;
+    padding: 0 24rpx;
     align-items: center;
     border-bottom: 1px solid #ebedf0;
     justify-content: space-between;
@@ -860,6 +878,8 @@ export default {
   &__tab {
     padding: 8rpx 24rpx;
     position: relative;
+    min-width: 160rpx;
+    text-align: center;
     transition: all 0.2s;
     border-radius: 8rpx;
 
@@ -869,18 +889,6 @@ export default {
       .ui-date-range-select__tab-text {
         color: var(--ui-color-primary);
         font-weight: 600;
-      }
-
-      &::after {
-        left: 50%;
-        width: 40rpx;
-        bottom: 0;
-        height: 4rpx;
-        content: "";
-        position: absolute;
-        transform: translateX(-50%);
-        background: var(--ui-color-primary);
-        border-radius: 2rpx;
       }
     }
 

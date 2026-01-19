@@ -166,20 +166,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 新增：自定义内容 -->
-    <demo-section title="自定义内容">
-      <demo-block direction="column">
-        <ui-swiper height="300rpx" :autoplay="false">
-          <swiper-item v-for="(item, index) in customItems" :key="index">
-            <view class="custom-item" :style="{ background: item.bg }">
-              <text class="custom-title">{{ item.title }}</text>
-              <text class="custom-desc">{{ item.desc }}</text>
-            </view>
-          </swiper-item>
-        </ui-swiper>
-      </demo-block>
-    </demo-section>
-
     <!-- 新增：综合示例 - 商品轮播 -->
     <demo-section title="综合示例 - 商品轮播">
       <demo-block direction="column">
@@ -198,22 +184,6 @@
         <view class="product-info">
           <text class="product-name">商品名称 {{ productIndex + 1 }}</text>
           <text class="product-price">¥{{ (productIndex + 1) * 99 }}.00</text>
-        </view>
-      </demo-block>
-    </demo-section>
-
-    <!-- 新增：综合示例 - 公告轮播 -->
-    <demo-section title="综合示例 - 公告轮播">
-      <demo-block direction="column">
-        <view class="notice-swiper">
-          <ui-icon name="notice" size="36rpx" color="#ff9500" />
-          <ui-swiper :list="notices" height="60rpx" vertical :indicator="false" :interval="3000" image-mode="aspectFit">
-            <swiper-item v-for="(notice, index) in notices" :key="index">
-              <view class="notice-item">
-                <text class="notice-text">{{ notice }}</text>
-              </view>
-            </swiper-item>
-          </ui-swiper>
         </view>
       </demo-block>
     </demo-section>
@@ -281,22 +251,12 @@ function onSwiperAnimationfinish(index: number) {
   eventLog.value = `触发 animationfinish 事件，索引: ${index}`
 }
 
-// 自定义内容
-const customItems = [
-  { title: "春季新品", desc: "限时特惠", bg: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)" },
-  { title: "夏日清凉", desc: "全场8折", bg: "linear-gradient(135deg, #11998e 0%, #38ef7d 100%)" },
-  { title: "秋冬上新", desc: "满减优惠", bg: "linear-gradient(135deg, #ee0979 0%, #ff6a00 100%)" },
-]
-
 // 商品轮播
 const productIndex = ref(0)
 
 function onProductClick(index: number) {
   toast.success(`查看商品 ${index + 1} 详情`)
 }
-
-// 公告轮播
-const notices = ["欢迎使用 UniApp UI 组件库", "新版本 v2.0 已发布，快来体验", "所有商品限时特惠，满 300 减 50", "会员日专享福利，积分翻倍"]
 </script>
 
 <style lang="scss" scoped>
@@ -307,27 +267,6 @@ const notices = ["欢迎使用 UniApp UI 组件库", "新版本 v2.0 已发布�
 
 .switch-label {
   color: var(--ui-color-text-primary);
-  font-size: 28rpx;
-}
-
-.custom-item {
-  gap: 16rpx;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  justify-content: center;
-}
-
-.custom-title {
-  color: #fff;
-  font-size: 40rpx;
-  font-weight: 600;
-}
-
-.custom-desc {
-  color: rgba(255, 255, 255, 0.8);
   font-size: 28rpx;
 }
 
@@ -348,26 +287,6 @@ const notices = ["欢迎使用 UniApp UI 组件库", "新版本 v2.0 已发布�
   color: #ee0a24;
   font-size: 32rpx;
   font-weight: 600;
-}
-
-.notice-swiper {
-  gap: 16rpx;
-  display: flex;
-  padding: 16rpx 24rpx;
-  background: #fff7e6;
-  align-items: center;
-  border-radius: 12rpx;
-}
-
-.notice-item {
-  height: 60rpx;
-  display: flex;
-  align-items: center;
-}
-
-.notice-text {
-  color: #ff9500;
-  font-size: 26rpx;
 }
 
 :deep(.my-swiper) {

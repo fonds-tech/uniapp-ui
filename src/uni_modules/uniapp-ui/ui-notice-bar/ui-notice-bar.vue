@@ -6,7 +6,15 @@
       </slot>
     </view>
 
-    <swiper v-if="useProps.mode === 'vertical'" class="ui-notice-bar__vertical" circular vertical :autoplay="useProps.scrollable" :interval="useProps.interval" :duration="useProps.duration">
+    <swiper
+      v-if="useProps.mode === 'vertical'"
+      class="ui-notice-bar__vertical"
+      circular
+      vertical
+      :autoplay="useProps.scrollable"
+      :interval="useProps.interval"
+      :duration="useProps.duration"
+    >
       <swiper-item v-for="(text, index) in list" :key="index" style="display: flex" @click="onClick(index)">
         <text class="ui-notice-bar__vertical__text" :style="[textStyle]">{{ text }}</text>
       </swiper-item>
@@ -27,13 +35,7 @@
 
     <view v-if="useProps.rightIcon || slots.right" class="ui-notice-bar__right">
       <slot name="right">
-        <ui-icon
-          v-if="useProps.rightIcon"
-          :name="useProps.rightIcon"
-          :size="useProps.rightIconSize"
-          :color="useProps.rightIconColor"
-          :weight="useProps.rightIconWeight"
-        />
+        <ui-icon v-if="useProps.rightIcon" :name="useProps.rightIcon" :size="useProps.rightIconSize" :color="useProps.rightIconColor" :weight="useProps.rightIconWeight" />
       </slot>
     </view>
   </view>
@@ -180,31 +182,32 @@ export default {
 .ui-notice-bar {
   width: 100%;
   display: flex;
-  padding: 0 24rpx;
+  padding: 0 var(--ui-spacing-md);
   position: relative;
   box-sizing: border-box;
   align-items: center;
-  background-color: #fdf6ec;
+  background-color: var(--ui-notice-bar-background, #fdf6ec);
 
   &__left {
     display: flex;
     align-items: center;
-    margin-right: 16rpx;
+    margin-right: var(--ui-spacing-sm);
   }
 
   &__right {
-    margin-left: 16rpx;
+    margin-left: var(--ui-spacing-sm);
   }
 
   &__vertical {
     flex: 1;
-    height: 80rpx;
+    height: var(--ui-notice-bar-height, var(--ui-size-small));
     display: flex;
 
     &__text {
-      color: var(--ui-color-primary);
+      color: var(--ui-notice-bar-color, #ed6a0c);
       display: -webkit-box;
       overflow: hidden;
+      font-size: var(--ui-notice-bar-font-size, var(--ui-font-size-sm));
       box-sizing: border-box;
       line-clamp: 1;
       white-space: normal;
@@ -221,8 +224,9 @@ export default {
     align-items: center;
 
     &__text {
-      color: var(--ui-color-primary);
+      color: var(--ui-notice-bar-color, #ed6a0c);
       overflow: hidden;
+      font-size: var(--ui-notice-bar-font-size, var(--ui-font-size-sm));
       white-space: nowrap;
       text-overflow: ellipsis;
 

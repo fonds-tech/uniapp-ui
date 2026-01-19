@@ -83,6 +83,10 @@ export const [dateRangeSelectProps, useDateRangeSelectProps] = createProps("date
    * 是否只读
    */
   readonly: Boolean,
+  /**
+   * 选择开始日期后自动切换到结束日期
+   */
+  autoSwitchToEnd: truthProp,
 
   // ===== 日期配置 Props（透传 ui-date-picker）=====
   /**
