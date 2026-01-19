@@ -1,7 +1,9 @@
 import type Arc from "./ui-arc.vue"
 import type { PropType, CSSProperties, ExtractPropTypes } from "vue"
 import { createProps } from "../hooks"
-import { truthProp, numericProp, makeNumericProp } from "../utils/props"
+import { numericProp, makeStringProp, makeNumericProp } from "../utils/props"
+
+export type ArcDirection = "top" | "bottom"
 
 export const [arcProps, useArcProps] = createProps("arc", {
   /**
@@ -9,9 +11,15 @@ export const [arcProps, useArcProps] = createProps("arc", {
    */
   height: makeNumericProp("130rpx"),
   /**
-   * 圆弧半径
+   * 曲率（100-500），值越大弧度越平缓，值越小弧度越陡
+   * @default 120
    */
-  percent: makeNumericProp(120),
+  curvature: makeNumericProp(120),
+  /**
+   * 弧形方向
+   * @default 'bottom'
+   */
+  direction: makeStringProp<ArcDirection>("bottom"),
   /**
    * 背景色
    */
@@ -27,7 +35,7 @@ export const [arcProps, useArcProps] = createProps("arc", {
   /**
    * 是否固定定位
    */
-  fixed: truthProp,
+  fixed: Boolean,
   /**
    * 元素层级
    */

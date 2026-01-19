@@ -18,13 +18,25 @@ defineOptions({ name: "ui-count-down" })
 const props = defineProps(countDownProps)
 const emits = defineEmits(countDownEmits)
 const useProps = useCountDownProps(props)
-const timer = ref(null)
+const timer = ref<ReturnType<typeof setTimeout> | null>(null)
 const runing = ref(false)
-const endTime = ref(null)
-const remainTime = ref(0)
-const rafLastTime = ref(null)
-const timeData = ref<CountDownTimeData>({ days: 0, hours: 0, minutes: 0, seconds: 0, milliseconds: 0 })
+const startTime = ref<number>(0)
+const endTime = ref<number>(0)
+const totalTime = ref<number>(0)
+const remainTime = ref<number>(0)
+const rafLastTime = ref<number>(0)
+const timeData = ref<CountDownTimeData>({
+  days: 0,
+  hours: 0,
+  minutes: 0,
+  seconds: 0,
+  milliseconds: 0,
+  total: 0,
+  current: 0,
+})
 const formatTimeText = ref("")
+
+const isCountUp = computed(() => useProps.mode === "countup")
 
 const style = computed(() => {
   const style: any = {}
@@ -32,44 +44,92 @@ const style = computed(() => {
 })
 
 watch(() => useProps.time, reset, { immediate: true })
+watch(() => useProps.targetTime, reset)
+watch(
+  () => useProps.format,
+  () => {
+    formatTimeText.value = parseTimeFormat(timeData.value, useProps.format)
+  },
+)
 
 function tick() {
-  const next = () => {
-    timer.value = useRequestAnimationFrame(() => {
-      const remain = Math.max(endTime.value - Date.now(), 0)
-      timeData.value = parseTimeData(remain)
-      formatTimeText.value = parseTimeFormat(timeData.value, useProps.format)
-      if (useProps.millisecond) {
-        emits("change", parseTimeData(remain))
-      } else if (!isSameSecond(remain, remainTime.value)) {
-        emits("change", parseTimeData(remain))
-      }
-      remainTime.value = remain
-      if (remain === 0) {
-        emits("finish")
-        pause()
-      } else {
-        next()
-      }
-    })
+  if (!runing.value) return
+  const now = Date.now()
+  let current: number
+
+  if (isCountUp.value) {
+    current = Math.min(now - startTime.value, totalTime.value)
+  } else {
+    current = Math.max(endTime.value - now, 0)
   }
-  next()
+
+  const parsed = parseTimeData(current, totalTime.value)
+  timeData.value = parsed
+  formatTimeText.value = parseTimeFormat(parsed, useProps.format)
+
+  if (useProps.millisecond) {
+    emits("change", parsed)
+  } else if (!isSameSecond(current, remainTime.value)) {
+    emits("change", parsed)
+  }
+  remainTime.value = current
+
+  const finished = isCountUp.value ? current >= totalTime.value : current === 0
+  if (finished) {
+    emits("finish")
+    pause()
+  } else {
+    timer.value = useRequestAnimationFrame(tick)
+  }
 }
 
 function start() {
   if (runing.value) return
   runing.value = true
-  endTime.value = Date.now() + remainTime.value
+  const now = Date.now()
+  if (isCountUp.value) {
+    startTime.value = now - remainTime.value
+  } else {
+    endTime.value = now + remainTime.value
+  }
+  rafLastTime.value = now
   tick()
 }
 
 function reset() {
   pause()
-  remainTime.value = +useProps.time
+  const target = +useProps.targetTime
+  const time = +useProps.time
+
+  if (target > 0) {
+    const now = Date.now()
+    if (isCountUp.value) {
+      totalTime.value = target - now
+      remainTime.value = 0
+    } else {
+      totalTime.value = Math.max(target - now, 0)
+      remainTime.value = totalTime.value
+    }
+  } else {
+    const validTime = Number.isFinite(time) && time > 0 ? time : 0
+    totalTime.value = validTime
+    remainTime.value = isCountUp.value ? 0 : validTime
+  }
+
+  timeData.value = parseTimeData(remainTime.value, totalTime.value)
+  formatTimeText.value = parseTimeFormat(timeData.value, useProps.format)
   if (useProps.autoStart) start()
 }
 
 function pause() {
+  if (runing.value) {
+    const now = Date.now()
+    if (isCountUp.value) {
+      remainTime.value = Math.min(now - startTime.value, totalTime.value)
+    } else {
+      remainTime.value = Math.max(endTime.value - now, 0)
+    }
+  }
   runing.value = false
   useCancelRequestAnimationFrame(timer.value)
 }
@@ -78,7 +138,7 @@ function isSameSecond(time1: number, time2: number) {
   return Math.floor(time1 / 1000) === Math.floor(time2 / 1000)
 }
 
-function parseTimeFormat(time: any, format: string) {
+function parseTimeFormat(time: CountDownTimeData, format: string) {
   let { days, hours, minutes, seconds, milliseconds } = time
   if (!format.includes("DD")) {
     hours += days * 24
@@ -103,7 +163,7 @@ function parseTimeFormat(time: any, format: string) {
   return format.replace("SSS", padZero(milliseconds, 3))
 }
 
-function parseTimeData(time: number) {
+function parseTimeData(time: number, total: number): CountDownTimeData {
   const SECOND = 1000
   const MINUTE = 60 * SECOND
   const HOUR = 60 * MINUTE
@@ -113,24 +173,26 @@ function parseTimeData(time: number) {
   const minutes = Math.floor((time % HOUR) / MINUTE)
   const seconds = Math.floor((time % MINUTE) / SECOND)
   const milliseconds = Math.floor(time % SECOND)
-  return { days, hours, minutes, seconds, milliseconds }
+  return { days, hours, minutes, seconds, milliseconds, total, current: time }
 }
 
-function useRequestAnimationFrame(callback = () => {}) {
-  const currTime = new Date().getTime()
-  const timeToCall = Math.max(0, 16 - (currTime - rafLastTime.value))
-  const id = setTimeout(() => {
-    callback()
-  }, timeToCall)
+function getFrameInterval() {
+  return useProps.millisecond ? 16 : 1000
+}
+
+function useRequestAnimationFrame(callback: () => void) {
+  const interval = getFrameInterval()
+  const currTime = Date.now()
+  const timeToCall = Math.max(0, interval - (currTime - rafLastTime.value))
+  const id = setTimeout(callback, timeToCall)
   rafLastTime.value = currTime + timeToCall
   return id
 }
 
-function useCancelRequestAnimationFrame(id: number) {
-  clearTimeout(id)
+function useCancelRequestAnimationFrame(id: ReturnType<typeof setTimeout> | null) {
+  if (id !== null) clearTimeout(id)
 }
 
-// 组件卸载时清理定时器，防止内存泄漏
 onBeforeUnmount(() => {
   pause()
 })

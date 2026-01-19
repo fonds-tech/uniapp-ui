@@ -58,16 +58,16 @@ describe("ui-arc 弧形组件", () => {
   describe("弧度配置", () => {
     it("应支持自定义弧度百分比", () => {
       const wrapper = mount(UiArc, {
-        props: { percent: 120 },
+        props: { curvature: 120 },
       })
 
-      expect(wrapper.props("percent")).toBe(120)
+      expect(wrapper.props("curvature")).toBe(120)
     })
 
     it("默认弧度百分比应为 120", () => {
       const wrapper = mount(UiArc)
 
-      expect(wrapper.props("percent")).toBe(120)
+      expect(wrapper.props("curvature")).toBe(120)
     })
   })
 
@@ -160,7 +160,7 @@ describe("ui-arc 弧形组件", () => {
   describe("边界情况", () => {
     it("弧度百分比小于 100 时应正常渲染", async () => {
       const wrapper = mount(UiArc, {
-        props: { percent: 80 },
+        props: { curvature: 80 },
       })
 
       await waitForTransition()
@@ -170,7 +170,7 @@ describe("ui-arc 弧形组件", () => {
 
     it("弧度百分比大于 100 时应正常渲染", async () => {
       const wrapper = mount(UiArc, {
-        props: { percent: 150 },
+        props: { curvature: 150 },
       })
 
       await waitForTransition()

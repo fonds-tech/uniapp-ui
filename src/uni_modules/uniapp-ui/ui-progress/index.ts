@@ -3,27 +3,34 @@ import type { ExtractPropTypes } from "vue"
 import { createProps } from "../hooks"
 import { styleProp, truthProp, makeStringProp, makeNumericProp } from "../utils/props"
 
+export type ProgressTextPosition = "inside" | "outside" | "none"
+
 export const [progressProps, useProgressProps] = createProps("progress", {
   /**
-   * 进度百分比
+   * 进度百分比 (0-100)
    */
   percentage: makeNumericProp(0),
   /**
-   * 进度条的颜色
+   * 进度条填充色
    */
   color: makeStringProp(""),
   /**
-   * 进度条背景色
+   * 进度条轨道背景色
    */
-  background: makeStringProp(""),
+  trackColor: makeStringProp(""),
   /**
    * 进度文本内容
    */
   text: makeStringProp(""),
   /**
-   * 是否显示进度文本内容
+   * 是否显示进度文本
    */
   showText: truthProp,
+  /**
+   * 文本位置
+   * @default 'inside'
+   */
+  textPosition: makeStringProp<ProgressTextPosition>("inside"),
   /**
    * 进度文本颜色
    */

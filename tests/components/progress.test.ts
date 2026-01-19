@@ -133,8 +133,8 @@ describe("uiProgress 组件", () => {
       expect(pivot.attributes("style")).toContain("background")
     })
 
-    it("应该支持背景色 background", async () => {
-      const wrapper = mount(UiProgress, { props: { background: "#eeeeee" } })
+    it("应该支持轨道背景色 trackColor", async () => {
+      const wrapper = mount(UiProgress, { props: { trackColor: "#eeeeee" } })
       await waitForTransition()
       const progress = wrapper.find(".ui-progress")
       expect(progress.attributes("style")).toContain("background")
@@ -275,18 +275,18 @@ describe("uiProgress 组件", () => {
   })
 
   describe("边界情况测试", () => {
-    it("percentage 超过 100 时应该正常处理", async () => {
+    it("percentage 超过 100 时应该被限制为 100", async () => {
       const wrapper = mount(UiProgress, { props: { percentage: 150 } })
       await waitForTransition()
-      expect(wrapper.find(".ui-progress__text").text()).toBe("150%")
+      expect(wrapper.find(".ui-progress__text").text()).toBe("100%")
       const portion = wrapper.find(".ui-progress__portion")
-      expect(portion.attributes("style")).toContain("150%")
+      expect(portion.attributes("style")).toContain("100%")
     })
 
-    it("percentage 为负数时应该正常处理", async () => {
+    it("percentage 为负数时应该被限制为 0", async () => {
       const wrapper = mount(UiProgress, { props: { percentage: -10 } })
       await waitForTransition()
-      expect(wrapper.find(".ui-progress__text").text()).toBe("-10%")
+      expect(wrapper.find(".ui-progress__text").text()).toBe("0%")
     })
 
     it("percentage 为小数时应该正常显示", async () => {
@@ -317,12 +317,12 @@ describe("uiProgress 组件", () => {
         props: {
           percentage: 50,
           height: "30rpx",
-          background: "#f0f0f0",
+          trackColor: "#f0f0f0",
         },
       })
       await waitForTransition()
       expect(wrapper.props("height")).toBe("30rpx")
-      expect(wrapper.props("background")).toBe("#f0f0f0")
+      expect(wrapper.props("trackColor")).toBe("#f0f0f0")
     })
 
     it("应该正确计算指示器样式", async () => {
@@ -349,6 +349,95 @@ describe("uiProgress 组件", () => {
       expect(wrapper.props("textColor")).toBe("#333333")
       expect(wrapper.props("textSize")).toBe("24rpx")
       expect(wrapper.props("textWeight")).toBe(600)
+    })
+  })
+
+  describe("finish 事件测试", () => {
+    it("percentage 达到 100 时应该触发 finish 事件", async () => {
+      const wrapper = mount(UiProgress, { props: { percentage: 50 } })
+      await waitForTransition()
+
+      await wrapper.setProps({ percentage: 100 })
+      await waitForTransition()
+
+      expect(wrapper.emitted("finish")).toBeTruthy()
+      expect(wrapper.emitted("finish")?.length).toBe(1)
+    })
+
+    it("percentage 从 100 变为其他值再回到 100 应该再次触发 finish", async () => {
+      const wrapper = mount(UiProgress, { props: { percentage: 100 } })
+      await waitForTransition()
+
+      await wrapper.setProps({ percentage: 50 })
+      await waitForTransition()
+
+      await wrapper.setProps({ percentage: 100 })
+      await waitForTransition()
+
+      expect(wrapper.emitted("finish")?.length).toBe(1)
+    })
+
+    it("初始 percentage 为 100 时不应触发 finish 事件", async () => {
+      const wrapper = mount(UiProgress, { props: { percentage: 100 } })
+      await waitForTransition()
+
+      expect(wrapper.emitted("finish")).toBeFalsy()
+    })
+  })
+
+  describe("textPosition 属性测试", () => {
+    it("默认 textPosition 应为 inside", () => {
+      const wrapper = mount(UiProgress)
+      expect(wrapper.props("textPosition")).toBe("inside")
+    })
+
+    it("应该支持 textPosition 为 outside", () => {
+      const wrapper = mount(UiProgress, { props: { textPosition: "outside" } })
+      expect(wrapper.props("textPosition")).toBe("outside")
+    })
+
+    it("应该支持 textPosition 为 none", async () => {
+      const wrapper = mount(UiProgress, { props: { textPosition: "none" } })
+      await waitForTransition()
+      expect(wrapper.props("textPosition")).toBe("none")
+    })
+  })
+
+  describe("无障碍属性测试", () => {
+    it("应该包含 role=progressbar 属性", async () => {
+      const wrapper = mount(UiProgress)
+      await waitForTransition()
+      expect(wrapper.find(".ui-progress").attributes("role")).toBe("progressbar")
+    })
+
+    it("应该包含 aria-valuemin 属性", async () => {
+      const wrapper = mount(UiProgress)
+      await waitForTransition()
+      expect(wrapper.find(".ui-progress").attributes("aria-valuemin")).toBe("0")
+    })
+
+    it("应该包含 aria-valuemax 属性", async () => {
+      const wrapper = mount(UiProgress)
+      await waitForTransition()
+      expect(wrapper.find(".ui-progress").attributes("aria-valuemax")).toBe("100")
+    })
+
+    it("应该包含正确的 aria-valuenow 属性", async () => {
+      const wrapper = mount(UiProgress, { props: { percentage: 75 } })
+      await waitForTransition()
+      expect(wrapper.find(".ui-progress").attributes("aria-valuenow")).toBe("75")
+    })
+
+    it("应该包含 aria-valuetext 属性显示百分比", async () => {
+      const wrapper = mount(UiProgress, { props: { percentage: 50 } })
+      await waitForTransition()
+      expect(wrapper.find(".ui-progress").attributes("aria-valuetext")).toBe("50%")
+    })
+
+    it("aria-valuetext 应该显示自定义文本", async () => {
+      const wrapper = mount(UiProgress, { props: { percentage: 50, text: "加载中..." } })
+      await waitForTransition()
+      expect(wrapper.find(".ui-progress").attributes("aria-valuetext")).toBe("加载中...")
     })
   })
 })

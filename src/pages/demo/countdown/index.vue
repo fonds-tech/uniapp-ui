@@ -1,5 +1,6 @@
 <template>
   <demo-page>
+    <!-- ==================== 基础功能 ==================== -->
     <demo-section title="基础用法">
       <demo-block>
         <ui-count-down :time="time" />
@@ -7,10 +8,19 @@
     </demo-section>
 
     <demo-section title="自定义格式">
-      <demo-block direction="column" align="start" :gap="16">
-        <ui-count-down :time="time" format="DD 天 HH 时 mm 分 ss 秒" />
-        <ui-count-down :time="time" format="HH:mm:ss" />
-        <ui-count-down :time="time" format="mm:ss:SSS" millisecond />
+      <demo-block direction="column" align="start" :gap="20">
+        <view class="format-item">
+          <text class="format-label">天时分秒:</text>
+          <ui-count-down :time="longTime" format="DD 天 HH 时 mm 分 ss 秒" />
+        </view>
+        <view class="format-item">
+          <text class="format-label">时分秒:</text>
+          <ui-count-down :time="time" format="HH:mm:ss" />
+        </view>
+        <view class="format-item">
+          <text class="format-label">分秒毫秒:</text>
+          <ui-count-down :time="time" format="mm:ss:SSS" millisecond />
+        </view>
       </demo-block>
     </demo-section>
 
@@ -20,71 +30,77 @@
       </demo-block>
     </demo-section>
 
-    <demo-section title="自定义样式">
+    <!-- ==================== 自定义样式 ==================== -->
+    <demo-section title="自定义样式 - 方块">
       <demo-block>
         <ui-count-down :time="time">
           <template #default="{ time: current }">
-            <text class="countdown-block">{{ current.hours }}</text>
+            <text class="countdown-block">{{ padZero(current.hours) }}</text>
             <text class="countdown-colon">:</text>
-            <text class="countdown-block">{{ current.minutes }}</text>
+            <text class="countdown-block">{{ padZero(current.minutes) }}</text>
             <text class="countdown-colon">:</text>
-            <text class="countdown-block">{{ current.seconds }}</text>
+            <text class="countdown-block">{{ padZero(current.seconds) }}</text>
           </template>
         </ui-count-down>
       </demo-block>
     </demo-section>
 
-    <!-- 新增：更多自定义样式 -->
-    <demo-section title="样式变体">
-      <demo-block direction="column" align="start" :gap="24">
-        <view class="countdown-row">
-          <text class="countdown-row__label">圆形样式:</text>
-          <ui-count-down :time="time">
-            <template #default="{ time: current }">
-              <text class="countdown-circle">{{ current.hours }}</text>
-              <text class="countdown-separator">:</text>
-              <text class="countdown-circle">{{ current.minutes }}</text>
-              <text class="countdown-separator">:</text>
-              <text class="countdown-circle">{{ current.seconds }}</text>
-            </template>
-          </ui-count-down>
-        </view>
-        <view class="countdown-row">
-          <text class="countdown-row__label">渐变样式:</text>
-          <ui-count-down :time="time">
-            <template #default="{ time: current }">
-              <text class="countdown-gradient">{{ current.hours }}</text>
-              <text class="countdown-gradient-separator">时</text>
-              <text class="countdown-gradient">{{ current.minutes }}</text>
-              <text class="countdown-gradient-separator">分</text>
-              <text class="countdown-gradient">{{ current.seconds }}</text>
-              <text class="countdown-gradient-separator">秒</text>
-            </template>
-          </ui-count-down>
-        </view>
+    <demo-section title="自定义样式 - 圆形">
+      <demo-block>
+        <ui-count-down :time="time">
+          <template #default="{ time: current }">
+            <text class="countdown-circle">{{ padZero(current.hours) }}</text>
+            <text class="countdown-separator">:</text>
+            <text class="countdown-circle">{{ padZero(current.minutes) }}</text>
+            <text class="countdown-separator">:</text>
+            <text class="countdown-circle">{{ padZero(current.seconds) }}</text>
+          </template>
+        </ui-count-down>
       </demo-block>
     </demo-section>
 
-    <demo-section title="手动控制">
-      <demo-block direction="column" :gap="16">
-        <ui-count-down ref="countDownRef" :time="3000" :auto-start="false" format="ss:SSS" millisecond @finish="onFinish" />
-        <demo-block :cols="3" :gap="16">
-          <ui-button size="small" type="primary" @click="start">开始</ui-button>
-          <ui-button size="small" type="warning" @click="pause">暂停</ui-button>
-          <ui-button size="small" type="default" @click="reset">重置</ui-button>
-        </demo-block>
+    <demo-section title="自定义样式 - 渐变">
+      <demo-block>
+        <ui-count-down :time="time">
+          <template #default="{ time: current }">
+            <text class="countdown-gradient">{{ padZero(current.hours) }}</text>
+            <text class="countdown-gradient-separator">时</text>
+            <text class="countdown-gradient">{{ padZero(current.minutes) }}</text>
+            <text class="countdown-gradient-separator">分</text>
+            <text class="countdown-gradient">{{ padZero(current.seconds) }}</text>
+            <text class="countdown-gradient-separator">秒</text>
+          </template>
+        </ui-count-down>
       </demo-block>
     </demo-section>
 
-    <!-- 新增：change 事件 -->
-    <demo-section title="事件处理">
-      <demo-block direction="column" align="start" :gap="16">
-        <ui-count-down :time="eventTime" @change="onCountDownChange" @finish="onEventFinish" />
-        <text class="demo-text">{{ eventLog }}</text>
+    <demo-section title="超长时间展示">
+      <demo-block>
+        <ui-count-down :time="longTime">
+          <template #default="{ time: current }">
+            <view class="long-time-countdown">
+              <view class="long-time-item">
+                <text class="long-time-value">{{ padZero(current.days) }}</text>
+                <text class="long-time-label">天</text>
+              </view>
+              <view class="long-time-item">
+                <text class="long-time-value">{{ padZero(current.hours) }}</text>
+                <text class="long-time-label">时</text>
+              </view>
+              <view class="long-time-item">
+                <text class="long-time-value">{{ padZero(current.minutes) }}</text>
+                <text class="long-time-label">分</text>
+              </view>
+              <view class="long-time-item">
+                <text class="long-time-value">{{ padZero(current.seconds) }}</text>
+                <text class="long-time-label">秒</text>
+              </view>
+            </view>
+          </template>
+        </ui-count-down>
       </demo-block>
     </demo-section>
 
-    <!-- 新增：自定义类名和样式 -->
     <demo-section title="自定义类名样式">
       <demo-block :cols="2" :gap="24">
         <view class="countdown-item">
@@ -98,10 +114,64 @@
       </demo-block>
     </demo-section>
 
-    <!-- 新增：应用场景 -->
-    <demo-section title="应用场景">
-      <demo-block direction="column" :gap="24">
-        <!-- 秒杀倒计时 -->
+    <!-- ==================== 计时模式 ==================== -->
+    <demo-section title="正计时模式">
+      <demo-block direction="column" align="start" :gap="16">
+        <ui-count-down :time="countUpTime" mode="countup" format="mm:ss:SSS" millisecond>
+          <template #default="{ time: current }">
+            <text class="countup-text">已用时: {{ padZero(current.minutes) }}:{{ padZero(current.seconds) }}.{{ padZero(current.milliseconds, 3) }}</text>
+          </template>
+        </ui-count-down>
+        <text class="demo-hint">从 0 开始计时，到达设定时间后触发 finish 事件</text>
+      </demo-block>
+    </demo-section>
+
+    <demo-section title="目标时间模式">
+      <demo-block direction="column" align="start" :gap="16">
+        <ui-count-down :target-time="targetTimestamp" format="DD天 HH:mm:ss" />
+        <text class="demo-hint">目标时间: {{ formatTargetDate(targetTimestamp) }}</text>
+      </demo-block>
+    </demo-section>
+
+    <!-- ==================== 进度展示 ==================== -->
+    <demo-section title="进度条倒计时">
+      <demo-block>
+        <ui-count-down :time="progressTime">
+          <template #default="{ time: current }">
+            <view class="progress-countdown">
+              <view class="progress-countdown__bar">
+                <view class="progress-countdown__fill" :style="{ width: `${getProgress(current)}%` }" />
+              </view>
+              <text class="progress-countdown__text">{{ padZero(current.minutes) }}:{{ padZero(current.seconds) }}</text>
+            </view>
+          </template>
+        </ui-count-down>
+      </demo-block>
+    </demo-section>
+
+    <!-- ==================== 手动控制 ==================== -->
+    <demo-section title="手动控制">
+      <demo-block direction="column" :gap="16">
+        <ui-count-down ref="countDownRef" :time="3000" :auto-start="false" format="ss:SSS" millisecond @finish="onFinish" />
+        <demo-block :cols="3" :gap="16">
+          <ui-button size="small" type="primary" @click="start">开始</ui-button>
+          <ui-button size="small" type="warning" @click="pause">暂停</ui-button>
+          <ui-button size="small" type="default" @click="reset">重置</ui-button>
+        </demo-block>
+      </demo-block>
+    </demo-section>
+
+    <!-- ==================== 事件监听 ==================== -->
+    <demo-section title="事件监听">
+      <demo-block direction="column" align="start" :gap="16">
+        <ui-count-down :time="eventTime" @change="onCountDownChange" @finish="onEventFinish" />
+        <text class="demo-hint">{{ eventLog }}</text>
+      </demo-block>
+    </demo-section>
+
+    <!-- ==================== 应用场景 ==================== -->
+    <demo-section title="秒杀倒计时">
+      <demo-block>
         <view class="scene-card scene-card--sale">
           <view class="scene-card__header">
             <text class="scene-card__title">限时秒杀</text>
@@ -117,8 +187,11 @@
           </view>
           <text class="scene-card__desc">距离活动结束</text>
         </view>
+      </demo-block>
+    </demo-section>
 
-        <!-- 验证码倒计时 -->
+    <demo-section title="验证码倒计时">
+      <demo-block>
         <view class="scene-card scene-card--code">
           <text class="scene-card__code-title">验证码倒计时</text>
           <ui-button v-if="!codeCountingDown" type="primary" size="small" @click="sendCode">获取验证码</ui-button>
@@ -144,9 +217,13 @@ definePage({
 const toast = useToast()
 
 // 基础时间
-const time = ref(30 * 60 * 60 * 1000)
+const time = ref(30 * 60 * 60 * 1000) // 30小时
+const longTime = ref(3 * 24 * 60 * 60 * 1000 + 5 * 60 * 60 * 1000) // 3天5小时
 const eventTime = ref(10 * 1000)
 const saleTime = ref(2 * 60 * 60 * 1000 + 30 * 60 * 1000)
+const countUpTime = ref(60 * 1000)
+const progressTime = ref(60 * 1000)
+const targetTimestamp = ref(Date.now() + 2 * 24 * 60 * 60 * 1000)
 
 // 手动控制
 const countDownRef = ref()
@@ -158,7 +235,6 @@ const codeCountingDown = ref(false)
 // 事件日志
 const eventLog = ref("等待 change 事件触发...")
 
-// 手动控制方法
 function start() {
   countDownRef.value?.start()
 }
@@ -175,9 +251,8 @@ function onFinish() {
   toast.success("倒计时结束")
 }
 
-// change 事件处理
 function onCountDownChange(timeData: CountDownTimeData) {
-  eventLog.value = `剩余: ${timeData.hours}时${timeData.minutes}分${timeData.seconds}秒${timeData.milliseconds}毫秒`
+  eventLog.value = `剩余: ${timeData.hours}时${timeData.minutes}分${timeData.seconds}秒`
 }
 
 function onEventFinish() {
@@ -185,7 +260,6 @@ function onEventFinish() {
   toast.success("倒计时结束")
 }
 
-// 验证码
 function sendCode() {
   codeCountingDown.value = true
   toast.text("验证码已发送")
@@ -195,19 +269,42 @@ function onCodeFinish() {
   codeCountingDown.value = false
 }
 
-// 补零
-function padZero(num: number): string {
-  return num.toString().padStart(2, "0")
+function padZero(num: number, len = 2): string {
+  return num.toString().padStart(len, "0")
+}
+
+function getProgress(current: CountDownTimeData): number {
+  if (current.total === 0) return 0
+  return Math.round((current.current / current.total) * 100)
+}
+
+function formatTargetDate(timestamp: number): string {
+  const date = new Date(timestamp)
+  return `${date.getFullYear()}-${padZero(date.getMonth() + 1)}-${padZero(date.getDate())} ${padZero(date.getHours())}:${padZero(date.getMinutes())}`
 }
 </script>
 
 <style lang="scss" scoped>
+/* ==================== 格式化示例 ==================== */
+.format-item {
+  gap: 16rpx;
+  display: flex;
+  align-items: center;
+}
+
+.format-label {
+  color: var(--ui-color-text-secondary);
+  font-size: 26rpx;
+  min-width: 140rpx;
+}
+
+/* ==================== 方块样式 ==================== */
 .countdown-block {
   color: #fff;
-  width: 44rpx;
-  height: 44rpx;
+  width: 48rpx;
+  height: 48rpx;
   display: inline-flex;
-  font-size: 24rpx;
+  font-size: 26rpx;
   background: var(--ui-color-primary);
   align-items: center;
   border-radius: 8rpx;
@@ -216,15 +313,16 @@ function padZero(num: number): string {
 
 .countdown-colon {
   color: var(--ui-color-primary);
-  padding: 0 8rpx;
-  font-size: 24rpx;
+  padding: 0 10rpx;
+  font-size: 26rpx;
   font-weight: bold;
 }
 
+/* ==================== 圆形样式 ==================== */
 .countdown-circle {
   color: #fff;
-  width: 56rpx;
-  height: 56rpx;
+  width: 60rpx;
+  height: 60rpx;
   display: inline-flex;
   font-size: 28rpx;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -241,9 +339,10 @@ function padZero(num: number): string {
   font-weight: bold;
 }
 
+/* ==================== 渐变样式 ==================== */
 .countdown-gradient {
   color: #fff;
-  padding: 8rpx 16rpx;
+  padding: 10rpx 18rpx;
   font-size: 28rpx;
   background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
   font-weight: 600;
@@ -252,22 +351,45 @@ function padZero(num: number): string {
 
 .countdown-gradient-separator {
   color: #f5576c;
-  padding: 0 8rpx;
+  display: inline-flex;
+  padding: 0 10rpx;
   font-size: 24rpx;
+  align-items: center;
 }
 
-.countdown-row {
-  gap: 16rpx;
+/* ==================== 超长时间样式 ==================== */
+.long-time-countdown {
+  gap: 8rpx;
   display: flex;
   align-items: center;
-
-  &__label {
-    color: var(--ui-color-text-primary);
-    width: 140rpx;
-    font-size: 28rpx;
-  }
 }
 
+.long-time-item {
+  gap: 4rpx;
+  display: flex;
+  align-items: baseline;
+}
+
+.long-time-value {
+  color: #fff;
+  width: 56rpx;
+  height: 56rpx;
+  display: inline-flex;
+  font-size: 30rpx;
+  background: linear-gradient(135deg, #1890ff 0%, #096dd9 100%);
+  align-items: center;
+  font-weight: 600;
+  border-radius: 10rpx;
+  justify-content: center;
+}
+
+.long-time-label {
+  color: var(--ui-color-text-secondary);
+  font-size: 24rpx;
+  margin-left: 4rpx;
+}
+
+/* ==================== 通用样式 ==================== */
 .countdown-item {
   gap: 12rpx;
   display: flex;
@@ -280,13 +402,52 @@ function padZero(num: number): string {
   font-size: 24rpx;
 }
 
-.demo-text {
+.demo-hint {
   color: var(--ui-color-text-secondary);
   font-size: 24rpx;
 }
 
+/* ==================== 正计时样式 ==================== */
+.countup-text {
+  color: #07c160;
+  font-size: 32rpx;
+  font-weight: 600;
+}
+
+/* ==================== 进度条样式 ==================== */
+.progress-countdown {
+  gap: 20rpx;
+  width: 100%;
+  display: flex;
+  align-items: center;
+
+  &__bar {
+    flex: 1;
+    height: 20rpx;
+    overflow: hidden;
+    background: #eee;
+    border-radius: 10rpx;
+  }
+
+  &__fill {
+    height: 100%;
+    background: linear-gradient(90deg, #1989fa 0%, #07c160 100%);
+    transition: width 0.3s ease;
+    border-radius: 10rpx;
+  }
+
+  &__text {
+    color: var(--ui-color-text-primary);
+    font-size: 30rpx;
+    min-width: 120rpx;
+    text-align: right;
+    font-weight: 500;
+  }
+}
+
+/* ==================== 场景卡片样式 ==================== */
 .scene-card {
-  padding: 24rpx;
+  padding: 28rpx;
   background: #fff;
   border-radius: 16rpx;
 
@@ -302,21 +463,21 @@ function padZero(num: number): string {
   }
 
   &__header {
-    gap: 16rpx;
+    gap: 20rpx;
     display: flex;
     align-items: center;
   }
 
   &__title {
     color: #fff;
-    font-size: 32rpx;
+    font-size: 34rpx;
     font-weight: 600;
   }
 
   &__desc {
     color: rgba(255, 255, 255, 0.8);
     font-size: 24rpx;
-    margin-top: 8rpx;
+    margin-top: 12rpx;
   }
 
   &__code-title {
@@ -327,10 +488,10 @@ function padZero(num: number): string {
 
 .sale-countdown-block {
   color: #ee0a24;
-  width: 44rpx;
-  height: 44rpx;
+  width: 48rpx;
+  height: 48rpx;
   display: inline-flex;
-  font-size: 24rpx;
+  font-size: 26rpx;
   background: #fff;
   align-items: center;
   font-weight: 600;
@@ -340,14 +501,15 @@ function padZero(num: number): string {
 
 .sale-countdown-colon {
   color: #fff;
-  padding: 0 6rpx;
-  font-size: 24rpx;
+  padding: 0 8rpx;
+  font-size: 26rpx;
   font-weight: bold;
 }
 
+/* ==================== 自定义类名样式 ==================== */
 :deep(.my-countdown) {
   color: #1989fa;
-  padding: 8rpx 16rpx;
+  padding: 10rpx 18rpx;
   font-size: 32rpx;
   background: #e8f4ff;
   font-weight: 500;
