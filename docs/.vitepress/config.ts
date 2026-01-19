@@ -116,7 +116,6 @@ export default defineConfig({
           text: "展示组件",
           items: [
             { text: "Cell 单元格", link: "/components/cell" },
-            { text: "CellGroup 单元格组", link: "/components/cell-group" },
             { text: "SwipeCell 滑动单元格", link: "/components/swipe-cell" },
             { text: "Swiper 轮播", link: "/components/swiper" },
             { text: "NoticeBar 通知栏", link: "/components/noticebar" },
