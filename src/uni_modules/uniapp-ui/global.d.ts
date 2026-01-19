@@ -15,8 +15,6 @@ declare module "vue" {
     UiCheckbox: (typeof import("./ui-checkbox/ui-checkbox.vue"))["default"]
     UiCheckboxGroup: (typeof import("./ui-checkbox-group/ui-checkbox-group.vue"))["default"]
     UiCol: (typeof import("./ui-col/ui-col.vue"))["default"]
-    UiCollapse: (typeof import("./ui-collapse/ui-collapse.vue"))["default"]
-    UiCollapseItem: (typeof import("./ui-collapse-item/ui-collapse-item.vue"))["default"]
     UiConfigProvider: (typeof import("./ui-config-provider/ui-config-provider.vue"))["default"]
     UiCountDown: (typeof import("./ui-count-down/ui-count-down.vue"))["default"]
     UiDatePicker: (typeof import("./ui-date-picker/ui-date-picker.vue"))["default"]

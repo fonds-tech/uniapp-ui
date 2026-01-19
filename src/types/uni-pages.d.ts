@@ -14,13 +14,11 @@ type _LocationUrl =
   "/pages/demo/badge/index" |
   "/pages/demo/button/index" |
   "/pages/demo/calendar/index" |
-  "/pages/demo/card/index" |
   "/pages/demo/cascader/index" |
   "/pages/demo/cell/index" |
   "/pages/demo/cell-group/index" |
   "/pages/demo/checkbox/index" |
   "/pages/demo/checkbox-group/index" |
-  "/pages/demo/collapse/index" |
   "/pages/demo/config-provider/index" |
   "/pages/demo/countdown/index" |
   "/pages/demo/date-picker/index" |

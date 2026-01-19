@@ -105,7 +105,6 @@ const componentCategories = [
     components: [
       { name: "Card", path: "card", icon: "🎴", desc: "卡片组件" },
       { name: "Cell", path: "cell", icon: "📊", desc: "单元格组件" },
-      { name: "Collapse", path: "collapse", icon: "📂", desc: "折叠面板组件" },
       { name: "Progress", path: "progress", icon: "📊", desc: "进度条组件" },
       { name: "CountDown", path: "countdown", icon: "⏰", desc: "倒计时组件" },
       { name: "NumberRoll", path: "number-roll", icon: "🔢", desc: "数字滚动组件" },

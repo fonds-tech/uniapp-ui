@@ -27,5 +27,6 @@ dist
 docs/.vitepress/dist
 docs/.vitepress/cache
 
+src/types
 src/pages.json
 

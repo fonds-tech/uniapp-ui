@@ -202,7 +202,6 @@ const componentCategories = [
     components: [
       { name: "Card", path: "card", icon: "i-lucide-square", desc: "卡片" },
       { name: "Cell", path: "cell", icon: "i-lucide-table", desc: "单元格" },
-      { name: "Collapse", path: "collapse", icon: "i-lucide-chevrons-down-up", desc: "折叠面板" },
       { name: "Progress", path: "progress", icon: "i-lucide-bar-chart-horizontal", desc: "进度条" },
       { name: "CountDown", path: "countdown", icon: "i-lucide-timer", desc: "倒计时" },
       { name: "NumberRoll", path: "number-roll", icon: "i-lucide-hash", desc: "数字滚动" },
