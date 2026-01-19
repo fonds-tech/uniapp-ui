@@ -20,34 +20,23 @@
 </template>
 ```
 
-## 多行展示
+## 关闭滚动
 
-通过 `wrapable` 属性开启多行展示，需同时设置 `:scrollable="false"`。
+通过 `scrollable` 设置为 `false` 关闭滚动播放。
 
 ```vue
 <template>
-  <ui-notice-bar wrapable :scrollable="false" text="在代码阅读过程中人们说脏话的频率是衡量代码质量的唯一标准。" />
+  <ui-notice-bar :scrollable="false" text="这是一条不会滚动的通知消息。" />
 </template>
 ```
 
 ## 左侧图标
 
-通过 `left-icon` 属性设置左侧图标。
+通过 `icon` 属性设置左侧图标。
 
 ```vue
 <template>
-  <ui-notice-bar left-icon="volume-up" text="在代码阅读过程中人们说脏话的频率是衡量代码质量的唯一标准。" />
-</template>
-```
-
-## 通知模式
-
-通过 `mode` 属性设置通知模式，可选 `closeable` 和 `link`。
-
-```vue
-<template>
-  <ui-notice-bar mode="closeable" text="可关闭的通知栏" />
-  <ui-notice-bar mode="link" text="可点击的通知栏" />
+  <ui-notice-bar icon="volume-o" text="在代码阅读过程中人们说脏话的频率是衡量代码质量的唯一标准。" />
 </template>
 ```
 
@@ -57,17 +46,17 @@
 
 ```vue
 <template>
-  <ui-notice-bar background="#ecf9ff" color="#1989fa" left-icon="info" text="技术是开发它的人的共同灵魂。" />
+  <ui-notice-bar background="#ecf9ff" color="#1989fa" icon="info" text="技术是开发它的人的共同灵魂。" />
 </template>
 ```
 
 ## 垂直滚动
 
-传入数组并设置 `vertical` 属性实现垂直滚动。
+传入数组并设置 `mode="vertical"` 实现垂直滚动。
 
 ```vue
 <template>
-  <ui-notice-bar :text="notices" vertical left-icon="volume-up" />
+  <ui-notice-bar :text="notices" mode="vertical" icon="volume-o" />
 </template>
 
 <script setup>
@@ -105,8 +94,7 @@ const notices = ["通知内容一", "通知内容二", "通知内容三"]
 
 ## Slots
 
-| 名称    | 说明           |
-| ------- | -------------- |
-| default | 自定义通知内容 |
-| left    | 自定义左侧图标 |
-| right   | 自定义右侧图标 |
+| 名称  | 说明           |
+| ----- | -------------- |
+| left  | 自定义左侧图标 |
+| right | 自定义右侧图标 |

@@ -78,6 +78,27 @@ describe("uiNoticeBar 组件", () => {
       expect(wrapper.find(".ui-notice-bar__vertical").exists()).toBe(true)
     })
 
+    it("垂直模式应正确渲染文本内容", async () => {
+      const wrapper = mount(UiNoticeBar, {
+        props: {
+          text: ["通知1", "通知2"],
+          mode: "vertical",
+        },
+        global: {
+          stubs: {
+            "ui-icon": true,
+            swiper: { template: "<div><slot /></div>" },
+            "swiper-item": { template: "<div><slot /></div>" },
+          },
+        },
+      })
+      await waitForTransition()
+      const texts = wrapper.findAll(".ui-notice-bar__vertical__text")
+      expect(texts).toHaveLength(2)
+      expect(texts[0].text()).toBe("通知1")
+      expect(texts[1].text()).toBe("通知2")
+    })
+
     it("水平模式下数组只显示第一条", async () => {
       const wrapper = mount(UiNoticeBar, {
         props: {

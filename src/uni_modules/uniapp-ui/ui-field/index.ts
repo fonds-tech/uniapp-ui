@@ -65,7 +65,7 @@ export const [fieldProps, useFieldProps] = createProps("field", {
   /**
    * 清除图标名称
    */
-  clearIcon: makeStringProp("cross"),
+  clearIcon: makeStringProp("close"),
   /**
    * 清除图标大小
    */

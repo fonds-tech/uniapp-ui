@@ -58,7 +58,6 @@ const style = computed(() => {
   style.padding = useUnit(useProps.padding)
   style.background = useColor(useProps.background)
   style.borderRadius = useUnit(useProps.radius)
-  console.log("🚀 ~ useStyle({ ...style, ...useStyle(useProps.customStyle) }):", useStyle({ ...style, ...useStyle(useProps.customStyle) }))
   return useStyle({ ...style, ...useStyle(useProps.customStyle) })
 })
 
@@ -112,17 +111,28 @@ const disabled = computed(() => {
   return useProps.disabled || useProps.readonly
 })
 
+// 空值统一映射为空字符串，避免出现 "undefined"/"null" 文案
+function normalizeValue(value: unknown): string {
+  if (value === null || value === undefined) return ""
+  return String(value)
+}
+
 watch(
   () => useProps.modelValue,
   (val) => {
-    current.value = String(val)
+    current.value = normalizeValue(val)
   },
   { immediate: true },
 )
 
+/**
+ * 重置输入值
+ * @param value - 需要重置的值
+ */
 function reset(value: any) {
-  current.value = value
-  updateValue(value)
+  const normalized = normalizeValue(value)
+  current.value = normalized
+  updateValue(normalized)
 }
 
 async function updateValue(value: string) {
@@ -155,8 +165,9 @@ function onKeyboardheightchange() {
 }
 
 function onInput(event: any) {
-  current.value = event.detail.value
-  updateValue(event.detail.value)
+  const value = normalizeValue(event?.detail?.value)
+  current.value = value
+  updateValue(value)
   parent?.onChange(current.value)
 }
 
@@ -164,7 +175,8 @@ function onClickClear() {
   current.value = ""
   updateValue("")
   emits("clear")
-  parent?.onBlur(current.value)
+  // 清空属于值变化，触发表单 change 校验
+  parent?.onChange(current.value)
 }
 
 defineExpose({ reset })

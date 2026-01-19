@@ -392,7 +392,7 @@ export default {
 .ui-form-item {
   flex: 1;
   display: flex;
-  padding: var(--ui-spacing-xl) 0;
+  padding: var(--ui-spacing-md) 0;
   flex-direction: column;
 
   &__main {

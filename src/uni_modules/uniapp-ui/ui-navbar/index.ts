@@ -63,7 +63,7 @@ export const [navbarProps, useNavbarProps] = createProps("navbar", {
   /**
    * 是否显示返回按钮
    */
-  showBack: Boolean,
+  showBack: truthProp,
   /**
    * 固定定位时是否生成占位元素
    */

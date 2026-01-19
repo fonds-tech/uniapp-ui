@@ -67,4 +67,4 @@ UiInput 组件，属性与事件以源码注释为准。
 | keyboardheightchange | -    | -             |
 | input                | -    | value: string |
 | change               | -    | value: string |
-| update               | -    | value: string |
+| update:modelValue    | -    | value: string |

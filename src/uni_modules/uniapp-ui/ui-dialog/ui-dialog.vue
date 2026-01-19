@@ -47,6 +47,7 @@
               type="default"
               border-radius="0rpx"
               text-weight="normal"
+              border-width="0"
               :text-color="useColor(mergedOptions.cancelButtonColor)"
               @click="handleCancel"
             >
@@ -68,6 +69,7 @@
               type="default"
               border-radius="0rpx"
               text-weight="normal"
+              border-width="0"
               :text-color="useColor(mergedOptions.confirmButtonColor)"
               @click="handleConfirm"
             >
@@ -411,13 +413,13 @@ export default {
   &__body {
     margin: 0 auto;
     overflow: hidden;
-    border-radius: var(--ui-radius-xl);
+    border-radius: var(--ui-radius-md);
     background-color: var(--ui-color-background);
   }
 
   &__title {
     display: flex;
-    padding: var(--ui-spacing-xxxl) var(--ui-spacing-xxxl) 0;
+    padding: var(--ui-spacing-md);
     overflow: hidden;
     font-size: var(--ui-font-size-lg);
     font-weight: var(--ui-font-weight-bold);
@@ -460,7 +462,7 @@ export default {
     &__line {
       top: 0;
       left: 50%;
-      width: var(--ui-border-width-thick);
+      width: var(--ui-border-width);
       height: 100%;
       display: flex;
       z-index: var(--ui-z-index-content);
@@ -475,7 +477,7 @@ export default {
       width: 100%;
       content: "";
       position: absolute;
-      border-top: var(--ui-border-width-thick) solid var(--ui-color-border-light);
+      border-top: var(--ui-border-width) solid var(--ui-color-border-light);
     }
   }
 

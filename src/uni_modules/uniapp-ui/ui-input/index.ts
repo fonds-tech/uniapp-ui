@@ -132,7 +132,7 @@ export const [inputProps, useInputProps] = createProps("input", {
   /**
    * 输入框清除图标
    */
-  clearIcon: { type: String, default: "cross" },
+  clearIcon: { type: String, default: "close" },
   /**
    * 输入框清除图标大小
    */

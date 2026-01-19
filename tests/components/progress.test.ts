@@ -129,8 +129,8 @@ describe("uiProgress 组件", () => {
     it("应该支持进度条颜色 color", async () => {
       const wrapper = mount(UiProgress, { props: { color: "#1989fa" } })
       await waitForTransition()
-      const pivot = wrapper.find(".ui-progress__pivot")
-      expect(pivot.attributes("style")).toContain("background")
+      const portion = wrapper.find(".ui-progress__portion")
+      expect(portion.attributes("style")).toContain("background")
     })
 
     it("应该支持轨道背景色 trackColor", async () => {
@@ -143,8 +143,8 @@ describe("uiProgress 组件", () => {
     it("应该支持预设颜色名称", async () => {
       const wrapper = mount(UiProgress, { props: { color: "primary" } })
       await waitForTransition()
-      const pivot = wrapper.find(".ui-progress__pivot")
-      expect(pivot.attributes("style")).toContain("background")
+      const portion = wrapper.find(".ui-progress__portion")
+      expect(portion.attributes("style")).toContain("background")
     })
   })
 

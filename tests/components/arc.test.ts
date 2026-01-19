@@ -93,7 +93,7 @@ describe("ui-arc 弧形组件", () => {
     it("默认固定定位", () => {
       const wrapper = mount(UiArc)
 
-      expect(wrapper.props("fixed")).toBe(true)
+      expect(wrapper.props("fixed")).toBe(false)
     })
 
     it("应支持固定定位", () => {

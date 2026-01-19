@@ -43,10 +43,10 @@ describe("ui-navbar 导航栏组件", () => {
   })
 
   describe("返回按钮", () => {
-    it("默认不应显示返回按钮", async () => {
+    it("默认应显示返回按钮", async () => {
       const wrapper = mount(UiNavbar)
       await waitForTransition()
-      expect(wrapper.find(".ui-navbar__back").exists()).toBe(false)
+      expect(wrapper.find(".ui-navbar__back").exists()).toBe(true)
     })
 
     it("showBack 为 true 时应显示返回按钮", async () => {

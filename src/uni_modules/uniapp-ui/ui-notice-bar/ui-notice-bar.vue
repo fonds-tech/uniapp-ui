@@ -1,18 +1,18 @@
 <template>
-  <view class="ui-notice-bar" :class="[customClass]" :style="[style]">
-    <view v-if="icon || slots.left" class="ui-notice-bar__left">
+  <view class="ui-notice-bar" :class="[useProps.customClass]" :style="[style]">
+    <view v-if="useProps.icon || slots.left" class="ui-notice-bar__left">
       <slot name="left">
-        <ui-icon v-if="icon" :name="icon" :size="iconSize" :color="iconColor" :weight="iconWeight" />
+        <ui-icon v-if="useProps.icon" :name="useProps.icon" :size="useProps.iconSize" :color="useProps.iconColor" :weight="useProps.iconWeight" />
       </slot>
     </view>
 
-    <swiper v-if="mode === 'vertical'" class="ui-notice-bar__vertical" circular vertical :autoplay="scrollable" :interval="interval" :duration="useProps.duration">
+    <swiper v-if="useProps.mode === 'vertical'" class="ui-notice-bar__vertical" circular vertical :autoplay="useProps.scrollable" :interval="useProps.interval" :duration="useProps.duration">
       <swiper-item v-for="(text, index) in list" :key="index" style="display: flex" @click="onClick(index)">
-        <text class="ui-notice-bar__vertical__text" :style="[textStyle]">{{ text }}12312123</text>
+        <text class="ui-notice-bar__vertical__text" :style="[textStyle]">{{ text }}</text>
       </swiper-item>
     </swiper>
 
-    <view v-if="mode === 'horizontal'" class="ui-notice-bar__horizontal">
+    <view v-if="useProps.mode === 'horizontal'" class="ui-notice-bar__horizontal">
       <text
         v-for="(text, index) in list"
         :key="index"
@@ -25,9 +25,15 @@
       </text>
     </view>
 
-    <view v-if="rightIcon || slots.right" class="ui-notice-bar__right">
+    <view v-if="useProps.rightIcon || slots.right" class="ui-notice-bar__right">
       <slot name="right">
-        <ui-icon v-if="rightIcon" :name="rightIcon" :size="rightIconSize" :color="rightIconColor" :weight="rightIconWeight" />
+        <ui-icon
+          v-if="useProps.rightIcon"
+          :name="useProps.rightIcon"
+          :size="useProps.rightIconSize"
+          :color="useProps.rightIconColor"
+          :weight="useProps.rightIconWeight"
+        />
       </slot>
     </view>
   </view>
@@ -38,7 +44,7 @@ import { delay } from "../utils/utils"
 import { isArray, isString } from "../utils/check"
 import { useRect, useUnit, useColor, useStyle } from "../hooks"
 import { noticeBarEmits, noticeBarProps, useNoticeBarProps } from "./index"
-import { ref, computed, useSlots, onMounted, getCurrentInstance } from "vue"
+import { ref, watch, computed, nextTick, useSlots, onMounted, getCurrentInstance } from "vue"
 
 defineOptions({ name: "ui-notice-bar" })
 
@@ -51,6 +57,7 @@ const duration = ref(0)
 const horizontalPaddingLeft = ref("0")
 const horizontalPaddingRight = ref("100%")
 const instance = getCurrentInstance()
+let animationToken = 0
 
 const list = computed(() => {
   if (isString(useProps.text)) return [useProps.text]
@@ -95,24 +102,54 @@ const horizontalTextClass = computed(() => {
   return list
 })
 
-async function resize() {
-  if (useProps.mode === "horizontal") horizontalAnimation()
+function resize() {
+  if (useProps.mode !== "horizontal" || !useProps.scrollable) {
+    animationToken += 1
+    duration.value = 0
+    return
+  }
+  void horizontalAnimation()
 }
 
 async function horizontalAnimation() {
+  const token = (animationToken += 1)
+  if (!instance) return
+  const speed = Number(useProps.speed)
+  if (!speed || speed <= 0) {
+    duration.value = 0
+    return
+  }
   pause.value = false
+  horizontalPaddingLeft.value = "0"
+  horizontalPaddingRight.value = "100%"
+  await nextTick()
+  if (token !== animationToken) return
   const textRect = await useRect(".ui-notice-bar__horizontal__text", instance)
   const horizontalRect = await useRect(".ui-notice-bar__horizontal", instance)
-  const horizontalDduration = horizontalRect.width / useProps.speed
-  duration.value = textRect.width / useProps.speed
-  await delay((duration.value - horizontalDduration) * 1000)
+  if (token !== animationToken) return
+  const textWidth = textRect?.width ?? 0
+  const horizontalWidth = horizontalRect?.width ?? 0
+  if (!textWidth || !horizontalWidth) {
+    duration.value = 0
+    return
+  }
+  const textDuration = textWidth / speed
+  const horizontalDuration = horizontalWidth / speed
+  duration.value = textDuration
+  const waitMs = Math.max(0, (textDuration - horizontalDuration) * 1000)
+  if (waitMs > 0) {
+    await delay(waitMs)
+    if (token !== animationToken) return
+  }
   pause.value = true
   await delay(10)
+  if (token !== animationToken) return
   duration.value = 0
   horizontalPaddingLeft.value = "100%"
   horizontalPaddingRight.value = "0"
-  duration.value = textRect.width / useProps.speed
+  duration.value = textDuration
   await delay(10)
+  if (token !== animationToken) return
   pause.value = false
 }
 
@@ -120,6 +157,14 @@ function onClick(index: number) {
   emits("click", index)
 }
 
+watch(() => useProps.mode, resize)
+watch(() => useProps.scrollable, resize)
+watch(() => useProps.speed, resize)
+watch(
+  () => useProps.text,
+  () => resize(),
+  { deep: true },
+)
 onMounted(() => resize())
 defineExpose({ name: "ui-notice-bar" })
 </script>
@@ -133,9 +178,11 @@ export default {
 
 <style lang="scss" scoped>
 .ui-notice-bar {
+  width: 100%;
   display: flex;
   padding: 0 24rpx;
   position: relative;
+  box-sizing: border-box;
   align-items: center;
   background-color: #fdf6ec;
 

@@ -599,10 +599,10 @@ describe("uiField 组件", () => {
   })
 
   describe("清除图标属性测试", () => {
-    it("默认 clearIcon 应该是 cross", async () => {
+    it("默认 clearIcon 应该是 close", async () => {
       const wrapper = createFieldWrapper()
       await waitForTransition()
-      expect(wrapper.props("clearIcon")).toBe("cross")
+      expect(wrapper.props("clearIcon")).toBe("close")
     })
 
     it("默认 clearIconSize 应该是 24rpx", async () => {

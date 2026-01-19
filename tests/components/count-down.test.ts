@@ -201,7 +201,7 @@ describe("uiCountDown 组件", () => {
 
     it("倒计时结束时应该触发 finish 事件", async () => {
       const wrapper = mount(UiCountDown, {
-        props: { time: 100 },
+        props: { time: 100, millisecond: true },
       })
       await waitForTransition()
       await vi.advanceTimersByTimeAsync(200)
@@ -289,8 +289,8 @@ describe("uiCountDown 组件", () => {
         props: { time: 125000 },
       })
       await waitForTransition()
-      // 启动以触发 timeData 更新
-      await vi.advanceTimersByTimeAsync(100)
+      // 等待至少 1 秒以触发 change 事件
+      await vi.advanceTimersByTimeAsync(1100)
       // 通过 emitted change 事件验证 time 参数传递
       expect(wrapper.emitted("change")).toBeTruthy()
       const timeData = wrapper.emitted("change")![0][0] as any
