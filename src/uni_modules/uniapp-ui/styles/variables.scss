@@ -20,17 +20,17 @@ page {
   --ui-color-text-secondary: #646566; // 次要文本
   --ui-color-text-tertiary: #969799; // 辅助文本
   --ui-color-text-placeholder: #c8c9cc; // 占位文本
-  --ui-color-text-disabled: #c8c9cc; // 禁用文本
+  --ui-color-text-disabled: #bdbec2; // 禁用文本
 
   --ui-color-text-primary-rgb: 50, 50, 51; // 主要文本 RGB
   --ui-color-text-secondary-rgb: 100, 101, 102; // 次要文本 RGB
   --ui-color-text-tertiary-rgb: 150, 151, 153; // 辅助文本 RGB
   --ui-color-text-placeholder-rgb: 200, 201, 204; // 占位文本 RGB
-  --ui-color-text-disabled-rgb: 200, 201, 204; // 禁用文本 RGB
+  --ui-color-text-disabled-rgb: 189, 190, 194; // 禁用文本 RGB
 
   // 边框色彩
   --ui-color-border: #dcdee0; // 默认边框
-  --ui-color-border-light: #eeeeee; // 浅色边框
+  --ui-color-border-light: #e5e5e5; // 浅色边框
   --ui-color-border-dark: #c8c9cc; // 深色边框
 
   // 背景色彩
@@ -44,11 +44,11 @@ page {
   --ui-color-mask-heavy: rgba(0, 0, 0, 0.7); // 深色遮罩
 
   // 组件尺寸
-  --ui-size-mini: 48rpx; // 迷你尺寸
-  --ui-size-small: 64rpx; // 小尺寸
-  --ui-size-normal: 80rpx; // 常规尺寸
-  --ui-size-medium: 88rpx; // 中等尺寸
-  --ui-size-large: 96rpx; // 大尺寸
+  --ui-size-mini: 56rpx; // 迷你尺寸
+  --ui-size-small: 72rpx; // 小尺寸
+  --ui-size-normal: 88rpx; // 常规尺寸
+  --ui-size-medium: 96rpx; // 中等尺寸
+  --ui-size-large: 104rpx; // 大尺寸
 
   // 图标尺寸
   --ui-icon-size-xs: 24rpx; // 超小图标
@@ -58,11 +58,11 @@ page {
   --ui-icon-size-xl: 80rpx; // 超大图标
 
   // 字体大小
-  --ui-font-size-xs: 22rpx; // 超小字号
-  --ui-font-size-sm: 24rpx; // 小字号
-  --ui-font-size-md: 28rpx; // 中等字号
-  --ui-font-size-lg: 32rpx; // 大字号
-  --ui-font-size-xl: 36rpx; // 超大字号
+  --ui-font-size-xs: 24rpx; // 超小字号
+  --ui-font-size-sm: 28rpx; // 小字号
+  --ui-font-size-md: 32rpx; // 中等字号
+  --ui-font-size-lg: 36rpx; // 大字号
+  --ui-font-size-xl: 40rpx; // 超大字号
 
   // 字重
   --ui-font-weight-normal: 400; // 常规
@@ -74,9 +74,9 @@ page {
   --ui-spacing-xs: 8rpx; // 超小间距
   --ui-spacing-sm: 16rpx; // 小间距
   --ui-spacing-md: 24rpx; // 中等间距
-  --ui-spacing-lg: 48rpx; // 大间距
-  --ui-spacing-xl: 64rpx; // 超大间距
-  --ui-spacing-xxl: 96rpx; // 特大间距
+  --ui-spacing-lg: 32rpx; // 大间距
+  --ui-spacing-xl: 48rpx; // 超大间距
+  --ui-spacing-xxl: 64rpx; // 特大间距
 
   // 圆角
   --ui-radius-xs: 4rpx; // 超小圆角
@@ -162,7 +162,7 @@ page {
 
   // 边框色彩
   --ui-color-border: #3a3a3a; // 默认边框
-  --ui-color-border-light: #2a2a2a; // 浅色边框
+  --ui-color-border-light: #2f2f2f; // 浅色边框
   --ui-color-border-dark: #4a4a4a; // 深色边框
 
   // 背景色彩

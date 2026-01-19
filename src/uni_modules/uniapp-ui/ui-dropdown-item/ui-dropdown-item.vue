@@ -293,9 +293,9 @@ export default {
   }
 
   &__option {
-    margin: 0 var(--ui-spacing-xl);
+    margin: 0 var(--ui-spacing-lg);
     display: flex;
-    padding: var(--ui-spacing-xl) 0;
+    padding: var(--ui-spacing-lg) 0;
     position: relative;
     align-items: center;
     justify-content: space-between;
@@ -320,7 +320,7 @@ export default {
     flex: 1;
     overflow: hidden;
     white-space: nowrap;
-    margin-right: var(--ui-spacing-xl);
+    margin-right: var(--ui-spacing-lg);
     text-overflow: ellipsis;
   }
 

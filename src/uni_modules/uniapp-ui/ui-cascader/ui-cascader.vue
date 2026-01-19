@@ -264,7 +264,7 @@ export default {
 
   &__header {
     display: flex;
-    padding: var(--ui-spacing-xl);
+    padding: var(--ui-spacing-lg);
     align-items: center;
     justify-content: space-between;
 
@@ -310,7 +310,7 @@ export default {
 
   &__swiper {
     height: 100%;
-    padding-top: var(--ui-spacing-xl);
+    padding-top: var(--ui-spacing-lg);
 
     &__item {
       flex: 1;
@@ -324,7 +324,7 @@ export default {
   &__options {
     &__option {
       display: flex;
-      padding: var(--ui-spacing-lg) var(--ui-spacing-xl);
+      padding: var(--ui-spacing-md) var(--ui-spacing-lg);
       font-size: var(--ui-font-size-md);
       align-items: center;
       justify-content: space-between;

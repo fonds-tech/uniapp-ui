@@ -305,7 +305,7 @@ export default {
 <style lang="scss">
 .ui-stepper {
   width: max-content;
-  height: 48rpx;
+  height: var(--ui-size-small);
   display: inline-flex;
   align-items: center;
   flex-shrink: 0;
@@ -335,7 +335,7 @@ export default {
     &::before {
       top: 50%;
       left: 50%;
-      width: var(--stepper-minus-text-size, 20rpx);
+      width: var(--stepper-minus-text-size, var(--ui-font-size-sm));
       height: 3rpx;
       content: "";
       position: absolute;
@@ -348,14 +348,14 @@ export default {
     }
 
     &--button {
-      width: 48rpx;
+      width: var(--ui-size-small);
       height: 100%;
       border-radius: var(--ui-radius-md) 0 0 var(--ui-radius-md);
       background-color: var(--ui-color-background-dark);
     }
 
     &--round {
-      width: 48rpx;
+      width: var(--ui-size-small);
       border: var(--ui-border-width) solid currentColor;
       height: 100%;
       border-radius: var(--ui-radius-round);
@@ -364,7 +364,7 @@ export default {
 
     &--border {
       color: currentColor;
-      width: 48rpx;
+      width: var(--ui-size-small);
       height: 100%;
       border-right: var(--ui-border-width-thick) solid var(--ui-color-border-light);
       background-color: var(--ui-color-background);
@@ -375,7 +375,7 @@ export default {
     &::before {
       top: 50%;
       left: 50%;
-      width: var(--stepper-plus-text-size, 20rpx);
+      width: var(--stepper-plus-text-size, var(--ui-font-size-sm));
       height: 3rpx;
       content: "";
       position: absolute;
@@ -386,7 +386,7 @@ export default {
       top: 50%;
       left: 50%;
       width: 3rpx;
-      height: var(--stepper-plus-text-size, 20rpx);
+      height: var(--stepper-plus-text-size, var(--ui-font-size-sm));
       content: "";
       position: absolute;
       transform: translate(-50%, -50%);
@@ -398,7 +398,7 @@ export default {
     }
 
     &--button {
-      width: 48rpx;
+      width: var(--ui-size-small);
       height: 100%;
       border-radius: 0 var(--ui-radius-md) var(--ui-radius-md) 0;
       background-color: var(--ui-color-background-dark);
@@ -406,7 +406,7 @@ export default {
 
     &--round {
       color: var(--ui-color-background);
-      width: 48rpx;
+      width: var(--ui-size-small);
       border: var(--ui-border-width) solid var(--ui-color-primary);
       height: 100%;
       border-radius: var(--ui-radius-round);
@@ -415,7 +415,7 @@ export default {
 
     &--border {
       color: currentColor;
-      width: 48rpx;
+      width: var(--ui-size-small);
       height: 100%;
       border-left: var(--ui-border-width-thick) solid var(--ui-color-border-light);
       background-color: var(--ui-color-background);
@@ -423,7 +423,7 @@ export default {
   }
 
   &__input {
-    width: 48rpx;
+    width: var(--ui-size-small);
     height: 100%;
     margin: 0 var(--ui-spacing-sm);
     display: flex;

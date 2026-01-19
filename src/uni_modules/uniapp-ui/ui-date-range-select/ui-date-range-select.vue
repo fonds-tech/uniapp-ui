@@ -659,6 +659,12 @@ function handleClick(type: DateRangeSelectActiveType) {
   // 初始化 picker 值
   const currentValue = type === "start" ? tempStartValue.value : tempEndValue.value
   initFromValue(currentValue)
+  // 自动回填：用 picker 当前显示值更新临时值（即使用户不滑动也能确认）
+  if (type === "start") {
+    tempStartValue.value = getFormattedValue()
+  } else {
+    tempEndValue.value = getFormattedValue()
+  }
   visible.value = true
 }
 
@@ -667,6 +673,12 @@ function switchTab(type: DateRangeSelectActiveType) {
   // 切换 Tab 时重新初始化 picker
   const currentValue = type === "start" ? tempStartValue.value : tempEndValue.value
   initFromValue(currentValue)
+  // 自动回填：用 picker 当前显示值更新临时值
+  if (type === "start") {
+    tempStartValue.value = getFormattedValue()
+  } else {
+    tempEndValue.value = getFormattedValue()
+  }
 }
 
 function handleUpdateShow(show: boolean) {
@@ -711,6 +723,12 @@ function open(type: DateRangeSelectActiveType = "start") {
   tempEndValue.value = endValue.value
   const currentValue = type === "start" ? tempStartValue.value : tempEndValue.value
   initFromValue(currentValue)
+  // 自动回填：用 picker 当前显示值更新临时值
+  if (type === "start") {
+    tempStartValue.value = getFormattedValue()
+  } else {
+    tempEndValue.value = getFormattedValue()
+  }
   visible.value = true
 }
 

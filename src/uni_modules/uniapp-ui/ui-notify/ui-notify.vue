@@ -163,7 +163,7 @@ export default {
   top: 0;
   left: 0;
   right: 0;
-  padding: var(--ui-spacing-xl);
+  padding: var(--ui-spacing-lg);
 
   &--primary {
     background-color: var(--ui-color-primary);

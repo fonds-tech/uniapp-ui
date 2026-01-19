@@ -178,7 +178,7 @@ export default {
     flex: 1;
     height: 100%;
     display: flex;
-    padding: 0 var(--ui-spacing-lg);
+    padding: 0 var(--ui-spacing-md);
     transition:
       border-color 0.2s ease,
       box-shadow 0.2s ease;
@@ -226,7 +226,7 @@ export default {
 
   &__action {
     height: 100%;
-    margin-left: var(--ui-spacing-xl); // 高度与输入框同步
+    margin-left: var(--ui-spacing-lg); // 高度与输入框同步
 
     &__button {
       color: var(--ui-color-text);

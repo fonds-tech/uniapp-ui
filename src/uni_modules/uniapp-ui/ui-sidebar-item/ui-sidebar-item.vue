@@ -115,7 +115,7 @@ export default {
 
   &__title {
     flex: 1;
-    padding: 0 var(--ui-spacing-xl);
+    padding: 0 var(--ui-spacing-lg);
     overflow: hidden;
     position: relative;
     white-space: nowrap;

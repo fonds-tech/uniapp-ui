@@ -159,7 +159,7 @@ export default {
 .ui-card {
   --ui-card-radius: var(--ui-radius-lg);
   --ui-card-shadow: var(--ui-shadow-sm);
-  --ui-card-padding: var(--ui-spacing-xl);
+  --ui-card-padding: var(--ui-spacing-lg);
   --ui-card-desc-size: var(--ui-font-size-sm);
   --ui-card-background: var(--ui-color-background);
   --ui-card-desc-color: var(--ui-color-text-secondary);

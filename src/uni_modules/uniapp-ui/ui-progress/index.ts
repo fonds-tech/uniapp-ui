@@ -46,7 +46,7 @@ export const [progressProps, useProgressProps] = createProps("progress", {
   /**
    * 进度条的高度
    */
-  height: makeNumericProp("24rpx"),
+  height: makeNumericProp("28rpx"),
   /**
    * 自定义类名
    */

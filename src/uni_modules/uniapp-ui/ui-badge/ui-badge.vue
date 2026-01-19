@@ -142,11 +142,11 @@ export default {
 
   &__inner {
     color: #fff;
-    height: 32rpx;
+    height: 40rpx;
     display: flex;
     padding: 0;
     font-size: var(--ui-font-size-xs);
-    min-width: 32rpx;
+    min-width: 40rpx;
     box-sizing: border-box;
     align-items: center;
     line-height: 1;

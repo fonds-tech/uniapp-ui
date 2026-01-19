@@ -437,7 +437,7 @@ export default {
     }
 
     &--effective {
-      margin-right: var(--ui-spacing-xl);
+      margin-right: var(--ui-spacing-lg);
     }
 
     &--required {
@@ -480,7 +480,7 @@ export default {
     }
 
     &__offset {
-      margin-right: var(--ui-spacing-xl);
+      margin-right: var(--ui-spacing-lg);
     }
   }
 }

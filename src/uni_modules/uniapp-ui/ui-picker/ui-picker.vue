@@ -217,7 +217,7 @@ export default {
 .ui-picker {
   &__header {
     display: flex;
-    padding: var(--ui-spacing-xl);
+    padding: var(--ui-spacing-lg);
     align-items: center;
     border-bottom: var(--ui-border-width) solid var(--ui-color-border-light);
     justify-content: space-between;

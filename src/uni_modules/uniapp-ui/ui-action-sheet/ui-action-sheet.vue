@@ -219,7 +219,7 @@ export default {
 
   &__header {
     display: grid;
-    padding: var(--ui-spacing-xl);
+    padding: var(--ui-spacing-lg);
     row-gap: var(--ui-spacing-md);
     padding-bottom: var(--ui-spacing-md);
     grid-template-columns: repeat(1, minmax(0, 1fr));
@@ -248,7 +248,7 @@ export default {
 
   &__item {
     display: grid;
-    padding: var(--ui-spacing-xl);
+    padding: var(--ui-spacing-lg);
     row-gap: var(--ui-spacing-md);
     transition: background-color var(--ui-transition-fast);
     align-items: center;

@@ -431,7 +431,7 @@ export default {
   }
 
   &__content {
-    padding: var(--ui-spacing-xxxl);
+    padding: var(--ui-spacing-lg);
     font-size: var(--ui-font-size-md);
     word-wrap: break-word;
     white-space: pre-wrap;

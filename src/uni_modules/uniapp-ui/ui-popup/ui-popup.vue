@@ -209,23 +209,23 @@ export default {
     position: absolute;
 
     &--top-left {
-      top: var(--ui-spacing-xl);
-      left: var(--ui-spacing-xl);
+      top: var(--ui-spacing-lg);
+      left: var(--ui-spacing-lg);
     }
 
     &--top-right {
-      top: var(--ui-spacing-xl);
-      right: var(--ui-spacing-xl);
+      top: var(--ui-spacing-lg);
+      right: var(--ui-spacing-lg);
     }
 
     &--bottom-left {
-      left: var(--ui-spacing-xl);
-      bottom: var(--ui-spacing-xl);
+      left: var(--ui-spacing-lg);
+      bottom: var(--ui-spacing-lg);
     }
 
     &--bottom-right {
-      right: var(--ui-spacing-xl);
-      bottom: var(--ui-spacing-xl);
+      right: var(--ui-spacing-lg);
+      bottom: var(--ui-spacing-lg);
     }
   }
 

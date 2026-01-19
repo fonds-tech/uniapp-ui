@@ -276,15 +276,15 @@ export default {
   --ui-collapse-item-value-color: var(--ui-color-text-secondary);
   --ui-collapse-item-border-color: var(--ui-color-border-light);
   --ui-collapse-item-disabled-color: var(--ui-color-text-disabled);
-  --ui-collapse-item-header-padding: var(--ui-spacing-lg) var(--ui-spacing-xl);
-  --ui-collapse-item-content-padding: 0 var(--ui-spacing-xl) var(--ui-spacing-lg);
+  --ui-collapse-item-header-padding: var(--ui-spacing-md) var(--ui-spacing-lg);
+  --ui-collapse-item-content-padding: 0 var(--ui-spacing-lg) var(--ui-spacing-md);
   --ui-collapse-item-transition-duration: 300ms;
   background: var(--ui-color-background);
 
   &--border {
     &::after {
-      left: var(--ui-spacing-xl);
-      right: var(--ui-spacing-xl);
+      left: var(--ui-spacing-lg);
+      right: var(--ui-spacing-lg);
       bottom: 0;
       content: "";
       position: absolute;

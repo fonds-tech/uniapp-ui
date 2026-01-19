@@ -109,7 +109,7 @@ export default {
 <style lang="scss" scoped>
 .ui-progress {
   width: 100%;
-  height: 24rpx;
+  height: 28rpx;
   display: flex;
   position: relative;
   align-items: center;

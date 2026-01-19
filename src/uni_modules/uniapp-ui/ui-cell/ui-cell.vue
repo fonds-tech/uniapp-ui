@@ -150,12 +150,12 @@ export default {
 
 <style lang="scss" scoped>
 .ui-cell {
-  --ui-cell-border-left: var(--ui-spacing-xl);
+  --ui-cell-border-left: var(--ui-spacing-lg);
   --ui-cell-border-color: var(--ui-color-border-light);
-  --ui-cell-border-right: var(--ui-spacing-xl);
+  --ui-cell-border-right: var(--ui-spacing-lg);
   --ui-cell-border-width: var(--ui-border-width);
   display: flex;
-  padding: var(--ui-spacing-lg) var(--ui-spacing-xl);
+  padding: var(--ui-spacing-md) var(--ui-spacing-lg);
   position: relative;
   background: var(--ui-color-background);
 
@@ -178,7 +178,7 @@ export default {
     display: flex;
     font-size: var(--ui-font-size-md);
     align-items: center;
-    margin-right: var(--ui-spacing-xl);
+    margin-right: var(--ui-spacing-lg);
   }
 
   &__body {
