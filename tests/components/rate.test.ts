@@ -145,15 +145,15 @@ describe("uiRate 组件", () => {
       expect(wrapper.props("voidIcon")).toBe("heart-o")
     })
 
-    it("默认图标应该是 star", async () => {
+    it("默认图标应该是 star-fill", async () => {
       const wrapper = mount(UiRate, {
         global: {
           stubs: { "ui-icon": true },
         },
       })
       await waitForTransition()
-      expect(wrapper.props("icon")).toBe("star")
-      expect(wrapper.props("voidIcon")).toBe("star-o")
+      expect(wrapper.props("icon")).toBe("star-fill")
+      expect(wrapper.props("voidIcon")).toBe("star")
     })
   })
 
