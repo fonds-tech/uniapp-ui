@@ -97,7 +97,7 @@ const bodyClass = computed(() => {
   const list: string[] = []
   if (visible.value) {
     list.push(`ui-toast__body--${mergedOptions.value.type}`)
-    if (mergedOptions.value.icon) {
+    if (isShowIcon.value) {
       list.push("ui-toast__body--icon")
     }
   }
@@ -157,7 +157,6 @@ function open() {
 function close() {
   if (transition.visible.value) {
     clearTimer()
-    visible.value = false
     transition.leave()
     emits("update:show", false)
   }
@@ -192,7 +191,7 @@ function clearTimer() {
  * toast 关闭动画结束后的回调
  */
 function closed() {
-  // 清空命令式调用的选项
+  visible.value = false
   commandOptions.value = {}
   emits("closed")
 }
@@ -301,12 +300,20 @@ export default {
 
   &__body {
     display: flex;
-    padding: var(--ui-spacing-md);
+    padding: var(--ui-spacing-md) var(--ui-spacing-lg);
     max-width: calc(100% - 160rpx);
     align-items: center;
     border-radius: var(--ui-radius-lg);
-    flex-direction: column;
+    flex-direction: row;
     justify-content: center;
+
+    // 带图标时使用正方形布局
+    &--icon {
+      width: 240rpx;
+      padding: var(--ui-spacing-lg);
+      min-height: 240rpx;
+      flex-direction: column;
+    }
   }
 
   &__icon {

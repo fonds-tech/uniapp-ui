@@ -59,5 +59,7 @@ export { provideDialog } from "./ui-dialog"
 export type { DialogExpose, DialogInstance, DialogOptions } from "./ui-dialog"
 export { provideNotify } from "./ui-notify"
 export type { NotifyInstance, NotifyOptions, NotifyType } from "./ui-notify"
+export { provideToast } from "./ui-toast"
+export type { ToastInstance, ToastOptions } from "./ui-toast"
 export { setGlobalProps } from "./utils/component"
 export default ui
