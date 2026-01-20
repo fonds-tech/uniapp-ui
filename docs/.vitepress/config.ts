@@ -57,12 +57,10 @@ export default defineConfig({
           text: "布局组件",
           items: [
             { text: "Layout 布局", link: "/components/layout" },
-            { text: "Grid 栅格", link: "/components/grid" },
             { text: "Sticky 粘性布局", link: "/components/sticky" },
             { text: "Line 分割线", link: "/components/line" },
             { text: "SafeAreaTop 顶部安全区", link: "/components/safe-area-top" },
             { text: "SafeAreaBottom 底部安全区", link: "/components/safe-area-bottom" },
-            { text: "SafeArea 安全区域", link: "/components/safe-area" },
             { text: "Header 页头", link: "/components/header" },
             { text: "Footer 页脚", link: "/components/footer" },
             { text: "Resize 尺寸监听", link: "/components/resize" },

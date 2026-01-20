@@ -1,5 +1,5 @@
 <template>
-  <view class="ui-textarea" :class="[classs, customClass]" :style="[style]">
+  <view class="ui-textarea" :class="[classes, customClass]" :style="[style]">
     <view class="ui-textarea__content">
       <textarea
         class="ui-textarea__textarea"
@@ -9,12 +9,13 @@
         :fixed="useProps.fixed"
         :focus="useProps.focus"
         :cursor="+useProps.cursor"
-        :disabled="useProps.disabled"
+        :disabled="disabled"
         :maxlength="+useProps.maxlength"
         :placeholder="useProps.placeholder"
         :cursor-color="useProps.cursorColor"
         :auto-height="useProps.autoHeight"
         :confirm-type="useProps.confirmType"
+        :confirm-hold="useProps.confirmHold"
         :hold-keyboard="useProps.holdKeyboard"
         :selection-end="+useProps.selectionEnd"
         :cursor-spacing="+useProps.cursorSpacing"
@@ -61,15 +62,16 @@ const style = computed(() => {
   const style: any = {}
   style.border = useProps.border
   style.width = useUnit(useProps.width)
-  style.padding = useUnit(useProps.padding)
+  if (useProps.padding) style.padding = useUnit(useProps.padding)
   style.minHeight = useUnit(useProps.minHeight)
   style.background = useColor(useProps.background)
   style.borderRadius = useUnit(useProps.radius)
   return useStyle({ ...style, ...useStyle(useProps.customStyle) })
 })
 
-const classs = computed(() => {
+const classes = computed(() => {
   const list: string[] = []
+  if (useProps.readonly) list.push("ui-textarea--readonly")
   if (useProps.disabled) list.push("ui-textarea--disabled")
   if (useProps.clearable) list.push("ui-textarea--clearable")
   return list
@@ -87,12 +89,14 @@ const textareaStyle = computed(() => {
 const textareaClass = computed(() => {
   const list: string[] = []
   list.push(`ui-textarea__textarea--${useProps.inputAlign}`)
+  if (useProps.readonly) list.push("ui-textarea__textarea--readonly")
   return list
 })
 
 const placeholderStyle = computed(() => {
   const style: any = {}
   style.color = useColor(useProps.placeholderColor)
+  style.fontSize = useUnit(useProps.fontSize)
   return useStyle({ ...style, ...useStyle(useProps.placeholderStyle) }, "string")
 })
 
@@ -114,7 +118,11 @@ const countStyle = computed(() => {
 
 const valueLength = computed(() => {
   const count = String(useProps.modelValue).length
-  return useProps.maxlength === -1 ? count : `${count > +useProps.maxlength ? useProps.maxlength : count}/${useProps.maxlength}`
+  return useProps.maxlength === -1 ? count : `${count}/${useProps.maxlength}`
+})
+
+const disabled = computed(() => {
+  return useProps.disabled || useProps.readonly
 })
 
 watch(
@@ -186,7 +194,9 @@ export default {
 .ui-textarea {
   flex: 1;
   display: flex;
+  padding: var(--ui-spacing-md);
   flex-direction: column;
+  background-color: var(--ui-color-background);
 
   &--disabled {
     cursor: not-allowed;
@@ -205,14 +215,15 @@ export default {
       text-align: right;
     }
 
-    :deep(.textarea-placeholder) {
-      font-weight: var(--ui-font-weight-normal);
+    &--readonly {
+      pointer-events: none;
     }
   }
 
   &__content {
     display: flex;
-    align-items: center;
+    position: relative;
+    align-items: flex-start;
   }
 
   &__count {
@@ -222,11 +233,13 @@ export default {
   }
 
   &__clear {
+    top: 0;
+    right: 0;
     display: flex;
     padding: var(--ui-spacing-xs);
+    position: absolute;
     box-sizing: content-box;
     align-items: center;
-    margin-left: var(--ui-spacing-sm);
     border-radius: var(--ui-radius-round);
     justify-content: center;
     background-color: var(--ui-color-text-placeholder);

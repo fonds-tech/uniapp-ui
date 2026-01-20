@@ -13,6 +13,10 @@ export const [cellProps, useCellProps] = createProps("cell", {
    */
   title: String,
   /**
+   * 标题宽度，不设置则根据内容自适应
+   */
+  titleWidth: numericProp,
+  /**
    * 描述
    */
   label: String,

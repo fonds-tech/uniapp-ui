@@ -36,7 +36,7 @@ export const [searchProps, useSearchProps] = createProps("search", {
   /** 输入文字大小 */
   fontSize: makeNumericProp(""),
   /** 占位文字颜色 */
-  placeholderColor: makeStringProp("#989898"),
+  placeholderColor: makeStringProp("#969799"),
   /** 输入框内容水平对齐方式 */
   inputAlign: { type: String, default: "left", validator: (v: string) => ["left", "center", "right"].includes(v) },
 

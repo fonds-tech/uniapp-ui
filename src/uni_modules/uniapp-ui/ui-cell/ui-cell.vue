@@ -5,7 +5,7 @@
         <ui-icon :name="icon" :size="iconSize" :color="iconColor" :weight="iconWeight" />
       </view>
     </slot>
-    <view class="ui-cell__body">
+    <view class="ui-cell__body" :style="[bodyStyle]">
       <slot name="title">
         <text v-if="isShowTitle" class="ui-cell__title" :style="[titleStyle]">{{ title }}</text>
       </slot>
@@ -13,9 +13,11 @@
         <text v-if="isShowLabel" class="ui-cell__label" :style="[labelStyle]">{{ label }}</text>
       </slot>
     </view>
-    <slot name="value">
-      <text v-if="isShowValue" class="ui-cell__value" :style="[valueStyle]">{{ value }}</text>
-    </slot>
+    <view class="ui-cell__content">
+      <slot>
+        <text v-if="isShowValue" class="ui-cell__value" :style="[valueStyle]">{{ value }}</text>
+      </slot>
+    </view>
     <slot name="right-icon">
       <view v-if="isShowRightIcon" class="ui-cell__right-icon" :style="[rightIconStyle]">
         <ui-icon :name="rightIcon" :size="rightIconSize" :color="rightIconColor" :weight="rightIconWeight" />
@@ -94,6 +96,16 @@ const titleStyle = computed(() => {
   style.color = useColor(useProps.titleColor)
   style.fontSize = useUnit(useProps.titleSize)
   style.fontWeight = useProps.titleWeight
+  return useStyle(style)
+})
+
+// 计算 body 样式
+const bodyStyle = computed(() => {
+  const style: CSSProperties = {}
+  if (useProps.titleWidth) {
+    style.width = useUnit(useProps.titleWidth)
+    style.flexShrink = 0
+  }
   return useStyle(style)
 })
 
@@ -188,31 +200,42 @@ export default {
   }
 
   &__body {
-    flex: 1;
     display: flex;
     min-width: 0;
+    flex-shrink: 0;
     flex-direction: column;
     justify-content: center;
   }
 
   &__title {
     color: var(--ui-color-text-primary);
+    overflow: hidden;
     font-size: var(--ui-font-size-sm);
+    white-space: nowrap;
+    text-overflow: ellipsis;
   }
 
   &__label {
     color: var(--ui-color-text-tertiary);
+    overflow: hidden;
     font-size: var(--ui-font-size-xs);
     margin-top: var(--ui-spacing-xs);
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  &__content {
+    flex: 1;
+    display: flex;
+    min-width: 0;
+    align-items: center;
+    margin-left: var(--ui-spacing-md);
+    justify-content: flex-end;
   }
 
   &__value {
     color: var(--ui-color-text-secondary);
-    display: flex;
     font-size: var(--ui-font-size-sm);
-    align-items: center;
-    flex-shrink: 0;
-    margin-left: var(--ui-spacing-md);
   }
 
   &__right-icon {

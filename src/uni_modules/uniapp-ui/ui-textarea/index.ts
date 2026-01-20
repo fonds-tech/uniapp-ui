@@ -13,6 +13,10 @@ export const [textareaProps, useTextareaProps] = createProps("textarea", {
    */
   disabled: Boolean,
   /**
+   * 是否只读，与disabled不同之处在于disabled会置灰组件，而readonly则不会
+   */
+  readonly: Boolean,
+  /**
    * 是否显示清除按钮
    */
   clearable: truthProp,
@@ -41,7 +45,7 @@ export const [textareaProps, useTextareaProps] = createProps("textarea", {
    */
   confirmType: {
     type: String as PropType<"send" | "search" | "next" | "go" | "done" | "return">,
-    default: "done",
+    default: "return",
   },
   /**
    * 点击键盘右下角按钮时是否保持键盘不收起，H5无效
@@ -134,7 +138,7 @@ export const [textareaProps, useTextareaProps] = createProps("textarea", {
   /**
    * 是否显示字数统计
    */
-  showCount: truthProp,
+  showCount: Boolean,
   /**
    * 字数统计字体大小
    */

@@ -98,9 +98,7 @@
           </template>
         </ui-cell>
         <ui-cell title="自定义内容">
-          <template #value>
-            <ui-switch :model-value="true" size="32" />
-          </template>
+          <ui-switch :model-value="true" size="32" />
         </ui-cell>
         <ui-cell title="自定义右侧图标" is-link>
           <template #right-icon>

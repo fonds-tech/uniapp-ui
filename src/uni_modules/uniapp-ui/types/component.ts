@@ -472,7 +472,6 @@ export type {
   PaginationProps,
   PickerPanelProps,
   PickerProps,
-  PopoverProps,
   PopupProps,
   ProgressProps,
   PullRefreshProps,

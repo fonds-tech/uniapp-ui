@@ -39,6 +39,20 @@ function onHeight(height) {
 </script>
 ```
 
+## 应用场景：底部操作栏
+
+```vue
+<template>
+  <view class="footer-bar">
+    <view class="footer-content">
+      <ui-button type="primary">立即购买</ui-button>
+      <ui-button>加入购物车</ui-button>
+    </view>
+    <ui-safe-area-bottom background="#fff" />
+  </view>
+</template>
+```
+
 ## Props
 
 | 参数         | 说明       | 类型               | 默认值 |

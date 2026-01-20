@@ -169,7 +169,7 @@ export default {
 
 <style lang="scss">
 .ui-search {
-  flex: 1;
+  width: 100%;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -183,7 +183,7 @@ export default {
       border-color 0.2s ease,
       box-shadow 0.2s ease;
     align-items: center;
-    border-radius: var(--ui-radius-lg);
+    border-radius: var(--ui-radius-sm);
     background-color: var(--ui-color-background-light);
 
     &--round {
@@ -192,6 +192,7 @@ export default {
   }
 
   &__icon {
+    color: var(--ui-color-text-tertiary);
     display: flex;
     align-items: center;
     margin-right: var(--ui-spacing-sm);
@@ -201,7 +202,7 @@ export default {
   &__value {
     flex: 1;
     height: 100%;
-    font-size: var(--ui-font-size-md);
+    font-size: var(--ui-font-size-sm);
 
     &--disabled {
       opacity: 0.6;
@@ -226,13 +227,13 @@ export default {
 
   &__action {
     height: 100%;
-    margin-left: var(--ui-spacing-lg); // 高度与输入框同步
+    margin-left: var(--ui-spacing-md);
 
     &__button {
       color: var(--ui-color-text);
       height: 100%;
       display: flex;
-      font-size: var(--ui-font-size-md);
+      font-size: var(--ui-font-size-sm);
       align-items: center;
       justify-content: center;
 

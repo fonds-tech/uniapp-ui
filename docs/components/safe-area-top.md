@@ -36,6 +36,20 @@ function onHeight(height) {
 </script>
 ```
 
+## 应用场景：自定义导航栏
+
+```vue
+<template>
+  <view class="custom-navbar">
+    <ui-safe-area-top background="#1989fa" />
+    <view class="navbar-content">
+      <ui-icon name="arrow-left" color="#fff" />
+      <text class="navbar-title">页面标题</text>
+    </view>
+  </view>
+</template>
+```
+
 ## Props
 
 | 参数         | 说明       | 类型               | 默认值 |
