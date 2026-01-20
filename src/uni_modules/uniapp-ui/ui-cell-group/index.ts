@@ -14,18 +14,6 @@ export const [cellGroupProps, useCellGroupProps] = createProps("cellGroup", {
    */
   background: String,
   /**
-   * 内容颜色（可被子组件继承）
-   */
-  contentColor: String,
-  /**
-   * 内容大小（可被子组件继承）
-   */
-  contentSize: numericProp,
-  /**
-   * 内容粗细（可被子组件继承）
-   */
-  contentWeight: numericProp,
-  /**
    * 自定义类名
    */
   customClass: String,

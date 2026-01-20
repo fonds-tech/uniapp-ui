@@ -1,172 +1,119 @@
 <template>
-  <demo-page>
-    <!-- title -->
-    <demo-section title="title 标题" :card="false">
+  <demo-page padding-x="0">
+    <!-- 基础用法 -->
+    <demo-section title="基础用法" :card="false">
       <ui-cell-group>
-        <ui-cell title="单元格标题" />
+        <ui-cell title="标题" value="内容" />
+        <ui-cell title="标题" value="内容" label="描述信息" />
       </ui-cell-group>
     </demo-section>
 
-    <!-- value -->
-    <demo-section title="value 内容" :card="false">
+    <!-- 左侧图标 -->
+    <demo-section title="左侧图标" :card="false">
       <ui-cell-group>
-        <ui-cell title="单元格" value="右侧内容" />
+        <ui-cell title="默认图标" icon="setting" value="内容" />
+        <ui-cell title="图标大小" icon="setting" :icon-size="24" value="icon-size=24" />
+        <ui-cell title="图标颜色" icon="setting" icon-color="#1989fa" value="icon-color" />
+        <ui-cell title="图标粗细" icon="setting" :icon-weight="600" value="icon-weight=600" />
+        <ui-cell title="图标间距" icon="setting" icon-gap="16" value="icon-gap=16" />
       </ui-cell-group>
     </demo-section>
 
-    <!-- label -->
-    <demo-section title="label 描述" :card="false">
+    <!-- 右侧内容样式 -->
+    <demo-section title="右侧内容样式" :card="false">
       <ui-cell-group>
-        <ui-cell title="单元格" value="内容" label="描述信息" />
+        <ui-cell title="默认样式" value="内容" />
+        <ui-cell title="内容大小" value="value-size=16" :value-size="16" />
+        <ui-cell title="内容颜色" value="value-color" value-color="#07c160" />
+        <ui-cell title="内容粗细" value="value-weight=600" :value-weight="600" />
       </ui-cell-group>
     </demo-section>
 
-    <!-- icon -->
-    <demo-section title="icon 图标" :card="false">
+    <!-- 链接与箭头 -->
+    <demo-section title="链接与箭头" :card="false">
       <ui-cell-group>
-        <ui-cell title="单元格" icon="setting" value="内容" />
+        <ui-cell title="展示箭头" value="is-link" is-link />
       </ui-cell-group>
     </demo-section>
 
-    <!-- iconColor -->
-    <demo-section title="iconColor 图标颜色" :card="false">
+    <!-- 页面跳转 -->
+    <demo-section title="页面跳转" :card="false">
       <ui-cell-group>
-        <ui-cell title="单元格" icon="setting" icon-color="#1989fa" value="内容" />
+        <ui-cell title="默认跳转" value="navigateTo" is-link url="/pages/demo/button/index" />
+        <ui-cell title="重定向" value="redirectTo" is-link url="/pages/demo/button/index" link-type="redirectTo" />
       </ui-cell-group>
     </demo-section>
 
-    <!-- isLink -->
-    <demo-section title="isLink 展示箭头" :card="false">
+    <!-- 标题样式 -->
+    <demo-section title="标题样式" :card="false">
       <ui-cell-group>
-        <ui-cell title="单元格" value="内容" is-link />
+        <ui-cell title="标题大小" title-size="18rpx" value="title-size=18rpx" />
+        <ui-cell title="标题颜色" title-color="#1989fa" value="title-color" />
+        <ui-cell title="标题粗细" title-weight="400" value="title-weight=400" />
       </ui-cell-group>
     </demo-section>
 
-    <!-- rightIcon -->
-    <demo-section title="rightIcon 右侧图标" :card="false">
+    <!-- 描述样式 -->
+    <demo-section title="描述样式" :card="false">
       <ui-cell-group>
-        <ui-cell title="单元格" is-link right-icon="plus" />
+        <ui-cell title="默认描述" label="描述信息" value="内容" />
+        <ui-cell title="描述大小" label="label-size=20" label-size="20" value="内容" />
+        <ui-cell title="描述颜色" label="label-color" label-color="#ee0a24" value="内容" />
+        <ui-cell title="描述粗细" label="label-weight=bold" label-weight="bold" value="内容" />
+        <ui-cell title="描述间距" label="label-gap=12" label-gap="20" value="内容" />
       </ui-cell-group>
     </demo-section>
 
-    <!-- rightIconColor -->
-    <demo-section title="rightIconColor 右侧图标颜色" :card="false">
+    <!-- 尺寸与间距 -->
+    <demo-section title="尺寸与间距" :card="false">
       <ui-cell-group>
-        <ui-cell title="单元格" is-link right-icon-color="#1989fa" />
+        <ui-cell title="自定义高度" value="height=120rpx" height="120rpx" />
+        <ui-cell title="自定义内边距" value="padding=40rpx" padding="40rpx" />
       </ui-cell-group>
     </demo-section>
 
-    <!-- url -->
-    <demo-section title="url 页面跳转" :card="false">
+    <!-- 点击交互 -->
+    <demo-section title="点击交互" :card="false">
       <ui-cell-group>
-        <ui-cell title="跳转到按钮页" is-link url="/pages/demo/button/index" />
+        <ui-cell title="无点击态" value="默认" />
+        <ui-cell title="可点击" value="clickable" clickable @click="onCellClick" />
+        <ui-cell title="链接模式" value="is-link 自带点击态" is-link @click="onCellClick" />
       </ui-cell-group>
     </demo-section>
 
-    <!-- center -->
-    <demo-section title="center 垂直居中" :card="false">
+    <!-- 插槽用法 -->
+    <demo-section title="插槽用法" :card="false">
       <ui-cell-group>
-        <ui-cell title="单元格" value="内容" label="描述信息" center />
+        <ui-cell title="标题">
+          <template #icon>
+            <view class="custom-icon">🔥</view>
+          </template>
+        </ui-cell>
+        <ui-cell>
+          <template #title>
+            <view class="custom-title">
+              <text>自定义标题</text>
+              <ui-tag type="primary" size="mini">标签</ui-tag>
+            </view>
+          </template>
+        </ui-cell>
+        <ui-cell title="自定义内容">
+          <template #value>
+            <ui-switch :model-value="true" size="32" />
+          </template>
+        </ui-cell>
+        <ui-cell title="自定义右侧图标" is-link>
+          <template #right-icon>
+            <view class="custom-icon">🍎</view>
+          </template>
+        </ui-cell>
       </ui-cell-group>
     </demo-section>
 
-    <!-- titleColor -->
-    <demo-section title="titleColor 标题颜色" :card="false">
-      <ui-cell-group>
-        <ui-cell title="单元格" title-color="#1989fa" value="内容" />
-      </ui-cell-group>
-    </demo-section>
-
-    <!-- titleSize -->
-    <demo-section title="titleSize 标题大小" :card="false">
-      <ui-cell-group>
-        <ui-cell title="单元格" title-size="18" value="内容" />
-      </ui-cell-group>
-    </demo-section>
-
-    <!-- labelColor -->
-    <demo-section title="labelColor 描述颜色" :card="false">
-      <ui-cell-group>
-        <ui-cell title="单元格" label="红色描述" label-color="#ee0a24" value="内容" />
-      </ui-cell-group>
-    </demo-section>
-
-    <!-- labelSize -->
-    <demo-section title="labelSize 描述大小" :card="false">
-      <ui-cell-group>
-        <ui-cell title="单元格" label="大号描述" label-size="14" value="内容" />
-      </ui-cell-group>
-    </demo-section>
-
-    <!-- contentColor -->
-    <demo-section title="contentColor 内容颜色" :card="false">
-      <ui-cell-group>
-        <ui-cell title="单元格" value="绿色内容" content-color="#07c160" />
-      </ui-cell-group>
-    </demo-section>
-
-    <!-- contentSize -->
-    <demo-section title="contentSize 内容大小" :card="false">
-      <ui-cell-group>
-        <ui-cell title="单元格" value="大号内容" content-size="16" />
-      </ui-cell-group>
-    </demo-section>
-
-    <!-- height -->
-    <demo-section title="height 高度" :card="false">
-      <ui-cell-group>
-        <ui-cell title="单元格" value="60px高度" height="60" />
-      </ui-cell-group>
-    </demo-section>
-
-    <!-- padding -->
-    <demo-section title="padding 内边距" :card="false">
-      <ui-cell-group>
-        <ui-cell title="单元格" value="24px内边距" padding="24" />
-      </ui-cell-group>
-    </demo-section>
-
-    <!-- background -->
-    <demo-section title="background 背景色" :card="false">
-      <ui-cell-group>
-        <ui-cell title="单元格" value="浅蓝色背景" background="#e6f7ff" />
-      </ui-cell-group>
-    </demo-section>
-
-    <!-- border -->
-    <demo-section title="border 边框" :card="false">
-      <ui-cell-group>
-        <ui-cell title="无边框" value="内容" :border="false" />
-        <ui-cell title="有边框" value="内容" />
-      </ui-cell-group>
-    </demo-section>
-
-    <!-- borderColor -->
-    <demo-section title="borderColor 边框颜色" :card="false">
-      <ui-cell-group>
-        <ui-cell title="单元格" value="蓝色边框" border-color="#1989fa" />
-        <ui-cell title="单元格" value="内容" />
-      </ui-cell-group>
-    </demo-section>
-
-    <!-- clickable -->
-    <demo-section title="clickable 点击反馈" :card="false">
-      <ui-cell-group>
-        <ui-cell title="可点击" value="有点击效果" clickable @click="onCellClick" />
-      </ui-cell-group>
-    </demo-section>
-
-    <!-- CellGroup radius -->
-    <demo-section title="CellGroup radius 圆角" :card="false">
-      <ui-cell-group radius="16">
-        <ui-cell title="单元格" value="16px圆角" />
-      </ui-cell-group>
-    </demo-section>
-
-    <!-- CellGroup background -->
-    <demo-section title="CellGroup background 背景" :card="false">
-      <ui-cell-group background="#f5f5f5">
-        <ui-cell title="单元格" value="灰色背景" />
+    <demo-section title="自定义背景色" :card="false">
+      <ui-cell-group background="#e6f7ff">
+        <ui-cell title="标题" value="内容" />
+        <ui-cell title="标题" value="内容" label="描述信息" />
       </ui-cell-group>
     </demo-section>
   </demo-page>
@@ -181,3 +128,17 @@ function onCellClick() {
   uni.showToast({ title: "点击了单元格", icon: "none" })
 }
 </script>
+
+<style lang="scss" scoped>
+.custom-icon {
+  display: flex;
+  align-items: center;
+  margin-right: 8rpx;
+}
+
+.custom-title {
+  gap: 8rpx;
+  display: flex;
+  align-items: center;
+}
+</style>

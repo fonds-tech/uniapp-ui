@@ -1,5 +1,5 @@
 <template>
-  <view class="ui-cell" :class="[classs, customClass]" :style="[style]" :hover-class="hoverClass" :hover-stay-time="50" @click="onClick">
+  <view class="ui-cell" :class="[classes, customClass]" :style="[style]" :hover-class="hoverClass" :hover-stay-time="50" @click="onClick">
     <slot name="icon">
       <view v-if="isShowIcon" class="ui-cell__icon" :style="[iconStyle]">
         <ui-icon :name="icon" :size="iconSize" :color="iconColor" :weight="iconWeight" />
@@ -14,7 +14,7 @@
       </slot>
     </view>
     <slot name="value">
-      <text v-if="isShowValue" class="ui-cell__value" :style="[contentStyle]">{{ value }}</text>
+      <text v-if="isShowValue" class="ui-cell__value" :style="[valueStyle]">{{ value }}</text>
     </slot>
     <slot name="right-icon">
       <view v-if="isShowRightIcon" class="ui-cell__right-icon" :style="[rightIconStyle]">
@@ -26,7 +26,6 @@
 
 <script setup lang="ts">
 import type { CSSProperties } from "vue"
-import { isDef } from "../utils/check"
 import { computed } from "vue"
 import { cellGroupKey } from "../ui-cell-group"
 import { cellEmits, cellProps, useCellProps } from "./index"
@@ -47,7 +46,12 @@ const style = computed(() => {
   const style: any = {}
   style.height = useUnit(useProps.height)
   style.padding = useUnit(useProps.padding)
-  style.background = useColor(useProps.background)
+  // 在 cell-group 中时背景透明，单独使用时默认白色
+  if (useProps.background) {
+    style.background = useColor(useProps.background)
+  } else if (!cellGroup) {
+    style.background = "var(--ui-color-background)"
+  }
 
   style["--ui-cell-border-left"] = useUnit(useProps.borderLeft)
   style["--ui-cell-border-right"] = useUnit(useProps.borderRight)
@@ -56,18 +60,18 @@ const style = computed(() => {
   return useStyle({ ...style, ...useStyle(useProps.customStyle) })
 })
 
-// 判断是否是最后一个 cell
+// 判断是否是最后一个 cell（单独使用时视为最后一个，不显示边框）
 const isLastCell = computed(() => {
-  if (!cellGroup?.childrens) return false
+  if (!cellGroup?.childrens) return true
   return index.value === cellGroup.childrens.length - 1
 })
 
 // 计算class列表
-const classs = computed(() => {
+const classes = computed(() => {
   const list: string[] = []
   // 最后一个 cell 不显示边框
   if (useProps.border && !isLastCell.value) list.push("ui-cell--border")
-  if (useProps.center) list.push("ui-cell--center")
+
   if (useProps.clickable) list.push("ui-cell--clickable")
   return list
 })
@@ -80,7 +84,7 @@ const hoverClass = computed(() => {
 // 计算图标样式
 const iconStyle = computed(() => {
   const style: CSSProperties = {}
-  style.marginRight = useStyle(useProps.iconGap)
+  style.marginRight = useUnit(useProps.iconGap)
   return useStyle(style)
 })
 
@@ -106,16 +110,16 @@ const labelStyle = computed(() => {
 // 计算右侧图标样式
 const rightIconStyle = computed(() => {
   const style: CSSProperties = {}
-  style.marginLeft = useStyle(useProps.rightIconGap)
+  style.marginLeft = useUnit(useProps.rightIconGap)
   return useStyle(style)
 })
 
-// 计算内容样式
-const contentStyle = computed(() => {
-  const style: any = {}
-  style.color = useColor(prop("contentColor"))
-  style.fontSize = useUnit(prop("contentSize"))
-  style.fontWeight = prop("contentWeight")
+// 计算值样式
+const valueStyle = computed(() => {
+  const style: CSSProperties = {}
+  style.color = useColor(useProps.valueColor)
+  style.fontSize = useUnit(useProps.valueSize)
+  style.fontWeight = useProps.valueWeight
   return useStyle(style)
 })
 
@@ -124,14 +128,7 @@ const isShowIcon = computed(() => useProps.icon)
 const isShowTitle = computed(() => useProps.title)
 const isShowLabel = computed(() => useProps.label)
 const isShowValue = computed(() => useProps.value)
-const isShowRightIcon = computed(() => useProps.isLink && isDef(useProps.rightIcon))
-
-// 获取属性值，优先使用props中的值，如果没有则使用cellGroup中的值
-function prop(name: string) {
-  if (isDef(props[name])) return props[name]
-  if (cellGroup?.props && isDef(cellGroup.props[name])) return cellGroup.props[name]
-  return ""
-}
+const isShowRightIcon = computed(() => useProps.isLink)
 
 // 点击事件处理
 function onClick() {
@@ -164,7 +161,8 @@ export default {
   display: flex;
   padding: var(--ui-spacing-md) var(--ui-spacing-lg);
   position: relative;
-  background: var(--ui-color-background);
+  background: transparent;
+  align-items: center;
 
   &::before {
     top: 50%;
@@ -181,6 +179,7 @@ export default {
   }
 
   &__icon {
+    color: var(--ui-color-text-secondary);
     display: flex;
     font-size: var(--ui-font-size-md);
     align-items: center;
@@ -202,7 +201,7 @@ export default {
   }
 
   &__label {
-    color: var(--ui-color-text-secondary);
+    color: var(--ui-color-text-tertiary);
     font-size: var(--ui-font-size-xs);
     margin-top: var(--ui-spacing-xs);
   }
@@ -217,15 +216,11 @@ export default {
   }
 
   &__right-icon {
-    color: var(--ui-color-text-placeholder);
+    color: var(--ui-color-text-tertiary);
     display: flex;
     align-items: center;
     flex-shrink: 0;
     margin-left: var(--ui-spacing-xs);
-  }
-
-  &--center {
-    align-items: center;
   }
 
   &--border::after {

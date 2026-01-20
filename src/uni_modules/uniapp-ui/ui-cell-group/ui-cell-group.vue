@@ -36,11 +36,7 @@ export default {
 
 <style lang="scss" scoped>
 .ui-cell-group {
-  display: flex;
-  overflow: hidden;
   position: relative;
-  border-radius: var(--ui-radius-md);
-  flex-direction: column;
   background-color: var(--ui-color-background);
 }
 </style>

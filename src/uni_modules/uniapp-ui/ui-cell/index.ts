@@ -35,7 +35,7 @@ export const [cellProps, useCellProps] = createProps("cell", {
   /**
    * 图标和右侧内容间隔
    */
-  iconGap: String,
+  iconGap: numericProp,
   /**
    * 图标大小
    */
@@ -77,25 +77,25 @@ export const [cellProps, useCellProps] = createProps("cell", {
    */
   labelWeight: numericProp,
   /**
-   * 内容大小
+   * 右侧值大小
    */
-  contentSize: numericProp,
+  valueSize: numericProp,
   /**
-   * 内容颜色
+   * 右侧值颜色
    */
-  contentColor: String,
+  valueColor: String,
   /**
-   * 内容粗细
+   * 右侧值粗细
    */
-  contentWeight: numericProp,
+  valueWeight: numericProp,
   /**
    * 右侧图标
    */
-  rightIcon: makeStringProp("arrow"),
+  rightIcon: makeStringProp("right"),
   /**
    * 右侧图标距离左边间隔
    */
-  rightIconGap: String,
+  rightIconGap: numericProp,
   /**
    * 右侧图标大小
    */
@@ -115,7 +115,7 @@ export const [cellProps, useCellProps] = createProps("cell", {
   /**
    * 跳转类型
    */
-  linkType: String,
+  linkType: String as PropType<"navigateTo" | "redirectTo" | "reLaunch" | "switchTab">,
   /**
    * 是否显示边框
    */
@@ -139,15 +139,12 @@ export const [cellProps, useCellProps] = createProps("cell", {
   /**
    * 是否可点击的
    */
-  clickable: truthProp,
+  clickable: Boolean,
   /**
    * 是否为链接
    */
   isLink: Boolean,
-  /**
-   * 是否居中对齐
-   */
-  center: Boolean,
+  
   /**
    * 自定义类名
    */

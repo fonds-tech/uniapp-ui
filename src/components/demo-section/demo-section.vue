@@ -96,9 +96,9 @@ const sectionClass = computed(() => {
     flex-direction: column;
   }
 
-  // When not card mode, add padding to title
+  // When not card mode, add padding to title (same as card padding)
   &:not(.demo-section--card) &__header {
-    padding: 0 8rpx;
+    padding: 0 24rpx;
   }
 }
 </style>

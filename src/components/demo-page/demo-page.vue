@@ -18,6 +18,8 @@ import { ref, computed, onMounted } from "vue"
 const props = withDefaults(
   defineProps<{
     padding?: string | number
+    paddingX?: string | number
+    paddingY?: string | number
     customClass?: string
     customStyle?: string | Record<string, any>
   }>(),
@@ -26,9 +28,13 @@ const props = withDefaults(
 
 const style = computed(() => {
   const padding = useUnit(props.padding)
+  const paddingX = props.paddingX !== undefined ? useUnit(props.paddingX) : padding
+  const paddingY = props.paddingY !== undefined ? useUnit(props.paddingY) : padding
   const s: CSSProperties = {
-    padding,
-    paddingBottom: `calc(${padding} + env(safe-area-inset-bottom))`,
+    paddingLeft: paddingX,
+    paddingRight: paddingX,
+    paddingTop: paddingY,
+    paddingBottom: `calc(${paddingY} + env(safe-area-inset-bottom))`,
   }
   return useStyle({ ...s, ...useStyle(props.customStyle) })
 })

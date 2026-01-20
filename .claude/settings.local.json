@@ -4,7 +4,10 @@
       "Bash(npm run test:*)",
       "Bash(npm run lint:fix:*)",
       "Bash(npm run typecheck:*)",
-      "Bash(npm run type-check:*)"
+      "Bash(npm run type-check:*)",
+      "Bash(git ls-remote:*)",
+      "Bash(curl:*)",
+      "Bash(cat:*)"
     ]
   }
 }
