@@ -40,7 +40,7 @@ describe("ui-button 按钮组件", () => {
   })
 
   describe("按钮大小", () => {
-    const sizes = ["mini", "small", "normal", "medium", "large"] as const
+    const sizes = ["mini", "small", "normal", "large"] as const
 
     sizes.forEach((size) => {
       it(`应支持 ${size} 大小`, () => {

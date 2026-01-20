@@ -43,12 +43,11 @@ page {
   --ui-color-mask-light: rgba(0, 0, 0, 0.3); // 浅色遮罩
   --ui-color-mask-heavy: rgba(0, 0, 0, 0.7); // 深色遮罩
 
-  // 组件尺寸
-  --ui-size-mini: 56rpx; // 迷你尺寸
-  --ui-size-small: 72rpx; // 小尺寸
-  --ui-size-normal: 88rpx; // 常规尺寸
-  --ui-size-medium: 96rpx; // 中等尺寸
-  --ui-size-large: 104rpx; // 大尺寸
+  // 组件尺寸（用于按钮、输入框、步进器等组件的高度基准）
+  --ui-size-mini: 48rpx;
+  --ui-size-large: 96rpx;
+  --ui-size-small: 64rpx;
+  --ui-size-normal: 80rpx;
 
   // 图标尺寸
   --ui-icon-size-xs: 24rpx; // 超小图标

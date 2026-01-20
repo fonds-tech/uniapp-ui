@@ -188,7 +188,7 @@ export default {
 
 .ui-button {
   // 基础样式
-  height: var(--ui-size-medium);
+  height: var(--ui-size-normal);
   margin: 0;
   display: flex;
   overflow: visible;
@@ -266,7 +266,7 @@ export default {
 
   // ========== 尺寸变体 ==========
   &--mini {
-    @include button-size(var(--ui-size-mini), var(--ui-font-size-sm));
+    @include button-size(var(--ui-size-mini), var(--ui-font-size-xs));
   }
   &--small {
     @include button-size(var(--ui-size-small), var(--ui-font-size-sm));
@@ -274,11 +274,8 @@ export default {
   &--normal {
     @include button-size(var(--ui-size-normal), var(--ui-font-size-md));
   }
-  &--medium {
-    @include button-size(var(--ui-size-medium), var(--ui-font-size-md));
-  }
   &--large {
-    @include button-size(var(--ui-size-large), var(--ui-font-size-lg));
+    @include button-size(var(--ui-size-large), var(--ui-font-size-md));
   }
 
   // ========== 类型变体 ==========

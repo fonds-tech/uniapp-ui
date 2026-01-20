@@ -82,11 +82,10 @@
     </demo-section>
 
     <demo-section title="按钮尺寸">
-      <demo-block align="end" :cols="5">
+      <demo-block align="end" :cols="4">
         <ui-button size="mini">迷你</ui-button>
         <ui-button size="small">小型</ui-button>
         <ui-button size="normal">普通</ui-button>
-        <ui-button size="medium">中号</ui-button>
         <ui-button size="large">大号</ui-button>
       </demo-block>
     </demo-section>

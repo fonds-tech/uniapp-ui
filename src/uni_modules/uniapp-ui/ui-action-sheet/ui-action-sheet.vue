@@ -30,8 +30,13 @@
             @click="!item.disabled && !item.loading && handleSelectAction(item, index)"
           >
             <ui-loading v-if="item.loading" size="36rpx" />
-            <text v-else class="ui-action-sheet__item__title" :style="[actionTitleStyle, item.titleStyle, item.color && { color: item.color }]">{{ item.title }}</text>
-            <text v-if="item.description" class="ui-action-sheet__item__description" :style="[actionDescStyle, item.descriptionStyle]">{{ item.description }}</text>
+            <template v-else>
+              <view class="ui-action-sheet__item__main">
+                <ui-icon v-if="item.icon" :name="item.icon" class="ui-action-sheet__item__icon" />
+                <text class="ui-action-sheet__item__title" :style="[actionTitleStyle, item.titleStyle, item.color && { color: item.color }]">{{ item.title }}</text>
+              </view>
+              <text v-if="item.description" class="ui-action-sheet__item__description" :style="[actionDescStyle, item.descriptionStyle]">{{ item.description }}</text>
+            </template>
           </view>
         </view>
       </slot>
@@ -176,7 +181,7 @@ function handleSelectAction(item: ActionSheetAction, index: number) {
   if (useProps.closeOnClickAction) {
     if (isFunction(useProps.beforeClose)) {
       callInterceptor(useProps.beforeClose, {
-        args: [{ action: item, index }],
+        args: [item, index],
         done: () => close(),
       })
     } else {
@@ -226,9 +231,9 @@ export default {
 
   &__header {
     display: grid;
-    padding: var(--ui-spacing-md);
+    padding: var(--ui-spacing-lg);
     row-gap: var(--ui-spacing-xs);
-    padding-bottom: var(--ui-spacing-sm);
+    padding-bottom: var(--ui-spacing-md);
     grid-template-columns: repeat(1, minmax(0, 1fr));
   }
 
@@ -256,7 +261,7 @@ export default {
 
   &__item {
     display: grid;
-    padding: var(--ui-spacing-md);
+    padding: var(--ui-spacing-lg);
     row-gap: var(--ui-spacing-xs);
     transition: background-color var(--ui-transition-fast);
     align-items: center;
@@ -294,6 +299,17 @@ export default {
       text-align: center;
     }
 
+    &__main {
+      gap: var(--ui-spacing-xs);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    &__icon {
+      font-size: var(--ui-font-size-lg);
+    }
+
     &__description {
       color: var(--ui-color-text-tertiary);
       font-size: var(--ui-font-size-xs);
@@ -308,7 +324,7 @@ export default {
 
   &__cancel {
     color: var(--ui-color-text-primary);
-    height: var(--ui-size-medium);
+    height: var(--ui-size-large);
     margin: 0;
     display: flex;
     position: relative;

@@ -4,7 +4,7 @@ import { createProps } from "../hooks"
 import { styleProp, truthProp, numericProp, makeNumberProp, makeStringProp, makeNumericProp } from "../utils/props"
 
 export type ButtonType = "primary" | "success" | "warning" | "danger" | "info" | "default" | "error"
-export type ButtonSize = "mini" | "small" | "normal" | "medium" | "large"
+export type ButtonSize = "mini" | "small" | "normal" | "large"
 export type ButtonFormType = "submit" | "reset"
 export type ButtonIconPosition = "left" | "right"
 export type ButtonOpenType = "contact" | "share" | "getPhoneNumber" | "getUserInfo" | "launchApp" | "openSetting" | "feedback" | "chooseAvatar" | "agreePrivacyAuthorization"

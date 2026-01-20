@@ -102,8 +102,8 @@ describe("ui-action-sheet 动作面板组件", () => {
 
       await waitForTransition()
 
-      // 标题区域仍然存在，但文本为空
-      expect(wrapper.find(".ui-action-sheet__title").text()).toBe("")
+      // 无标题时 header 区域不应存在
+      expect(wrapper.find(".ui-action-sheet__header").exists()).toBe(false)
     })
 
     it("应支持自定义标题样式", async () => {

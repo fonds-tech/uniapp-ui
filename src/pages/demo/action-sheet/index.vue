@@ -25,6 +25,12 @@
       </demo-block>
     </demo-section>
 
+    <demo-section title="带图标选项">
+      <demo-block>
+        <ui-button type="primary" @click="showIcon = true">带图标选项</ui-button>
+      </demo-block>
+    </demo-section>
+
     <demo-section title="自定义标题">
       <demo-block>
         <ui-button type="primary" @click="show5 = true">自定义标题</ui-button>
@@ -101,6 +107,9 @@
 
     <!-- 选项状态 -->
     <ui-action-sheet v-model:show="show4" :actions="actions2" cancel-text="取消" />
+
+    <!-- 带图标选项 -->
+    <ui-action-sheet v-model:show="showIcon" :actions="actionsWithIcon" cancel-text="取消" />
 
     <!-- 自定义标题 -->
     <ui-action-sheet v-model:show="show5" :actions="actions1" title="标题" cancel-text="取消" />
@@ -222,6 +231,7 @@ const showEvent = ref(false)
 const showHeaderSlot = ref(false)
 const showDefaultSlot = ref(false)
 const showFooterSlot = ref(false)
+const showIcon = ref(false)
 
 // 基础操作项
 const actions1 = [{ title: "选项一" }, { title: "选项二" }, { title: "选项三" }]
@@ -238,6 +248,13 @@ const actionsWithDesc = [
   { title: "选项一", description: "这是选项一的描述信息" },
   { title: "选项二", description: "这是选项二的描述信息" },
   { title: "选项三", description: "这是选项三的描述信息" },
+]
+
+// 带图标的操作项
+const actionsWithIcon = [
+  { title: "复制链接", icon: "link" },
+  { title: "编辑内容", icon: "edit" },
+  { title: "删除", icon: "delete", color: "#ee0a24" },
 ]
 
 // 多个操作项（用于测试最大高度）

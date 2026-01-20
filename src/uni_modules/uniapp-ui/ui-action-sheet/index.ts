@@ -134,6 +134,25 @@ export const [actionSheetProps, useActionSheetProps] = createProps("actionSheet"
   customStyle: styleProp,
 })
 
+export interface ActionSheetAction {
+  /** 选项标题 */
+  title: string
+  /** 选项描述 */
+  description?: string
+  /** 选项图标 */
+  icon?: string
+  /** 选项颜色 */
+  color?: string
+  /** 是否加载中 */
+  loading?: boolean
+  /** 是否禁用 */
+  disabled?: boolean
+  /** 标题样式 */
+  titleStyle?: string | CSSProperties
+  /** 描述样式 */
+  descriptionStyle?: string | CSSProperties
+}
+
 export const actionSheetEmits = {
   "update:show": (show: boolean) => true,
   clickOverlay: () => true,
@@ -142,17 +161,7 @@ export const actionSheetEmits = {
   opened: () => true,
   closed: () => true,
   cancel: () => true,
-  select: (item: object, index: number) => true,
-}
-export type Action = "show" | "close" | "action" | "cancel"
-export interface ActionSheetAction {
-  title: string
-  description?: string
-  color?: string
-  loading?: boolean
-  disabled?: boolean
-  titleStyle?: string | CSSProperties
-  descriptionStyle?: string | CSSProperties
+  select: (action: ActionSheetAction, index: number) => true,
 }
 export type ActionSheetEmits = typeof actionSheetEmits
 export type ActionSheetProps = ExtractPropTypes<typeof actionSheetProps>
