@@ -109,7 +109,7 @@ export default defineConfig({
             { text: "Popover 气泡弹框", link: "/components/popover" },
             { text: "PullRefresh 下拉刷新", link: "/components/pull-refresh" },
             { text: "DropdownMenu 下拉菜单", link: "/components/dropdown-menu" },
-            { text: "DropdownItem 下拉菜单项", link: "/components/dropdown-item" },
+
           ],
         },
         {

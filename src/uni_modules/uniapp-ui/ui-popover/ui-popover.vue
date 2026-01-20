@@ -230,13 +230,18 @@ function getContentPosition(): CSSProperties {
   const refWidth = rect.width || 0
   const refHeight = rect.height || 0
 
+  // 使用 transform 来处理定位，避免使用 100vh/100vw 计算
+  const transforms: string[] = []
+
   // 计算基础位置
   if (placement.startsWith("top")) {
-    style.bottom = `calc(100vh - ${refTop - arrowGap + offsetY}px)`
+    style.top = `${refTop - arrowGap + offsetY}px`
+    transforms.push("translateY(-100%)")
   } else if (placement.startsWith("bottom")) {
     style.top = `${refTop + refHeight + arrowGap + offsetY}px`
   } else if (placement.startsWith("left")) {
-    style.right = `calc(100vw - ${refLeft - arrowGap + offsetX}px)`
+    style.left = `${refLeft - arrowGap + offsetX}px`
+    transforms.push("translateX(-100%)")
   } else if (placement.startsWith("right")) {
     style.left = `${refLeft + refWidth + arrowGap + offsetX}px`
   }
@@ -246,20 +251,27 @@ function getContentPosition(): CSSProperties {
     if (placement.endsWith("-start")) {
       style.left = `${refLeft + offsetX}px`
     } else if (placement.endsWith("-end")) {
-      style.right = `calc(100vw - ${refLeft + refWidth - offsetX}px)`
+      style.left = `${refLeft + refWidth + offsetX}px`
+      transforms.push("translateX(-100%)")
     } else {
       style.left = `${refLeft + refWidth / 2 + offsetX}px`
-      style.transform = "translateX(-50%)"
+      transforms.push("translateX(-50%)")
     }
   } else {
     if (placement.endsWith("-start")) {
       style.top = `${refTop + offsetY}px`
     } else if (placement.endsWith("-end")) {
-      style.bottom = `calc(100vh - ${refTop + refHeight - offsetY}px)`
+      style.top = `${refTop + refHeight + offsetY}px`
+      transforms.push("translateY(-100%)")
     } else {
       style.top = `${refTop + refHeight / 2 + offsetY}px`
-      style.transform = "translateY(-50%)"
+      transforms.push("translateY(-50%)")
     }
+  }
+
+  // 合并 transform
+  if (transforms.length > 0) {
+    style.transform = transforms.join(" ")
   }
 
   return style

@@ -144,7 +144,7 @@ export const [cellProps, useCellProps] = createProps("cell", {
    * 是否为链接
    */
   isLink: Boolean,
-  
+
   /**
    * 自定义类名
    */

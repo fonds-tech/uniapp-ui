@@ -53,6 +53,10 @@ export const [actionSheetProps, useActionSheetProps] = createProps("actionSheet"
    */
   descriptionWeight: numericProp,
   /**
+   * 是否显示取消按钮
+   */
+  showCancel: truthProp,
+  /**
    * 取消按钮文本
    */
   cancelText: makeStringProp("取消"),

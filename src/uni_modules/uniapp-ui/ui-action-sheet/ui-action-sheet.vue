@@ -5,17 +5,17 @@
     :duration="useProps.duration"
     :z-index="currentZIndex"
     :lazy-render="useProps.lazyRender"
-    :custom-style="overlayStyle"
+    :custom-style="useProps.overlayStyle"
     @click="handleOverlayClick"
   />
-  <view v-if="inited" class="ui-action-sheet" :style="[panelStyle]" :class="[classNames, customClass]" @transitionend="transition.end" @touchmove.prevent.stop="() => {}">
+  <view v-if="inited" class="ui-action-sheet" :style="[panelStyle]" :class="[classNames, useProps.customClass]" @transitionend="transition.end" @touchmove.prevent.stop="() => {}">
     <slot name="header">
-      <view class="ui-action-sheet__header">
+      <view v-if="useProps.title || useProps.description" class="ui-action-sheet__header">
         <slot name="title">
-          <text class="ui-action-sheet__title" :style="[headerTitleStyle]">{{ title }}</text>
+          <text v-if="useProps.title" class="ui-action-sheet__title" :style="[headerTitleStyle]">{{ useProps.title }}</text>
         </slot>
         <slot name="description">
-          <text class="ui-action-sheet__description" :style="[headerDescStyle]">{{ description }}</text>
+          <text v-if="useProps.description" class="ui-action-sheet__description" :style="[headerDescStyle]">{{ useProps.description }}</text>
         </slot>
       </view>
     </slot>
@@ -23,24 +23,26 @@
       <slot>
         <view class="ui-action-sheet__content">
           <view
-            v-for="(item, index) in actions"
+            v-for="(item, index) in useProps.actions"
             :key="index"
             class="ui-action-sheet__item"
             :class="{ 'ui-action-sheet__item--disabled': item.disabled, 'ui-action-sheet__item--loading': item.loading }"
             @click="!item.disabled && !item.loading && handleSelectAction(item, index)"
           >
             <ui-loading v-if="item.loading" size="36rpx" />
-            <text v-else class="ui-action-sheet__item__title" :style="{ color: item.color }">{{ item.title }}</text>
-            <text v-if="item.description" class="ui-action-sheet__item__description">{{ item.description }}</text>
+            <text v-else class="ui-action-sheet__item__title" :style="[actionTitleStyle, item.titleStyle, item.color && { color: item.color }]">{{ item.title }}</text>
+            <text v-if="item.description" class="ui-action-sheet__item__description" :style="[actionDescStyle, item.descriptionStyle]">{{ item.description }}</text>
           </view>
         </view>
       </slot>
     </scroll-view>
     <slot name="footer">
-      <view class="ui-action-sheet__gap" />
-      <button class="ui-action-sheet__cancel" :style="[cancelBtnStyle]" hover-class="ui-action-sheet__cancel--active" @click="handleCancel">
-        {{ useProps.cancelText }}
-      </button>
+      <template v-if="useProps.showCancel">
+        <view class="ui-action-sheet__gap" />
+        <button class="ui-action-sheet__cancel" :style="[cancelBtnStyle]" hover-class="ui-action-sheet__cancel--active" @click="handleCancel">
+          {{ useProps.cancelText }}
+        </button>
+      </template>
     </slot>
     <ui-safe-area-bottom v-if="useProps.safeAreaInsetBottom" />
   </view>
@@ -126,6 +128,12 @@ const scrollStyle = computed(() => {
   return useStyle(styles)
 })
 
+// 计算操作项标题样式
+const actionTitleStyle = computed(() => useStyle(useProps.actionTitleStyle))
+
+// 计算操作项描述样式
+const actionDescStyle = computed(() => useStyle(useProps.actionDescriptionStyle))
+
 // 监听 show 属性变化
 watch(
   () => useProps.show,
@@ -209,36 +217,36 @@ export default {
   display: flex;
   overflow: hidden;
   position: fixed;
-  max-width: 100vw;
-  max-height: 100vh;
+  max-height: 80%;
   flex-direction: column;
   background-color: var(--ui-color-background);
   transition-duration: var(--ui-transition-duration);
-  border-top-left-radius: var(--ui-radius-xl);
-  border-top-right-radius: var(--ui-radius-xl);
+  border-top-left-radius: var(--ui-radius-lg);
+  border-top-right-radius: var(--ui-radius-lg);
 
   &__header {
     display: grid;
-    padding: var(--ui-spacing-lg);
-    row-gap: var(--ui-spacing-md);
-    padding-bottom: var(--ui-spacing-md);
+    padding: var(--ui-spacing-md);
+    row-gap: var(--ui-spacing-xs);
+    padding-bottom: var(--ui-spacing-sm);
     grid-template-columns: repeat(1, minmax(0, 1fr));
   }
 
   &__title {
     color: var(--ui-color-text-primary);
-    font-size: var(--ui-font-size-lg);
-    text-align: center;
-  }
-
-  &__description {
-    color: var(--ui-color-text-secondary);
     font-size: var(--ui-font-size-md);
     text-align: center;
   }
 
+  &__description {
+    color: var(--ui-color-text-tertiary);
+    font-size: var(--ui-font-size-sm);
+    text-align: center;
+  }
+
   &__scroll {
-    max-height: 100vh;
+    flex: 1;
+    min-height: 0;
   }
 
   &__content {
@@ -248,8 +256,8 @@ export default {
 
   &__item {
     display: grid;
-    padding: var(--ui-spacing-lg);
-    row-gap: var(--ui-spacing-md);
+    padding: var(--ui-spacing-md);
+    row-gap: var(--ui-spacing-xs);
     transition: background-color var(--ui-transition-fast);
     align-items: center;
     justify-items: center;
@@ -282,29 +290,29 @@ export default {
 
     &__title {
       color: var(--ui-color-text-primary);
-      font-size: var(--ui-font-size-lg);
+      font-size: var(--ui-font-size-md);
       text-align: center;
     }
 
     &__description {
-      color: var(--ui-color-text-secondary);
-      font-size: var(--ui-font-size-md);
+      color: var(--ui-color-text-tertiary);
+      font-size: var(--ui-font-size-xs);
       text-align: center;
     }
   }
 
   &__gap {
-    height: var(--ui-spacing-lg);
+    height: var(--ui-spacing-sm);
     background-color: var(--ui-color-background-light);
   }
 
   &__cancel {
     color: var(--ui-color-text-primary);
-    height: var(--ui-size-large);
+    height: var(--ui-size-medium);
     margin: 0;
     display: flex;
     position: relative;
-    font-size: var(--ui-font-size-lg);
+    font-size: var(--ui-font-size-md);
     transition: background-color var(--ui-transition-fast);
     align-items: center;
     white-space: nowrap;
