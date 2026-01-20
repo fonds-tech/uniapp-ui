@@ -1,8 +1,8 @@
 <template>
   <view class="ui-textarea" :class="[classes, customClass]" :style="[style]">
-    <view class="ui-textarea__content">
+    <view class="ui-textarea__body">
       <textarea
-        class="ui-textarea__textarea"
+        class="ui-textarea__input"
         :style="[textareaStyle]"
         :class="[textareaClass]"
         :value="current"
@@ -36,8 +36,8 @@
         <ui-icon :name="useProps.clearIcon" :size="useProps.clearIconSize" :color="useProps.clearIconColor" :weight="useProps.clearIconWeight" />
       </view>
     </view>
-    <view v-if="useProps.showCount" class="ui-textarea__count" :style="[countStyle]">
-      {{ valueLength }}
+    <view v-if="useProps.showCount" class="ui-textarea__footer">
+      <view class="ui-textarea__count" :style="[countStyle]">{{ valueLength }}</view>
     </view>
   </view>
 </template>
@@ -73,7 +73,6 @@ const classes = computed(() => {
   const list: string[] = []
   if (useProps.readonly) list.push("ui-textarea--readonly")
   if (useProps.disabled) list.push("ui-textarea--disabled")
-  if (useProps.clearable) list.push("ui-textarea--clearable")
   return list
 })
 
@@ -88,8 +87,8 @@ const textareaStyle = computed(() => {
 
 const textareaClass = computed(() => {
   const list: string[] = []
-  list.push(`ui-textarea__textarea--${useProps.inputAlign}`)
-  if (useProps.readonly) list.push("ui-textarea__textarea--readonly")
+  list.push(`ui-textarea__input--${useProps.inputAlign}`)
+  if (useProps.readonly) list.push("ui-textarea__input--readonly")
   return list
 })
 
@@ -203,8 +202,15 @@ export default {
     opacity: var(--ui-opacity-disabled);
   }
 
-  &__textarea {
+  &__body {
     flex: 1;
+    display: flex;
+    align-items: center;
+  }
+
+  &__input {
+    flex: 1;
+    width: 0;
     font-size: inherit;
 
     &--center {
@@ -220,26 +226,24 @@ export default {
     }
   }
 
-  &__content {
+  &__footer {
     display: flex;
-    position: relative;
-    align-items: flex-start;
+    margin-top: var(--ui-spacing-sm);
+    justify-content: flex-end;
   }
 
   &__count {
     color: var(--ui-color-text-secondary);
-    margin-top: var(--ui-spacing-md);
-    text-align: right;
+    font-size: var(--ui-font-size-xs);
   }
 
   &__clear {
-    top: 0;
-    right: 0;
     display: flex;
     padding: var(--ui-spacing-xs);
-    position: absolute;
     box-sizing: content-box;
     align-items: center;
+    flex-shrink: 0;
+    margin-left: var(--ui-spacing-sm);
     border-radius: var(--ui-radius-round);
     justify-content: center;
     background-color: var(--ui-color-text-placeholder);

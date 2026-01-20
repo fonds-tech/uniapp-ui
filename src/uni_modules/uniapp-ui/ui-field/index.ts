@@ -145,7 +145,7 @@ export const [fieldProps, useFieldProps] = createProps("field", {
   /**
    * 输入对齐方式，可选值为 left center right
    */
-  inputAlign: { type: String, default: "left", validator: (v: string) => ["left", "center", "right"].includes(v) },
+  inputAlign: { type: String as PropType<"left" | "center" | "right">, default: "left" },
   /**
    * 设置右下角按钮的文字，兼容性详见uni-app文档
    */

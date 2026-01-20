@@ -1,5 +1,10 @@
 <template>
-  <view class="ui-input" :class="[classs, useProps.customClass]" :style="[style]" @click="onClick">
+  <view class="ui-input" :class="[classes, useProps.customClass]" :style="[style]" @click="onClick">
+    <slot name="prefix">
+      <view v-if="useProps.prefixIcon" class="ui-input__prefix">
+        <ui-icon :name="useProps.prefixIcon" :size="useProps.prefixIconSize" :color="useProps.prefixIconColor" :weight="useProps.prefixIconWeight" />
+      </view>
+    </slot>
     <input
       class="ui-input__input"
       :style="[inputStyle]"
@@ -32,6 +37,11 @@
     <view v-if="useProps.clearable && current && isFocus" class="ui-input__clear" :style="[clearStyle]" @click="onClickClear">
       <ui-icon :name="useProps.clearIcon" :size="useProps.clearIconSize" :color="useProps.clearIconColor" :weight="useProps.clearIconWeight" />
     </view>
+    <slot name="suffix">
+      <view v-if="useProps.suffixIcon" class="ui-input__suffix">
+        <ui-icon :name="useProps.suffixIcon" :size="useProps.suffixIconSize" :color="useProps.suffixIconColor" :weight="useProps.suffixIconWeight" />
+      </view>
+    </slot>
   </view>
 </template>
 
@@ -55,13 +65,14 @@ const style = computed(() => {
   const style: any = {}
   style.width = useUnit(useProps.width)
   style.height = useUnit(useProps.height)
+  style.border = useProps.border
   style.padding = useUnit(useProps.padding)
   style.background = useColor(useProps.background)
   style.borderRadius = useUnit(useProps.radius)
   return useStyle({ ...style, ...useStyle(useProps.customStyle) })
 })
 
-const classs = computed(() => {
+const classes = computed(() => {
   const list: string[] = []
   if (useProps.readonly) list.push("ui-input--readonly")
   if (useProps.disabled) list.push("ui-input--disabled")
@@ -218,6 +229,22 @@ export default {
     &--readonly {
       pointer-events: none;
     }
+  }
+
+  &__prefix,
+  &__suffix {
+    color: var(--ui-color-text-secondary);
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+  }
+
+  &__prefix {
+    margin-right: var(--ui-spacing-sm);
+  }
+
+  &__suffix {
+    margin-left: var(--ui-spacing-sm);
   }
 
   &__clear {

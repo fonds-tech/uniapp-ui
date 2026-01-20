@@ -42,15 +42,7 @@
           <ui-input v-model="value6" clearable placeholder="点击清除" @clear="onClear" />
         </ui-cell>
         <ui-cell title="自定义图标">
-          <ui-input
-            v-model="value7"
-            clearable
-            clear-icon="close"
-            clear-icon-size="28rpx"
-            clear-icon-color="#fff"
-            clear-icon-background="#1989fa"
-            placeholder="自定义清除图标"
-          />
+          <ui-input v-model="value7" clearable clear-icon="close" clear-icon-size="28rpx" clear-icon-color="#fff" clear-icon-background="#1989fa" placeholder="自定义清除图标" />
         </ui-cell>
       </ui-cell-group>
     </demo-section>
@@ -79,6 +71,38 @@
         </ui-cell>
         <ui-cell title="光标颜色">
           <ui-input v-model="valueCursor" cursor-color="#07c160" placeholder="绿色光标" />
+        </ui-cell>
+      </ui-cell-group>
+    </demo-section>
+
+    <demo-section title="前缀后缀" :card="false">
+      <ui-cell-group>
+        <ui-cell title="前缀图标">
+          <ui-input v-model="valuePrefix" prefix-icon="search" placeholder="搜索内容" />
+        </ui-cell>
+        <ui-cell title="后缀图标">
+          <ui-input v-model="valueSuffix" suffix-icon="scan" placeholder="扫描输入" />
+        </ui-cell>
+        <ui-cell title="前后缀插槽">
+          <ui-input v-model="valueSlot" placeholder="金额">
+            <template #prefix>
+              <text class="prefix-text">¥</text>
+            </template>
+            <template #suffix>
+              <text class="suffix-text">元</text>
+            </template>
+          </ui-input>
+        </ui-cell>
+      </ui-cell-group>
+    </demo-section>
+
+    <demo-section title="边框样式" :card="false">
+      <ui-cell-group>
+        <ui-cell title="默认边框">
+          <ui-input v-model="valueBorder1" border="1px solid #ebedf0" radius="8rpx" padding="16rpx" placeholder="带边框输入框" />
+        </ui-cell>
+        <ui-cell title="圆角边框">
+          <ui-input v-model="valueBorder2" border="1px solid #1989fa" radius="999rpx" padding="16rpx" placeholder="圆角边框" />
         </ui-cell>
       </ui-cell-group>
     </demo-section>
@@ -118,6 +142,11 @@ const value10 = ref("")
 const valueColor = ref("蓝色文字")
 const valuePlaceholder = ref("")
 const valueCursor = ref("")
+const valuePrefix = ref("")
+const valueSuffix = ref("")
+const valueSlot = ref("")
+const valueBorder1 = ref("")
+const valueBorder2 = ref("")
 const valueMaxlength = ref("")
 const valueConfirm = ref("")
 
@@ -129,3 +158,11 @@ function onConfirm(value: string) {
   toast.success(`搜索: ${value}`)
 }
 </script>
+
+<style lang="scss" scoped>
+.prefix-text,
+.suffix-text {
+  color: var(--ui-color-text-secondary);
+  font-size: var(--ui-font-size-sm);
+}
+</style>
