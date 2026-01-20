@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">15.38% </span>
+                <span class="strong">84.61% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>2/13</span>
+                <span class='fraction'>11/13</span>
+            </div>
+        
+            
+            <div class='fl pad1y space-right2'>
+                <span class="strong">87.5% </span>
+                <span class="quiet">Branches</span>
+                <span class='fraction'>7/8</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
-                <span class="quiet">Branches</span>
-                <span class='fraction'>0/0</span>
-            </div>
-        
-            
-            <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/1</span>
+                <span class='fraction'>1/1</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">15.38% </span>
+                <span class="strong">84.61% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>2/13</span>
+                <span class='fraction'>11/13</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line low'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -92,15 +92,15 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1053x</span>
+<span class="cline-any cline-yes">985x</span>
+<span class="cline-any cline-yes">985x</span>
+<span class="cline-any cline-yes">985x</span>
+<span class="cline-any cline-yes">367x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">64x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { isNumber } from "../utils/check"
@@ -111,16 +111,16 @@
  * @param value 单位值，支持纯数字、rpx、px
  * @returns 转换值
  */
-export <span class="fstat-no" title="function not covered" >function useUnitToPx(value: string | number): number {</span>
-<span class="cstat-no" title="statement not covered" >  if (String(value).includes("rpx")) {</span>
-<span class="cstat-no" title="statement not covered" >    const val = String(value).split("rpx")[0]</span>
-<span class="cstat-no" title="statement not covered" >    if (isNumber(val)) return uni.upx2px(Number(val))</span>
-<span class="cstat-no" title="statement not covered" >  }</span>
-<span class="cstat-no" title="statement not covered" >  if (String(value).includes("px")) {</span>
-<span class="cstat-no" title="statement not covered" >    const val = String(value).split("px")[0]</span>
-<span class="cstat-no" title="statement not covered" >    if (isNumber(val)) return Number(val)</span>
-<span class="cstat-no" title="statement not covered" >  }</span>
-<span class="cstat-no" title="statement not covered" >  if (isNumber(value)) return uni.upx2px(Number(value))</span>
+export function useUnitToPx(value: string | number): number {
+  if (String(value).includes("rpx")) {
+    const val = String(value).split("rpx")[0]
+    if (isNumber(val)) return uni.upx2px(Number(val))
+  }
+  if (String(value).includes("px")) {
+    const val = String(value).split("px")[0]
+    if (isNumber(val)) return Number(val)
+  }
+  if (isNumber(value)) return uni.upx2px(Number(value)<span class="branch-0 cbranch-no" title="branch not covered" >)</span>
 <span class="cstat-no" title="statement not covered" >  throw new Error(`${value} 不是有效值`)</span>
 <span class="cstat-no" title="statement not covered" >}</span>
 &nbsp;</pre></td></tr></table></pre>
@@ -130,7 +130,7 @@ export <span class="fstat-no" title="function not covered" >function useUnitToPx
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-01-17T17:57:28.201Z
+                at 2026-01-20T08:35:19.656Z
             </div>
         <script src="../prettify.js"></script>
         <script>

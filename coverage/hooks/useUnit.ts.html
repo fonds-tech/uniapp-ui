@@ -23,16 +23,16 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">34.37% </span>
+                <span class="strong">93.75% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>11/32</span>
+                <span class='fraction'>30/32</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">36.36% </span>
+                <span class="strong">78.78% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>4/11</span>
+                <span class='fraction'>26/33</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">34.37% </span>
+                <span class="strong">93.75% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>11/32</span>
+                <span class='fraction'>30/32</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line low'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -117,36 +117,36 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">28x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-yes">28x</span>
+<span class="cline-any cline-yes">8527x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">28x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">8527x</span>
+<span class="cline-any cline-yes">1678x</span>
+<span class="cline-any cline-yes">1678x</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1678x</span>
+<span class="cline-any cline-yes">7894x</span>
+<span class="cline-any cline-yes">9x</span>
+<span class="cline-any cline-yes">9x</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-yes">27x</span>
-<span class="cline-any cline-yes">28x</span>
-<span class="cline-any cline-yes">28x</span>
+<span class="cline-any cline-yes">9x</span>
+<span class="cline-any cline-yes">7826x</span>
+<span class="cline-any cline-yes">8527x</span>
+<span class="cline-any cline-yes">8527x</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { useUnitToPx } from "./useUnitToPx"
 import { useUnitToRpx } from "./useUnitToRpx"
 import { isDef, isNumber } from "../utils/check"
@@ -159,35 +159,35 @@ import { isDef, isNumber } from "../utils/check"
  * @returns 转换值
  */
 export function useUnit(value: string | number, unit: "px" | "rpx" = "rpx"): string {
-  if (/\s+/.test(String(value))) <span class="branch-0 cbranch-no" title="branch not covered" >{</span>
-<span class="cstat-no" title="statement not covered" >    value = String(value)</span>
-<span class="cstat-no" title="statement not covered" >    const values = value.trim().split(/\s+/)</span>
-<span class="cstat-no" title="statement not covered" >    const isInvalid = values.some((val) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >      if (val.includes("rpx")) return !isNumber(val.split("rpx")[0])</span>
-<span class="cstat-no" title="statement not covered" >      if (val.includes("px")) return !isNumber(val.split("px")[0])</span>
-<span class="cstat-no" title="statement not covered" >      return !isNumber(val)</span>
-<span class="cstat-no" title="statement not covered" >    })</span>
-<span class="cstat-no" title="statement not covered" >    if (isInvalid) return String(value)</span>
-<span class="cstat-no" title="statement not covered" >    return values</span>
-<span class="cstat-no" title="statement not covered" >      .map((val) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >        if (val.includes("rpx")) return unit === "rpx" ? val : `${useUnitToPx(val)}px`</span>
-<span class="cstat-no" title="statement not covered" >        if (val.includes("px")) return unit === "px" ? val : `${useUnitToRpx(val)}rpx`</span>
-<span class="cstat-no" title="statement not covered" >        return unit === "rpx" ? `${val}rpx` : `${useUnitToPx(val)}px`</span>
-<span class="cstat-no" title="statement not covered" >      })</span>
-<span class="cstat-no" title="statement not covered" >      .join(" ")</span>
-<span class="cstat-no" title="statement not covered" >  }</span>
+  if (/\s+/.test(String(value))) {
+    value = String(value)
+    const values = value.trim().split(/\s+/)
+    const isInvalid = values.some((val) =&gt; {
+      if (val.includes("rpx")) return !isNumber(val.split("rpx")[0])
+      if (val.includes("px")) <span class="branch-0 cbranch-no" title="branch not covered" >return !isNumber(val.split("px")[0])</span>
+      return !isNumber(val)
+    })
+    if (isInvalid) <span class="branch-0 cbranch-no" title="branch not covered" >return String(value)</span>
+    return values
+      .map((val) =&gt; {
+        if (val.includes("rpx")) return unit === "rpx" ? <span class="branch-0 cbranch-no" title="branch not covered" >val : `${useUnitToPx(val)}px`</span>
+        if (val.includes("px")) <span class="branch-0 cbranch-no" title="branch not covered" >return unit === "px" ? val : `${useUnitToRpx(val)}rpx`</span>
+        return unit === "rpx" ? `${val<span class="branch-0 cbranch-no" title="branch not covered" >}rpx` : `${useUnitToPx(val)}px`</span>
+      })
+      .join(" ")
+  }
   if (String(value).includes("rpx")) {
     const val = String(value).split("rpx")[0]
-    if (isNumber(val)) return unit === "rpx" ? String(value<span class="branch-0 cbranch-no" title="branch not covered" >) : `${useUnitToPx(value)<span class="branch-0 cbranch-no" title="branch not covered" >}px`</span></span>
+    if (isNumber(val)) return unit === "rpx" ? String(value) : `${useUnitToPx(value)<span class="branch-0 cbranch-no" title="branch not covered" >}px`</span>
 <span class="cstat-no" title="statement not covered" >    else return String(value)</span>
   }
-  if (String(value).includes("px")) <span class="branch-0 cbranch-no" title="branch not covered" >{</span>
-<span class="cstat-no" title="statement not covered" >    const val = String(value).split("px")[0]</span>
-<span class="cstat-no" title="statement not covered" >    if (isNumber(val)) return unit === "px" ? String(value) : `${useUnitToRpx(value)}rpx`</span>
+  if (String(value).includes("px")) {
+    const val = String(value).split("px")[0]
+    if (isNumber(val)) return unit === "px" ? String(value) : `${useUnitToRpx(value)<span class="branch-0 cbranch-no" title="branch not covered" >}rpx`</span>
 <span class="cstat-no" title="statement not covered" >    else return String(value)</span>
-<span class="cstat-no" title="statement not covered" >  }</span>
-  if (isNumber(value)) return unit === "rpx" ? `${value<span class="branch-0 cbranch-no" title="branch not covered" >}rpx` : `${useUnitToPx(value)<span class="branch-0 cbranch-no" title="branch not covered" >}px`</span></span>
-  return isDef(value) ? String(value<span class="branch-0 cbranch-no" title="branch not covered" >) : ""</span>
+  }
+  if (isNumber(value)) return unit === "rpx" ? `${value}rpx` : `${useUnitToPx(value)}px`
+  return isDef(value) ? String(value) : ""
 }
 &nbsp;</pre></td></tr></table></pre>
 
@@ -196,7 +196,7 @@ export function useUnit(value: string | number, unit: "px" | "rpx" = "rpx"): str
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-01-17T17:57:28.201Z
+                at 2026-01-20T08:35:19.656Z
             </div>
         <script src="../prettify.js"></script>
         <script>

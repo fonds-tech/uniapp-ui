@@ -1,16 +1,35 @@
 <template>
-  <view class="ui-stepper" :class="[classs, customClass]" :style="[style]">
-    <button v-if="showMinus" class="ui-stepper__button" hover-class="ui-stepper__button--active" @click.stop="onMinus" @touchend.stop="onTouchend" @touchstart="onMinusTouchstart">
+  <view
+    class="ui-stepper"
+    :class="[classes, customClass]"
+    :style="[style]"
+    role="spinbutton"
+    :aria-valuenow="+current"
+    :aria-valuemin="+useProps.min"
+    :aria-valuemax="+useProps.max"
+    :aria-disabled="useProps.disabled"
+  >
+    <button
+      v-if="showMinus"
+      class="ui-stepper__button"
+      :class="{ 'ui-stepper__button--loading': loading }"
+      hover-class="ui-stepper__button--active"
+      :disabled="minusDisabled || loading"
+      aria-label="减少"
+      @click.stop="onMinus"
+      @touchend.stop="onTouchend"
+      @touchstart="onMinusTouchstart"
+    >
       <slot name="minus" :disabled="minusDisabled">
-        <view class="ui-stepper__minus" :style="[minusStyle]" :class="[minusClasss]" />
+        <view class="ui-stepper__minus" :style="[minusStyle]" :class="[minusClasses]" />
       </slot>
     </button>
-    <view v-if="showInput" @click="onClick">
+    <view v-if="showInput" class="ui-stepper__value" @click="onClick">
       <input
         v-model="current"
         :style="[inputStyle]"
         class="ui-stepper__input"
-        :class="[inputClass]"
+        :class="[inputClasses]"
         :type="inputType"
         :disabled="inputDisabled"
         placeholder=""
@@ -19,10 +38,19 @@
         @input="onInput"
       />
     </view>
-
-    <button v-if="showPlus" class="ui-stepper__button" hover-class="ui-stepper__button--active" @click.stop="onPlus" @touchstart="onPlusTouchstart" @touchend.stop="onTouchend">
+    <button
+      v-if="showPlus"
+      class="ui-stepper__button"
+      :class="{ 'ui-stepper__button--loading': loading }"
+      hover-class="ui-stepper__button--active"
+      :disabled="plusDisabled || loading"
+      aria-label="增加"
+      @click.stop="onPlus"
+      @touchstart="onPlusTouchstart"
+      @touchend.stop="onTouchend"
+    >
       <slot name="plus" :disabled="plusDisabled">
-        <view class="ui-stepper__plus" :style="[plusStyle]" :class="[plusClasss]" />
+        <view class="ui-stepper__plus" :style="[plusStyle]" :class="[plusClasses]" />
       </slot>
     </button>
   </view>
@@ -53,17 +81,25 @@ const inputType = computed(() => (useProps.integer ? "number" : "digit"))
 const plusDisabled = computed(() => useProps.disabled || useProps.disablePlus || +current.value >= +useProps.max)
 const minusDisabled = computed(() => useProps.disabled || useProps.disableMinus || +current.value <= +useProps.min)
 const inputDisabled = computed(() => useProps.disabled || useProps.disabledInput)
+const showMinus = computed(() => useProps.showMinus)
+const showPlus = computed(() => useProps.showPlus)
+const showInput = computed(() => useProps.showInput)
+const customClass = computed(() => useProps.customClass)
 
 const style = computed(() => {
   const style: CSSProperties = {}
-  style.height = useUnit(useProps.height)
+  if (useProps.height) {
+    style.height = useUnit(useProps.height)
+  }
   return useStyle({ ...style, ...useStyle(useProps.customStyle) })
 })
 
-const classs = computed(() => {
+const classes = computed(() => {
   const list: string[] = []
+  list.push(`ui-stepper--${useProps.size}`)
   list.push(`ui-stepper--${useProps.theme}`)
   if (useProps.disabled) list.push("ui-stepper--disabled")
+  if (loading.value) list.push("ui-stepper--loading")
   return list
 })
 
@@ -102,14 +138,14 @@ const inputStyle = computed(() => {
   return useStyle(style)
 })
 
-const inputClass = computed(() => {
+const inputClasses = computed(() => {
   const list: string[] = []
   list.push(`ui-stepper__input--${useProps.theme}`)
   if (inputDisabled.value) list.push("ui-stepper__input--disabled")
   return list
 })
 
-const minusClasss = computed(() => {
+const minusClasses = computed(() => {
   const list: string[] = []
   list.push(`ui-stepper__minus--${useProps.theme}`)
   if (loading.value) list.push("ui-stepper__minus--loading")
@@ -117,7 +153,7 @@ const minusClasss = computed(() => {
   return list
 })
 
-const plusClasss = computed(() => {
+const plusClasses = computed(() => {
   const list: string[] = []
   list.push(`ui-stepper__plus--${useProps.theme}`)
   if (loading.value) list.push("ui-stepper__plus--loading")
@@ -305,14 +341,50 @@ export default {
 <style lang="scss">
 .ui-stepper {
   width: max-content;
-  height: var(--ui-size-small);
   display: inline-flex;
   align-items: center;
   flex-shrink: 0;
   user-select: none;
   justify-content: center;
 
+  // 尺寸
+  &--small {
+    --stepper-height: 56rpx;
+    --stepper-font-size: var(--ui-font-size-xs);
+    --stepper-icon-size: 20rpx;
+    --stepper-button-size: 56rpx;
+    --stepper-input-width: 64rpx;
+  }
+
+  &--medium {
+    --stepper-height: 72rpx;
+    --stepper-font-size: var(--ui-font-size-sm);
+    --stepper-icon-size: 24rpx;
+    --stepper-button-size: 72rpx;
+    --stepper-input-width: 80rpx;
+  }
+
+  &--large {
+    --stepper-height: 88rpx;
+    --stepper-font-size: var(--ui-font-size-md);
+    --stepper-icon-size: 28rpx;
+    --stepper-button-size: 88rpx;
+    --stepper-input-width: 96rpx;
+  }
+
+  height: var(--stepper-height);
+
+  &--disabled {
+    opacity: var(--ui-opacity-disabled);
+    pointer-events: none;
+  }
+
+  &--loading {
+    pointer-events: none;
+  }
+
   &__button {
+    width: var(--stepper-button-size);
     height: 100%;
     margin: 0;
     display: flex;
@@ -323,19 +395,33 @@ export default {
     vertical-align: middle;
     justify-content: center;
     background-color: transparent;
+
     &::after {
       content: none;
     }
+
     &--active {
       opacity: var(--ui-opacity-active);
     }
+
+    &--loading {
+      opacity: 0.5;
+    }
+
+    &[disabled] {
+      opacity: var(--ui-opacity-disabled);
+    }
   }
+
   &__minus {
+    width: var(--stepper-button-size);
+    height: 100%;
     position: relative;
+
     &::before {
       top: 50%;
       left: 50%;
-      width: var(--stepper-minus-text-size, var(--ui-font-size-sm));
+      width: var(--stepper-icon-size);
       height: 3rpx;
       content: "";
       position: absolute;
@@ -347,46 +433,49 @@ export default {
       opacity: var(--ui-opacity-disabled);
     }
 
+    &--loading {
+      opacity: 0.5;
+    }
+
     &--button {
-      width: var(--ui-size-small);
-      height: 100%;
       border-radius: var(--ui-radius-md) 0 0 var(--ui-radius-md);
       background-color: var(--ui-color-background-dark);
     }
 
     &--round {
-      width: var(--ui-size-small);
       border: var(--ui-border-width) solid currentColor;
-      height: 100%;
       border-radius: var(--ui-radius-round);
       background-color: var(--ui-color-background);
     }
 
     &--border {
       color: currentColor;
-      width: var(--ui-size-small);
-      height: 100%;
       border-right: var(--ui-border-width-thick) solid var(--ui-color-border-light);
       background-color: var(--ui-color-background);
     }
   }
+
   &__plus {
+    width: var(--stepper-button-size);
+    height: 100%;
     position: relative;
+
     &::before {
       top: 50%;
       left: 50%;
-      width: var(--stepper-plus-text-size, var(--ui-font-size-sm));
+      width: var(--stepper-icon-size);
       height: 3rpx;
       content: "";
       position: absolute;
       transform: translate(-50%, -50%);
       background-color: currentColor;
     }
+
     &::after {
       top: 50%;
       left: 50%;
       width: 3rpx;
-      height: var(--stepper-plus-text-size, var(--ui-font-size-sm));
+      height: var(--stepper-icon-size);
       content: "";
       position: absolute;
       transform: translate(-50%, -50%);
@@ -397,41 +486,51 @@ export default {
       opacity: var(--ui-opacity-disabled);
     }
 
+    &--loading {
+      opacity: 0.5;
+    }
+
     &--button {
-      width: var(--ui-size-small);
-      height: 100%;
       border-radius: 0 var(--ui-radius-md) var(--ui-radius-md) 0;
       background-color: var(--ui-color-background-dark);
     }
 
     &--round {
       color: var(--ui-color-background);
-      width: var(--ui-size-small);
       border: var(--ui-border-width) solid var(--ui-color-primary);
-      height: 100%;
       border-radius: var(--ui-radius-round);
       background-color: var(--ui-color-primary);
     }
 
     &--border {
       color: currentColor;
-      width: var(--ui-size-small);
-      height: 100%;
       border-left: var(--ui-border-width-thick) solid var(--ui-color-border-light);
       background-color: var(--ui-color-background);
     }
   }
 
-  &__input {
-    width: var(--ui-size-small);
+  &__value {
     height: 100%;
-    margin: 0 var(--ui-spacing-sm);
     display: flex;
-    font-size: var(--ui-font-size-sm);
+    align-items: center;
+  }
+
+  &__input {
+    width: var(--stepper-input-width);
+    height: 100%;
+    margin: 0 var(--ui-spacing-xs);
+    display: flex;
+    font-size: var(--stepper-font-size);
     text-align: center;
     align-items: center;
+    font-variant-numeric: tabular-nums;
+
     &--button {
       background-color: var(--ui-color-background-dark);
+    }
+
+    &--disabled {
+      opacity: var(--ui-opacity-disabled);
     }
   }
 

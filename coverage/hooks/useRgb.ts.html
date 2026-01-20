@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">41.17% </span>
+                <span class="strong">60% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>35/85</span>
+                <span class='fraction'>51/85</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">33.33% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/0</span>
+                <span class='fraction'>2/6</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">66.66% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/3</span>
+                <span class='fraction'>2/3</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">41.17% </span>
+                <span class="strong">60% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>35/85</span>
+                <span class='fraction'>51/85</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line low'></div>
+    <div class='status-line medium'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -258,25 +258,25 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">10x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">10x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">10x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">10x</span>
+<span class="cline-any cline-yes">10x</span>
+<span class="cline-any cline-yes">10x</span>
+<span class="cline-any cline-yes">10x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -291,16 +291,16 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">10x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">10x</span>
+<span class="cline-any cline-yes">10x</span>
+<span class="cline-any cline-yes">10x</span>
+<span class="cline-any cline-yes">10x</span>
+<span class="cline-any cline-yes">10x</span>
+<span class="cline-any cline-yes">10x</span>
+<span class="cline-any cline-yes">10x</span>
+<span class="cline-any cline-yes">10x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -393,24 +393,24 @@ export interface RgbResult {
  * @param color 颜色字符串
  * @returns 包含 RGB 值的对象，如果输入无效则返回 null
  */
-export <span class="fstat-no" title="function not covered" >function useRgb(color: string): RgbResult | null {</span>
-<span class="cstat-no" title="statement not covered" >  if (!color || typeof color !== "string") {</span>
+export function useRgb(color: string): RgbResult | null {
+  if (!color || typeof color !== "string") <span class="branch-0 cbranch-no" title="branch not covered" >{</span>
 <span class="cstat-no" title="statement not covered" >    return null</span>
 <span class="cstat-no" title="statement not covered" >  }</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  const trimmed = color.trim().toLowerCase()</span>
+  const trimmed = color.trim().toLowerCase()
 &nbsp;
   // 1. 尝试解析 CSS 颜色关键字
-<span class="cstat-no" title="statement not covered" >  if (CSS_COLORS[trimmed]) {</span>
+  if (CSS_COLORS[trimmed]) <span class="branch-0 cbranch-no" title="branch not covered" >{</span>
 <span class="cstat-no" title="statement not covered" >    const [r, g, b] = CSS_COLORS[trimmed]</span>
 <span class="cstat-no" title="statement not covered" >    return { r, g, b }</span>
 <span class="cstat-no" title="statement not covered" >  }</span>
 &nbsp;
   // 2. 尝试解析十六进制颜色
-<span class="cstat-no" title="statement not covered" >  const hexResult = parseHex(trimmed)</span>
-<span class="cstat-no" title="statement not covered" >  if (hexResult) {</span>
-<span class="cstat-no" title="statement not covered" >    return hexResult</span>
-<span class="cstat-no" title="statement not covered" >  }</span>
+  const hexResult = parseHex(trimmed)
+  if (hexResult) {
+    return hexResult
+<span class="branch-0 cbranch-no" title="branch not covered" >  }</span>
 &nbsp;
   // 3. 尝试解析 rgb/rgba 格式
 <span class="cstat-no" title="statement not covered" >  const rgbResult = parseRgbFunction(trimmed)</span>
@@ -427,16 +427,16 @@ export <span class="fstat-no" title="function not covered" >function useRgb(colo
  * 解析十六进制颜色
  * 支持 #RGB 和 #RRGGBB 格式
  */
-<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >function parseHex(hex: string): RgbResult | null {</span></span>
+function parseHex(hex: string): RgbResult | null {
   // 匹配 #RRGGBB 格式
-<span class="cstat-no" title="statement not covered" >  const hex6 = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex)</span>
-<span class="cstat-no" title="statement not covered" >  if (hex6) {</span>
-<span class="cstat-no" title="statement not covered" >    return {</span>
-<span class="cstat-no" title="statement not covered" >      r: Number.parseInt(hex6[1], 16),</span>
-<span class="cstat-no" title="statement not covered" >      g: Number.parseInt(hex6[2], 16),</span>
-<span class="cstat-no" title="statement not covered" >      b: Number.parseInt(hex6[3], 16),</span>
-<span class="cstat-no" title="statement not covered" >    }</span>
-<span class="cstat-no" title="statement not covered" >  }</span>
+  const hex6 = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex)
+  if (hex6) {
+    return {
+      r: Number.parseInt(hex6[1], 16),
+      g: Number.parseInt(hex6[2], 16),
+      b: Number.parseInt(hex6[3], 16),
+    }
+<span class="branch-0 cbranch-no" title="branch not covered" >  }</span>
 &nbsp;
   // 匹配 #RGB 格式（简写）
 <span class="cstat-no" title="statement not covered" >  const hex3 = /^#?([a-f\d])([a-f\d])([a-f\d])$/i.exec(hex)</span>
@@ -478,7 +478,7 @@ export <span class="fstat-no" title="function not covered" >function useRgb(colo
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-01-17T17:57:28.201Z
+                at 2026-01-20T08:35:19.656Z
             </div>
         <script src="../prettify.js"></script>
         <script>

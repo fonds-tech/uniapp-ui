@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">20% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>2/10</span>
+                <span class='fraction'>10/10</span>
+            </div>
+        
+            
+            <div class='fl pad1y space-right2'>
+                <span class="strong">14.28% </span>
+                <span class="quiet">Branches</span>
+                <span class='fraction'>1/7</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
-                <span class="quiet">Branches</span>
-                <span class='fraction'>0/0</span>
-            </div>
-        
-            
-            <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/1</span>
+                <span class='fraction'>1/1</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">20% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>2/10</span>
+                <span class='fraction'>10/10</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line low'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -92,43 +92,43 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">133x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">133x</span>
+<span class="cline-any cline-yes">133x</span>
+<span class="cline-any cline-yes">133x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">133x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">133x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">133x</span>
+<span class="cline-any cline-yes">133x</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { merge } from "../utils/object"
 &nbsp;
 /**
  * 获取系统信息
  * @returns 系统信息对象
  */
-export <span class="fstat-no" title="function not covered" >function useSystemInfo() {</span>
-<span class="cstat-no" title="statement not covered" >  let info = {} as any</span>
+export function useSystemInfo() {
+  let info = {} as any
   // #ifdef MP-WEIXIN
-<span class="cstat-no" title="statement not covered" >  const deviceInfo = (typeof uni.getDeviceInfo === "function" ? uni.getDeviceInfo() : {}) || {}</span>
-<span class="cstat-no" title="statement not covered" >  const windowInfo = (typeof uni.getWindowInfo === "function" ? uni.getWindowInfo() : {}) || {}</span>
-<span class="cstat-no" title="statement not covered" >  const appBaseInfo = (typeof uni.getAppBaseInfo === "function" ? uni.getAppBaseInfo() : {}) || {}</span>
+  const deviceInfo = (typeof uni.getDeviceInfo === <span class="branch-0 cbranch-no" title="branch not covered" >"function" ? uni.getDeviceInfo() : {<span class="branch-0 cbranch-no" title="branch not covered" ></span>}) || {}</span>
+  const windowInfo = (typeof uni.getWindowInfo === "function" ? uni.getWindowInfo(<span class="branch-0 cbranch-no" title="branch not covered" >) : {<span class="branch-0 cbranch-no" title="branch not covered" >}) || {</span>}</span>
+  const appBaseInfo = (typeof uni.getAppBaseInfo === <span class="branch-0 cbranch-no" title="branch not covered" >"function" ? uni.getAppBaseInfo() : {<span class="branch-0 cbranch-no" title="branch not covered" ></span>}) || {}</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  info = merge(deviceInfo, windowInfo, appBaseInfo)</span>
+  info = merge(deviceInfo, windowInfo, appBaseInfo)
   // #endif
 &nbsp;
   // #ifndef MP-WEIXIN
-<span class="cstat-no" title="statement not covered" >  info = uni.getSystemInfoSync()</span>
+  info = uni.getSystemInfoSync()
   // #endif
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  return info</span>
-<span class="cstat-no" title="statement not covered" >}</span>
+  return info
+}
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
@@ -136,7 +136,7 @@ export <span class="fstat-no" title="function not covered" >function useSystemIn
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-01-17T17:57:28.201Z
+                at 2026-01-20T08:35:19.656Z
             </div>
         <script src="../prettify.js"></script>
         <script>

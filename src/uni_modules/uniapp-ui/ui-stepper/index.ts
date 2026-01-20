@@ -25,7 +25,11 @@ export const [stepperProps, useStepperProps] = createProps("stepper", {
    */
   name: makeNumericProp(""),
   /**
-   * 高度
+   * 尺寸
+   */
+  size: { type: String as PropType<StepperSize>, default: "medium" },
+  /**
+   * 高度（优先级高于 size）
    */
   height: makeNumericProp(""),
   /**
@@ -171,5 +175,6 @@ export const stepperEmits = {
 
 export type StepperEmits = typeof stepperEmits
 export type StepperProps = ExtractPropTypes<typeof stepperProps>
+export type StepperSize = "small" | "medium" | "large"
 export type StepperTheme = "button" | "round" | "border"
 export type StepperInstance = InstanceType<typeof Stepper>

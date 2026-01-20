@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">5.55% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>1/18</span>
+                <span class='fraction'>18/18</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/0</span>
+                <span class='fraction'>4/4</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">75% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/1</span>
+                <span class='fraction'>3/4</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">5.55% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>1/18</span>
+                <span class='fraction'>18/18</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line low'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -97,56 +97,56 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">395x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">395x</span>
+<span class="cline-any cline-yes">395x</span>
+<span class="cline-any cline-yes">395x</span>
+<span class="cline-any cline-yes">395x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">395x</span>
+<span class="cline-any cline-yes">211x</span>
+<span class="cline-any cline-yes">211x</span>
+<span class="cline-any cline-yes">211x</span>
+<span class="cline-any cline-yes">211x</span>
+<span class="cline-any cline-yes">211x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">395x</span>
+<span class="cline-any cline-yes">28x</span>
+<span class="cline-any cline-yes">28x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">395x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">395x</span>
+<span class="cline-any cline-yes">395x</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">/**
  * 自定义 Promise 钩子函数，用于封装 Promise 对象
  * @param executor Promise 执行函数
  * @returns 包含自定义 Promise 对象及相关方法的对象
  */
-export <span class="fstat-no" title="function not covered" >function usePromise&lt;T&gt;(executor: (resolve: (value?: T | PromiseLike&lt;T&gt;) =&gt; void, reject: (reason?: any) =&gt; void) =&gt; void) {</span>
-<span class="cstat-no" title="statement not covered" >  let _reject: ((res?: any) =&gt; void) | null = null</span>
+export function usePromise&lt;T&gt;(executor: (resolve: (value?: T | PromiseLike&lt;T&gt;) =&gt; void, reject: (reason?: any) =&gt; void) =&gt; void) {
+  let _reject: ((res?: any) =&gt; void) | null = null
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  const _promise = new Promise&lt;T&gt;((resolve, reject) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    executor(resolve, reject)</span>
-<span class="cstat-no" title="statement not covered" >    _reject = reject</span>
-<span class="cstat-no" title="statement not covered" >  })</span>
+  const _promise = new Promise&lt;T&gt;((resolve, reject) =&gt; {
+    executor(resolve, reject)
+    _reject = reject
+  })
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  const _then = &lt;TResult1 = T, TResult2 = never&gt;(</span>
-<span class="cstat-no" title="statement not covered" >    onfulfilled?: ((value: T) =&gt; TResult1 | PromiseLike&lt;TResult1&gt;) | undefined | null,</span>
-<span class="cstat-no" title="statement not covered" >    onrejected?: ((reason: any) =&gt; TResult2 | PromiseLike&lt;TResult2&gt;) | undefined | null,</span>
-<span class="cstat-no" title="statement not covered" >  ) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    return _promise.then(onfulfilled, onrejected)</span>
-<span class="cstat-no" title="statement not covered" >  }</span>
+  const _then = &lt;TResult1 = T, TResult2 = never&gt;(
+    onfulfilled?: ((value: T) =&gt; TResult1 | PromiseLike&lt;TResult1&gt;) | undefined | null,
+    onrejected?: ((reason: any) =&gt; TResult2 | PromiseLike&lt;TResult2&gt;) | undefined | null,
+  ) =&gt; {
+    return _promise.then(onfulfilled, onrejected)
+  }
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  const _abort = (error?: any) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    if (_reject) _reject(error)</span>
-<span class="cstat-no" title="statement not covered" >  }</span>
+  const _abort = (error?: any) =&gt; {
+    if (_reject) _reject(error)
+  }
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  const _catch = &lt;TResult = never&gt;(onrejected?: ((reason: any) =&gt; TResult | PromiseLike&lt;TResult&gt;) | undefined | null) =&gt; _promise.catch(onrejected)</span>
+  const _catch = <span class="fstat-no" title="function not covered" >&lt;TResult = never&gt;(onrejected?: ((reason: any) =&gt; TResult | PromiseLike&lt;TResult&gt;) | undefined | null) =&gt; _promise.catch(onrejected)</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  return { promise: _promise, then: _then, abort: _abort, catch: _catch }</span>
-<span class="cstat-no" title="statement not covered" >}</span>
+  return { promise: _promise, then: _then, abort: _abort, catch: _catch }
+}
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
@@ -154,7 +154,7 @@ export <span class="fstat-no" title="function not covered" >function usePromise&
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-01-17T17:57:28.201Z
+                at 2026-01-20T08:35:19.656Z
             </div>
         <script src="../prettify.js"></script>
         <script>

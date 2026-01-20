@@ -577,55 +577,7 @@
 <a name='L512'></a><a href='#L512'>512</a>
 <a name='L513'></a><a href='#L513'>513</a>
 <a name='L514'></a><a href='#L514'>514</a>
-<a name='L515'></a><a href='#L515'>515</a>
-<a name='L516'></a><a href='#L516'>516</a>
-<a name='L517'></a><a href='#L517'>517</a>
-<a name='L518'></a><a href='#L518'>518</a>
-<a name='L519'></a><a href='#L519'>519</a>
-<a name='L520'></a><a href='#L520'>520</a>
-<a name='L521'></a><a href='#L521'>521</a>
-<a name='L522'></a><a href='#L522'>522</a>
-<a name='L523'></a><a href='#L523'>523</a>
-<a name='L524'></a><a href='#L524'>524</a>
-<a name='L525'></a><a href='#L525'>525</a>
-<a name='L526'></a><a href='#L526'>526</a>
-<a name='L527'></a><a href='#L527'>527</a>
-<a name='L528'></a><a href='#L528'>528</a>
-<a name='L529'></a><a href='#L529'>529</a>
-<a name='L530'></a><a href='#L530'>530</a>
-<a name='L531'></a><a href='#L531'>531</a>
-<a name='L532'></a><a href='#L532'>532</a>
-<a name='L533'></a><a href='#L533'>533</a>
-<a name='L534'></a><a href='#L534'>534</a>
-<a name='L535'></a><a href='#L535'>535</a>
-<a name='L536'></a><a href='#L536'>536</a>
-<a name='L537'></a><a href='#L537'>537</a>
-<a name='L538'></a><a href='#L538'>538</a>
-<a name='L539'></a><a href='#L539'>539</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L515'></a><a href='#L515'>515</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1144,7 +1096,6 @@ import type { ColProps } from "../ui-col"
 import type { RowProps } from "../ui-row"
 import type { TabProps } from "../ui-tab"
 import type { TagProps } from "../ui-tag"
-import type { CardProps } from "../ui-card"
 import type { CellProps } from "../ui-cell"
 import type { FormProps } from "../ui-form"
 import type { IconProps } from "../ui-icon"
@@ -1183,13 +1134,11 @@ import type { UploadProps } from "../ui-upload"
 import type { BackTopProps } from "../ui-back-top"
 import type { LoadingProps } from "../ui-loading"
 import type { OverlayProps } from "../ui-overlay"
-import type { PopoverProps } from "../ui-popover"
 import type { SidebarProps } from "../ui-sidebar"
 import type { StepperProps } from "../ui-stepper"
 import type { CalendarProps } from "../ui-calendar"
 import type { CascaderProps } from "../ui-cascader"
 import type { CheckboxProps } from "../ui-checkbox"
-import type { CollapseProps } from "../ui-collapse"
 import type { FormItemProps } from "../ui-form-item"
 import type { IndexBarProps } from "../ui-index-bar"
 import type { KeyboardProps } from "../ui-keyboard"
@@ -1215,7 +1164,6 @@ import type { PickerPanelProps } from "../ui-picker-panel"
 import type { PullRefreshProps } from "../ui-pull-refresh"
 import type { SafeAreaTopProps } from "../ui-safe-area-top"
 import type { SidebarItemProps } from "../ui-sidebar-item"
-import type { CollapseItemProps } from "../ui-collapse-item"
 import type { DropdownItemProps } from "../ui-dropdown-item"
 import type { DropdownMenuProps } from "../ui-dropdown-menu"
 import type { CheckboxGroupProps } from "../ui-checkbox-group"
@@ -1265,10 +1213,6 @@ export interface Components {
    */
   calendar?: Partial&lt;CalendarProps&gt;
   /**
-   * card 组件默认值
-   */
-  card?: Partial&lt;CardProps&gt;
-  /**
    * cascader 组件默认值
    */
   cascader?: Partial&lt;CascaderProps&gt;
@@ -1292,14 +1236,6 @@ export interface Components {
    * col 组件默认值
    */
   col?: Partial&lt;ColProps&gt;
-  /**
-   * collapse 组件默认值
-   */
-  collapse?: Partial&lt;CollapseProps&gt;
-  /**
-   * collapse-item 组件默认值
-   */
-  "collapse-item"?: Partial&lt;CollapseItemProps&gt;
   /**
    * config-provider 组件默认值
    */
@@ -1424,10 +1360,6 @@ export interface Components {
    * picker-panel 组件默认值
    */
   "picker-panel"?: Partial&lt;PickerPanelProps&gt;
-  /**
-   * popover 组件默认值
-   */
-  popover?: Partial&lt;PopoverProps&gt;
   /**
    * popup 组件默认值
    */
@@ -1596,14 +1528,11 @@ export type {
   BadgeProps,
   ButtonProps,
   CalendarProps,
-  CardProps,
   CascaderProps,
   CellGroupProps,
   CellProps,
   CheckboxGroupProps,
   CheckboxProps,
-  CollapseItemProps,
-  CollapseProps,
   ColProps,
   ConfigProviderProps,
   CountDownProps,
@@ -1636,7 +1565,6 @@ export type {
   PaginationProps,
   PickerPanelProps,
   PickerProps,
-  PopoverProps,
   PopupProps,
   ProgressProps,
   PullRefreshProps,
@@ -1684,7 +1612,7 @@ export type {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-01-17T17:57:28.201Z
+                at 2026-01-20T08:35:19.656Z
             </div>
         <script src="../prettify.js"></script>
         <script>

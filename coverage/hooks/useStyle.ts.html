@@ -23,16 +23,16 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">32.25% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>10/31</span>
+                <span class='fraction'>31/31</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">75% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>6/8</span>
+                <span class='fraction'>19/19</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">32.25% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>10/31</span>
+                <span class='fraction'>31/31</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line low'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -113,38 +113,38 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">213x</span>
-<span class="cline-any cline-yes">213x</span>
-<span class="cline-any cline-yes">184x</span>
-<span class="cline-any cline-yes">311x</span>
-<span class="cline-any cline-yes">311x</span>
-<span class="cline-any cline-yes">184x</span>
-<span class="cline-any cline-yes">213x</span>
-<span class="cline-any cline-yes">213x</span>
+<span class="cline-any cline-yes">12792x</span>
+<span class="cline-any cline-yes">12355x</span>
+<span class="cline-any cline-yes">9521x</span>
+<span class="cline-any cline-yes">23846x</span>
+<span class="cline-any cline-yes">23846x</span>
+<span class="cline-any cline-yes">9521x</span>
+<span class="cline-any cline-yes">12355x</span>
+<span class="cline-any cline-yes">12355x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">4366x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">434x</span>
+<span class="cline-any cline-yes">656x</span>
+<span class="cline-any cline-yes">749x</span>
+<span class="cline-any cline-yes">749x</span>
+<span class="cline-any cline-yes">749x</span>
+<span class="cline-any cline-yes">434x</span>
+<span class="cline-any cline-yes">434x</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { isEmpty, isObject, isString } from "../utils/check"
 &nbsp;
 /**
@@ -154,38 +154,38 @@
  * @returns 转换后的样式
  */
 export function useStyle(style: any, type: string = "object"): any {
-  if (isEmpty(style) || (isObject(style) &amp;&amp; type === <span class="branch-0 cbranch-no" title="branch not covered" >"object") || (isString(style) &amp;&amp; type === "string")) {</span>
+  if (isEmpty(style) || (isObject(style) &amp;&amp; type === "object") || (isString(style) &amp;&amp; type === "string")) {
     if (isObject(style)) {
       for (const key in style) {
         if (isEmpty(style[key]) &amp;&amp; style[key] !== 0) delete style[key]
       }
     }
     return style
-<span class="branch-0 cbranch-no" title="branch not covered" >  }</span>
+  }
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  if (type === "object") {</span>
-<span class="cstat-no" title="statement not covered" >    style = style.trim()</span>
-<span class="cstat-no" title="statement not covered" >    const styleArray = style.split(";")</span>
-<span class="cstat-no" title="statement not covered" >    const styleObject: any = {}</span>
-<span class="cstat-no" title="statement not covered" >    for (let i = 0; i &lt; styleArray.length; i++) {</span>
-<span class="cstat-no" title="statement not covered" >      if (styleArray[i]) {</span>
-<span class="cstat-no" title="statement not covered" >        const item = styleArray[i].split(":")</span>
+  if (type === "object") {
+    style = style.trim()
+    const styleArray = style.split(";")
+    const styleObject: any = {}
+    for (let i = 0; i &lt; styleArray.length; i++) {
+      if (styleArray[i]) {
+        const item = styleArray[i].split(":")
         // 确保属性名和属性值都存在
-<span class="cstat-no" title="statement not covered" >        if (item[0] &amp;&amp; item[1]) {</span>
-<span class="cstat-no" title="statement not covered" >          styleObject[item[0].trim()] = item[1].trim()</span>
-<span class="cstat-no" title="statement not covered" >        }</span>
-<span class="cstat-no" title="statement not covered" >      }</span>
-<span class="cstat-no" title="statement not covered" >    }</span>
-<span class="cstat-no" title="statement not covered" >    return styleObject</span>
-<span class="cstat-no" title="statement not covered" >  }</span>
+        if (item[0] &amp;&amp; item[1]) {
+          styleObject[item[0].trim()] = item[1].trim()
+        }
+      }
+    }
+    return styleObject
+  }
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  let string = ""</span>
-<span class="cstat-no" title="statement not covered" >  for (const key in style) {</span>
-<span class="cstat-no" title="statement not covered" >    const newKey = key.replace(/([A-Z])/g, "-$1").toLowerCase()</span>
-<span class="cstat-no" title="statement not covered" >    string += `${newKey}:${style[key]};`</span>
-<span class="cstat-no" title="statement not covered" >  }</span>
-<span class="cstat-no" title="statement not covered" >  return string.trim()</span>
-<span class="cstat-no" title="statement not covered" >}</span>
+  let string = ""
+  for (const key in style) {
+    const newKey = key.replace(/([A-Z])/g, "-$1").toLowerCase()
+    string += `${newKey}:${style[key]};`
+  }
+  return string.trim()
+}
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
@@ -193,7 +193,7 @@ export function useStyle(style: any, type: string = "object"): any {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-01-17T17:57:28.201Z
+                at 2026-01-20T08:35:19.656Z
             </div>
         <script src="../prettify.js"></script>
         <script>

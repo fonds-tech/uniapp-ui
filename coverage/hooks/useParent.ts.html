@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">8.69% </span>
+                <span class="strong">73.91% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>2/23</span>
+                <span class='fraction'>17/23</span>
+            </div>
+        
+            
+            <div class='fl pad1y space-right2'>
+                <span class="strong">83.33% </span>
+                <span class="quiet">Branches</span>
+                <span class='fraction'>5/6</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
-                <span class="quiet">Branches</span>
-                <span class='fraction'>0/0</span>
-            </div>
-        
-            
-            <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/1</span>
+                <span class='fraction'>1/1</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">8.69% </span>
+                <span class="strong">73.91% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>2/23</span>
+                <span class='fraction'>17/23</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line low'></div>
+    <div class='status-line medium'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -153,36 +153,36 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">788x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">788x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">450x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">450x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">450x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">450x</span>
+<span class="cline-any cline-yes">450x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">450x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">450x</span>
+<span class="cline-any cline-yes">450x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">338x</span>
+<span class="cline-any cline-yes">338x</span>
+<span class="cline-any cline-yes">338x</span>
+<span class="cline-any cline-yes">338x</span>
+<span class="cline-any cline-yes">338x</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import type { ComputedRef, InjectionKey, ComponentInternalInstance } from "vue"
 import { inject, computed, onUnmounted, getCurrentInstance } from "vue"
 &nbsp;
@@ -211,15 +211,15 @@ export interface UseParentReturn&lt;T&gt; {
  *   parent.validate()
  * }
  */
-export <span class="fstat-no" title="function not covered" >function useParent&lt;T&gt;(key: InjectionKey&lt;T&gt;): UseParentReturn&lt;T&gt; {</span>
+export function useParent&lt;T&gt;(key: InjectionKey&lt;T&gt;): UseParentReturn&lt;T&gt; {
   // inject 获取的实际类型是 ParentProvide&lt;T&gt;，因为 useChildren 会添加 link/unlink/childrens
-<span class="cstat-no" title="statement not covered" >  const parent = inject(key, null) as ParentProvide&lt;T&gt; | null</span>
+  const parent = inject(key, null) as ParentProvide&lt;T&gt; | null
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  if (parent) {</span>
+  if (parent) {
     // 获取当前组件实例，添加空值检查
-<span class="cstat-no" title="statement not covered" >    const instance = getCurrentInstance()</span>
+    const instance = getCurrentInstance()
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    if (!instance) {</span>
+    if (!instance) <span class="branch-0 cbranch-no" title="branch not covered" >{</span>
 <span class="cstat-no" title="statement not covered" >      console.warn("[useParent] 必须在 setup() 函数内部调用")</span>
 <span class="cstat-no" title="statement not covered" >      return {</span>
 <span class="cstat-no" title="statement not covered" >        index: computed(() =&gt; -1),</span>
@@ -227,22 +227,22 @@ export <span class="fstat-no" title="function not covered" >function useParent&l
 <span class="cstat-no" title="statement not covered" >      }</span>
 <span class="cstat-no" title="statement not covered" >    }</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    const { link, unlink, childrens } = parent</span>
+    const { link, unlink, childrens } = parent
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    link(instance)</span>
-<span class="cstat-no" title="statement not covered" >    onUnmounted(() =&gt; unlink(instance))</span>
+    link(instance)
+    onUnmounted(() =&gt; unlink(instance))
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    const index = computed(() =&gt; childrens.indexOf(instance))</span>
+    const index = computed(() =&gt; childrens.indexOf(instance))
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    return { index, parent }</span>
-<span class="cstat-no" title="statement not covered" >  }</span>
+    return { index, parent }
+  }
 &nbsp;
   // 统一返回 computed 类型，保持类型一致性
-<span class="cstat-no" title="statement not covered" >  return {</span>
-<span class="cstat-no" title="statement not covered" >    index: computed(() =&gt; -1),</span>
-<span class="cstat-no" title="statement not covered" >    parent: null,</span>
-<span class="cstat-no" title="statement not covered" >  }</span>
-<span class="cstat-no" title="statement not covered" >}</span>
+  return {
+    index: computed(() =&gt; -1),
+    parent: null,
+  }
+}
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
@@ -250,7 +250,7 @@ export <span class="fstat-no" title="function not covered" >function useParent&l
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-01-17T17:57:28.201Z
+                at 2026-01-20T08:35:19.656Z
             </div>
         <script src="../prettify.js"></script>
         <script>

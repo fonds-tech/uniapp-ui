@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">14.81% </span>
+                <span class="strong">51.85% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>4/27</span>
+                <span class='fraction'>14/27</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">66.66% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/0</span>
+                <span class='fraction'>2/3</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">40% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/1</span>
+                <span class='fraction'>2/5</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">14.81% </span>
+                <span class="strong">51.85% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>4/27</span>
+                <span class='fraction'>14/27</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line low'></div>
+    <div class='status-line medium'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -133,6 +133,21 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">41x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">41x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -145,36 +160,21 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">41x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">41x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">41x</span>
+<span class="cline-any cline-yes">41x</span>
+<span class="cline-any cline-yes">41x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">41x</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">41x</span>
+<span class="cline-any cline-yes">41x</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { watch, onMounted, onDeactivated, onBeforeUnmount } from "vue"
 &nbsp;
 let totalLockCount = 0
@@ -185,11 +185,11 @@ const BODY_LOCK_CLASS = "ui-overflow-hidden"
  * 用于锁定和解锁页面滚动的钩子函数
  * @param shouldLock 一个返回布尔值的函数，用于决定是否应该锁定滚动
  */
-export <span class="fstat-no" title="function not covered" >function useLockScroll(shouldLock: () =&gt; boolean) {</span>
+export function useLockScroll(shouldLock: () =&gt; boolean) {
   /**
    * 锁定页面滚动
    */
-<span class="cstat-no" title="statement not covered" >  const lock = () =&gt; {</span>
+  const lock = <span class="fstat-no" title="function not covered" >() =&gt; {</span>
     // #ifdef WEB
 <span class="cstat-no" title="statement not covered" >    if (!totalLockCount) {</span>
 <span class="cstat-no" title="statement not covered" >      document.body.classList.add(BODY_LOCK_CLASS)</span>
@@ -201,7 +201,7 @@ export <span class="fstat-no" title="function not covered" >function useLockScro
   /**
    * 解锁页面滚动
    */
-<span class="cstat-no" title="statement not covered" >  const unlock = () =&gt; {</span>
+  const unlock = <span class="fstat-no" title="function not covered" >() =&gt; {</span>
     // #ifdef WEB
 <span class="cstat-no" title="statement not covered" >    if (totalLockCount) {</span>
 <span class="cstat-no" title="statement not covered" >      totalLockCount--</span>
@@ -216,21 +216,21 @@ export <span class="fstat-no" title="function not covered" >function useLockScro
   /**
    * 初始化函数，根据shouldLock的结果决定是否锁定滚动
    */
-<span class="cstat-no" title="statement not covered" >  const init = () =&gt; shouldLock() &amp;&amp; lock()</span>
+  const init = () =&gt; shouldLock(<span class="branch-0 cbranch-no" title="branch not covered" >) &amp;&amp; lock()</span>
 &nbsp;
   /**
    * 销毁函数，根据shouldLock的结果决定是否解锁滚动
    */
-<span class="cstat-no" title="statement not covered" >  const destroy = () =&gt; shouldLock() &amp;&amp; unlock()</span>
+  const destroy = <span class="fstat-no" title="function not covered" >() =&gt; shouldLock() &amp;&amp; unlock()</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  onMounted(init)</span>
-<span class="cstat-no" title="statement not covered" >  onDeactivated(destroy)</span>
-<span class="cstat-no" title="statement not covered" >  onBeforeUnmount(destroy)</span>
+  onMounted(init)
+  onDeactivated(destroy)
+  onBeforeUnmount(destroy)
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  watch(shouldLock, (value) =&gt; {</span>
+  watch(shouldLock, (value) =&gt; {
 <span class="cstat-no" title="statement not covered" >    value ? lock() : unlock()</span>
-<span class="cstat-no" title="statement not covered" >  })</span>
-<span class="cstat-no" title="statement not covered" >}</span>
+  })
+}
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
@@ -238,7 +238,7 @@ export <span class="fstat-no" title="function not covered" >function useLockScro
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-01-17T17:57:28.201Z
+                at 2026-01-20T08:35:19.656Z
             </div>
         <script src="../prettify.js"></script>
         <script>

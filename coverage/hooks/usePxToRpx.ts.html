@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">8% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>2/25</span>
+                <span class='fraction'>25/25</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/0</span>
+                <span class='fraction'>17/17</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/1</span>
+                <span class='fraction'>2/2</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">8% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>2/25</span>
+                <span class='fraction'>25/25</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line low'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -131,38 +131,38 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">176x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">174x</span>
+<span class="cline-any cline-yes">176x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">173x</span>
+<span class="cline-any cline-yes">173x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">176x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">176x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">176x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { isNumber } from "../utils/check"
 &nbsp;
 /**
@@ -180,39 +180,39 @@
  * usePxToRpx("100px")  // 返回 100（px）
  * usePxToRpx(50)       // 在 375px 宽度屏幕上返回 100（rpx）
  */
-export <span class="fstat-no" title="function not covered" >function usePxToRpx(value: string | number): number {</span>
-<span class="cstat-no" title="statement not covered" >  if (value === null || value === undefined) return 0</span>
+export function usePxToRpx(value: string | number): number {
+  if (value === null || value === undefined) return 0
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  const raw = String(value).trim()</span>
-<span class="cstat-no" title="statement not covered" >  if (!raw) return 0</span>
+  const raw = String(value).trim()
+  if (!raw) return 0
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  const normalized = raw.replace(/\s+/g, "")</span>
-<span class="cstat-no" title="statement not covered" >  const warnInvalid = () =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    console.warn(`[usePxToRpx] ${value} 不是有效值`)</span>
-<span class="cstat-no" title="statement not covered" >  }</span>
+  const normalized = raw.replace(/\s+/g, "")
+  const warnInvalid = () =&gt; {
+    console.warn(`[usePxToRpx] ${value} 不是有效值`)
+  }
 &nbsp;
   // 处理 rpx 单位：使用 uni.upx2px 转换为 px
-<span class="cstat-no" title="statement not covered" >  if (normalized.includes("rpx")) {</span>
-<span class="cstat-no" title="statement not covered" >    const val = normalized.split("rpx")[0]</span>
-<span class="cstat-no" title="statement not covered" >    if (isNumber(val)) return uni.upx2px(Number(val))</span>
-<span class="cstat-no" title="statement not covered" >    warnInvalid()</span>
-<span class="cstat-no" title="statement not covered" >    return 0</span>
-<span class="cstat-no" title="statement not covered" >  }</span>
+  if (normalized.includes("rpx")) {
+    const val = normalized.split("rpx")[0]
+    if (isNumber(val)) return uni.upx2px(Number(val))
+    warnInvalid()
+    return 0
+  }
 &nbsp;
   // 处理 px 单位：直接提取数值
-<span class="cstat-no" title="statement not covered" >  if (normalized.includes("px")) {</span>
-<span class="cstat-no" title="statement not covered" >    const val = normalized.split("px")[0]</span>
-<span class="cstat-no" title="statement not covered" >    if (isNumber(val)) return Number(val)</span>
-<span class="cstat-no" title="statement not covered" >    warnInvalid()</span>
-<span class="cstat-no" title="statement not covered" >    return 0</span>
-<span class="cstat-no" title="statement not covered" >  }</span>
+  if (normalized.includes("px")) {
+    const val = normalized.split("px")[0]
+    if (isNumber(val)) return Number(val)
+    warnInvalid()
+    return 0
+  }
 &nbsp;
   // 处理纯数字：视为 rpx，转换为 px
-<span class="cstat-no" title="statement not covered" >  if (isNumber(normalized)) return uni.upx2px(Number(normalized))</span>
+  if (isNumber(normalized)) return uni.upx2px(Number(normalized))
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  warnInvalid()</span>
-<span class="cstat-no" title="statement not covered" >  return 0</span>
-<span class="cstat-no" title="statement not covered" >}</span>
+  warnInvalid()
+  return 0
+}
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
@@ -220,7 +220,7 @@ export <span class="fstat-no" title="function not covered" >function usePxToRpx(
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-01-17T17:57:28.201Z
+                at 2026-01-20T08:35:19.656Z
             </div>
         <script src="../prettify.js"></script>
         <script>
