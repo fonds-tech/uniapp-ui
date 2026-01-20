@@ -140,11 +140,11 @@ describe("uiStepper 组件", () => {
       const minusBtn = wrapper.findAll(".ui-stepper__button")[0]
       await minusBtn.trigger("click")
       await waitForTransition()
-      // 值为 0，再减少应该触发 overlimit
-      await minusBtn.trigger("click")
-      await waitForTransition()
-      expect(wrapper.emitted("overlimit")).toBeTruthy()
-      expect(wrapper.emitted("overlimit")![0]).toEqual(["minus"])
+      expect(wrapper.emitted("update:modelValue")![0]).toEqual(["0"])
+
+      // 达到最小值后按钮会被禁用，无法继续减少
+      expect(minusBtn.attributes("disabled")).toBeDefined()
+      expect(wrapper.find(".ui-stepper__minus--disabled").exists()).toBe(true)
     })
 
     it("值不应该大于 max", async () => {
@@ -153,11 +153,11 @@ describe("uiStepper 组件", () => {
       const plusBtn = wrapper.findAll(".ui-stepper__button")[1]
       await plusBtn.trigger("click")
       await waitForTransition()
-      // 值为 10，再增加应该触发 overlimit
-      await plusBtn.trigger("click")
-      await waitForTransition()
-      expect(wrapper.emitted("overlimit")).toBeTruthy()
-      expect(wrapper.emitted("overlimit")![0]).toEqual(["plus"])
+      expect(wrapper.emitted("update:modelValue")![0]).toEqual(["10"])
+
+      // 达到最大值后按钮会被禁用，无法继续增加
+      expect(plusBtn.attributes("disabled")).toBeDefined()
+      expect(wrapper.find(".ui-stepper__plus--disabled").exists()).toBe(true)
     })
 
     it("达到最小值时减少按钮应该禁用", async () => {

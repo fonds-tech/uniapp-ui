@@ -74,6 +74,14 @@ console.warn = (...args: any[]) => {
   if (args[0] && typeof args[0] === "string" && args[0].includes("Do not use built-in or reserved HTML elements as component id")) {
     return
   }
+  // 测试环境下（jsdom）部分组合式 API 警告会大量刷屏，但不会影响断言结果
+  // 这里仅做降噪处理，避免覆盖率输出难以阅读
+  if (args[0] && typeof args[0] === "string" && args[0].includes("provide() can only be used inside setup()")) {
+    return
+  }
+  if (args[0] && typeof args[0] === "string" && args[0].includes("inject() can only be used inside setup()")) {
+    return
+  }
   originalWarn.apply(console, args)
 }
 
@@ -84,6 +92,14 @@ config.global.config = {
     ...config.global.config?.compilerOptions,
     isCustomElement: (tag) => ["view", "text", "image", "input", "textarea", "video", "button", "form", "label", "switch", "audio", "canvas", "map", "progress"].includes(tag),
   },
+}
+
+// ============================================
+// 全局 stub（避免“Failed to resolve component”类警告）
+// ============================================
+config.global.stubs = {
+  ...(config.global.stubs as any),
+  "ui-resize": true,
 }
 
 // ============================================

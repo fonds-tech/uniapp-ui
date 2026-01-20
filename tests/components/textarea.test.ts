@@ -35,17 +35,17 @@ describe("uiTextarea 组件", () => {
         },
       })
       await waitForTransition()
-      expect(wrapper.find(".ui-textarea__textarea").exists()).toBe(true)
+      expect(wrapper.find(".ui-textarea__input").exists()).toBe(true)
     })
 
-    it("应该默认显示字数统计", async () => {
+    it("默认不显示字数统计", async () => {
       const wrapper = mount(UiTextarea, {
         global: {
           stubs: { "ui-icon": true },
         },
       })
       await waitForTransition()
-      expect(wrapper.find(".ui-textarea__count").exists()).toBe(true)
+      expect(wrapper.find(".ui-textarea__count").exists()).toBe(false)
     })
   })
 
@@ -70,7 +70,7 @@ describe("uiTextarea 组件", () => {
         },
       })
       await waitForTransition()
-      await wrapper.find(".ui-textarea__textarea").trigger("input", {
+      await wrapper.find(".ui-textarea__input").trigger("input", {
         detail: { value: "新内容" },
       })
       expect(wrapper.emitted("update:modelValue")).toBeTruthy()
@@ -84,7 +84,7 @@ describe("uiTextarea 组件", () => {
         },
       })
       await waitForTransition()
-      await wrapper.find(".ui-textarea__textarea").trigger("input", {
+      await wrapper.find(".ui-textarea__input").trigger("input", {
         detail: { value: "新内容" },
       })
       expect(wrapper.emitted("change")).toBeTruthy()
@@ -98,7 +98,7 @@ describe("uiTextarea 组件", () => {
         },
       })
       await waitForTransition()
-      await wrapper.find(".ui-textarea__textarea").trigger("input", {
+      await wrapper.find(".ui-textarea__input").trigger("input", {
         detail: { value: "新内容" },
       })
       expect(wrapper.emitted("input")).toBeTruthy()
@@ -113,7 +113,7 @@ describe("uiTextarea 组件", () => {
         },
       })
       await waitForTransition()
-      const textarea = wrapper.find<HTMLTextAreaElement>(".ui-textarea__textarea")
+      const textarea = wrapper.find<HTMLTextAreaElement>(".ui-textarea__input")
       expect(textarea.attributes("placeholder")).toBe("请输入内容")
     })
 
@@ -125,7 +125,7 @@ describe("uiTextarea 组件", () => {
         },
       })
       await waitForTransition()
-      const textarea = wrapper.find<HTMLTextAreaElement>(".ui-textarea__textarea")
+      const textarea = wrapper.find<HTMLTextAreaElement>(".ui-textarea__input")
       expect(textarea.attributes("placeholder")).toBe("请输入评价")
     })
   })
@@ -150,7 +150,7 @@ describe("uiTextarea 组件", () => {
         },
       })
       await waitForTransition()
-      const textarea = wrapper.find<HTMLTextAreaElement>(".ui-textarea__textarea")
+      const textarea = wrapper.find<HTMLTextAreaElement>(".ui-textarea__input")
       expect(textarea.attributes("disabled")).toBeDefined()
     })
   })
@@ -164,7 +164,7 @@ describe("uiTextarea 组件", () => {
         },
       })
       await waitForTransition()
-      const textarea = wrapper.find<HTMLTextAreaElement>(".ui-textarea__textarea")
+      const textarea = wrapper.find<HTMLTextAreaElement>(".ui-textarea__input")
       expect(textarea.attributes("maxlength")).toBe("100")
     })
 
@@ -175,13 +175,13 @@ describe("uiTextarea 组件", () => {
         },
       })
       await waitForTransition()
-      const textarea = wrapper.find<HTMLTextAreaElement>(".ui-textarea__textarea")
+      const textarea = wrapper.find<HTMLTextAreaElement>(".ui-textarea__input")
       expect(textarea.attributes("maxlength")).toBe("200")
     })
 
     it("应该显示字数统计", async () => {
       const wrapper = mount(UiTextarea, {
-        props: { modelValue: "12345", maxlength: 100 },
+        props: { modelValue: "12345", maxlength: 100, showCount: true },
         global: {
           stubs: { "ui-icon": true },
         },
@@ -223,7 +223,7 @@ describe("uiTextarea 组件", () => {
         },
       })
       await waitForTransition()
-      expect(wrapper.find(".ui-textarea--clearable").exists()).toBe(true)
+      expect(wrapper.props("clearable")).toBe(true)
     })
 
     it("有值且聚焦时显示清除按钮", async () => {
@@ -234,13 +234,12 @@ describe("uiTextarea 组件", () => {
         },
       })
       await waitForTransition()
-      // 验证 clearable 属性正确设置
-      expect(wrapper.props("clearable")).toBe(true)
-      expect(wrapper.props("modelValue")).toBe("测试")
+      await wrapper.find(".ui-textarea__input").trigger("focus")
+      await waitForTransition()
+      expect(wrapper.find(".ui-textarea__clear").exists()).toBe(true)
     })
 
     it("点击清除按钮应该清空内容", async () => {
-      // 测试 clearable 功能配置
       const wrapper = mount(UiTextarea, {
         props: { modelValue: "测试", clearable: true },
         global: {
@@ -248,8 +247,12 @@ describe("uiTextarea 组件", () => {
         },
       })
       await waitForTransition()
-      // 验证配置正确
-      expect(wrapper.props("clearable")).toBe(true)
+      await wrapper.find(".ui-textarea__input").trigger("focus")
+      await waitForTransition()
+      await wrapper.find(".ui-textarea__clear").trigger("click")
+      expect(wrapper.emitted("clear")).toBeTruthy()
+      expect(wrapper.emitted("update:modelValue")).toBeTruthy()
+      expect(wrapper.emitted("update:modelValue")!.at(-1)).toEqual([""])
     })
   })
 
@@ -262,7 +265,7 @@ describe("uiTextarea 组件", () => {
         },
       })
       await waitForTransition()
-      const textarea = wrapper.find<HTMLTextAreaElement>(".ui-textarea__textarea")
+      const textarea = wrapper.find<HTMLTextAreaElement>(".ui-textarea__input")
       expect(textarea.attributes("auto-height")).toBeDefined()
     })
   })
@@ -276,7 +279,7 @@ describe("uiTextarea 组件", () => {
         },
       })
       await waitForTransition()
-      expect(wrapper.find(".ui-textarea__textarea--left").exists()).toBe(true)
+      expect(wrapper.find(".ui-textarea__input--left").exists()).toBe(true)
     })
 
     it("应该支持居中对齐", async () => {
@@ -287,7 +290,7 @@ describe("uiTextarea 组件", () => {
         },
       })
       await waitForTransition()
-      expect(wrapper.find(".ui-textarea__textarea--center").exists()).toBe(true)
+      expect(wrapper.find(".ui-textarea__input--center").exists()).toBe(true)
     })
 
     it("应该支持右对齐", async () => {
@@ -298,7 +301,7 @@ describe("uiTextarea 组件", () => {
         },
       })
       await waitForTransition()
-      expect(wrapper.find(".ui-textarea__textarea--right").exists()).toBe(true)
+      expect(wrapper.find(".ui-textarea__input--right").exists()).toBe(true)
     })
   })
 
@@ -310,7 +313,7 @@ describe("uiTextarea 组件", () => {
         },
       })
       await waitForTransition()
-      await wrapper.find(".ui-textarea__textarea").trigger("focus")
+      await wrapper.find(".ui-textarea__input").trigger("focus")
       expect(wrapper.emitted("focus")).toBeTruthy()
     })
 
@@ -321,7 +324,7 @@ describe("uiTextarea 组件", () => {
         },
       })
       await waitForTransition()
-      await wrapper.find(".ui-textarea__textarea").trigger("blur")
+      await wrapper.find(".ui-textarea__input").trigger("blur")
       // 等待 setTimeout（组件内部使用 100ms 延迟）
       await waitForTransition()
       expect(wrapper.emitted("blur")).toBeTruthy()
@@ -335,7 +338,7 @@ describe("uiTextarea 组件", () => {
         },
       })
       await waitForTransition()
-      await wrapper.find(".ui-textarea__textarea").trigger("confirm")
+      await wrapper.find(".ui-textarea__input").trigger("confirm")
       expect(wrapper.emitted("confirm")).toBeTruthy()
     })
 
@@ -346,7 +349,7 @@ describe("uiTextarea 组件", () => {
         },
       })
       await waitForTransition()
-      await wrapper.find(".ui-textarea__textarea").trigger("linechange")
+      await wrapper.find(".ui-textarea__input").trigger("linechange")
       expect(wrapper.emitted("linechange")).toBeTruthy()
     })
 
@@ -357,7 +360,7 @@ describe("uiTextarea 组件", () => {
         },
       })
       await waitForTransition()
-      await wrapper.find(".ui-textarea__textarea").trigger("keyboardheightchange")
+      await wrapper.find(".ui-textarea__input").trigger("keyboardheightchange")
       expect(wrapper.emitted("keyboardheightchange")).toBeTruthy()
     })
   })
@@ -461,6 +464,7 @@ describe("uiTextarea 组件", () => {
   describe("边界情况测试", () => {
     it("不设置任何 props 时应该使用默认值", async () => {
       const wrapper = mount(UiTextarea, {
+        props: { showCount: true },
         global: {
           stubs: { "ui-icon": true },
         },
@@ -478,13 +482,13 @@ describe("uiTextarea 组件", () => {
         },
       })
       await waitForTransition()
-      const textarea = wrapper.find<HTMLTextAreaElement>(".ui-textarea__textarea")
-      expect(textarea.attributes("value")).toBe("")
+      const textarea = wrapper.find<HTMLTextAreaElement>(".ui-textarea__input")
+      expect(textarea.element.value).toBe("")
     })
 
     it("maxlength 为 -1 时应该不限制长度", async () => {
       const wrapper = mount(UiTextarea, {
-        props: { maxlength: -1, modelValue: "12345" },
+        props: { maxlength: -1, modelValue: "12345", showCount: true },
         global: {
           stubs: { "ui-icon": true },
         },

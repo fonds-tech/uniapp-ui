@@ -11,11 +11,11 @@ export const [rateProps, useRateProps] = createProps("rate", {
   /**
    * 图标选中时的名称
    */
-  icon: makeStringProp("star"),
+  icon: makeStringProp("star-fill"),
   /**
    * 图标未选中时的名称
    */
-  voidIcon: makeStringProp("star-o"),
+  voidIcon: makeStringProp("star"),
   /**
    * 最多可选数量
    */
@@ -23,7 +23,7 @@ export const [rateProps, useRateProps] = createProps("rate", {
   /**
    * 图标大小
    */
-  size: makeNumericProp(""),
+  size: makeNumericProp("40rpx"),
   /**
    * 图标选中时的颜色
    */

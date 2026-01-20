@@ -30,7 +30,7 @@ describe("ui-cell 单元格组件", () => {
       const wrapper = mount(UiCell, {
         props: { title: "标题" },
         slots: {
-          value: "<span class='test-value'>内容</span>",
+          default: "<span class='test-value'>内容</span>",
         },
       })
 
@@ -319,10 +319,10 @@ describe("ui-cell 单元格组件", () => {
       expect(wrapper.find(".custom-label").exists()).toBe(true)
     })
 
-    it("应支持 value 插槽", () => {
+    it("应支持内容插槽（默认插槽）", () => {
       const wrapper = mount(UiCell, {
         slots: {
-          value: "<span class='custom-value'>自定义内容</span>",
+          default: "<span class='custom-value'>自定义内容</span>",
         },
       })
 
@@ -376,7 +376,7 @@ describe("ui-cell 单元格组件", () => {
     it("同时显示标题、描述和内容", () => {
       const wrapper = mount(UiCell, {
         slots: {
-          value: "<span class='test-value'>内容</span>",
+          default: "<span class='test-value'>内容</span>",
         },
         props: { title: "标题", label: "描述" },
       })

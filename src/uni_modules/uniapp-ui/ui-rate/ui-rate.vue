@@ -1,5 +1,12 @@
 <template>
-  <view class="ui-rate" :class="[classs, customClass]" :style="[style]" @click="onClick" @touchstart.stop="onTouchstart" @touchmove.stop="onTouchmove">
+  <view
+    class="ui-rate"
+    :class="[classes, customClass]"
+    :style="[style]"
+    @click="onClick"
+    @touchstart="onTouchstart"
+    @touchmove="onTouchmove"
+  >
     <view v-for="(item, index) in list" :key="index" class="ui-rate__item" :style="[itemStyle(index)]">
       <view class="ui-rate__item__icon">
         <ui-icon :name="icon(item)" :size="size" :weight="iconWeight" :color="iconColor(item)" />
@@ -38,7 +45,7 @@ const style = computed(() => {
   return useStyle({ ...style, ...useStyle(useProps.customStyle) })
 })
 
-const classs = computed(() => {
+const classes = computed(() => {
   const list: string[] = []
   if (useProps.disabled) list.push("ui-rate--disabled")
   if (useProps.readonly) list.push("ui-rate--readonly")
@@ -146,10 +153,9 @@ function onTouchstart() {
 }
 
 function onTouchmove(event: any) {
-  if (useProps.touchable) {
-    const value = getScoreByPosition(event.touches[0].clientX)
-    updateValue(value)
-  }
+  if (!useProps.touchable) return
+  const value = getScoreByPosition(event.touches[0].clientX)
+  updateValue(value)
 }
 
 async function updateValue(value: number) {
