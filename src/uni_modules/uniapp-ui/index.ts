@@ -57,5 +57,7 @@ export * from "./hooks"
 export type * from "./types"
 export { provideDialog } from "./ui-dialog"
 export type { DialogExpose, DialogInstance, DialogOptions } from "./ui-dialog"
+export { provideNotify } from "./ui-notify"
+export type { NotifyInstance, NotifyOptions, NotifyType } from "./ui-notify"
 export { setGlobalProps } from "./utils/component"
 export default ui

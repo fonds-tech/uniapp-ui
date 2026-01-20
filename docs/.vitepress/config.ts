@@ -106,7 +106,6 @@ export default defineConfig({
             { text: "ActionSheet 动作面板", link: "/components/action-sheet" },
             { text: "Notify 消息通知", link: "/components/notify" },
             { text: "Overlay 遮罩层", link: "/components/overlay" },
-            { text: "Popover 气泡弹框", link: "/components/popover" },
             { text: "PullRefresh 下拉刷新", link: "/components/pull-refresh" },
             { text: "DropdownMenu 下拉菜单", link: "/components/dropdown-menu" },
 

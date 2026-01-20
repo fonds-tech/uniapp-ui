@@ -1,5 +1,5 @@
 import type Notify from "./ui-notify.vue"
-import type { PropType, ExtractPropTypes } from "vue"
+import type { Ref, PropType, ExtractPropTypes } from "vue"
 import { createProps } from "../hooks"
 import { styleProp, makeStringProp, makeNumericProp } from "../utils/props"
 
@@ -9,7 +9,7 @@ export const [notifyProps, useNotifyProps] = createProps("notify", {
    */
   show: Boolean,
   /**
-   * 自定义类名
+   * 通知类型
    */
   type: {
     type: String as PropType<NotifyType>,
@@ -84,3 +84,54 @@ export interface NotifyOptions {
 export type NotifyType = "primary" | "success" | "warning" | "danger"
 export type NotifyProps = ExtractPropTypes<typeof notifyProps>
 export type NotifyInstance = InstanceType<typeof Notify>
+
+/**
+ * 全局 Notify 实例存储
+ */
+let globalNotifyInstance: Ref<NotifyInstance | null> | null = null
+
+/**
+ * 待执行的 notify 调用队列
+ */
+const pendingQueue: Array<{ action: "show" | "close"; options?: NotifyOptions }> = []
+
+/**
+ * 注册全局 Notify 实例
+ * @param instance Notify 组件实例的 ref
+ */
+export function provideNotify(instance: Ref<NotifyInstance | null>) {
+  globalNotifyInstance = instance
+  flushPendingQueue()
+}
+
+/**
+ * 获取全局 Notify 实例
+ */
+export function getGlobalNotifyInstance(): Ref<NotifyInstance | null> | null {
+  return globalNotifyInstance
+}
+
+/**
+ * 将调用加入待执行队列
+ */
+export function enqueuePendingNotify(action: "show" | "close", options?: NotifyOptions) {
+  pendingQueue.push({ action, options })
+}
+
+/**
+ * 执行队列中的待处理调用
+ */
+function flushPendingQueue() {
+  if (!globalNotifyInstance?.value) return
+
+  while (pendingQueue.length > 0) {
+    const item = pendingQueue.shift()
+    if (!item) continue
+
+    if (item.action === "show" && item.options !== undefined) {
+      globalNotifyInstance.value.show(item.options)
+    } else if (item.action === "close") {
+      globalNotifyInstance.value.close()
+    }
+  }
+}

@@ -1,21 +1,16 @@
 <template>
-  <ui-transition
-    :custom-class="classs"
-    :custom-style="style"
-    :show="visible"
-    :z-index="useOptions.zIndex"
-    name="slide-down"
-    @before-enter="onOpen"
-    @after-enter="onOpened"
-    @before-leave="onClose"
-    @after-leave="onClosed"
+  <view
+    v-if="inited"
+    class="ui-notify"
+    :class="[typeClass, useOptions.customClass, { 'ui-notify--visible': visible }]"
+    :style="[panelStyle]"
     @click="onClick"
     @touchmove.prevent.stop="noop"
   >
     <slot>
       <text class="ui-notify__content" :style="[contentStyle]">{{ useOptions.content }}</text>
     </slot>
-  </ui-transition>
+  </view>
 </template>
 
 <script setup lang="ts">
@@ -30,11 +25,19 @@ defineOptions({ name: "ui-notify" })
 const props = defineProps(notifyProps)
 const emits = defineEmits(notifyEmits)
 const useProps = useNotifyProps(props)
+
+// 状态
+const inited = ref(false)
 const visible = ref(false)
 const useOptions = ref<NotifyOptions>({})
 const propOptions = ref<NotifyOptions>({})
-// 定时器引用，用于组件卸载时清理
 const closeTimer = ref<ReturnType<typeof setTimeout> | null>(null)
+const animationTimer = ref<ReturnType<typeof setTimeout> | null>(null)
+
+// 动画时长（毫秒）
+const ANIMATION_DURATION = 300
+
+// 默认配置
 const baseOptions = ref<NotifyOptions>({
   type: "primary",
   content: "",
@@ -49,29 +52,28 @@ const baseOptions = ref<NotifyOptions>({
   customStyle: "",
 })
 
-const classs = computed(() => {
-  const list = ["ui-notify"]
-  list.push(useOptions.value.customClass)
-  list.push(`ui-notify--${useOptions.value.type}`)
-  return list.join(" ")
+// 类型类名
+const typeClass = computed(() => `ui-notify--${useOptions.value.type || "primary"}`)
+
+// 面板样式
+const panelStyle = computed(() => {
+  const styles: Record<string, any> = {}
+  styles.zIndex = useOptions.value.zIndex
+  styles.top = useUnit(useOptions.value.offsetTop)
+  styles.background = useColor(useOptions.value.background)
+  return useStyle({ ...styles, ...useStyle(useOptions.value.customStyle) })
 })
 
-const style = computed(() => {
-  const style: any = {}
-  style.position = "fixed"
-  style.top = useUnit(useOptions.value.offsetTop)
-  style.background = useColor(useOptions.value.background)
-  return useStyle({ ...style, ...useStyle(useOptions.value.customStyle) })
-})
-
+// 内容样式
 const contentStyle = computed(() => {
-  const style: any = {}
-  style.color = useColor(useOptions.value.color)
-  style.fontSize = useUnit(useOptions.value.fontSize)
-  style.fontWeight = useOptions.value.fontWeight
-  return useStyle(style)
+  const styles: Record<string, any> = {}
+  styles.color = useColor(useOptions.value.color)
+  styles.fontSize = useUnit(useOptions.value.fontSize)
+  styles.fontWeight = useOptions.value.fontWeight
+  return useStyle(styles)
 })
 
+// 监听 props 变化
 watch(
   () => props,
   (options) => {
@@ -80,6 +82,7 @@ watch(
   { deep: true, immediate: true },
 )
 
+// 监听 show 属性
 watch(
   () => useProps.show,
   (val) => {
@@ -89,11 +92,12 @@ watch(
   { immediate: true },
 )
 
+// 监听 visible 变化
 watch(visible, (val) => {
   emits("update:show", val)
 })
 
-// 清理定时器的辅助函数
+// 清理定时器
 function clearCloseTimer() {
   if (closeTimer.value) {
     clearTimeout(closeTimer.value)
@@ -101,51 +105,79 @@ function clearCloseTimer() {
   }
 }
 
-function show(options: NotifyOptions = {}) {
-  if (visible.value) return
-  // 先清理之前的定时器
-  clearCloseTimer()
-
-  useOptions.value = merge(merge(baseOptions.value, propOptions.value), options)
-  visible.value = true
-
-  // 保存定时器引用以便后续清理
-  closeTimer.value = setTimeout(() => close(), +useOptions.value.duration || 3000)
+function clearAnimationTimer() {
+  if (animationTimer.value) {
+    clearTimeout(animationTimer.value)
+    animationTimer.value = null
+  }
 }
 
-function close() {
-  // 关闭时清理定时器
+// 显示通知
+function show(options: NotifyOptions = {}) {
   clearCloseTimer()
+  clearAnimationTimer()
+
+  useOptions.value = merge(merge(baseOptions.value, propOptions.value), options)
+
+  // 已显示时仅更新内容和重置定时器
+  if (visible.value) {
+    const duration = +useOptions.value.duration || 3000
+    closeTimer.value = setTimeout(() => close(), duration)
+    return
+  }
+
+  // 初始化
+  inited.value = true
+
+  // 触发 open 事件
+  emits("open")
+
+  // 下一帧开始进入动画
+  setTimeout(() => {
+    visible.value = true
+
+    // 动画结束后触发 opened
+    animationTimer.value = setTimeout(() => {
+      emits("opened")
+    }, ANIMATION_DURATION)
+  }, 20)
+
+  // 设置自动关闭定时器
+  const duration = +useOptions.value.duration || 3000
+  closeTimer.value = setTimeout(() => close(), duration)
+}
+
+// 关闭通知
+function close() {
+  if (!visible.value) return
+
+  clearCloseTimer()
+  clearAnimationTimer()
+
+  // 触发 close 事件
+  emits("close")
+
+  // 开始离开动画
   visible.value = false
+
+  // 动画结束后触发 closed
+  animationTimer.value = setTimeout(() => {
+    emits("closed")
+  }, ANIMATION_DURATION)
 }
 
 function onClick() {
   emits("click")
 }
 
-function onOpen() {
-  emits("open")
-}
-
-function onOpened() {
-  emits("opened")
-}
-
-function onClose() {
-  emits("close")
-}
-
-function onClosed() {
-  emits("closed")
-}
-
 function noop() {
   return false
 }
 
-// 组件卸载时清理定时器，防止内存泄漏
+// 组件卸载时清理
 onBeforeUnmount(() => {
   clearCloseTimer()
+  clearAnimationTimer()
 })
 
 defineExpose({ name: "ui-notify", show, close })
@@ -158,20 +190,40 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .ui-notify {
   top: 0;
   left: 0;
   right: 0;
-  padding: var(--ui-spacing-lg);
+  padding: var(--ui-spacing-md);
+  position: fixed;
+  transform: translateY(-100%);
+  transition: transform 0.3s ease-out;
+
+  &--visible {
+    transform: translateY(0);
+  }
 
   &--primary {
     background-color: var(--ui-color-primary);
   }
 
+  &--success {
+    background-color: var(--ui-color-success);
+  }
+
+  &--warning {
+    background-color: var(--ui-color-warning);
+  }
+
+  &--danger {
+    background-color: var(--ui-color-danger);
+  }
+
   &__content {
     color: var(--ui-color-background);
     display: flex;
+    font-size: var(--ui-font-size-sm);
     align-items: center;
     justify-content: center;
   }

@@ -96,7 +96,6 @@ const componentCategories = [
       { name: "Skeleton", path: "skeleton", icon: "💀", desc: "骨架屏组件" },
       { name: "SwipeCell", path: "swipe-cell", icon: "👆", desc: "滑动单元格组件" },
       { name: "PullRefresh", path: "pull-refresh", icon: "🔄", desc: "下拉刷新组件" },
-      { name: "Popover", path: "popover", icon: "💬", desc: "气泡弹框组件" },
     ],
   },
   {

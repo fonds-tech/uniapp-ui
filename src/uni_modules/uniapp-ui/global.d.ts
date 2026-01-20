@@ -47,7 +47,6 @@ declare module "vue" {
     UiPicker: (typeof import("./ui-picker/ui-picker.vue"))["default"]
     UiPickerPanel: (typeof import("./ui-picker-panel/ui-picker-panel.vue"))["default"]
     UiPopup: (typeof import("./ui-popup/ui-popup.vue"))["default"]
-    UiPopover: (typeof import("./ui-popover/ui-popover.vue"))["default"]
     UiPoster: (typeof import("./ui-poster/ui-poster.vue"))["default"]
     UiProgress: (typeof import("./ui-progress/ui-progress.vue"))["default"]
     UiPullRefresh: (typeof import("./ui-pull-refresh/ui-pull-refresh.vue"))["default"]

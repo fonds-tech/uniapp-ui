@@ -193,7 +193,6 @@ const componentCategories = [
       { name: "Skeleton", path: "skeleton", icon: "i-lucide-layout-template", desc: "骨架屏" },
       { name: "SwipeCell", path: "swipe-cell", icon: "i-lucide-hand", desc: "滑动单元格" },
       { name: "PullRefresh", path: "pull-refresh", icon: "i-lucide-refresh-cw", desc: "下拉刷新" },
-      { name: "Popover", path: "popover", icon: "i-lucide-message-square", desc: "气泡弹框" },
     ],
   },
   {

@@ -4,7 +4,9 @@
  */
 
 import UiCell from "@/uni_modules/uniapp-ui/ui-cell/ui-cell.vue"
+import UiCellGroup from "@/uni_modules/uniapp-ui/ui-cell-group/ui-cell-group.vue"
 import { mount } from "@vue/test-utils"
+import { nextTick } from "vue"
 import { it, expect, describe } from "vitest"
 
 describe("ui-cell 单元格组件", () => {
@@ -115,12 +117,12 @@ describe("ui-cell 单元格组件", () => {
   })
 
   describe("边框", () => {
-    it("默认应显示边框", () => {
+    it("单独使用时默认不显示边框", () => {
       const wrapper = mount(UiCell, {
         props: { title: "标题" },
       })
 
-      expect(wrapper.classes()).toContain("ui-cell--border")
+      expect(wrapper.classes()).not.toContain("ui-cell--border")
     })
 
     it("border 为 false 时不应显示边框", () => {
@@ -129,6 +131,24 @@ describe("ui-cell 单元格组件", () => {
       })
 
       expect(wrapper.classes()).not.toContain("ui-cell--border")
+    })
+
+    it("在 cell-group 中且非最后一项应显示边框", async () => {
+      const wrapper = mount(UiCellGroup, {
+        slots: {
+          default: "<ui-cell title='标题一' /><ui-cell title='标题二' />",
+        },
+        global: {
+          components: { UiCell },
+        },
+      })
+
+      await nextTick()
+
+      const cells = wrapper.findAllComponents(UiCell)
+
+      expect(cells[0].classes()).toContain("ui-cell--border")
+      expect(cells[1].classes()).not.toContain("ui-cell--border")
     })
 
     it("应支持自定义边框颜色", () => {
@@ -140,31 +160,13 @@ describe("ui-cell 单元格组件", () => {
     })
   })
 
-  describe("居中对齐", () => {
-    it("center 为 true 时应添加居中类名", () => {
-      const wrapper = mount(UiCell, {
-        props: { title: "标题", center: true },
-      })
-
-      expect(wrapper.classes()).toContain("ui-cell--center")
-    })
-
-    it("center 为 false 时不应添加居中类名", () => {
-      const wrapper = mount(UiCell, {
-        props: { title: "标题", center: false },
-      })
-
-      expect(wrapper.classes()).not.toContain("ui-cell--center")
-    })
-  })
-
   describe("可点击状态", () => {
-    it("默认 clickable 应为 true", () => {
+    it("默认不应添加可点击类名", () => {
       const wrapper = mount(UiCell, {
         props: { title: "标题" },
       })
 
-      expect(wrapper.classes()).toContain("ui-cell--clickable")
+      expect(wrapper.classes()).not.toContain("ui-cell--clickable")
     })
 
     it("clickable 为 false 时不应添加可点击类名", () => {
@@ -173,6 +175,14 @@ describe("ui-cell 单元格组件", () => {
       })
 
       expect(wrapper.classes()).not.toContain("ui-cell--clickable")
+    })
+
+    it("clickable 为 true 时应添加可点击类名", () => {
+      const wrapper = mount(UiCell, {
+        props: { title: "标题", clickable: true },
+      })
+
+      expect(wrapper.classes()).toContain("ui-cell--clickable")
     })
 
     it("isLink 为 true 时应有悬停效果类", () => {

@@ -41,7 +41,6 @@ import type { UploadProps } from "../ui-upload"
 import type { BackTopProps } from "../ui-back-top"
 import type { LoadingProps } from "../ui-loading"
 import type { OverlayProps } from "../ui-overlay"
-import type { PopoverProps } from "../ui-popover"
 import type { SidebarProps } from "../ui-sidebar"
 import type { StepperProps } from "../ui-stepper"
 import type { CalendarProps } from "../ui-calendar"
@@ -268,10 +267,6 @@ export interface Components {
    * picker-panel 组件默认值
    */
   "picker-panel"?: Partial<PickerPanelProps>
-  /**
-   * popover 组件默认值
-   */
-  popover?: Partial<PopoverProps>
   /**
    * popup 组件默认值
    */
