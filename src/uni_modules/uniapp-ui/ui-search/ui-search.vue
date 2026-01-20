@@ -1,9 +1,9 @@
 <template>
-  <view class="ui-search" :class="[customClass]" :style="[rootStyle]" role="search" @click="onClick">
+  <view class="ui-search" :class="[useProps.customClass]" :style="[rootStyle]" role="search" @click="onClick">
     <view class="ui-search__content" :class="[contentClass]" :style="[contentStyle]">
       <view class="ui-search__icon">
         <slot name="icon">
-          <ui-icon :name="icon" :size="iconSize" :color="iconColor" :weight="iconWeight" />
+          <ui-icon :name="useProps.icon" :size="useProps.iconSize" :color="useProps.iconColor" :weight="useProps.iconWeight" />
         </slot>
       </view>
       <input
@@ -13,12 +13,12 @@
         :style="[inputStyle]"
         type="text"
         confirm-type="search"
-        :focus="focus"
-        :disabled="disabled"
-        :maxlength="maxlength"
-        :placeholder="placeholder"
+        :focus="useProps.focus"
+        :disabled="useProps.disabled"
+        :maxlength="useProps.maxlength"
+        :placeholder="useProps.placeholder"
         :placeholder-style="placeholderStyle"
-        :aria-label="placeholder"
+        :aria-label="useProps.placeholder"
         @blur="onBlur"
         @focus="onFocus"
         @confirm="onConfirm"
@@ -29,17 +29,17 @@
         </slot>
       </view>
     </view>
-    <view v-if="action" class="ui-search__action" @click.stop="onClickAction">
+    <view v-if="useProps.action" class="ui-search__action" @click.stop="onClickAction">
       <slot name="action">
         <view
           class="ui-search__action__button"
           hover-class="ui-search__action__button--active"
           role="button"
           :hover-stay-time="50"
-          :aria-label="actionText"
+          :aria-label="useProps.actionText"
           :style="[actionButtonStyle]"
         >
-          {{ actionText }}
+          {{ useProps.actionText }}
         </view>
       </slot>
     </view>
