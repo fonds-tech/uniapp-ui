@@ -126,7 +126,18 @@ export interface FormProvide {
   maxLabelWidth: import("vue").ComputedRef<number>
   submit: () => void
   getValues: () => Record<string, unknown>
-  validate: (name?: string | string[]) => Promise<void>
+  validate: {
+    (): Promise<void>
+    (callback: FormValidateCallback): void
+  }
+  validateField: {
+    (prop: string): Promise<void>
+    (prop: string, callback: FormValidateCallback): void
+  }
+  validateFields: {
+    (props: string[]): Promise<void>
+    (props: string[], callback: FormValidateCallback): void
+  }
   resetValidation: (name?: string | string[]) => void
   getValidationStatus: () => Record<string, unknown>
 }
@@ -150,13 +161,24 @@ export interface FormValidateError {
   prop?: string
   message: string
 }
+export type FormValidateCallback = (valid: boolean, errors?: FormValidateError[]) => void
 export type FormValidateTrigger = "blur" | "change" | "submit"
 export type FormValidationStatus = "passed" | "failed" | "unvalidated"
 export type FormErrorMessageAlign = "left" | "center" | "right"
 
 export interface FormExpose {
-  validate: (name?: string | string[]) => Promise<void>
-  validateField: (name?: string) => Promise<void>
+  validate: {
+    (): Promise<void>
+    (callback: FormValidateCallback): void
+  }
+  validateField: {
+    (prop: string): Promise<void>
+    (prop: string, callback: FormValidateCallback): void
+  }
+  validateFields: {
+    (props: string[]): Promise<void>
+    (props: string[], callback: FormValidateCallback): void
+  }
   resetValidation: (name?: string | string[]) => void
   getValidationStatus: () => Record<string, unknown>
 }

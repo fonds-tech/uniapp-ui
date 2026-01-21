@@ -3,7 +3,7 @@
     <slot />
     <view v-if="isShowEmpty" class="ui-pagination__empty">
       <slot name="empty">
-        <ui-empty :icon="emptyIcon" :text="emptyText" />
+        <ui-empty :icon="useProps.emptyIcon" :text="useProps.emptyText" />
       </slot>
     </view>
     <view v-else class="ui-pagination__loading">

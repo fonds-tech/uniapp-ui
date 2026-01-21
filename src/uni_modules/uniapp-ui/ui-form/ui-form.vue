@@ -6,6 +6,7 @@
 
 <script setup lang="ts">
 import type { CSSProperties } from "vue"
+import type { FormValidateCallback } from "../ui-form"
 import type { FieldValidateError, FieldValidationStatus } from "../ui-field"
 import { clone } from "../utils/utils"
 import { ref, toRef, computed } from "vue"
@@ -43,7 +44,7 @@ const maxLabelWidth = computed(() => {
  */
 function submit() {
   const values = getValues()
-  validate()
+  doValidate()
     .then(() => {
       emits("submit", values)
     })
@@ -53,23 +54,58 @@ function submit() {
 }
 
 /**
- * 根据参数类型调用不同的验证函数
- * @param prop 待验证的属性，可以是字符串或字符串数组
- * @returns 验证结果
+ * 验证全部字段
  */
-function validate(prop?: string | string[]) {
-  if (typeof prop === "string") {
-    return validateField(prop)
+function validate(callback?: FormValidateCallback): Promise<void> | void {
+  const promise = doValidate()
+  if (callback) {
+    promise
+      .then(() => callback(true))
+      .catch((errors: FieldValidateError[]) => callback(false, errors))
+    return
   }
-  return useProps.validateFirst ? validateSeq(prop) : validateAll(prop)
+  return promise
 }
 
 /**
- * 验证指定字段的数据序列，并返回一个 Promise 对象
- * @param props 一个可选的字符串数组，包含要验证的字段的属性名称
- * @returns 一个 Promise 对象，当验证成功时 resolve，当验证失败时 reject，并返回包含错误信息的 FieldValidateError 数组
+ * 验证单个字段
  */
-function validateSeq(props?: string[]) {
+function validateField(prop: string, callback?: FormValidateCallback): Promise<void> | void {
+  const promise = doValidateField(prop)
+  if (callback) {
+    promise
+      .then(() => callback(true))
+      .catch((errors: FieldValidateError[]) => callback(false, errors))
+    return
+  }
+  return promise
+}
+
+/**
+ * 验证多个指定字段
+ */
+function validateFields(props: string[], callback?: FormValidateCallback): Promise<void> | void {
+  const promise = useProps.validateFirst ? doValidateSeq(props) : doValidateAll(props)
+  if (callback) {
+    promise
+      .then(() => callback(true))
+      .catch((errors: FieldValidateError[]) => callback(false, errors))
+    return
+  }
+  return promise
+}
+
+/**
+ * 内部：执行全部字段验证
+ */
+function doValidate() {
+  return useProps.validateFirst ? doValidateSeq() : doValidateAll()
+}
+
+/**
+ * 内部：串行验证字段
+ */
+function doValidateSeq(props?: string[]) {
   return new Promise<void>((resolve, reject) => {
     const errors: FieldValidateError[] = []
     const fields = getFieldsByProps(props)
@@ -99,11 +135,9 @@ function validateSeq(props?: string[]) {
 }
 
 /**
- * 验证所有字段
- * @param props 字段属性数组
- * @returns Promise，验证结果为void
+ * 内部：并行验证所有字段
  */
-function validateAll(props?: string[]) {
+function doValidateAll(props?: string[]) {
   return new Promise<void>((resolve, reject) => {
     const fields = getFieldsByProps(props)
     Promise.all(fields.map((item) => item.exposed.validate())).then((errors) => {
@@ -118,23 +152,21 @@ function validateAll(props?: string[]) {
 }
 
 /**
- * 验证单个字段
- * @param prop 字段属性
- * @returns Promise，验证结果
+ * 内部：验证单个字段
  */
-function validateField(prop: string) {
+function doValidateField(prop: string) {
   return new Promise<void>((resolve, reject) => {
     const children = childrens.find((item) => item.exposed.useProps.prop === prop)
     if (children) {
       children.exposed.validate().then((error?: FieldValidateError) => {
         if (error) {
-          reject(error)
+          reject([error])
         } else {
           resolve()
         }
       })
     } else {
-      reject()
+      reject([])
     }
   })
 }
@@ -196,7 +228,7 @@ function getValidateStatus() {
 }
 
 linkChildren({ props, useProps, model, rules: useProps.rules, initialModel, maxLabelWidth })
-defineExpose({ submit, validate, validateField, resetFields, getValues, clearValidate, getValidateStatus })
+defineExpose({ submit, validate, validateField, validateFields, resetFields, getValues, clearValidate, getValidateStatus })
 </script>
 
 <script lang="ts">
