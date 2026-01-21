@@ -13,7 +13,6 @@ import type { TabsProps } from "../ui-tabs"
 import type { TextProps } from "../ui-text"
 import type { BadgeProps } from "../ui-badge"
 import type { EmptyProps } from "../ui-empty"
-import type { FieldProps } from "../ui-field"
 import type { ImageProps } from "../ui-image"
 import type { InputProps } from "../ui-input"
 import type { PopupProps } from "../ui-popup"
@@ -179,10 +178,6 @@ export interface Components {
    * empty 组件默认值
    */
   empty?: Partial<EmptyProps>
-  /**
-   * field 组件默认值
-   */
-  field?: Partial<FieldProps>
   /**
    * float-button 组件默认值
    */
@@ -450,7 +445,6 @@ export type {
   DropdownItemProps,
   DropdownMenuProps,
   EmptyProps,
-  FieldProps,
   FloatButtonProps,
   FooterProps,
   FormItemProps,

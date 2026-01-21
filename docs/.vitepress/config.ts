@@ -89,7 +89,6 @@ export default defineConfig({
             { text: "Upload 上传", link: "/components/upload" },
             { text: "Form 表单", link: "/components/form" },
             { text: "FormItem 表单项", link: "/components/form-item" },
-            { text: "Field 输入域", link: "/components/field" },
             { text: "Keyboard 键盘", link: "/components/keyboard" },
           ],
         },

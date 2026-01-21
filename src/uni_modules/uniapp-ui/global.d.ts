@@ -25,7 +25,6 @@ declare module "vue" {
     UiDropdownMenu: (typeof import("./ui-dropdown-menu/ui-dropdown-menu.vue"))["default"]
     UiEmpty: (typeof import("./ui-empty/ui-empty.vue"))["default"]
     UiFloatButton: (typeof import("./ui-float-button/ui-float-button.vue"))["default"]
-    UiField: (typeof import("./ui-field/ui-field.vue"))["default"]
     UiFooter: (typeof import("./ui-footer/ui-footer.vue"))["default"]
     UiForm: (typeof import("./ui-form/ui-form.vue"))["default"]
     UiFormItem: (typeof import("./ui-form-item/ui-form-item.vue"))["default"]

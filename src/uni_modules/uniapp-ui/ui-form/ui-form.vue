@@ -7,7 +7,7 @@
 <script setup lang="ts">
 import type { CSSProperties } from "vue"
 import type { FormValidateCallback } from "../ui-form"
-import type { FieldValidateError, FieldValidationStatus } from "../ui-field"
+import type { FormValidateError, FormValidationStatus } from "../ui-form"
 import { clone } from "../utils/utils"
 import { ref, toRef, computed } from "vue"
 import { useStyle, useChildren } from "../hooks"
@@ -48,7 +48,7 @@ function submit() {
     .then(() => {
       emits("submit", values)
     })
-    .catch((errors: FieldValidateError[]) => {
+    .catch((errors: FormValidateError[]) => {
       emits("failed", { values, errors })
     })
 }
@@ -61,7 +61,7 @@ function validate(callback?: FormValidateCallback): Promise<void> | void {
   if (callback) {
     promise
       .then(() => callback(true))
-      .catch((errors: FieldValidateError[]) => callback(false, errors))
+      .catch((errors: FormValidateError[]) => callback(false, errors))
     return
   }
   return promise
@@ -75,7 +75,7 @@ function validateField(prop: string, callback?: FormValidateCallback): Promise<v
   if (callback) {
     promise
       .then(() => callback(true))
-      .catch((errors: FieldValidateError[]) => callback(false, errors))
+      .catch((errors: FormValidateError[]) => callback(false, errors))
     return
   }
   return promise
@@ -89,7 +89,7 @@ function validateFields(props: string[], callback?: FormValidateCallback): Promi
   if (callback) {
     promise
       .then(() => callback(true))
-      .catch((errors: FieldValidateError[]) => callback(false, errors))
+      .catch((errors: FormValidateError[]) => callback(false, errors))
     return
   }
   return promise
@@ -107,7 +107,7 @@ function doValidate() {
  */
 function doValidateSeq(props?: string[]) {
   return new Promise<void>((resolve, reject) => {
-    const errors: FieldValidateError[] = []
+    const errors: FormValidateError[] = []
     const fields = getFieldsByProps(props)
 
     fields
@@ -115,7 +115,7 @@ function doValidateSeq(props?: string[]) {
         (promise, field) =>
           promise.then(() => {
             if (!errors.length) {
-              return field.exposed.validate().then((error?: FieldValidateError) => {
+              return field.exposed.validate().then((error?: FormValidateError) => {
                 if (error) {
                   errors.push(error)
                 }
@@ -158,7 +158,7 @@ function doValidateField(prop: string) {
   return new Promise<void>((resolve, reject) => {
     const children = childrens.find((item) => item.exposed.useProps.prop === prop)
     if (children) {
-      children.exposed.validate().then((error?: FieldValidateError) => {
+      children.exposed.validate().then((error?: FormValidateError) => {
         if (error) {
           reject([error])
         } else {
@@ -221,7 +221,7 @@ function getFieldsByProps(props?: string[]) {
  * 获取所有字段的验证状态
  */
 function getValidateStatus() {
-  childrens.reduce<Record<string, FieldValidationStatus>>((form, field) => {
+  childrens.reduce<Record<string, FormValidationStatus>>((form, field) => {
     form[field.exposed.prop] = field.exposed.getValidationStatus()
     return form
   }, {})
