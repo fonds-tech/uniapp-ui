@@ -3,6 +3,11 @@ import type { ExtractPropTypes } from "vue"
 import { createProps } from "../hooks"
 import { styleProp, truthProp, makeStringProp, makeNumericProp } from "../utils/props"
 
+export interface KeyboardKeyItem {
+  value: string
+  type: "key" | "delete" | "close" | "switch"
+}
+
 export const [keyboardProps, useKeyboardProps] = createProps("keyboard", {
   /**
    * 是否显示
@@ -11,7 +16,7 @@ export const [keyboardProps, useKeyboardProps] = createProps("keyboard", {
   /**
    * 标题
    */
-  title: makeNumericProp(""),
+  title: makeStringProp(""),
   /**
    * 键盘类型，可选值car、card、number
    */
@@ -36,6 +41,18 @@ export const [keyboardProps, useKeyboardProps] = createProps("keyboard", {
    * 是否显示小数点按钮
    */
   showDot: Boolean,
+  /**
+   * 是否开启按键震动反馈
+   */
+  vibrate: Boolean,
+  /**
+   * 当前输入值，用于 maxlength 限制和 change 事件
+   */
+  modelValue: makeStringProp(""),
+  /**
+   * 车牌键盘是否自动切换中英文（根据输入长度）
+   */
+  autoSwitch: truthProp,
   /**
    * 是否显示顶部栏
    */
@@ -104,13 +121,16 @@ export const [keyboardProps, useKeyboardProps] = createProps("keyboard", {
 
 export const keyboardEmits = {
   open: () => true,
+  opened: () => true,
   close: () => true,
+  closed: () => true,
   cancel: () => true,
   confirm: () => true,
-  input: (value: string) => value,
+  input: (value: string) => typeof value === "string",
   delete: () => true,
-  change: (value: string) => value,
-  "update:show": (show: boolean) => show,
+  change: (value: string) => typeof value === "string",
+  "update:show": (show: boolean) => typeof show === "boolean",
+  "update:modelValue": (value: string) => typeof value === "string",
 }
 
 export type KeyboardEmits = typeof keyboardEmits

@@ -2,37 +2,47 @@
   <ui-popup
     v-model:show="visible"
     mode="bottom"
-    :overlay="overlay"
-    :background="background"
-    :close-on-click-overlay="closeOnClickOverlay"
-    :safe-area-inset-bottom="safeAreaInsetBottom"
+    :overlay="useProps.overlay"
+    :z-index="useProps.zIndex"
+    :background="useProps.background"
+    :close-on-click-overlay="useProps.closeOnClickOverlay"
+    :safe-area-inset-bottom="useProps.safeAreaInsetBottom"
+    @opened="emits('opened')"
+    @closed="emits('closed')"
   >
-    <view class="ui-keyboard" :class="[classs, customClass]" :style="[style]">
+    <view class="ui-keyboard" :class="[useProps.customClass]" :style="[style]">
       <slot name="header">
-        <view v-if="showHeader" class="ui-keyboard__header">
-          <view class="ui-keyboard__cancel" @click="onCancel">
+        <view v-if="useProps.showHeader" class="ui-keyboard__header">
+          <view v-if="useProps.showCancel" class="ui-keyboard__cancel">
             <slot name="cancel">
-              <ui-button text :text-color="cancelTextColor" :text-size="cancelTextSize" :text-weight="cancelTextWeight" @click="onCancel">
-                {{ cancelText }}
+              <ui-button text :text-color="useProps.cancelTextColor" :text-size="useProps.cancelTextSize" :text-weight="useProps.cancelTextWeight" @click="onCancel">
+                {{ useProps.cancelText }}
               </ui-button>
             </slot>
           </view>
           <view class="ui-keyboard__title">
             <slot name="title">
-              {{ title }}
+              {{ useProps.title }}
             </slot>
           </view>
-          <view class="ui-keyboard__confirm" @click="onConfirm">
+          <view v-if="useProps.showConfirm" class="ui-keyboard__confirm">
             <slot name="confirm">
-              <ui-button text :text-color="confirmTextColor" :text-size="confirmTextSize" :text-weight="confirmTextWeight" @click="onConfirm">
-                {{ confirmText }}
+              <ui-button text :text-color="useProps.confirmTextColor" :text-size="useProps.confirmTextSize" :text-weight="useProps.confirmTextWeight" @click="onConfirm">
+                {{ useProps.confirmText }}
               </ui-button>
             </slot>
           </view>
         </view>
       </slot>
       <view class="ui-keyboard__keys" :class="[keysClass]">
-        <view v-for="(item, index) in keys" :key="item.value" class="ui-keyboard__keys__key" :style="[keyStyle(item, index)]" @click="onClick(item)">
+        <view
+          v-for="(item, index) in keys"
+          :key="`${item.type}-${item.value || index}`"
+          class="ui-keyboard__keys__key"
+          :class="{ 'is-disabled': isKeyDisabled(item), 'is-func': item.type === 'delete' || item.type === 'close' }"
+          :style="[keyStyle(item, index)]"
+          @click="onClick(item)"
+        >
           <view v-if="item.type === 'switch'" class="ui-keyboard__keys__key__switch">
             <text :class="{ 'is-active': language === 'zh-cn' }">中</text>
             <text>/</text>
@@ -48,6 +58,7 @@
 </template>
 
 <script setup lang="ts">
+import type { KeyboardKeyItem } from "./index"
 import { useStyle } from "../hooks"
 import { clone, shuffleArray } from "../utils/utils"
 import { ref, watch, computed, onMounted } from "vue"
@@ -59,9 +70,9 @@ const props = defineProps(keyboardProps)
 const emits = defineEmits(keyboardEmits)
 const useProps = useKeyboardProps(props)
 const visible = ref(false)
-const numbers = ref([])
-const letters = ref([])
-const cars = ref([
+const numbers = ref<KeyboardKeyItem[]>([])
+const letters = ref<KeyboardKeyItem[]>([])
+const cars = ref<KeyboardKeyItem[]>([
   { value: "京", type: "key" },
   { value: "沪", type: "key" },
   { value: "粤", type: "key" },
@@ -100,15 +111,23 @@ const cars = ref([
   { value: "学", type: "key" },
 ])
 const language = ref("zh-cn")
+const inputValue = ref("")
+
+watch(
+  () => useProps.modelValue,
+  (val) => {
+    inputValue.value = val
+    // 车牌键盘自动切换：根据输入长度判断显示中文还是英文
+    if (useProps.mode === "car" && useProps.autoSwitch) {
+      language.value = val.length === 0 ? "zh-cn" : "en-us"
+    }
+  },
+  { immediate: true },
+)
 
 const style = computed(() => {
-  const style: any = {}
-  return useStyle({ ...style, ...useStyle(useProps.customStyle) })
-})
-
-const classs = computed(() => {
-  const list: string[] = []
-  return list
+  const styles: Record<string, string> = {}
+  return useStyle({ ...styles, ...useStyle(useProps.customStyle) })
 })
 
 const keysClass = computed(() => {
@@ -118,8 +137,8 @@ const keysClass = computed(() => {
 })
 
 const keyStyle = computed(() => {
-  return (item: any, index: number) => {
-    const style: any = {}
+  return (item: KeyboardKeyItem, index: number) => {
+    const style: Record<string, string> = {}
     if (useProps.mode === "car") {
       if (item.type === "switch") {
         style.gridArea = "4 / 1 / 5 / 3"
@@ -133,10 +152,11 @@ const keyStyle = computed(() => {
 })
 
 const keys = computed(() => {
-  const { random, showDot } = props
-  let list = []
+  const { random, showDot } = useProps
+  let list: KeyboardKeyItem[] = []
   if (useProps.mode === "number") {
     list = random ? shuffleArray(clone(numbers.value)) : clone(numbers.value)
+    // 在位置9插入小数点或关闭按钮，0在位置10，删除在位置11
     showDot ? list.splice(9, 0, { value: ".", type: "key" }) : list.splice(9, 0, { value: "keyboard-hide", type: "close" })
     list.push({ value: "backspace-o", type: "delete" })
   }
@@ -146,7 +166,6 @@ const keys = computed(() => {
     } else {
       const ns = random ? shuffleArray(clone(numbers.value)) : clone(numbers.value)
       const ls = random ? shuffleArray(clone(letters.value)) : clone(letters.value)
-      if (ns.length) ns.push(ns.shift())
       list = [...ns, ...ls]
     }
     list.splice(30, 0, { value: "", type: "switch" })
@@ -154,7 +173,6 @@ const keys = computed(() => {
   }
   if (useProps.mode === "card") {
     const ns = random ? shuffleArray(clone(numbers.value)) : clone(numbers.value)
-    if (ns.length) ns.push(ns.shift())
     list = ns
     list.splice(9, 0, { value: "X", type: "key" })
     list.push({ value: "backspace-o", type: "delete" })
@@ -173,20 +191,76 @@ watch(
 
 watch(
   () => visible.value,
-  (val) => emits("update:show", val),
+  (val) => {
+    emits("update:show", val)
+    if (val) emits("open")
+  },
 )
 
 function init() {
-  numbers.value = Array.from({ length: 10 }, () => ({})).map((_, i) => ({ value: i.toString(), type: "key" }))
-  letters.value = Array.from({ length: 26 }, (_, i) => String.fromCharCode(65 + i)).map((letter) => ({ value: letter, type: "key" }))
+  // 数字键盘布局: 1-9 在前，0 在后（符合用户习惯）
+  numbers.value = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0].map((n) => ({ value: n.toString(), type: "key" as const }))
+  letters.value = Array.from({ length: 26 }, (_, i) => String.fromCharCode(65 + i)).map((letter) => ({ value: letter, type: "key" as const }))
 }
 
-function onClick(item: { type: string; value: string }) {
+function triggerVibrate() {
+  if (!useProps.vibrate) return
+  // #ifdef APP-PLUS || MP
+  try {
+    uni.vibrateShort({ type: "light" })
+  } catch {}
+  // #endif
+}
+
+function isKeyDisabled(item: KeyboardKeyItem): boolean {
+  if (item.type !== "key") return false
+  const maxLen = Number(useProps.maxlength)
+  // 达到最大长度时禁用所有输入键
+  if (maxLen !== Infinity && inputValue.value.length >= maxLen) {
+    return true
+  }
+  // 小数点键盘：已输入小数点则禁用
+  if (item.value === "." && inputValue.value.includes(".")) {
+    return true
+  }
+  return false
+}
+
+function onClick(item: KeyboardKeyItem) {
+  // 禁用状态不响应点击
+  if (isKeyDisabled(item)) return
+
+  triggerVibrate()
+
   if (item.type === "key") {
+    const maxLen = Number(useProps.maxlength)
+    if (maxLen !== Infinity && inputValue.value.length >= maxLen) {
+      return
+    }
+    const newValue = inputValue.value + item.value
+    inputValue.value = newValue
     emits("input", item.value)
+    emits("change", newValue)
+    emits("update:modelValue", newValue)
+    // 车牌键盘：输入第一个字符后自动切换到英文
+    if (useProps.mode === "car" && useProps.autoSwitch && newValue.length === 1) {
+      language.value = "en-us"
+    }
   }
   if (item.type === "delete") {
-    emits("delete")
+    if (inputValue.value.length > 0) {
+      const newValue = inputValue.value.slice(0, -1)
+      inputValue.value = newValue
+      emits("delete")
+      emits("change", newValue)
+      emits("update:modelValue", newValue)
+      // 车牌键盘：删除到第一位时自动切回中文
+      if (useProps.mode === "car" && useProps.autoSwitch && newValue.length === 0) {
+        language.value = "zh-cn"
+      }
+    } else {
+      emits("delete")
+    }
   }
   if (item.type === "close") {
     visible.value = false
@@ -207,8 +281,32 @@ function onConfirm() {
   emits("confirm")
 }
 
+function open() {
+  visible.value = true
+}
+
+function close() {
+  visible.value = false
+}
+
+function clear() {
+  inputValue.value = ""
+  emits("change", "")
+  emits("update:modelValue", "")
+  // 车牌键盘重置语言
+  if (useProps.mode === "car") {
+    language.value = "zh-cn"
+  }
+}
+
 onMounted(() => init())
-defineExpose({ name: "ui-keyboard" })
+defineExpose({
+  name: "ui-keyboard",
+  open,
+  close,
+  clear,
+  value: inputValue,
+})
 </script>
 
 <script lang="ts">
@@ -236,28 +334,43 @@ export default {
   }
 
   &__keys {
-    padding: 12rpx;
+    padding: 16rpx 12rpx;
 
     &__key {
       display: flex;
+      box-shadow: 0 2rpx 4rpx rgba(0, 0, 0, 0.08);
+      transition: background-color 0.15s ease;
       align-items: center;
-      border-radius: 8rpx;
+      border-radius: 16rpx;
       justify-content: center;
       background-color: #fff;
 
       &:active {
-        background-color: #ebedf0;
+        background-color: #d5d8de;
+      }
+
+      &.is-disabled {
+        opacity: 0.4;
+        pointer-events: none;
+      }
+
+      &.is-func {
+        background-color: #d5d8de;
+
+        &:active {
+          background-color: #c5c8ce;
+        }
       }
     }
 
     &--number {
-      gap: 12rpx;
+      gap: 16rpx;
       display: grid;
       grid-template-columns: repeat(3, 1fr);
 
       .ui-keyboard__keys__key {
-        height: 96rpx;
-        font-size: 56rpx;
+        height: 88rpx;
+        font-size: 48rpx;
       }
     }
 
@@ -285,13 +398,13 @@ export default {
     }
 
     &--card {
-      gap: 12rpx;
+      gap: 16rpx;
       display: grid;
       grid-template-columns: repeat(3, 1fr);
 
       .ui-keyboard__keys__key {
-        height: 96rpx;
-        font-size: 56rpx;
+        height: 88rpx;
+        font-size: 48rpx;
       }
     }
   }

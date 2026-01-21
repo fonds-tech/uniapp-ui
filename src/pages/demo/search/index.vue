@@ -1,51 +1,37 @@
 <template>
   <demo-page>
     <demo-section title="基础用法">
-      <demo-block direction="column">
-        <ui-search v-model="keyword" placeholder="请输入搜索关键词" />
-      </demo-block>
+      <ui-search v-model="keyword" placeholder="请输入搜索关键词" />
     </demo-section>
 
     <demo-section title="圆角搜索框">
-      <demo-block direction="column">
-        <ui-search v-model="roundKeyword" round placeholder="圆角搜索框" />
-      </demo-block>
+      <ui-search v-model="roundKeyword" round placeholder="圆角搜索框" />
     </demo-section>
 
     <demo-section title="自定义图标">
-      <demo-block direction="column" :gap="16">
-        <ui-search v-model="scanKeyword" icon="scan" placeholder="扫描搜索" />
-        <ui-search v-model="noIconKeyword" icon="" placeholder="隐藏图标" />
-      </demo-block>
+      <ui-search v-model="scanKeyword" icon="scan" placeholder="扫描搜索" />
+      <ui-search v-model="noIconKeyword" icon="" placeholder="隐藏图标" />
     </demo-section>
 
     <demo-section title="自定义背景">
-      <demo-block direction="column">
-        <ui-search v-model="bgKeyword" background="#f5f5f5" placeholder="灰色背景" />
-      </demo-block>
+      <ui-search v-model="bgKeyword" background="#f5f5f5" placeholder="灰色背景" />
     </demo-section>
 
     <demo-section title="隐藏按钮">
-      <demo-block direction="column" :gap="16">
-        <ui-search v-model="noActionKeyword" :action="false" placeholder="隐藏搜索按钮" />
-      </demo-block>
+      <ui-search v-model="noActionKeyword" :action="false" placeholder="隐藏搜索按钮" />
     </demo-section>
 
     <demo-section title="禁用状态">
-      <demo-block direction="column">
-        <ui-search v-model="disabledKeyword" disabled placeholder="禁用状态" />
-      </demo-block>
+      <ui-search v-model="disabledKeyword" disabled placeholder="禁用状态" />
     </demo-section>
 
     <demo-section title="事件监听">
-      <demo-block direction="column" :gap="16">
-        <ui-search v-model="eventKeyword" placeholder="输入后查看事件" @search="onSearch" @clear="onClear" />
-        <view v-if="eventLogs.length" class="event-list">
-          <view v-for="(log, index) in eventLogs" :key="index" class="event-item">
-            <text class="event-text">{{ log }}</text>
-          </view>
+      <ui-search v-model="eventKeyword" placeholder="输入后查看事件" @search="onSearch" @clear="onClear" />
+      <view v-if="eventLogs.length" class="event-list">
+        <view v-for="(log, index) in eventLogs" :key="index" class="event-item">
+          <text class="event-text">{{ log }}</text>
         </view>
-      </demo-block>
+      </view>
     </demo-section>
 
     <ui-toast ref="toastRef" />
