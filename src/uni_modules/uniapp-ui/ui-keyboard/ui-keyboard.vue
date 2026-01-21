@@ -323,6 +323,7 @@ export default {
   &__header {
     display: flex;
     padding: var(--ui-spacing-md);
+    padding-bottom: 0;
     align-items: center;
     justify-content: space-between;
   }
@@ -341,7 +342,7 @@ export default {
   }
 
   &__keys {
-    padding: var(--ui-spacing-sm) var(--ui-spacing-xs);
+    padding: var(--ui-spacing-sm);
 
     &__key {
       display: flex;
