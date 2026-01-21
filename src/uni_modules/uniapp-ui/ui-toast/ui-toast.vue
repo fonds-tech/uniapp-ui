@@ -303,7 +303,7 @@ export default {
     padding: var(--ui-spacing-md) var(--ui-spacing-lg);
     max-width: calc(100% - 160rpx);
     align-items: center;
-    border-radius: var(--ui-radius-lg);
+    border-radius: var(--ui-radius-md);
     flex-direction: row;
     justify-content: center;
 
