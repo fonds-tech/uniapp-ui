@@ -88,7 +88,6 @@ export default defineConfig({
             { text: "Cascader 级联选择", link: "/components/cascader" },
             { text: "Upload 上传", link: "/components/upload" },
             { text: "Form 表单", link: "/components/form" },
-            { text: "FormItem 表单项", link: "/components/form-item" },
             { text: "Keyboard 键盘", link: "/components/keyboard" },
           ],
         },

@@ -6,11 +6,10 @@
 
 <script setup lang="ts">
 import type { CSSProperties } from "vue"
-import type { FormValidateCallback } from "../ui-form"
-import type { FormValidateError, FormValidationStatus } from "../ui-form"
+import type { FormValidateError, FormValidateCallback, FormValidationStatus } from "../ui-form"
 import { clone } from "../utils/utils"
-import { ref, toRef, computed } from "vue"
 import { useStyle, useChildren } from "../hooks"
+import { ref, computed, reactive } from "vue"
 import { formKey, formEmits, formProps, useFormProps } from "../ui-form"
 
 defineOptions({ name: "ui-form" })
@@ -21,6 +20,8 @@ const useProps = useFormProps(props)
 const { childrens, linkChildren } = useChildren(formKey)
 
 const initialModel = ref(clone(useProps.model))
+// 存储各子组件的标签宽度 { [uid]: width }
+const labelWidthMap = reactive<Record<number, number>>({})
 
 const style = computed(() => {
   const style: CSSProperties = {}
@@ -36,8 +37,28 @@ const classs = computed(() => {
 
 const model = computed({ get: () => useProps.model, set: (value) => emits("update:model", value) })
 const maxLabelWidth = computed(() => {
-  return Math.max(...childrens.filter((child) => child.exposed.labelPosition !== "top").map((child) => toRef(child.exposed.labelRect).value.width))
+  const widths = Object.values(labelWidthMap).filter((w) => w > 0)
+  return widths.length > 0 ? Math.max(...widths) : 0
 })
+
+/**
+ * 注册子组件的标签宽度
+ */
+function registerLabelWidth(uid: number, width: number, isTop: boolean) {
+  if (isTop) {
+    // labelPosition 为 top 时不参与计算
+    delete labelWidthMap[uid]
+  } else {
+    labelWidthMap[uid] = width
+  }
+}
+
+/**
+ * 注销子组件的标签宽度
+ */
+function unregisterLabelWidth(uid: number) {
+  delete labelWidthMap[uid]
+}
 
 /**
  * 提交表单
@@ -59,9 +80,7 @@ function submit() {
 function validate(callback?: FormValidateCallback): Promise<void> | void {
   const promise = doValidate()
   if (callback) {
-    promise
-      .then(() => callback(true))
-      .catch((errors: FormValidateError[]) => callback(false, errors))
+    promise.then(() => callback(true)).catch((errors: FormValidateError[]) => callback(false, errors))
     return
   }
   return promise
@@ -73,9 +92,7 @@ function validate(callback?: FormValidateCallback): Promise<void> | void {
 function validateField(prop: string, callback?: FormValidateCallback): Promise<void> | void {
   const promise = doValidateField(prop)
   if (callback) {
-    promise
-      .then(() => callback(true))
-      .catch((errors: FormValidateError[]) => callback(false, errors))
+    promise.then(() => callback(true)).catch((errors: FormValidateError[]) => callback(false, errors))
     return
   }
   return promise
@@ -87,9 +104,7 @@ function validateField(prop: string, callback?: FormValidateCallback): Promise<v
 function validateFields(props: string[], callback?: FormValidateCallback): Promise<void> | void {
   const promise = useProps.validateFirst ? doValidateSeq(props) : doValidateAll(props)
   if (callback) {
-    promise
-      .then(() => callback(true))
-      .catch((errors: FormValidateError[]) => callback(false, errors))
+    promise.then(() => callback(true)).catch((errors: FormValidateError[]) => callback(false, errors))
     return
   }
   return promise
@@ -227,7 +242,7 @@ function getValidateStatus() {
   }, {})
 }
 
-linkChildren({ props, useProps, model, rules: useProps.rules, initialModel, maxLabelWidth })
+linkChildren({ props, useProps, model, rules: useProps.rules, initialModel, maxLabelWidth, registerLabelWidth, unregisterLabelWidth })
 defineExpose({ submit, validate, validateField, validateFields, resetFields, getValues, clearValidate, getValidateStatus })
 </script>
 

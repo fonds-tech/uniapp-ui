@@ -124,6 +124,10 @@ export interface FormProvide {
   initialModel: import("vue").Ref<Record<string, unknown>>
   /** 最大标签宽度（用于自动对齐） */
   maxLabelWidth: import("vue").ComputedRef<number>
+  /** 注册子组件的标签宽度 */
+  registerLabelWidth: (uid: number, width: number, isTop: boolean) => void
+  /** 注销子组件的标签宽度 */
+  unregisterLabelWidth: (uid: number) => void
   submit: () => void
   getValues: () => Record<string, unknown>
   validate: {

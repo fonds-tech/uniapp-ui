@@ -323,16 +323,16 @@ export default {
   &__header {
     display: flex;
     padding: var(--ui-spacing-md);
-    padding-bottom: 0;
     align-items: center;
+    padding-bottom: 0;
     justify-content: space-between;
   }
 
   &__title {
     flex: 1;
+    color: var(--ui-color-text-secondary);
     padding: 0 var(--ui-spacing-md);
     font-size: var(--ui-font-size-sm);
-    color: var(--ui-color-text-secondary);
     text-align: center;
   }
 
@@ -345,6 +345,7 @@ export default {
     padding: var(--ui-spacing-sm);
 
     &__key {
+      color: var(--ui-color-text-primary);
       display: flex;
       box-shadow: var(--ui-shadow-xs);
       transition: background-color var(--ui-transition-fast) var(--ui-transition-timing);
@@ -352,7 +353,6 @@ export default {
       border-radius: var(--ui-radius-sm);
       justify-content: center;
       background-color: var(--ui-color-background);
-      color: var(--ui-color-text-primary);
 
       &:active {
         background-color: var(--ui-color-border-dark);
@@ -364,13 +364,13 @@ export default {
       }
 
       &__switch {
-        flex: 1;
         gap: var(--ui-spacing-xs);
+        flex: 1;
+        color: var(--ui-color-text-tertiary);
         display: flex;
         font-size: var(--ui-font-size-sm);
         align-items: center;
         justify-content: center;
-        color: var(--ui-color-text-tertiary);
 
         .is-active {
           color: var(--ui-color-primary);

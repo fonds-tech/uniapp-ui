@@ -26,8 +26,8 @@ import { formKey } from "../ui-form"
 import { clone, toArray, getDeepValue } from "../utils/utils"
 import { isDef, isEmpty, isNoEmpty, isPromise, isFunction } from "../utils/check"
 import { formItemKey, formItemEmits, formItemProps, useFormItemProps } from "./index"
-import { ref, toRaw, computed, nextTick, reactive, useSlots, onMounted, getCurrentInstance } from "vue"
 import { useRect, useUnit, useColor, useStyle, useParent, usePxToRpx, useChildren, useUnitToPx } from "../hooks"
+import { ref, toRaw, computed, nextTick, reactive, useSlots, onMounted, onUnmounted, getCurrentInstance } from "vue"
 
 defineOptions({ name: "ui-form-item" })
 
@@ -42,6 +42,7 @@ const state = reactive({ status: "unvalidated", focused: false, validateMessage:
 const inited = ref(false)
 const errorRect = ref<UniApp.NodeInfo>({})
 const labelRect = ref<UniApp.NodeInfo>({ width: 0 })
+const labelWidth = ref(0)
 const instance = getCurrentInstance()
 
 const { parent: form } = useParent(formKey)
@@ -78,7 +79,7 @@ const labelStyle = computed(() => {
     if (prop("labelWidth")) {
       style.width = useUnit(prop("labelWidth"))
     }
-    if (inited.value && prop("labelWidth") === "auto" && form.maxLabelWidth.value >= 0) {
+    if (inited.value && prop("labelWidth") === "auto" && form.maxLabelWidth.value > 0) {
       style.width = `${usePxToRpx(form.maxLabelWidth.value)}rpx`
     }
   } else {
@@ -347,9 +348,16 @@ function getPropRules() {
  */
 async function resize() {
   await nextTick()
+  // 延迟确保 DOM 完全渲染
+  await new Promise((resolve) => setTimeout(resolve, 50))
   labelRect.value = await useRect(".ui-form-item__label", instance)
   errorRect.value = await useRect(".ui-form-item__error__text", instance)
+  labelWidth.value = labelRect.value?.width ?? 0
   inited.value = true
+  // 向父组件注册标签宽度
+  const uid = instance?.uid ?? 0
+  const isTop = prop("labelPosition") === "top"
+  form?.registerLabelWidth?.(uid, labelWidth.value, isTop)
 }
 
 /**
@@ -367,13 +375,17 @@ function onChange() {
 }
 
 onMounted(resize)
+onUnmounted(() => {
+  // 组件卸载时注销标签宽度
+  const uid = instance?.uid ?? 0
+  form?.unregisterLabelWidth?.(uid)
+})
 linkChildren({ props, prop: useProps.prop, onBlur, onChange })
 defineExpose({
   useProps,
   prop: useProps.prop,
-  // 安全访问 form.model.value，避免 form 为 null 时报错
   modelValue: form?.model?.value?.[useProps.prop],
-  labelRect,
+  labelWidth,
   validate,
   resetField,
   resetValidate,
@@ -419,7 +431,7 @@ export default {
   }
 
   &__label {
-    width: max-content;
+    width: fit-content;
     display: flex;
     flex-shrink: 0;
     white-space: nowrap;
