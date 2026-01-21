@@ -1,5 +1,5 @@
 <template>
-  <view v-if="isVisible" class="ui-avatar" :class="[classNames, customClass]" :style="rootStyle" @click="onClick">
+  <view v-if="isVisible" class="ui-avatar" :class="[classNames, useProps.customClass]" :style="rootStyle" @click="onClick">
     <!-- 图片头像 -->
     <image
       v-if="useProps.src && !hasError"

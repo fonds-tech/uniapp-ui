@@ -39,7 +39,7 @@
           v-for="(item, index) in keys"
           :key="`${item.type}-${item.value || index}`"
           class="ui-keyboard__keys__key"
-          :class="{ 'is-disabled': isKeyDisabled(item), 'is-func': item.type === 'delete' || item.type === 'close' }"
+          :class="{ 'is-disabled': isKeyDisabled(item) }"
           :style="[keyStyle(item, index)]"
           @click="onClick(item)"
         >
@@ -48,8 +48,8 @@
             <text>/</text>
             <text :class="{ 'is-active': language === 'en-us' }">英</text>
           </view>
-          <ui-icon v-else-if="item.type === 'close'" :name="item.value" size="56rpx" />
-          <ui-icon v-else-if="item.type === 'delete'" :name="item.value" size="56rpx" />
+          <ui-icon v-else-if="item.type === 'close'" :name="item.value" size="var(--ui-icon-size-lg)" />
+          <ui-icon v-else-if="item.type === 'delete'" :name="item.value" size="var(--ui-icon-size-lg)" />
           <text v-else>{{ item.value }}</text>
         </view>
       </view>
@@ -157,8 +157,8 @@ const keys = computed(() => {
   if (useProps.mode === "number") {
     list = random ? shuffleArray(clone(numbers.value)) : clone(numbers.value)
     // 在位置9插入小数点或关闭按钮，0在位置10，删除在位置11
-    showDot ? list.splice(9, 0, { value: ".", type: "key" }) : list.splice(9, 0, { value: "keyboard-hide", type: "close" })
-    list.push({ value: "backspace-o", type: "delete" })
+    showDot ? list.splice(9, 0, { value: ".", type: "key" }) : list.splice(9, 0, { value: "keyboard", type: "close" })
+    list.push({ value: "backspace", type: "delete" })
   }
   if (useProps.mode === "car") {
     if (language.value === "zh-cn") {
@@ -169,13 +169,13 @@ const keys = computed(() => {
       list = [...ns, ...ls]
     }
     list.splice(30, 0, { value: "", type: "switch" })
-    list.push({ value: "backspace-o", type: "delete" })
+    list.push({ value: "backspace", type: "delete" })
   }
   if (useProps.mode === "card") {
     const ns = random ? shuffleArray(clone(numbers.value)) : clone(numbers.value)
     list = ns
     list.splice(9, 0, { value: "X", type: "key" })
-    list.push({ value: "backspace-o", type: "delete" })
+    list.push({ value: "backspace", type: "delete" })
   }
 
   return list
@@ -322,89 +322,95 @@ export default {
 
   &__header {
     display: flex;
-    padding: 24rpx;
+    padding: var(--ui-spacing-md);
     align-items: center;
     justify-content: space-between;
   }
 
   &__title {
-    padding: 0 24rpx;
-    font-size: 28rpx;
+    flex: 1;
+    padding: 0 var(--ui-spacing-md);
+    font-size: var(--ui-font-size-sm);
+    color: var(--ui-color-text-secondary);
     text-align: center;
   }
 
+  &__cancel,
+  &__confirm {
+    flex-shrink: 0;
+  }
+
   &__keys {
-    padding: 16rpx 12rpx;
+    padding: var(--ui-spacing-sm) var(--ui-spacing-xs);
 
     &__key {
       display: flex;
-      box-shadow: 0 2rpx 4rpx rgba(0, 0, 0, 0.08);
-      transition: background-color 0.15s ease;
+      box-shadow: var(--ui-shadow-xs);
+      transition: background-color var(--ui-transition-fast) var(--ui-transition-timing);
       align-items: center;
-      border-radius: 16rpx;
+      border-radius: var(--ui-radius-sm);
       justify-content: center;
-      background-color: #fff;
+      background-color: var(--ui-color-background);
+      color: var(--ui-color-text-primary);
 
       &:active {
-        background-color: #d5d8de;
+        background-color: var(--ui-color-border-dark);
       }
 
       &.is-disabled {
-        opacity: 0.4;
+        opacity: var(--ui-opacity-disabled);
         pointer-events: none;
       }
 
-      &.is-func {
-        background-color: #d5d8de;
+      &__switch {
+        flex: 1;
+        gap: var(--ui-spacing-xs);
+        display: flex;
+        font-size: var(--ui-font-size-sm);
+        align-items: center;
+        justify-content: center;
+        color: var(--ui-color-text-tertiary);
 
-        &:active {
-          background-color: #c5c8ce;
+        .is-active {
+          color: var(--ui-color-primary);
+          font-weight: var(--ui-font-weight-medium);
         }
       }
     }
 
     &--number {
-      gap: 16rpx;
+      gap: var(--ui-spacing-sm);
       display: grid;
       grid-template-columns: repeat(3, 1fr);
 
       .ui-keyboard__keys__key {
-        height: 88rpx;
-        font-size: 48rpx;
+        height: 96rpx;
+        font-size: 56rpx;
+        font-weight: var(--ui-font-weight-medium);
       }
     }
 
     &--car {
-      gap: 12rpx;
+      gap: var(--ui-spacing-xs);
       display: grid;
       grid-template-columns: repeat(10, 1fr);
 
       .ui-keyboard__keys__key {
-        height: 56rpx;
-        font-weight: 400;
-
-        &__switch {
-          flex: 1;
-          display: flex;
-          padding: 0 30rpx;
-          align-items: center;
-          justify-content: space-around;
-
-          .is-active {
-            color: var(--ui-color-primary);
-          }
-        }
+        height: 72rpx;
+        font-size: var(--ui-font-size-sm);
+        font-weight: var(--ui-font-weight-normal);
       }
     }
 
     &--card {
-      gap: 16rpx;
+      gap: var(--ui-spacing-sm);
       display: grid;
       grid-template-columns: repeat(3, 1fr);
 
       .ui-keyboard__keys__key {
-        height: 88rpx;
-        font-size: 48rpx;
+        height: 96rpx;
+        font-size: 56rpx;
+        font-weight: var(--ui-font-weight-medium);
       }
     }
   }

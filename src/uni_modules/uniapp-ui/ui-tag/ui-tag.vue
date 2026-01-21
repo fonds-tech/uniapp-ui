@@ -1,16 +1,16 @@
 <template>
-  <view v-if="visible" class="ui-tag" :class="[classes, customClass]" :style="[style]" @click="onClick">
-    <view v-if="icon || slots.icon" class="ui-tag__icon">
+  <view v-if="visible" class="ui-tag" :class="[classes, useProps.customClass]" :style="[style]" @click="onClick">
+    <view v-if="useProps.icon || slots.icon" class="ui-tag__icon">
       <slot name="icon">
-        <ui-icon :name="icon" :color="iconColor" :size="iconSize" :weight="iconWeight" />
+        <ui-icon :name="useProps.icon" :color="useProps.iconColor" :size="useProps.iconSize" :weight="useProps.iconWeight" />
       </slot>
     </view>
     <view class="ui-tag__text" :style="[textStyle]">
-      <slot>{{ text }}</slot>
+      <slot>{{ useProps.text }}</slot>
     </view>
-    <view v-if="closeable || slots.close" class="ui-tag__close" @click="onClose">
+    <view v-if="useProps.closeable || slots.close" class="ui-tag__close" @click="onClose">
       <slot name="close">
-        <ui-icon name="cross" :color="iconColor" :size="iconSize" :weight="iconWeight" />
+        <ui-icon name="cross" :color="useProps.iconColor" :size="useProps.iconSize" :weight="useProps.iconWeight" />
       </slot>
     </view>
   </view>

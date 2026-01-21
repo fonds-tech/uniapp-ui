@@ -1,12 +1,12 @@
 <template>
-  <view v-if="show" class="ui-loading" :class="[classs, customClass]" :style="[style]">
+  <view v-if="useProps.show" class="ui-loading" :class="[classs, useProps.customClass]" :style="[style]">
     <view class="ui-loading__icon" :style="[iconStyle]">
       <slot name="icon">
         <view class="ui-loading__rotate" :class="[rotateClass]" />
       </slot>
     </view>
     <text v-if="isShowText" class="ui-loading__text" :style="[textStyle]">
-      <slot>{{ text }}</slot>
+      <slot>{{ useProps.text }}</slot>
     </text>
   </view>
 </template>

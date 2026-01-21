@@ -13,7 +13,7 @@
   />
 
   <!-- 对话框主体 -->
-  <view v-if="inited" class="ui-dialog" :class="[rootClass, customClass]" :style="rootStyle" @transitionend="transition.end" @touchmove.prevent.stop="noop">
+  <view v-if="inited" class="ui-dialog" :class="[rootClass, useProps.customClass]" :style="rootStyle" @transitionend="transition.end" @touchmove.prevent.stop="noop">
     <view class="ui-dialog__body" :style="bodyStyle" @click.stop="noop">
       <!-- 标题区域 -->
       <slot name="title">

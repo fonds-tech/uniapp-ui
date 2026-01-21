@@ -1,11 +1,11 @@
 <template>
-  <view v-if="show" class="ui-empty" :class="[useProps.customClass]" :style="[style]">
+  <view v-if="useProps.show" class="ui-empty" :class="[useProps.customClass]" :style="[style]">
     <slot name="icon">
-      <image v-if="icon" class="ui-empty__icon" :src="icon" mode="widthFix" :style="[iconStyle]" />
+      <image v-if="useProps.icon" class="ui-empty__icon" :src="useProps.icon" mode="widthFix" :style="[iconStyle]" />
       <image v-else class="ui-empty__icon" :src="emptyImg" mode="widthFix" :style="[iconStyle]" />
     </slot>
     <slot name="text">
-      <text class="ui-empty__text" :style="[textStyle]">{{ text }}</text>
+      <text class="ui-empty__text" :style="[textStyle]">{{ useProps.text }}</text>
     </slot>
     <view class="ui-empty__slot">
       <slot />

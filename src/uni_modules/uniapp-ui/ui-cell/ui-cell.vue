@@ -1,26 +1,26 @@
 <template>
-  <view class="ui-cell" :class="[classes, customClass]" :style="[style]" :hover-class="hoverClass" :hover-stay-time="50" @click="onClick">
+  <view class="ui-cell" :class="[classes, useProps.customClass]" :style="[style]" :hover-class="hoverClass" :hover-stay-time="50" @click="onClick">
     <slot name="icon">
       <view v-if="isShowIcon" class="ui-cell__icon" :style="[iconStyle]">
-        <ui-icon :name="icon" :size="iconSize" :color="iconColor" :weight="iconWeight" />
+        <ui-icon :name="useProps.icon" :size="useProps.iconSize" :color="useProps.iconColor" :weight="useProps.iconWeight" />
       </view>
     </slot>
     <view class="ui-cell__body" :style="[bodyStyle]">
       <slot name="title">
-        <text v-if="isShowTitle" class="ui-cell__title" :style="[titleStyle]">{{ title }}</text>
+        <text v-if="isShowTitle" class="ui-cell__title" :style="[titleStyle]">{{ useProps.title }}</text>
       </slot>
       <slot name="label">
-        <text v-if="isShowLabel" class="ui-cell__label" :style="[labelStyle]">{{ label }}</text>
+        <text v-if="isShowLabel" class="ui-cell__label" :style="[labelStyle]">{{ useProps.label }}</text>
       </slot>
     </view>
     <view class="ui-cell__content">
       <slot>
-        <text v-if="isShowValue" class="ui-cell__value" :style="[valueStyle]">{{ value }}</text>
+        <text v-if="isShowValue" class="ui-cell__value" :style="[valueStyle]">{{ useProps.value }}</text>
       </slot>
     </view>
     <slot name="right-icon">
       <view v-if="isShowRightIcon" class="ui-cell__right-icon" :style="[rightIconStyle]">
-        <ui-icon :name="rightIcon" :size="rightIconSize" :color="rightIconColor" :weight="rightIconWeight" />
+        <ui-icon :name="useProps.rightIcon" :size="useProps.rightIconSize" :color="useProps.rightIconColor" :weight="useProps.rightIconWeight" />
       </view>
     </slot>
   </view>

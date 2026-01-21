@@ -1,9 +1,9 @@
 <template>
   <view class="ui-badge" :style="[style]">
     <slot />
-    <view v-if="isShow" class="ui-badge__inner" :class="[classs, customClass]" :style="[innerStyle]" @click="onClick">
+    <view v-if="isShow" class="ui-badge__inner" :class="[classs, useProps.customClass]" :style="[innerStyle]" @click="onClick">
       <slot name="content">
-        <ui-icon v-if="isShowIcon" :name="icon" />
+        <ui-icon v-if="isShowIcon" :name="useProps.icon" />
         <text v-else class="ui-badge__value" :style="[valueStyle]">{{ formatValue }}</text>
       </slot>
     </view>

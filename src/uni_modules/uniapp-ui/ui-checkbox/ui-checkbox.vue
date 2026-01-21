@@ -1,5 +1,5 @@
 <template>
-  <view class="ui-checkbox" :class="[rootClass, customClass]" :style="[rootStyle]" @click.stop="onClick">
+  <view class="ui-checkbox" :class="[rootClass, useProps.customClass]" :style="[rootStyle]" @click.stop="onClick">
     <view class="ui-checkbox__icon" :class="[iconClass]" :style="[iconContainerStyle]" @click.stop="onClickIcon">
       <slot name="icon" :checked="checked" :disabled="disabled" :indeterminate="isIndeterminate">
         <view v-if="checked && !isIndeterminate && actualShape === 'dot'" class="ui-checkbox__dot" :style="[dotStyle]" />

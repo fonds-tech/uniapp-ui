@@ -1,4 +1,11 @@
-// 图标样式 - @font-face 在组件中定义
+.ui-icon-keyboard:before {
+  content: "\e600";
+}
+
+.ui-icon-backspace:before {
+  content: "\e66d";
+}
+
 .ui-icon-cloud-sync:before {
   content: "\e82a";
 }

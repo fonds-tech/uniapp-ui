@@ -1,19 +1,19 @@
 <template>
   <view>
-    <ui-overlay v-if="overlay" :show="visible" :duration="duration" :z-index="zIndex" :lazy-render="lazyRender" :custom-style="overlayStyle" @click="onClickOverlay" />
-    <view v-if="inited" class="ui-popup" :style="[style]" :class="[classs, customClass]" @transitionend="transition.end" @touchmove.prevent.stop="noop">
-      <view v-if="closeable" class="ui-popup__close" :class="[closeClass]" @click.stop="onClickClose">
+    <ui-overlay v-if="useProps.overlay" :show="visible" :duration="useProps.duration" :z-index="zIndex" :lazy-render="useProps.lazyRender" :custom-style="overlayStyle" @click="onClickOverlay" />
+    <view v-if="inited" class="ui-popup" :style="[style]" :class="[classs, useProps.customClass]" @transitionend="transition.end" @touchmove.prevent.stop="noop">
+      <view v-if="useProps.closeable" class="ui-popup__close" :class="[closeClass]" @click.stop="onClickClose">
         <slot name="close">
-          <ui-icon :name="closeIcon" size="36rpx" color="#333333" hover-class="active-opacity" />
+          <ui-icon :name="useProps.closeIcon" size="36rpx" color="#333333" hover-class="active-opacity" />
         </slot>
       </view>
-      <ui-safe-area-top v-if="safeAreaInsetTop" />
+      <ui-safe-area-top v-if="useProps.safeAreaInsetTop" />
       <slot name="header" />
       <scroll-view class="ui-popup__scroll" enable-flex scroll-y :style="[scrollViewStyle]" @click.stop="onClickBody">
         <slot />
       </scroll-view>
       <slot name="footer" />
-      <ui-safe-area-bottom v-if="safeAreaInsetBottom" />
+      <ui-safe-area-bottom v-if="useProps.safeAreaInsetBottom" />
       <slot name="outside" />
     </view>
   </view>

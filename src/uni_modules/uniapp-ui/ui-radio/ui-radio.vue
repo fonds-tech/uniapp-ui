@@ -1,5 +1,5 @@
 <template>
-  <view class="ui-radio" :class="[rootClass, customClass]" :style="[rootStyle]" @click.stop="onClick">
+  <view class="ui-radio" :class="[rootClass, useProps.customClass]" :style="[rootStyle]" @click.stop="onClick">
     <view class="ui-radio__icon" :class="[iconClass]" :style="[iconContainerStyle]" @click.stop="onClickIcon">
       <slot name="icon" :checked="checked" :disabled="disabled">
         <view v-if="checked && actualShape === 'dot'" class="ui-radio__dot" :style="[dotStyle]" />

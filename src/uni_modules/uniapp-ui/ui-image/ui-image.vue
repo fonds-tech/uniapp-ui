@@ -1,5 +1,5 @@
 <template>
-  <view class="ui-image" :class="[classs, customClass]" :style="[style]" @click="onClick">
+  <view class="ui-image" :class="[classs, useProps.customClass]" :style="[style]" @click="onClick">
     <view v-if="showLoading" class="ui-image__placeholder">
       <slot name="loading">
         <view class="ui-image__icon ui-image__icon--loading" />
@@ -11,16 +11,16 @@
       </slot>
     </view>
     <image
-      v-if="src"
+      v-if="useProps.src"
       v-show="!loading && !error"
       class="ui-image__image"
-      :class="{ 'ui-image__image--fade': fade }"
-      :src="src"
-      :mode="mode"
-      :webp="webp"
-      :lazy-load="lazyLoad"
-      :draggable="draggable"
-      :show-menu-by-longpress="showMenuByLongpress"
+      :class="{ 'ui-image__image--fade': useProps.fade }"
+      :src="useProps.src"
+      :mode="useProps.mode"
+      :webp="useProps.webp"
+      :lazy-load="useProps.lazyLoad"
+      :draggable="useProps.draggable"
+      :show-menu-by-longpress="useProps.showMenuByLongpress"
       @load="onImageLoad"
       @error="onImageError"
     />

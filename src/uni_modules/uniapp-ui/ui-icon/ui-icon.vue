@@ -97,11 +97,11 @@ export default {
 <style lang="scss" scoped>
 // CDN 字体（默认）
 @font-face {
-  src:
-    url("//at.alicdn.com/t/c/font_5102197_mdw378h3bwg.woff2?t=1767430497879") format("woff2"),
-    url("//at.alicdn.com/t/c/font_5102197_mdw378h3bwg.woff?t=1767430497879") format("woff"),
-    url("//at.alicdn.com/t/c/font_5102197_mdw378h3bwg.ttf?t=1767430497879") format("truetype");
   font-family: "ui-icon";
+  src:
+    url("//at.alicdn.com/t/c/font_5102197_4kmrr4c1n2i.woff2?t=1769000769287") format("woff2"),
+    url("//at.alicdn.com/t/c/font_5102197_4kmrr4c1n2i.woff?t=1769000769287") format("woff"),
+    url("//at.alicdn.com/t/c/font_5102197_4kmrr4c1n2i.ttf?t=1769000769287") format("truetype");
 }
 /*  #ifdef  APP-PLUS  */
 // APP 端使用本地字体
