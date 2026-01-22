@@ -99,6 +99,7 @@ export interface CascaderTab {
   selected: CascaderOption | null
 }
 export interface CascaderOption {
+  [key: string]: any
   text: string
   value: string | number
   color?: string

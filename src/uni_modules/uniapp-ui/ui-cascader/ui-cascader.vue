@@ -2,7 +2,7 @@
   <view class="ui-cascader" :class="[customClass]" :style="[style]">
     <view v-if="showHeader" class="ui-cascader__header">
       <slot name="title">
-        <text class="ui-cascader__header__title">{{ title }}</text>
+        <text class="ui-cascader__header__title" :style="[titleStyle]">{{ title }}</text>
       </slot>
       <slot name="close">
         <ui-icon
@@ -16,7 +16,7 @@
         />
       </slot>
     </view>
-    <scroll-view scroll-x>
+    <scroll-view scroll-x :show-scrollbar="false">
       <view class="ui-cascader__tabs">
         <view
           v-for="(item, index) in tabs"
@@ -30,15 +30,16 @@
         <view class="ui-cascader__tabs__line" :style="[tabsLineStyle]" />
       </view>
     </scroll-view>
-    <swiper class="ui-cascader__swiper" :current="activeTab" @change="onSwiperChange">
+    <swiper class="ui-cascader__swiper" :current="activeTab" :disable-touch="!useProps.swipeable" @change="onSwiperChange">
       <swiper-item v-for="(item, index) in tabs" :key="index" class="ui-cascader__swiper__item">
-        <scroll-view scroll-y>
+        <scroll-view scroll-y :show-scrollbar="false" class="ui-cascader__scroll">
           <view class="ui-cascader__options">
             <view
               v-for="(option, optionIndex) in item.options"
               :key="optionIndex"
               class="ui-cascader__options__option"
               :class="{ 'ui-cascader__options__option--selected': item.selected && option[valueKey] === item.selected[valueKey] }"
+              :style="[item.selected && option[valueKey] === item.selected[valueKey] ? activeOptionStyle : optionStyle]"
               @click="onClickOption(option, index, optionIndex)"
             >
               <view class="option-text">
@@ -63,7 +64,7 @@ import { callInterceptor } from "../utils/interceptor"
 import { useRects, useStyle } from "../hooks"
 import { isDef, isEmpty, isNoEmpty, isFunction } from "../utils/check"
 import { cascaderEmits, cascaderProps, useCascaderProps } from "./index"
-import { ref, watch, computed, nextTick, getCurrentInstance } from "vue"
+import { ref, toRaw, watch, computed, nextTick, getCurrentInstance } from "vue"
 
 // 定义组件名称
 defineOptions({ name: "ui-cascader" })
@@ -89,6 +90,29 @@ const { text: textKey, value: valueKey, children: childrenKey, disabled: disable
 const style = computed(() => {
   const style: any = {}
   return useStyle({ ...style, ...useStyle(useProps.customStyle) })
+})
+
+// 标题样式
+const titleStyle = computed(() => {
+  const style: any = {}
+  if (useProps.titleSize) style.fontSize = useProps.titleSize
+  if (useProps.titleColor) style.color = useProps.titleColor
+  if (useProps.titleWeight) style.fontWeight = useProps.titleWeight
+  return useStyle(style)
+})
+
+// 选项样式
+const optionStyle = computed(() => {
+  const style: any = {}
+  if (useProps.color) style.color = useProps.color
+  return useStyle(style)
+})
+
+// 选中选项样式
+const activeOptionStyle = computed(() => {
+  const style: any = {}
+  if (useProps.activeColor) style.color = useProps.activeColor
+  return useStyle(style)
 })
 
 // 计算标签页下划线的样式
@@ -119,7 +143,7 @@ watch(() => activeTab.value, updateRect, { immediate: true })
 
 // 更新标签页
 async function updateTabs() {
-  const { options } = props
+  const options = useProps.options
 
   if (isDef(currentValue.value)) {
     const selectedOptions = getSelectedOptionsByValue(clone(options), currentValue.value)
@@ -152,7 +176,7 @@ async function updateTabs() {
 }
 
 // 根据值获取选中的选项
-function getSelectedOptionsByValue(options: CascaderOption[], value: string | number): CascaderOption[] {
+function getSelectedOptionsByValue(options: CascaderOption[], value: string | number): CascaderOption[] | undefined {
   for (const option of options) {
     if (option[valueKey] === value) return [option]
 
@@ -161,6 +185,7 @@ function getSelectedOptionsByValue(options: CascaderOption[], value: string | nu
       if (selectedOptions) return [option, ...selectedOptions]
     }
   }
+  return undefined
 }
 
 // 更新标签页位置信息
@@ -309,7 +334,7 @@ export default {
   }
 
   &__swiper {
-    height: 100%;
+    flex: 1;
     padding-top: var(--ui-spacing-lg);
 
     &__item {
@@ -319,6 +344,10 @@ export default {
       position: relative;
       flex-direction: row;
     }
+  }
+
+  &__scroll {
+    height: 100%;
   }
 
   &__options {

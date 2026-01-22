@@ -117,20 +117,35 @@ export const [dialogProps, useDialogProps] = createProps("dialog", {
    */
   customStyle: [String, Object] as PropType<string | CSSProperties>,
 })
+
+export type DialogOpenAction = "inner" | "outside"
+export type DialogDoneAction = "confirm" | "cancel" | "overlay"
+export type DialogCloseAction = "confirm" | "cancel" | "overlay" | "close"
+
+export interface DialogConfirmNext {
+  close: () => void
+  done: () => void
+}
+
+export interface DialogCancelNext {
+  close: () => void
+  done: () => void
+}
+
+export interface DialogOverlayNext {
+  close: (action: DialogCloseAction) => void
+}
+
 export const dialogEmits = {
   "update:show": (show: boolean) => true,
   open: () => true,
   opened: () => true,
   close: () => true,
   closed: () => true,
-  cancel: (next?: { close: (action: DialogCloseAction) => void; done: (action: DialogDoneAction) => void }) => true,
-  confirm: (next?: { close: (action: DialogCloseAction) => void; done: (action: DialogDoneAction) => void }) => true,
-  clickOverlay: (next?: { close: (action: DialogCloseAction) => void }) => true,
+  cancel: (next?: DialogCancelNext) => true,
+  confirm: (next?: DialogConfirmNext) => true,
+  clickOverlay: (next?: DialogOverlayNext) => true,
 }
-
-export type DialogOpenAction = "inner" | "outside"
-export type DialogDoneAction = "confirm" | "cancel" | "overlay"
-export type DialogCloseAction = "confirm" | "cancel" | "overlay" | "close"
 
 export interface DialogOptions {
   /**
