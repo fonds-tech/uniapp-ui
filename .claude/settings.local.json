@@ -11,7 +11,8 @@
       "mcp__serena__read_memory",
       "Read(//Users/macos/WebProject/vant/packages/vant/src/number-keyboard/**)",
       "mcp__serena__think_about_task_adherence",
-      "mcp__serena__think_about_whether_you_are_done"
+      "mcp__serena__think_about_whether_you_are_done",
+      "Bash(npx vue-tsc:*)"
     ]
   }
 }

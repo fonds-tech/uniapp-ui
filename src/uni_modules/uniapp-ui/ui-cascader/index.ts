@@ -46,11 +46,11 @@ export const [cascaderProps, useCascaderProps] = createProps("cascader", {
    */
   titleSize: numericProp,
   /**
-   * 标题大小
+   * 标题颜色
    */
-  titleColor: numericProp,
+  titleColor: String,
   /**
-   * 标题大小
+   * 标题字重
    */
   titleWeight: numericProp,
   /**
@@ -88,8 +88,8 @@ export const [cascaderProps, useCascaderProps] = createProps("cascader", {
 })
 export const cascaderEmits = {
   close: () => true,
-  change: (data: { value: string | number; selectedOptions: CascaderOption[]; index: number }) => true,
-  finish: (data: { value: string | number; selectedOptions: CascaderOption[]; index: number }) => true,
+  change: (data: { value: string | number; text: string; selectedOptions: CascaderOption[]; index: number }) => true,
+  finish: (data: { value: string | number; text: string; selectedOptions: CascaderOption[]; index: number }) => true,
   clickTab: (data: { index: number }) => true,
   "update:modelValue": (value: string | number) => true,
 }
@@ -99,9 +99,10 @@ export interface CascaderTab {
   selected: CascaderOption | null
 }
 export interface CascaderOption {
-  [key: string]: any
-  text: string
-  value: string | number
+  /** 支持自定义字段名 */
+  [key: string]: unknown
+  text?: string
+  value?: string | number
   color?: string
   children?: CascaderOption[]
   disabled?: boolean

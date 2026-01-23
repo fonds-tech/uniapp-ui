@@ -33,12 +33,20 @@
     <swiper class="ui-cascader__swiper" :current="activeTab" :disable-touch="!useProps.swipeable" @change="onSwiperChange">
       <swiper-item v-for="(item, index) in tabs" :key="index" class="ui-cascader__swiper__item">
         <scroll-view scroll-y :show-scrollbar="false" class="ui-cascader__scroll">
-          <view class="ui-cascader__options">
+          <view v-if="!item.options || item.options.length === 0" class="ui-cascader__empty">
+            <slot name="empty">
+              <text class="ui-cascader__empty__text">暂无数据</text>
+            </slot>
+          </view>
+          <view v-else class="ui-cascader__options">
             <view
               v-for="(option, optionIndex) in item.options"
               :key="optionIndex"
               class="ui-cascader__options__option"
-              :class="{ 'ui-cascader__options__option--selected': item.selected && option[valueKey] === item.selected[valueKey] }"
+              :class="{
+                'ui-cascader__options__option--selected': item.selected && option[valueKey] === item.selected[valueKey],
+                'ui-cascader__options__option--disabled': option[disabledKey],
+              }"
               :style="[item.selected && option[valueKey] === item.selected[valueKey] ? activeOptionStyle : optionStyle]"
               @click="onClickOption(option, index, optionIndex)"
             >
@@ -271,6 +279,19 @@ function onSwiperChange(event: any) {
 function onClickClose() {
   emits("close")
 }
+
+// 重置选择
+function reset() {
+  currentValue.value = ""
+  tabs.value = [{ options: useProps.options, selected: null }]
+  activeTab.value = 0
+}
+
+// 暴露实例方法
+defineExpose({
+  reset,
+  updateTabs,
+})
 </script>
 
 <script lang="ts">
@@ -350,6 +371,18 @@ export default {
     height: 100%;
   }
 
+  &__empty {
+    display: flex;
+    padding: var(--ui-spacing-xl) var(--ui-spacing-lg);
+    align-items: center;
+    justify-content: center;
+
+    &__text {
+      color: var(--ui-color-text-tertiary);
+      font-size: var(--ui-font-size-md);
+    }
+  }
+
   &__options {
     &__option {
       display: flex;
@@ -360,6 +393,11 @@ export default {
 
       &--selected {
         color: var(--ui-color-primary);
+      }
+
+      &--disabled {
+        opacity: 0.5;
+        pointer-events: none;
       }
     }
   }

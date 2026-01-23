@@ -50,6 +50,7 @@ export default defineConfig({
             { text: "Badge 徽标", link: "/components/badge" },
             { text: "Loading 加载", link: "/components/loading" },
             { text: "TextHighlight 文本高亮", link: "/components/text-highlight" },
+            { text: "TextEllipsis 文本省略", link: "/components/text-ellipsis" },
             { text: "Transition 过渡动画", link: "/components/transition" },
           ],
         },
