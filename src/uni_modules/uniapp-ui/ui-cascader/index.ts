@@ -4,7 +4,50 @@ import type { PropType, CSSProperties, ExtractPropTypes } from "vue"
 import { createProps } from "../hooks"
 import { truthProp, numericProp, makeStringProp, makeNumericProp } from "../utils/props"
 
+// Popup 模式类型
+export type PopupMode = "top" | "bottom" | "left" | "right" | "center"
+
 export const [cascaderProps, useCascaderProps] = createProps("cascader", {
+  /**
+   * 是否显示弹窗
+   */
+  show: Boolean,
+  /**
+   * 弹窗位置
+   */
+  mode: makeStringProp<PopupMode>("bottom"),
+  /**
+   * 圆角大小
+   */
+  borderRadius: numericProp,
+  /**
+   * 点击遮罩是否关闭
+   */
+  closeOnClickOverlay: truthProp,
+  /**
+   * 是否显示遮罩
+   */
+  overlay: truthProp,
+  /**
+   * 动画时长
+   */
+  duration: makeNumericProp(300),
+  /**
+   * 弹窗层级
+   */
+  zIndex: numericProp,
+  /**
+   * 背景色
+   */
+  background: String,
+  /**
+   * 底部安全区
+   */
+  safeAreaInsetBottom: truthProp,
+  /**
+   * 是否在显示时才渲染
+   */
+  lazyRender: truthProp,
   /**
    * 绑定值
    */
@@ -92,6 +135,7 @@ export const cascaderEmits = {
   finish: (data: { value: string | number; text: string; selectedOptions: CascaderOption[]; index: number }) => true,
   clickTab: (data: { index: number }) => true,
   "update:modelValue": (value: string | number) => true,
+  "update:show": (show: boolean) => typeof show === "boolean",
 }
 
 export interface CascaderTab {

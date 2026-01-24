@@ -1,68 +1,82 @@
 <template>
-  <view class="ui-cascader" :class="[customClass]" :style="[style]">
-    <view v-if="showHeader" class="ui-cascader__header">
-      <slot name="title">
-        <text class="ui-cascader__header__title" :style="[titleStyle]">{{ title }}</text>
-      </slot>
-      <slot name="close">
-        <ui-icon
-          v-if="closeable"
-          custom-class="ui-cascader__header__close"
-          :name="closeIcon"
-          :size="closeIconSize"
-          :color="closeIconColor"
-          :weight="closeIconWeight"
-          @click="onClickClose"
-        />
-      </slot>
-    </view>
-    <scroll-view scroll-x :show-scrollbar="false">
-      <view class="ui-cascader__tabs">
-        <view
-          v-for="(item, index) in tabs"
-          :key="index"
-          class="ui-cascader__tabs__tab"
-          :class="{ 'ui-cascader__tabs__tab--unselected': !item.selected }"
-          @click="onClickTab(item, index)"
-        >
-          {{ item.selected ? item.selected[textKey] : placeholder }}
-        </view>
-        <view class="ui-cascader__tabs__line" :style="[tabsLineStyle]" />
+  <ui-popup
+    :show="visible"
+    :mode="useProps.mode"
+    :border-radius="useProps.borderRadius"
+    :close-on-click-overlay="useProps.closeOnClickOverlay"
+    :overlay="useProps.overlay"
+    :duration="useProps.duration"
+    :z-index="useProps.zIndex"
+    :background="useProps.background"
+    :safe-area-inset-bottom="useProps.safeAreaInsetBottom"
+    :lazy-render="useProps.lazyRender"
+    @update:show="handleUpdateShow"
+  >
+    <view class="ui-cascader" :class="[customClass]" :style="[style]">
+      <view v-if="showHeader" class="ui-cascader__header">
+        <slot name="title">
+          <text class="ui-cascader__header__title" :style="[titleStyle]">{{ title }}</text>
+        </slot>
+        <slot name="close">
+          <ui-icon
+            v-if="closeable"
+            custom-class="ui-cascader__header__close"
+            :name="closeIcon"
+            :size="closeIconSize"
+            :color="closeIconColor"
+            :weight="closeIconWeight"
+            @click="onClickClose"
+          />
+        </slot>
       </view>
-    </scroll-view>
-    <swiper class="ui-cascader__swiper" :current="activeTab" :disable-touch="!useProps.swipeable" @change="onSwiperChange">
-      <swiper-item v-for="(item, index) in tabs" :key="index" class="ui-cascader__swiper__item">
-        <scroll-view scroll-y :show-scrollbar="false" class="ui-cascader__scroll">
-          <view v-if="!item.options || item.options.length === 0" class="ui-cascader__empty">
-            <slot name="empty">
-              <text class="ui-cascader__empty__text">暂无数据</text>
-            </slot>
+      <scroll-view scroll-x :show-scrollbar="false">
+        <view class="ui-cascader__tabs">
+          <view
+            v-for="(item, index) in tabs"
+            :key="index"
+            class="ui-cascader__tabs__tab"
+            :class="{ 'ui-cascader__tabs__tab--unselected': !item.selected }"
+            @click="onClickTab(item, index)"
+          >
+            {{ item.selected ? item.selected[textKey] : placeholder }}
           </view>
-          <view v-else class="ui-cascader__options">
-            <view
-              v-for="(option, optionIndex) in item.options"
-              :key="optionIndex"
-              class="ui-cascader__options__option"
-              :class="{
-                'ui-cascader__options__option--selected': item.selected && option[valueKey] === item.selected[valueKey],
-                'ui-cascader__options__option--disabled': option[disabledKey],
-              }"
-              :style="[item.selected && option[valueKey] === item.selected[valueKey] ? activeOptionStyle : optionStyle]"
-              @click="onClickOption(option, index, optionIndex)"
-            >
-              <view class="option-text">
-                {{ option[textKey] }}
-              </view>
-              <ui-icon v-if="item.selected && option[valueKey] === item.selected[valueKey]" name="check" />
+          <view class="ui-cascader__tabs__line" :style="[tabsLineStyle]" />
+        </view>
+      </scroll-view>
+      <swiper class="ui-cascader__swiper" :current="activeTab" :disable-touch="!useProps.swipeable" @change="onSwiperChange">
+        <swiper-item v-for="(item, index) in tabs" :key="index" class="ui-cascader__swiper__item">
+          <scroll-view scroll-y :show-scrollbar="false" class="ui-cascader__scroll">
+            <view v-if="!item.options || item.options.length === 0" class="ui-cascader__empty">
+              <slot name="empty">
+                <text class="ui-cascader__empty__text">暂无数据</text>
+              </slot>
             </view>
-          </view>
-        </scroll-view>
-      </swiper-item>
-    </swiper>
-    <view v-if="loading" class="ui-cascader__loading">
-      <ui-loading color="primary" size="50rpx" />
+            <view v-else class="ui-cascader__options">
+              <view
+                v-for="(option, optionIndex) in item.options"
+                :key="optionIndex"
+                class="ui-cascader__options__option"
+                :class="{
+                  'ui-cascader__options__option--selected': item.selected && option[valueKey] === item.selected[valueKey],
+                  'ui-cascader__options__option--disabled': option[disabledKey],
+                }"
+                :style="[item.selected && option[valueKey] === item.selected[valueKey] ? activeOptionStyle : optionStyle]"
+                @click="onClickOption(option, index, optionIndex)"
+              >
+                <view class="option-text">
+                  {{ option[textKey] }}
+                </view>
+                <ui-icon v-if="item.selected && option[valueKey] === item.selected[valueKey]" name="check" />
+              </view>
+            </view>
+          </scroll-view>
+        </swiper-item>
+      </swiper>
+      <view v-if="loading" class="ui-cascader__loading">
+        <ui-loading color="primary" size="50rpx" />
+      </view>
     </view>
-  </view>
+  </ui-popup>
 </template>
 
 <script setup lang="ts">
@@ -84,6 +98,7 @@ const useProps = useCascaderProps(props)
 const instance = getCurrentInstance()
 
 // 定义响应式数据
+const visible = ref(false) // 弹窗显示状态
 const tabs = ref<CascaderTab[]>([]) // 存储级联选择器的标签页
 const tabsRect = ref<UniApp.NodeInfo[]>([]) // 存储标签页的位置信息
 const loading = ref(false) // 加载状态
@@ -143,6 +158,27 @@ watch(
   { immediate: true },
 )
 
+// 同步外部 show 与内部弹窗状态，保证受控与内部关闭一致
+watch(
+  () => useProps.show,
+  (value) => {
+    visible.value = value
+  },
+  { immediate: true },
+)
+
+watch(
+  () => visible.value,
+  (value) => {
+    emits("update:show", value)
+    if (value) {
+      nextTick(updateRect)
+      return
+    }
+    emits("close")
+  },
+)
+
 // 监听useProps.options的变化
 watch(() => useProps.options, updateTabs, { deep: true })
 
@@ -157,18 +193,22 @@ async function updateTabs() {
     const selectedOptions = getSelectedOptionsByValue(clone(options), currentValue.value)
 
     if (selectedOptions) {
-      let optionsCursor = options
+      let optionsCursor: CascaderOption[] | undefined = options
 
       tabs.value = selectedOptions.map((option) => {
         const tab = { options: optionsCursor, selected: option }
 
         const next = optionsCursor.find((item: any) => item[valueKey] === option[valueKey])
-        if (next) optionsCursor = next[childrenKey]
+        if (next) {
+          optionsCursor = next[childrenKey] as CascaderOption[] | undefined
+        } else {
+          optionsCursor = undefined
+        }
 
         return tab
       })
 
-      if (optionsCursor) {
+      if (optionsCursor && optionsCursor.length > 0) {
         tabs.value.push({ options: optionsCursor, selected: null })
       }
 
@@ -188,8 +228,9 @@ function getSelectedOptionsByValue(options: CascaderOption[], value: string | nu
   for (const option of options) {
     if (option[valueKey] === value) return [option]
 
-    if (option[childrenKey]) {
-      const selectedOptions = getSelectedOptionsByValue(option[childrenKey], value)
+    const children = option[childrenKey] as CascaderOption[] | undefined
+    if (children && children.length > 0) {
+      const selectedOptions = getSelectedOptionsByValue(children, value)
       if (selectedOptions) return [option, ...selectedOptions]
     }
   }
@@ -200,6 +241,10 @@ function getSelectedOptionsByValue(options: CascaderOption[], value: string | nu
 async function updateRect() {
   await nextTick()
   tabsRect.value = await useRects(".ui-cascader__tabs__tab", instance)
+}
+
+function handleUpdateShow(value: boolean) {
+  visible.value = value
 }
 
 // 点击标签页的处理函数
@@ -219,8 +264,9 @@ async function onClickOption(option: CascaderOption, index: number, optionIndex:
       tabs.value = tabs.value.slice(0, index + 1)
     }
 
-    if (isNoEmpty(option[childrenKey])) {
-      const nextTab = { options: option[childrenKey], selected: null }
+    const children = option[childrenKey] as CascaderOption[] | undefined
+    if (isNoEmpty(children)) {
+      const nextTab = { options: children, selected: null }
 
       if (tabs.value[index + 1]) {
         tabs.value[index + 1] = nextTab
@@ -233,15 +279,18 @@ async function onClickOption(option: CascaderOption, index: number, optionIndex:
       })
     }
 
-    const selectedOptions = tabs.value.map((tab) => toRaw(tab.selected)).filter(Boolean)
+    const selectedOptions = tabs.value.map((tab) => toRaw(tab.selected)).filter((item): item is CascaderOption => Boolean(item))
+    const selectedValue = option[valueKey] as string | number
+    const selectedText = String(option[textKey] ?? "")
 
-    const params = { value: option[valueKey], text: option[textKey], index, selectedOptions }
-    currentValue.value = option[valueKey]
+    const params = { value: selectedValue, text: selectedText, index, selectedOptions }
+    currentValue.value = selectedValue
     emits("change", toRaw(params))
 
-    if (isEmpty(option[childrenKey])) {
+    if (isEmpty(children)) {
       emits("finish", toRaw(params))
-      emits("update:modelValue", option[valueKey])
+      emits("update:modelValue", selectedValue)
+      visible.value = false
     }
 
     nextTick(updateRect)
@@ -277,7 +326,7 @@ function onSwiperChange(event: any) {
 
 // 点击关闭按钮的处理函数
 function onClickClose() {
-  emits("close")
+  visible.value = false
 }
 
 // 重置选择
@@ -355,7 +404,6 @@ export default {
   }
 
   &__swiper {
-    flex: 1;
     padding-top: var(--ui-spacing-lg);
 
     &__item {

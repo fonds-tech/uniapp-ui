@@ -16,6 +16,16 @@ UiCascader 组件，属性与事件以源码注释为准。
 
 | 参数            | 说明                                                            | 类型                                                  | 默认值     | 可选值 |
 | --------------- | --------------------------------------------------------------- | ----------------------------------------------------- | ---------- | ------ |
+| show            | 是否显示弹窗                                                    | boolean                                               | false      | -      |
+| mode            | 弹窗位置                                                        | "top" \| "bottom" \| "left" \| "right" \| "center"     | bottom     | -      |
+| borderRadius    | 圆角大小                                                        | string \| number                                      | 24rpx 24rpx 0 0 | - |
+| closeOnClickOverlay | 点击遮罩是否关闭                                           | boolean                                               | true       | -      |
+| overlay         | 是否显示遮罩                                                    | boolean                                               | true       | -      |
+| duration        | 动画时长                                                        | number \| string                                      | 300        | -      |
+| zIndex          | 弹窗层级                                                        | number \| string                                      | -          | -      |
+| background      | 背景色                                                          | string                                                | -          | -      |
+| safeAreaInsetBottom | 底部安全区                                                 | boolean                                               | true       | -      |
+| lazyRender      | 是否在显示时才渲染                                              | boolean                                               | true       | -      |
 | modelValue      | 绑定值                                                          | numericProp                                           | -          | -      |
 | title           | 顶部标题                                                        | string                                                | -          | -      |
 | options         | 可选项数据源                                                    | Array as PropType<CascaderOption[]>                   | () => []   | -      |
@@ -39,13 +49,14 @@ UiCascader 组件，属性与事件以源码注释为准。
 
 ## Events
 
-| 事件名   | 说明 | 回调参数                                                                            |
-| -------- | ---- | ----------------------------------------------------------------------------------- |
-| close    | -    | -                                                                                   |
-| change   | -    | data: { value: string \| number; selectedOptions: CascaderOption[]; index: number } |
-| finish   | -    | data: { value: string \| number; selectedOptions: CascaderOption[]; index: number } |
-| clickTab | -    | data: { index: number }                                                             |
-| update   | -    | value: string \| number                                                             |
+| 事件名          | 说明 | 回调参数                                                                            |
+| --------------- | ---- | ----------------------------------------------------------------------------------- |
+| close           | -    | -                                                                                   |
+| change          | -    | data: { value: string \| number; selectedOptions: CascaderOption[]; index: number } |
+| finish          | -    | data: { value: string \| number; selectedOptions: CascaderOption[]; index: number } |
+| clickTab        | -    | data: { index: number }                                                             |
+| update:modelValue | -  | value: string \| number                                                             |
+| update:show     | -    | show: boolean                                                                       |
 
 ## Slots
 
