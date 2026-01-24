@@ -96,7 +96,6 @@ const props = defineProps(cascaderProps)
 const emits = defineEmits(cascaderEmits)
 const useProps = useCascaderProps(props)
 const instance = getCurrentInstance()
-
 // 定义响应式数据
 const visible = ref(false) // 弹窗显示状态
 const tabs = ref<CascaderTab[]>([]) // 存储级联选择器的标签页
@@ -186,7 +185,7 @@ watch(() => useProps.options, updateTabs, { deep: true })
 watch(() => activeTab.value, updateRect, { immediate: true })
 
 // 更新标签页
-async function updateTabs() {
+function updateTabs() {
   const options = useProps.options
 
   if (isDef(currentValue.value)) {
@@ -212,8 +211,7 @@ async function updateTabs() {
         tabs.value.push({ options: optionsCursor, selected: null })
       }
 
-      await updateRect()
-
+      nextTick(updateRect)
       nextTick(() => {
         activeTab.value = tabs.value.length - 1
       })
@@ -221,6 +219,7 @@ async function updateTabs() {
     }
   }
   tabs.value = [{ options, selected: null }]
+  nextTick(updateRect)
 }
 
 // 根据值获取选中的选项
@@ -254,10 +253,10 @@ function onClickTab(item: CascaderTab, index: number) {
 }
 
 // 点击选项的处理函数
-async function onClickOption(option: CascaderOption, index: number, optionIndex: number) {
+function onClickOption(option: CascaderOption, index: number, optionIndex: number) {
   if (option[disabledKey]) return
 
-  const next = async () => {
+  const next = () => {
     tabs.value[index].selected = option
 
     if (tabs.value.length > index + 1) {
@@ -273,11 +272,13 @@ async function onClickOption(option: CascaderOption, index: number, optionIndex:
       } else {
         tabs.value.push(nextTab)
       }
-      await updateRect()
+      nextTick(updateRect)
       nextTick(() => {
         activeTab.value = tabs.value.length - 1
       })
     }
+
+    nextTick(updateRect)
 
     const selectedOptions = tabs.value.map((tab) => toRaw(tab.selected)).filter((item): item is CascaderOption => Boolean(item))
     const selectedValue = option[valueKey] as string | number
@@ -292,8 +293,6 @@ async function onClickOption(option: CascaderOption, index: number, optionIndex:
       emits("update:modelValue", selectedValue)
       visible.value = false
     }
-
-    nextTick(updateRect)
   }
 
   // 处理beforeChange拦截器
@@ -359,18 +358,18 @@ export default {
 
   &__header {
     display: flex;
-    padding: var(--ui-spacing-lg);
+    padding: var(--ui-spacing-md);
     align-items: center;
     justify-content: space-between;
 
     &__title {
-      font-size: var(--ui-font-size-lg);
+      font-size: var(--ui-font-size-sm);
       font-weight: var(--ui-font-weight-bold);
     }
   }
 
   &__tabs {
-    height: 100rpx;
+    height: 60rpx;
     display: flex;
     padding: 0 var(--ui-spacing-md);
     position: relative;
@@ -378,22 +377,21 @@ export default {
     &__tab {
       width: max-content;
       height: 100%;
-      margin: 0 var(--ui-spacing-md);
       display: flex;
-      font-size: var(--ui-font-size-md);
+      font-size: var(--ui-font-size-sm);
       align-items: center;
       font-weight: var(--ui-font-weight-bold);
+      margin-right: var(--ui-spacing-md);
       justify-content: center;
 
       &--unselected {
-        color: var(--ui-color-text-secondary);
+        color: var(--ui-color-text-tertiary);
         font-weight: var(--ui-font-weight-normal);
       }
     }
 
     &__line {
       left: 0;
-      width: 100rpx;
       bottom: 0;
       height: 6rpx;
       position: absolute;
@@ -404,7 +402,7 @@ export default {
   }
 
   &__swiper {
-    padding-top: var(--ui-spacing-lg);
+    padding-top: var(--ui-spacing-md);
 
     &__item {
       flex: 1;
@@ -432,10 +430,13 @@ export default {
   }
 
   &__options {
+    gap: var(--ui-spacing-md);
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
     &__option {
       display: flex;
-      padding: var(--ui-spacing-md) var(--ui-spacing-lg);
-      font-size: var(--ui-font-size-md);
+      padding: 0 var(--ui-spacing-md);
+      font-size: var(--ui-font-size-sm);
       align-items: center;
       justify-content: space-between;
 
