@@ -99,7 +99,7 @@ export const [cascaderProps, useCascaderProps] = createProps("cascader", {
   /**
    * 关闭图标名称或图片链接，等同于 Icon 组件的 name 属性
    */
-  closeIcon: makeStringProp("cross"),
+  closeIcon: makeStringProp("close"),
   /**
    * 关闭图标大小
    */

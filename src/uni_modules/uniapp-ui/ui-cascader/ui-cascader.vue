@@ -18,15 +18,7 @@
           <text class="ui-cascader__header__title" :style="[titleStyle]">{{ title }}</text>
         </slot>
         <slot name="close">
-          <ui-icon
-            v-if="closeable"
-            custom-class="ui-cascader__header__close"
-            :name="closeIcon"
-            :size="closeIconSize"
-            :color="closeIconColor"
-            :weight="closeIconWeight"
-            @click="onClickClose"
-          />
+          <ui-icon v-if="closeable" :name="closeIcon" :size="closeIconSize" :color="closeIconColor" :weight="closeIconWeight" @click="onClickClose" />
         </slot>
       </view>
       <scroll-view scroll-x :show-scrollbar="false">
@@ -219,6 +211,7 @@ function updateTabs() {
     }
   }
   tabs.value = [{ options, selected: null }]
+  activeTab.value = 0
   nextTick(updateRect)
 }
 

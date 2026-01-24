@@ -53,18 +53,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 新增：自定义关闭图标 -->
-    <demo-section title="自定义关闭图标">
-      <demo-block direction="column" align="start" :gap="16">
-        <text class="demo-text">通过 close-icon 系列属性自定义关闭图标</text>
-        <demo-block :cols="3" :gap="16">
-          <ui-button size="small" @click="showCloseIcon('cross')">cross</ui-button>
-          <ui-button size="small" @click="showCloseIcon('close')">close</ui-button>
-          <ui-button size="small" @click="showCloseIcon('arrow-down')">arrow-down</ui-button>
-        </demo-block>
-      </demo-block>
-    </demo-section>
-
     <!-- 新增：隐藏头部栏 -->
     <demo-section title="隐藏头部栏">
       <demo-block direction="column" align="start" :gap="16">
@@ -123,38 +111,6 @@
             <text class="event-text">{{ log }}</text>
           </view>
         </view>
-      </demo-block>
-    </demo-section>
-
-    <!-- 新增：自定义样式 -->
-    <demo-section title="自定义样式">
-      <demo-block direction="column" :gap="16">
-        <demo-block :cols="2" :gap="24">
-          <ui-button size="small" @click="show13 = true">自定义类名</ui-button>
-          <ui-button size="small" @click="show14 = true">自定义样式</ui-button>
-        </demo-block>
-      </demo-block>
-    </demo-section>
-
-    <!-- 新增：综合示例 - 省市区选择 -->
-    <demo-section title="综合示例 - 省市区选择">
-      <demo-block direction="column" :gap="16">
-        <ui-cell-group>
-          <ui-cell title="省份" :value="selectedProvince || '请选择'" is-link @click="show15 = true" />
-          <ui-cell title="城市" :value="selectedCity || '请选择'" is-link @click="show16 = true" />
-          <ui-cell title="区县" :value="selectedDistrict || '请选择'" is-link @click="show17 = true" />
-        </ui-cell-group>
-        <view v-if="fullAddress" class="address-result">
-          <text class="address-label">完整地址：</text>
-          <text class="address-text">{{ fullAddress }}</text>
-        </view>
-      </demo-block>
-    </demo-section>
-
-    <!-- 新增：综合示例 - 商品分类选择 -->
-    <demo-section title="综合示例 - 商品分类选择">
-      <demo-block direction="column" :gap="16">
-        <ui-cell title="商品分类" :value="categoryText || '请选择'" is-link @click="show18 = true" />
       </demo-block>
     </demo-section>
 
@@ -237,45 +193,12 @@
 
     <!-- 自定义类名 -->
     <ui-cascader v-model="value13" v-model:show="show13" title="请选择地区" :options="options" custom-class="my-cascader" @close="show13 = false" @finish="onFinish13" />
-
-    <!-- 自定义样式 -->
-    <ui-cascader
-      v-model="value14"
-      v-model:show="show14"
-      title="请选择地区"
-      :options="options"
-      :custom-style="{ background: 'linear-gradient(180deg, #f7f8fa 0%, #fff 100%)' }"
-      @close="show14 = false"
-      @finish="onFinish14"
-    />
-
-    <!-- 综合示例 - 省市区选择 -->
-    <ui-cascader v-model="provinceValue" v-model:show="show15" title="请选择省份" :options="provinceOptions" active-color="#1989fa" @close="show15 = false" @finish="onFinishProvince" />
-
-    <ui-cascader v-model="cityValue" v-model:show="show16" title="请选择城市" :options="cityOptions" active-color="#1989fa" @close="show16 = false" @finish="onFinishCity" />
-
-    <ui-cascader v-model="districtValue" v-model:show="show17" title="请选择区县" :options="districtOptions" active-color="#1989fa" @close="show17 = false" @finish="onFinishDistrict" />
-
-    <!-- 综合示例 - 商品分类选择 -->
-    <ui-cascader
-      v-model="categoryValue"
-      v-model:show="show18"
-      title="选择商品分类"
-      :options="categoryOptions"
-      active-color="#ee0a24"
-      title-size="32rpx"
-      title-weight="600"
-      close-icon="arrow-down"
-      close-icon-size="36rpx"
-      @close="show18 = false"
-      @finish="onFinishCategory"
-    />
   </demo-page>
 </template>
 
 <script setup lang="ts">
-import { useToast } from "@/uni_modules/uniapp-ui"
 import type { CascaderOption } from "@/uni_modules/uniapp-ui/ui-cascader"
+import { useToast } from "@/uni_modules/uniapp-ui"
 
 definePage({
   style: { navigationBarTitleText: "Cascader 级联选择" },
@@ -297,11 +220,6 @@ const show10 = ref(false)
 const show11 = ref(false)
 const show12 = ref(false)
 const show13 = ref(false)
-const show14 = ref(false)
-const show15 = ref(false)
-const show16 = ref(false)
-const show17 = ref(false)
-const show18 = ref(false)
 const showCloseIconPopup = ref(false)
 
 // 选中值
@@ -318,7 +236,6 @@ const value10 = ref("")
 const value11 = ref("")
 const value12 = ref("")
 const value13 = ref("")
-const value14 = ref("")
 const valueCloseIcon = ref("")
 
 // 显示文本
@@ -528,99 +445,6 @@ const customFieldOptions: any = [
   },
 ]
 
-// 商品分类选项
-const categoryOptions = [
-  {
-    text: "食品饮料",
-    value: "food",
-    children: [
-      {
-        text: "休闲零食",
-        value: "snacks",
-        children: [
-          { text: "饼干糕点", value: "biscuits" },
-          { text: "坚果炒货", value: "nuts" },
-          { text: "糖果巧克力", value: "candy" },
-        ],
-      },
-      {
-        text: "饮料冲调",
-        value: "drinks",
-        children: [
-          { text: "咖啡", value: "coffee" },
-          { text: "茶叶", value: "tea" },
-          { text: "果汁", value: "juice" },
-        ],
-      },
-    ],
-  },
-  {
-    text: "家居用品",
-    value: "home",
-    children: [
-      {
-        text: "厨房用品",
-        value: "kitchen",
-        children: [
-          { text: "锅具", value: "pots" },
-          { text: "餐具", value: "tableware" },
-          { text: "收纳", value: "storage" },
-        ],
-      },
-      {
-        text: "清洁用品",
-        value: "cleaning",
-        children: [
-          { text: "洗衣液", value: "detergent" },
-          { text: "纸巾", value: "tissue" },
-        ],
-      },
-    ],
-  },
-]
-
-// 综合示例 - 省市区选择
-const provinceValue = ref("")
-const cityValue = ref("")
-const districtValue = ref("")
-const selectedProvince = ref("")
-const selectedCity = ref("")
-const selectedDistrict = ref("")
-
-const provinceOptions = [
-  { text: "浙江省", value: "330000" },
-  { text: "江苏省", value: "320000" },
-  { text: "广东省", value: "440000" },
-]
-
-const cityOptions = computed(() => {
-  if (!selectedProvince.value) return []
-  const province = options.find((p) => p.text === selectedProvince.value)
-  return province?.children?.map((c) => ({ text: c.text, value: c.value })) || []
-})
-
-const districtOptions = computed(() => {
-  if (!selectedCity.value) return []
-  for (const province of options) {
-    const city = province.children?.find((c) => c.text === selectedCity.value)
-    if (city) {
-      return city.children?.map((d) => ({ text: d.text, value: d.value })) || []
-    }
-  }
-  return []
-})
-
-const fullAddress = computed(() => {
-  if (selectedProvince.value && selectedCity.value && selectedDistrict.value) {
-    return `${selectedProvince.value} ${selectedCity.value} ${selectedDistrict.value}`
-  }
-  return ""
-})
-
-// 商品分类
-const categoryValue = ref("")
-const categoryText = ref("")
-
 // 事件日志
 const eventLog = ref("操作级联选择器查看事件")
 const eventLogs = ref<string[]>([])
@@ -718,12 +542,6 @@ function onFinish13(data: FinishData) {
   show13.value = false
 }
 
-// 自定义样式完成
-function onFinish14(data: FinishData) {
-  toast.text(data.selectedOptions.map((item) => item.text).join("/"))
-  show14.value = false
-}
-
 // 显示关闭图标控制
 function showCloseable(closeable: boolean) {
   currentCloseable.value = closeable
@@ -738,8 +556,6 @@ function showCloseIcon(icon: string) {
 
 // 异步加载拦截器
 async function onBeforeChange(value: string | number): Promise<boolean> {
-  toast.loading("加载中...")
-
   // 模拟异步加载
   await new Promise((resolve) => setTimeout(resolve, 1000))
 
@@ -777,36 +593,6 @@ function onCascaderFinish(data: FinishData) {
 
 function onCascaderClickTab(data: { index: number }) {
   addEventLog(`触发 click-tab 事件，索引: ${data.index}`)
-}
-
-// 省市区选择
-function onFinishProvince(data: FinishData) {
-  selectedProvince.value = data.selectedOptions[0]?.text || ""
-  selectedCity.value = ""
-  selectedDistrict.value = ""
-  cityValue.value = ""
-  districtValue.value = ""
-  show15.value = false
-}
-
-function onFinishCity(data: FinishData) {
-  selectedCity.value = data.selectedOptions[0]?.text || ""
-  selectedDistrict.value = ""
-  districtValue.value = ""
-  show16.value = false
-}
-
-function onFinishDistrict(data: FinishData) {
-  selectedDistrict.value = data.selectedOptions[0]?.text || ""
-  show17.value = false
-  toast.success("地址选择完成")
-}
-
-// 商品分类选择
-function onFinishCategory(data: FinishData) {
-  categoryText.value = data.selectedOptions.map((item) => item.text).join(" > ")
-  show18.value = false
-  toast.success(`已选择: ${categoryText.value}`)
 }
 </script>
 
