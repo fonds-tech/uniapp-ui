@@ -2,8 +2,8 @@
   <demo-section title="禁用选项">
     <demo-block direction="column" align="start" :gap="16">
       <text class="demo-text">通过选项的 disabled 属性禁用该选项</text>
-      <ui-cell title="选择地区" :value="areaText || '请选择'" is-link @click="show = true" />
     </demo-block>
+    <ui-cell padding="0" title="选择地区" :value="areaText || '请选择'" @click="show = true" />
   </demo-section>
 
   <ui-cascader v-model="value" v-model:show="show" title="请选择地区" :options="optionsWithDisabled" @close="show = false" @finish="onFinish" />

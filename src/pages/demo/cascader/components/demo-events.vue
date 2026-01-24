@@ -1,7 +1,6 @@
 <template>
   <demo-section title="事件处理">
     <demo-block direction="column" align="start" :gap="16">
-      <ui-cell title="选择地区" :value="areaText || '请选择'" is-link @click="show = true" />
       <text class="demo-text">{{ eventLog }}</text>
       <view class="event-list">
         <view v-for="(log, index) in eventLogs" :key="index" class="event-item">
@@ -9,6 +8,7 @@
         </view>
       </view>
     </demo-block>
+    <ui-cell padding="0" title="选择地区" :value="areaText || '请选择'" @click="show = true" />
   </demo-section>
 
   <ui-cascader

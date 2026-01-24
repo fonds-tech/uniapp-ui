@@ -6,8 +6,8 @@
         <ui-switch v-model="currentShowHeader" />
         <text class="switch-label">{{ currentShowHeader ? "显示头部" : "隐藏头部" }}</text>
       </demo-block>
-      <ui-cell title="选择地区" :value="areaText || '请选择'" is-link @click="show = true" />
     </demo-block>
+    <ui-cell padding="0" title="选择地区" :value="areaText || '请选择'" @click="show = true" />
   </demo-section>
 
   <ui-cascader

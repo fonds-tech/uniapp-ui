@@ -1,8 +1,6 @@
 <template>
   <demo-section title="基础用法">
-    <demo-block>
-      <ui-cell title="选择地区" :value="areaText || '请选择'" is-link @click="show = true" />
-    </demo-block>
+    <ui-cell padding="0" title="选择地区" :value="areaText || '请选择'" @click="show = true" />
   </demo-section>
 
   <ui-cascader v-model="value" v-model:show="show" title="请选择地区" :options="options" @close="show = false" @finish="onFinish" />

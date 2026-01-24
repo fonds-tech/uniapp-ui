@@ -2,8 +2,8 @@
   <demo-section title="自定义占位符">
     <demo-block direction="column" align="start" :gap="16">
       <text class="demo-text">通过 placeholder 设置未选中时的提示文案</text>
-      <ui-cell title="选择地区" :value="areaText || '请选择'" is-link @click="show = true" />
     </demo-block>
+    <ui-cell padding="0" title="选择地区" :value="areaText || '请选择'" @click="show = true" />
   </demo-section>
 
   <ui-cascader

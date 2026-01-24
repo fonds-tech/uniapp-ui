@@ -6,8 +6,8 @@
         <ui-switch v-model="currentSwipeable" />
         <text class="switch-label">{{ currentSwipeable ? "开启滑动" : "关闭滑动" }}</text>
       </demo-block>
-      <ui-cell title="选择地区" :value="areaText || '请选择'" is-link @click="show = true" />
     </demo-block>
+    <ui-cell padding="0" title="选择地区" :value="areaText || '请选择'" @click="show = true" />
   </demo-section>
 
   <ui-cascader

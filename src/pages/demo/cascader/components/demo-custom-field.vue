@@ -2,8 +2,8 @@
   <demo-section title="自定义字段名">
     <demo-block direction="column" align="start" :gap="16">
       <text class="demo-text">通过 field-keys 自定义 text/value/children/disabled 字段名</text>
-      <ui-cell title="选择分类" :value="areaText || '请选择'" is-link @click="show = true" />
     </demo-block>
+    <ui-cell padding="0" title="选择分类" :value="areaText || '请选择'" @click="show = true" />
   </demo-section>
 
   <ui-cascader

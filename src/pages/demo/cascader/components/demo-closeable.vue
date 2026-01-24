@@ -7,6 +7,7 @@
         <ui-button size="small" @click="showCloseable(false)">隐藏关闭图标</ui-button>
       </demo-block>
     </demo-block>
+    <ui-cell padding="0" title="选择地区" :value="areaText || '请选择'" @click="show = true" />
   </demo-section>
 
   <ui-cascader

@@ -1,12 +1,14 @@
 <template>
   <demo-section title="双向绑定">
-    <text class="demo-text">当前值: {{ value || "未选择" }}</text>
-    <demo-block :gap="16">
-      <ui-button size="small" @click="value = '330106'">设为西湖区</ui-button>
-      <ui-button size="small" @click="value = '320102'">设为玄武区</ui-button>
-      <ui-button size="small" @click="value = ''">清空</ui-button>
+    <demo-block direction="column" align="start" :gap="16">
+      <text class="demo-text">当前值: {{ value || "未选择" }}</text>
+      <demo-block :gap="16">
+        <ui-button size="small" @click="value = '330106'">设为西湖区</ui-button>
+        <ui-button size="small" @click="value = '320102'">设为玄武区</ui-button>
+        <ui-button size="small" @click="value = ''">清空</ui-button>
+      </demo-block>
     </demo-block>
-    <ui-cell title="选择地区" :value="areaText || '请选择'" is-link @click="show = true" />
+    <ui-cell padding="0" title="选择地区" :value="areaText || '请选择'" @click="show = true" />
   </demo-section>
 
   <ui-cascader v-model="value" v-model:show="show" title="请选择地区" :options="options" @close="show = false" @finish="onFinish" />

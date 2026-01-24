@@ -3,8 +3,8 @@
     <demo-block direction="column" align="start" :gap="16">
       <text class="demo-text">通过 active-color 设置选中项颜色</text>
       <text class="demo-text">通过 color 设置未选中项颜色</text>
-      <ui-cell title="选择地区" :value="areaText || '请选择'" is-link @click="show = true" />
     </demo-block>
+    <ui-cell padding="0" title="选择地区" :value="areaText || '请选择'" @click="show = true" />
   </demo-section>
 
   <ui-cascader

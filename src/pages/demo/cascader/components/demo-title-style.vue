@@ -2,8 +2,8 @@
   <demo-section title="标题样式">
     <demo-block direction="column" align="start" :gap="16">
       <text class="demo-text">通过 title-size/color/weight 自定义标题样式</text>
-      <ui-cell title="选择地区" :value="areaText || '请选择'" is-link @click="show = true" />
     </demo-block>
+    <ui-cell padding="0" title="选择地区" :value="areaText || '请选择'" @click="show = true" />
   </demo-section>
 
   <ui-cascader
