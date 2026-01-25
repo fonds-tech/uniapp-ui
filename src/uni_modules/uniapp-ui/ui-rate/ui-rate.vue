@@ -1,12 +1,5 @@
 <template>
-  <view
-    class="ui-rate"
-    :class="[classes, customClass]"
-    :style="[style]"
-    @click="onClick"
-    @touchstart="onTouchstart"
-    @touchmove="onTouchmove"
-  >
+  <view class="ui-rate" :class="[classes, customClass]" :style="[style]" @click="onClick" @touchstart="onTouchstart" @touchmove="onTouchmove">
     <view v-for="(item, index) in list" :key="index" class="ui-rate__item" :style="[itemStyle(index)]">
       <view class="ui-rate__item__icon">
         <ui-icon :name="icon(item)" :size="size" :weight="iconWeight" :color="iconColor(item)" />

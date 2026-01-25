@@ -101,16 +101,7 @@
 
     <demo-section title="事件处理">
       <demo-block direction="column" :gap="16">
-        <ui-date-range-select
-          v-model="value17"
-          @open="onOpen"
-          @opened="onOpened"
-          @close="onClose"
-          @closed="onClosed"
-          @change="onChange"
-          @cancel="onCancel"
-          @confirm="onConfirm"
-        />
+        <ui-date-range-select v-model="value17" @open="onOpen" @opened="onOpened" @close="onClose" @closed="onClosed" @change="onChange" @cancel="onCancel" @confirm="onConfirm" />
         <view class="event-list">
           <view v-for="(log, index) in eventLogs" :key="index" class="event-item">
             <text class="event-text">{{ log }}</text>
@@ -163,7 +154,13 @@
 <script setup lang="ts">
 import type { PopupMode } from "@/uni_modules/uniapp-ui/ui-popup"
 import type { FormInstance } from "@/uni_modules/uniapp-ui/ui-form"
-import type { DateRangeSelectValue, DateRangeSelectActiveType, DateRangeSelectCancelData, DateRangeSelectChangeData, DateRangeSelectConfirmData } from "@/uni_modules/uniapp-ui/ui-date-range-select"
+import type {
+  DateRangeSelectValue,
+  DateRangeSelectActiveType,
+  DateRangeSelectCancelData,
+  DateRangeSelectChangeData,
+  DateRangeSelectConfirmData,
+} from "@/uni_modules/uniapp-ui/ui-date-range-select"
 import { useToast } from "@/uni_modules/uniapp-ui"
 
 definePage({

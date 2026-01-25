@@ -80,7 +80,7 @@ const value = ref("")
 const areaText = ref("")
 
 function onFinish(data: FinishData) {
-  areaText.value = data.selectedOptions.map((item) => (item.name ?? item.text)).join("/")
+  areaText.value = data.selectedOptions.map((item) => item.name ?? item.text).join("/")
   show.value = false
 }
 </script>

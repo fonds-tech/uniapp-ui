@@ -10,15 +10,7 @@
     <ui-cell padding="0" title="选择地区" :value="areaText || '请选择'" @click="show = true" />
   </demo-section>
 
-  <ui-cascader
-    v-model="value"
-    v-model:show="show"
-    title="请选择地区"
-    :options="options"
-    :swipeable="currentSwipeable"
-    @close="show = false"
-    @finish="onFinish"
-  />
+  <ui-cascader v-model="value" v-model:show="show" title="请选择地区" :options="options" :swipeable="currentSwipeable" @close="show = false" @finish="onFinish" />
 </template>
 
 <script setup lang="ts">

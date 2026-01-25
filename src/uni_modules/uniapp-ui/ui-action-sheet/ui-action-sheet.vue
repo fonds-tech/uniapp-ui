@@ -23,7 +23,7 @@
       <slot>
         <view class="ui-action-sheet__content">
           <view
-            v-for="(item, index) in useProps.actions"
+            v-for="(item, index) in safeActions"
             :key="index"
             class="ui-action-sheet__item"
             :class="{ 'ui-action-sheet__item--disabled': item.disabled, 'ui-action-sheet__item--loading': item.loading }"
@@ -78,6 +78,11 @@ const visible = ref(false)
 
 // 计算属性: 是否已初始化
 const inited = computed(() => !useProps.lazyRender || transition.inited.value)
+
+// 计算属性: 安全的 actions 数组
+const safeActions = computed(() => {
+  return Array.isArray(useProps.actions) ? useProps.actions : []
+})
 
 // 为 transition 的各个阶段绑定事件
 transition.on("before-enter", () => emits("open"))

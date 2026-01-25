@@ -137,9 +137,13 @@ function syncAreaText(currentValue: string | number) {
   areaText.value = getAreaTextByValue(options, currentValue)
 }
 
-watch(value, (currentValue) => {
-  syncAreaText(currentValue)
-}, { immediate: true })
+watch(
+  value,
+  (currentValue) => {
+    syncAreaText(currentValue)
+  },
+  { immediate: true },
+)
 
 function onFinish(data: FinishData) {
   areaText.value = data.selectedOptions.map((item) => item.text).join("/")

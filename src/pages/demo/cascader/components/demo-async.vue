@@ -45,12 +45,12 @@ async function onBeforeChange(value: string | number): Promise<boolean> {
   await new Promise((resolve) => setTimeout(resolve, 1000))
 
   // 动态加载子选项
-  if (value == "330000") {
+  if (value === "330000") {
     asyncOptions.value[0].children = [
       { text: "杭州市", value: "330100", children: [{ text: "西湖区", value: "330106" }] },
       { text: "宁波市", value: "330200", children: [{ text: "海曙区", value: "330203" }] },
     ]
-  } else if (value == "320000") {
+  } else if (value === "320000") {
     asyncOptions.value[1].children = [
       { text: "南京市", value: "320100", children: [{ text: "玄武区", value: "320102" }] },
       { text: "苏州市", value: "320500", children: [{ text: "虎丘区", value: "320505" }] },

@@ -1,6 +1,14 @@
 <template>
   <view>
-    <ui-overlay v-if="useProps.overlay" :show="visible" :duration="useProps.duration" :z-index="zIndex" :lazy-render="useProps.lazyRender" :custom-style="overlayStyle" @click="onClickOverlay" />
+    <ui-overlay
+      v-if="useProps.overlay"
+      :show="visible"
+      :duration="useProps.duration"
+      :z-index="zIndex"
+      :lazy-render="useProps.lazyRender"
+      :custom-style="overlayStyle"
+      @click="onClickOverlay"
+    />
     <view v-if="inited" class="ui-popup" :style="[style]" :class="[classs, useProps.customClass]" @transitionend="transition.end" @touchmove.prevent.stop="noop">
       <view v-if="useProps.closeable" class="ui-popup__close" :class="[closeClass]" @click.stop="onClickClose">
         <slot name="close">
