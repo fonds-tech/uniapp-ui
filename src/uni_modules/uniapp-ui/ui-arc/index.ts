@@ -11,7 +11,7 @@ export const [arcProps, useArcProps] = createProps("arc", {
    */
   height: makeNumericProp("130rpx"),
   /**
-   * 曲率（100-500），值越大弧度越平缓，值越小弧度越陡
+   * 曲率（50-500），值越大弧度越平缓，值越小弧度越陡
    * @default 120
    */
   curvature: makeNumericProp(120),
@@ -34,6 +34,7 @@ export const [arcProps, useArcProps] = createProps("arc", {
   left: numericProp,
   /**
    * 是否固定定位
+   * @default false
    */
   fixed: Boolean,
   /**

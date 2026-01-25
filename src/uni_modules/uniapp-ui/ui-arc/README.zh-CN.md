@@ -29,17 +29,18 @@ function handleClick() {
 
 ## Props
 
-| 参数        | 说明           | 类型             | 默认值   | 可选值 |
-| ----------- | -------------- | ---------------- | -------- | ------ |
-| top         | 顶部位置       | string \| number | -        | -      |
-| left        | 左边位置       | string \| number | -        | -      |
-| fixed       | 是否固定定位   | boolean          | `true`   | -      |
-| height      | 弧形高度       | string \| number | `130rpx` | -      |
-| percent     | 圆弧半径百分比 | string \| number | `120`    | -      |
-| background  | 背景色         | string           | -        | -      |
-| zIndex      | 元素层级       | string \| number | -        | -      |
-| customClass | 自定义类名     | string           | -        | -      |
-| customStyle | 自定义样式     | string \| object | -        | -      |
+| 参数        | 说明           | 类型             | 默认值   | 可选值           |
+| ----------- | -------------- | ---------------- | -------- | ---------------- |
+| top         | 顶部位置       | string \| number | -        | -                |
+| left        | 左边位置       | string \| number | -        | -                |
+| fixed       | 是否固定定位   | boolean          | `false`  | -                |
+| height      | 弧形高度       | string \| number | `130rpx` | -                |
+| curvature   | 曲率（50-500） | string \| number | `120`    | -                |
+| direction   | 弧形方向       | string           | `bottom` | `top` / `bottom` |
+| background  | 背景色         | string           | -        | -                |
+| zIndex      | 元素层级       | string \| number | -        | -                |
+| customClass | 自定义类名     | string           | -        | -                |
+| customStyle | 自定义样式     | string \| object | -        | -                |
 
 ## Events
 
