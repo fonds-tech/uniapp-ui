@@ -16,7 +16,7 @@
 
 <script setup lang="ts">
 import type { CascaderOption } from "@/uni_modules/uniapp-ui/ui-cascader"
-import { ref } from "vue"
+import { ref, watch } from "vue"
 
 defineOptions({ name: "demo-two-way" })
 
@@ -112,6 +112,34 @@ const options = [
 const show = ref(false)
 const value = ref("")
 const areaText = ref("")
+
+// 根据已选值回溯文本路径，保证按钮赋值时展示同步
+function getAreaTextByValue(options: CascaderOption[], target: string | number): string {
+  for (const option of options) {
+    if (option.value === target) {
+      return option.text
+    }
+    if (option.children?.length) {
+      const childText = getAreaTextByValue(option.children, target)
+      if (childText) {
+        return `${option.text}/${childText}`
+      }
+    }
+  }
+  return ""
+}
+
+function syncAreaText(currentValue: string | number) {
+  if (!currentValue) {
+    areaText.value = ""
+    return
+  }
+  areaText.value = getAreaTextByValue(options, currentValue)
+}
+
+watch(value, (currentValue) => {
+  syncAreaText(currentValue)
+}, { immediate: true })
 
 function onFinish(data: FinishData) {
   areaText.value = data.selectedOptions.map((item) => item.text).join("/")

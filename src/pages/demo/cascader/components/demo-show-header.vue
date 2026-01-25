@@ -117,7 +117,7 @@ const options = [
 const show = ref(false)
 const value = ref("")
 const areaText = ref("")
-const currentShowHeader = ref(true)
+const currentShowHeader = ref(false)
 
 function onFinish(data: FinishData) {
   areaText.value = data.selectedOptions.map((item) => item.text).join("/")
