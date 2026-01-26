@@ -67,12 +67,6 @@ const style = computed(() => {
   style.zIndex = zIndex.value
   style.background = useColor(useProps.background)
   style["--ui-popup-border-radius"] = useUnit(useProps.borderRadius)
-  // 当mode为bottom时，设置底部偏移以避免被系统底部状态栏遮挡
-  // #ifdef WEB
-  if (useProps.mode === "bottom" && windowBottom.value > 0) {
-    style.bottom = `${windowBottom.value}px`
-  }
-  // #endif
   return useStyle({ ...style, ...useStyle(useProps.customStyle), ...transition.styles.value })
 })
 
