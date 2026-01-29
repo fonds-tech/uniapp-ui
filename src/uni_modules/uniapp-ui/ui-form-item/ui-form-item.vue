@@ -1,7 +1,12 @@
 <template>
   <view class="ui-form-item" :class="[customClass]" :style="[style]">
     <view class="ui-form-item__main" :class="[mainClass]">
-      <view class="ui-form-item__label" :class="[labelClass]" :style="[labelStyle]">
+      <!--
+        labelPosition="top" 且未配置 label/label slot 时，不渲染 label 容器：
+        1) 避免空 label 容器因默认空白文本节点/外边距产生“空白占位”
+        2) required 星号也仅在有 label 内容时显示，避免只有星号/空白的异常视觉
+      -->
+      <view v-if="isLabelEffective" class="ui-form-item__label" :class="[labelClass]" :style="[labelStyle]">
         <slot name="label"> {{ label }}{{ colon ? ":" : "" }} </slot>
       </view>
       <view class="ui-form-item__content" :class="[contentClass]">
@@ -44,6 +49,8 @@ const instance = getCurrentInstance()
 
 const { parent: form } = useParent(formKey)
 const { linkChildren } = useChildren(formItemKey)
+
+const isLabelEffective = computed(() => Boolean(slots.label || props.label))
 
 const style = computed(() => {
   const style: CSSProperties = {}
@@ -98,7 +105,7 @@ const labelClass = computed(() => {
   if (prop("required")) {
     list.push("ui-form-item__label--required")
   }
-  if (props.label || slots.label) {
+  if (isLabelEffective.value) {
     list.push("ui-form-item__label--effective")
   }
   return list
@@ -138,7 +145,9 @@ const errorOffsetStyle = computed(() => {
   }
   if (prop("labelPosition") === "top") {
     style.width = "100%"
-    style.marginBottom = useUnit(prop("labelGap"))
+    if (isLabelEffective.value) {
+      style.marginBottom = useUnit(prop("labelGap"))
+    }
   }
   if (["left", "right"].includes(prop("labelPosition"))) {
     if ((prop("labelWidth") !== "auto" && useUnitToPx(prop("labelWidth")) > 0) || form.maxLabelWidth.value > 0) {

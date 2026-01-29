@@ -62,6 +62,14 @@ describe("ui-form-item 表单项组件", () => {
       expect(wrapper.find(".ui-form-item").exists()).toBe(true)
     })
 
+    it("labelPosition=top 且未配置 label 时不应渲染 label 容器（避免空白占位）", async () => {
+      const wrapper = createFormItemWrapper({
+        props: { labelPosition: "top" },
+      })
+      await waitForTransition()
+      expect(wrapper.find(".ui-form-item__label").exists()).toBe(false)
+    })
+
     it("应正确渲染带标签的表单项", async () => {
       const wrapper = createFormItemWrapper({
         props: { label: "用户名" },
