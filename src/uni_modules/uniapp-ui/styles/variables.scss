@@ -15,6 +15,9 @@ page {
   --ui-color-error-rgb: 238, 10, 36; // 错误 RGB
   --ui-color-info-rgb: 144, 147, 153; // 信息 RGB
 
+  // 品牌色衍生（基于 RGB，暗色模式会自动随 --ui-color-primary-rgb 变化）
+  --ui-color-primary-light: rgba(var(--ui-color-primary-rgb), 0.1); // 主色浅背景（用于选中态/区间）
+
   // 文本色彩
   --ui-color-text-primary: #323233; // 主要文本
   --ui-color-text-secondary: #646566; // 次要文本

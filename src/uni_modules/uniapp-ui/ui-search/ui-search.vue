@@ -228,7 +228,6 @@ export default {
     margin-left: var(--ui-spacing-md);
 
     &__button {
-      color: var(--ui-color-text);
       height: 100%;
       display: flex;
       font-size: var(--ui-font-size-sm);

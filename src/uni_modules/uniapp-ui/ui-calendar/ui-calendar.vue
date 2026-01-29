@@ -566,7 +566,6 @@ export default {
   }
 
   &__title {
-    color: var(--ui-color-text);
     font-size: 32rpx;
     text-align: center;
     font-weight: 600;
@@ -581,7 +580,6 @@ export default {
   }
 
   &__subtitle-text {
-    color: var(--ui-color-text);
     font-size: 28rpx;
     min-width: 160rpx;
     text-align: center;
@@ -598,7 +596,7 @@ export default {
     justify-content: center;
 
     &:active {
-      background-color: var(--ui-color-background-secondary);
+      background-color: var(--ui-color-background-dark);
     }
   }
 
@@ -703,7 +701,7 @@ export default {
   }
 
   &__day-text {
-    color: var(--ui-color-text);
+    color: var(--ui-color-text-primary);
     font-size: var(--ui-calendar-day-font-size);
     line-height: 1;
   }
