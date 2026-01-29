@@ -51,7 +51,7 @@ export const [popupProps, usePopupProps] = createProps("popup", {
   /**
    * 关闭按钮的图标，默认为 "cross"
    */
-  closeIcon: makeStringProp("cross"),
+  closeIcon: makeStringProp("close"),
   /**
    * 关闭按钮的位置，可选值 top-left, top-right, bottom-left, bottom-right
    */

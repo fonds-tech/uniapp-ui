@@ -1,5 +1,6 @@
 import type { ExtractPropTypes } from "vue"
 import { getGlobalProps } from "../utils/component"
+import { getCurrentInstance } from "vue"
 
 /**
  * Extract default values from Vue props definition
@@ -42,6 +43,7 @@ function extractDefaults(propsConfig: Record<string, any>): Record<string, any> 
  */
 export function useGlobalProps<T extends Record<string, any>>(name: string, props: T, propsConfig: Record<string, any>): T {
   const defaults = extractDefaults(propsConfig)
+  const instance = getCurrentInstance()
 
   return new Proxy(props, {
     get(target, key: string) {
@@ -58,6 +60,20 @@ export function useGlobalProps<T extends Record<string, any>>(name: string, prop
       }
 
       const globalConfig = getGlobalProps(name)
+      const vnodeProps = instance?.vnode?.props as Record<string, unknown> | null | undefined
+      const hasUserProp = vnodeProps ? Object.prototype.hasOwnProperty.call(vnodeProps, key) : null
+
+      if (hasUserProp === false) {
+        const globalValue = globalConfig[key]
+        if (globalValue !== undefined) {
+          return globalValue
+        }
+      }
+
+      if (hasUserProp === true) {
+        return currentValue
+      }
+
       const defaultValue = defaults[key]
 
       // 如果 prop 有提取到的默认值，检查当前值是否等于默认值

@@ -214,7 +214,6 @@ export default {
 
   &__input {
     flex: 1;
-    height: 100%;
     font-size: var(--ui-font-size-sm);
 
     &--center {

@@ -340,6 +340,11 @@ function getPropRules() {
   if (!form) {
     return undefined
   }
+  // 优先直接匹配 key（支持 "contactData.realName" 这种带点的 key）
+  if (useProps.prop && form.rules[useProps.prop]) {
+    return form.rules[useProps.prop]
+  }
+  // 降级使用深层查找
   return getDeepValue(form.rules, useProps.prop)
 }
 
@@ -465,6 +470,7 @@ export default {
   &__content {
     flex: 1;
     display: flex;
+    overflow: hidden;
 
     &--center {
       justify-content: center;
