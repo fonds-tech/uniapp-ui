@@ -121,7 +121,15 @@ const bodyStyle = computed(() => {
   const style: CSSProperties = {}
   style.height = `${navbarHeight.value}px`
   style.paddingLeft = useUnit(useProps.padding)
+  // #ifdef MP
+  // 小程序下需要考虑胶囊按钮的位置，避免右侧内容与胶囊重叠
+  const menuOffset = systemInfo.windowWidth - menuButtonInfo.left
+  const paddingPx = useUnitToPx(useProps.padding) || 0
+  style.paddingRight = `${Math.max(menuOffset, paddingPx)}px`
+  // #endif
+  // #ifndef MP
   style.paddingRight = useUnit(useProps.padding)
+  // #endif
   if (useProps.height) style.alignItems = "flex-start"
   return useStyle({ ...style, ...useStyle(useProps.customStyle) })
 })

@@ -242,7 +242,7 @@ function getValidateStatus() {
   }, {})
 }
 
-linkChildren({ props, useProps, model, rules: useProps.rules, initialModel, maxLabelWidth, registerLabelWidth, unregisterLabelWidth })
+linkChildren({ props: useProps, useProps, model, rules: useProps.rules, initialModel, maxLabelWidth, registerLabelWidth, unregisterLabelWidth })
 defineExpose({ submit, validate, validateField, validateFields, resetFields, getValues, clearValidate, getValidateStatus })
 </script>
 
