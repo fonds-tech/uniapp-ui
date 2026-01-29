@@ -16,16 +16,14 @@
 <script setup lang="ts">
 import type { NotifyOptions } from "./index"
 import { merge } from "../utils/utils"
+import { notifyEmits, notifyProps } from "./index"
 import { useUnit, useColor, useStyle } from "../hooks"
 import { ref, watch, computed, onBeforeUnmount } from "vue"
-import { notifyEmits, notifyProps, useNotifyProps } from "./index"
 
 defineOptions({ name: "ui-notify" })
 
 const props = defineProps(notifyProps)
 const emits = defineEmits(notifyEmits)
-const useProps = useNotifyProps(props)
-
 // 状态
 const inited = ref(false)
 const visible = ref(false)
@@ -84,7 +82,7 @@ watch(
 
 // 监听 show 属性
 watch(
-  () => useProps.show,
+  () => props.show,
   (val) => {
     if (val) show()
     else close()

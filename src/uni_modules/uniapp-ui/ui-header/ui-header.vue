@@ -12,7 +12,7 @@
 <script setup lang="ts">
 import type { CSSProperties } from "vue"
 import { configProviderKey } from "../ui-config-provider"
-import { headerEmits, headerProps, useHeaderProps } from "./index"
+import { headerEmits, headerProps } from "./index"
 import { useRect, useColor, useStyle, useParent, useUnitToPx } from "../hooks"
 import { ref, toRefs, computed, nextTick, onMounted, onBeforeMount, getCurrentInstance } from "vue"
 
@@ -22,7 +22,6 @@ defineOptions({ name: "ui-header" })
 // 定义props和emits
 const props = defineProps(headerProps)
 const emits = defineEmits(headerEmits)
-const useProps = useHeaderProps(props)
 // 使用useParent hook获取父组件信息
 const { parent } = useParent(configProviderKey)
 
@@ -39,10 +38,10 @@ const instance = getCurrentInstance()
 // 计算header样式
 const style = computed(() => {
   const style: CSSProperties = {}
-  style.zIndex = useProps.zIndex
-  style.top = `calc(${uiNavbarHeight.value}px + ${h5NavbarHeight.value}px + ${useUnitToPx(useProps.offset)}px)`
-  style.background = useColor(useProps.background)
-  return useStyle({ ...style, ...useStyle(useProps.customStyle) })
+  style.zIndex = props.zIndex
+  style.top = `calc(${uiNavbarHeight.value}px + ${h5NavbarHeight.value}px + ${useUnitToPx(props.offset)}px)`
+  style.background = useColor(props.background)
+  return useStyle({ ...style, ...useStyle(props.customStyle) })
 })
 
 // 计算占位符样式

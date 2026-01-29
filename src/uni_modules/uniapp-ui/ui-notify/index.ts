@@ -1,9 +1,8 @@
 import type Notify from "./ui-notify.vue"
 import type { Ref, PropType, ExtractPropTypes } from "vue"
-import { createProps } from "../hooks"
 import { styleProp, makeStringProp, makeNumericProp } from "../utils/props"
 
-export const [notifyProps, useNotifyProps] = createProps("notify", {
+export const notifyProps = {
   /**
    * 是否显示
    */
@@ -56,8 +55,7 @@ export const [notifyProps, useNotifyProps] = createProps("notify", {
    * 自定义样式
    */
   customStyle: styleProp,
-})
-
+}
 export const notifyEmits = {
   open: () => true,
   opened: () => true,

@@ -9,13 +9,12 @@ import type { CSSProperties } from "vue"
 import { useSystemInfo } from "../hooks/useSystemInfo"
 import { ref, computed, onMounted, onUnmounted } from "vue"
 import { useRgb, useMitt, useUnit, useColor, useStyle, useChildren } from "../hooks"
-import { configProviderKey, configProviderEmits, configProviderProps, useConfigProviderProps } from "./index"
+import { configProviderKey, configProviderEmits, configProviderProps } from "./index"
 
 defineOptions({ name: "ui-config-provider" })
 
 const props = defineProps(configProviderProps)
 const emits = defineEmits(configProviderEmits)
-const useProps = useConfigProviderProps(props)
 const { linkChildren } = useChildren(configProviderKey)
 
 const route = ref("")
@@ -24,28 +23,28 @@ const systemTheme = ref<"light" | "dark">("light")
 const mitt = useMitt()
 
 const currentTheme = computed(() => {
-  if (useProps.theme === "auto") {
+  if (props.theme === "auto") {
     return systemTheme.value
   }
-  return useProps.theme
+  return props.theme
 })
 
 const style = computed(() => {
   const style: CSSProperties = {}
 
-  if (useProps.themeVars) {
-    Object.entries(useProps.themeVars).forEach(([key, value]) => {
+  if (props.themeVars) {
+    Object.entries(props.themeVars).forEach(([key, value]) => {
       if (value) {
         Object.assign(style, generateColorVars(key, value))
       }
     })
   }
 
-  applyCustomCssVars(style, useProps.cssVars)
+  applyCustomCssVars(style, props.cssVars)
 
-  style.minHeight = useUnit(useProps.height)
-  style.background = useColor(useProps.background)
-  return useStyle({ ...style, ...useStyle(useProps.customStyle) })
+  style.minHeight = useUnit(props.height)
+  style.background = useColor(props.background)
+  return useStyle({ ...style, ...useStyle(props.customStyle) })
 })
 
 function init() {

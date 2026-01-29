@@ -48,19 +48,6 @@ function createMockStepsProvide(
       errorIcon: options.errorIcon,
       iconSize: options.iconSize,
     },
-    useProps: {
-      active: options.active ?? 0,
-      direction: options.direction ?? "horizontal",
-      clickable: options.clickable ?? false,
-      activeColor: options.activeColor,
-      inactiveColor: options.inactiveColor,
-      errorColor: options.errorColor,
-      activeIcon: options.activeIcon,
-      inactiveIcon: options.inactiveIcon,
-      finishIcon: options.finishIcon,
-      errorIcon: options.errorIcon,
-      iconSize: options.iconSize,
-    },
     active,
     count,
     onClickStep: vi.fn(),
@@ -576,9 +563,9 @@ describe("uiStep 组件", () => {
   })
 
   describe("暴露属性测试", () => {
-    it("应该暴露 useProps 属性", () => {
+    it("应该暴露 props 属性", () => {
       const { wrapper } = mountStep({ title: "测试" })
-      expect(wrapper.vm.useProps).toBeDefined()
+      expect(wrapper.vm.props).toBeDefined()
     })
 
     it("应该暴露 index 属性", () => {

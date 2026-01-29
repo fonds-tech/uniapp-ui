@@ -1,10 +1,9 @@
 import type SafeAreaTop from "./ui-safe-area-top.vue"
 import type { ExtractPropTypes } from "vue"
 import { isNumber } from "../utils/check"
-import { createProps } from "../hooks"
 import { styleProp, makeStringProp } from "../utils/props"
 
-export const [safeAreaTopProps, useSafeAreaTopProps] = createProps("safeAreaTop", {
+export const safeAreaTopProps = {
   /**
    * 背景色
    */
@@ -17,7 +16,7 @@ export const [safeAreaTopProps, useSafeAreaTopProps] = createProps("safeAreaTop"
    * 自定义样式
    */
   customStyle: styleProp,
-})
+}
 export const safeAreaTopEmits = {
   height: (htight: number) => isNumber(htight),
 }

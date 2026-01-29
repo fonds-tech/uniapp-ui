@@ -22,16 +22,14 @@ import type { CSSProperties } from "vue"
 import type { SwipeCellPosition } from "./index"
 import { isDef } from "../utils/check"
 import { useRect, useStyle } from "../hooks"
+import { swipeCellEmits, swipeCellProps } from "./index"
 import { ref, computed, onMounted, getCurrentInstance } from "vue"
-import { swipeCellEmits, swipeCellProps, useSwipeCellProps } from "./index"
 
 defineOptions({ name: "ui-swipe-cell" })
 
 // 定义 props 和 emits
 const props = defineProps(swipeCellProps)
 const emits = defineEmits(swipeCellEmits)
-const useProps = useSwipeCellProps(props)
-
 // 获取组件实例
 const instance = getCurrentInstance()
 
@@ -57,7 +55,7 @@ const rightWidth = ref(0)
 // 根样式
 const rootStyle = computed(() => {
   const style: CSSProperties = {}
-  return useStyle({ ...style, ...useStyle(useProps.customStyle) })
+  return useStyle({ ...style, ...useStyle(props.customStyle) })
 })
 
 // 包装器样式
@@ -72,8 +70,8 @@ const wrapperStyle = computed(() => {
 // 获取左右区域宽度
 async function getLeftWidth(): Promise<number> {
   // 优先使用用户设置的宽度
-  if (useProps.leftWidth && Number(useProps.leftWidth) > 0) {
-    return Number(useProps.leftWidth)
+  if (props.leftWidth && Number(props.leftWidth) > 0) {
+    return Number(props.leftWidth)
   }
   // 自动计算插槽宽度
   if (!instance) return 0
@@ -87,8 +85,8 @@ async function getLeftWidth(): Promise<number> {
 
 async function getRightWidth(): Promise<number> {
   // 优先使用用户设置的宽度
-  if (useProps.rightWidth && Number(useProps.rightWidth) > 0) {
-    return Number(useProps.rightWidth)
+  if (props.rightWidth && Number(props.rightWidth) > 0) {
+    return Number(props.rightWidth)
   }
   // 自动计算插槽宽度
   if (!instance) return 0
@@ -108,7 +106,7 @@ async function initWidths() {
 
 // 触摸开始
 function onTouchStart(event: TouchEvent) {
-  if (useProps.disabled) return
+  if (props.disabled) return
 
   // 重置状态
   isVerticalScroll.value = false
@@ -128,7 +126,7 @@ function onTouchStart(event: TouchEvent) {
 
 // 触摸移动
 function onTouchMove(event: TouchEvent) {
-  if (useProps.disabled || isVerticalScroll.value) return
+  if (props.disabled || isVerticalScroll.value) return
 
   const touch = event.touches[0]
   touchDeltaX.value = touch.clientX - touchStartX.value
@@ -148,7 +146,7 @@ function onTouchMove(event: TouchEvent) {
   }
 
   // 阻止事件冒泡
-  if (useProps.stopPropagation && absX > 10) {
+  if (props.stopPropagation && absX > 10) {
     event.stopPropagation()
   }
 
@@ -172,11 +170,11 @@ function onTouchMove(event: TouchEvent) {
 
 // 触摸结束
 function onTouchEnd() {
-  if (useProps.disabled) return
+  if (props.disabled) return
 
   dragging.value = false
 
-  const threshold = Number(useProps.threshold)
+  const threshold = Number(props.threshold)
   const absOffset = Math.abs(offset.value)
 
   // 根据偏移量和阈值判断是否打开
@@ -215,7 +213,7 @@ async function open(pos: SwipeCellPosition) {
   if (!opened.value || position.value !== pos) {
     opened.value = true
     emits("open", {
-      name: isDef(useProps.name) ? useProps.name : "",
+      name: isDef(props.name) ? props.name : "",
       position: pos,
     })
   }
@@ -229,8 +227,8 @@ async function close(callBeforeClose = true) {
   const currentPosition = position.value
 
   // 调用关闭前回调
-  if (callBeforeClose && useProps.beforeClose) {
-    const result = await useProps.beforeClose({
+  if (callBeforeClose && props.beforeClose) {
+    const result = await props.beforeClose({
       position: currentPosition,
       close: () => close(false),
     })
@@ -245,7 +243,7 @@ async function close(callBeforeClose = true) {
   if (opened.value) {
     opened.value = false
     emits("close", {
-      name: isDef(useProps.name) ? useProps.name : "",
+      name: isDef(props.name) ? props.name : "",
       position: currentPosition,
     })
     position.value = ""

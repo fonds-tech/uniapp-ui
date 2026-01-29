@@ -1,9 +1,8 @@
 import type Text from "./ui-text.vue"
 import type { ExtractPropTypes } from "vue"
-import { createProps } from "../hooks"
 import { styleProp, makeStringProp, makeNumericProp } from "../utils/props"
 
-export const [textProps, useTextProps] = createProps("text", {
+export const textProps = {
   /**
    * 文本内容
    */
@@ -56,8 +55,7 @@ export const [textProps, useTextProps] = createProps("text", {
    * 自定义样式
    */
   customStyle: styleProp,
-})
-
+}
 export const textEmits = {
   click: () => true,
 }

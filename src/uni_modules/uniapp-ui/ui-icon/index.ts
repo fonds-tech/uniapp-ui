@@ -1,9 +1,8 @@
 import type Icon from "./ui-icon.vue"
 import type { ExtractPropTypes } from "vue"
-import { createProps } from "../hooks"
 import { styleProp, makeStringProp, makeNumericProp } from "../utils/props"
 
-export const [iconProps, useIconProps] = createProps("icon", {
+export const iconProps = {
   /**
    * 图标名称或者图片地址
    */
@@ -64,7 +63,7 @@ export const [iconProps, useIconProps] = createProps("icon", {
    * 自定义样式
    */
   customStyle: styleProp,
-})
+}
 export const iconEmits = {
   click: () => true,
 }

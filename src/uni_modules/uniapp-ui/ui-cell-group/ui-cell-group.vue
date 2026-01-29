@@ -8,20 +8,19 @@
 import type { CSSProperties } from "vue"
 import { computed } from "vue"
 import { useUnit, useColor, useStyle, useChildren } from "../hooks"
-import { cellGroupKey, cellGroupEmits, cellGroupProps, useCellGroupProps } from "./index"
+import { cellGroupKey, cellGroupEmits, cellGroupProps } from "./index"
 
 defineOptions({ name: "ui-cell-group" })
 
 const props = defineProps(cellGroupProps)
 const emits = defineEmits(cellGroupEmits)
-const useProps = useCellGroupProps(props)
 const { childrens, linkChildren } = useChildren(cellGroupKey)
 
 const style = computed(() => {
   const style: CSSProperties = {}
-  style.background = useColor(useProps.background)
-  style.borderRadius = useUnit(useProps.radius)
-  return useStyle({ ...style, ...useStyle(useProps.customStyle) })
+  style.background = useColor(props.background)
+  style.borderRadius = useUnit(props.radius)
+  return useStyle({ ...style, ...useStyle(props.customStyle) })
 })
 
 linkChildren({ props, childrens })

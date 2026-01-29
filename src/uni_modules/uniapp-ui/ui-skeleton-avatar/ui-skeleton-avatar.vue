@@ -6,27 +6,26 @@
 import type { CSSProperties } from "vue"
 import { computed } from "vue"
 import { skeletonKey } from "../ui-skeleton"
+import { skeletonAvatarProps } from "./index"
 import { useUnit, useStyle, useParent } from "../hooks"
-import { skeletonAvatarProps, useSkeletonAvatarProps } from "./index"
 
 defineOptions({ name: "ui-skeleton-avatar" })
 
 const props = defineProps(skeletonAvatarProps)
-const useProps = useSkeletonAvatarProps(props)
 const { parent } = useParent(skeletonKey)
 
 const style = computed(() => {
   const style: CSSProperties = {}
-  if (useProps.size) {
-    style.width = useUnit(useProps.size)
-    style.height = useUnit(useProps.size)
+  if (props.size) {
+    style.width = useUnit(props.size)
+    style.height = useUnit(props.size)
   }
-  return useStyle({ ...style, ...useStyle(useProps.customStyle) })
+  return useStyle({ ...style, ...useStyle(props.customStyle) })
 })
 
 const classes = computed(() => {
   const list: string[] = []
-  list.push(`ui-skeleton-avatar--${useProps.shape}`)
+  list.push(`ui-skeleton-avatar--${props.shape}`)
   if (parent?.props?.animate) list.push("ui-skeleton-avatar--animate")
   return list
 })

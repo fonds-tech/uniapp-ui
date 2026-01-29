@@ -1,24 +1,23 @@
 <template>
-  <view class="ui-safe-area-top" :class="[useProps.customClass]" :style="[style]" />
+  <view class="ui-safe-area-top" :class="[props.customClass]" :style="[style]" />
 </template>
 
 <script setup lang="ts">
 import { ref, computed, onBeforeMount } from "vue"
 
 import { useColor, useStyle, useSystemInfo } from "../hooks"
-import { safeAreaTopEmits, safeAreaTopProps, useSafeAreaTopProps } from "./index"
+import { safeAreaTopEmits, safeAreaTopProps } from "./index"
 
 defineOptions({ name: "ui-safe-area-top" })
 
 const props = defineProps(safeAreaTopProps)
 const emits = defineEmits(safeAreaTopEmits)
-const useProps = useSafeAreaTopProps(props)
 const height = ref(0)
 const style = computed(() => {
   const style: any = {}
   style.height = `${height.value}px`
-  style.background = useColor(useProps.background)
-  return useStyle({ ...style, ...useStyle(useProps.customStyle) })
+  style.background = useColor(props.background)
+  return useStyle({ ...style, ...useStyle(props.customStyle) })
 })
 
 function resize() {

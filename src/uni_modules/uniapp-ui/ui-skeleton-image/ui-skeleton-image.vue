@@ -6,28 +6,27 @@
 import type { CSSProperties } from "vue"
 import { computed } from "vue"
 import { skeletonKey } from "../ui-skeleton"
+import { skeletonImageProps } from "./index"
 import { useUnit, useStyle, useParent } from "../hooks"
-import { skeletonImageProps, useSkeletonImageProps } from "./index"
 
 defineOptions({ name: "ui-skeleton-image" })
 
 const props = defineProps(skeletonImageProps)
-const useProps = useSkeletonImageProps(props)
 const { parent } = useParent(skeletonKey)
 
 const style = computed(() => {
   const style: CSSProperties = {}
-  const width = useProps.width ?? useProps.size
-  const height = useProps.height ?? useProps.size
+  const width = props.width ?? props.size
+  const height = props.height ?? props.size
   if (width) style.width = useUnit(width)
-  if (!useProps.square && height) style.height = useUnit(height)
-  if (useProps.radius) style.borderRadius = useUnit(useProps.radius)
-  return useStyle({ ...style, ...useStyle(useProps.customStyle) })
+  if (!props.square && height) style.height = useUnit(height)
+  if (props.radius) style.borderRadius = useUnit(props.radius)
+  return useStyle({ ...style, ...useStyle(props.customStyle) })
 })
 
 const classes = computed(() => {
   const list: string[] = []
-  if (useProps.square) list.push("ui-skeleton-image--square")
+  if (props.square) list.push("ui-skeleton-image--square")
   if (parent?.props?.animate) list.push("ui-skeleton-image--animate")
   return list
 })

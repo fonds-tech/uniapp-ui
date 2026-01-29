@@ -165,18 +165,9 @@ selectRef.value.getSelectedIndexs()
 selectRef.value.getSelectedColumns()
 ```
 
-## 全局默认值
+## 默认值策略
 
-`ui-select` 支持通过全局配置设置默认 props：
-
-```ts
-import { setGlobalProps } from "@/uni_modules/uniapp-ui"
-
-setGlobalProps("select", {
-  placeholder: "请选择",
-  confirmText: "确定",
-})
-```
+当前版本不提供“全局 props 默认值注入”能力。如需统一默认值，建议在业务侧封装一层组件，或在使用处显式传入相关 props。
 
 ## 注意事项
 

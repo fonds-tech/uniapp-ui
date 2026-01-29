@@ -9,31 +9,30 @@ import type { CSSProperties } from "vue"
 import { isArray } from "../utils/check"
 import { computed } from "vue"
 import { skeletonKey } from "../ui-skeleton"
+import { skeletonParagraphProps } from "./index"
 import { useUnit, useStyle, useParent } from "../hooks"
-import { skeletonParagraphProps, useSkeletonParagraphProps } from "./index"
 
 defineOptions({ name: "ui-skeleton-paragraph" })
 
 const props = defineProps(skeletonParagraphProps)
-const useProps = useSkeletonParagraphProps(props)
 const { parent } = useParent(skeletonKey)
 
-const row = computed(() => +useProps.row)
+const row = computed(() => +props.row)
 
 const style = computed(() => {
   const styles: CSSProperties = {}
-  styles["--ui-skeleton-paragraph-gap"] = useUnit(useProps.rowGap)
-  styles["--ui-skeleton-paragraph-height"] = useUnit(useProps.rowHeight)
-  return useStyle({ ...styles, ...useStyle(useProps.customStyle) })
+  styles["--ui-skeleton-paragraph-gap"] = useUnit(props.rowGap)
+  styles["--ui-skeleton-paragraph-height"] = useUnit(props.rowHeight)
+  return useStyle({ ...styles, ...useStyle(props.customStyle) })
 })
 
 const rowStyle = computed(() => {
   return (index: number) => {
     const style: CSSProperties = {}
-    if (isArray(useProps.rowWidth)) {
-      style.width = useUnit(useProps.rowWidth[index])
+    if (isArray(props.rowWidth)) {
+      style.width = useUnit(props.rowWidth[index])
     } else {
-      style.width = useUnit(useProps.rowWidth)
+      style.width = useUnit(props.rowWidth)
     }
     return useStyle(style)
   }

@@ -31,11 +31,6 @@ function createMockTabsProvide() {
       inactiveFontSize: "28rpx",
       inactiveFontWeight: 400,
     },
-    useProps: {
-      scrollable: false,
-      itemWidth: "auto",
-      itemMaxWidth: "",
-    },
     currentName: ref(0),
     tabRects,
     clickTab: () => {},

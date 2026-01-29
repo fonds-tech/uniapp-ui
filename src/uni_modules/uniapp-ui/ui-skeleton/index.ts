@@ -1,10 +1,9 @@
 import type Skeleton from "./ui-skeleton.vue"
 import type { PropType, InjectionKey, CSSProperties, ExtractPropTypes } from "vue"
-import { createProps } from "../hooks"
 import { truthProp, numericProp } from "../utils/props"
 
 export const skeletonKey: InjectionKey<SkeletonProvide> = Symbol("ui-skeleton")
-export const [skeletonProps, useSkeletonProps] = createProps("skeleton", {
+export const skeletonProps = {
   /**
    * 是否显示骨架屏，false 时显示插槽内容
    */
@@ -29,8 +28,7 @@ export const [skeletonProps, useSkeletonProps] = createProps("skeleton", {
    * 自定义样式
    */
   customStyle: [String, Object] as PropType<string | CSSProperties>,
-})
-
+}
 export interface SkeletonProvide {
   props: SkeletonProps
 }

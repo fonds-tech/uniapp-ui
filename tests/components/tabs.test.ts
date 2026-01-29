@@ -32,11 +32,6 @@ function createMockTabsProvide() {
       inactiveSize: "28rpx",
       inactiveWeight: 400,
     },
-    useProps: {
-      scrollable: false,
-      itemWidth: "auto",
-      itemMaxWidth: "",
-    },
     currentName: ref(0),
     tabRects,
     clickTab: vi.fn(),

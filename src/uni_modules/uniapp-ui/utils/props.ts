@@ -66,23 +66,9 @@ export const styleProp = {
 /**
  * 构建组件 props 定义
  *
- * @deprecated 此函数现在仅作为直接传递使用，全局配置功能已迁移到 useGlobalProps hook
+ * @deprecated 已废弃：直接导出 props 定义对象即可，不再需要任何包装。
  *
- * 新的推荐方式:
- * ```ts
- * // index.ts - 定义 props（不需要 buildProps 包装）
- * export const switchProps = {
- *   size: makeNumericProp(''),
- *   disabled: Boolean,
- * }
- *
- * // component.vue - 使用 useGlobalProps 合并全局配置
- * import { switchProps } from './index'
- * import { useGlobalProps } from '../hooks'
- *
- * const rawProps = defineProps(switchProps)
- * const props = useGlobalProps('switch', rawProps, switchProps)
- * ```
+ * 说明：项目已移除“全局 props 默认值注入/合并”能力，因此也不存在需要在此处兼容的历史逻辑。
  *
  * @param _name 组件名称（现已不使用）
  * @param props props 配置对象

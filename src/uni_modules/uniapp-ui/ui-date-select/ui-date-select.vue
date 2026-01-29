@@ -1,16 +1,16 @@
 <template>
-  <view class="ui-date-select" :class="[classs, useProps.customClass]" :style="[style]">
+  <view class="ui-date-select" :class="[classs, props.customClass]" :style="[style]">
     <!-- 可点击的展示区域 -->
     <view class="ui-date-select__trigger" :hover-class="hoverClass" :hover-stay-time="50" @click="handleClick">
       <view class="ui-date-select__value" :style="[valueStyle]">
-        <slot name="display" :text="displayText" :value="currentValue" :placeholder="useProps.placeholder">
+        <slot name="display" :text="displayText" :value="currentValue" :placeholder="props.placeholder">
           <text v-if="displayText" class="ui-date-select__text" :style="[textStyle]">{{ displayText }}</text>
-          <text v-else class="ui-date-select__placeholder" :style="[placeholderStyle]">{{ useProps.placeholder }}</text>
+          <text v-else class="ui-date-select__placeholder" :style="[placeholderStyle]">{{ props.placeholder }}</text>
         </slot>
       </view>
       <view v-if="showRightIcon" class="ui-date-select__icon">
         <slot name="right-icon">
-          <ui-icon :name="useProps.rightIcon" :size="useProps.rightIconSize" :color="useProps.rightIconColor" :weight="useProps.rightIconWeight" />
+          <ui-icon :name="props.rightIcon" :size="props.rightIconSize" :color="props.rightIconColor" :weight="props.rightIconWeight" />
         </slot>
       </view>
     </view>
@@ -19,32 +19,32 @@
     <ui-date-picker
       ref="datePickerRef"
       :show="visible"
-      :mode="useProps.mode"
-      :border-radius="useProps.borderRadius"
-      :close-on-click-overlay="useProps.closeOnClickOverlay"
-      :overlay="useProps.overlay"
-      :duration="useProps.duration"
-      :z-index="useProps.zIndex"
-      :background="useProps.background"
-      :safe-area-inset-bottom="useProps.safeAreaInsetBottom"
-      :show-header="useProps.showHeader"
-      :title="useProps.title"
-      :cancel-text="useProps.cancelText"
-      :confirm-text="useProps.confirmText"
-      :columns="useProps.columns"
-      :min-date="useProps.minDate"
-      :max-date="useProps.maxDate"
-      :format="useProps.format"
-      :column-filter="useProps.columnFilter"
-      :column-formatter="useProps.columnFormatter"
-      :column-height="useProps.columnHeight"
-      :visible-column-num="useProps.visibleColumnNum"
-      :column-size="useProps.columnSize"
-      :column-color="useProps.columnColor"
-      :column-weight="useProps.columnWeight"
-      :active-column-size="useProps.activeColumnSize"
-      :active-column-color="useProps.activeColumnColor"
-      :active-column-weight="useProps.activeColumnWeight"
+      :mode="props.mode"
+      :border-radius="props.borderRadius"
+      :close-on-click-overlay="props.closeOnClickOverlay"
+      :overlay="props.overlay"
+      :duration="props.duration"
+      :z-index="props.zIndex"
+      :background="props.background"
+      :safe-area-inset-bottom="props.safeAreaInsetBottom"
+      :show-header="props.showHeader"
+      :title="props.title"
+      :cancel-text="props.cancelText"
+      :confirm-text="props.confirmText"
+      :columns="props.columns"
+      :min-date="props.minDate"
+      :max-date="props.maxDate"
+      :format="props.format"
+      :column-filter="props.columnFilter"
+      :column-formatter="props.columnFormatter"
+      :column-height="props.columnHeight"
+      :visible-column-num="props.visibleColumnNum"
+      :column-size="props.columnSize"
+      :column-color="props.columnColor"
+      :column-weight="props.columnWeight"
+      :active-column-size="props.activeColumnSize"
+      :active-column-color="props.activeColumnColor"
+      :active-column-weight="props.activeColumnWeight"
       :model-value="currentValue"
       @update:model-value="handleUpdateValue"
       @update:show="handleUpdateShow"
@@ -79,14 +79,13 @@
 import type { DatePickerInstance, DatePickerCancelData, DatePickerChangeData, DatePickerConfirmData } from "../ui-date-picker"
 import { formItemKey } from "../ui-form-item"
 import { ref, watch, computed, useSlots } from "vue"
+import { dateSelectEmits, dateSelectProps } from "./index"
 import { useUnit, useColor, useStyle, useParent } from "../hooks"
-import { dateSelectEmits, dateSelectProps, useDateSelectProps } from "./index"
 
 defineOptions({ name: "ui-date-select" })
 
 const props = defineProps(dateSelectProps)
 const emits = defineEmits(dateSelectEmits)
-const useProps = useDateSelectProps(props)
 const slots = useSlots()
 
 const { parent } = useParent(formItemKey)
@@ -97,12 +96,12 @@ const lastAction = ref<"confirm" | "cancel" | null>(null)
 // 内部管理弹窗显示状态
 const visible = ref(false)
 
-const isInteractive = computed(() => !useProps.disabled && !useProps.readonly)
+const isInteractive = computed(() => !props.disabled && !props.readonly)
 
 const classs = computed(() => {
   const list: string[] = []
-  if (useProps.disabled) list.push("ui-date-select--disabled")
-  if (useProps.readonly) list.push("ui-date-select--readonly")
+  if (props.disabled) list.push("ui-date-select--disabled")
+  if (props.readonly) list.push("ui-date-select--readonly")
   return list
 })
 
@@ -111,35 +110,35 @@ const hoverClass = computed(() => {
 })
 
 const style = computed(() => {
-  return useStyle(useProps.customStyle)
+  return useStyle(props.customStyle)
 })
 
 const valueStyle = computed(() => {
   const style: Record<string, string> = {}
-  if (useProps.textAlign) {
-    style.justifyContent = useProps.textAlign === "left" ? "flex-start" : useProps.textAlign === "right" ? "flex-end" : "center"
+  if (props.textAlign) {
+    style.justifyContent = props.textAlign === "left" ? "flex-start" : props.textAlign === "right" ? "flex-end" : "center"
   }
   return useStyle(style)
 })
 
 const textStyle = computed(() => {
   const style: Record<string, string | number> = {}
-  style.color = useColor(useProps.textColor)
-  style.fontSize = useUnit(useProps.textSize)
-  if (useProps.textWeight) style.fontWeight = useProps.textWeight
+  style.color = useColor(props.textColor)
+  style.fontSize = useUnit(props.textSize)
+  if (props.textWeight) style.fontWeight = props.textWeight
   return useStyle(style)
 })
 
 const placeholderStyle = computed(() => {
   const style: Record<string, string | number> = {}
-  style.color = useColor(useProps.placeholderColor)
-  style.fontSize = useUnit(useProps.textSize)
-  if (useProps.textWeight) style.fontWeight = useProps.textWeight
+  style.color = useColor(props.placeholderColor)
+  style.fontSize = useUnit(props.textSize)
+  if (props.textWeight) style.fontWeight = props.textWeight
   return useStyle(style)
 })
 
 const showRightIcon = computed(() => {
-  return Boolean(slots["right-icon"] || useProps.rightIcon)
+  return Boolean(slots["right-icon"] || props.rightIcon)
 })
 
 /**
@@ -149,8 +148,8 @@ const displayText = computed(() => {
   if (!currentValue.value) return ""
 
   // 如果有自定义格式化函数，使用它
-  if (useProps.displayFormatter) {
-    return useProps.displayFormatter(currentValue.value)
+  if (props.displayFormatter) {
+    return props.displayFormatter(currentValue.value)
   }
 
   // 根据 columns 配置生成默认展示格式
@@ -179,7 +178,7 @@ function formatDisplayText(value: string): string {
   const minute = parts[4] || "00"
   const second = parts[5] || "00"
 
-  const columns = useProps.columns
+  const columns = props.columns
   const textParts: string[] = []
 
   // 根据列配置决定显示哪些部分
@@ -250,11 +249,11 @@ function formatDate(date: Date): string {
   const second = String(date.getSeconds()).padStart(2, "0")
 
   // 根据 format 配置返回
-  return useProps.format.replace(/YYYY/g, String(year)).replace(/MM/g, month).replace(/DD/g, day).replace(/HH/g, hour).replace(/mm/g, minute).replace(/ss/g, second)
+  return props.format.replace(/YYYY/g, String(year)).replace(/MM/g, month).replace(/DD/g, day).replace(/HH/g, hour).replace(/mm/g, minute).replace(/ss/g, second)
 }
 
 watch(
-  () => useProps.modelValue,
+  () => props.modelValue,
   (val) => {
     currentValue.value = parseValue(val)
   },

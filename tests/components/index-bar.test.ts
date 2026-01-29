@@ -197,10 +197,7 @@ describe("uiIndexAnchor 组件", () => {
 
   // 创建用于 mock parent context 的辅助函数
   const createMockParentProvide = (currentNameValue: string | number | null = "A") => ({
-    props: {},
-    useProps: {
-      sticky: true,
-    },
+    props: { sticky: true },
     currentName: ref(currentNameValue),
     link: vi.fn(),
     unlink: vi.fn(),

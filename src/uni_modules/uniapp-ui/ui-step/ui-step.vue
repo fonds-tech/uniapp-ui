@@ -38,14 +38,13 @@ import type { InheritableStepPropKeys } from "./index"
 import { isDef } from "../utils/check"
 import { stepsKey } from "../ui-steps"
 import { computed } from "vue"
+import { stepEmits, stepProps } from "./index"
 import { useColor, useStyle, useParent } from "../hooks"
-import { stepEmits, stepProps, useStepProps } from "./index"
 
 defineOptions({ name: "ui-step" })
 
 const props = defineProps(stepProps)
 const emits = defineEmits(stepEmits)
-const useProps = useStepProps(props)
 const { parent, index } = useParent(stepsKey)
 
 /** 安全的索引值（处理父组件不存在时返回 0） */
@@ -92,8 +91,8 @@ const isActive = computed(() => {
  */
 const isFinish = computed(() => {
   if (!parent) return false
-  if (useProps.status === "finish") return true
-  if (useProps.status) return false
+  if (props.status === "finish") return true
+  if (props.status) return false
   return index.value < parent.active.value
 })
 
@@ -101,7 +100,7 @@ const isFinish = computed(() => {
  * 是否为错误状态
  */
 const isError = computed(() => {
-  return useProps.status === "error"
+  return props.status === "error"
 })
 
 /**
@@ -109,8 +108,8 @@ const isError = computed(() => {
  */
 const isWait = computed(() => {
   if (!parent) return true
-  if (useProps.status === "wait") return true
-  if (useProps.status) return false
+  if (props.status === "wait") return true
+  if (props.status) return false
   return index.value > parent.active.value
 })
 
@@ -118,7 +117,7 @@ const isWait = computed(() => {
  * 当前步骤状态
  */
 const currentStatus = computed<StepStatus>(() => {
-  if (useProps.status) return useProps.status
+  if (props.status) return props.status
   if (isFinish.value) return "finish"
   if (isActive.value) return "process"
   return "wait"
@@ -127,19 +126,19 @@ const currentStatus = computed<StepStatus>(() => {
 /**
  * 是否为点状模式
  */
-const isDot = computed(() => parent?.useProps.dot ?? false)
+const isDot = computed(() => parent?.props.dot ?? false)
 
 /**
  * 是否为简洁模式
  */
-const isSimple = computed(() => parent?.useProps.simple ?? false)
+const isSimple = computed(() => parent?.props.simple ?? false)
 
 /**
  * 当前图标
  */
 const currentIcon = computed<string>(() => {
   if (isDot.value) return ""
-  if (useProps.icon) return useProps.icon
+  if (props.icon) return props.icon
   const finishIcon = getInheritProp("finishIcon")
   if (isFinish.value && finishIcon) return String(finishIcon)
   const activeIcon = getInheritProp("activeIcon")
@@ -155,7 +154,7 @@ const currentIcon = computed<string>(() => {
  * 图标大小
  */
 const currentIconSize = computed(() => {
-  return useProps.iconSize || getInheritProp("iconSize") || "40rpx"
+  return props.iconSize || getInheritProp("iconSize") || "40rpx"
 })
 
 /** 默认圆圈尺寸 */
@@ -228,7 +227,7 @@ const lineAfterColor = computed(() => {
  */
 const style = computed(() => {
   const style: CSSProperties = {}
-  return useStyle({ ...style, ...useStyle(useProps.customStyle) })
+  return useStyle({ ...style, ...useStyle(props.customStyle) })
 })
 
 /**
@@ -237,7 +236,7 @@ const style = computed(() => {
 const classes = computed(() => {
   const list: string[] = []
   list.push(`ui-step--${currentStatus.value}`)
-  if (parent?.useProps.direction === "vertical") {
+  if (parent?.props.direction === "vertical") {
     list.push("ui-step--vertical")
   }
   if (isFirst.value) {
@@ -332,7 +331,7 @@ function onClick() {
   parent?.onClickStep(safeIndex.value)
 }
 
-defineExpose({ useProps, index: safeIndex, currentStatus })
+defineExpose({ props, index: safeIndex, currentStatus })
 </script>
 
 <script lang="ts">

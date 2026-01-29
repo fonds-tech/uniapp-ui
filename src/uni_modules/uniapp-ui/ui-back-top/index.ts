@@ -1,10 +1,9 @@
 import type BackTop from "./ui-back-top.vue"
 import type { TransitionName } from "../ui-transition"
 import type { PropType, CSSProperties, ExtractPropTypes } from "vue"
-import { createProps } from "../hooks"
 import { numericProp, makeStringProp, makeNumericProp } from "../utils/props"
 
-export const [backTopProps, useBackTopProps] = createProps("backTop", {
+export const backTopProps = {
   /**
    * 页面滚动距离，可选。
    * - 不传：组件自动监听页面滚动事件
@@ -95,8 +94,7 @@ export const [backTopProps, useBackTopProps] = createProps("backTop", {
    * 自定义样式
    */
   customStyle: [String, Object] as PropType<string | CSSProperties>,
-})
-
+}
 export const backTopEmits = {
   click: () => true,
 }

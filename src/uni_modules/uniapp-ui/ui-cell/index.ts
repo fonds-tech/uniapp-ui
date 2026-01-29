@@ -1,9 +1,8 @@
 import type Cell from "./ui-cell.vue"
 import type { PropType, CSSProperties, ExtractPropTypes } from "vue"
-import { createProps } from "../hooks"
 import { truthProp, numericProp, makeStringProp } from "../utils/props"
 
-export const [cellProps, useCellProps] = createProps("cell", {
+export const cellProps = {
   /**
    * 图标
    */
@@ -157,7 +156,7 @@ export const [cellProps, useCellProps] = createProps("cell", {
    * 自定义样式
    */
   customStyle: [String, Object] as PropType<string | CSSProperties>,
-})
+}
 export const cellEmits = {
   click: () => true,
 }

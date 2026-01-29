@@ -10,44 +10,42 @@
 <script setup lang="ts">
 import type { CSSProperties } from "vue"
 import { computed } from "vue"
+import { arcEmits, arcProps } from "./index"
 import { useUnit, useColor, useStyle } from "../hooks"
-import { arcEmits, arcProps, useArcProps } from "./index"
 
 const props = defineProps(arcProps)
 const emits = defineEmits(arcEmits)
-const useProps = useArcProps(props)
-
 // 曲率校验：限制在 50-500 范围内
 const validCurvature = computed(() => {
-  const value = Number(useProps.curvature)
+  const value = Number(props.curvature)
   if (Number.isNaN(value)) return 120
   return Math.max(50, Math.min(500, value))
 })
 
 const widthOffset = computed(() => (validCurvature.value - 100) / 2)
 
-const directionClass = computed(() => `ui-arc--${useProps.direction}`)
+const directionClass = computed(() => `ui-arc--${props.direction}`)
 
 const style = computed(() => {
   const result: CSSProperties = {
-    top: useUnit(useProps.top),
-    left: useUnit(useProps.left),
-    height: useUnit(useProps.height),
-    zIndex: useProps.zIndex,
+    top: useUnit(props.top),
+    left: useUnit(props.left),
+    height: useUnit(props.height),
+    zIndex: props.zIndex,
   }
-  if (useProps.fixed) result.position = "fixed"
-  return useStyle({ ...result, ...useStyle(useProps.customStyle) })
+  if (props.fixed) result.position = "fixed"
+  return useStyle({ ...result, ...useStyle(props.customStyle) })
 })
 
 const innerStyle = computed(() => {
   const offset = `${Math.max(0, widthOffset.value)}%`
   const result: CSSProperties = {
-    height: useUnit(useProps.height),
+    height: useUnit(props.height),
     left: `-${offset}`,
     right: `-${offset}`,
     paddingLeft: offset,
     paddingRight: offset,
-    background: useColor(useProps.background),
+    background: useColor(props.background),
   }
   return useStyle(result)
 })

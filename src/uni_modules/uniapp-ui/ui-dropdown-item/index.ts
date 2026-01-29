@@ -1,10 +1,9 @@
 import type DropdownItem from "./ui-dropdown-item.vue"
 import type { PropType, CSSProperties, ExtractPropTypes } from "vue"
-import { createProps } from "../hooks"
 import { truthProp, numericProp, makeArrayProp, makeStringProp, makeNumericProp } from "../utils/props"
 
 export const dropdownItemKey = Symbol("ui-dropdown-item")
-export const [dropdownItemProps, useDropdownItemProps] = createProps("dropdownItem", {
+export const dropdownItemProps = {
   /**
    * 绑定值，多选时为数组
    */
@@ -149,8 +148,7 @@ export const [dropdownItemProps, useDropdownItemProps] = createProps("dropdownIt
    * 自定义样式
    */
   customStyle: [String, Object] as PropType<string | CSSProperties>,
-})
-
+}
 export const dropdownItemEmits = {
   open: () => true,
   opened: () => true,

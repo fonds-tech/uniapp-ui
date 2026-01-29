@@ -1,6 +1,5 @@
 import type PullRefresh from "./ui-pull-refresh.vue"
 import type { PropType, CSSProperties, ExtractPropTypes } from "vue"
-import { createProps } from "../hooks"
 import { makeStringProp, makeNumericProp } from "../utils/props"
 
 /**
@@ -13,7 +12,7 @@ import { makeStringProp, makeNumericProp } from "../utils/props"
  */
 export type PullRefreshStatus = "normal" | "pulling" | "loosing" | "loading" | "success"
 
-export const [pullRefreshProps, usePullRefreshProps] = createProps("pullRefresh", {
+export const pullRefreshProps = {
   /**
    * 是否处于加载中状态（v-model）
    */
@@ -62,8 +61,7 @@ export const [pullRefreshProps, usePullRefreshProps] = createProps("pullRefresh"
    * 自定义样式
    */
   customStyle: [String, Object] as PropType<string | CSSProperties>,
-})
-
+}
 export const pullRefreshEmits = {
   /** 更新 modelValue */
   "update:modelValue": (value: boolean) => typeof value === "boolean",

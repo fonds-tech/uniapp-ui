@@ -1,7 +1,6 @@
 import type ConfigProvider from "./ui-config-provider.vue"
 import type { Mitt } from "../utils/mitt"
 import type { PropType, InjectionKey, ExtractPropTypes } from "vue"
-import { createProps } from "../hooks"
 import { styleProp, makeStringProp, makeNumericProp } from "../utils/props"
 
 /**
@@ -41,7 +40,7 @@ export type CssVars = Record<string, string | number>
 export type ThemeMode = "light" | "dark" | "auto"
 
 export const configProviderKey: InjectionKey<ConfigProviderProvide> = Symbol("ui-config-provider")
-export const [configProviderProps, useConfigProviderProps] = createProps("configProvider", {
+export const configProviderProps = {
   /**
    * 主题模式
    * - light: 亮色模式
@@ -84,8 +83,7 @@ export const [configProviderProps, useConfigProviderProps] = createProps("config
    * 自定义样式
    */
   customStyle: styleProp,
-})
-
+}
 export const configProviderEmits = {
   scroll: (options: Page.PageScrollOption) => options,
   reachTop: () => true,

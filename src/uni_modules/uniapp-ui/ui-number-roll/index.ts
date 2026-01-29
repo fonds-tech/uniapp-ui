@@ -1,9 +1,8 @@
 import type NumberRoll from "./ui-number-roll.vue"
 import type { ExtractPropTypes } from "vue"
-import { createProps } from "../hooks"
 import { styleProp, truthProp, makeNumberProp, makeStringProp, makeNumericProp } from "../utils/props"
 
-export const [numberRollProps, useNumberRollProps] = createProps("numberRoll", {
+export const numberRollProps = {
   /**
    * 数据值
    */
@@ -48,7 +47,7 @@ export const [numberRollProps, useNumberRollProps] = createProps("numberRoll", {
    * 自定义样式
    */
   customStyle: styleProp,
-})
+}
 export const numberRollEmits = {}
 
 export type NumberRollEmits = typeof numberRollEmits

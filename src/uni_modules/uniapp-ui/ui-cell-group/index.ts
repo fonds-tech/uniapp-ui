@@ -1,10 +1,9 @@
 import type CellGroup from "./ui-cell-group.vue"
 import type { PropType, InjectionKey, CSSProperties, ExtractPropTypes } from "vue"
-import { createProps } from "../hooks"
 import { numericProp } from "../utils/props"
 
 export const cellGroupKey: InjectionKey<CellGroupProvide> = Symbol("ui-cell-group")
-export const [cellGroupProps, useCellGroupProps] = createProps("cellGroup", {
+export const cellGroupProps = {
   /**
    * 圆角值
    */
@@ -21,7 +20,7 @@ export const [cellGroupProps, useCellGroupProps] = createProps("cellGroup", {
    * 自定义样式
    */
   customStyle: [String, Object] as PropType<string | CSSProperties>,
-})
+}
 export const cellGroupEmits = {}
 
 export type CellGroupEmits = typeof cellGroupEmits

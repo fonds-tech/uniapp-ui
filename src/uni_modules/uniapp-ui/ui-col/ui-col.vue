@@ -1,5 +1,5 @@
 <template>
-  <view class="ui-col" :class="[useProps.customClass]" :style="[style]">
+  <view class="ui-col" :class="[props.customClass]" :style="[style]">
     <slot />
   </view>
 </template>
@@ -7,14 +7,12 @@
 <script setup lang="ts">
 import type { ComputedRef, CSSProperties } from "vue"
 import { useStyle } from "../hooks"
+import { colProps } from "./index"
 import { inject, computed } from "vue"
-import { colProps, useColProps } from "./index"
 
 defineOptions({ name: "ui-col" })
 
 const props = defineProps(colProps)
-const useProps = useColProps(props)
-
 // 从 Row 注入间距信息
 const rowGapInfo = inject<ComputedRef<{ rowGap: string; colGap: string }> | null>("ui-row", null)
 
@@ -23,13 +21,13 @@ const style = computed(() => {
   const style: CSSProperties = {}
 
   // 计算列宽（基于24栅格系统）
-  const spanValue = Math.min(24, Math.max(0, +useProps.span))
+  const spanValue = Math.min(24, Math.max(0, +props.span))
   const widthPercent = (100 / 24) * spanValue
   style.width = `${widthPercent}%`
 
   // 计算偏移
-  if (useProps.offset > 0) {
-    const offsetValue = Math.min(24 - spanValue, Math.max(0, +useProps.offset))
+  if (props.offset > 0) {
+    const offsetValue = Math.min(24 - spanValue, Math.max(0, +props.offset))
     style.marginLeft = `${(100 / 24) * offsetValue}%`
   }
 
@@ -43,7 +41,7 @@ const style = computed(() => {
     }
   }
 
-  return useStyle({ ...style, ...useStyle(useProps.customStyle) })
+  return useStyle({ ...style, ...useStyle(props.customStyle) })
 })
 
 defineExpose({ name: "ui-col" })

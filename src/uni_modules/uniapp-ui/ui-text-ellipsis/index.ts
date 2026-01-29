@@ -1,9 +1,8 @@
 import type TextEllipsis from "./ui-text-ellipsis.vue"
 import type { PropType, CSSProperties, ExtractPropTypes } from "vue"
-import { createProps } from "../hooks"
 import { truthProp, numericProp, makeStringProp, makeNumericProp } from "../utils/props"
 
-export const [textEllipsisProps, useTextEllipsisProps] = createProps("text-ellipsis", {
+export const textEllipsisProps = {
   /**
    * 文本内容
    */
@@ -56,8 +55,7 @@ export const [textEllipsisProps, useTextEllipsisProps] = createProps("text-ellip
    * 自定义样式
    */
   customStyle: [String, Object] as PropType<string | CSSProperties>,
-})
-
+}
 export const textEllipsisEmits = {
   change: (expanded: boolean) => true,
   click: (event: Event) => true,

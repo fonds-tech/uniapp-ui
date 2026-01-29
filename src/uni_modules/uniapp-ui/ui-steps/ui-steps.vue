@@ -8,20 +8,19 @@
 import type { CSSProperties } from "vue"
 import { computed } from "vue"
 import { useStyle, useChildren } from "../hooks"
-import { stepsKey, stepsEmits, stepsProps, useStepsProps } from "./index"
+import { stepsKey, stepsEmits, stepsProps } from "./index"
 
 defineOptions({ name: "ui-steps" })
 
 const props = defineProps(stepsProps)
 const emits = defineEmits(stepsEmits)
-const useProps = useStepsProps(props)
 const { childrens, linkChildren } = useChildren(stepsKey)
 
 /**
  * 当前激活步骤索引（带边界校验）
  */
 const active = computed(() => {
-  const val = Number(useProps.active)
+  const val = Number(props.active)
   if (Number.isNaN(val)) return 0
   const maxIndex = Math.max(0, count.value - 1)
   return Math.max(0, Math.min(val, maxIndex))
@@ -37,7 +36,7 @@ const count = computed(() => childrens.length)
  */
 const style = computed(() => {
   const style: CSSProperties = {}
-  return useStyle({ ...style, ...useStyle(useProps.customStyle) })
+  return useStyle({ ...style, ...useStyle(props.customStyle) })
 })
 
 /**
@@ -45,19 +44,19 @@ const style = computed(() => {
  */
 const classes = computed(() => {
   const list: string[] = []
-  if (useProps.direction === "vertical") {
+  if (props.direction === "vertical") {
     list.push("ui-steps--vertical")
   }
-  if (useProps.clickable) {
+  if (props.clickable) {
     list.push("ui-steps--clickable")
   }
-  if (useProps.simple) {
+  if (props.simple) {
     list.push("ui-steps--simple")
   }
-  if (useProps.dot) {
+  if (props.dot) {
     list.push("ui-steps--dot")
   }
-  if (useProps.center) {
+  if (props.center) {
     list.push("ui-steps--center")
   }
   return list
@@ -67,13 +66,13 @@ const classes = computed(() => {
  * 点击步骤事件处理
  */
 function onClickStep(index: number) {
-  if (useProps.clickable) {
+  if (props.clickable) {
     emits("clickStep", index)
   }
 }
 
 // 向子组件提供数据
-linkChildren({ props, useProps, active, count, onClickStep })
+linkChildren({ props, active, count, onClickStep })
 </script>
 
 <script lang="ts">

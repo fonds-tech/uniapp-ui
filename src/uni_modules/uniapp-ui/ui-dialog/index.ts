@@ -1,9 +1,8 @@
 import type Dialog from "./ui-dialog.vue"
 import type { Ref, PropType, CSSProperties, ExtractPropTypes } from "vue"
-import { createProps } from "../hooks"
 import { truthProp, numericProp, makeStringProp, makeNumericProp } from "../utils/props"
 
-export const [dialogProps, useDialogProps] = createProps("dialog", {
+export const dialogProps = {
   /**
    * 是否显示
    */
@@ -116,8 +115,7 @@ export const [dialogProps, useDialogProps] = createProps("dialog", {
    * 自定义样式
    */
   customStyle: [String, Object] as PropType<string | CSSProperties>,
-})
-
+}
 export type DialogOpenAction = "inner" | "outside"
 export type DialogDoneAction = "confirm" | "cancel" | "overlay"
 export type DialogCloseAction = "confirm" | "cancel" | "overlay" | "close"

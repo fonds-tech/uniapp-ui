@@ -20,7 +20,7 @@
         <view class="ui-slider__track-active" :style="activeTrackStyle" />
 
         <!-- 刻度标记 -->
-        <template v-if="useProps.marks">
+        <template v-if="props.marks">
           <view
             v-for="(mark, key) in normalizedMarks"
             :key="key"
@@ -32,7 +32,7 @@
 
         <!-- 左侧把手（范围模式）- 放在轨道内部定位 -->
         <view
-          v-if="useProps.range"
+          v-if="props.range"
           class="ui-slider__handle"
           :class="getHandleClass(0)"
           :style="getHandleStyle(0)"
@@ -50,15 +50,15 @@
         <!-- 右侧/单个把手 - 放在轨道内部定位 -->
         <view
           class="ui-slider__handle"
-          :class="getHandleClass(useProps.range ? 1 : 0)"
-          :style="getHandleStyle(useProps.range ? 1 : 0)"
-          @touchstart.stop="onHandleTouchStart($event, useProps.range ? 1 : 0)"
-          @mousedown.stop="onHandleMouseDown($event, useProps.range ? 1 : 0)"
+          :class="getHandleClass(props.range ? 1 : 0)"
+          :style="getHandleStyle(props.range ? 1 : 0)"
+          @touchstart.stop="onHandleTouchStart($event, props.range ? 1 : 0)"
+          @mousedown.stop="onHandleMouseDown($event, props.range ? 1 : 0)"
         >
-          <slot :name="useProps.range ? 'right-handle' : 'handle'" :value="useProps.range ? rangeValue[1] : currentValue" :dragging="draggingIndex === (useProps.range ? 1 : 0)">
+          <slot :name="props.range ? 'right-handle' : 'handle'" :value="props.range ? rangeValue[1] : currentValue" :dragging="draggingIndex === (props.range ? 1 : 0)">
             <!-- 值指示器 -->
-            <view v-if="shouldShowValue(useProps.range ? 1 : 0)" class="ui-slider__indicator" :style="indicatorStyle">
-              {{ formatDisplayValue(useProps.range ? rangeValue[1] : currentValue) }}
+            <view v-if="shouldShowValue(props.range ? 1 : 0)" class="ui-slider__indicator" :style="indicatorStyle">
+              {{ formatDisplayValue(props.range ? rangeValue[1] : currentValue) }}
             </view>
           </slot>
         </view>
@@ -66,7 +66,7 @@
     </view>
 
     <!-- 刻度标签（在轨道外部显示） -->
-    <view v-if="useProps.marks && hasMarkLabels" class="ui-slider__labels" :style="labelsStyle">
+    <view v-if="props.marks && hasMarkLabels" class="ui-slider__labels" :style="labelsStyle">
       <view
         v-for="(mark, key) in normalizedMarks"
         :key="key"
@@ -84,16 +84,14 @@
 import type { CSSProperties } from "vue"
 import type { SliderMarks, SliderValue } from "./index"
 import { isArray } from "../utils/check"
+import { sliderEmits, sliderProps } from "./index"
 import { useRect, useColor, useStyle, useUnitToPx } from "../hooks"
-import { sliderEmits, sliderProps, useSliderProps } from "./index"
 import { ref, watch, computed, onUnmounted, getCurrentInstance } from "vue"
 
 defineOptions({ name: "ui-slider" })
 
 const props = defineProps(sliderProps)
 const emit = defineEmits(sliderEmits)
-const useProps = useSliderProps(props)
-
 // 组件实例
 const instance = getCurrentInstance()
 
@@ -111,11 +109,11 @@ const trackRect = ref<UniApp.NodeInfo>({})
 const lastTouchEndTime = ref(0)
 
 // 内部值状态
-const internalValue = ref<SliderValue>(useProps.modelValue)
+const internalValue = ref<SliderValue>(props.modelValue)
 
 // 当前值（单滑块模式）
 const currentValue = computed(() => {
-  if (useProps.range) return 0
+  if (props.range) return 0
   const val = internalValue.value
   return isArray(val) ? val[0] : val
 })
@@ -126,12 +124,12 @@ const rangeValue = computed<[number, number]>(() => {
   if (isArray(val)) {
     return [val[0], val[1]]
   }
-  return [useProps.min, val as number]
+  return [props.min, val as number]
 })
 
 // 监听外部值变化
 watch(
-  () => useProps.modelValue,
+  () => props.modelValue,
   (newVal) => {
     if (draggingIndex.value === -1) {
       internalValue.value = newVal
@@ -141,18 +139,18 @@ watch(
 
 // 获取尺寸配置
 const sizeConfig = computed(() => {
-  const preset = SIZE_PRESETS[useProps.size] || SIZE_PRESETS.medium
+  const preset = SIZE_PRESETS[props.size] || SIZE_PRESETS.medium
   return {
-    trackHeight: useProps.barHeight ? useUnitToPx(useProps.barHeight) : preset.trackHeight,
-    handleSize: useProps.handleSize ? useUnitToPx(useProps.handleSize) : preset.handleSize,
+    trackHeight: props.barHeight ? useUnitToPx(props.barHeight) : preset.trackHeight,
+    handleSize: props.handleSize ? useUnitToPx(props.handleSize) : preset.handleSize,
   }
 })
 
 // 标准化刻度标记
 const normalizedMarks = computed(() => {
-  if (!useProps.marks) return []
+  if (!props.marks) return []
   const result: Array<{ value: number; label: string; labelStyle?: CSSProperties }> = []
-  const marksObj = useProps.marks as SliderMarks
+  const marksObj = props.marks as SliderMarks
 
   for (const key of Object.keys(marksObj)) {
     const numKey = Number(key)
@@ -175,19 +173,19 @@ const hasMarkLabels = computed(() => {
 // 根样式类
 const rootClass = computed(() => {
   const list: string[] = ["ui-slider"]
-  list.push(`ui-slider--${useProps.size}`)
-  if (useProps.vertical) list.push("ui-slider--vertical")
-  if (useProps.disabled) list.push("ui-slider--disabled")
-  if (useProps.readonly) list.push("ui-slider--readonly")
+  list.push(`ui-slider--${props.size}`)
+  if (props.vertical) list.push("ui-slider--vertical")
+  if (props.disabled) list.push("ui-slider--disabled")
+  if (props.readonly) list.push("ui-slider--readonly")
   if (draggingIndex.value !== -1) list.push("ui-slider--dragging")
-  if (useProps.customClass) list.push(useProps.customClass)
+  if (props.customClass) list.push(props.customClass)
   return list
 })
 
 // 根样式
 const rootStyle = computed(() => {
   const style: CSSProperties = {}
-  return useStyle({ ...style, ...useStyle(useProps.customStyle) })
+  return useStyle({ ...style, ...useStyle(props.customStyle) })
 })
 
 // 轨道包装器样式（提供足够的触摸区域）
@@ -196,7 +194,7 @@ const wrapperStyle = computed(() => {
   const minTouchSize = 44 // 最小触摸区域 44px
   const { handleSize } = sizeConfig.value
 
-  if (useProps.vertical) {
+  if (props.vertical) {
     // 垂直模式：固定宽度，高度 100%
     style.width = `${Math.max(minTouchSize, handleSize)}px`
     style.height = "100%"
@@ -214,7 +212,7 @@ const trackStyle = computed(() => {
   const style: CSSProperties = {}
   const { trackHeight } = sizeConfig.value
 
-  if (useProps.vertical) {
+  if (props.vertical) {
     // 垂直模式：宽度固定，高度由 flex: 1 决定（在 CSS 中设置）
     style.width = `${trackHeight}px`
   } else {
@@ -228,8 +226,8 @@ const trackStyle = computed(() => {
 // 非激活轨道样式
 const inactiveTrackStyle = computed(() => {
   const style: CSSProperties = {}
-  if (useProps.inactiveColor) {
-    style.backgroundColor = useColor(useProps.inactiveColor)
+  if (props.inactiveColor) {
+    style.backgroundColor = useColor(props.inactiveColor)
   }
   return useStyle(style)
 })
@@ -237,13 +235,13 @@ const inactiveTrackStyle = computed(() => {
 // 激活轨道样式
 const activeTrackStyle = computed(() => {
   const style: CSSProperties = {}
-  const range = useProps.max - useProps.min
+  const range = props.max - props.min
 
-  if (useProps.range) {
-    const leftRatio = ((rangeValue.value[0] - useProps.min) / range) * 100
-    const rightRatio = ((rangeValue.value[1] - useProps.min) / range) * 100
+  if (props.range) {
+    const leftRatio = ((rangeValue.value[0] - props.min) / range) * 100
+    const rightRatio = ((rangeValue.value[1] - props.min) / range) * 100
 
-    if (useProps.vertical) {
+    if (props.vertical) {
       style.bottom = `${leftRatio}%`
       style.height = `${rightRatio - leftRatio}%`
     } else {
@@ -251,9 +249,9 @@ const activeTrackStyle = computed(() => {
       style.width = `${rightRatio - leftRatio}%`
     }
   } else {
-    const ratio = ((currentValue.value - useProps.min) / range) * 100
+    const ratio = ((currentValue.value - props.min) / range) * 100
 
-    if (useProps.vertical) {
+    if (props.vertical) {
       style.bottom = "0"
       style.height = `${ratio}%`
     } else {
@@ -262,8 +260,8 @@ const activeTrackStyle = computed(() => {
     }
   }
 
-  if (useProps.activeColor) {
-    style.backgroundColor = useColor(useProps.activeColor)
+  if (props.activeColor) {
+    style.backgroundColor = useColor(props.activeColor)
   }
 
   return useStyle(style)
@@ -272,8 +270,8 @@ const activeTrackStyle = computed(() => {
 // 值指示器样式
 const indicatorStyle = computed(() => {
   const style: CSSProperties = {}
-  if (useProps.activeColor) {
-    style.backgroundColor = useColor(useProps.activeColor)
+  if (props.activeColor) {
+    style.backgroundColor = useColor(props.activeColor)
   }
   return useStyle(style)
 })
@@ -286,7 +284,7 @@ const labelsStyle = computed(() => {
 
   // 标签容器需要与轨道内容区域对齐
   // 由于把手会溢出轨道两端，标签也需要相同的边距来对齐
-  if (useProps.vertical) {
+  if (props.vertical) {
     style.paddingTop = `${halfHandle}px`
     style.paddingBottom = `${halfHandle}px`
   } else {
@@ -309,30 +307,30 @@ function getHandleClass(index: number): string[] {
 // 获取把手样式
 function getHandleStyle(index: number): CSSProperties {
   const style: CSSProperties = {}
-  const range = useProps.max - useProps.min
+  const range = props.max - props.min
   const { handleSize } = sizeConfig.value
   let value: number
 
-  if (useProps.range) {
+  if (props.range) {
     value = rangeValue.value[index]
   } else {
     value = currentValue.value
   }
 
-  const ratio = ((value - useProps.min) / range) * 100
+  const ratio = ((value - props.min) / range) * 100
 
   // 设置把手尺寸
   style.width = `${handleSize}px`
   style.height = `${handleSize}px`
 
-  if (useProps.vertical) {
+  if (props.vertical) {
     style.bottom = `${ratio}%`
   } else {
     style.left = `${ratio}%`
   }
 
-  if (useProps.handleColor) {
-    style.backgroundColor = useColor(useProps.handleColor)
+  if (props.handleColor) {
+    style.backgroundColor = useColor(props.handleColor)
   }
 
   return useStyle(style)
@@ -343,11 +341,11 @@ function getHandleStyle(index: number): CSSProperties {
 // 0% 时刻度点左边缘对齐轨道左边缘，100% 时刻度点右边缘对齐轨道右边缘
 function getTickStyle(value: number): CSSProperties {
   const style: CSSProperties = {}
-  const range = useProps.max - useProps.min
-  const ratio = ((value - useProps.min) / range) * 100
+  const range = props.max - props.min
+  const ratio = ((value - props.min) / range) * 100
   const tickSize = 4 // 刻度点尺寸 4px
 
-  if (useProps.vertical) {
+  if (props.vertical) {
     // 垂直模式：bottom 从 0 到 calc(100% - 4px)
     style.bottom = `calc(${ratio}% - ${(ratio / 100) * tickSize}px)`
   } else {
@@ -361,10 +359,10 @@ function getTickStyle(value: number): CSSProperties {
 // 获取标签样式
 function getLabelStyle(mark: { value: number; labelStyle?: CSSProperties }): CSSProperties {
   const style: CSSProperties = {}
-  const range = useProps.max - useProps.min
-  const ratio = ((mark.value - useProps.min) / range) * 100
+  const range = props.max - props.min
+  const ratio = ((mark.value - props.min) / range) * 100
 
-  if (useProps.vertical) {
+  if (props.vertical) {
     style.bottom = `${ratio}%`
   } else {
     style.left = `${ratio}%`
@@ -379,7 +377,7 @@ function getLabelStyle(mark: { value: number; labelStyle?: CSSProperties }): CSS
 
 // 判断刻度是否在激活范围内
 function isMarkActive(value: number): boolean {
-  if (useProps.range) {
+  if (props.range) {
     return value >= rangeValue.value[0] && value <= rangeValue.value[1]
   }
   return value <= currentValue.value
@@ -387,15 +385,15 @@ function isMarkActive(value: number): boolean {
 
 // 是否应该显示值提示
 function shouldShowValue(index: number): boolean {
-  if (useProps.showValueMode === "never" || !useProps.showValue) return false
-  if (useProps.showValueMode === "always") return true
+  if (props.showValueMode === "never" || !props.showValue) return false
+  if (props.showValueMode === "always") return true
   return draggingIndex.value === index
 }
 
 // 格式化显示值
 function formatDisplayValue(value: number): string {
-  if (useProps.formatValue) {
-    return useProps.formatValue(value)
+  if (props.formatValue) {
+    return props.formatValue(value)
   }
   return String(value)
 }
@@ -404,28 +402,28 @@ function formatDisplayValue(value: number): string {
 function positionToValue(position: number, trackLength: number): number {
   // 防止除以 0 或无效输入
   if (!Number.isFinite(position) || !Number.isFinite(trackLength) || trackLength === 0) {
-    return useProps.min
+    return props.min
   }
 
-  const range = useProps.max - useProps.min
+  const range = props.max - props.min
   // 防止 range 为 0
   if (range === 0) {
-    return useProps.min
+    return props.min
   }
 
   let ratio = position / trackLength
   ratio = Math.max(0, Math.min(1, ratio))
 
-  let value = useProps.min + ratio * range
+  let value = props.min + ratio * range
 
   // 根据步长对齐
-  if (useProps.step > 0) {
-    const steps = Math.round((value - useProps.min) / useProps.step)
-    value = useProps.min + steps * useProps.step
+  if (props.step > 0) {
+    const steps = Math.round((value - props.min) / props.step)
+    value = props.min + steps * props.step
   }
 
   // 确保在范围内
-  value = Math.max(useProps.min, Math.min(useProps.max, value))
+  value = Math.max(props.min, Math.min(props.max, value))
 
   return value
 }
@@ -437,7 +435,7 @@ async function updateTrackRect() {
 
 // 轨道点击事件
 async function onTrackClick(event: any) {
-  if (useProps.disabled || useProps.readonly) return
+  if (props.disabled || props.readonly) return
   if (Date.now() - lastTouchEndTime.value < 300) return
 
   await updateTrackRect()
@@ -473,7 +471,7 @@ async function onTrackClick(event: any) {
   let position: number
   let trackLength: number
 
-  if (useProps.vertical) {
+  if (props.vertical) {
     position = (rect.bottom || 0) - clientY
     trackLength = rect.height || 1
   } else {
@@ -493,7 +491,7 @@ async function onTrackClick(event: any) {
     return
   }
 
-  if (useProps.range) {
+  if (props.range) {
     const leftDist = Math.abs(newValue - rangeValue.value[0])
     const rightDist = Math.abs(newValue - rangeValue.value[1])
 
@@ -512,13 +510,13 @@ async function onTrackClick(event: any) {
 
 // 触摸开始
 function onTouchStart() {
-  if (useProps.disabled || useProps.readonly) return
+  if (props.disabled || props.readonly) return
   updateTrackRect()
 }
 
 // 把手触摸开始
 function onHandleTouchStart(event: TouchEvent, index: number) {
-  if (useProps.disabled || useProps.readonly) return
+  if (props.disabled || props.readonly) return
 
   draggingIndex.value = index
   startPosition.value = {
@@ -532,7 +530,7 @@ function onHandleTouchStart(event: TouchEvent, index: number) {
 
 // 触摸移动
 function onTouchMove(event: TouchEvent) {
-  if (useProps.disabled || useProps.readonly) return
+  if (props.disabled || props.readonly) return
   if (draggingIndex.value === -1) return
 
   const touch = event.touches[0]
@@ -547,7 +545,7 @@ function onTouchMove(event: TouchEvent) {
   let position: number
   let trackLength: number
 
-  if (useProps.vertical) {
+  if (props.vertical) {
     position = (rect.bottom || 0) - touch.clientY
     trackLength = rect.height || 1
   } else {
@@ -567,7 +565,7 @@ function onTouchMove(event: TouchEvent) {
     return
   }
 
-  if (useProps.range) {
+  if (props.range) {
     updateRangeValue(draggingIndex.value, newValue)
   } else {
     updateSingleValue(newValue)
@@ -588,13 +586,13 @@ function onTouchEnd() {
 
 // 鼠标按下（PC 端支持）
 function onMouseDown(_event: MouseEvent) {
-  if (useProps.disabled || useProps.readonly) return
+  if (props.disabled || props.readonly) return
   updateTrackRect()
 }
 
 // 鼠标移动处理函数
 function handleMouseMove(event: MouseEvent) {
-  if (useProps.disabled || useProps.readonly) return
+  if (props.disabled || props.readonly) return
   if (draggingIndex.value === -1) return
 
   const rect = trackRect.value
@@ -605,7 +603,7 @@ function handleMouseMove(event: MouseEvent) {
   let position: number
   let trackLength: number
 
-  if (useProps.vertical) {
+  if (props.vertical) {
     position = (rect.bottom || 0) - event.clientY
     trackLength = rect.height || 1
   } else {
@@ -623,7 +621,7 @@ function handleMouseMove(event: MouseEvent) {
     return
   }
 
-  if (useProps.range) {
+  if (props.range) {
     updateRangeValue(draggingIndex.value, newValue)
   } else {
     updateSingleValue(newValue)
@@ -650,7 +648,7 @@ function handleMouseUp() {
 
 // 把手鼠标按下
 function onHandleMouseDown(event: MouseEvent, index: number) {
-  if (useProps.disabled || useProps.readonly) return
+  if (props.disabled || props.readonly) return
 
   event.preventDefault()
   draggingIndex.value = index

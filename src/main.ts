@@ -10,14 +10,7 @@ import "virtual:uno.css"
 export function createApp() {
   const app = createSSRApp(App)
 
-  app.use(ui, {
-    components: {
-      input: { placeholderColor: "#989898" },
-      navbar: { homePath: "/pages/tabbar/workbench/index", homeType: "tab" },
-      picker: { columnSize: "26", activeColumnSize: "30" },
-      select: { textSize: "26", placeholderColor: "#989898" },
-    },
-  })
+  app.use(ui)
   app.use(store)
   app.use(router)
 

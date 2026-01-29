@@ -1,9 +1,8 @@
 import type Sticky from "./ui-sticky.vue"
 import type { PropType, CSSProperties, ExtractPropTypes } from "vue"
-import { createProps } from "../hooks"
 import { numericProp, makeNumericProp } from "../utils/props"
 
-export const [stickyProps, useStickyProps] = createProps("sticky", {
+export const stickyProps = {
   /**
    * 元素层级
    */
@@ -28,8 +27,7 @@ export const [stickyProps, useStickyProps] = createProps("sticky", {
    * 自定义样式
    */
   customStyle: [String, Object] as PropType<string | CSSProperties>,
-})
-
+}
 export const stickyEmits = {
   change: (sticky: boolean) => true,
   scroll: (data: { scrollTop: number; isFixed: boolean }) => true,

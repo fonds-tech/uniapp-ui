@@ -1,6 +1,5 @@
 import type Checkbox from "./ui-checkbox.vue"
 import type { ExtractPropTypes } from "vue"
-import { createProps } from "../hooks"
 import { styleProp, truthProp, makeStringProp, makeNumericProp } from "../utils/props"
 
 /**
@@ -13,7 +12,7 @@ export type CheckboxShape = "dot" | "icon" | ""
  */
 export type CheckboxLabelPosition = "left" | "right"
 
-export const [checkboxProps, useCheckboxProps] = createProps("checkbox", {
+export const checkboxProps = {
   /**
    * 绑定值
    */
@@ -144,8 +143,7 @@ export const [checkboxProps, useCheckboxProps] = createProps("checkbox", {
    * 自定义样式
    */
   customStyle: styleProp,
-})
-
+}
 export const checkboxEmits = {
   click: (event: any) => true,
   change: (value: CheckboxValueType) => true,

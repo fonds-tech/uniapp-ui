@@ -1,9 +1,8 @@
 import type Popup from "./ui-popup.vue"
 import type { PropType, CSSProperties, ExtractPropTypes } from "vue"
-import { createProps } from "../hooks"
 import { truthProp, numericProp, makeStringProp, makeNumericProp } from "../utils/props"
 
-export const [popupProps, usePopupProps] = createProps("popup", {
+export const popupProps = {
   /**
    * 是否显示
    */
@@ -88,8 +87,7 @@ export const [popupProps, usePopupProps] = createProps("popup", {
    * 自定义样式
    */
   customStyle: [String, Object] as PropType<string | CSSProperties>,
-})
-
+}
 export const popupEmits = {
   "update:show": (show: boolean) => true,
   open: () => true,

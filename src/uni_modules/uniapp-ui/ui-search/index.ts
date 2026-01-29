@@ -1,9 +1,8 @@
 import type Search from "./ui-search.vue"
 import type { ExtractPropTypes } from "vue"
-import { createProps } from "../hooks"
 import { styleProp, truthProp, makeNumberProp, makeStringProp, makeNumericProp } from "../utils/props"
 
-export const [searchProps, useSearchProps] = createProps("search", {
+export const searchProps = {
   // ==================== 基础属性 ====================
   /** 绑定值 */
   modelValue: makeStringProp(""),
@@ -83,8 +82,7 @@ export const [searchProps, useSearchProps] = createProps("search", {
   customClass: makeStringProp(""),
   /** 自定义根元素样式 */
   customStyle: styleProp,
-})
-
+}
 export const searchEmits = {
   blur: (event: any) => true,
   focus: (event: any) => true,

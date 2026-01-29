@@ -1,13 +1,12 @@
 import type Cascader from "./ui-cascader.vue"
 import type { Interceptor } from "../utils/interceptor"
 import type { PropType, CSSProperties, ExtractPropTypes } from "vue"
-import { createProps } from "../hooks"
 import { truthProp, numericProp, makeStringProp, makeNumericProp } from "../utils/props"
 
 // Popup 模式类型
 export type PopupMode = "top" | "bottom" | "left" | "right" | "center"
 
-export const [cascaderProps, useCascaderProps] = createProps("cascader", {
+export const cascaderProps = {
   /**
    * 是否显示弹窗
    */
@@ -128,7 +127,7 @@ export const [cascaderProps, useCascaderProps] = createProps("cascader", {
    * 自定义样式
    */
   customStyle: [String, Object] as PropType<string | CSSProperties>,
-})
+}
 export const cascaderEmits = {
   close: () => true,
   change: (data: { value: string | number; text: string; selectedOptions: CascaderOption[]; index: number }) => true,

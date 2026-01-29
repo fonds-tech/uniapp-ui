@@ -1,9 +1,8 @@
 import type SkeletonAvatar from "./ui-skeleton-avatar.vue"
 import type { PropType, CSSProperties, ExtractPropTypes } from "vue"
-import { createProps } from "../hooks"
 import { numericProp, makeStringProp } from "../utils/props"
 
-export const [skeletonAvatarProps, useSkeletonAvatarProps] = createProps("skeletonAvatar", {
+export const skeletonAvatarProps = {
   /**
    * 头像占位图大小
    */
@@ -20,7 +19,7 @@ export const [skeletonAvatarProps, useSkeletonAvatarProps] = createProps("skelet
    * 自定义样式
    */
   customStyle: [String, Object] as PropType<string | CSSProperties>,
-})
+}
 export type SkeletonAvatarShape = "round" | "square"
 export type SkeletonAvatarProps = ExtractPropTypes<typeof skeletonAvatarProps>
 export type SkeletonAvatarInstance = InstanceType<typeof SkeletonAvatar>

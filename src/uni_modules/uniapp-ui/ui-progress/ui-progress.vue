@@ -12,7 +12,7 @@
     <!-- 进度条填充 -->
     <view class="ui-progress__portion" :style="[portionStyle]" />
     <!-- 文本显示 -->
-    <view v-if="showText && useProps.textPosition !== 'none'" class="ui-progress__pivot" :style="[pivotStyle]">
+    <view v-if="showText && props.textPosition !== 'none'" class="ui-progress__pivot" :style="[pivotStyle]">
       <slot name="text" :percentage="validPercentage">
         <text class="ui-progress__text" :style="[textStyle]">{{ displayText }}</text>
       </slot>
@@ -24,24 +24,22 @@
 import type { CSSProperties } from "vue"
 import { watch, computed } from "vue"
 import { useUnit, useColor, useStyle } from "../hooks"
-import { progressEmits, progressProps, useProgressProps } from "./index"
+import { progressEmits, progressProps } from "./index"
 
 defineOptions({ name: "ui-progress" })
 
 const props = defineProps(progressProps)
 const emits = defineEmits(progressEmits)
-const useProps = useProgressProps(props)
-
 // 百分比边界校验
 const validPercentage = computed(() => {
-  const value = Number(useProps.percentage)
+  const value = Number(props.percentage)
   if (Number.isNaN(value)) return 0
   return Math.max(0, Math.min(100, value))
 })
 
 // 显示文本
 const displayText = computed(() => {
-  return useProps.text || `${validPercentage.value}%`
+  return props.text || `${validPercentage.value}%`
 })
 
 // 监听进度达到100%触发finish事件
@@ -53,25 +51,25 @@ watch(validPercentage, (newVal, oldVal) => {
 
 const style = computed(() => {
   const result: CSSProperties = {
-    height: useUnit(useProps.height),
+    height: useUnit(props.height),
   }
-  if (useProps.trackColor) {
-    result.backgroundColor = useColor(useProps.trackColor)
+  if (props.trackColor) {
+    result.backgroundColor = useColor(props.trackColor)
   }
-  return useStyle({ ...result, ...useStyle(useProps.customStyle) })
+  return useStyle({ ...result, ...useStyle(props.customStyle) })
 })
 
 const textStyle = computed(() => {
   const result: CSSProperties = {}
-  if (useProps.textColor) result.color = useColor(useProps.textColor)
-  if (useProps.textSize) result.fontSize = useUnit(useProps.textSize)
-  if (useProps.textWeight) result.fontWeight = useProps.textWeight as CSSProperties["fontWeight"]
+  if (props.textColor) result.color = useColor(props.textColor)
+  if (props.textSize) result.fontSize = useUnit(props.textSize)
+  if (props.textWeight) result.fontWeight = props.textWeight as CSSProperties["fontWeight"]
   return useStyle(result)
 })
 
 const pivotStyle = computed(() => {
   const result: CSSProperties = {}
-  const isInside = useProps.textPosition === "inside"
+  const isInside = props.textPosition === "inside"
 
   if (isInside) {
     // 内部文本：跟随进度条，但限制最小位置防止溢出
@@ -90,8 +88,8 @@ const portionStyle = computed(() => {
   const result: CSSProperties = {
     width: `${validPercentage.value}%`,
   }
-  if (useProps.color) {
-    result.backgroundColor = useColor(useProps.color)
+  if (props.color) {
+    result.backgroundColor = useColor(props.color)
   }
   return useStyle(result)
 })

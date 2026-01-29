@@ -1,9 +1,8 @@
 import type SkeletonImage from "./ui-skeleton-image.vue"
 import type { PropType, CSSProperties, ExtractPropTypes } from "vue"
-import { createProps } from "../hooks"
 import { numericProp } from "../utils/props"
 
-export const [skeletonImageProps, useSkeletonImageProps] = createProps("skeletonImage", {
+export const skeletonImageProps = {
   /**
    * 图片占位图大小
    */
@@ -32,7 +31,6 @@ export const [skeletonImageProps, useSkeletonImageProps] = createProps("skeleton
    * 自定义样式
    */
   customStyle: [String, Object] as PropType<string | CSSProperties>,
-})
-
+}
 export type SkeletonImageProps = ExtractPropTypes<typeof skeletonImageProps>
 export type SkeletonImageInstance = InstanceType<typeof SkeletonImage>

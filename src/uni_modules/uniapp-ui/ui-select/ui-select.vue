@@ -1,16 +1,16 @@
 <template>
-  <view class="ui-select" :class="[classs, useProps.customClass]" :style="[style]">
+  <view class="ui-select" :class="[classs, props.customClass]" :style="[style]">
     <!-- 可点击的展示区域 -->
     <view class="ui-select__trigger" :hover-class="hoverClass" :hover-stay-time="50" @click="handleClick">
       <view class="ui-select__value" :style="[valueStyle]">
-        <slot name="display" :text="displayText" :payload="displayPayload" :placeholder="useProps.placeholder">
+        <slot name="display" :text="displayText" :payload="displayPayload" :placeholder="props.placeholder">
           <text v-if="displayText" class="ui-select__text" :style="[textStyle]">{{ displayText }}</text>
-          <text v-else class="ui-select__placeholder" :style="[placeholderStyle]">{{ useProps.placeholder }}</text>
+          <text v-else class="ui-select__placeholder" :style="[placeholderStyle]">{{ props.placeholder }}</text>
         </slot>
       </view>
       <view v-if="showRightIcon" class="ui-select__icon">
         <slot name="right-icon">
-          <ui-icon :name="useProps.rightIcon" :size="useProps.rightIconSize" :color="useProps.rightIconColor" :weight="useProps.rightIconWeight" />
+          <ui-icon :name="props.rightIcon" :size="props.rightIconSize" :color="props.rightIconColor" :weight="props.rightIconWeight" />
         </slot>
       </view>
     </view>
@@ -19,29 +19,29 @@
     <ui-picker
       ref="pickerRef"
       :show="visible"
-      :mode="useProps.mode"
-      :border-radius="useProps.borderRadius"
-      :close-on-click-overlay="useProps.closeOnClickOverlay"
-      :overlay="useProps.overlay"
-      :duration="useProps.duration"
-      :z-index="useProps.zIndex"
-      :background="useProps.background"
-      :safe-area-inset-bottom="useProps.safeAreaInsetBottom"
-      :show-header="useProps.showHeader"
-      :title="useProps.title"
-      :cancel-text="useProps.cancelText"
-      :confirm-text="useProps.confirmText"
-      :columns="useProps.columns"
-      :columns-fields="useProps.columnsFields"
-      :loading="useProps.loading"
-      :column-height="useProps.columnHeight"
-      :visible-column-num="useProps.visibleColumnNum"
-      :column-size="useProps.columnSize"
-      :column-color="useProps.columnColor"
-      :column-weight="useProps.columnWeight"
-      :active-column-size="useProps.activeColumnSize"
-      :active-column-color="useProps.activeColumnColor"
-      :active-column-weight="useProps.activeColumnWeight"
+      :mode="props.mode"
+      :border-radius="props.borderRadius"
+      :close-on-click-overlay="props.closeOnClickOverlay"
+      :overlay="props.overlay"
+      :duration="props.duration"
+      :z-index="props.zIndex"
+      :background="props.background"
+      :safe-area-inset-bottom="props.safeAreaInsetBottom"
+      :show-header="props.showHeader"
+      :title="props.title"
+      :cancel-text="props.cancelText"
+      :confirm-text="props.confirmText"
+      :columns="props.columns"
+      :columns-fields="props.columnsFields"
+      :loading="props.loading"
+      :column-height="props.columnHeight"
+      :visible-column-num="props.visibleColumnNum"
+      :column-size="props.columnSize"
+      :column-color="props.columnColor"
+      :column-weight="props.columnWeight"
+      :active-column-size="props.activeColumnSize"
+      :active-column-color="props.activeColumnColor"
+      :active-column-weight="props.activeColumnWeight"
       :model-value="currentValue"
       @update:model-value="handleUpdateValue"
       @update:show="handleUpdateShow"
@@ -77,15 +77,14 @@ import type { SelectValue, SelectDisplayPayload } from "./index"
 import type { PickerValue, PickerColumn, PickerInstance, PickerCancelData, PickerChangeData, PickerColumnsType, PickerConfirmData, PickerColumnFields } from "../ui-picker"
 import { merge } from "../utils/utils"
 import { formItemKey } from "../ui-form-item"
+import { selectEmits, selectProps } from "./index"
 import { ref, watch, computed, useSlots } from "vue"
 import { useUnit, useColor, useStyle, useParent } from "../hooks"
-import { selectEmits, selectProps, useSelectProps } from "./index"
 
 defineOptions({ name: "ui-select" })
 
 const props = defineProps(selectProps)
 const emits = defineEmits(selectEmits)
-const useProps = useSelectProps(props)
 const slots = useSlots()
 
 const { parent } = useParent(formItemKey)
@@ -100,7 +99,7 @@ const visible = ref(false)
  * 判断列数据类型（单列/多列/级联）
  */
 const columnsType = computed<PickerColumnsType>(() => {
-  return getColumnsType(useProps.columns, resolvedFields.value)
+  return getColumnsType(props.columns, resolvedFields.value)
 })
 
 /**
@@ -108,19 +107,19 @@ const columnsType = computed<PickerColumnsType>(() => {
  * 单值模式条件：单列选择器 + 非多选模式
  */
 const isSingleValueMode = computed(() => {
-  return columnsType.value === "default" && !useProps.multiple
+  return columnsType.value === "default" && !props.multiple
 })
 
 const resolvedFields = computed(() => {
-  return merge({ text: "text", value: "value", children: "children" }, useProps.columnsFields) as Required<PickerColumnFields>
+  return merge({ text: "text", value: "value", children: "children" }, props.columnsFields) as Required<PickerColumnFields>
 })
 
-const isInteractive = computed(() => !useProps.disabled && !useProps.readonly)
+const isInteractive = computed(() => !props.disabled && !props.readonly)
 
 const classs = computed(() => {
   const list: string[] = []
-  if (useProps.disabled) list.push("ui-select--disabled")
-  if (useProps.readonly) list.push("ui-select--readonly")
+  if (props.disabled) list.push("ui-select--disabled")
+  if (props.readonly) list.push("ui-select--readonly")
   return list
 })
 
@@ -129,39 +128,39 @@ const hoverClass = computed(() => {
 })
 
 const style = computed(() => {
-  return useStyle(useProps.customStyle)
+  return useStyle(props.customStyle)
 })
 
 const valueStyle = computed(() => {
   const style: Record<string, string> = {}
-  if (useProps.textAlign) {
-    style.justifyContent = useProps.textAlign === "left" ? "flex-start" : useProps.textAlign === "right" ? "flex-end" : "center"
+  if (props.textAlign) {
+    style.justifyContent = props.textAlign === "left" ? "flex-start" : props.textAlign === "right" ? "flex-end" : "center"
   }
   return useStyle(style)
 })
 
 const textStyle = computed(() => {
   const style: Record<string, string | number> = {}
-  style.color = useColor(useProps.textColor)
-  style.fontSize = useUnit(useProps.textSize)
-  if (useProps.textWeight) style.fontWeight = useProps.textWeight
+  style.color = useColor(props.textColor)
+  style.fontSize = useUnit(props.textSize)
+  if (props.textWeight) style.fontWeight = props.textWeight
   return useStyle(style)
 })
 
 const placeholderStyle = computed(() => {
   const style: Record<string, string | number> = {}
-  style.color = useColor(useProps.placeholderColor)
-  style.fontSize = useUnit(useProps.textSize)
-  if (useProps.textWeight) style.fontWeight = useProps.textWeight
+  style.color = useColor(props.placeholderColor)
+  style.fontSize = useUnit(props.textSize)
+  if (props.textWeight) style.fontWeight = props.textWeight
   return useStyle(style)
 })
 
 const showRightIcon = computed(() => {
-  return Boolean(slots["right-icon"] || useProps.rightIcon)
+  return Boolean(slots["right-icon"] || props.rightIcon)
 })
 
 const displayMeta = computed(() => {
-  return buildDisplayMeta(currentValue.value, useProps.columns, resolvedFields.value)
+  return buildDisplayMeta(currentValue.value, props.columns, resolvedFields.value)
 })
 
 const displayPayload = computed<SelectDisplayPayload>(() => {
@@ -174,16 +173,16 @@ const displayPayload = computed<SelectDisplayPayload>(() => {
 })
 
 const displayText = computed(() => {
-  if (useProps.displayFormatter) {
-    const formatted = useProps.displayFormatter(displayPayload.value)
+  if (props.displayFormatter) {
+    const formatted = props.displayFormatter(displayPayload.value)
     return formatted !== undefined && formatted !== null ? String(formatted) : ""
   }
   const texts = displayMeta.value.texts.filter((text) => text !== "" && text !== undefined && text !== null)
-  return texts.length ? texts.join(useProps.displaySeparator) : ""
+  return texts.length ? texts.join(props.displaySeparator) : ""
 })
 
 watch(
-  () => useProps.modelValue,
+  () => props.modelValue,
   (val) => {
     currentValue.value = parseValue(val)
   },

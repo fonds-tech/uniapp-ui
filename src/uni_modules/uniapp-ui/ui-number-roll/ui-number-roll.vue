@@ -1,5 +1,5 @@
 <template>
-  <view class="ui-number-roll" :class="useProps.customClass" :style="[style]">
+  <view class="ui-number-roll" :class="props.customClass" :style="[style]">
     <view v-for="(column, index) in columns" :key="index" class="ui-number-roll__column" :style="[columnStyle(index)]">
       <text v-for="(v, valueIndex) in column" :key="valueIndex" class="ui-number-roll__row" :style="[columnItemStyle]">{{ v }}</text>
     </view>
@@ -9,15 +9,13 @@
 <script setup lang="ts">
 import { isDef } from "../utils/check"
 import { formatDigit } from "../utils/format"
-import { numberRollProps, useNumberRollProps } from "./index"
+import { numberRollProps } from "./index"
 import { useRect, useUnit, useColor, useStyle } from "../hooks"
 import { ref, watch, computed, nextTick, onMounted, getCurrentInstance } from "vue"
 
 defineOptions({ name: "ui-number-roll" })
 
 const props = defineProps(numberRollProps)
-const useProps = useNumberRollProps(props)
-
 const instance = getCurrentInstance()
 const isInit = ref(false)
 const height = ref(0)
@@ -32,9 +30,9 @@ function escapeRegExp(value: string) {
 // 兼容字符串输入，避免 NaN，并在必要时保留原始格式
 function formatValue(value: string | number) {
   const options = {
-    decimalPlaces: useProps.decimalPlaces,
-    trimZero: useProps.trimZero,
-    thousandsSep: useProps.thousandsSep,
+    decimalPlaces: props.decimalPlaces,
+    trimZero: props.trimZero,
+    thousandsSep: props.thousandsSep,
   }
 
   if (typeof value === "number") {
@@ -66,14 +64,14 @@ function formatValue(value: string | number) {
 }
 
 const heightValue = computed(() => {
-  if (useProps.fontSize) return useUnit(useProps.fontSize)
+  if (props.fontSize) return useUnit(props.fontSize)
   return height.value > 0 ? `${height.value}px` : "auto"
 })
 
 const style = computed(() => {
   const style: any = {}
   style.height = heightValue.value
-  return useStyle({ ...style, ...useStyle(useProps.customStyle) })
+  return useStyle({ ...style, ...useStyle(props.customStyle) })
 })
 const columnStyle = computed(() => {
   return (index: number) => {
@@ -81,27 +79,27 @@ const columnStyle = computed(() => {
     const h = heightValue.value
     const translateValue = `calc(${indexs.value[index]} * ${h} * -1)`
     style.transform = `translateY(${translateValue})`
-    if (useProps.timingFunction) style.transitionTimingFunction = useProps.timingFunction
-    if (isDef(useProps.duration)) style.transitionDuration = `${useProps.duration}ms`
+    if (props.timingFunction) style.transitionTimingFunction = props.timingFunction
+    if (isDef(props.duration)) style.transitionDuration = `${props.duration}ms`
     return useStyle(style)
   }
 })
 const columnItemStyle = computed(() => {
   const style: any = {}
   const h = heightValue.value
-  style.color = useColor(useProps.color)
+  style.color = useColor(props.color)
   style.height = h
   style.fontSize = h
   style.lineHeight = h
-  style.fontWeight = useProps.fontWeight
+  style.fontWeight = props.fontWeight
   return useStyle(style)
 })
 
-watch(() => [useProps.value, useProps.decimalPlaces, useProps.trimZero, useProps.thousandsSep, useProps.fontSize], resize)
+watch(() => [props.value, props.decimalPlaces, props.trimZero, props.thousandsSep, props.fontSize], resize)
 
 async function resize() {
   await nextTick()
-  const value = formatValue(isInit.value ? useProps.value : 0)
+  const value = formatValue(isInit.value ? props.value : 0)
   const formatValueArr = String(value).split("")
   columns.value = formatValueArr.map((val) => (~arab.indexOf(val) ? arab : [val]))
   indexs.value = formatValueArr

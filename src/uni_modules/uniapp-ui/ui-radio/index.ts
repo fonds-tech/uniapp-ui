@@ -1,9 +1,8 @@
 import type Radio from "./ui-radio.vue"
 import type { ExtractPropTypes } from "vue"
-import { createProps } from "../hooks"
 import { styleProp, truthProp, makeStringProp, makeNumericProp } from "../utils/props"
 
-export const [radioProps, useRadioProps] = createProps("radio", {
+export const radioProps = {
   /**
    * 标识符，通常为一个唯一的字符串或数字
    */
@@ -100,7 +99,7 @@ export const [radioProps, useRadioProps] = createProps("radio", {
    * 自定义样式
    */
   customStyle: styleProp,
-})
+}
 export const radioEmits = {
   click: () => true,
   change: (value: RadioValueType) => true,

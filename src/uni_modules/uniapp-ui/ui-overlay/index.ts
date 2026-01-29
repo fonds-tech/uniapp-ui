@@ -1,10 +1,9 @@
 import type Overlay from "./ui-overlay.vue"
 import type { PropType, CSSProperties, ExtractPropTypes } from "vue"
 import { isBoolean } from "../utils/check"
-import { createProps } from "../hooks"
 import { truthProp, numericProp, makeStringProp, makeNumericProp } from "../utils/props"
 
-export const [overlayProps, useOverlayProps] = createProps("overlay", {
+export const overlayProps = {
   /**
    * 是否显示
    */
@@ -41,8 +40,7 @@ export const [overlayProps, useOverlayProps] = createProps("overlay", {
    * 自定义样式
    */
   customStyle: [String, Object] as PropType<string | CSSProperties>,
-})
-
+}
 export const overlayEmits = {
   "update:show": (show: boolean) => isBoolean(show),
   open: () => true,

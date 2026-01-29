@@ -19,7 +19,7 @@ import type { ToastOptions } from "./index"
 import type { CSSProperties } from "vue"
 import { isImage, isString } from "../utils/check"
 import { ref, watch, computed } from "vue"
-import { toastEmits, toastProps, useToastProps } from "./index"
+import { toastEmits, toastProps } from "./index"
 import { useUnit, useStyle, useTransition, useGlobalZIndex } from "../hooks"
 
 // 定义组件名称
@@ -28,7 +28,6 @@ defineOptions({ name: "ui-toast" })
 // 定义props和emits
 const props = defineProps(toastProps)
 const emits = defineEmits(toastEmits)
-const useProps = useToastProps(props)
 // 使用transition hook
 const transition = useTransition()
 
@@ -48,17 +47,17 @@ const commandOptions = ref<ToastOptions>({}) // 命令式调用时传入的选�
  * 命令式调用时 commandOptions 会覆盖 props
  */
 const mergedOptions = computed(() => ({
-  type: commandOptions.value.type ?? useProps.type,
-  icon: commandOptions.value.icon ?? useProps.icon,
-  mask: commandOptions.value.mask ?? useProps.mask,
-  content: commandOptions.value.content ?? useProps.content,
-  width: commandOptions.value.width ?? useProps.width,
-  offset: commandOptions.value.offset ?? useProps.offset,
-  iconSize: commandOptions.value.iconSize ?? useProps.iconSize,
-  iconPrefix: commandOptions.value.iconPrefix ?? useProps.iconPrefix,
-  duration: commandOptions.value.duration ?? useProps.duration,
-  position: commandOptions.value.position ?? useProps.position,
-  background: commandOptions.value.background ?? useProps.background,
+  type: commandOptions.value.type ?? props.type,
+  icon: commandOptions.value.icon ?? props.icon,
+  mask: commandOptions.value.mask ?? props.mask,
+  content: commandOptions.value.content ?? props.content,
+  width: commandOptions.value.width ?? props.width,
+  offset: commandOptions.value.offset ?? props.offset,
+  iconSize: commandOptions.value.iconSize ?? props.iconSize,
+  iconPrefix: commandOptions.value.iconPrefix ?? props.iconPrefix,
+  duration: commandOptions.value.duration ?? props.duration,
+  position: commandOptions.value.position ?? props.position,
+  background: commandOptions.value.background ?? props.background,
 }))
 
 // 计算样式
@@ -89,7 +88,7 @@ const bodyStyle = computed(() => {
   const style: CSSProperties = {}
   style.maxWidth = useUnit(mergedOptions.value.width)
   style.background = mergedOptions.value.background
-  return useStyle({ ...style, ...useStyle(useProps.customStyle) })
+  return useStyle({ ...style, ...useStyle(props.customStyle) })
 })
 
 // 计算body class
@@ -121,9 +120,9 @@ transition.on("after-enter", () => emits("opened"))
 transition.on("before-leave", () => emits("close"))
 transition.on("after-leave", closed)
 
-// 监听 useProps.show 变化，支持声明式调用
+// 监听 props.show 变化，支持声明式调用
 watch(
-  () => useProps.show,
+  () => props.show,
   (val) => {
     val ? open() : close()
   },
@@ -137,7 +136,7 @@ function initTransition() {
 
 /**
  * 打开 toast
- * 内部方法，被 show() 和 useProps.show 监听调用
+ * 内部方法，被 show() 和 props.show 监听调用
  */
 function open() {
   if (transition.visible.value) return
@@ -152,7 +151,7 @@ function open() {
 
 /**
  * 关闭 toast
- * 内部方法，被 hide() 和 useProps.show 监听调用
+ * 内部方法，被 hide() 和 props.show 监听调用
  */
 function close() {
   if (transition.visible.value) {
@@ -169,7 +168,7 @@ function startTimer() {
   clearTimer()
   const duration = +mergedOptions.value.duration
   // loading 类型默认不自动关闭（除非显式设置了 duration）
-  const isLoadingWithoutDuration = mergedOptions.value.type === "loading" && !commandOptions.value.duration && !useProps.duration
+  const isLoadingWithoutDuration = mergedOptions.value.type === "loading" && !commandOptions.value.duration && !props.duration
   if (duration > 0 && !isLoadingWithoutDuration) {
     timer.value = setTimeout(() => {
       close()

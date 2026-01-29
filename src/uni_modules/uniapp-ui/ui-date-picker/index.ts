@@ -1,6 +1,5 @@
 import type DatePicker from "./ui-date-picker.vue"
 import type { PropType, ExtractPropTypes } from "vue"
-import { createProps } from "../hooks"
 import { truthProp, numericProp, makeStringProp, makeNumericProp } from "../utils/props"
 
 // ==================== 通用类型定义 ====================
@@ -46,7 +45,7 @@ export type PopupMode = "top" | "bottom" | "left" | "right" | "center"
  * UI-Date-Picker Props
  * 完整的日期选择器,集成 ui-popup 和 picker-view
  */
-export const [datePickerProps, useDatePickerProps] = createProps("datePicker", {
+export const datePickerProps = {
   // ===== Popup 相关 props =====
   /**
    * 是否显示弹窗
@@ -167,8 +166,7 @@ export const [datePickerProps, useDatePickerProps] = createProps("datePicker", {
    * 激活选项文字字重
    */
   activeColumnWeight: numericProp,
-})
-
+}
 /**
  * 取消/确认事件数据
  */

@@ -13,15 +13,12 @@ import { it, vi, expect, describe, afterEach, beforeEach } from "vitest"
 // 创建用于 mock parent context 的辅助函数
 function createMockParentProvide(currentNameValue: string | number | null = "A") {
   return {
-  props: {},
-  useProps: {
-    sticky: true,
-  },
-  currentName: ref(currentNameValue),
-  link: vi.fn(),
-  unlink: vi.fn(),
-  childrens: [],
-}
+    props: { sticky: true },
+    currentName: ref(currentNameValue),
+    link: vi.fn(),
+    unlink: vi.fn(),
+    childrens: [],
+  }
 }
 
 describe("ui-index-anchor 索引锚点组件", () => {

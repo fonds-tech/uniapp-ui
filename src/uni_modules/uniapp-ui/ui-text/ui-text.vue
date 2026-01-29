@@ -6,34 +6,33 @@
 
 <script setup lang="ts">
 import { computed } from "vue"
+import { textEmits, textProps } from "./index"
 
 import { useUnit, useColor, useStyle } from "../hooks"
-import { textEmits, textProps, useTextProps } from "./index"
 
 defineOptions({ name: "ui-text" })
 
 const props = defineProps(textProps)
 const emits = defineEmits(textEmits)
-const useProps = useTextProps(props)
 const style = computed(() => {
   const style: any = {}
-  style.fontWeight = useProps.weight
-  style.color = useColor(useProps.color)
-  style.fontSize = useUnit(useProps.size)
-  style.textAlign = useProps.align
-  style.lineHeight = useProps.lineHeight
-  style.textDecoration = useProps.decoration
-  if (+useProps.rows > 1) {
-    style["-webkit-line-clamp"] = useProps.rows
+  style.fontWeight = props.weight
+  style.color = useColor(props.color)
+  style.fontSize = useUnit(props.size)
+  style.textAlign = props.align
+  style.lineHeight = props.lineHeight
+  style.textDecoration = props.decoration
+  if (+props.rows > 1) {
+    style["-webkit-line-clamp"] = props.rows
   }
-  return useStyle({ ...style, ...useStyle(useProps.customStyle) })
+  return useStyle({ ...style, ...useStyle(props.customStyle) })
 })
 
 const classes = computed(() => {
   const list: string[] = []
-  if (useProps.clickable) list.push("ui-text--clickable")
-  if (+useProps.rows === 1) list.push("ui-text--ellipsis")
-  if (+useProps.rows > 1) list.push("ui-text--clamp")
+  if (props.clickable) list.push("ui-text--clickable")
+  if (+props.rows === 1) list.push("ui-text--ellipsis")
+  if (+props.rows > 1) list.push("ui-text--clamp")
   return list
 })
 

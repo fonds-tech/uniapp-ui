@@ -1,9 +1,8 @@
 import type Image from "./ui-image.vue"
 import type { ExtractPropTypes } from "vue"
-import { createProps } from "../hooks"
 import { styleProp, truthProp, makeStringProp, makeNumericProp } from "../utils/props"
 
-export const [imageProps, useImageProps] = createProps("image", {
+export const imageProps = {
   /**
    * 图片资源地址
    */
@@ -68,7 +67,7 @@ export const [imageProps, useImageProps] = createProps("image", {
    * 自定义样式
    */
   customStyle: styleProp,
-})
+}
 export const imageEmits = {
   load: (event: any) => true,
   error: (event: any) => true,

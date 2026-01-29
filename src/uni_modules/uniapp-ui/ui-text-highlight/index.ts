@@ -1,9 +1,8 @@
 import type TextHighlight from "./ui-text-highlight.vue"
 import type { ExtractPropTypes } from "vue"
-import { createProps } from "../hooks"
 import { styleProp, makeStringProp, makeNumericProp } from "../utils/props"
 
-export const [textHighlightProps, useTextHighlightProps] = createProps("textHighlight", {
+export const textHighlightProps = {
   /**
    * 文本内容
    */
@@ -44,8 +43,7 @@ export const [textHighlightProps, useTextHighlightProps] = createProps("textHigh
    * 自定义样式
    */
   customStyle: styleProp,
-})
-
+}
 export const textHighlightEmits = {
   click: (value: string | number) => true,
   clickMatch: (value: string | number) => true,

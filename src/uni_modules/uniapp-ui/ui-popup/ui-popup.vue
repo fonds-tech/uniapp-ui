@@ -1,27 +1,27 @@
 <template>
   <view>
     <ui-overlay
-      v-if="useProps.overlay"
+      v-if="props.overlay"
       :show="visible"
-      :duration="useProps.duration"
+      :duration="props.duration"
       :z-index="zIndex"
-      :lazy-render="useProps.lazyRender"
+      :lazy-render="props.lazyRender"
       :custom-style="overlayStyle"
       @click="onClickOverlay"
     />
-    <view v-if="inited" class="ui-popup" :style="[style]" :class="[classs, useProps.customClass]" @transitionend="transition.end" @touchmove.prevent.stop="noop">
-      <view v-if="useProps.closeable" class="ui-popup__close" :class="[closeClass]" @click.stop="onClickClose">
+    <view v-if="inited" class="ui-popup" :style="[style]" :class="[classs, props.customClass]" @transitionend="transition.end" @touchmove.prevent.stop="noop">
+      <view v-if="props.closeable" class="ui-popup__close" :class="[closeClass]" @click.stop="onClickClose">
         <slot name="close">
-          <ui-icon :name="useProps.closeIcon" size="36rpx" color="#333333" hover-class="active-opacity" />
+          <ui-icon :name="props.closeIcon" size="36rpx" color="#333333" hover-class="active-opacity" />
         </slot>
       </view>
-      <ui-safe-area-top v-if="useProps.safeAreaInsetTop" />
+      <ui-safe-area-top v-if="props.safeAreaInsetTop" />
       <slot name="header" />
       <scroll-view class="ui-popup__scroll" enable-flex scroll-y :style="[scrollViewStyle]" @click.stop="onClickBody">
         <slot />
       </scroll-view>
       <slot name="footer" />
-      <ui-safe-area-bottom v-if="useProps.safeAreaInsetBottom" />
+      <ui-safe-area-bottom v-if="props.safeAreaInsetBottom" />
       <slot name="outside" />
     </view>
   </view>
@@ -32,8 +32,8 @@ import type { CSSProperties } from "vue"
 import type { TransitionName } from "../hooks"
 import { noop } from "../utils/utils"
 import { isNumber } from "../utils/check"
+import { popupEmits, popupProps } from "./index"
 import { ref, watch, computed, onMounted } from "vue"
-import { popupEmits, popupProps, usePopupProps } from "./index"
 import { useUnit, useColor, useStyle, useTransition, useGlobalZIndex } from "../hooks"
 
 // 定义组件名称
@@ -42,7 +42,6 @@ defineOptions({ name: "ui-popup" })
 // 定义props和emits
 const props = defineProps(popupProps)
 const emits = defineEmits(popupEmits)
-const useProps = usePopupProps(props)
 // 使用transition hook
 const transition = useTransition()
 
@@ -53,7 +52,7 @@ const visible = ref(false) // 控制弹出层的可见性
 const windowBottom = ref(0) // 窗口底部安全区域高度
 
 // 计算属性: 是否已初始化
-const inited = computed(() => !useProps.lazyRender || transition.inited.value)
+const inited = computed(() => !props.lazyRender || transition.inited.value)
 
 // 为transition的各个阶段绑定事件
 transition.on("before-enter", () => emits("open"))
@@ -65,14 +64,14 @@ transition.on("after-leave", () => emits("closed", action.value))
 const style = computed(() => {
   const style: CSSProperties = {}
   style.zIndex = zIndex.value
-  style.background = useColor(useProps.background)
-  style["--ui-popup-border-radius"] = useUnit(useProps.borderRadius)
-  return useStyle({ ...style, ...useStyle(useProps.customStyle), ...transition.styles.value })
+  style.background = useColor(props.background)
+  style["--ui-popup-border-radius"] = useUnit(props.borderRadius)
+  return useStyle({ ...style, ...useStyle(props.customStyle), ...transition.styles.value })
 })
 
 // 计算弹出层的类名
 const classs = computed(() => {
-  const list: string[] = [`ui-popup--${useProps.mode}`, transition.classs.value]
+  const list: string[] = [`ui-popup--${props.mode}`, transition.classs.value]
   return list
 })
 
@@ -80,24 +79,24 @@ const classs = computed(() => {
 const closeClass = computed(() => {
   const list: string[] = []
   const positions = { top: "top-right", right: "top-left", bottom: "top-right", left: "top-right" }
-  if (useProps.closeIconPosition) list.push(`ui-popup__close--${useProps.closeIconPosition}`)
-  else list.push(`ui-popup__close--${positions[useProps.mode]}`)
+  if (props.closeIconPosition) list.push(`ui-popup__close--${props.closeIconPosition}`)
+  else list.push(`ui-popup__close--${positions[props.mode]}`)
   return list
 })
 
 // 计算滚动视图的样式
 const scrollViewStyle = computed(() => {
   const style: CSSProperties = {}
-  style.width = useUnit(useProps.width)
-  style.height = useUnit(useProps.height)
-  style.maxWidth = useUnit(useProps.maxWidth)
-  style.maxHeight = useUnit(useProps.maxHeight)
+  style.width = useUnit(props.width)
+  style.height = useUnit(props.height)
+  style.maxWidth = useUnit(props.maxWidth)
+  style.maxHeight = useUnit(props.maxHeight)
   return useStyle(style)
 })
 
 // 监听show属性变化,控制弹出层的显示和隐藏
 watch(
-  () => useProps.show,
+  () => props.show,
   (val) => {
     if (val) open()
     else close("show")
@@ -106,19 +105,19 @@ watch(
 )
 
 // 监听mode和duration属性变化,重新初始化transition
-watch(() => [useProps.mode, useProps.duration], initTransition, { immediate: true })
+watch(() => [props.mode, props.duration], initTransition, { immediate: true })
 
 // 初始化transition
 function initTransition() {
   const modes = { top: "slide-down", left: "slide-left", right: "slide-right", bottom: "slide-up", center: "fade" }
-  transition.init({ name: modes[useProps.mode] as TransitionName, duration: useProps.duration })
+  transition.init({ name: modes[props.mode] as TransitionName, duration: props.duration })
 }
 
 // 打开弹出层
 function open() {
   if (transition.visible.value) return
   initTransition()
-  zIndex.value = isNumber(useProps.zIndex) ? +useProps.zIndex : useGlobalZIndex()
+  zIndex.value = isNumber(props.zIndex) ? +props.zIndex : useGlobalZIndex()
   visible.value = true
   transition.enter()
   emits("update:show", true)
@@ -147,7 +146,7 @@ function onClickBody() {
 
 // 点击遮罩层时的处理函数
 function onClickOverlay() {
-  if (useProps.closeOnClickOverlay) {
+  if (props.closeOnClickOverlay) {
     close("overlay")
   }
   emits("clickOverlay")
@@ -155,7 +154,7 @@ function onClickOverlay() {
 
 // 获取窗口底部安全区域高度
 function getWindowBottom() {
-  if (useProps.mode !== "bottom") return
+  if (props.mode !== "bottom") return
   // #ifdef MP-WEIXIN
   try {
     const windowInfo = uni.getWindowInfo()

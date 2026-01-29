@@ -1,35 +1,33 @@
 <template>
-  <view class="ui-line" :class="[useProps.customClass]" :style="[style]" />
+  <view class="ui-line" :class="[props.customClass]" :style="[style]" />
 </template>
 
 <script setup lang="ts">
 import { computed } from "vue"
 
-import { lineProps, useLineProps } from "./index"
+import { lineProps } from "./index"
 import { useUnit, useColor, useStyle } from "../hooks"
 
 defineOptions({ name: "ui-line" })
 
 const props = defineProps(lineProps)
-const useProps = useLineProps(props)
-
 const style = computed(() => {
   const style: any = {}
-  style.margin = useUnit(useProps.margin)
+  style.margin = useUnit(props.margin)
 
-  if (useProps.vertical) {
+  if (props.vertical) {
     // 垂直线：length 作为高度，thickness 作为边框粗细
     style.width = 0
-    style.height = useUnit(useProps.length)
-    style.borderLeft = `${useUnit(useProps.thickness)} ${useProps.type} ${useColor(useProps.color)}`
+    style.height = useUnit(props.length)
+    style.borderLeft = `${useUnit(props.thickness)} ${props.type} ${useColor(props.color)}`
   } else {
     // 水平线：length 作为宽度，thickness 作为边框粗细
-    style.width = useUnit(useProps.length)
+    style.width = useUnit(props.length)
     style.height = 0
-    style.borderTop = `${useUnit(useProps.thickness)} ${useProps.type} ${useColor(useProps.color)}`
+    style.borderTop = `${useUnit(props.thickness)} ${props.type} ${useColor(props.color)}`
   }
 
-  return useStyle({ ...style, ...useStyle(useProps.customStyle) })
+  return useStyle({ ...style, ...useStyle(props.customStyle) })
 })
 
 defineExpose({ name: "ui-line" })

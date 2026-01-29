@@ -50,7 +50,13 @@ const toast = ref<ToastInstance>()
 const keyword = ref("")
 
 // 图标列表
-const icons = ref<{ name: string; unicode: string }[]>(iconsData)
+// icons.json 为 iconfont 导出的完整结构，这里转换为组件使用的精简列表
+const icons = ref<{ name: string; unicode: string }[]>(
+  iconsData.glyphs.map((item) => ({
+    name: item.font_class,
+    unicode: item.unicode,
+  })),
+)
 
 // 过滤后的图标列表
 const filteredIcons = computed(() => {

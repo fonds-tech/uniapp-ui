@@ -1,71 +1,70 @@
 <template>
-  <view v-if="visible" class="ui-tag" :class="[classes, useProps.customClass]" :style="[style]" @click="onClick">
-    <view v-if="useProps.icon || slots.icon" class="ui-tag__icon">
+  <view v-if="visible" class="ui-tag" :class="[classes, props.customClass]" :style="[style]" @click="onClick">
+    <view v-if="props.icon || slots.icon" class="ui-tag__icon">
       <slot name="icon">
-        <ui-icon :name="useProps.icon" :color="useProps.iconColor" :size="useProps.iconSize" :weight="useProps.iconWeight" />
+        <ui-icon :name="props.icon" :color="props.iconColor" :size="props.iconSize" :weight="props.iconWeight" />
       </slot>
     </view>
     <view class="ui-tag__text" :style="[textStyle]">
-      <slot>{{ useProps.text }}</slot>
+      <slot>{{ props.text }}</slot>
     </view>
-    <view v-if="useProps.closeable || slots.close" class="ui-tag__close" @click="onClose">
+    <view v-if="props.closeable || slots.close" class="ui-tag__close" @click="onClose">
       <slot name="close">
-        <ui-icon name="cross" :color="useProps.iconColor" :size="useProps.iconSize" :weight="useProps.iconWeight" />
+        <ui-icon name="cross" :color="props.iconColor" :size="props.iconSize" :weight="props.iconWeight" />
       </slot>
     </view>
   </view>
 </template>
 
 <script setup lang="ts">
+import { tagEmits, tagProps } from "./index"
 import { useUnit, useColor, useStyle } from "../hooks"
 import { ref, watch, computed, useSlots } from "vue"
-import { tagEmits, tagProps, useTagProps } from "./index"
 
 defineOptions({ name: "ui-tag" })
 
 const props = defineProps(tagProps)
 const emits = defineEmits(tagEmits)
-const useProps = useTagProps(props)
 const slots = useSlots()
 const visible = ref(true)
 
 const style = computed(() => {
   const style: any = {}
-  style.padding = useProps.padding
-  style.color = useColor(useProps.textColor)
-  style.height = useUnit(useProps.height)
-  style.background = useColor(useProps.background)
-  style.borderRadius = useUnit(useProps.borderRadius)
+  style.padding = props.padding
+  style.color = useColor(props.textColor)
+  style.height = useUnit(props.height)
+  style.background = useColor(props.background)
+  style.borderRadius = useUnit(props.borderRadius)
 
-  if (useProps.borderColor) {
-    style.borderColor = useColor(useProps.borderColor)
+  if (props.borderColor) {
+    style.borderColor = useColor(props.borderColor)
     style.borderStyle = "solid"
-    style.borderWidth = useUnit(useProps.borderWidth) || "1rpx"
-  } else if (useProps.borderWidth) {
-    style.borderWidth = useUnit(useProps.borderWidth)
+    style.borderWidth = useUnit(props.borderWidth) || "1rpx"
+  } else if (props.borderWidth) {
+    style.borderWidth = useUnit(props.borderWidth)
   }
 
-  return useStyle({ ...style, ...useStyle(useProps.customStyle) })
+  return useStyle({ ...style, ...useStyle(props.customStyle) })
 })
 
 const classes = computed(() => {
   const list: string[] = []
-  list.push(`ui-tag--${useProps.type}`)
-  if (useProps.round) list.push("ui-tag--round")
-  if (useProps.plain) list.push("ui-tag--plain")
-  if (useProps.closeable) list.push("ui-tag--closeable")
+  list.push(`ui-tag--${props.type}`)
+  if (props.round) list.push("ui-tag--round")
+  if (props.plain) list.push("ui-tag--plain")
+  if (props.closeable) list.push("ui-tag--closeable")
   return list
 })
 
 const textStyle = computed(() => {
   const style: any = {}
-  style.fontSize = useUnit(useProps.textSize)
-  style.fontWeight = useProps.textWeight
+  style.fontSize = useUnit(props.textSize)
+  style.fontWeight = props.textWeight
   return useStyle(style)
 })
 
 watch(
-  () => useProps.show,
+  () => props.show,
   (val) => {
     visible.value = val
   },

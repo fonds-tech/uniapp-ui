@@ -224,12 +224,6 @@ describe("uiTabbarItem 组件", () => {
               inactiveColor: "",
               route: false,
             },
-            useProps: {
-              modelValue: 0,
-              activeColor: "",
-              inactiveColor: "",
-              route: false,
-            },
             updateValue: vi.fn(),
           },
         },

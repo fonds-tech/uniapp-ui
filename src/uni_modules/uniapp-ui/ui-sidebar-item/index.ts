@@ -1,9 +1,8 @@
 import type SidebarItem from "./ui-sidebar-item.vue"
 import type { PropType, CSSProperties, ExtractPropTypes } from "vue"
-import { createProps } from "../hooks"
 import { numericProp, makeStringProp } from "../utils/props"
 
-export const [sidebarItemProps, useSidebarItemProps] = createProps("sidebarItem", {
+export const sidebarItemProps = {
   /**
    * 标识符
    */
@@ -72,8 +71,7 @@ export const [sidebarItemProps, useSidebarItemProps] = createProps("sidebarItem"
    * 自定义样式
    */
   customStyle: [String, Object] as PropType<string | CSSProperties>,
-})
-
+}
 export const sidebarItemEmits = {}
 
 export type SidebarItemEmits = typeof sidebarItemEmits

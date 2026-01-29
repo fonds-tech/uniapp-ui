@@ -13,16 +13,14 @@
 <script setup lang="ts">
 import type { CSSProperties } from "vue"
 import { uuid } from "../utils/utils"
+import { stickyEmits, stickyProps } from "./index"
 import { useRect, useColor, useStyle } from "../hooks"
-import { stickyEmits, stickyProps, useStickyProps } from "./index"
 import { ref, watch, computed, nextTick, reactive, onUnmounted, getCurrentInstance } from "vue"
 
 defineOptions({ name: "ui-sticky" })
 
 const props = defineProps(stickyProps)
 const emits = defineEmits(stickyEmits)
-const useProps = useStickyProps(props)
-
 // 唯一 ID
 const stickyId = ref(`sticky-${uuid()}`)
 const instance = getCurrentInstance()!
@@ -47,7 +45,7 @@ const innerOffsetTop = computed(() => {
   // H5 端导航栏高度为 44px
   top = 44
   // #endif
-  return top + Number(useProps.offsetTop || 0)
+  return top + Number(props.offsetTop || 0)
 })
 
 // 根容器样式 - 外层占位
@@ -55,7 +53,7 @@ const rootStyle = computed(() => {
   const style: CSSProperties = {
     display: "inline-block",
     position: "relative",
-    zIndex: useProps.zIndex,
+    zIndex: props.zIndex,
     width: stickyState.width ? `${stickyState.width}px` : undefined,
     height: stickyState.height ? `${stickyState.height}px` : undefined,
   }
@@ -66,7 +64,7 @@ const rootStyle = computed(() => {
 const stickyStyle = computed(() => {
   const style: CSSProperties = {
     position: "relative",
-    zIndex: useProps.zIndex,
+    zIndex: props.zIndex,
     width: stickyState.width ? `${stickyState.width}px` : undefined,
     height: stickyState.height ? `${stickyState.height}px` : undefined,
   }
@@ -78,7 +76,7 @@ const containerStyle = computed(() => {
   const style: CSSProperties = {
     position: stickyState.position,
     top: `${stickyState.top}px`,
-    zIndex: useProps.zIndex,
+    zIndex: props.zIndex,
   }
 
   // fixed 定位时需要设置 left/right
@@ -87,11 +85,11 @@ const containerStyle = computed(() => {
     style.right = "0"
   }
 
-  if (useProps.background) {
-    style.background = useColor(useProps.background)
+  if (props.background) {
+    style.background = useColor(props.background)
   }
 
-  return useStyle({ ...style, ...useStyle(useProps.customStyle) })
+  return useStyle({ ...style, ...useStyle(props.customStyle) })
 })
 
 // 判断是否吸顶
@@ -115,7 +113,7 @@ function createObserver() {
 
 // 处理位置变化
 function handleRelativeTo(result: { boundingClientRect: { top: number; bottom: number } }) {
-  if (useProps.disabled) {
+  if (props.disabled) {
     if (stickyState.state === "sticky") {
       setNormalState()
     }
@@ -163,7 +161,7 @@ function setNormalState() {
 // 监听元素滚动（使用 IntersectionObserver）
 async function observeScroll() {
   if (stickyState.height === 0 && stickyState.width === 0) return
-  if (useProps.disabled) return
+  if (props.disabled) return
 
   const offset = innerOffsetTop.value + stickyState.height
   clearObserver()
@@ -202,7 +200,7 @@ async function handleResize(detail: { width: number; height: number }) {
 
 // 监听 disabled 变化
 watch(
-  () => useProps.disabled,
+  () => props.disabled,
   (disabled) => {
     if (disabled) {
       setNormalState()

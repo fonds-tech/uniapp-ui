@@ -1,11 +1,10 @@
 import type Arc from "./ui-arc.vue"
 import type { PropType, CSSProperties, ExtractPropTypes } from "vue"
-import { createProps } from "../hooks"
 import { numericProp, makeStringProp, makeNumericProp } from "../utils/props"
 
 export type ArcDirection = "top" | "bottom"
 
-export const [arcProps, useArcProps] = createProps("arc", {
+export const arcProps = {
   /**
    * 弧形高度
    */
@@ -49,8 +48,7 @@ export const [arcProps, useArcProps] = createProps("arc", {
    * 自定义样式
    */
   customStyle: [String, Object] as PropType<string | CSSProperties>,
-})
-
+}
 export const arcEmits = {
   click: () => true,
 }

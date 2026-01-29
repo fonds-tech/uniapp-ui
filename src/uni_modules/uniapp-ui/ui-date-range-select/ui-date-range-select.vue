@@ -1,34 +1,34 @@
 <template>
-  <view class="ui-date-range-select" :class="[classs, useProps.customClass]" :style="[style]">
+  <view class="ui-date-range-select" :class="[classs, props.customClass]" :style="[style]">
     <!-- 触发区域 -->
     <view class="ui-date-range-select__trigger" :hover-class="hoverClass" :hover-stay-time="50">
       <!-- 开始日期 -->
       <view class="ui-date-range-select__item ui-date-range-select__start" :class="{ 'is-active': activeType === 'start' && visible }" @click="handleClick('start')">
-        <slot name="start" :text="startDisplayText" :value="startValue" :placeholder="useProps.startPlaceholder">
+        <slot name="start" :text="startDisplayText" :value="startValue" :placeholder="props.startPlaceholder">
           <text v-if="startDisplayText" class="ui-date-range-select__text" :style="[textStyle]">{{ startDisplayText }}</text>
-          <text v-else class="ui-date-range-select__placeholder" :style="[placeholderStyle]">{{ useProps.startPlaceholder }}</text>
+          <text v-else class="ui-date-range-select__placeholder" :style="[placeholderStyle]">{{ props.startPlaceholder }}</text>
         </slot>
       </view>
 
       <!-- 分隔符 -->
       <view class="ui-date-range-select__separator" @click="handleClick('start')">
         <slot name="separator">
-          <text class="ui-date-range-select__separator-text" :style="[separatorStyle]">{{ useProps.separator }}</text>
+          <text class="ui-date-range-select__separator-text" :style="[separatorStyle]">{{ props.separator }}</text>
         </slot>
       </view>
 
       <!-- 结束日期 -->
       <view class="ui-date-range-select__item ui-date-range-select__end" :class="{ 'is-active': activeType === 'end' && visible }" @click="handleClick('end')">
-        <slot name="end" :text="endDisplayText" :value="endValue" :placeholder="useProps.endPlaceholder">
+        <slot name="end" :text="endDisplayText" :value="endValue" :placeholder="props.endPlaceholder">
           <text v-if="endDisplayText" class="ui-date-range-select__text" :style="[textStyle]">{{ endDisplayText }}</text>
-          <text v-else class="ui-date-range-select__placeholder" :style="[placeholderStyle]">{{ useProps.endPlaceholder }}</text>
+          <text v-else class="ui-date-range-select__placeholder" :style="[placeholderStyle]">{{ props.endPlaceholder }}</text>
         </slot>
       </view>
 
       <!-- 右侧图标 -->
       <view v-if="showRightIcon" class="ui-date-range-select__icon" @click="handleClick('start')">
         <slot name="right-icon">
-          <ui-icon :name="useProps.rightIcon" :size="useProps.rightIconSize" :color="useProps.rightIconColor" :weight="useProps.rightIconWeight" />
+          <ui-icon :name="props.rightIcon" :size="props.rightIconSize" :color="props.rightIconColor" :weight="props.rightIconWeight" />
         </slot>
       </view>
     </view>
@@ -36,14 +36,14 @@
     <!-- Popup 弹窗 -->
     <ui-popup
       :show="visible"
-      :mode="useProps.mode"
-      :border-radius="useProps.borderRadius"
-      :close-on-click-overlay="useProps.closeOnClickOverlay"
-      :overlay="useProps.overlay"
-      :duration="useProps.duration"
-      :z-index="useProps.zIndex"
-      :background="useProps.background"
-      :safe-area-inset-bottom="useProps.safeAreaInsetBottom"
+      :mode="props.mode"
+      :border-radius="props.borderRadius"
+      :close-on-click-overlay="props.closeOnClickOverlay"
+      :overlay="props.overlay"
+      :duration="props.duration"
+      :z-index="props.zIndex"
+      :background="props.background"
+      :safe-area-inset-bottom="props.safeAreaInsetBottom"
       @update:show="handleUpdateShow"
       @open="emits('open')"
       @opened="emits('opened')"
@@ -52,10 +52,10 @@
     >
       <template #header>
         <slot name="header">
-          <view v-if="useProps.showHeader" class="ui-date-range-select__header">
+          <view v-if="props.showHeader" class="ui-date-range-select__header">
             <view class="ui-date-range-select__header__cancel" @click="handleCancel">
               <slot name="cancel">
-                <ui-button text text-color="#969799">{{ useProps.cancelText }}</ui-button>
+                <ui-button text text-color="#969799">{{ props.cancelText }}</ui-button>
               </slot>
             </view>
 
@@ -71,7 +71,7 @@
 
             <view class="ui-date-range-select__header__confirm" @click="handleConfirm">
               <slot name="confirm">
-                <ui-button text>{{ useProps.confirmText }}</ui-button>
+                <ui-button text>{{ props.confirmText }}</ui-button>
               </slot>
             </view>
           </view>
@@ -107,15 +107,14 @@ import type { DatePickerOption, DatePickerColumnType } from "../ui-date-picker"
 import type { DateRangeSelectValue, DateRangeSelectActiveType, DateRangeSelectCancelData, DateRangeSelectChangeData, DateRangeSelectConfirmData } from "./index"
 import { padZero } from "../utils/utils"
 import { formItemKey } from "../ui-form-item"
+import { dateRangeSelectEmits, dateRangeSelectProps } from "./index"
 import { ref, toRaw, watch, computed, nextTick, useSlots } from "vue"
 import { useUnit, useColor, useStyle, useParent, useUnitToPx } from "../hooks"
-import { dateRangeSelectEmits, dateRangeSelectProps, useDateRangeSelectProps } from "./index"
 
 defineOptions({ name: "ui-date-range-select" })
 
 const props = defineProps(dateRangeSelectProps)
 const emits = defineEmits(dateRangeSelectEmits)
-const useProps = useDateRangeSelectProps(props)
 const slots = useSlots()
 
 const { parent } = useParent(formItemKey)
@@ -191,8 +190,8 @@ const minBound = computed(() => {
   // 选择结束日期时，最小日期不能早于开始日期
   if (activeType.value === "end" && tempStartValue.value) {
     const startParsed = parseDate(tempStartValue.value)
-    if (useProps.minDate) {
-      const minParsed = parseDate(useProps.minDate)
+    if (props.minDate) {
+      const minParsed = parseDate(props.minDate)
       // 取较大者
       if (
         startParsed.y > minParsed.y ||
@@ -206,8 +205,8 @@ const minBound = computed(() => {
     return startParsed
   }
 
-  if (useProps.minDate) {
-    return parseDate(useProps.minDate)
+  if (props.minDate) {
+    return parseDate(props.minDate)
   }
   const y = new Date().getFullYear() - 10
   return { y, m: 1, d: 1, h: 0, mi: 0, s: 0 }
@@ -217,8 +216,8 @@ const maxBound = computed(() => {
   // 选择开始日期时，最大日期不能晚于结束日期
   if (activeType.value === "start" && tempEndValue.value) {
     const endParsed = parseDate(tempEndValue.value)
-    if (useProps.maxDate) {
-      const maxParsed = parseDate(useProps.maxDate)
+    if (props.maxDate) {
+      const maxParsed = parseDate(props.maxDate)
       // 取较小者
       if (
         endParsed.y < maxParsed.y ||
@@ -232,8 +231,8 @@ const maxBound = computed(() => {
     return endParsed
   }
 
-  if (useProps.maxDate) {
-    return parseDate(useProps.maxDate)
+  if (props.maxDate) {
+    return parseDate(props.maxDate)
   }
   const y = new Date().getFullYear() + 10
   return { y, m: 12, d: 31, h: 23, mi: 59, s: 59 }
@@ -247,7 +246,7 @@ function genOptions(start: number, end: number, type: DatePickerColumnType): Dat
   const options: DatePickerOption[] = []
 
   const defaultFormatter = (_type: string, option: DatePickerOption) => option
-  const formatter = useProps.columnFormatter ?? defaultFormatter
+  const formatter = props.columnFormatter ?? defaultFormatter
 
   for (let i = safeStart; i <= safeEnd; i++) {
     const text = pad(i)
@@ -256,7 +255,7 @@ function genOptions(start: number, end: number, type: DatePickerColumnType): Dat
     options.push(formatted ?? option)
   }
 
-  const filter = useProps.columnFilter
+  const filter = props.columnFilter
   if (typeof filter === "function") {
     return filter(type, options, [])
   }
@@ -378,14 +377,14 @@ function setCurrentValue(type: DatePickerColumnType, val: number) {
 // ==================== Picker 数据 ====================
 
 const pickerColumns = computed(() => {
-  return useProps.columns.map((type) => {
+  return props.columns.map((type) => {
     const col = columnMap[type]
     return col ? col.value : []
   })
 })
 
 const pickerIndexes = computed(() => {
-  return useProps.columns.map((type, colIdx) => {
+  return props.columns.map((type, colIdx) => {
     const column = pickerColumns.value[colIdx]
     if (!column || column.length === 0) return 0
     const currentVal = pad(getCurrentValue(type))
@@ -397,12 +396,12 @@ const pickerIndexes = computed(() => {
 // ==================== Picker 样式 ====================
 
 const viewStyle = computed(() => {
-  const height = useUnitToPx(useProps.columnHeight) * +useProps.visibleColumnNum
+  const height = useUnitToPx(props.columnHeight) * +props.visibleColumnNum
   return useStyle({ height: `${height}px` })
 })
 
 const optionStyle = computed(() => {
-  return useStyle({ height: useUnit(useProps.columnHeight) }, "string")
+  return useStyle({ height: useUnit(props.columnHeight) }, "string")
 })
 
 const isActiveColumn = computed(() => {
@@ -415,9 +414,9 @@ const columnStyle = computed(() => {
   return (columnIndex: number, index: number) => {
     const isActive = isActiveColumn.value(columnIndex, index)
     return useStyle({
-      fontSize: useUnit(isActive ? useProps.activeColumnSize : useProps.columnSize),
-      color: isActive ? useColor(useProps.activeColumnColor) : useColor(useProps.columnColor),
-      fontWeight: isActive ? useProps.activeColumnWeight : useProps.columnWeight,
+      fontSize: useUnit(isActive ? props.activeColumnSize : props.columnSize),
+      color: isActive ? useColor(props.activeColumnColor) : useColor(props.columnColor),
+      fontWeight: isActive ? props.activeColumnWeight : props.columnWeight,
     })
   }
 })
@@ -471,11 +470,11 @@ function adjustToBounds() {
 }
 
 function getFormattedValue(): string {
-  return formatDate(currentYear.value, currentMonth.value, currentDay.value, currentHour.value, currentMinute.value, currentSecond.value, useProps.format)
+  return formatDate(currentYear.value, currentMonth.value, currentDay.value, currentHour.value, currentMinute.value, currentSecond.value, props.format)
 }
 
 function getSelectedValues(): string[] {
-  return useProps.columns.map((type) => pad(getCurrentValue(type)))
+  return props.columns.map((type) => pad(getCurrentValue(type)))
 }
 
 // ==================== Picker 事件 ====================
@@ -487,7 +486,7 @@ interface PickerViewChangeEvent {
 function onPickerChange(e: PickerViewChangeEvent) {
   const indexes = e.detail.value
 
-  useProps.columns.forEach((type, colIdx) => {
+  props.columns.forEach((type, colIdx) => {
     const column = pickerColumns.value[colIdx]
     const selectedIdx = indexes[colIdx] ?? 0
     const selectedOption = column[selectedIdx]
@@ -526,12 +525,12 @@ function emitPickerChange() {
 
 // ==================== 原有逻辑 ====================
 
-const isInteractive = computed(() => !useProps.disabled && !useProps.readonly)
+const isInteractive = computed(() => !props.disabled && !props.readonly)
 
 const classs = computed(() => {
   const list: string[] = []
-  if (useProps.disabled) list.push("ui-date-range-select--disabled")
-  if (useProps.readonly) list.push("ui-date-range-select--readonly")
+  if (props.disabled) list.push("ui-date-range-select--disabled")
+  if (props.readonly) list.push("ui-date-range-select--readonly")
   return list
 })
 
@@ -540,59 +539,59 @@ const hoverClass = computed(() => {
 })
 
 const style = computed(() => {
-  return useStyle(useProps.customStyle)
+  return useStyle(props.customStyle)
 })
 
 const textStyle = computed(() => {
   const style: Record<string, string | number> = {}
-  style.color = useColor(useProps.textColor)
-  style.fontSize = useUnit(useProps.textSize)
-  if (useProps.textWeight) style.fontWeight = useProps.textWeight
+  style.color = useColor(props.textColor)
+  style.fontSize = useUnit(props.textSize)
+  if (props.textWeight) style.fontWeight = props.textWeight
   return useStyle(style)
 })
 
 const placeholderStyle = computed(() => {
   const style: Record<string, string | number> = {}
-  style.color = useColor(useProps.placeholderColor)
-  style.fontSize = useUnit(useProps.textSize)
-  if (useProps.textWeight) style.fontWeight = useProps.textWeight
+  style.color = useColor(props.placeholderColor)
+  style.fontSize = useUnit(props.textSize)
+  if (props.textWeight) style.fontWeight = props.textWeight
   return useStyle(style)
 })
 
 const separatorStyle = computed(() => {
   const style: Record<string, string | number> = {}
-  if (useProps.separatorColor) {
-    style.color = useColor(useProps.separatorColor)
+  if (props.separatorColor) {
+    style.color = useColor(props.separatorColor)
   }
   return useStyle(style)
 })
 
 const showRightIcon = computed(() => {
-  return Boolean(slots["right-icon"] || useProps.rightIcon)
+  return Boolean(slots["right-icon"] || props.rightIcon)
 })
 
 const startDisplayText = computed(() => {
   if (!startValue.value) return ""
-  if (useProps.displayFormatter) {
-    return useProps.displayFormatter(startValue.value, "start")
+  if (props.displayFormatter) {
+    return props.displayFormatter(startValue.value, "start")
   }
   return formatDisplayText(startValue.value)
 })
 
 const endDisplayText = computed(() => {
   if (!endValue.value) return ""
-  if (useProps.displayFormatter) {
-    return useProps.displayFormatter(endValue.value, "end")
+  if (props.displayFormatter) {
+    return props.displayFormatter(endValue.value, "end")
   }
   return formatDisplayText(endValue.value)
 })
 
 const startTabText = computed(() => {
-  return tempStartValue.value || useProps.startPlaceholder
+  return tempStartValue.value || props.startPlaceholder
 })
 
 const endTabText = computed(() => {
-  return tempEndValue.value || useProps.endPlaceholder
+  return tempEndValue.value || props.endPlaceholder
 })
 
 function formatDisplayText(value: string): string {
@@ -611,7 +610,7 @@ function formatDisplayText(value: string): string {
   const minute = parts[4] || "00"
   const second = parts[5] || "00"
 
-  const columns = useProps.columns
+  const columns = props.columns
   const textParts: string[] = []
 
   const hasYear = columns.includes("year")
@@ -651,7 +650,7 @@ function parseRangeValue(value: DateRangeSelectValue | undefined) {
 }
 
 watch(
-  () => useProps.modelValue,
+  () => props.modelValue,
   (val) => {
     const { start, end } = parseRangeValue(val)
     startValue.value = start
@@ -710,7 +709,7 @@ function handleCancel() {
 
 function handleConfirm() {
   // 自动切换：当前是开始日期且开启了自动切换，则切换到结束日期而非关闭
-  if (useProps.autoSwitchToEnd && activeType.value === "start") {
+  if (props.autoSwitchToEnd && activeType.value === "start") {
     switchTab("end")
     return
   }

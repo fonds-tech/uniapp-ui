@@ -9,7 +9,6 @@ import type {
   DatePickerColumnFilter,
   DatePickerColumnFormatter,
 } from "../ui-date-picker"
-import { createProps } from "../hooks"
 import { truthProp, numericProp, makeStringProp, makeNumericProp } from "../utils/props"
 
 /**
@@ -54,7 +53,7 @@ export interface DateRangeSelectCancelData {
   range: DateRangeSelectValue
 }
 
-export const [dateRangeSelectProps, useDateRangeSelectProps] = createProps("dateRangeSelect", {
+export const dateRangeSelectProps = {
   // ===== 基础 Props =====
   /**
    * 绑定日期区间值 [开始日期, 结束日期]
@@ -262,8 +261,7 @@ export const [dateRangeSelectProps, useDateRangeSelectProps] = createProps("date
    * 自定义样式
    */
   customStyle: [String, Object] as PropType<string | CSSProperties>,
-})
-
+}
 export const dateRangeSelectEmits = {
   "update:modelValue": (value: DateRangeSelectValue) => value,
   open: () => true,

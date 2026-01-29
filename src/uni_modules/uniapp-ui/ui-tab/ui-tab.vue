@@ -1,6 +1,6 @@
 <template>
-  <view class="ui-tab" :class="[classes, useProps.customClass]" :style="[style]" @click="onClick">
-    <slot :active="active" :disabled="useProps.disabled">
+  <view class="ui-tab" :class="[classes, props.customClass]" :style="[style]" @click="onClick">
+    <slot :active="active" :disabled="props.disabled">
       <text class="ui-tab__title" :style="[titleStyle]">{{ titleText }}</text>
     </slot>
   </view>
@@ -10,7 +10,7 @@
 import type { CSSProperties } from "vue"
 import { isDef } from "../utils/check"
 import { tabsKey } from "../ui-tabs"
-import { tabEmits, tabProps, useTabProps } from "./index"
+import { tabEmits, tabProps } from "./index"
 import { useRect, useUnit, useColor, useStyle, useParent } from "../hooks"
 import { computed, nextTick, onMounted, getCurrentInstance } from "vue"
 
@@ -18,7 +18,6 @@ defineOptions({ name: "ui-tab" })
 
 const props = defineProps(tabProps)
 const emits = defineEmits(tabEmits)
-const useProps = useTabProps(props)
 const { parent, index } = useParent(tabsKey)
 const instance = getCurrentInstance()!
 
@@ -27,13 +26,13 @@ const style = computed(() => {
   style.flex = resolveProp("scrollable") ? "" : "1"
   style.width = useUnit(resolveProp("itemWidth"))
   style.maxWidth = useUnit(resolveProp("itemMaxWidth"))
-  return useStyle({ ...style, ...useStyle(useProps.customStyle) })
+  return useStyle({ ...style, ...useStyle(props.customStyle) })
 })
 
 const classes = computed(() => {
   const list: string[] = []
   if (active.value) list.push("ui-tab--active")
-  if (useProps.disabled) list.push("ui-tab--disabled")
+  if (props.disabled) list.push("ui-tab--disabled")
   return list
 })
 
@@ -51,23 +50,21 @@ const titleStyle = computed(() => {
 })
 
 const titleText = computed(() => {
-  return isDef(useProps.title) ? String(useProps.title) : ""
+  return isDef(props.title) ? String(props.title) : ""
 })
 
-const name = computed(() => useProps.name ?? index.value)
+const name = computed(() => props.name ?? index.value)
 const active = computed(() => parent?.currentName.value === name.value)
 
 function resolveProp(name: string) {
-  if (isDef((useProps as Record<string, any>)[name])) return (useProps as Record<string, any>)[name]
-  if (parent?.useProps && isDef((parent.useProps as Record<string, any>)[name])) return (parent.useProps as Record<string, any>)[name]
-  if (parent?.props && isDef((parent.props as Record<string, any>)[name])) return (parent.props as Record<string, any>)[name]
   if (isDef((props as Record<string, any>)[name])) return (props as Record<string, any>)[name]
+  if (parent?.props && isDef((parent.props as Record<string, any>)[name])) return (parent.props as Record<string, any>)[name]
   return ""
 }
 
 async function onClick() {
   emits("click", name.value)
-  if (useProps.disabled || !parent) return
+  if (props.disabled || !parent) return
   // 点击时更新尺寸信息，确保位置准确
   await reportRect()
   parent.clickTab(name.value)
@@ -95,7 +92,7 @@ onMounted(async () => {
   reportRect()
 })
 
-defineExpose({ useProps, name, index })
+defineExpose({ props, name, index })
 </script>
 
 <script lang="ts">

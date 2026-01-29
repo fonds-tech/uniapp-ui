@@ -1,11 +1,10 @@
 import type RadioGroup from "./ui-radio-group.vue"
 import type { InjectionKey, ExtractPropTypes } from "vue"
-import { createProps } from "../hooks"
 import { isNumber, isString } from "../utils/check"
 import { styleProp, truthProp, makeStringProp, makeNumericProp } from "../utils/props"
 
 export const radioGroupKey: InjectionKey<RadioGroupProvide> = Symbol("ui-radio-group")
-export const [radioGroupProps, useRadioGroupProps] = createProps("radioGroup", {
+export const radioGroupProps = {
   /**
    * 绑定值
    */
@@ -94,7 +93,7 @@ export const [radioGroupProps, useRadioGroupProps] = createProps("radioGroup", {
    * 自定义样式
    */
   customStyle: styleProp,
-})
+}
 export const radioGroupEmits = {
   click: () => true,
   change: (value: string | number) => isString(value) || isNumber(value),
@@ -111,7 +110,6 @@ export type RadioGroupEmits = typeof radioGroupEmits
 export type RadioGroupProps = ExtractPropTypes<typeof radioGroupProps>
 export interface RadioGroupProvide {
   props: RadioGroupProps
-  useProps: RadioGroupProps
   updateValue: (value: RadioGroupValueType) => void
 }
 export type RadioGroupInstance = InstanceType<typeof RadioGroup>

@@ -375,7 +375,9 @@ describe("uiField 组件", () => {
   })
 
   // 辅助函数：创建带有必要 stub 的 UiField 包装器
-  const createFieldWrapper = (options: any = {}) => {
+  const createFieldWrapper = (options: any = {}): any => {
+    // 说明：当前项目中 UiField 为“虚拟/外部”组件类型（在类型层面无法完整推断 props 键名）
+    // 测试关注运行时行为，这里将 wrapper 标注为 any，避免 wrapper.props(key) 的类型约束影响测试编写。
     return mount(UiField, {
       global: {
         stubs: {
@@ -395,7 +397,7 @@ describe("uiField 组件", () => {
         },
       },
       ...options,
-    })
+    }) as any
   }
 
   describe("基础渲染", () => {

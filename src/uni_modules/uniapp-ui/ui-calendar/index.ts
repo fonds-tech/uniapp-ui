@@ -1,6 +1,5 @@
 import type Calendar from "./ui-calendar.vue"
 import type { PropType, CSSProperties, ExtractPropTypes } from "vue"
-import { createProps } from "../hooks"
 import { truthProp, numericProp, makeArrayProp, makeStringProp, makeNumericProp } from "../utils/props"
 
 // ==================== 类型定义 ====================
@@ -86,7 +85,7 @@ export interface CalendarConfirmData {
 
 // ==================== Props 定义 ====================
 
-export const [calendarProps, useCalendarProps] = createProps("calendar", {
+export const calendarProps = {
   /**
    * 是否显示日历（弹层模式）
    */
@@ -220,8 +219,7 @@ export const [calendarProps, useCalendarProps] = createProps("calendar", {
    * 自定义类名
    */
   customClass: String,
-})
-
+}
 // ==================== Emits 定义 ====================
 
 export const calendarEmits = {

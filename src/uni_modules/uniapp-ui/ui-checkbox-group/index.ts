@@ -1,12 +1,11 @@
 import type CheckboxGroup from "./ui-checkbox-group.vue"
 import type { CheckboxShape, CheckboxLabelPosition } from "../ui-checkbox"
 import type { PropType, InjectionKey, ExtractPropTypes } from "vue"
-import { createProps } from "../hooks"
 import { styleProp, makeStringProp, makeNumericProp } from "../utils/props"
 
 export const checkboxGroupKey: InjectionKey<CheckboxGroupProvide> = Symbol("ui-checkbox-group")
 
-export const [checkboxGroupProps, useCheckboxGroupProps] = createProps("checkboxGroup", {
+export const checkboxGroupProps = {
   /**
    * 绑定值
    */
@@ -147,8 +146,7 @@ export const [checkboxGroupProps, useCheckboxGroupProps] = createProps("checkbox
    * 自定义样式
    */
   customStyle: styleProp,
-})
-
+}
 export const checkboxGroupEmits = {
   click: (event: any) => true,
   change: (value: unknown[]) => true,
@@ -166,7 +164,6 @@ export type CheckboxGroupProps = ExtractPropTypes<typeof checkboxGroupProps>
 
 export interface CheckboxGroupProvide {
   props: CheckboxGroupProps
-  useProps: CheckboxGroupProps
   updateValue: (value: unknown[]) => void
 }
 

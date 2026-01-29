@@ -11,7 +11,7 @@
 
 <script setup lang="ts">
 import type { CSSProperties } from "vue"
-import { footerEmits, footerProps, useFooterProps } from "./index"
+import { footerEmits, footerProps } from "./index"
 import { ref, computed, nextTick, onMounted, getCurrentInstance } from "vue"
 import { useMitt, useRect, useColor, useStyle, usePxToRpx, useUnitToPx } from "../hooks"
 
@@ -19,7 +19,6 @@ defineOptions({ name: "ui-footer" })
 
 const props = defineProps(footerProps)
 const emits = defineEmits(footerEmits)
-const useProps = useFooterProps(props)
 const mitt = useMitt()
 const rect = ref<UniApp.NodeInfo>({ height: 0 })
 const tabbarHeight = ref(0)
@@ -28,10 +27,10 @@ const instance = getCurrentInstance()
 const style = computed(() => {
   const style: CSSProperties = {}
   style.position = "fixed"
-  style.zIndex = useProps.zIndex
-  style.bottom = `${tabbarHeight.value + useUnitToPx(useProps.offset)}px`
-  style.background = useColor(useProps.background)
-  return useStyle({ ...style, ...useStyle(useProps.customStyle) })
+  style.zIndex = props.zIndex
+  style.bottom = `${tabbarHeight.value + useUnitToPx(props.offset)}px`
+  style.background = useColor(props.background)
+  return useStyle({ ...style, ...useStyle(props.customStyle) })
 })
 
 const placeholderStyle = computed(() => {

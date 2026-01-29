@@ -1,9 +1,8 @@
 import type PickerPanel from "./ui-picker-panel.vue"
 import type { PropType, ExtractPropTypes } from "vue"
-import { createProps } from "../hooks"
 import { numericProp, makeArrayProp, makeNumericProp } from "../utils/props"
 
-export const [pickerPanelProps, usePickerPanelProps] = createProps("pickerPanel", {
+export const pickerPanelProps = {
   /**
    * 绑定值
    */
@@ -60,8 +59,7 @@ export const [pickerPanelProps, usePickerPanelProps] = createProps("pickerPanel"
    * 自定义样式
    */
   customStyle: [String, Object],
-})
-
+}
 export const pickerPanelEmits = {
   change: (data: PickerChangeData) => data,
   "update:modelValue": (value: PickerValue[]) => value,

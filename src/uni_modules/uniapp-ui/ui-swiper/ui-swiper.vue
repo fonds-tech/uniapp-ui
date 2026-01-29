@@ -11,7 +11,7 @@
       :autoplay="autoplay"
       :indicator-dots="false"
       :disable-touch="disableTouch"
-      :easing-function="useProps.easingFunction"
+      :easing-function="props.easingFunction"
       @change="onChange"
       @transition="onTransition"
       @animationfinish="onAnimationFinish"
@@ -19,7 +19,7 @@
       <swiper-item v-for="(item, index) in list" :key="forKey ? item[forKey] : index" @click="onClick(index)">
         <view class="ui-swiper__item" :class="[itemClass(index)]" :style="[itemStyle(index)]">
           <video v-if="item.type === 'video'" class="ui-swiper__video" :src="item.url" :poster="item.poster" controls />
-          <ui-image v-else :src="item.url" width="100%" :height="useProps.height" :radius="useProps.radius" :mode="imageMode" />
+          <ui-image v-else :src="item.url" width="100%" :height="props.height" :radius="props.radius" :mode="imageMode" />
         </view>
       </swiper-item>
     </swiper>
@@ -41,8 +41,8 @@
 import type { CSSProperties } from "vue"
 import { useUnit, useStyle } from "../hooks"
 import { ref, watch, computed } from "vue"
+import { swiperEmits, swiperProps } from "./index"
 import { isArray, isObject, isString } from "../utils/check"
-import { swiperEmits, swiperProps, useSwiperProps } from "./index"
 
 // 定义组件名称
 defineOptions({ name: "ui-swiper" })
@@ -50,7 +50,6 @@ defineOptions({ name: "ui-swiper" })
 // 定义props和emits
 const props = defineProps(swiperProps)
 const emits = defineEmits(swiperEmits)
-const useProps = useSwiperProps(props)
 // 当前活动项的索引
 const current = ref(0)
 // 字段键名映射
@@ -60,14 +59,14 @@ const fieldKeys = ref({ type: "type", url: "url", poster: "poster", title: "titl
 const list = computed(() => {
   let data: any = []
   // 如果list是字符串,按逗号分割并转换为对象数组
-  if (isString(useProps.list)) {
-    data = useProps.list.split(",").map((url: string) => {
+  if (isString(props.list)) {
+    data = props.list.split(",").map((url: string) => {
       return { url, type: getFileType(url) }
     })
   }
   // 如果list是数组,处理每一项
-  if (isArray(useProps.list)) {
-    data = useProps.list.map((item: any) => {
+  if (isArray(props.list)) {
+    data = props.list.map((item: any) => {
       if (isString(item)) {
         return { url: item, type: getFileType(item) }
       } else if (isObject(item)) {
@@ -87,26 +86,26 @@ const list = computed(() => {
 // 计算组件样式
 const style = computed(() => {
   const style: CSSProperties = {}
-  style.width = useUnit(useProps.width)
-  style.height = useUnit(useProps.height)
-  style.borderRadius = useUnit(useProps.radius)
-  return useStyle({ ...style, ...useStyle(useProps.customStyle) })
+  style.width = useUnit(props.width)
+  style.height = useUnit(props.height)
+  style.borderRadius = useUnit(props.radius)
+  return useStyle({ ...style, ...useStyle(props.customStyle) })
 })
 
 // 计算列表样式
 const listStyle = computed(() => {
   const style: CSSProperties = {}
-  style.width = useUnit(useProps.width)
-  style.height = useUnit(useProps.height)
-  style.borderRadius = useUnit(useProps.radius)
+  style.width = useUnit(props.width)
+  style.height = useUnit(props.height)
+  style.borderRadius = useUnit(props.radius)
   return useStyle(style)
 })
 
 // 计算每个项目的样式
 const itemStyle = computed(() => (index: string | number) => {
   const style: CSSProperties = {}
-  style.paddingLeft = useUnit(useProps.prevGap)
-  style.paddingRight = useUnit(useProps.nextGap)
+  style.paddingLeft = useUnit(props.prevGap)
+  style.paddingRight = useUnit(props.nextGap)
   return useStyle(style)
 })
 
@@ -123,15 +122,15 @@ const itemClass = computed(() => (index: string | number) => {
 // 计算指示器的类名
 const indicatorClass = computed(() => {
   const list: string[] = []
-  list.push(`ui-swiper__indicator--${useProps.indicatorType}`)
-  list.push(`ui-swiper__indicator--${useProps.indicatorPosition}`)
-  if (useProps.vertical) list.push("ui-swiper__indicator--vertical")
+  list.push(`ui-swiper__indicator--${props.indicatorType}`)
+  list.push(`ui-swiper__indicator--${props.indicatorPosition}`)
+  if (props.vertical) list.push("ui-swiper__indicator--vertical")
   return list
 })
 
-// 监听useProps.current的变化
+// 监听 props.current 的变化
 watch(
-  () => useProps.current,
+  () => props.current,
   (val) => {
     current.value = val
   },
@@ -147,9 +146,9 @@ watch(
   { immediate: true },
 )
 
-// 监听useProps.fieldKeys的变化
+// 监听 props.fieldKeys 的变化
 watch(
-  () => useProps.fieldKeys,
+  () => props.fieldKeys,
   (field) => {
     Object.assign(fieldKeys.value, field)
   },
@@ -161,7 +160,7 @@ function prev() {
   if (current.value > 0) {
     current.value = current.value - 1
     emits("change", current.value)
-  } else if (useProps.circular) {
+  } else if (props.circular) {
     current.value = list.value.length - 1
     emits("change", current.value)
   }
@@ -172,7 +171,7 @@ function next() {
   if (current.value < list.value.length - 1) {
     current.value = current.value + 1
     emits("change", current.value)
-  } else if (useProps.circular) {
+  } else if (props.circular) {
     current.value = 0
     emits("change", current.value)
   }

@@ -1,12 +1,12 @@
 <template>
-  <view v-if="useProps.show" class="ui-loading" :class="[classs, useProps.customClass]" :style="[style]">
+  <view v-if="props.show" class="ui-loading" :class="[classs, props.customClass]" :style="[style]">
     <view class="ui-loading__icon" :style="[iconStyle]">
       <slot name="icon">
         <view class="ui-loading__rotate" :class="[rotateClass]" />
       </slot>
     </view>
     <text v-if="isShowText" class="ui-loading__text" :style="[textStyle]">
-      <slot>{{ useProps.text }}</slot>
+      <slot>{{ props.text }}</slot>
     </text>
   </view>
 </template>
@@ -14,56 +14,55 @@
 <script setup lang="ts">
 import type { CSSProperties } from "vue"
 import { computed, useSlots } from "vue"
+import { loadingEmits, loadingProps } from "./index"
 import { useUnit, useColor, useStyle } from "../hooks"
-import { loadingEmits, loadingProps, useLoadingProps } from "./index"
 
 defineOptions({ name: "ui-loading" })
 
 const props = defineProps(loadingProps)
 const emits = defineEmits(loadingEmits)
-const useProps = useLoadingProps(props)
 const slots = useSlots()
 
 const style = computed(() => {
   const style: CSSProperties = {}
-  style.color = useColor(useProps.color)
-  return useStyle({ ...style, ...useStyle(useProps.customStyle) })
+  style.color = useColor(props.color)
+  return useStyle({ ...style, ...useStyle(props.customStyle) })
 })
 
 const classs = computed(() => {
   const list: string[] = []
-  if (useProps.vertical) list.push("ui-loading--vertical")
+  if (props.vertical) list.push("ui-loading--vertical")
   return list
 })
 
 const iconStyle = computed(() => {
   const style: CSSProperties = {}
-  style.color = useColor(useProps.color)
-  style.width = useUnit(useProps.size)
-  style.height = useUnit(useProps.size)
+  style.color = useColor(props.color)
+  style.width = useUnit(props.size)
+  style.height = useUnit(props.size)
   return useStyle(style)
 })
 
 const rotateClass = computed(() => {
   const list: string[] = []
-  list.push(`ui-loading__rotate--${useProps.type}`)
+  list.push(`ui-loading__rotate--${props.type}`)
   return list
 })
 
 const textStyle = computed(() => {
   const style: CSSProperties = {}
-  style.color = useColor(useProps.textColor)
-  style.fontSize = useUnit(useProps.textSize)
-  style.fontWeight = useProps.textWeight
-  if (useProps.vertical) {
-    style.marginTop = useUnit(useProps.textGap)
+  style.color = useColor(props.textColor)
+  style.fontSize = useUnit(props.textSize)
+  style.fontWeight = props.textWeight
+  if (props.vertical) {
+    style.marginTop = useUnit(props.textGap)
   } else {
-    style.marginLeft = useUnit(useProps.textGap)
+    style.marginLeft = useUnit(props.textGap)
   }
   return useStyle(style)
 })
 
-const isShowText = computed(() => useProps.text || slots.default)
+const isShowText = computed(() => props.text || slots.default)
 </script>
 
 <script lang="ts">

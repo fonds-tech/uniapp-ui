@@ -6,25 +6,25 @@
         :style="[textareaStyle]"
         :class="[textareaClass]"
         :value="current"
-        :fixed="useProps.fixed"
-        :focus="useProps.focus"
-        :cursor="+useProps.cursor"
+        :fixed="props.fixed"
+        :focus="props.focus"
+        :cursor="+props.cursor"
         :disabled="disabled"
-        :maxlength="+useProps.maxlength"
-        :placeholder="useProps.placeholder"
-        :cursor-color="useProps.cursorColor"
-        :auto-height="useProps.autoHeight"
-        :confirm-type="useProps.confirmType"
-        :confirm-hold="useProps.confirmHold"
-        :hold-keyboard="useProps.holdKeyboard"
-        :selection-end="+useProps.selectionEnd"
-        :cursor-spacing="+useProps.cursorSpacing"
-        :adjust-position="useProps.adjustPosition"
-        :show-confirm-bar="useProps.showConfirmBar"
-        :selection-start="+useProps.selectionStart"
+        :maxlength="+props.maxlength"
+        :placeholder="props.placeholder"
+        :cursor-color="props.cursorColor"
+        :auto-height="props.autoHeight"
+        :confirm-type="props.confirmType"
+        :confirm-hold="props.confirmHold"
+        :hold-keyboard="props.holdKeyboard"
+        :selection-end="+props.selectionEnd"
+        :cursor-spacing="+props.cursorSpacing"
+        :adjust-position="props.adjustPosition"
+        :show-confirm-bar="props.showConfirmBar"
+        :selection-start="+props.selectionStart"
         :placeholder-style="placeholderStyle"
-        :disable-default-padding="useProps.disableDefaultPadding"
-        :ignore-composition-event="useProps.ignoreCompositionEvent"
+        :disable-default-padding="props.disableDefaultPadding"
+        :ignore-composition-event="props.ignoreCompositionEvent"
         @blur="onBlur"
         @focus="onFocus"
         @input="onInput"
@@ -32,11 +32,11 @@
         @linechange="onLinechange"
         @keyboardheightchange="onKeyboardheightchange"
       />
-      <view v-if="useProps.clearable && current && isFocus" class="ui-textarea__clear" :style="[clearStyle]" @click="onClickClear">
-        <ui-icon :name="useProps.clearIcon" :size="useProps.clearIconSize" :color="useProps.clearIconColor" :weight="useProps.clearIconWeight" />
+      <view v-if="props.clearable && current && isFocus" class="ui-textarea__clear" :style="[clearStyle]" @click="onClickClear">
+        <ui-icon :name="props.clearIcon" :size="props.clearIconSize" :color="props.clearIconColor" :weight="props.clearIconWeight" />
       </view>
     </view>
-    <view v-if="useProps.showCount" class="ui-textarea__footer">
+    <view v-if="props.showCount" class="ui-textarea__footer">
       <view class="ui-textarea__count" :style="[countStyle]">{{ valueLength }}</view>
     </view>
   </view>
@@ -45,14 +45,13 @@
 <script setup lang="ts">
 import { formItemKey } from "../ui-form-item"
 import { ref, watch, computed } from "vue"
+import { textareaEmits, textareaProps } from "./index"
 import { useUnit, useColor, useStyle, useParent } from "../hooks"
-import { textareaEmits, textareaProps, useTextareaProps } from "./index"
 
 defineOptions({ name: "ui-textarea" })
 
 const props = defineProps(textareaProps)
 const emits = defineEmits(textareaEmits)
-const useProps = useTextareaProps(props)
 const { parent } = useParent(formItemKey)
 
 const isFocus = ref(false)
@@ -60,72 +59,72 @@ const current = ref("")
 
 const style = computed(() => {
   const style: any = {}
-  style.border = useProps.border
-  style.width = useUnit(useProps.width)
-  if (useProps.padding) style.padding = useUnit(useProps.padding)
-  style.minHeight = useUnit(useProps.minHeight)
-  style.background = useColor(useProps.background)
-  style.borderRadius = useUnit(useProps.radius)
-  return useStyle({ ...style, ...useStyle(useProps.customStyle) })
+  style.border = props.border
+  style.width = useUnit(props.width)
+  if (props.padding) style.padding = useUnit(props.padding)
+  style.minHeight = useUnit(props.minHeight)
+  style.background = useColor(props.background)
+  style.borderRadius = useUnit(props.radius)
+  return useStyle({ ...style, ...useStyle(props.customStyle) })
 })
 
 const classes = computed(() => {
   const list: string[] = []
-  if (useProps.readonly) list.push("ui-textarea--readonly")
-  if (useProps.disabled) list.push("ui-textarea--disabled")
+  if (props.readonly) list.push("ui-textarea--readonly")
+  if (props.disabled) list.push("ui-textarea--disabled")
   return list
 })
 
 const textareaStyle = computed(() => {
   const style: any = {}
-  style.color = useColor(useProps.color)
-  style.fontSize = useUnit(useProps.fontSize)
-  style.minHeight = useUnit(useProps.minHeight)
-  style.fontWeight = useProps.fontWeight
+  style.color = useColor(props.color)
+  style.fontSize = useUnit(props.fontSize)
+  style.minHeight = useUnit(props.minHeight)
+  style.fontWeight = props.fontWeight
   return useStyle(style)
 })
 
 const textareaClass = computed(() => {
   const list: string[] = []
-  list.push(`ui-textarea__input--${useProps.inputAlign}`)
-  if (useProps.readonly) list.push("ui-textarea__input--readonly")
+  list.push(`ui-textarea__input--${props.inputAlign}`)
+  if (props.readonly) list.push("ui-textarea__input--readonly")
   return list
 })
 
 const placeholderStyle = computed(() => {
   const style: any = {}
-  style.color = useColor(useProps.placeholderColor)
-  style.fontSize = useUnit(useProps.fontSize)
-  return useStyle({ ...style, ...useStyle(useProps.placeholderStyle) }, "string")
+  style.color = useColor(props.placeholderColor)
+  style.fontSize = useUnit(props.fontSize)
+  return useStyle({ ...style, ...useStyle(props.placeholderStyle) }, "string")
 })
 
 const clearStyle = computed(() => {
   const style: any = {}
-  style.width = useUnit(useProps.clearIconSize)
-  style.height = useUnit(useProps.clearIconSize)
-  style.backgroundColor = useColor(useProps.clearIconBackground)
+  style.width = useUnit(props.clearIconSize)
+  style.height = useUnit(props.clearIconSize)
+  style.backgroundColor = useColor(props.clearIconBackground)
   return useStyle(style)
 })
 
 const countStyle = computed(() => {
   const style: any = {}
-  style.color = useColor(useProps.countColor)
-  style.fontSize = useUnit(useProps.countSize)
-  style.fontWeight = useProps.countWeight
+  style.color = useColor(props.countColor)
+  style.fontSize = useUnit(props.countSize)
+  style.fontWeight = props.countWeight
   return useStyle(style)
 })
 
 const valueLength = computed(() => {
-  const count = String(useProps.modelValue).length
-  return useProps.maxlength === -1 ? count : `${count}/${useProps.maxlength}`
+  const count = String(props.modelValue).length
+  return props.maxlength === -1 ? count : `${count}/${props.maxlength}`
 })
 
 const disabled = computed(() => {
-  return useProps.disabled || useProps.readonly
+  return props.disabled || props.readonly
 })
 
 watch(
-  () => useProps.modelValue,
+  () => props.modelValue,
   (value) => {
     current.value = value
   },

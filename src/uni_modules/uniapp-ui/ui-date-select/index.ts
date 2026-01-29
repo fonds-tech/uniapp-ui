@@ -9,7 +9,6 @@ import type {
   DatePickerColumnFilter,
   DatePickerColumnFormatter,
 } from "../ui-date-picker"
-import { createProps } from "../hooks"
 import { truthProp, numericProp, makeStringProp, makeNumericProp } from "../utils/props"
 
 /**
@@ -22,7 +21,7 @@ export type DateSelectValue = string | Date | number
  */
 export type DateSelectDisplayFormatter = (value: string) => string
 
-export const [dateSelectProps, useDateSelectProps] = createProps("dateSelect", {
+export const dateSelectProps = {
   // ===== 基础 Props =====
   /**
    * 绑定日期值
@@ -218,8 +217,7 @@ export const [dateSelectProps, useDateSelectProps] = createProps("dateSelect", {
    * 自定义样式
    */
   customStyle: [String, Object] as PropType<string | CSSProperties>,
-})
-
+}
 export const dateSelectEmits = {
   "update:modelValue": (value: string) => value,
   open: () => true,

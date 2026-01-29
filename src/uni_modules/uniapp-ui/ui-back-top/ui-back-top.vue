@@ -1,10 +1,10 @@
 <template>
-  <ui-transition :show="visible" :name="useProps.transition" :custom-style="transitionStyle">
+  <ui-transition :show="visible" :name="props.transition" :custom-style="transitionStyle">
     <view class="ui-back-top" hover-class="ui-back-top--hover" :hover-stay-time="100" :class="[customClass]" :style="[style]" @click="onClick">
       <slot>
         <view class="ui-back-top__content" :style="contentStyle">
-          <ui-icon :name="useProps.icon" :size="useProps.iconSize" :color="useProps.iconColor" :weight="useProps.iconWeight" />
-          <text v-if="useProps.text" class="ui-back-top__text" :style="textStyle">{{ useProps.text }}</text>
+          <ui-icon :name="props.icon" :size="props.iconSize" :color="props.iconColor" :weight="props.iconWeight" />
+          <text v-if="props.text" class="ui-back-top__text" :style="textStyle">{{ props.text }}</text>
         </view>
       </slot>
     </view>
@@ -14,27 +14,25 @@
 <script setup lang="ts">
 import type { CSSProperties } from "vue"
 import { isDef } from "../utils/check"
-import { backTopEmits, backTopProps, useBackTopProps } from "./index"
+import { backTopEmits, backTopProps } from "./index"
 import { useMitt, useUnit, useColor, useStyle, useUnitToPx } from "../hooks"
 import { ref, watch, computed, nextTick, onMounted, onUnmounted } from "vue"
 
 // ===================== Props/Emits =====================
 const props = defineProps(backTopProps)
 const emits = defineEmits(backTopEmits)
-const useProps = useBackTopProps(props)
-
 // ===================== 响应式状态 =====================
 const mitt = useMitt()
 const innerScrollTop = ref(0)
 let bindRoute = ""
 
 // ===================== 计算属性 =====================
-const useExternalScrollTop = computed(() => isDef(useProps.scrollTop))
+const useExternalScrollTop = computed(() => isDef(props.scrollTop))
 
-const currentScrollTop = computed(() => (useExternalScrollTop.value ? Number(useProps.scrollTop) : innerScrollTop.value))
+const currentScrollTop = computed(() => (useExternalScrollTop.value ? Number(props.scrollTop) : innerScrollTop.value))
 
 const visible = computed(() => {
-  const offset = useUnitToPx(useProps.offset)
+  const offset = useUnitToPx(props.offset)
   return currentScrollTop.value >= offset
 })
 
@@ -42,31 +40,31 @@ const visible = computed(() => {
 const transitionStyle = computed(() => {
   const style: CSSProperties = {}
   style.position = "fixed"
-  style.zIndex = useProps.zIndex
-  style.right = useUnit(useProps.right)
-  style.bottom = useUnit(useProps.bottom)
+  style.zIndex = props.zIndex
+  style.right = useUnit(props.right)
+  style.bottom = useUnit(props.bottom)
   return useStyle(style)
 })
 
 const style = computed(() => {
   const style: CSSProperties = {}
-  style.background = useColor(useProps.background)
-  style.borderRadius = useUnit(useProps.borderRadius)
-  return useStyle({ ...style, ...useStyle(useProps.customStyle) })
+  style.background = useColor(props.background)
+  style.borderRadius = useUnit(props.borderRadius)
+  return useStyle({ ...style, ...useStyle(props.customStyle) })
 })
 
 const contentStyle = computed(() => {
   const style: CSSProperties = {}
-  style.width = useUnit(useProps.width) || useUnit(useProps.size)
-  style.height = useUnit(useProps.height) || useUnit(useProps.size)
+  style.width = useUnit(props.width) || useUnit(props.size)
+  style.height = useUnit(props.height) || useUnit(props.size)
   return useStyle(style)
 })
 
 const textStyle = computed(() => {
   const style: CSSProperties = {}
-  style.color = useColor(useProps.textColor)
-  style.fontSize = useUnit(useProps.textSize)
-  if (useProps.textWeight) style.fontWeight = useProps.textWeight
+  style.color = useColor(props.textColor)
+  style.fontSize = useUnit(props.textSize)
+  if (props.textWeight) style.fontWeight = props.textWeight
   return useStyle(style)
 })
 
@@ -115,7 +113,7 @@ function clearAutoListener() {
 }
 
 function onClick() {
-  uni.pageScrollTo({ scrollTop: 0, duration: +useProps.duration })
+  uni.pageScrollTo({ scrollTop: 0, duration: +props.duration })
   emits("click")
 }
 </script>

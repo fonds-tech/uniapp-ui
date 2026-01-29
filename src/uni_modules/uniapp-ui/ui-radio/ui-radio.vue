@@ -1,5 +1,5 @@
 <template>
-  <view class="ui-radio" :class="[rootClass, useProps.customClass]" :style="[rootStyle]" @click.stop="onClick">
+  <view class="ui-radio" :class="[rootClass, props.customClass]" :style="[rootStyle]" @click.stop="onClick">
     <view class="ui-radio__icon" :class="[iconClass]" :style="[iconContainerStyle]" @click.stop="onClickIcon">
       <slot name="icon" :checked="checked" :disabled="disabled">
         <view v-if="checked && actualShape === 'dot'" class="ui-radio__dot" :style="[dotStyle]" />
@@ -18,15 +18,14 @@ import type { CSSProperties } from "vue"
 import type { RadioValueType } from "./index"
 import { isDef } from "../utils/check"
 import { radioGroupKey } from "../ui-radio-group"
+import { radioEmits, radioProps } from "./index"
 import { toRaw, watch, computed, useSlots } from "vue"
-import { radioEmits, radioProps, useRadioProps } from "./index"
 import { useUnit, useColor, useStyle, useParent } from "../hooks"
 
 defineOptions({ name: "ui-radio" })
 
 const props = defineProps(radioProps)
 const emits = defineEmits(radioEmits)
-const useProps = useRadioProps(props)
 const slots = useSlots()
 
 const { index, parent } = useParent(radioGroupKey)
@@ -44,7 +43,7 @@ const primaryColor = computed(() => {
 
 const rootStyle = computed(() => {
   const style: CSSProperties = {}
-  return useStyle({ ...style, ...useStyle(useProps.customStyle) })
+  return useStyle({ ...style, ...useStyle(props.customStyle) })
 })
 
 const rootClass = computed(() => {
@@ -86,7 +85,7 @@ const dotStyle = computed(() => {
   return useStyle(style)
 })
 
-const hasLabel = computed(() => slots.default || useProps.label)
+const hasLabel = computed(() => slots.default || props.label)
 
 const contentClass = computed(() => {
   const list: string[] = []
@@ -120,23 +119,23 @@ const labelClass = computed(() => {
   return list
 })
 
-const name = computed(() => useProps.name || index.value)
+const name = computed(() => props.name || index.value)
 const checked = computed(() => {
-  if (useProps.bindGroup && parent) {
-    return parent.useProps.modelValue === name.value
+  if (props.bindGroup && parent) {
+    return parent.props.modelValue === name.value
   }
-  return !!useProps.modelValue
+  return !!props.modelValue
 })
 const disabled = computed(() => prop("disabled"))
-const label = computed(() => useProps.label)
+const label = computed(() => props.label)
 
 watch(
-  () => useProps.modelValue,
+  () => props.modelValue,
   (value) => emits("change", value),
 )
 
 function prop(name: string) {
-  if (useProps.bindGroup && parent) {
+  if (props.bindGroup && parent) {
     if (isDef(props[name]) && props[name] !== "") return props[name]
     if (isDef(parent.props[name])) return parent.props[name]
   }
@@ -150,12 +149,12 @@ async function updateValue(value: RadioValueType) {
 function toggle(check?: boolean) {
   if (prop("disabled") || prop("readonly")) return
 
-  if (parent && useProps.bindGroup) {
+  if (parent && props.bindGroup) {
     if (!checked.value) {
-      parent.updateValue(useProps.name)
+      parent.updateValue(props.name)
     }
   } else {
-    const newValue = check ?? !useProps.modelValue
+    const newValue = check ?? !props.modelValue
     updateValue(newValue)
   }
 }
@@ -176,7 +175,7 @@ function onClickLabel(event: any) {
   emits("click")
 }
 
-defineExpose({ useProps, checked, toggle, name })
+defineExpose({ props, checked, toggle, name })
 </script>
 
 <script lang="ts">

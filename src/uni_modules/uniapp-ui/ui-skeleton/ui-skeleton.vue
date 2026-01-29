@@ -1,5 +1,5 @@
 <template>
-  <view v-if="useProps.loading" class="ui-skeleton" :class="[customClass]" :style="[style]">
+  <view v-if="props.loading" class="ui-skeleton" :class="[customClass]" :style="[style]">
     <slot />
   </view>
   <slot v-else name="content" />
@@ -8,21 +8,19 @@
 <script setup lang="ts">
 import type { CSSProperties } from "vue"
 import { computed } from "vue"
+import { skeletonKey, skeletonProps } from "./index"
 import { useUnit, useStyle, useChildren } from "../hooks"
-import { skeletonKey, skeletonProps, useSkeletonProps } from "./index"
 
 defineOptions({ name: "ui-skeleton" })
 
 const props = defineProps(skeletonProps)
-const useProps = useSkeletonProps(props)
-
 const { linkChildren } = useChildren(skeletonKey)
 
 const style = computed(() => {
   const styles: CSSProperties = {}
-  styles["--ui-skeleton-background"] = useProps.background
-  if (useProps.gap) styles.gap = useUnit(useProps.gap)
-  return useStyle({ ...styles, ...useStyle(useProps.customStyle) })
+  styles["--ui-skeleton-background"] = props.background
+  if (props.gap) styles.gap = useUnit(props.gap)
+  return useStyle({ ...styles, ...useStyle(props.customStyle) })
 })
 
 linkChildren({ props })

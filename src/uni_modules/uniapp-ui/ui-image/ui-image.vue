@@ -1,5 +1,5 @@
 <template>
-  <view class="ui-image" :class="[classs, useProps.customClass]" :style="[style]" @click="onClick">
+  <view class="ui-image" :class="[classs, props.customClass]" :style="[style]" @click="onClick">
     <view v-if="showLoading" class="ui-image__placeholder">
       <slot name="loading">
         <view class="ui-image__icon ui-image__icon--loading" />
@@ -11,16 +11,16 @@
       </slot>
     </view>
     <image
-      v-if="useProps.src"
+      v-if="props.src"
       v-show="!loading && !error"
       class="ui-image__image"
-      :class="{ 'ui-image__image--fade': useProps.fade }"
-      :src="useProps.src"
-      :mode="useProps.mode"
-      :webp="useProps.webp"
-      :lazy-load="useProps.lazyLoad"
-      :draggable="useProps.draggable"
-      :show-menu-by-longpress="useProps.showMenuByLongpress"
+      :class="{ 'ui-image__image--fade': props.fade }"
+      :src="props.src"
+      :mode="props.mode"
+      :webp="props.webp"
+      :lazy-load="props.lazyLoad"
+      :draggable="props.draggable"
+      :show-menu-by-longpress="props.showMenuByLongpress"
       @load="onImageLoad"
       @error="onImageError"
     />
@@ -30,39 +30,38 @@
 <script setup lang="ts">
 import type { CSSProperties } from "vue"
 import { ref, watch, computed } from "vue"
+import { imageEmits, imageProps } from "./index"
 import { useUnit, useColor, useStyle } from "../hooks"
-import { imageEmits, imageProps, useImageProps } from "./index"
 
 defineOptions({ name: "ui-image" })
 
 const props = defineProps(imageProps)
 const emits = defineEmits(imageEmits)
-const useProps = useImageProps(props)
 const error = ref(false)
 const loading = ref(true)
 
 const style = computed(() => {
   const style: CSSProperties = {}
-  style.width = useUnit(useProps.width)
-  style.height = useUnit(useProps.height)
-  style.background = useColor(useProps.background)
-  style.borderRadius = useUnit(useProps.radius)
-  return useStyle({ ...style, ...useStyle(useProps.customStyle) })
+  style.width = useUnit(props.width)
+  style.height = useUnit(props.height)
+  style.background = useColor(props.background)
+  style.borderRadius = useUnit(props.radius)
+  return useStyle({ ...style, ...useStyle(props.customStyle) })
 })
 
 const classs = computed(() => {
   const list = []
-  if (useProps.round) list.push("ui-image--round")
-  if (useProps.block) list.push("ui-image--block")
-  if (useProps.square) list.push("ui-image--square")
+  if (props.round) list.push("ui-image--round")
+  if (props.block) list.push("ui-image--block")
+  if (props.square) list.push("ui-image--square")
   return list
 })
 
-const showLoading = computed(() => !useProps.src || (loading.value && !error.value))
-const showError = computed(() => useProps.src && error.value)
+const showLoading = computed(() => !props.src || (loading.value && !error.value))
+const showError = computed(() => props.src && error.value)
 
 watch(
-  () => useProps.src,
+  () => props.src,
   () => {
     error.value = false
     loading.value = true

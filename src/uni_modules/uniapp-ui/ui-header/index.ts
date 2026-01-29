@@ -1,9 +1,8 @@
 import type Header from "./ui-header.vue"
 import type { ExtractPropTypes } from "vue"
-import { createProps } from "../hooks"
 import { styleProp, makeStringProp, makeNumericProp } from "../utils/props"
 
-export const [headerProps, useHeaderProps] = createProps("header", {
+export const headerProps = {
   /**
    * 元素层级
    */
@@ -28,7 +27,7 @@ export const [headerProps, useHeaderProps] = createProps("header", {
    * 自定义样式
    */
   customStyle: styleProp,
-})
+}
 export const headerEmits = {
   rect: (rect: UniApp.NodeInfo) => true,
   height: (height: number) => true,

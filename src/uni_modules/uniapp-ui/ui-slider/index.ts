@@ -1,6 +1,5 @@
 import type Slider from "./ui-slider.vue"
 import type { PropType, ExtractPropTypes } from "vue"
-import { createProps } from "../hooks"
 import { styleProp, truthProp, makeNumberProp, makeStringProp, makeNumericProp } from "../utils/props"
 
 /**
@@ -33,7 +32,7 @@ export type SliderShowValueMode = "always" | "dragging" | "never"
  */
 export type SliderSize = "small" | "medium" | "large"
 
-export const [sliderProps, useSliderProps] = createProps("slider", {
+export const sliderProps = {
   /**
    * 绑定值，支持单值或范围值
    */
@@ -137,8 +136,7 @@ export const [sliderProps, useSliderProps] = createProps("slider", {
    * 自定义样式
    */
   customStyle: styleProp,
-})
-
+}
 export const sliderEmits = {
   /**
    * 值变化时触发（拖动过程中）

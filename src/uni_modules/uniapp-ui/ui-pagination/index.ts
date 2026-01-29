@@ -1,9 +1,8 @@
 import type Pagination from "./ui-pagination.vue"
 import type { ExtractPropTypes } from "vue"
-import { createProps } from "../hooks"
 import { styleProp, makeStringProp, makeNumericProp } from "../utils/props"
 
-export const [paginationProps, usePaginationProps] = createProps("pagination", {
+export const paginationProps = {
   /**
    * 列表数据
    */
@@ -44,8 +43,7 @@ export const [paginationProps, usePaginationProps] = createProps("pagination", {
    * 自定义样式
    */
   customStyle: styleProp,
-})
-
+}
 export const paginationEmits = {
   load: (page: number, pageSize: number) => true,
   refresh: (page: number, pageSize: number) => true,

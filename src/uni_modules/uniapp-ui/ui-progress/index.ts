@@ -1,11 +1,10 @@
 import type Progress from "./ui-progress.vue"
 import type { ExtractPropTypes } from "vue"
-import { createProps } from "../hooks"
 import { styleProp, truthProp, makeStringProp, makeNumericProp } from "../utils/props"
 
 export type ProgressTextPosition = "inside" | "outside" | "none"
 
-export const [progressProps, useProgressProps] = createProps("progress", {
+export const progressProps = {
   /**
    * 进度百分比 (0-100)
    */
@@ -55,8 +54,7 @@ export const [progressProps, useProgressProps] = createProps("progress", {
    * 自定义样式
    */
   customStyle: styleProp,
-})
-
+}
 export const progressEmits = {
   finish: () => true,
 }

@@ -1,11 +1,11 @@
 <template>
-  <view v-if="useProps.show" class="ui-empty" :class="[useProps.customClass]" :style="[style]">
+  <view v-if="props.show" class="ui-empty" :class="[props.customClass]" :style="[style]">
     <slot name="icon">
-      <image v-if="useProps.icon" class="ui-empty__icon" :src="useProps.icon" mode="widthFix" :style="[iconStyle]" />
+      <image v-if="props.icon" class="ui-empty__icon" :src="props.icon" mode="widthFix" :style="[iconStyle]" />
       <image v-else class="ui-empty__icon" :src="emptyImg" mode="widthFix" :style="[iconStyle]" />
     </slot>
     <slot name="text">
-      <text class="ui-empty__text" :style="[textStyle]">{{ useProps.text }}</text>
+      <text class="ui-empty__text" :style="[textStyle]">{{ props.text }}</text>
     </slot>
     <view class="ui-empty__slot">
       <slot />
@@ -16,35 +16,33 @@
 <script setup lang="ts">
 import emptyImg from "./lib/empty.png"
 import { computed } from "vue"
-import { emptyProps, useEmptyProps } from "./index"
+import { emptyProps } from "./index"
 import { useUnit, useColor, useStyle } from "../hooks"
 
 defineOptions({ name: "ui-empty" })
 
 const props = defineProps(emptyProps)
-const useProps = useEmptyProps(props)
-
 const style = computed(() => {
   return useStyle({
-    margin: useUnit(useProps.margin),
-    padding: useUnit(useProps.padding),
-    ...useStyle(useProps.customStyle),
+    margin: useUnit(props.margin),
+    padding: useUnit(props.padding),
+    ...useStyle(props.customStyle),
   })
 })
 
 const iconStyle = computed(() => {
   const style: any = {}
-  style.color = useColor(useProps.iconColor)
-  style.width = useUnit(useProps.iconSize || useProps.iconWidth)
-  style.height = useUnit(useProps.iconSize || useProps.iconHeight)
-  style.fontWeight = useProps.iconWeight
+  style.color = useColor(props.iconColor)
+  style.width = useUnit(props.iconSize || props.iconWidth)
+  style.height = useUnit(props.iconSize || props.iconHeight)
+  style.fontWeight = props.iconWeight
   return useStyle(style)
 })
 
 const textStyle = computed(() => {
   const style: any = {}
-  style.color = useColor(useProps.iconColor)
-  style.fontWeight = useProps.iconWeight
+  style.color = useColor(props.iconColor)
+  style.fontWeight = props.iconWeight
   return useStyle(style)
 })
 </script>

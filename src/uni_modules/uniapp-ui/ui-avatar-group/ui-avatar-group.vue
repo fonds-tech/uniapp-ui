@@ -16,7 +16,7 @@
 import type { CSSProperties } from "vue"
 import { computed } from "vue"
 import { useUnit, useColor, useStyle, useChildren } from "../hooks"
-import { avatarGroupKey, avatarGroupEmits, avatarGroupProps, useAvatarGroupProps } from "./index"
+import { avatarGroupKey, avatarGroupEmits, avatarGroupProps } from "./index"
 
 // 定义组件名称
 defineOptions({ name: "ui-avatar-group" })
@@ -24,15 +24,13 @@ defineOptions({ name: "ui-avatar-group" })
 // 定义 props 和 emits
 const props = defineProps(avatarGroupProps)
 const emits = defineEmits(avatarGroupEmits)
-const useProps = useAvatarGroupProps(props)
-
 // 使用 useChildren 收集子头像组件
 const { childrens, linkChildren } = useChildren(avatarGroupKey)
 
 // 超出的数量
 const excessCount = computed(() => {
   const total = childrens.length
-  const max = Number(useProps.max) || 5
+  const max = Number(props.max) || 5
   return total > max ? total - max : 0
 })
 
@@ -49,7 +47,7 @@ const sizeMap: Record<string, string> = {
 
 // 计算尺寸值
 const sizeValue = computed(() => {
-  const size = useProps.size
+  const size = props.size
   if (typeof size === "string" && size in sizeMap) {
     return sizeMap[size]
   }
@@ -58,13 +56,13 @@ const sizeValue = computed(() => {
 
 // 计算间距值
 const gapValue = computed(() => {
-  return useUnit(useProps.gap)
+  return useUnit(props.gap)
 })
 
 // 计算根元素样式
 const rootStyle = computed(() => {
   const style: CSSProperties = {}
-  return useStyle({ ...style, ...useStyle(useProps.customStyle) })
+  return useStyle({ ...style, ...useStyle(props.customStyle) })
 })
 
 // 容器样式
@@ -74,7 +72,7 @@ const containerStyle = computed(() => {
     alignItems: "center",
   }
   // 如果是从右向左堆叠，需要反转方向
-  if (useProps.direction === "left") {
+  if (props.direction === "left") {
     style.flexDirection = "row-reverse"
   }
   return style
@@ -82,7 +80,7 @@ const containerStyle = computed(() => {
 
 // 超出数量的形状类名
 const excessShapeClass = computed(() => {
-  return `ui-avatar-group__excess--${useProps.shape}`
+  return `ui-avatar-group__excess--${props.shape}`
 })
 
 // 超出数量样式
@@ -91,22 +89,22 @@ const excessStyle = computed(() => {
     width: sizeValue.value,
     height: sizeValue.value,
     marginLeft: gapValue.value,
-    borderWidth: useUnit(useProps.borderWidth) || "4rpx",
+    borderWidth: useUnit(props.borderWidth) || "4rpx",
     borderStyle: "solid",
-    borderColor: useColor(useProps.borderColor) || "#fff",
+    borderColor: useColor(props.borderColor) || "#fff",
   }
 
-  if (useProps.excessColor) {
-    style.color = useColor(useProps.excessColor)
+  if (props.excessColor) {
+    style.color = useColor(props.excessColor)
   }
 
-  if (useProps.excessBackground) {
-    style.background = useColor(useProps.excessBackground)
+  if (props.excessBackground) {
+    style.background = useColor(props.excessBackground)
   }
 
   // 计算 z-index：超出数量应该在最上层
-  const max = Number(useProps.max) || 5
-  if (useProps.direction === "right") {
+  const max = Number(props.max) || 5
+  if (props.direction === "right") {
     style.zIndex = max + 1
   } else {
     style.zIndex = 0
@@ -122,7 +120,7 @@ function getIndex() {
 
 // 获取最大数量
 function getMax() {
-  return Number(useProps.max) || 5
+  return Number(props.max) || 5
 }
 
 // 获取总数
@@ -143,7 +141,6 @@ function onClickExcess(event: any) {
 // 提供给子组件的数据
 linkChildren({
   props,
-  useProps,
   getIndex,
   getMax,
   getTotal,

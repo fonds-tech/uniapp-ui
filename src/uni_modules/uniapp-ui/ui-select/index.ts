@@ -1,7 +1,6 @@
 import type Select from "./ui-select.vue"
 import type { PropType, CSSProperties, ExtractPropTypes } from "vue"
 import type { PopupMode, PickerValue, PickerColumn, PickerCancelData, PickerChangeData, PickerConfirmData, PickerColumnFields } from "../ui-picker"
-import { createProps } from "../hooks"
 import { truthProp, numericProp, makeArrayProp, makeStringProp, makeNumericProp } from "../utils/props"
 
 /**
@@ -31,7 +30,7 @@ export interface SelectDisplayPayload {
   texts: Array<string | number>
 }
 
-export const [selectProps, useSelectProps] = createProps("select", {
+export const selectProps = {
   /**
    * 绑定值
    * - 单选模式：string | number
@@ -205,8 +204,7 @@ export const [selectProps, useSelectProps] = createProps("select", {
    * 自定义样式
    */
   customStyle: [String, Object] as PropType<string | CSSProperties>,
-})
-
+}
 export const selectEmits = {
   "update:modelValue": (value: SelectValue) => value,
   open: () => true,

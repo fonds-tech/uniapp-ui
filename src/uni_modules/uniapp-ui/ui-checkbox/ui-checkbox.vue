@@ -1,5 +1,5 @@
 <template>
-  <view class="ui-checkbox" :class="[rootClass, useProps.customClass]" :style="[rootStyle]" @click.stop="onClick">
+  <view class="ui-checkbox" :class="[rootClass, props.customClass]" :style="[rootStyle]" @click.stop="onClick">
     <view class="ui-checkbox__icon" :class="[iconClass]" :style="[iconContainerStyle]" @click.stop="onClickIcon">
       <slot name="icon" :checked="checked" :disabled="disabled" :indeterminate="isIndeterminate">
         <view v-if="checked && !isIndeterminate && actualShape === 'dot'" class="ui-checkbox__dot" :style="[dotStyle]" />
@@ -18,15 +18,14 @@ import type { CSSProperties } from "vue"
 import type { CheckboxValueType } from "./index"
 import { checkboxGroupKey } from "../ui-checkbox-group"
 import { isDef, isBoolean } from "../utils/check"
+import { checkboxEmits, checkboxProps } from "./index"
 import { toRaw, watch, computed, useSlots } from "vue"
 import { useUnit, useColor, useStyle, useParent } from "../hooks"
-import { checkboxEmits, checkboxProps, useCheckboxProps } from "./index"
 
 defineOptions({ name: "ui-checkbox" })
 
 const props = defineProps(checkboxProps)
 const emits = defineEmits(checkboxEmits)
-const useProps = useCheckboxProps(props)
 const slots = useSlots()
 
 const { index, parent } = useParent(checkboxGroupKey)
@@ -66,7 +65,7 @@ const actualShape = computed(() => prop("shape") || "dot")
 
 const rootStyle = computed(() => {
   const style: CSSProperties = {}
-  return useStyle({ ...style, ...useStyle(useProps.customStyle) })
+  return useStyle({ ...style, ...useStyle(props.customStyle) })
 })
 
 const rootClass = computed(() => {
@@ -114,7 +113,7 @@ const dotStyle = computed(() => {
   return useStyle(style)
 })
 
-const hasLabel = computed(() => slots.default || useProps.label)
+const hasLabel = computed(() => slots.default || props.label)
 
 const contentClass = computed(() => {
   const list: string[] = []
@@ -148,18 +147,18 @@ const labelClass = computed(() => {
   return list
 })
 
-const name = computed(() => useProps.name || index.value)
-const checked = computed(() => (useProps.bindGroup && parent ? parent.useProps.modelValue.includes(name.value) : !!useProps.modelValue))
+const name = computed(() => props.name || index.value)
+const checked = computed(() => (props.bindGroup && parent ? parent.props.modelValue.includes(name.value) : !!props.modelValue))
 const disabled = computed(() => prop("disabled"))
-const label = computed(() => useProps.label)
+const label = computed(() => props.label)
 
 watch(
-  () => useProps.modelValue,
+  () => props.modelValue,
   (value) => emits("change", value),
 )
 
 function prop(name: string) {
-  if (useProps.bindGroup && parent) {
+  if (props.bindGroup && parent) {
     // 子组件有显式定义的值时使用子组件的
     if (isDef(props[name])) return props[name]
     // 否则使用父组件的值
@@ -175,14 +174,14 @@ async function updateValue(value: CheckboxValueType) {
 function toggle(check?: boolean) {
   if (prop("disabled") || prop("readonly")) return
 
-  if (parent && useProps.bindGroup) {
-    const value = parent.useProps.modelValue
-    const min = parent.useProps.min ?? 0
+  if (parent && props.bindGroup) {
+    const value = parent.props.modelValue
+    const min = parent.props.min ?? 0
 
     const add = () => {
-      const isMax = parent.useProps.max && value.length >= +parent.useProps.max
-      if (!isMax && !value.includes(useProps.name)) {
-        value.push(useProps.name)
+      const isMax = parent.props.max && value.length >= +parent.props.max
+      if (!isMax && !value.includes(props.name)) {
+        value.push(props.name)
         parent.updateValue(value)
       }
     }
@@ -205,7 +204,7 @@ function toggle(check?: boolean) {
       add()
     }
   } else {
-    updateValue(!useProps.modelValue)
+    updateValue(!props.modelValue)
   }
 }
 
@@ -225,7 +224,7 @@ function onClickLabel(event: any) {
   emits("click", event)
 }
 
-defineExpose({ useProps, checked, toggle, name })
+defineExpose({ props, checked, toggle, name })
 </script>
 
 <script lang="ts">

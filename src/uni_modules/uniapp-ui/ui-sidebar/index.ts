@@ -1,10 +1,9 @@
 import type Sidebar from "./ui-sidebar.vue"
 import type { Ref, PropType, InjectionKey, CSSProperties, ExtractPropTypes } from "vue"
-import { createProps } from "../hooks"
 import { truthProp, numericProp, makeNumericProp } from "../utils/props"
 
 export const sidebarKey: InjectionKey<SidebarProvide> = Symbol("ui-sidebar")
-export const [sidebarProps, useSidebarProps] = createProps("sidebar", {
+export const sidebarProps = {
   /**
    * 绑定值
    */
@@ -61,8 +60,7 @@ export const [sidebarProps, useSidebarProps] = createProps("sidebar", {
    * 自定义样式
    */
   customStyle: [String, Object] as PropType<string | CSSProperties>,
-})
-
+}
 export const sidebarEmits = {
   change: (name: number | string) => true,
   clickItem: (name: number | string, index: number) => true,
@@ -73,7 +71,6 @@ export type SidebarEmits = typeof sidebarEmits
 export type SidebarProps = ExtractPropTypes<typeof sidebarProps>
 export interface SidebarProvide {
   props: SidebarProps
-  useProps: SidebarProps
   currentName: Ref<string | number | null>
   clickItem: (name: string | number, index: number) => void
   setLine: (name: string | number) => void

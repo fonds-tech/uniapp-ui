@@ -4,7 +4,6 @@
  */
 
 import UiTabbarItem from "@/uni_modules/uniapp-ui/ui-tabbar-item/ui-tabbar-item.vue"
-import { ref } from "vue"
 import { mount } from "@vue/test-utils"
 import { tabbarKey } from "@/uni_modules/uniapp-ui/ui-tabbar"
 import { waitForTransition } from "../setup"
@@ -15,15 +14,11 @@ function createMockTabbarProvide(modelValue = 0) {
   const childrens: any[] = []
   return {
     props: {
+      modelValue,
       activeColor: "#1989fa",
       inactiveColor: "#7d7e80",
       route: false,
     },
-    useProps: {
-      modelValue,
-      route: false,
-    },
-    modelValue: ref(modelValue),
     updateValue: vi.fn(),
     link: (child: any) => childrens.push(child),
     unlink: (child: any) => {
@@ -245,7 +240,6 @@ describe("ui-tabbar-item 标签栏项组件", () => {
           provide: {
             [tabbarKey]: {
               ...createMockTabbarProvide(0),
-              useProps: { modelValue: 0, route: false },
             },
           },
         },

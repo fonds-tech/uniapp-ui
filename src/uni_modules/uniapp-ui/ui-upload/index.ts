@@ -1,9 +1,8 @@
 import type Upload from "./ui-upload.vue"
 import type { PropType, ExtractPropTypes } from "vue"
-import { createProps } from "../hooks"
 import { styleProp, truthProp, makeNumberProp, makeStringProp, makeNumericProp } from "../utils/props"
 
-export const [uploadProps, useUploadProps] = createProps("upload", {
+export const uploadProps = {
   /**
    * 绑定值
    */
@@ -128,8 +127,7 @@ export const [uploadProps, useUploadProps] = createProps("upload", {
    * 自定义样式
    */
   customStyle: styleProp,
-})
-
+}
 export const uploadEmits = {
   upload: (event: { files: any }) => true,
   delete: (event: { index: number; file: any }) => true,

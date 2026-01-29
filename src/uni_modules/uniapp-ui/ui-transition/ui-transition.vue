@@ -7,8 +7,8 @@
 <script setup lang="ts">
 import { isNumber } from "../utils/check"
 import { ref, watch, computed } from "vue"
+import { transitionEmits, transitionProps } from "./index"
 import { useStyle, useTransition, useGlobalZIndex } from "../hooks"
-import { transitionEmits, transitionProps, useTransitionProps } from "./index"
 
 // 定义组件名称
 defineOptions({ name: "ui-transition" })
@@ -16,11 +16,10 @@ defineOptions({ name: "ui-transition" })
 // 定义 props 和 emits
 const props = defineProps(transitionProps)
 const emits = defineEmits(transitionEmits)
-const useProps = useTransitionProps(props)
 const transition = useTransition()
 
 const zIndex = ref<number>()
-const inited = computed(() => !useProps.lazyRender || transition.inited.value)
+const inited = computed(() => !props.lazyRender || transition.inited.value)
 
 // 绑定过渡生命周期事件
 transition.on("enter", () => emits("enter"))
@@ -39,14 +38,14 @@ const style = computed(() => {
 
   return useStyle({
     ...baseStyle,
-    ...useStyle(useProps.customStyle),
+    ...useStyle(props.customStyle),
     ...transition.styles.value,
   })
 })
 
 // 监听 show 变化，触发进入或离开过渡
 watch(
-  () => useProps.show,
+  () => props.show,
   (val) => {
     val ? enter() : leave()
   },
@@ -54,15 +53,15 @@ watch(
 )
 
 // 监听配置变化，重新初始化
-watch(() => [useProps.name, useProps.duration, useProps.enterTimingFunction, useProps.leaveTimingFunction], initTransition, { immediate: true })
+watch(() => [props.name, props.duration, props.enterTimingFunction, props.leaveTimingFunction], initTransition, { immediate: true })
 
 // 初始化过渡配置
 function initTransition() {
   transition.init({
-    name: useProps.name,
-    duration: useProps.duration,
-    enterTimingFunction: useProps.enterTimingFunction,
-    leaveTimingFunction: useProps.leaveTimingFunction,
+    name: props.name,
+    duration: props.duration,
+    enterTimingFunction: props.enterTimingFunction,
+    leaveTimingFunction: props.leaveTimingFunction,
   })
 }
 
@@ -70,7 +69,7 @@ function initTransition() {
 // 移除 visible 检查，允许从任何状态（包括离开中）切换到进入状态
 function enter() {
   initTransition()
-  zIndex.value = isNumber(useProps.zIndex) ? +useProps.zIndex : useGlobalZIndex()
+  zIndex.value = isNumber(props.zIndex) ? +props.zIndex : useGlobalZIndex()
   transition.enter()
   emits("update:show", true)
 }

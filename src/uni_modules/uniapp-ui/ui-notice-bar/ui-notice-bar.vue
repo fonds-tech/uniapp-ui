@@ -1,26 +1,26 @@
 <template>
-  <view class="ui-notice-bar" :class="[useProps.customClass]" :style="[style]">
-    <view v-if="useProps.icon || slots.left" class="ui-notice-bar__left">
+  <view class="ui-notice-bar" :class="[props.customClass]" :style="[style]">
+    <view v-if="props.icon || slots.left" class="ui-notice-bar__left">
       <slot name="left">
-        <ui-icon v-if="useProps.icon" :name="useProps.icon" :size="useProps.iconSize" :color="useProps.iconColor" :weight="useProps.iconWeight" />
+        <ui-icon v-if="props.icon" :name="props.icon" :size="props.iconSize" :color="props.iconColor" :weight="props.iconWeight" />
       </slot>
     </view>
 
     <swiper
-      v-if="useProps.mode === 'vertical'"
+      v-if="props.mode === 'vertical'"
       class="ui-notice-bar__vertical"
       circular
       vertical
-      :autoplay="useProps.scrollable"
-      :interval="useProps.interval"
-      :duration="useProps.duration"
+      :autoplay="props.scrollable"
+      :interval="props.interval"
+      :duration="props.duration"
     >
       <swiper-item v-for="(text, index) in list" :key="index" style="display: flex" @click="onClick(index)">
         <text class="ui-notice-bar__vertical__text" :style="[textStyle]">{{ text }}</text>
       </swiper-item>
     </swiper>
 
-    <view v-if="useProps.mode === 'horizontal'" class="ui-notice-bar__horizontal">
+    <view v-if="props.mode === 'horizontal'" class="ui-notice-bar__horizontal">
       <text
         v-for="(text, index) in list"
         :key="index"
@@ -33,9 +33,9 @@
       </text>
     </view>
 
-    <view v-if="useProps.rightIcon || slots.right" class="ui-notice-bar__right">
+    <view v-if="props.rightIcon || slots.right" class="ui-notice-bar__right">
       <slot name="right">
-        <ui-icon v-if="useProps.rightIcon" :name="useProps.rightIcon" :size="useProps.rightIconSize" :color="useProps.rightIconColor" :weight="useProps.rightIconWeight" />
+        <ui-icon v-if="props.rightIcon" :name="props.rightIcon" :size="props.rightIconSize" :color="props.rightIconColor" :weight="props.rightIconWeight" />
       </slot>
     </view>
   </view>
@@ -44,15 +44,14 @@
 <script setup lang="ts">
 import { delay } from "../utils/utils"
 import { isArray, isString } from "../utils/check"
+import { noticeBarEmits, noticeBarProps } from "./index"
 import { useRect, useUnit, useColor, useStyle } from "../hooks"
-import { noticeBarEmits, noticeBarProps, useNoticeBarProps } from "./index"
 import { ref, watch, computed, nextTick, useSlots, onMounted, getCurrentInstance } from "vue"
 
 defineOptions({ name: "ui-notice-bar" })
 
 const props = defineProps(noticeBarProps)
 const emits = defineEmits(noticeBarEmits)
-const useProps = useNoticeBarProps(props)
 const slots = useSlots()
 const pause = ref(false)
 const duration = ref(0)
@@ -62,33 +61,33 @@ const instance = getCurrentInstance()
 let animationToken = 0
 
 const list = computed(() => {
-  if (isString(useProps.text)) return [useProps.text]
-  if (isArray(useProps.text) && useProps.mode === "horizontal") {
-    return [useProps.text[0]]
+  if (isString(props.text)) return [props.text]
+  if (isArray(props.text) && props.mode === "horizontal") {
+    return [props.text[0]]
   }
-  return useProps.text
+  return props.text
 })
 
 const style = computed(() => {
   const style: any = {}
-  style.background = useColor(useProps.background)
-  return useStyle({ ...style, ...useStyle(useProps.customStyle) })
+  style.background = useColor(props.background)
+  return useStyle({ ...style, ...useStyle(props.customStyle) })
 })
 
 const textStyle = computed(() => {
   const style: any = {}
-  style.color = useColor(useProps.color)
-  style.fontSize = useUnit(useProps.fontSize)
-  style.fontWeight = useProps.fontWeight
-  style.minHeight = useUnit(useProps.minHeight)
-  style.lineHeight = useUnit(useProps.minHeight)
+  style.color = useColor(props.color)
+  style.fontSize = useUnit(props.fontSize)
+  style.fontWeight = props.fontWeight
+  style.minHeight = useUnit(props.minHeight)
+  style.lineHeight = useUnit(props.minHeight)
   return useStyle(style)
 })
 
 const horizontalTextStyle = computed(() => {
   const style: any = {}
   style.animationDuration = `${duration.value}s`
-  if (useProps.scrollable) {
+  if (props.scrollable) {
     style.paddingLeft = horizontalPaddingLeft.value
     style.paddingRight = horizontalPaddingRight.value
     style.opacity = pause.value ? 0 : 1
@@ -99,13 +98,13 @@ const horizontalTextStyle = computed(() => {
 
 const horizontalTextClass = computed(() => {
   const list: string[] = []
-  if (useProps.scrollable) list.push("ui-notice-bar__horizontal__text--scrollable")
-  if (!pause.value && useProps.scrollable) list.push("ui-notice-bar__horizontal__text--animation")
+  if (props.scrollable) list.push("ui-notice-bar__horizontal__text--scrollable")
+  if (!pause.value && props.scrollable) list.push("ui-notice-bar__horizontal__text--animation")
   return list
 })
 
 function resize() {
-  if (useProps.mode !== "horizontal" || !useProps.scrollable) {
+  if (props.mode !== "horizontal" || !props.scrollable) {
     animationToken += 1
     duration.value = 0
     return
@@ -116,7 +115,7 @@ function resize() {
 async function horizontalAnimation() {
   const token = (animationToken += 1)
   if (!instance) return
-  const speed = Number(useProps.speed)
+  const speed = Number(props.speed)
   if (!speed || speed <= 0) {
     duration.value = 0
     return
@@ -159,11 +158,11 @@ function onClick(index: number) {
   emits("click", index)
 }
 
-watch(() => useProps.mode, resize)
-watch(() => useProps.scrollable, resize)
-watch(() => useProps.speed, resize)
+watch(() => props.mode, resize)
+watch(() => props.scrollable, resize)
+watch(() => props.speed, resize)
 watch(
-  () => useProps.text,
+  () => props.text,
   () => resize(),
   { deep: true },
 )

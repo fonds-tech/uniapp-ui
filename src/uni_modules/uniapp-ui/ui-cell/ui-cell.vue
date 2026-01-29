@@ -1,26 +1,26 @@
 <template>
-  <view class="ui-cell" :class="[classes, useProps.customClass]" :style="[style]" :hover-class="hoverClass" :hover-stay-time="50" @click="onClick">
+  <view class="ui-cell" :class="[classes, props.customClass]" :style="[style]" :hover-class="hoverClass" :hover-stay-time="50" @click="onClick">
     <slot name="icon">
       <view v-if="isShowIcon" class="ui-cell__icon" :style="[iconStyle]">
-        <ui-icon :name="useProps.icon" :size="useProps.iconSize" :color="useProps.iconColor" :weight="useProps.iconWeight" />
+        <ui-icon :name="props.icon" :size="props.iconSize" :color="props.iconColor" :weight="props.iconWeight" />
       </view>
     </slot>
     <view class="ui-cell__body" :style="[bodyStyle]">
       <slot name="title">
-        <text v-if="isShowTitle" class="ui-cell__title" :style="[titleStyle]">{{ useProps.title }}</text>
+        <text v-if="isShowTitle" class="ui-cell__title" :style="[titleStyle]">{{ props.title }}</text>
       </slot>
       <slot name="label">
-        <text v-if="isShowLabel" class="ui-cell__label" :style="[labelStyle]">{{ useProps.label }}</text>
+        <text v-if="isShowLabel" class="ui-cell__label" :style="[labelStyle]">{{ props.label }}</text>
       </slot>
     </view>
     <view class="ui-cell__content">
       <slot>
-        <text v-if="isShowValue" class="ui-cell__value" :style="[valueStyle]">{{ useProps.value }}</text>
+        <text v-if="isShowValue" class="ui-cell__value" :style="[valueStyle]">{{ props.value }}</text>
       </slot>
     </view>
     <slot name="right-icon">
       <view v-if="isShowRightIcon" class="ui-cell__right-icon" :style="[rightIconStyle]">
-        <ui-icon :name="useProps.rightIcon" :size="useProps.rightIconSize" :color="useProps.rightIconColor" :weight="useProps.rightIconWeight" />
+        <ui-icon :name="props.rightIcon" :size="props.rightIconSize" :color="props.rightIconColor" :weight="props.rightIconWeight" />
       </view>
     </slot>
   </view>
@@ -30,7 +30,7 @@
 import type { CSSProperties } from "vue"
 import { computed } from "vue"
 import { cellGroupKey } from "../ui-cell-group"
-import { cellEmits, cellProps, useCellProps } from "./index"
+import { cellEmits, cellProps } from "./index"
 import { useUnit, useColor, useStyle, useParent } from "../hooks"
 
 defineOptions({ name: "ui-cell" })
@@ -38,28 +38,26 @@ defineOptions({ name: "ui-cell" })
 // 定义props和emits
 const props = defineProps(cellProps)
 const emits = defineEmits(cellEmits)
-const useProps = useCellProps(props)
-
 // 使用useParent hook获取父组件信息
 const { index, parent: cellGroup } = useParent(cellGroupKey)
 
 // 计算样式
 const style = computed(() => {
   const style: any = {}
-  style.height = useUnit(useProps.height)
-  style.padding = useUnit(useProps.padding)
+  style.height = useUnit(props.height)
+  style.padding = useUnit(props.padding)
   // 在 cell-group 中时背景透明，单独使用时默认白色
-  if (useProps.background) {
-    style.background = useColor(useProps.background)
+  if (props.background) {
+    style.background = useColor(props.background)
   } else if (!cellGroup) {
     style.background = "var(--ui-color-background)"
   }
 
-  style["--ui-cell-border-left"] = useUnit(useProps.borderLeft)
-  style["--ui-cell-border-right"] = useUnit(useProps.borderRight)
-  style["--ui-cell-border-width"] = useUnit(useProps.borderWidth)
-  style["--ui-cell-border-color"] = useColor(useProps.borderColor)
-  return useStyle({ ...style, ...useStyle(useProps.customStyle) })
+  style["--ui-cell-border-left"] = useUnit(props.borderLeft)
+  style["--ui-cell-border-right"] = useUnit(props.borderRight)
+  style["--ui-cell-border-width"] = useUnit(props.borderWidth)
+  style["--ui-cell-border-color"] = useColor(props.borderColor)
+  return useStyle({ ...style, ...useStyle(props.customStyle) })
 })
 
 // 判断是否是最后一个 cell（单独使用时视为最后一个，不显示边框）
@@ -72,38 +70,38 @@ const isLastCell = computed(() => {
 const classes = computed(() => {
   const list: string[] = []
   // 最后一个 cell 不显示边框
-  if (useProps.border && !isLastCell.value) list.push("ui-cell--border")
+  if (props.border && !isLastCell.value) list.push("ui-cell--border")
 
-  if (useProps.clickable) list.push("ui-cell--clickable")
+  if (props.clickable) list.push("ui-cell--clickable")
   return list
 })
 
 // 计算hover class
 const hoverClass = computed(() => {
-  return useProps.clickable || useProps.isLink ? "ui-cell--active" : ""
+  return props.clickable || props.isLink ? "ui-cell--active" : ""
 })
 
 // 计算图标样式
 const iconStyle = computed(() => {
   const style: CSSProperties = {}
-  style.marginRight = useUnit(useProps.iconGap)
+  style.marginRight = useUnit(props.iconGap)
   return useStyle(style)
 })
 
 // 计算标题样式
 const titleStyle = computed(() => {
   const style: CSSProperties = {}
-  style.color = useColor(useProps.titleColor)
-  style.fontSize = useUnit(useProps.titleSize)
-  style.fontWeight = useProps.titleWeight
+  style.color = useColor(props.titleColor)
+  style.fontSize = useUnit(props.titleSize)
+  style.fontWeight = props.titleWeight
   return useStyle(style)
 })
 
 // 计算 body 样式
 const bodyStyle = computed(() => {
   const style: CSSProperties = {}
-  if (useProps.titleWidth) {
-    style.width = useUnit(useProps.titleWidth)
+  if (props.titleWidth) {
+    style.width = useUnit(props.titleWidth)
     style.flexShrink = 0
   }
   return useStyle(style)
@@ -112,42 +110,42 @@ const bodyStyle = computed(() => {
 // 计算标签样式
 const labelStyle = computed(() => {
   const style: CSSProperties = {}
-  style.color = useColor(useProps.labelColor)
-  style.fontSize = useUnit(useProps.labelSize)
-  style.marginTop = useUnit(useProps.labelGap)
-  style.fontWeight = useProps.labelWeight
+  style.color = useColor(props.labelColor)
+  style.fontSize = useUnit(props.labelSize)
+  style.marginTop = useUnit(props.labelGap)
+  style.fontWeight = props.labelWeight
   return useStyle(style)
 })
 
 // 计算右侧图标样式
 const rightIconStyle = computed(() => {
   const style: CSSProperties = {}
-  style.marginLeft = useUnit(useProps.rightIconGap)
+  style.marginLeft = useUnit(props.rightIconGap)
   return useStyle(style)
 })
 
 // 计算值样式
 const valueStyle = computed(() => {
   const style: CSSProperties = {}
-  style.color = useColor(useProps.valueColor)
-  style.fontSize = useUnit(useProps.valueSize)
-  style.fontWeight = useProps.valueWeight
+  style.color = useColor(props.valueColor)
+  style.fontSize = useUnit(props.valueSize)
+  style.fontWeight = props.valueWeight
   return useStyle(style)
 })
 
 // 计算是否显示各个元素
-const isShowIcon = computed(() => useProps.icon)
-const isShowTitle = computed(() => useProps.title)
-const isShowLabel = computed(() => useProps.label)
-const isShowValue = computed(() => useProps.value)
-const isShowRightIcon = computed(() => useProps.isLink)
+const isShowIcon = computed(() => props.icon)
+const isShowTitle = computed(() => props.title)
+const isShowLabel = computed(() => props.label)
+const isShowValue = computed(() => props.value)
+const isShowRightIcon = computed(() => props.isLink)
 
 // 点击事件处理
 function onClick() {
-  if (useProps.url) {
-    const linkType = useProps.linkType || "navigateTo"
+  if (props.url) {
+    const linkType = props.linkType || "navigateTo"
     if (uni[linkType]) {
-      uni[linkType]({ url: useProps.url })
+      uni[linkType]({ url: props.url })
     }
   } else {
     emits("click")

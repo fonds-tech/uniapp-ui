@@ -1,9 +1,8 @@
 import type Tag from "./ui-tag.vue"
 import type { ExtractPropTypes } from "vue"
-import { createProps } from "../hooks"
 import { styleProp, truthProp, makeStringProp, makeNumericProp } from "../utils/props"
 
-export const [tagProps, useTagProps] = createProps("tag", {
+export const tagProps = {
   /**
    * 是否显示
    */
@@ -88,8 +87,7 @@ export const [tagProps, useTagProps] = createProps("tag", {
    * 自定义样式
    */
   customStyle: styleProp,
-})
-
+}
 export const tagEmits = {
   click: () => true,
   close: () => true,

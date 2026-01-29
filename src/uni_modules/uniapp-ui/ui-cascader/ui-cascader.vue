@@ -1,15 +1,15 @@
 <template>
   <ui-popup
     :show="visible"
-    :mode="useProps.mode"
-    :border-radius="useProps.borderRadius"
-    :close-on-click-overlay="useProps.closeOnClickOverlay"
-    :overlay="useProps.overlay"
-    :duration="useProps.duration"
-    :z-index="useProps.zIndex"
-    :background="useProps.background"
-    :safe-area-inset-bottom="useProps.safeAreaInsetBottom"
-    :lazy-render="useProps.lazyRender"
+    :mode="props.mode"
+    :border-radius="props.borderRadius"
+    :close-on-click-overlay="props.closeOnClickOverlay"
+    :overlay="props.overlay"
+    :duration="props.duration"
+    :z-index="props.zIndex"
+    :background="props.background"
+    :safe-area-inset-bottom="props.safeAreaInsetBottom"
+    :lazy-render="props.lazyRender"
     @update:show="handleUpdateShow"
   >
     <view class="ui-cascader" :class="[customClass]" :style="[style]">
@@ -35,7 +35,7 @@
           <view class="ui-cascader__tabs__line" :style="[tabsLineStyle]" />
         </view>
       </scroll-view>
-      <swiper class="ui-cascader__swiper" :current="activeTab" :disable-touch="!useProps.swipeable" @change="onSwiperChange">
+      <swiper class="ui-cascader__swiper" :current="activeTab" :disable-touch="!props.swipeable" @change="onSwiperChange">
         <swiper-item v-for="(item, index) in tabs" :key="index" class="ui-cascader__swiper__item">
           <scroll-view scroll-y :show-scrollbar="false" class="ui-cascader__scroll">
             <view v-if="!item.options || item.options.length === 0" class="ui-cascader__empty">
@@ -76,8 +76,8 @@ import type { CascaderTab, CascaderOption } from "./index"
 import { clone, merge } from "../utils/utils"
 import { callInterceptor } from "../utils/interceptor"
 import { useRects, useStyle } from "../hooks"
+import { cascaderEmits, cascaderProps } from "./index"
 import { isDef, isEmpty, isNoEmpty, isFunction } from "../utils/check"
-import { cascaderEmits, cascaderProps, useCascaderProps } from "./index"
 import { ref, toRaw, watch, computed, nextTick, getCurrentInstance } from "vue"
 
 // 定义组件名称
@@ -86,7 +86,6 @@ defineOptions({ name: "ui-cascader" })
 // 定义props和emits
 const props = defineProps(cascaderProps)
 const emits = defineEmits(cascaderEmits)
-const useProps = useCascaderProps(props)
 const instance = getCurrentInstance()
 // 定义响应式数据
 const visible = ref(false) // 弹窗显示状态
@@ -98,34 +97,34 @@ const currentValue = ref<string | number>("") // 当前选中的值
 
 // 定义默认的字段键名
 const defaultFieldKeys = { text: "text", value: "value", children: "children", disabled: "disabled" }
-const { text: textKey, value: valueKey, children: childrenKey, disabled: disabledKey } = merge(defaultFieldKeys, useProps.fieldKeys)
+const { text: textKey, value: valueKey, children: childrenKey, disabled: disabledKey } = merge(defaultFieldKeys, props.fieldKeys)
 
 // 计算样式
 const style = computed(() => {
   const style: any = {}
-  return useStyle({ ...style, ...useStyle(useProps.customStyle) })
+  return useStyle({ ...style, ...useStyle(props.customStyle) })
 })
 
 // 标题样式
 const titleStyle = computed(() => {
   const style: any = {}
-  if (useProps.titleSize) style.fontSize = useProps.titleSize
-  if (useProps.titleColor) style.color = useProps.titleColor
-  if (useProps.titleWeight) style.fontWeight = useProps.titleWeight
+  if (props.titleSize) style.fontSize = props.titleSize
+  if (props.titleColor) style.color = props.titleColor
+  if (props.titleWeight) style.fontWeight = props.titleWeight
   return useStyle(style)
 })
 
 // 选项样式
 const optionStyle = computed(() => {
   const style: any = {}
-  if (useProps.color) style.color = useProps.color
+  if (props.color) style.color = props.color
   return useStyle(style)
 })
 
 // 选中选项样式
 const activeOptionStyle = computed(() => {
   const style: any = {}
-  if (useProps.activeColor) style.color = useProps.activeColor
+  if (props.activeColor) style.color = props.activeColor
   return useStyle(style)
 })
 
@@ -139,9 +138,9 @@ const tabsLineStyle = computed(() => {
   return style
 })
 
-// 监听useProps.modelValue的变化
+// 监听 props.modelValue 的变化
 watch(
-  () => useProps.modelValue,
+  () => props.modelValue,
   (value) => {
     currentValue.value = value
     updateTabs()
@@ -151,7 +150,7 @@ watch(
 
 // 同步外部 show 与内部弹窗状态，保证受控与内部关闭一致
 watch(
-  () => useProps.show,
+  () => props.show,
   (value) => {
     visible.value = value
   },
@@ -170,15 +169,15 @@ watch(
   },
 )
 
-// 监听useProps.options的变化
-watch(() => useProps.options, updateTabs, { deep: true })
+// 监听 props.options 的变化
+watch(() => props.options, updateTabs, { deep: true })
 
 // 监听activeTab的变化
 watch(() => activeTab.value, updateRect, { immediate: true })
 
 // 更新标签页
 function updateTabs() {
-  const options = useProps.options
+  const options = props.options
 
   if (isDef(currentValue.value)) {
     const selectedOptions = getSelectedOptionsByValue(clone(options), currentValue.value)
@@ -289,11 +288,11 @@ function onClickOption(option: CascaderOption, index: number, optionIndex: numbe
   }
 
   // 处理beforeChange拦截器
-  if (isFunction(useProps.beforeChange)) {
+  if (isFunction(props.beforeChange)) {
     const indexs = [...tabs.value.filter((tab) => tab.selected).map((tab) => tab.options.findIndex((item: any) => item[valueKey] === tab.selected?.[valueKey]))]
     indexs[index] = optionIndex
     loading.value = true
-    callInterceptor(useProps.beforeChange, {
+    callInterceptor(props.beforeChange, {
       args: [{ index, option: toRaw(clone(option)), optionIndex, optionIndexs: indexs }],
       done() {
         next()
@@ -324,7 +323,7 @@ function onClickClose() {
 // 重置选择
 function reset() {
   currentValue.value = ""
-  tabs.value = [{ options: useProps.options, selected: null }]
+  tabs.value = [{ options: props.options, selected: null }]
   activeTab.value = 0
 }
 

@@ -13,7 +13,7 @@
   />
 
   <!-- 对话框主体 -->
-  <view v-if="inited" class="ui-dialog" :class="[rootClass, useProps.customClass]" :style="rootStyle" @transitionend="transition.end" @touchmove.prevent.stop="noop">
+  <view v-if="inited" class="ui-dialog" :class="[rootClass, props.customClass]" :style="rootStyle" @transitionend="transition.end" @touchmove.prevent.stop="noop">
     <view class="ui-dialog__body" :style="bodyStyle" @click.stop="noop">
       <!-- 标题区域 -->
       <slot name="title">
@@ -91,7 +91,7 @@ import type { DialogOptions, DialogDoneAction, DialogOpenAction, DialogCloseActi
 import { noop, merge } from "../utils/utils"
 import { isNumber, isFunction } from "../utils/check"
 import { ref, watch, computed } from "vue"
-import { dialogEmits, dialogProps, useDialogProps } from "./index"
+import { dialogEmits, dialogProps } from "./index"
 import { useUnit, useColor, useStyle, useTransition, useGlobalZIndex } from "../hooks"
 
 defineOptions({ name: "ui-dialog" })
@@ -99,8 +99,6 @@ defineOptions({ name: "ui-dialog" })
 // ===================== Props & Emits =====================
 const props = defineProps(dialogProps)
 const emits = defineEmits(dialogEmits)
-const useProps = useDialogProps(props)
-
 // ===================== 状态管理 =====================
 const transition = useTransition()
 const zIndex = ref<number | string>()
@@ -127,7 +125,7 @@ const propOptions = ref<DialogOptions>({})
 const mergedOptions = ref<DialogOptions>({})
 
 // ===================== 计算属性 =====================
-const inited = computed(() => !useProps.lazyRender || transition.inited.value)
+const inited = computed(() => !props.lazyRender || transition.inited.value)
 
 // 根元素样式
 const rootStyle = computed(() => {
@@ -190,7 +188,7 @@ watch(
 
 // 监听 show 属性变化
 watch(
-  () => useProps.show,
+  () => props.show,
   (val) => {
     val ? open({}, "inner") : close("close")
   },
@@ -198,18 +196,18 @@ watch(
 )
 
 // 监听动画相关属性变化
-watch(() => [useProps.duration, useProps.enterTimingFunction, useProps.leaveTimingFunction], initTransition, { immediate: true })
+watch(() => [props.duration, props.enterTimingFunction, props.leaveTimingFunction], initTransition, { immediate: true })
 
 // ===================== 内部方法 =====================
 /** 初始化过渡动画 */
 function initTransition() {
-  mergedOptions.value.enterTimingFunction = useProps.enterTimingFunction
-  mergedOptions.value.leaveTimingFunction = useProps.leaveTimingFunction
+  mergedOptions.value.enterTimingFunction = props.enterTimingFunction
+  mergedOptions.value.leaveTimingFunction = props.leaveTimingFunction
   transition.init({
     name: "dialog-bounce",
-    duration: useProps.duration,
-    enterTimingFunction: useProps.enterTimingFunction,
-    leaveTimingFunction: useProps.leaveTimingFunction,
+    duration: props.duration,
+    enterTimingFunction: props.enterTimingFunction,
+    leaveTimingFunction: props.leaveTimingFunction,
   })
 }
 

@@ -257,7 +257,7 @@ describe("ui-toast 轻提示组件", () => {
     })
 
     it("loading 类型在显式设置 duration=0 时不自动关闭", async () => {
-      // 注意：组件实现中 loading 类型的不自动关闭逻辑依赖于 useProps.duration 是否存在
+      // 注意：组件实现中 loading 类型的不自动关闭逻辑依赖于 props.duration 是否存在
       // 但由于 duration 有默认值 2000，所以需要显式设置 duration=0 来阻止自动关闭
       const wrapper = mount(UiToast, {
         props: { show: true, type: "loading", duration: 0 },

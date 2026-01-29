@@ -13,34 +13,24 @@ import { it, vi, expect, describe, afterEach, beforeEach } from "vitest"
 // Mock form 父组件上下文
 function createMockFormProvide() {
   return {
-  props: {
-    labelPosition: "left",
-    labelWidth: "auto",
-    labelAlign: "left",
-    labelGap: "16rpx",
-    border: false,
-    borderColor: "#eee",
-    errorMessageColor: "error",
-    validateTrigger: "blur",
-  },
-  useProps: {
-    labelPosition: "left",
-    labelWidth: "auto",
-    labelAlign: "left",
-    labelGap: "16rpx",
-    border: false,
-    borderColor: "#eee",
-    errorMessageColor: "error",
-    validateTrigger: "blur",
-  },
-  model: ref({}),
-  initialModel: ref({}),
-  rules: {},
-  maxLabelWidth: ref(0),
-  link: vi.fn(),
-  unlink: vi.fn(),
-  childrens: [],
-}
+    props: {
+      labelPosition: "left",
+      labelWidth: "auto",
+      labelAlign: "left",
+      labelGap: "16rpx",
+      border: false,
+      borderColor: "#eee",
+      errorMessageColor: "error",
+      validateTrigger: "blur",
+    },
+    model: ref({}),
+    initialModel: ref({}),
+    rules: {},
+    maxLabelWidth: ref(0),
+    link: vi.fn(),
+    unlink: vi.fn(),
+    childrens: [],
+  }
 }
 
 describe("ui-form-item 表单项组件", () => {

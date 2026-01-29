@@ -1,9 +1,8 @@
 import type Textarea from "./ui-textarea.vue"
 import type { PropType, ExtractPropTypes } from "vue"
-import { createProps } from "../hooks"
 import { styleProp, truthProp, makeStringProp, makeNumericProp } from "../utils/props"
 
-export const [textareaProps, useTextareaProps] = createProps("textarea", {
+export const textareaProps = {
   /**
    * 输入值
    */
@@ -183,7 +182,7 @@ export const [textareaProps, useTextareaProps] = createProps("textarea", {
    * 自定义样式
    */
   customStyle: styleProp,
-})
+}
 export const textareaEmits = {
   clear: () => true,
   focus: () => true,

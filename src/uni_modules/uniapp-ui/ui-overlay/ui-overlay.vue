@@ -17,8 +17,8 @@ import type { CSSProperties } from "vue"
 import { noop } from "../utils/utils"
 import { isNumber } from "../utils/check"
 import { ref, watch, computed } from "vue"
+import { overlayEmits, overlayProps } from "./index"
 import { useStyle, useTransition, useGlobalZIndex } from "../hooks"
-import { overlayEmits, overlayProps, useOverlayProps } from "./index"
 
 // 定义组件名称
 defineOptions({ name: "ui-overlay" })
@@ -26,7 +26,6 @@ defineOptions({ name: "ui-overlay" })
 // 定义props和emits
 const props = defineProps(overlayProps)
 const emits = defineEmits(overlayEmits)
-const useProps = useOverlayProps(props)
 // 使用transition钩子
 const transition = useTransition()
 
@@ -34,7 +33,7 @@ const transition = useTransition()
 const zIndex = ref<number>()
 
 // 计算是否显示overlay
-const inited = computed(() => !useProps.lazyRender || transition.inited.value)
+const inited = computed(() => !props.lazyRender || transition.inited.value)
 
 // 为transition的各个阶段绑定事件
 transition.on("before-enter", () => emits("open"))
@@ -47,13 +46,13 @@ const style = computed(() => {
   const style: CSSProperties = {}
   style.zIndex = zIndex.value
   style.display = transition.visible.value ? "block" : "none"
-  style.background = `rgba(0, 0, 0, ${useProps.opacity})`
-  return useStyle({ ...style, ...useStyle(useProps.customStyle), ...transition.styles.value })
+  style.background = `rgba(0, 0, 0, ${props.opacity})`
+  return useStyle({ ...style, ...useStyle(props.customStyle), ...transition.styles.value })
 })
 
 // 监听show属性变化,触发open或close方法
 watch(
-  () => useProps.show,
+  () => props.show,
   (val) => {
     val ? open() : close()
   },
@@ -61,15 +60,15 @@ watch(
 )
 
 // 监听duration属性变化,重新初始化transition
-watch(() => [useProps.duration, useProps.enterTimingFunction, useProps.leaveTimingFunction], initTransition, { immediate: true })
+watch(() => [props.duration, props.enterTimingFunction, props.leaveTimingFunction], initTransition, { immediate: true })
 
 // 初始化transition
 function initTransition() {
   transition.init({
     name: "fade",
-    duration: useProps.duration,
-    enterTimingFunction: useProps.enterTimingFunction,
-    leaveTimingFunction: useProps.leaveTimingFunction,
+    duration: props.duration,
+    enterTimingFunction: props.enterTimingFunction,
+    leaveTimingFunction: props.leaveTimingFunction,
   })
 }
 
@@ -77,7 +76,7 @@ function initTransition() {
 function open() {
   if (transition.visible.value) return
   initTransition()
-  zIndex.value = isNumber(useProps.zIndex) ? +useProps.zIndex : useGlobalZIndex()
+  zIndex.value = isNumber(props.zIndex) ? +props.zIndex : useGlobalZIndex()
   transition.enter()
   emits("update:show", true)
 }

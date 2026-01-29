@@ -2,20 +2,20 @@
   <button
     class="ui-button"
     :style="[buttonStyle]"
-    :class="[classNames, useProps.customClass]"
-    :lang="useProps.lang"
-    :form-type="useProps.formType"
-    :open-type="useProps.openType"
-    :session-from="useProps.sessionFrom"
-    :app-parameter="useProps.appParameter"
+    :class="[classNames, props.customClass]"
+    :lang="props.lang"
+    :form-type="props.formType"
+    :open-type="props.openType"
+    :session-from="props.sessionFrom"
+    :app-parameter="props.appParameter"
     :hover-class="hoverClass"
-    :hover-stay-time="useProps.hoverStayTime"
-    :hover-start-time="useProps.hoverStartTime"
-    :send-message-img="useProps.sendMessageImg"
-    :send-message-path="useProps.sendMessagePath"
-    :show-message-card="useProps.showMessageCard"
-    :send-message-title="useProps.sendMessageTitle"
-    :hover-stop-propagation="useProps.hoverStopPropagation"
+    :hover-stay-time="props.hoverStayTime"
+    :hover-start-time="props.hoverStartTime"
+    :send-message-img="props.sendMessageImg"
+    :send-message-path="props.sendMessagePath"
+    :show-message-card="props.showMessageCard"
+    :send-message-title="props.sendMessageTitle"
+    :hover-stop-propagation="props.hoverStopPropagation"
     @error="handleError"
     @click="handleClick"
     @launchapp="handleLaunchApp"
@@ -23,12 +23,12 @@
     @opensetting="handleOpenSetting"
     @getphonenumber="handleGetPhoneNumber"
   >
-    <view class="ui-button__content" :class="{ 'ui-button__content--reverse': useProps.iconPosition === 'right' }">
+    <view class="ui-button__content" :class="{ 'ui-button__content--reverse': props.iconPosition === 'right' }">
       <view v-if="isLoading" class="ui-button__loading">
-        <ui-loading :size="useProps.loadingIconSize" color="currentColor" />
+        <ui-loading :size="props.loadingIconSize" color="currentColor" />
       </view>
-      <view v-else-if="useProps.icon" class="ui-button__icon">
-        <ui-icon :name="useProps.icon" :color="useProps.iconColor" :size="useProps.iconSize" :weight="useProps.iconWeight" />
+      <view v-else-if="props.icon" class="ui-button__icon">
+        <ui-icon :name="props.icon" :color="props.iconColor" :size="props.iconSize" :weight="props.iconWeight" />
       </view>
       <view v-if="isLoading && resolvedLoadingText" class="ui-button__text">
         {{ resolvedLoadingText }}
@@ -44,8 +44,8 @@
 import type { CSSProperties } from "vue"
 import { createThrottle } from "../utils/utils"
 import { ref, computed, useSlots } from "vue"
+import { buttonEmits, buttonProps } from "./index"
 import { useUnit, useColor, useStyle } from "../hooks"
-import { buttonEmits, buttonProps, useButtonProps } from "./index"
 
 // 定义组件名称
 defineOptions({ name: "ui-button" })
@@ -53,7 +53,6 @@ defineOptions({ name: "ui-button" })
 // 定义props和emits
 const props = defineProps(buttonProps)
 const emits = defineEmits(buttonEmits)
-const useProps = useButtonProps(props)
 const slots = useSlots()
 
 // 检测 slot 是否有内容
@@ -65,31 +64,31 @@ const internalDisabled = ref(false)
 const internalLoadingText = ref("")
 
 // 创建节流函数实例
-const throttledEmit = computed(() => createThrottle(+useProps.throttle))
+const throttledEmit = computed(() => createThrottle(+props.throttle))
 
 // 计算按钮样式
 const buttonStyle = computed(() => {
   const styles: CSSProperties = {}
-  styles.width = useUnit(useProps.width)
-  styles.height = useUnit(useProps.height)
-  styles.color = useColor(useProps.textColor)
-  styles.fontSize = useUnit(useProps.textSize)
-  styles.boxShadow = useProps.shadow
-  styles.fontWeight = useProps.textWeight
-  styles.background = useColor(useProps.color)
-  styles.borderWidth = useUnit(useProps.borderWidth)
-  styles.borderColor = useColor(useProps.borderColor)
-  styles.borderRadius = useUnit(useProps.borderRadius)
-  styles.marginLeft = useUnit(useProps.marginLeft)
-  styles.marginRight = useUnit(useProps.marginRight)
-  return useStyle({ ...styles, ...useStyle(useProps.customStyle) })
+  styles.width = useUnit(props.width)
+  styles.height = useUnit(props.height)
+  styles.color = useColor(props.textColor)
+  styles.fontSize = useUnit(props.textSize)
+  styles.boxShadow = props.shadow
+  styles.fontWeight = props.textWeight
+  styles.background = useColor(props.color)
+  styles.borderWidth = useUnit(props.borderWidth)
+  styles.borderColor = useColor(props.borderColor)
+  styles.borderRadius = useUnit(props.borderRadius)
+  styles.marginLeft = useUnit(props.marginLeft)
+  styles.marginRight = useUnit(props.marginRight)
+  return useStyle({ ...styles, ...useStyle(props.customStyle) })
 })
 
 // 计算按钮类名
 const classNames = computed(() => {
   const classList: string[] = []
-  classList.push(`ui-button--${useProps.type}`)
-  classList.push(`ui-button--${useProps.size}`)
+  classList.push(`ui-button--${props.type}`)
+  classList.push(`ui-button--${props.size}`)
   const modifiers = ["text", "plain", "round", "block"]
   modifiers.forEach((modifier) => {
     if (props[modifier]) classList.push(`ui-button--${modifier}`)
@@ -100,9 +99,9 @@ const classNames = computed(() => {
 })
 
 // 计算按钮状态
-const isLoading = computed(() => useProps.loading || internalLoading.value)
-const isDisabled = computed(() => useProps.disabled || internalDisabled.value)
-const resolvedLoadingText = computed(() => useProps.loadingText || internalLoadingText.value)
+const isLoading = computed(() => props.loading || internalLoading.value)
+const isDisabled = computed(() => props.disabled || internalDisabled.value)
+const resolvedLoadingText = computed(() => props.loadingText || internalLoadingText.value)
 const hoverClass = computed(() => (isDisabled.value || isLoading.value ? "" : "ui-button--active"))
 
 // 点击事件处理

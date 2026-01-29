@@ -1,10 +1,9 @@
 import type SafeAreaBottom from "./ui-safe-area-bottom.vue"
 import type { ExtractPropTypes } from "vue"
 import { isNumber } from "../utils/check"
-import { createProps } from "../hooks"
 import { styleProp, makeStringProp } from "../utils/props"
 
-export const [safeAreaBottomProps, useSafeAreaBottomProps] = createProps("safeAreaBottom", {
+export const safeAreaBottomProps = {
   /**
    * 背景色
    */
@@ -17,7 +16,7 @@ export const [safeAreaBottomProps, useSafeAreaBottomProps] = createProps("safeAr
    * 自定义样式
    */
   customStyle: styleProp,
-})
+}
 export const safeAreaBottomEmits = {
   height: (htight: number) => isNumber(htight),
 }

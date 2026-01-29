@@ -1,24 +1,22 @@
 <template>
-  <view class="ui-row" :class="[useProps.customClass, { 'ui-row--wrap': useProps.wrap }]" :style="[style]">
+  <view class="ui-row" :class="[props.customClass, { 'ui-row--wrap': props.wrap }]" :style="[style]">
     <slot />
   </view>
 </template>
 
 <script setup lang="ts">
 import type { CSSProperties } from "vue"
+import { rowProps } from "./index"
 import { useUnit, useStyle } from "../hooks"
 import { provide, computed } from "vue"
-import { rowProps, useRowProps } from "./index"
 
 defineOptions({ name: "ui-row" })
 
 const props = defineProps(rowProps)
-const useProps = useRowProps(props)
-
 // 计算间距值（用于 provide 给 Col）
 const gapInfo = computed(() => {
-  const rowGapVal = useProps.gap || useProps.rowGap
-  const colGapVal = useProps.gap || useProps.colGap
+  const rowGapVal = props.gap || props.rowGap
+  const colGapVal = props.gap || props.colGap
   return {
     rowGap: rowGapVal ? useUnit(rowGapVal) : "0px",
     colGap: colGapVal ? useUnit(colGapVal) : "0px",
@@ -38,32 +36,32 @@ const style = computed(() => {
   }
 
   // 水平对齐方式
-  switch (useProps.justify) {
+  switch (props.justify) {
     case "start":
     case "end":
-      style.justifyContent = `flex-${useProps.justify}`
+      style.justifyContent = `flex-${props.justify}`
       break
     case "around":
     case "between":
-      style.justifyContent = `space-${useProps.justify}`
+      style.justifyContent = `space-${props.justify}`
       break
     default:
-      style.justifyContent = useProps.justify
+      style.justifyContent = props.justify
       break
   }
 
   // 垂直对齐方式
-  switch (useProps.align) {
+  switch (props.align) {
     case "start":
     case "end":
-      style.alignItems = `flex-${useProps.align}`
+      style.alignItems = `flex-${props.align}`
       break
     default:
-      style.alignItems = useProps.align
+      style.alignItems = props.align
       break
   }
 
-  return useStyle({ ...style, ...useStyle(useProps.customStyle) })
+  return useStyle({ ...style, ...useStyle(props.customStyle) })
 })
 
 // 向子组件提供间距信息

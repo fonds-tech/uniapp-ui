@@ -24,8 +24,8 @@ import type { CSSProperties } from "vue"
 import type { FormValidateRule, FormValidateError, FormValidateTrigger } from "../ui-form"
 import { formKey } from "../ui-form"
 import { clone, toArray, getDeepValue } from "../utils/utils"
+import { formItemKey, formItemEmits, formItemProps } from "./index"
 import { isDef, isEmpty, isNoEmpty, isPromise, isFunction } from "../utils/check"
-import { formItemKey, formItemEmits, formItemProps, useFormItemProps } from "./index"
 import { useRect, useUnit, useColor, useStyle, useParent, usePxToRpx, useChildren, useUnitToPx } from "../hooks"
 import { ref, toRaw, computed, nextTick, reactive, useSlots, onMounted, onUnmounted, getCurrentInstance } from "vue"
 
@@ -33,9 +33,6 @@ defineOptions({ name: "ui-form-item" })
 
 const props = defineProps(formItemProps)
 const emits = defineEmits(formItemEmits)
-
-const useProps = useFormItemProps(props)
-
 const slots = useSlots()
 
 const state = reactive({ status: "unvalidated", focused: false, validateMessage: "" })
@@ -50,11 +47,11 @@ const { linkChildren } = useChildren(formItemKey)
 
 const style = computed(() => {
   const style: CSSProperties = {}
-  style.padding = useUnit(useProps.padding)
+  style.padding = useUnit(props.padding)
   if (prop("border")) {
     style.borderBottom = `2rpx solid ${useColor(prop("borderColor"))}`
   }
-  return useStyle({ ...style, ...useStyle(useProps.customStyle) })
+  return useStyle({ ...style, ...useStyle(props.customStyle) })
 })
 
 const mainClass = computed(() => {
@@ -101,7 +98,7 @@ const labelClass = computed(() => {
   if (prop("required")) {
     list.push("ui-form-item__label--required")
   }
-  if (useProps.label || slots.label) {
+  if (props.label || slots.label) {
     list.push("ui-form-item__label--effective")
   }
   return list
@@ -256,7 +253,7 @@ function getRuleMessage(value: unknown, rule: FormValidateRule) {
   if (isFunction(message)) {
     return message(value, rule)
   }
-  return message || useProps.errorMessage
+  return message || props.errorMessage
 }
 
 /**
@@ -270,7 +267,7 @@ function validate(rules = getPropRules()) {
     if (isNoEmpty(rules)) {
       runRules(rules).then(() => {
         if (state.status === "failed") {
-          resolve({ prop: useProps.prop, message: state.validateMessage })
+          resolve({ prop: props.prop, message: state.validateMessage })
         } else {
           state.status = "passed"
           resolve()
@@ -307,8 +304,8 @@ async function resetField() {
     console.warn("[ui-form-item] resetField: 必须在 ui-form 组件内使用")
     return
   }
-  const value = form.initialModel.value[useProps.prop]
-  form.model.value[useProps.prop] = clone(value)
+  const value = form.initialModel.value[props.prop]
+  form.model.value[props.prop] = clone(value)
   await nextTick()
   resetValidate()
 }
@@ -329,7 +326,7 @@ function getPropValue() {
     console.warn("[ui-form-item] getPropValue: 必须在 ui-form 组件内使用")
     return undefined
   }
-  return getDeepValue(form.model.value, useProps.prop)
+  return getDeepValue(form.model.value, props.prop)
 }
 
 /**
@@ -341,11 +338,11 @@ function getPropRules() {
     return undefined
   }
   // 优先直接匹配 key（支持 "contactData.realName" 这种带点的 key）
-  if (useProps.prop && form.rules[useProps.prop]) {
-    return form.rules[useProps.prop]
+  if (props.prop && form.rules[props.prop]) {
+    return form.rules[props.prop]
   }
   // 降级使用深层查找
-  return getDeepValue(form.rules, useProps.prop)
+  return getDeepValue(form.rules, props.prop)
 }
 
 /**
@@ -385,11 +382,11 @@ onUnmounted(() => {
   const uid = instance?.uid ?? 0
   form?.unregisterLabelWidth?.(uid)
 })
-linkChildren({ props, prop: useProps.prop, onBlur, onChange })
+linkChildren({ props, prop: props.prop, onBlur, onChange })
 defineExpose({
-  useProps,
-  prop: useProps.prop,
-  modelValue: form?.model?.value?.[useProps.prop],
+  props,
+  prop: props.prop,
+  modelValue: form?.model?.value?.[props.prop],
   labelWidth,
   validate,
   resetField,

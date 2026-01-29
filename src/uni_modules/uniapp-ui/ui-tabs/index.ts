@@ -1,10 +1,9 @@
 import type Tabs from "./ui-tabs.vue"
 import type { Ref, PropType, InjectionKey, CSSProperties, ExtractPropTypes } from "vue"
-import { createProps } from "../hooks"
 import { truthProp, numericProp, makeNumericProp } from "../utils/props"
 
 export const tabsKey: InjectionKey<TabsProvide> = Symbol("ui-tabs")
-export const [tabsProps, useTabsProps] = createProps("tabs", {
+export const tabsProps = {
   /**
    * 绑定值
    */
@@ -97,8 +96,7 @@ export const [tabsProps, useTabsProps] = createProps("tabs", {
    * 自定义样式
    */
   customStyle: [String, Object] as PropType<string | CSSProperties>,
-})
-
+}
 export const tabsEmits = {
   change: (name: string | number) => true,
   tabClick: (name: string | number) => true,
@@ -115,7 +113,6 @@ export interface TabRect {
 
 export interface TabsProvide {
   props: TabsProps
-  useProps: TabsProps
   currentName: Ref<string | number | null>
   tabRects: Ref<Map<number, TabRect>>
   clickTab: (name: string | number) => void

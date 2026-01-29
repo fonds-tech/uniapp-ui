@@ -1,6 +1,5 @@
 import type Toast from "./ui-toast.vue"
 import type { Ref, PropType, CSSProperties, ExtractPropTypes } from "vue"
-import { createProps } from "../hooks"
 import { numericProp, makeStringProp, makeNumericProp } from "../utils/props"
 
 /**
@@ -9,7 +8,7 @@ import { numericProp, makeStringProp, makeNumericProp } from "../utils/props"
  * 1. 声明式：通过 Props + v-model:show 控制
  * 2. 命令式：通过 ref.show(options) 方法调用
  */
-export const [toastProps, useToastProps] = createProps("toast", {
+export const toastProps = {
   /**
    * 是否显示 toast
    * 支持 v-model:show 双向绑定
@@ -77,8 +76,7 @@ export const [toastProps, useToastProps] = createProps("toast", {
    * 自定义样式
    */
   customStyle: [String, Object] as PropType<string | CSSProperties>,
-})
-
+}
 /**
  * Toast 组件事件定义
  */

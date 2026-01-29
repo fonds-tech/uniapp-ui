@@ -1,9 +1,8 @@
 import type Line from "./ui-line.vue"
 import type { ExtractPropTypes } from "vue"
-import { createProps } from "../hooks"
 import { styleProp, makeStringProp, makeNumericProp } from "../utils/props"
 
-export const [lineProps, useLineProps] = createProps("line", {
+export const lineProps = {
   /**
    * 线条颜色
    */
@@ -36,7 +35,7 @@ export const [lineProps, useLineProps] = createProps("line", {
    * 自定义样式
    */
   customStyle: styleProp,
-})
+}
 export const lineEmits = {}
 
 export type LineEmits = typeof lineEmits

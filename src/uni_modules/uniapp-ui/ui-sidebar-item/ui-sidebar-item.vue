@@ -3,8 +3,8 @@
     <slot :active="active" :disabled="disabled">
       <view class="ui-sidebar-item__title" :style="[titleStyle]">
         {{ title }}
-        <view v-if="useProps.dot" class="ui-sidebar-item__dot" />
-        <view v-else-if="isDef(useProps.badge)" class="ui-sidebar-item__badge">{{ useProps.badge }}</view>
+        <view v-if="props.dot" class="ui-sidebar-item__dot" />
+        <view v-else-if="isDef(props.badge)" class="ui-sidebar-item__badge">{{ props.badge }}</view>
       </view>
     </slot>
   </view>
@@ -14,15 +14,14 @@
 import type { CSSProperties } from "vue"
 import { isDef } from "../utils/check"
 import { sidebarKey } from "../ui-sidebar"
+import { sidebarItemEmits, sidebarItemProps } from "./index"
 import { useRect, useUnit, useColor, useStyle, useParent } from "../hooks"
-import { sidebarItemEmits, sidebarItemProps, useSidebarItemProps } from "./index"
 import { ref, watch, computed, nextTick, onMounted, getCurrentInstance } from "vue"
 
 defineOptions({ name: "ui-sidebar-item" })
 
 const props = defineProps(sidebarItemProps)
 const emits = defineEmits(sidebarItemEmits)
-const useProps = useSidebarItemProps(props)
 const { index, parent } = useParent(sidebarKey)
 
 const rect = ref<UniApp.NodeInfo>({})
@@ -30,18 +29,18 @@ const instance = getCurrentInstance()
 
 const style = computed(() => {
   const style: CSSProperties = {}
-  style.height = useUnit(useProps.height)
-  style.background = useColor(useProps.background)
+  style.height = useUnit(props.height)
+  style.background = useColor(props.background)
   if (active.value) {
-    style.background = useColor(useProps.activeBackground)
+    style.background = useColor(props.activeBackground)
   }
-  return useStyle({ ...style, ...useStyle(useProps.customStyle) })
+  return useStyle({ ...style, ...useStyle(props.customStyle) })
 })
 
 const classs = computed(() => {
   const list: string[] = []
   if (active.value) list.push("ui-sidebar-item--active")
-  if (useProps.disabled) list.push("ui-sidebar-item--disabled")
+  if (props.disabled) list.push("ui-sidebar-item--disabled")
   return list
 })
 
@@ -59,7 +58,7 @@ const titleStyle = computed(() => {
   return useStyle(style)
 })
 
-const name = computed(() => useProps.name ?? index.value)
+const name = computed(() => props.name ?? index.value)
 const active = computed(() => parent?.currentName.value === name.value)
 
 watch(() => props, resize, { deep: true })
@@ -80,13 +79,13 @@ async function resize() {
 }
 
 function onClick() {
-  if (useProps.disabled) return
+  if (props.disabled) return
   parent.clickItem(name.value, index.value)
   parent.setCurrentName(name.value)
 }
 
 onMounted(resize)
-defineExpose({ useProps, rect, name, index, resize })
+defineExpose({ props, rect, name, index, resize })
 </script>
 
 <script lang="ts">

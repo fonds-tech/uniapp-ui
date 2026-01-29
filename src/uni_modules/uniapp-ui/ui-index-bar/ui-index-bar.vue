@@ -21,14 +21,13 @@
 <script setup lang="ts">
 import { debounce } from "../utils/utils"
 import { useRect, useRects, useStyle, useChildren } from "../hooks"
+import { indexBarKey, indexBarEmits, indexBarProps } from "../ui-index-bar"
 import { ref, toRef, watch, computed, getCurrentInstance } from "vue"
-import { indexBarKey, indexBarEmits, indexBarProps, useIndexBarProps } from "../ui-index-bar"
 
 defineOptions({ name: "ui-index-bar" })
 
 const props = defineProps(indexBarProps)
 const emits = defineEmits(indexBarEmits)
-const useProps = useIndexBarProps(props)
 const instance = getCurrentInstance()
 const { childrens, linkChildren } = useChildren(indexBarKey)
 
@@ -42,15 +41,15 @@ const currentName = ref(null)
 
 const style = computed(() => {
   const style: any = {}
-  style.zIndex = useProps.zIndex
-  return useStyle({ ...style, ...useStyle(useProps.customStyle) })
+  style.zIndex = props.zIndex
+  return useStyle({ ...style, ...useStyle(props.customStyle) })
 })
 
 const itemClass = computed(() => (item: string | number) => (currentName.value === item ? "is-active" : ""))
 
 const indexList = computed(() => {
-  if (useProps.indexs && useProps.indexs.length) {
-    return useProps.indexs
+  if (props.indexs && props.indexs.length) {
+    return props.indexs
   }
   return childrens.map((child) => toRef(child.exposed?.name).value)
 })
@@ -108,7 +107,7 @@ function onScroll(event: any) {
   }
 }
 
-linkChildren({ props, useProps, currentName })
+linkChildren({ props, currentName })
 defineExpose({ resize })
 </script>
 

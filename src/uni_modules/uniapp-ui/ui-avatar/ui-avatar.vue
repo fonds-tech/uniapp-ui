@@ -1,12 +1,12 @@
 <template>
-  <view v-if="isVisible" class="ui-avatar" :class="[classNames, useProps.customClass]" :style="rootStyle" @click="onClick">
+  <view v-if="isVisible" class="ui-avatar" :class="[classNames, props.customClass]" :style="rootStyle" @click="onClick">
     <!-- 图片头像 -->
     <image
-      v-if="useProps.src && !hasError"
+      v-if="props.src && !hasError"
       class="ui-avatar__image"
-      :src="useProps.src"
+      :src="props.src"
       :mode="imageMode"
-      :lazy-load="useProps.lazyLoad"
+      :lazy-load="props.lazyLoad"
       @load="onImageLoad"
       @error="onImageError"
     />
@@ -19,13 +19,13 @@
       </slot>
     </template>
     <!-- 图标头像 -->
-    <template v-else-if="useProps.icon">
+    <template v-else-if="props.icon">
       <view class="ui-avatar__icon">
-        <ui-icon :name="useProps.icon" :color="iconColorValue" :size="iconSizeValue" />
+        <ui-icon :name="props.icon" :color="iconColorValue" :size="iconSizeValue" />
       </view>
     </template>
     <!-- 文字头像 -->
-    <template v-else-if="useProps.text">
+    <template v-else-if="props.text">
       <view class="ui-avatar__text" :style="textStyle">
         {{ displayText }}
       </view>
@@ -45,8 +45,8 @@
 import type { CSSProperties } from "vue"
 import { avatarGroupKey } from "../ui-avatar-group"
 import { ref, watch, computed } from "vue"
+import { avatarEmits, avatarProps } from "./index"
 import { useUnit, useColor, useStyle, useParent } from "../hooks"
-import { avatarEmits, avatarProps, useAvatarProps } from "./index"
 
 // 定义组件名称
 defineOptions({ name: "ui-avatar" })
@@ -54,8 +54,6 @@ defineOptions({ name: "ui-avatar" })
 // 定义 props 和 emits
 const props = defineProps(avatarProps)
 const emits = defineEmits(avatarEmits)
-const useProps = useAvatarProps(props)
-
 // 获取父级头像组组件
 const { parent: avatarGroup, index: avatarIndex } = useParent(avatarGroupKey)
 
@@ -68,7 +66,7 @@ const inGroup = computed(() => !!avatarGroup)
 // 从头像组获取配置
 const groupConfig = computed(() => {
   if (!avatarGroup) return null
-  return avatarGroup.useProps
+  return avatarGroup.props
 })
 
 // 是否可见（如果在组内，需要检查是否超出 max 限制）
@@ -89,7 +87,7 @@ const imageModeMap: Record<string, UniHelper.ImageProps["mode"]> = {
 
 // 计算图片模式
 const imageMode = computed(() => {
-  return imageModeMap[useProps.fit] || "aspectFill"
+  return imageModeMap[props.fit] || "aspectFill"
 })
 
 // 预设尺寸映射
@@ -105,7 +103,7 @@ const actualSize = computed(() => {
   if (inGroup.value && groupConfig.value?.size) {
     return groupConfig.value.size
   }
-  return useProps.size
+  return props.size
 })
 
 // 计算实际形状（优先使用组的配置）
@@ -113,7 +111,7 @@ const actualShape = computed(() => {
   if (inGroup.value && groupConfig.value?.shape) {
     return groupConfig.value.shape
   }
-  return useProps.shape
+  return props.shape
 })
 
 // 计算尺寸值
@@ -129,8 +127,8 @@ const sizeValue = computed(() => {
 
 // 计算图标大小（默认为头像尺寸的 50%）
 const iconSizeValue = computed(() => {
-  if (useProps.iconSize) {
-    return useUnit(useProps.iconSize, "px")
+  if (props.iconSize) {
+    return useUnit(props.iconSize, "px")
   }
   const size = actualSize.value
   if (typeof size === "string" && size in sizeMap) {
@@ -149,8 +147,8 @@ const iconSizeValue = computed(() => {
 
 // 计算文字大小（默认为头像尺寸的 40%）
 const textSizeValue = computed(() => {
-  if (useProps.textSize) {
-    return useUnit(useProps.textSize, "px")
+  if (props.textSize) {
+    return useUnit(props.textSize, "px")
   }
   const size = actualSize.value
   if (typeof size === "string" && size in sizeMap) {
@@ -167,14 +165,14 @@ const textSizeValue = computed(() => {
 
 // 显示的文字（截取前两个字符）
 const displayText = computed(() => {
-  const text = useProps.text
+  const text = props.text
   if (!text) return ""
   return text.slice(0, 2)
 })
 
 // 图标颜色
 const iconColorValue = computed(() => {
-  return useProps.iconColor || "var(--ui-color-text-placeholder)"
+  return props.iconColor || "var(--ui-color-text-placeholder)"
 })
 
 // 回退图标颜色
@@ -188,13 +186,13 @@ const rootStyle = computed(() => {
   style.width = sizeValue.value
   style.height = sizeValue.value
 
-  if (useProps.background) {
-    style.background = useColor(useProps.background)
+  if (props.background) {
+    style.background = useColor(props.background)
   }
 
   // 处理边框：优先使用组件自身的配置，如果在组内且未自定义则使用组的配置
-  const borderColor = useProps.borderColor || (inGroup.value ? groupConfig.value?.borderColor : "")
-  const borderWidth = useProps.borderWidth || (inGroup.value ? groupConfig.value?.borderWidth : "")
+  const borderColor = props.borderColor || (inGroup.value ? groupConfig.value?.borderColor : "")
+  const borderWidth = props.borderWidth || (inGroup.value ? groupConfig.value?.borderWidth : "")
 
   if (borderColor) {
     style.borderColor = useColor(borderColor)
@@ -203,8 +201,8 @@ const rootStyle = computed(() => {
   }
 
   // 自定义圆角（仅 square 形状时生效）
-  if (actualShape.value === "square" && useProps.radius) {
-    style.borderRadius = useUnit(useProps.radius)
+  if (actualShape.value === "square" && props.radius) {
+    style.borderRadius = useUnit(props.radius)
   }
 
   // 如果在头像组内，添加堆叠相关的样式
@@ -228,7 +226,7 @@ const rootStyle = computed(() => {
     }
   }
 
-  const customStyle = useStyle(useProps.customStyle)
+  const customStyle = useStyle(props.customStyle)
   const mergedStyle = useStyle({ ...style, ...(customStyle && typeof customStyle === "object" ? customStyle : {}) })
   return useStyle(mergedStyle, "string")
 })
@@ -237,8 +235,8 @@ const rootStyle = computed(() => {
 const textStyle = computed(() => {
   const style: CSSProperties = {}
   style.fontSize = textSizeValue.value
-  if (useProps.textColor) {
-    style.color = useColor(useProps.textColor)
+  if (props.textColor) {
+    style.color = useColor(props.textColor)
   }
   return useStyle(style, "string")
 })
@@ -277,7 +275,7 @@ function onClick(event: any) {
 
 // 监听 src 变化，重置错误状态
 watch(
-  () => useProps.src,
+  () => props.src,
   () => {
     hasError.value = false
   },

@@ -1,9 +1,8 @@
 import type IndexAnchor from "./ui-index-anchor.vue"
 import type { ExtractPropTypes } from "vue"
-import { createProps } from "../hooks"
 import { styleProp, makeStringProp, makeNumericProp } from "../utils/props"
 
-export const [indexAnchorProps, useIndexAnchorProps] = createProps("indexAnchor", {
+export const indexAnchorProps = {
   /**
    * 索引名称，作为匹配的标识符
    */
@@ -56,8 +55,7 @@ export const [indexAnchorProps, useIndexAnchorProps] = createProps("indexAnchor"
    * 自定义样式
    */
   customStyle: styleProp,
-})
-
+}
 export const indexAnchorEmits = {
   blur: () => true,
 }

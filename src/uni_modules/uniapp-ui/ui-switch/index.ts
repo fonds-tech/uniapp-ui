@@ -1,9 +1,8 @@
 import type Switch from "./ui-switch.vue"
 import type { ExtractPropTypes } from "vue"
-import { createProps } from "../hooks"
 import { styleProp, makeStringProp, makeNumericProp } from "../utils/props"
 
-export const [switchProps, useSwitchProps] = createProps("switch", {
+export const switchProps = {
   /**
    * 开关选中状态
    */
@@ -80,8 +79,7 @@ export const [switchProps, useSwitchProps] = createProps("switch", {
    * 自定义样式
    */
   customStyle: styleProp,
-})
-
+}
 export const switchEmits = {
   change: (value: number | string | boolean) => true,
   "update:modelValue": (value: number | string | boolean) => true,

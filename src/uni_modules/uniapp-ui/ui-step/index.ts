@@ -1,7 +1,6 @@
 import type Step from "./ui-step.vue"
 import type { StepStatus } from "../ui-steps"
 import type { PropType, CSSProperties, ExtractPropTypes } from "vue"
-import { createProps } from "../hooks"
 import { numericProp } from "../utils/props"
 
 /** 可从父组件继承的属性键 */
@@ -10,7 +9,7 @@ export type InheritableStepPropKeys = "activeColor" | "inactiveColor" | "errorCo
 /**
  * 步骤项 Props 定义
  */
-export const [stepProps, useStepProps] = createProps("step", {
+export const stepProps = {
   /**
    * 步骤标题
    */
@@ -43,8 +42,7 @@ export const [stepProps, useStepProps] = createProps("step", {
    * 自定义样式
    */
   customStyle: [String, Object] as PropType<string | CSSProperties>,
-})
-
+}
 /**
  * 步骤项事件定义
  */

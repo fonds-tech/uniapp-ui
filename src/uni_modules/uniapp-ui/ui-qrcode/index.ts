@@ -1,9 +1,8 @@
 import type Qrcode from "./ui-qrcode.vue"
 import type { ExtractPropTypes } from "vue"
-import { createProps } from "../hooks"
 import { styleProp, truthProp, makeNumberProp, makeStringProp, makeNumericProp } from "../utils/props"
 
-export const [qrcodeProps, useQrcodeProps] = createProps("qrcode", {
+export const qrcodeProps = {
   /**
    * 是否显示
    */
@@ -68,7 +67,7 @@ export const [qrcodeProps, useQrcodeProps] = createProps("qrcode", {
    * 条形码宽度（仅当type为barcode时生效，默认使用size值）
    */
   barcodeWidth: makeNumericProp("600rpx"), // 不设置默认值，便于后续判断是否使用size
-})
+}
 export const qrcodeEmits = {
   click: () => true,
   error: (err: any) => err,

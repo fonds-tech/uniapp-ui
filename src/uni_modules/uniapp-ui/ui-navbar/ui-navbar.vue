@@ -1,5 +1,5 @@
 <template>
-  <view class="ui-navbar" :class="[useProps.customClass]">
+  <view class="ui-navbar" :class="[props.customClass]">
     <view class="ui-navbar__content" :style="[contentStyle]" :class="[contentClass]">
       <view class="ui-navbar__status-bar" :style="[statusBarStyle]" />
       <view class="ui-navbar__body" :style="[bodyStyle]">
@@ -8,19 +8,19 @@
           <view v-if="slots.left">
             <slot name="left" />
           </view>
-          <view v-else-if="useProps.showBack" class="ui-navbar__back" @click="onClickBack">
+          <view v-else-if="props.showBack" class="ui-navbar__back" @click="onClickBack">
             <slot name="back">
-              <ui-icon :name="backIcon" :color="useProps.backIconColor" :size="useProps.backIconSize" />
+              <ui-icon :name="backIcon" :color="props.backIconColor" :size="props.backIconSize" />
             </slot>
-            <view v-if="useProps.backText" class="ui-navbar__back__text" :style="[backTextStyle]">
-              {{ useProps.backText }}
+            <view v-if="props.backText" class="ui-navbar__back__text" :style="[backTextStyle]">
+              {{ props.backText }}
             </view>
           </view>
         </view>
         <!-- 标题区域（始终居中） -->
-        <view v-if="useProps.title || slots.title" class="ui-navbar__title" :class="[titleClass]" :style="[titleStyle]" @click="onTitleClick">
+        <view v-if="props.title || slots.title" class="ui-navbar__title" :class="[titleClass]" :style="[titleStyle]" @click="onTitleClick">
           <slot name="title">
-            <text class="ui-navbar__title__text">{{ useProps.title }}</text>
+            <text class="ui-navbar__title__text">{{ props.title }}</text>
           </slot>
         </view>
         <view v-else-if="slots.default" class="ui-navbar__default">
@@ -33,9 +33,9 @@
       </view>
     </view>
     <!-- 渐变监听触发区：独立于 placeholder，始终存在于文档流中 -->
-    <view v-if="useProps.gradient && useProps.fixed && !isNumber(useProps.scrollTop)" class="ui-navbar__gradient-trigger" :style="[gradientTriggerStyle]" />
+    <view v-if="props.gradient && props.fixed && !isNumber(props.scrollTop)" class="ui-navbar__gradient-trigger" :style="[gradientTriggerStyle]" />
     <!-- 占位元素 -->
-    <view v-if="useProps.fixed && useProps.placeholder && !useProps.immersive" class="ui-navbar__placeholder" :style="[placeholderStyle]" />
+    <view v-if="props.fixed && props.placeholder && !props.immersive" class="ui-navbar__placeholder" :style="[placeholderStyle]" />
   </view>
 </template>
 
@@ -43,7 +43,7 @@
 import type { CSSProperties } from "vue"
 import { isNumber } from "../utils/check"
 import { configProviderKey } from "../ui-config-provider"
-import { navbarEmits, navbarProps, useNavbarProps } from "./index"
+import { navbarEmits, navbarProps } from "./index"
 import { ref, watch, computed, nextTick, useSlots, onMounted, onUnmounted, getCurrentInstance } from "vue"
 import { useRgb, useRect, useUnit, useColor, useStyle, useParent, useUnitToPx, useUnitToRpx, useSystemInfo } from "../hooks"
 
@@ -53,7 +53,6 @@ defineOptions({ name: "ui-navbar" })
 // 定义组件的 props 和 emits
 const props = defineProps(navbarProps)
 const emits = defineEmits(navbarEmits)
-const useProps = useNavbarProps(props)
 const slots = useSlots()
 const { parent } = useParent(configProviderKey)
 
@@ -82,16 +81,16 @@ const instance = getCurrentInstance()
 // 计算导航栏内容的样式
 const contentStyle = computed(() => {
   const style: CSSProperties = {}
-  style.zIndex = useProps.zIndex
-  style.background = useColor(useProps.background)
+  style.zIndex = props.zIndex
+  style.background = useColor(props.background)
   // 如果启用了渐变效果，根据滚动位置计算背景颜色
-  if (useProps.gradient && useProps.background) {
+  if (props.gradient && props.background) {
     // 先将主题色键名转换为实际颜色值，再解析 RGB
-    const colorValue = useColor(useProps.background)
+    const colorValue = useColor(props.background)
     const rgb = useRgb(colorValue)
     if (rgb) {
       const { r, g, b } = rgb
-      const gradientHeightPx = useUnitToPx(useProps.gradientHeight) || 1
+      const gradientHeightPx = useUnitToPx(props.gradientHeight) || 1
       const opacity = Math.min(1, innerScrollTop.value / gradientHeightPx)
       style.background = `rgba(${r},${g},${b},${opacity})`
     }
@@ -102,15 +101,15 @@ const contentStyle = computed(() => {
 // 计算导航栏内容的类名
 const contentClass = computed(() => {
   const list: string[] = []
-  if (useProps.fixed) list.push("is-fixed")
-  if (useProps.borderBottom) list.push("is-border")
+  if (props.fixed) list.push("is-fixed")
+  if (props.borderBottom) list.push("is-border")
   return list
 })
 
 // 计算状态栏样式
 const statusBarStyle = computed(() => {
   const style: CSSProperties = {}
-  if (useProps.fixed) {
+  if (props.fixed) {
     style.height = `${statusBarHeight.value}px`
   }
   return useStyle(style)
@@ -120,33 +119,33 @@ const statusBarStyle = computed(() => {
 const bodyStyle = computed(() => {
   const style: CSSProperties = {}
   style.height = `${navbarHeight.value}px`
-  style.paddingLeft = useUnit(useProps.padding)
+  style.paddingLeft = useUnit(props.padding)
   // #ifdef MP
   // 小程序下需要考虑胶囊按钮的位置，避免右侧内容与胶囊重叠
   const menuOffset = systemInfo.windowWidth - menuButtonInfo.left
-  const paddingPx = useUnitToPx(useProps.padding) || 0
+  const paddingPx = useUnitToPx(props.padding) || 0
   style.paddingRight = `${Math.max(menuOffset, paddingPx)}px`
   // #endif
   // #ifndef MP
-  style.paddingRight = useUnit(useProps.padding)
+  style.paddingRight = useUnit(props.padding)
   // #endif
-  if (useProps.height) style.alignItems = "flex-start"
-  return useStyle({ ...style, ...useStyle(useProps.customStyle) })
+  if (props.height) style.alignItems = "flex-start"
+  return useStyle({ ...style, ...useStyle(props.customStyle) })
 })
 
 // 计算返回按钮文本样式
 const backTextStyle = computed(() => {
   const style: CSSProperties = {}
-  style.color = useColor(useProps.backTextColor)
-  style.fontSize = useUnit(useProps.backTextSize)
-  style.fontWeight = useProps.backTextWeight
+  style.color = useColor(props.backTextColor)
+  style.fontSize = useUnit(props.backTextSize)
+  style.fontWeight = props.backTextWeight
   return useStyle(style)
 })
 
 // 计算标题类名
 const titleClass = computed(() => {
   const list: string[] = []
-  if (useProps.centerTitle) list.push("is-center")
+  if (props.centerTitle) list.push("is-center")
   return list
 })
 
@@ -154,7 +153,7 @@ const titleClass = computed(() => {
 const titleStyle = computed(() => {
   const style: CSSProperties = {}
   // 居中模式下，通过 left/right 限制标题区域避免与左右内容重叠
-  if (useProps.centerTitle) {
+  if (props.centerTitle) {
     // 取左右偏移的最大值，确保标题真正居中
     const maxOffset = Math.max(leftOffset.value, rightOffset.value)
     if (maxOffset > 0) {
@@ -162,9 +161,9 @@ const titleStyle = computed(() => {
       style.right = `${maxOffset}px`
     }
   }
-  style.color = useColor(useProps.titleColor)
-  style.fontSize = useUnit(useProps.titleSize)
-  style.fontWeight = useProps.titleWeight
+  style.color = useColor(props.titleColor)
+  style.fontSize = useUnit(props.titleSize)
+  style.fontWeight = props.titleWeight
   return useStyle(style)
 })
 
@@ -178,7 +177,7 @@ const placeholderStyle = computed(() => {
 // 计算渐变触发区样式
 const gradientTriggerStyle = computed(() => {
   const style: CSSProperties = {}
-  const gradientHeightPx = useUnitToPx(useProps.gradientHeight)
+  const gradientHeightPx = useUnitToPx(props.gradientHeight)
   style.height = `${gradientHeightPx}px`
   // 使用负 margin 抵消高度，避免影响页面布局
   style.marginBottom = `-${gradientHeightPx}px`
@@ -190,7 +189,7 @@ const statusBarHeight = computed(() => systemInfo.statusBarHeight)
 
 // 计算导航栏高度
 const navbarHeight = computed(() => {
-  if (useProps.height) return useUnitToRpx(useProps.height)
+  if (props.height) return useUnitToRpx(props.height)
   // #ifdef MP
   // 小程序中，计算间隙确保与胶囊按钮垂直对齐
   // 间隙 = 胶囊顶部 - 状态栏底部
@@ -204,14 +203,14 @@ const navbarHeight = computed(() => {
 })
 
 // 计算返回图标，根据路由层级决定显示首页图标还是返回图标
-const backIcon = computed(() => (routes.value.length === 1 ? useProps.homeIconName : useProps.backIconName))
+const backIcon = computed(() => (routes.value.length === 1 ? props.homeIconName : props.backIconName))
 
 watch(
-  () => useProps.scrollTop,
+  () => props.scrollTop,
   (val) => {
     if (isNumber(val)) {
       innerScrollTop.value = val
-      if (useProps.gradient) {
+      if (props.gradient) {
         emits("gradient", val)
       }
     }
@@ -239,11 +238,11 @@ function createObserver(thresholds: number[] = [0, 1]) {
  */
 function observeGradient() {
   // 如果已经通过 scrollTop prop 传入滚动值，则不需要 observer
-  if (!useProps.gradient || !useProps.fixed || isNumber(useProps.scrollTop)) return
+  if (!props.gradient || !props.fixed || isNumber(props.scrollTop)) return
 
   clearObserver()
 
-  const gradientHeightPx = useUnitToPx(useProps.gradientHeight) || 200
+  const gradientHeightPx = useUnitToPx(props.gradientHeight) || 200
   // 创建更多阈值点实现平滑渐变（0, 0.01, 0.02, ..., 1）共 101 个点
   const thresholds = Array.from({ length: 101 }, (_, i) => i / 100)
 
@@ -262,17 +261,17 @@ function observeGradient() {
 function onEvent() {
   // 监听获取导航栏尺寸的事件（保留 mitt 用于组件间通信）
   // 初始化渐变监听
-  if (useProps.gradient) {
+  if (props.gradient) {
     nextTick(() => observeGradient())
   }
 }
 
 // 更新左右区域偏移量
 async function updateSideWidth() {
-  if (!useProps.centerTitle) return
+  if (!props.centerTitle) return
   await nextTick()
 
-  const paddingPx = useUnitToPx(useProps.padding) || 0
+  const paddingPx = useUnitToPx(props.padding) || 0
   const marginPx = useUnitToPx("16rpx") // 对应 --ui-spacing-sm
 
   const [leftRect, rightRect] = await Promise.all([useRect(".ui-navbar__left", instance), useRect(".ui-navbar__right", instance)])
@@ -313,14 +312,14 @@ function onTitleClick() {
 // 处理返回按钮点击
 function onClickBack() {
   emits("back")
-  if (typeof useProps.customBack === "function") {
+  if (typeof props.customBack === "function") {
     // 如果有自定义返回函数，则调用它
-    useProps.customBack()
+    props.customBack()
   } else {
     if (routes.value.length === 1) {
       // 如果只有一个页面，则跳转到首页
-      const homePath = useProps.homePath
-      const homeType = useProps.homeType
+      const homePath = props.homePath
+      const homeType = props.homeType
 
       // 根据类型选择跳转方式
       if (homeType === "tab") {

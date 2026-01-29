@@ -1,10 +1,9 @@
 import type Input from "./ui-input.vue"
 import type { PropType, ExtractPropTypes } from "vue"
 import type { InputType, InputConfirmType } from "@uni-helper/uni-types"
-import { createProps } from "../hooks"
 import { styleProp, truthProp, numericProp, makeStringProp, makeNumericProp } from "../utils/props"
 
-export const [inputProps, useInputProps] = createProps("input", {
+export const inputProps = {
   /**
    * 输入值
    */
@@ -196,8 +195,7 @@ export const [inputProps, useInputProps] = createProps("input", {
    * 自定义样式
    */
   customStyle: styleProp,
-})
-
+}
 export const inputEmits = {
   click: () => true,
   clear: () => true,

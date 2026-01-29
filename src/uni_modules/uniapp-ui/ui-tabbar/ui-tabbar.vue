@@ -4,16 +4,16 @@
       <view class="ui-tabbar__list">
         <slot />
       </view>
-      <ui-safe-area-bottom v-if="useProps.safeAreaInsetBottom" @height="onSafeAreaBottomHeight" />
+      <ui-safe-area-bottom v-if="props.safeAreaInsetBottom" @height="onSafeAreaBottomHeight" />
     </view>
-    <view v-if="useProps.fixed && useProps.placeholder" class="ui-tabbar__placeholder" :style="[placeholderStyle]" />
+    <view v-if="props.fixed && props.placeholder" class="ui-tabbar__placeholder" :style="[placeholderStyle]" />
   </view>
 </template>
 
 <script setup lang="ts">
 import type { CSSProperties } from "vue"
 import { isFunction } from "../utils/check"
-import { tabbarKey, tabbarEmits, tabbarProps, useTabbarProps } from "./index"
+import { tabbarKey, tabbarEmits, tabbarProps } from "./index"
 import { ref, watch, computed, nextTick, onUnmounted, getCurrentInstance } from "vue"
 import { useMitt, useRect, useColor, useStyle, usePxToRpx, useChildren, useUnitToRpx } from "../hooks"
 
@@ -21,7 +21,6 @@ defineOptions({ name: "ui-tabbar" })
 
 const props = defineProps(tabbarProps)
 const emits = defineEmits(tabbarEmits)
-const useProps = useTabbarProps(props)
 const { childrens, linkChildren } = useChildren(tabbarKey)
 
 const mitt = useMitt()
@@ -31,28 +30,28 @@ const instance = getCurrentInstance()
 
 const style = computed(() => {
   const style: CSSProperties = {}
-  style.height = `${useUnitToRpx(useProps.height) + usePxToRpx(offsetHeight.value)}rpx`
-  style.background = useColor(useProps.background)
+  style.height = `${useUnitToRpx(props.height) + usePxToRpx(offsetHeight.value)}rpx`
+  style.background = useColor(props.background)
   style.paddingBottom = `${usePxToRpx(offsetHeight.value)}rpx`
-  if (useProps.zIndex) style.zIndex = +useProps.zIndex
-  return useStyle({ ...useStyle(useProps.customStyle), ...style })
+  if (props.zIndex) style.zIndex = +props.zIndex
+  return useStyle({ ...useStyle(props.customStyle), ...style })
 })
 
 const classs = computed(() => {
   const list: string[] = []
-  if (useProps.border) list.push("ui-tabbar__content--border")
-  if (useProps.fixed) list.push("ui-tabbar__content--fixed")
+  if (props.border) list.push("ui-tabbar__content--border")
+  if (props.fixed) list.push("ui-tabbar__content--fixed")
   return list
 })
 
 const placeholderStyle = computed(() => {
   const style: CSSProperties = {}
-  style.height = `${useUnitToRpx(useProps.height) + usePxToRpx(offsetHeight.value)}rpx`
+  style.height = `${useUnitToRpx(props.height) + usePxToRpx(offsetHeight.value)}rpx`
   return useStyle(style)
 })
 
 watch(
-  () => useProps.modelValue,
+  () => props.modelValue,
   (value) => emits("change", value),
 )
 
@@ -82,9 +81,9 @@ async function resize() {
 }
 
 async function updateValue(value: string | number) {
-  if (useProps.beforeChange) {
+  if (props.beforeChange) {
     try {
-      const result = await useProps.beforeChange(value)
+      const result = await props.beforeChange(value)
       if (result === false) return
     } catch {
       return
@@ -99,7 +98,7 @@ function onSafeAreaBottomHeight(height: number) {
 }
 
 onEvent()
-linkChildren({ props, useProps, updateValue })
+linkChildren({ props, updateValue })
 defineExpose({ resize })
 </script>
 

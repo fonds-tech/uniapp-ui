@@ -1,15 +1,15 @@
 <template>
   <view class="ui-text-ellipsis" :class="[customClass]" :style="[rootStyle]" @click="onClick">
     <view class="ui-text-ellipsis__measure" :style="[measureStyle]">
-      {{ useProps.content }}
+      {{ props.content }}
     </view>
     <view class="ui-text-ellipsis__content" :style="[contentStyle]">
-      {{ useProps.content }}
+      {{ props.content }}
     </view>
-    <view v-if="useProps.showAction && hasOverflow" class="ui-text-ellipsis__footer" :class="{ 'ui-text-ellipsis__footer--expanded': expanded }">
+    <view v-if="props.showAction && hasOverflow" class="ui-text-ellipsis__footer" :class="{ 'ui-text-ellipsis__footer--expanded': expanded }">
       <view v-if="!expanded" class="ui-text-ellipsis__gradient" :style="[gradientStyle]" />
       <view class="ui-text-ellipsis__action" :style="[actionStyle]" @click.stop="onToggle">
-        {{ expanded ? useProps.collapseText : useProps.expandText }}
+        {{ expanded ? props.collapseText : props.expandText }}
       </view>
     </view>
   </view>
@@ -17,14 +17,13 @@
 
 <script setup lang="ts">
 import { useRects, useStyle } from "../hooks"
-import { textEllipsisEmits, textEllipsisProps, useTextEllipsisProps } from "./index"
+import { textEllipsisEmits, textEllipsisProps } from "./index"
 import { ref, watch, computed, nextTick, onMounted, getCurrentInstance } from "vue"
 
 defineOptions({ name: "ui-text-ellipsis" })
 
 const props = defineProps(textEllipsisProps)
 const emits = defineEmits(textEllipsisEmits)
-const useProps = useTextEllipsisProps(props)
 const instance = getCurrentInstance()
 
 // 状态
@@ -38,7 +37,7 @@ function formatNumericStyle(value: string | number | undefined): string | undefi
 }
 
 // 根容器样式
-const rootStyle = computed(() => useStyle(useProps.customStyle))
+const rootStyle = computed(() => useStyle(props.customStyle))
 
 // 测量容器样式：隐藏但保持布局计算，用于获取文本完整高度
 const measureStyle = computed(() => {
@@ -51,9 +50,9 @@ const measureStyle = computed(() => {
     zIndex: "-1",
     pointerEvents: "none",
   }
-  if (useProps.color) style.color = useProps.color
-  const fontSize = formatNumericStyle(useProps.fontSize)
-  const lineHeight = formatNumericStyle(useProps.lineHeight)
+  if (props.color) style.color = props.color
+  const fontSize = formatNumericStyle(props.fontSize)
+  const lineHeight = formatNumericStyle(props.lineHeight)
   if (fontSize) style.fontSize = fontSize
   if (lineHeight) style.lineHeight = lineHeight
   return useStyle(style)
@@ -62,16 +61,16 @@ const measureStyle = computed(() => {
 // 内容区样式：未展开时应用 line-clamp 截断
 const contentStyle = computed(() => {
   const style: Record<string, string> = {}
-  if (useProps.color) style.color = useProps.color
-  const fontSize = formatNumericStyle(useProps.fontSize)
-  const lineHeight = formatNumericStyle(useProps.lineHeight)
+  if (props.color) style.color = props.color
+  const fontSize = formatNumericStyle(props.fontSize)
+  const lineHeight = formatNumericStyle(props.lineHeight)
   if (fontSize) style.fontSize = fontSize
   if (lineHeight) style.lineHeight = lineHeight
   // 折叠状态下应用多行截断
   if (!expanded.value) {
     style.display = "-webkit-box"
     style.overflow = "hidden"
-    style.webkitLineClamp = String(useProps.rows)
+    style.webkitLineClamp = String(props.rows)
     style.webkitBoxOrient = "vertical"
   }
   return useStyle(style)
@@ -79,13 +78,13 @@ const contentStyle = computed(() => {
 
 // 操作按钮样式
 const actionStyle = computed(() => {
-  return useStyle({ color: useProps.actionColor || "var(--ui-color-primary)" })
+  return useStyle({ color: props.actionColor || "var(--ui-color-primary)" })
 })
 
 // 渐变遮罩样式
 const gradientStyle = computed(() => {
-  if (!useProps.gradientColor) return undefined
-  return useStyle({ background: `linear-gradient(to bottom, transparent, ${useProps.gradientColor})` })
+  if (!props.gradientColor) return undefined
+  return useStyle({ background: `linear-gradient(to bottom, transparent, ${props.gradientColor})` })
 })
 
 // 计算文本是否溢出：比较测量容器与内容容器的高度差
@@ -108,8 +107,8 @@ function onClick(event: Event) {
 }
 
 // 监听内容和行数变化，重新计算溢出状态
-watch(() => useProps.content, calcOverflow, { immediate: true })
-watch(() => useProps.rows, calcOverflow)
+watch(() => props.content, calcOverflow, { immediate: true })
+watch(() => props.rows, calcOverflow)
 
 onMounted(calcOverflow)
 

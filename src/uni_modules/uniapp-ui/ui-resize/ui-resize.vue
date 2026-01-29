@@ -15,16 +15,14 @@
 <script setup lang="ts">
 import type { CSSProperties } from "vue"
 import { pick, uuid } from "../utils/utils"
+import { resizeEmits, resizeProps } from "./index"
 import { useRect, useUnit, useStyle } from "../hooks"
-import { resizeEmits, resizeProps, useResizeProps } from "./index"
 import { ref, computed, onMounted, getCurrentInstance } from "vue"
 
 defineOptions({ name: "ui-resize" })
 
 const props = defineProps(resizeProps)
 const emits = defineEmits(resizeEmits)
-const useProps = useResizeProps(props)
-
 // 响应式状态
 const width = ref(0)
 const height = ref(0)
@@ -39,16 +37,16 @@ const instance = getCurrentInstance()
 // 根容器样式：设置动态宽高
 const style = computed(() => {
   const style: CSSProperties = {}
-  style.width = useProps.width ? useUnit(useProps.width) : `${width.value}px`
-  style.height = useProps.height ? useUnit(useProps.height) : `${height.value}px`
-  return useStyle({ ...style, ...useStyle(useProps.customStyle) })
+  style.width = props.width ? useUnit(props.width) : `${width.value}px`
+  style.height = props.height ? useUnit(props.height) : `${height.value}px`
+  return useStyle({ ...style, ...useStyle(props.customStyle) })
 })
 
 // 内容容器样式：仅在有初始值时设置
 const contentStyle = computed(() => {
   const style: CSSProperties = {}
-  style.width = useProps.width ? useUnit(useProps.width) : undefined
-  style.height = useProps.height ? useUnit(useProps.height) : undefined
+  style.width = props.width ? useUnit(props.width) : undefined
+  style.height = props.height ? useUnit(props.height) : undefined
   return useStyle(style)
 })
 
@@ -84,7 +82,7 @@ onMounted(async () => {
   // 定义滚动处理函数（闭包方式）
   onScrollHandler = async () => {
     // 禁用状态下不处理
-    if (useProps.disabled) return
+    if (props.disabled) return
 
     const rect = await useRect(`#${id.value}`, instance)
 

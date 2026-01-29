@@ -1,6 +1,5 @@
 import type Keyboard from "./ui-keyboard.vue"
 import type { ExtractPropTypes } from "vue"
-import { createProps } from "../hooks"
 import { styleProp, truthProp, makeStringProp, makeNumericProp } from "../utils/props"
 
 export interface KeyboardKeyItem {
@@ -8,7 +7,7 @@ export interface KeyboardKeyItem {
   type: "key" | "delete" | "close" | "switch"
 }
 
-export const [keyboardProps, useKeyboardProps] = createProps("keyboard", {
+export const keyboardProps = {
   /**
    * 是否显示
    */
@@ -117,8 +116,7 @@ export const [keyboardProps, useKeyboardProps] = createProps("keyboard", {
    * 自定义样式
    */
   customStyle: styleProp,
-})
-
+}
 export const keyboardEmits = {
   open: () => true,
   opened: () => true,

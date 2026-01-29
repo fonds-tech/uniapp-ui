@@ -1,15 +1,15 @@
 <template>
-  <view class="ui-tabbar-item" :style="[style, useProps.customStyle]" :class="[classs, useProps.customClass]" @click="onClick">
+  <view class="ui-tabbar-item" :style="[style, props.customStyle]" :class="[classs, props.customClass]" @click="onClick">
     <view class="ui-tabbar-item__icon" :style="[iconStyle]">
-      <ui-badge :dot="useProps.dot" :value="useProps.badge">
+      <ui-badge :dot="props.dot" :value="props.badge">
         <slot name="icon">
           <image v-if="isImageIcon" :src="currentIcon" class="ui-tabbar-item__image" mode="aspectFit" />
-          <ui-icon v-else :name="currentIcon" :size="useProps.iconSize" :weight="useProps.iconWeight" :custom-prefix="useProps.iconPrefix" />
+          <ui-icon v-else :name="currentIcon" :size="props.iconSize" :weight="props.iconWeight" :custom-prefix="props.iconPrefix" />
         </slot>
       </ui-badge>
     </view>
-    <view v-if="useProps.text || $slots.default" class="ui-tabbar-item__text" :style="[textStyle]">
-      <slot>{{ useProps.text }}</slot>
+    <view v-if="props.text || $slots.default" class="ui-tabbar-item__text" :style="[textStyle]">
+      <slot>{{ props.text }}</slot>
     </view>
     <slot name="extra" />
   </view>
@@ -21,14 +21,13 @@ import { isDef } from "../utils/check"
 import { computed } from "vue"
 import { tabbarKey } from "../ui-tabbar"
 import { createUrlParams } from "../utils/utils"
+import { tabbarItemEmits, tabbarItemProps } from "./index"
 import { useUnit, useColor, useStyle, useParent } from "../hooks"
-import { tabbarItemEmits, tabbarItemProps, useTabbarItemProps } from "./index"
 
 defineOptions({ name: "ui-tabbar-item" })
 
 const props = defineProps(tabbarItemProps)
 const emits = defineEmits(tabbarItemEmits)
-const useProps = useTabbarItemProps(props)
 const { parent, index } = useParent(tabbarKey)
 
 let navigating = false
@@ -41,13 +40,13 @@ const style = computed(() => {
 const classs = computed(() => {
   const list: string[] = []
   if (active.value) list.push("ui-tabbar-item--active")
-  if (useProps.disabled) list.push("ui-tabbar-item--disabled")
+  if (props.disabled) list.push("ui-tabbar-item--disabled")
   return list
 })
 
 const iconStyle = computed(() => {
   const style: CSSProperties = {}
-  style.fontSize = useUnit(useProps.iconSize)
+  style.fontSize = useUnit(props.iconSize)
   style.color = active.value ? useColor(prop("activeColor")) : useColor(prop("inactiveColor"))
   return useStyle(style)
 })
@@ -58,11 +57,11 @@ const textStyle = computed(() => {
   return useStyle(style)
 })
 
-const name = computed(() => (isDef(useProps.name) ? useProps.name : index.value))
-const active = computed(() => parent?.useProps.modelValue === name.value)
+const name = computed(() => (isDef(props.name) ? props.name : index.value))
+const active = computed(() => parent?.props.modelValue === name.value)
 const currentIcon = computed(() => {
-  if (active.value && useProps.activeIcon) return useProps.activeIcon
-  return useProps.icon
+  if (active.value && props.activeIcon) return props.activeIcon
+  return props.icon
 })
 
 const isImageIcon = computed(() => {
@@ -83,25 +82,25 @@ function normalizeRoute(route: string) {
 }
 
 function onClick() {
-  if (useProps.disabled) return
+  if (props.disabled) return
   emits("click", name.value)
   if (!parent) return
 
-  if (parent.useProps.route) {
-    if (!useProps.route) {
+  if (parent.props.route) {
+    if (!props.route) {
       console.error("ui-tabbar-item: route is required")
       return
     }
     const pages = getCurrentPages()
     const page = pages[pages.length - 1]
-    if (normalizeRoute(useProps.route) === normalizeRoute(page.route || "")) {
+    if (normalizeRoute(props.route) === normalizeRoute(page.route || "")) {
       return
     }
     if (navigating) return
     navigating = true
     parent.updateValue(name.value)
-    uni[useProps.routeType]({
-      url: useProps.routeType === "switchTab" ? useProps.route : `${useProps.route}${createUrlParams(useProps.routeParams)}`,
+    uni[props.routeType]({
+      url: props.routeType === "switchTab" ? props.route : `${props.route}${createUrlParams(props.routeParams)}`,
       complete: () => {
         navigating = false
       },

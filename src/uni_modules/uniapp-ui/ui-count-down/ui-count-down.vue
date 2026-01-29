@@ -10,14 +10,13 @@
 import type { CountDownTimeData } from "./index"
 import { padZero } from "../utils/utils"
 import { useStyle } from "../hooks"
+import { countDownEmits, countDownProps } from "./index"
 import { ref, watch, computed, onBeforeUnmount } from "vue"
-import { countDownEmits, countDownProps, useCountDownProps } from "./index"
 
 defineOptions({ name: "ui-count-down" })
 
 const props = defineProps(countDownProps)
 const emits = defineEmits(countDownEmits)
-const useProps = useCountDownProps(props)
 const timer = ref<ReturnType<typeof setTimeout> | null>(null)
 const runing = ref(false)
 const startTime = ref<number>(0)
@@ -36,19 +35,19 @@ const timeData = ref<CountDownTimeData>({
 })
 const formatTimeText = ref("")
 
-const isCountUp = computed(() => useProps.mode === "countup")
+const isCountUp = computed(() => props.mode === "countup")
 
 const style = computed(() => {
   const style: any = {}
-  return useStyle({ ...style, ...useStyle(useProps.customStyle) })
+  return useStyle({ ...style, ...useStyle(props.customStyle) })
 })
 
-watch(() => useProps.time, reset, { immediate: true })
-watch(() => useProps.targetTime, reset)
+watch(() => props.time, reset, { immediate: true })
+watch(() => props.targetTime, reset)
 watch(
-  () => useProps.format,
+  () => props.format,
   () => {
-    formatTimeText.value = parseTimeFormat(timeData.value, useProps.format)
+    formatTimeText.value = parseTimeFormat(timeData.value, props.format)
   },
 )
 
@@ -65,9 +64,9 @@ function tick() {
 
   const parsed = parseTimeData(current, totalTime.value)
   timeData.value = parsed
-  formatTimeText.value = parseTimeFormat(parsed, useProps.format)
+  formatTimeText.value = parseTimeFormat(parsed, props.format)
 
-  if (useProps.millisecond) {
+  if (props.millisecond) {
     emits("change", parsed)
   } else if (!isSameSecond(current, remainTime.value)) {
     emits("change", parsed)
@@ -98,8 +97,8 @@ function start() {
 
 function reset() {
   pause()
-  const target = +useProps.targetTime
-  const time = +useProps.time
+  const target = +props.targetTime
+  const time = +props.time
 
   if (target > 0) {
     const now = Date.now()
@@ -117,8 +116,8 @@ function reset() {
   }
 
   timeData.value = parseTimeData(remainTime.value, totalTime.value)
-  formatTimeText.value = parseTimeFormat(timeData.value, useProps.format)
-  if (useProps.autoStart) start()
+  formatTimeText.value = parseTimeFormat(timeData.value, props.format)
+  if (props.autoStart) start()
 }
 
 function pause() {
@@ -177,7 +176,7 @@ function parseTimeData(time: number, total: number): CountDownTimeData {
 }
 
 function getFrameInterval() {
-  return useProps.millisecond ? 16 : 1000
+  return props.millisecond ? 16 : 1000
 }
 
 function useRequestAnimationFrame(callback: () => void) {

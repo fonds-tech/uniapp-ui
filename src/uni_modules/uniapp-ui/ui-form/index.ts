@@ -1,10 +1,9 @@
 import type Form from "./ui-form.vue"
 import type { PropType, InjectionKey, CSSProperties, ExtractPropTypes } from "vue"
-import { createProps } from "../hooks"
 import { truthProp, numericProp, makeStringProp, makeNumericProp } from "../utils/props"
 
 export const formKey: InjectionKey<FormProvide> = Symbol("ui-form")
-export const [formProps, useFormProps] = createProps("form", {
+export const formProps = {
   /**
    * 表单数据对象
    */
@@ -105,7 +104,7 @@ export const [formProps, useFormProps] = createProps("form", {
    * 自定义样式
    */
   customStyle: [String, Object] as PropType<string | CSSProperties>,
-})
+}
 export const formEmits = {
   submit: (values: Record<string, unknown>) => true,
   failed: (result: { values: Record<string, unknown>; errors: FormValidateError[] }) => true,
@@ -114,8 +113,6 @@ export const formEmits = {
 
 export interface FormProvide {
   props: FormProps
-  /** useFormProps 返回的响应式属性 */
-  useProps: ReturnType<typeof useFormProps>
   /** 表单数据模型 */
   model: import("vue").WritableComputedRef<Record<string, unknown>>
   /** 表单验证规则 */

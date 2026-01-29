@@ -1,10 +1,9 @@
 import type Tabbar from "./ui-tabbar.vue"
 import type { PropType, InjectionKey, ExtractPropTypes } from "vue"
-import { createProps } from "../hooks"
 import { styleProp, truthProp, makeStringProp, makeNumericProp } from "../utils/props"
 
 export const tabbarKey: InjectionKey<TabbarProvide> = Symbol("ui-tabbar")
-export const [tabbarProps, useTabbarProps] = createProps("tabbar", {
+export const tabbarProps = {
   /**
    * 当前选中标签的名称或索引值
    */
@@ -64,7 +63,7 @@ export const [tabbarProps, useTabbarProps] = createProps("tabbar", {
     type: Function as PropType<(name: string | number) => boolean | Promise<boolean>>,
     default: null,
   },
-})
+}
 export const tabbarEmits = {
   rect: (rect: UniApp.NodeInfo) => true,
   height: (height: number) => true,
@@ -75,7 +74,6 @@ export const tabbarEmits = {
 export type TabbarEmits = typeof tabbarEmits
 export interface TabbarProvide {
   props: TabbarProps
-  useProps: TabbarProps
   updateValue: (value: string | number) => void
 }
 export type TabbarProps = ExtractPropTypes<typeof tabbarProps>

@@ -1,6 +1,5 @@
 import type SwipeCell from "./ui-swipe-cell.vue"
 import type { PropType, CSSProperties, ExtractPropTypes } from "vue"
-import { createProps } from "../hooks"
 import { truthProp, makeNumericProp } from "../utils/props"
 
 /**
@@ -23,7 +22,7 @@ export interface SwipeCellBeforeCloseParams {
  */
 export type SwipeCellBeforeClose = (params: SwipeCellBeforeCloseParams) => boolean | void | Promise<boolean | void>
 
-export const [swipeCellProps, useSwipeCellProps] = createProps("swipeCell", {
+export const swipeCellProps = {
   /**
    * 标识符，用于在点击事件中区分不同的滑动单元格
    */
@@ -60,8 +59,7 @@ export const [swipeCellProps, useSwipeCellProps] = createProps("swipeCell", {
    * 自定义样式
    */
   customStyle: [String, Object] as PropType<string | CSSProperties>,
-})
-
+}
 export const swipeCellEmits = {
   /** 打开时触发 */
   open: (params: { name: string | number; position: SwipeCellPosition }) => true,

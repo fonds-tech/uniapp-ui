@@ -2,14 +2,14 @@
   <view class="ui-picker">
     <ui-popup
       :show="show"
-      :mode="useProps.mode"
-      :border-radius="useProps.borderRadius"
-      :close-on-click-overlay="useProps.closeOnClickOverlay"
-      :overlay="useProps.overlay"
-      :duration="useProps.duration"
-      :z-index="useProps.zIndex"
-      :background="useProps.background"
-      :safe-area-inset-bottom="useProps.safeAreaInsetBottom"
+      :mode="props.mode"
+      :border-radius="props.borderRadius"
+      :close-on-click-overlay="props.closeOnClickOverlay"
+      :overlay="props.overlay"
+      :duration="props.duration"
+      :z-index="props.zIndex"
+      :background="props.background"
+      :safe-area-inset-bottom="props.safeAreaInsetBottom"
       @update:show="handleUpdateShow"
       @open="emits('open')"
       @opened="emits('opened')"
@@ -19,20 +19,20 @@
       <!-- Header 插槽 -->
       <template #header>
         <slot name="header">
-          <view v-if="useProps.showHeader" class="ui-picker__header">
+          <view v-if="props.showHeader" class="ui-picker__header">
             <view class="ui-picker__header__cancel" @click="onCancel">
               <slot name="cancel">
                 <ui-button text text-color="#969799">
-                  {{ useProps.cancelText }}
+                  {{ props.cancelText }}
                 </ui-button>
               </slot>
             </view>
             <view class="ui-picker__header__title">
-              <slot name="title">{{ useProps.title }}</slot>
+              <slot name="title">{{ props.title }}</slot>
             </view>
             <view class="ui-picker__header__confirm" @click="onConfirm">
               <slot name="confirm">
-                <ui-button text>{{ useProps.confirmText }}</ui-button>
+                <ui-button text>{{ props.confirmText }}</ui-button>
               </slot>
             </view>
           </view>
@@ -43,17 +43,17 @@
       <ui-picker-panel
         ref="panelRef"
         v-model="internalValue"
-        :columns="useProps.columns"
-        :loading="useProps.loading"
-        :column-fields="useProps.columnFields"
-        :column-height="useProps.columnHeight"
-        :visible-column-num="useProps.visibleColumnNum"
-        :column-size="useProps.columnSize"
-        :column-color="useProps.columnColor"
-        :column-weight="useProps.columnWeight"
-        :active-column-size="useProps.activeColumnSize"
-        :active-column-color="useProps.activeColumnColor"
-        :active-column-weight="useProps.activeColumnWeight"
+        :columns="props.columns"
+        :loading="props.loading"
+        :column-fields="props.columnFields"
+        :column-height="props.columnHeight"
+        :visible-column-num="props.visibleColumnNum"
+        :column-size="props.columnSize"
+        :column-color="props.columnColor"
+        :column-weight="props.columnWeight"
+        :active-column-size="props.activeColumnSize"
+        :active-column-color="props.activeColumnColor"
+        :active-column-weight="props.activeColumnWeight"
         @change="handlePanelChange"
       />
 
@@ -74,13 +74,12 @@ import UiPopup from "../ui-popup/ui-popup.vue"
 import UiPickerPanel from "../ui-picker-panel/ui-picker-panel.vue"
 import { merge } from "../utils/utils"
 import { ref, watch, computed } from "vue"
-import { pickerEmits, pickerProps, usePickerProps } from "./index"
+import { pickerEmits, pickerProps } from "./index"
 
 defineOptions({ name: "ui-picker" })
 
 const props = defineProps(pickerProps)
 const emits = defineEmits(pickerEmits)
-const useProps = usePickerProps(props)
 // picker-panel 组件引用
 const panelRef = ref<PickerPanelInstance | null>(null)
 // 内部值,用于双向绑定
@@ -90,14 +89,14 @@ const internalValue = ref<(string | number)[]>([])
  * 统一字段映射
  */
 const resolvedFields = computed(() => {
-  return merge({ text: "text", value: "value", children: "children" }, useProps.columnFields) as Required<PickerColumnFields>
+  return merge({ text: "text", value: "value", children: "children" }, props.columnFields) as Required<PickerColumnFields>
 })
 
 /**
  * 判断列数据类型（单列/多列/级联）
  */
 const columnsType = computed<PickerColumnsType>(() => {
-  const firstColumn = useProps.columns[0]
+  const firstColumn = props.columns[0]
   if (firstColumn) {
     if (Array.isArray(firstColumn)) return "multiple"
     if (resolvedFields.value.children in firstColumn) return "cascade"
@@ -134,7 +133,7 @@ function formatValue(values: PickerValue[]): PickerModelValue {
 
 // 监听外部 modelValue 变化,使用 immediate 确保初始值同步
 watch(
-  () => useProps.modelValue,
+  () => props.modelValue,
   (val) => {
     internalValue.value = parseValue(val)
   },
@@ -143,11 +142,11 @@ watch(
 
 // 监听 show 变化,弹窗打开时同步最新值
 watch(
-  () => useProps.show,
+  () => props.show,
   (val) => {
     if (val) {
       // 弹窗打开时,确保内部值与外部同步
-      internalValue.value = parseValue(useProps.modelValue)
+      internalValue.value = parseValue(props.modelValue)
     }
   },
 )

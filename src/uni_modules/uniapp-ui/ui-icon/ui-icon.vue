@@ -1,9 +1,9 @@
 <template>
   <image
     v-if="isImage(name)"
-    :class="[prefix, `${prefix}-${useProps.name}`, useProps.customClass, hoverClass]"
+    :class="[prefix, `${prefix}-${props.name}`, props.customClass, hoverClass]"
     :style="[imageStyle]"
-    :src="useProps.name"
+    :src="props.name"
     :mode="imageMode"
     @click="onClick"
     @touchstart="onHoverStart"
@@ -15,7 +15,7 @@
   />
   <text
     v-else
-    :class="[prefix, `${prefix}-${useProps.name}`, useProps.customClass, hoverClass]"
+    :class="[prefix, `${prefix}-${props.name}`, props.customClass, hoverClass]"
     :style="[iconStyle]"
     @click="onClick"
     @touchstart="onHoverStart"
@@ -30,44 +30,43 @@
 <script setup lang="ts">
 import { isImage } from "../utils/check"
 import { ref, computed } from "vue"
+import { iconEmits, iconProps } from "./index"
 import { useUnit, useColor, useStyle } from "../hooks"
-import { iconEmits, iconProps, useIconProps } from "./index"
 
 defineOptions({ name: "ui-icon" })
 
 const props = defineProps(iconProps)
 const emits = defineEmits(iconEmits)
-const useProps = useIconProps(props)
 const isHover = ref(false)
 
 const prefix = computed(() => {
-  return useProps.customPrefix || "ui-icon"
+  return props.customPrefix || "ui-icon"
 })
 
 const hoverClass = computed(() => {
-  return useProps.hoverClass && isHover.value ? useProps.hoverClass : ""
+  return props.hoverClass && isHover.value ? props.hoverClass : ""
 })
 
-const imageMode: any = computed(() => useProps.imageMode)
+const imageMode: any = computed(() => props.imageMode)
 
 const iconStyle = computed(() => {
   const style: any = {}
-  style.color = useColor(useProps.color)
-  style.fontSize = useUnit(useProps.size)
-  style.fontWeight = useProps.weight
-  style.lineHeight = useProps.lineHeight
-  style.borderRadius = useUnit(useProps.radius)
-  style.background = useColor(useProps.background)
-  return useStyle({ ...style, ...useStyle(useProps.customStyle) })
+  style.color = useColor(props.color)
+  style.fontSize = useUnit(props.size)
+  style.fontWeight = props.weight
+  style.lineHeight = props.lineHeight
+  style.borderRadius = useUnit(props.radius)
+  style.background = useColor(props.background)
+  return useStyle({ ...style, ...useStyle(props.customStyle) })
 })
 
 const imageStyle = computed(() => {
   const style: any = {}
-  style.width = useUnit(useProps.width || useProps.size)
-  style.height = useUnit(useProps.height || useProps.size)
-  style.background = useColor(useProps.background)
-  style.borderRadius = useUnit(useProps.radius)
-  return useStyle({ ...style, ...useStyle(useProps.customStyle) })
+  style.width = useUnit(props.width || props.size)
+  style.height = useUnit(props.height || props.size)
+  style.background = useColor(props.background)
+  style.borderRadius = useUnit(props.radius)
+  return useStyle({ ...style, ...useStyle(props.customStyle) })
 })
 
 function onClick() {
@@ -75,12 +74,12 @@ function onClick() {
 }
 
 function onHoverStart() {
-  if (!useProps.hoverClass) return
+  if (!props.hoverClass) return
   isHover.value = true
 }
 
 function onHoverEnd() {
-  if (!useProps.hoverClass) return
+  if (!props.hoverClass) return
   isHover.value = false
 }
 

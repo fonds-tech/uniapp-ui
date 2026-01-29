@@ -1,9 +1,8 @@
 import type Row from "./ui-row.vue"
 import type { ExtractPropTypes } from "vue"
-import { createProps } from "../hooks"
 import { styleProp, makeStringProp, makeNumericProp } from "../utils/props"
 
-export const [rowProps, useRowProps] = createProps("row", {
+export const rowProps = {
   /**
    * 统一间距（同时设置行间距和列间距）
    */
@@ -36,8 +35,7 @@ export const [rowProps, useRowProps] = createProps("row", {
    * 自定义样式
    */
   customStyle: styleProp,
-})
-
+}
 export const rowEmits = {}
 
 export type RowEmits = typeof rowEmits

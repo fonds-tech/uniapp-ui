@@ -1,9 +1,8 @@
 import type NoticeBar from "./ui-notice-bar.vue"
 import type { PropType, ExtractPropTypes } from "vue"
-import { createProps } from "../hooks"
 import { styleProp, truthProp, makeNumberProp, makeStringProp, makeNumericProp } from "../utils/props"
 
-export const [noticeBarProps, useNoticeBarProps] = createProps("noticeBar", {
+export const noticeBarProps = {
   /**
    * 显示内容，vertical 垂直模式时要求内容为数组
    */
@@ -88,8 +87,7 @@ export const [noticeBarProps, useNoticeBarProps] = createProps("noticeBar", {
    * 自定义样式
    */
   customStyle: styleProp,
-})
-
+}
 export const noticeBarEmits = {
   click: (index: number) => true,
 }

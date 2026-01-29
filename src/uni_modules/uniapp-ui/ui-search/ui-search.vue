@@ -1,9 +1,9 @@
 <template>
-  <view class="ui-search" :class="[useProps.customClass]" :style="[rootStyle]" role="search" @click="onClick">
+  <view class="ui-search" :class="[props.customClass]" :style="[rootStyle]" role="search" @click="onClick">
     <view class="ui-search__content" :class="[contentClass]" :style="[contentStyle]">
       <view class="ui-search__icon">
         <slot name="icon">
-          <ui-icon :name="useProps.icon" :size="useProps.iconSize" :color="useProps.iconColor" :weight="useProps.iconWeight" />
+          <ui-icon :name="props.icon" :size="props.iconSize" :color="props.iconColor" :weight="props.iconWeight" />
         </slot>
       </view>
       <input
@@ -13,33 +13,33 @@
         :style="[inputStyle]"
         type="text"
         confirm-type="search"
-        :focus="useProps.focus"
-        :disabled="useProps.disabled"
-        :maxlength="useProps.maxlength"
-        :placeholder="useProps.placeholder"
+        :focus="props.focus"
+        :disabled="props.disabled"
+        :maxlength="props.maxlength"
+        :placeholder="props.placeholder"
         :placeholder-style="placeholderStyle"
-        :aria-label="useProps.placeholder"
+        :aria-label="props.placeholder"
         @blur="onBlur"
         @focus="onFocus"
         @confirm="onConfirm"
       />
       <view v-if="showClear" class="ui-search__clear" hover-class="ui-search__clear--active" role="button" aria-label="清除" @click.stop="onClickClear">
         <slot name="clear">
-          <ui-icon name="close-circle" :size="useProps.clearSize" :color="useProps.clearColor" :weight="useProps.clearWeight" />
+          <ui-icon name="close-circle" :size="props.clearSize" :color="props.clearColor" :weight="props.clearWeight" />
         </slot>
       </view>
     </view>
-    <view v-if="useProps.action" class="ui-search__action" @click.stop="onClickAction">
+    <view v-if="props.action" class="ui-search__action" @click.stop="onClickAction">
       <slot name="action">
         <view
           class="ui-search__action__button"
           hover-class="ui-search__action__button--active"
           role="button"
           :hover-stay-time="50"
-          :aria-label="useProps.actionText"
+          :aria-label="props.actionText"
           :style="[actionButtonStyle]"
         >
-          {{ useProps.actionText }}
+          {{ props.actionText }}
         </view>
       </slot>
     </view>
@@ -50,79 +50,78 @@
 import type { CSSProperties } from "vue"
 import { useUnit, useColor, useStyle } from "../hooks"
 import { ref, watch, computed, nextTick } from "vue"
-import { searchEmits, searchProps, useSearchProps, searchInputAlign } from "./index"
+import { searchEmits, searchProps, searchInputAlign } from "./index"
 
 defineOptions({ name: "ui-search" })
 
 const props = defineProps(searchProps)
 const emits = defineEmits(searchEmits)
-const useProps = useSearchProps(props)
-const modelValue = ref(useProps.modelValue)
+const modelValue = ref(props.modelValue)
 
 // 根元素样式
 const rootStyle = computed(() => {
   const styles: CSSProperties = {}
-  styles.height = useUnit(useProps.height)
-  styles.margin = useUnit(useProps.margin)
-  return useStyle({ ...styles, ...useStyle(useProps.customStyle) })
+  styles.height = useUnit(props.height)
+  styles.margin = useUnit(props.margin)
+  return useStyle({ ...styles, ...useStyle(props.customStyle) })
 })
 
 // 搜索框容器样式
 const contentStyle = computed(() => {
   const styles: CSSProperties = {}
-  styles.border = useProps.border
-  styles.background = useColor(useProps.background)
-  styles.borderRadius = useUnit(useProps.radius)
+  styles.border = props.border
+  styles.background = useColor(props.background)
+  styles.borderRadius = useUnit(props.radius)
   return useStyle(styles)
 })
 
 // 搜索框容器类名
 const contentClass = computed(() => {
-  return useProps.round ? ["ui-search__content--round"] : []
+  return props.round ? ["ui-search__content--round"] : []
 })
 
 // 输入框样式
 const inputStyle = computed(() => {
   const styles: CSSProperties = {}
-  styles.color = useColor(useProps.color)
-  styles.fontSize = useUnit(useProps.fontSize)
-  if (searchInputAlign.includes(useProps.inputAlign)) {
-    styles.textAlign = useProps.inputAlign as CSSProperties["textAlign"]
+  styles.color = useColor(props.color)
+  styles.fontSize = useUnit(props.fontSize)
+  if (searchInputAlign.includes(props.inputAlign)) {
+    styles.textAlign = props.inputAlign as CSSProperties["textAlign"]
   }
-  return useStyle({ ...styles, ...useStyle(useProps.inputStyle) })
+  return useStyle({ ...styles, ...useStyle(props.inputStyle) })
 })
 
 // 输入框类名
 const inputClass = computed(() => {
-  return useProps.disabled ? ["ui-search__value--disabled"] : []
+  return props.disabled ? ["ui-search__value--disabled"] : []
 })
 
 // 右侧操作按钮样式
 const actionButtonStyle = computed(() => {
   const styles: CSSProperties = {}
-  styles.color = useColor(useProps.actionColor)
-  styles.fontSize = useUnit(useProps.actionSize)
-  styles.fontWeight = useProps.actionWeight
+  styles.color = useColor(props.actionColor)
+  styles.fontSize = useUnit(props.actionSize)
+  styles.fontWeight = props.actionWeight
   return useStyle(styles)
 })
 
 // 占位符样式（返回字符串格式，用于 placeholder-style 属性）
 const placeholderStyle = computed(() => {
   const styles: CSSProperties = {}
-  if (useProps.fontSize) styles.fontSize = useUnit(useProps.fontSize)
-  if (useProps.placeholderColor) styles.color = useColor(useProps.placeholderColor)
+  if (props.fontSize) styles.fontSize = useUnit(props.fontSize)
+  if (props.placeholderColor) styles.color = useColor(props.placeholderColor)
   return useStyle(styles, "string")
 })
 
 // 是否显示清除按钮
 const showClear = computed(() => {
-  const clearable = useProps.clearabled !== undefined ? useProps.clearabled : useProps.clearable
+  const clearable = props.clearabled !== undefined ? props.clearabled : props.clearable
   return clearable && modelValue.value
 })
 
 watch(() => modelValue.value, updateValue)
 watch(
-  () => useProps.modelValue,
+  () => props.modelValue,
   (val) => (modelValue.value = val),
 )
 

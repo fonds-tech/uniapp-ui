@@ -51,15 +51,7 @@ export function createApp() {
   const app = createSSRApp(App)
 
   // 安装 UI 组件库
-  app.use(ui, {
-    // 可选配置
-    components: {
-      // 全局组件默认属性
-      button: {
-        type: 'primary',
-      },
-    },
-  })
+  app.use(ui)
 
   return { app }
 }

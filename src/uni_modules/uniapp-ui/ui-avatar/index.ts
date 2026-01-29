@@ -1,6 +1,5 @@
 import type Avatar from "./ui-avatar.vue"
 import type { ExtractPropTypes } from "vue"
-import { createProps } from "../hooks"
 import { styleProp, makeStringProp, makeNumericProp } from "../utils/props"
 
 /**
@@ -18,7 +17,7 @@ export type AvatarSize = "mini" | "small" | "medium" | "large" | string | number
  */
 export type AvatarFit = "contain" | "cover" | "fill" | "none" | "scale-down"
 
-export const [avatarProps, useAvatarProps] = createProps("avatar", {
+export const avatarProps = {
   /**
    * 头像图片地址
    */
@@ -91,8 +90,7 @@ export const [avatarProps, useAvatarProps] = createProps("avatar", {
    * 自定义样式
    */
   customStyle: styleProp,
-})
-
+}
 export const avatarEmits = {
   /**
    * 点击头像时触发

@@ -1,10 +1,9 @@
 import type FormItem from "./ui-form-item.vue"
 import type { PropType, InjectionKey, ExtractPropTypes } from "vue"
 import type { FormLabelPosition, FormValidateError, FormValidateTrigger, FormErrorMessageAlign } from "../ui-form"
-import { createProps } from "../hooks"
 import { styleProp, truthProp, numericProp, makeStringProp } from "../utils/props"
 
-export const [formItemProps, useFormItemProps] = createProps("formItem", {
+export const formItemProps = {
   /**
    * model的键名
    */
@@ -105,7 +104,7 @@ export const [formItemProps, useFormItemProps] = createProps("formItem", {
    * 自定义样式
    */
   customStyle: styleProp,
-})
+}
 export const formItemEmits = {
   submit: (values: Record<string, unknown>) => values,
   failed: (result: { values: Record<string, unknown>; errors: FormValidateError[] }) => result,

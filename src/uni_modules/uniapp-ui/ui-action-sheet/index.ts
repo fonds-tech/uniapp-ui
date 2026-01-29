@@ -1,9 +1,8 @@
 import type ActionSheet from "./ui-action-sheet.vue"
 import type { PropType, CSSProperties, ExtractPropTypes } from "vue"
-import { createProps } from "../hooks"
 import { styleProp, truthProp, numericProp, makeArrayProp, makeStringProp, makeNumericProp } from "../utils/props"
 
-export const [actionSheetProps, useActionSheetProps] = createProps("actionSheet", {
+export const actionSheetProps = {
   /**
    * 是否显示
    */
@@ -132,8 +131,7 @@ export const [actionSheetProps, useActionSheetProps] = createProps("actionSheet"
    * 自定义样式
    */
   customStyle: styleProp,
-})
-
+}
 export interface ActionSheetAction {
   /** 选项标题 */
   title: string

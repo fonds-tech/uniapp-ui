@@ -1,9 +1,8 @@
 import type Rate from "./ui-rate.vue"
 import type { ExtractPropTypes } from "vue"
-import { createProps } from "../hooks"
 import { styleProp, truthProp, makeNumberProp, makeStringProp, makeNumericProp } from "../utils/props"
 
-export const [rateProps, useRateProps] = createProps("rate", {
+export const rateProps = {
   /**
    * 当前分值
    */
@@ -68,8 +67,7 @@ export const [rateProps, useRateProps] = createProps("rate", {
    * 自定义样式
    */
   customStyle: styleProp,
-})
-
+}
 export const rateEmits = {
   change: (value: number) => value,
   "update:modelValue": (value: number) => value,

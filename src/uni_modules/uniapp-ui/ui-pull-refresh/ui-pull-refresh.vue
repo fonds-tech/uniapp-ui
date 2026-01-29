@@ -1,8 +1,8 @@
 <template>
   <view
     class="ui-pull-refresh"
-    :class="[useProps.customClass]"
-    :style="[useStyle(useProps.customStyle)]"
+    :class="[props.customClass]"
+    :style="[useStyle(props.customStyle)]"
     @touchstart="onTouchStart"
     @touchmove.passive="onTouchMove"
     @touchend="onTouchEnd"
@@ -13,19 +13,19 @@
       <view class="ui-pull-refresh__head" :style="[headStyle]">
         <!-- 各状态的插槽 -->
         <slot v-if="status === 'pulling'" name="pulling" :distance="distance">
-          <text class="ui-pull-refresh__text">{{ useProps.pullingText }}</text>
+          <text class="ui-pull-refresh__text">{{ props.pullingText }}</text>
         </slot>
         <slot v-else-if="status === 'loosing'" name="loosing" :distance="distance">
-          <text class="ui-pull-refresh__text">{{ useProps.loosingText }}</text>
+          <text class="ui-pull-refresh__text">{{ props.loosingText }}</text>
         </slot>
         <slot v-else-if="status === 'loading'" name="loading">
           <view class="ui-pull-refresh__loading">
             <ui-loading size="36rpx" />
-            <text class="ui-pull-refresh__text ui-pull-refresh__text--loading">{{ useProps.loadingText }}</text>
+            <text class="ui-pull-refresh__text ui-pull-refresh__text--loading">{{ props.loadingText }}</text>
           </view>
         </slot>
         <slot v-else-if="status === 'success'" name="success">
-          <text class="ui-pull-refresh__text">{{ useProps.successText }}</text>
+          <text class="ui-pull-refresh__text">{{ props.successText }}</text>
         </slot>
         <slot v-else name="normal" />
       </view>
@@ -42,15 +42,13 @@
 import type { CSSProperties } from "vue"
 import type { PullRefreshStatus } from "./index"
 import { useStyle } from "../hooks"
+import { pullRefreshEmits, pullRefreshProps } from "./index"
 import { ref, watch, computed, onBeforeUnmount } from "vue"
-import { pullRefreshEmits, pullRefreshProps, usePullRefreshProps } from "./index"
 
 defineOptions({ name: "ui-pull-refresh" })
 
 const props = defineProps(pullRefreshProps)
 const emit = defineEmits(pullRefreshEmits)
-const useProps = usePullRefreshProps(props)
-
 // 状态管理
 const status = ref<PullRefreshStatus>("normal")
 const distance = ref(0)
@@ -69,25 +67,25 @@ let successTimer: ReturnType<typeof setTimeout> | null = null
  * 默认使用 headHeight
  */
 const pullDistanceValue = computed(() => {
-  const pd = useProps.pullDistance
+  const pd = props.pullDistance
   if (pd !== undefined && pd !== null && pd !== "") {
     return Number(pd)
   }
-  return Number(useProps.headHeight)
+  return Number(props.headHeight)
 })
 
 /**
  * 头部高度（px）
  */
 const headHeightValue = computed(() => {
-  return Number(useProps.headHeight)
+  return Number(props.headHeight)
 })
 
 /**
  * 动画持续时间（ms）
  */
 const animationDurationValue = computed(() => {
-  return Number(useProps.animationDuration)
+  return Number(props.animationDuration)
 })
 
 /**
@@ -158,7 +156,7 @@ function checkPosition(): Promise<boolean> {
  * 处理触摸开始
  */
 async function onTouchStart(event: TouchEvent) {
-  if (useProps.disabled || useProps.modelValue) return
+  if (props.disabled || props.modelValue) return
 
   // 检测是否在页面顶部
   ceiling = await checkPosition()
@@ -173,7 +171,7 @@ async function onTouchStart(event: TouchEvent) {
  * 处理触摸移动
  */
 function onTouchMove(event: TouchEvent) {
-  if (useProps.disabled || !touchable || !ceiling) return
+  if (props.disabled || !touchable || !ceiling) return
 
   const touch = event.touches[0]
   deltaY = touch.clientY - startY
@@ -210,7 +208,7 @@ function onTouchMove(event: TouchEvent) {
  * 处理触摸结束
  */
 function onTouchEnd() {
-  if (useProps.disabled || !touchable) return
+  if (props.disabled || !touchable) return
 
   touchable = false
 
@@ -232,9 +230,9 @@ function onTouchEnd() {
  * 显示刷新成功状态
  */
 function showSuccessTip() {
-  const successDuration = Number(useProps.successDuration)
+  const successDuration = Number(props.successDuration)
 
-  if (successDuration > 0 && useProps.successText) {
+  if (successDuration > 0 && props.successText) {
     setStatus("success")
 
     // 清除之前的定时器
@@ -259,7 +257,7 @@ function showSuccessTip() {
  * 当父组件设置 modelValue 为 false 时，表示刷新完成
  */
 watch(
-  () => useProps.modelValue,
+  () => props.modelValue,
   (newVal, oldVal) => {
     if (oldVal && !newVal) {
       // 从 true 变为 false，表示刷新完成

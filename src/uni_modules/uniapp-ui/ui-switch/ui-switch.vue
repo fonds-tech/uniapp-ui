@@ -1,21 +1,21 @@
 <template>
-  <view :id="switchId" class="ui-switch" :class="[classs, useProps.customClass]" :style="[style]" @click="onClick">
-    <view v-if="useProps.activeText" class="ui-switch__text ui-switch__text--left" :style="[textStyle, { opacity: isActive ? 1 : 0 }]">
-      {{ useProps.activeText }}
+  <view :id="switchId" class="ui-switch" :class="[classs, props.customClass]" :style="[style]" @click="onClick">
+    <view v-if="props.activeText" class="ui-switch__text ui-switch__text--left" :style="[textStyle, { opacity: isActive ? 1 : 0 }]">
+      {{ props.activeText }}
     </view>
     <view class="ui-switch__node" :style="[nodeStyle]">
-      <ui-loading v-if="useProps.loading" :size="useProps.loadingIconSize" :color="useProps.loadingIconColor" />
+      <ui-loading v-if="props.loading" :size="props.loadingIconSize" :color="props.loadingIconColor" />
       <slot v-else name="node" :checked="isActive" />
     </view>
-    <view v-if="useProps.inactiveText" class="ui-switch__text ui-switch__text--right" :style="[textStyle, { opacity: isActive ? 0 : 1 }]">
-      {{ useProps.inactiveText }}
+    <view v-if="props.inactiveText" class="ui-switch__text ui-switch__text--right" :style="[textStyle, { opacity: isActive ? 0 : 1 }]">
+      {{ props.inactiveText }}
     </view>
   </view>
 </template>
 
 <script setup lang="ts">
 import { isFunction } from "../utils/check"
-import { switchEmits, switchProps, useSwitchProps } from "./index"
+import { switchEmits, switchProps } from "./index"
 import { useRect, useUnit, useColor, useStyle, useUnitToPx } from "../hooks"
 import { ref, watch, computed, nextTick, onMounted, getCurrentInstance } from "vue"
 
@@ -23,36 +23,34 @@ defineOptions({ name: "ui-switch" })
 
 const props = defineProps(switchProps)
 const emits = defineEmits(switchEmits)
-const useProps = useSwitchProps(props)
-
 const switchId = `switch-${Math.random().toString(36).slice(2, 10)}`
 
-const active = ref(useProps.modelValue)
+const active = ref(props.modelValue)
 const switchRect = ref<UniApp.NodeInfo>({})
 const nodeRect = ref<UniApp.NodeInfo>({})
 const instance = getCurrentInstance()!
 
 const style = computed(() => {
   const style: any = {}
-  style.background = isActive.value ? useColor(useProps.activeColor) : useColor(useProps.inactiveColor)
-  if (useProps.size) {
-    style.width = `${useUnitToPx(useProps.size) * 2}px`
-    style.height = useUnit(useProps.size)
+  style.background = isActive.value ? useColor(props.activeColor) : useColor(props.inactiveColor)
+  if (props.size) {
+    style.width = `${useUnitToPx(props.size) * 2}px`
+    style.height = useUnit(props.size)
   }
-  return useStyle({ ...style, ...useStyle(useProps.customStyle) })
+  return useStyle({ ...style, ...useStyle(props.customStyle) })
 })
 
 const classs = computed(() => {
   const list: string[] = []
   if (isActive.value) list.push("ui-switch--active")
-  if (useProps.disabled) list.push("ui-switch--disabled")
+  if (props.disabled) list.push("ui-switch--disabled")
   return list
 })
 
 const nodeStyle = computed(() => {
   const style: any = {}
-  const size = useUnitToPx(useProps.size || "40rpx")
-  const gutter = useProps.gutter ? useUnitToPx(useProps.gutter) : useUnitToPx("4rpx")
+  const size = useUnitToPx(props.size || "40rpx")
+  const gutter = props.gutter ? useUnitToPx(props.gutter) : useUnitToPx("4rpx")
   const switchWidth = switchRect.value?.width || size * 2
   const nodeWidth = nodeRect.value?.width || size - gutter * 2
   style.top = `${gutter}px`
@@ -69,24 +67,24 @@ const nodeStyle = computed(() => {
 
 const textStyle = computed(() => {
   const style: any = {}
-  if (useProps.textSize) style.fontSize = useUnit(useProps.textSize)
-  if (useProps.textColor) style.color = useColor(useProps.textColor)
-  if (useProps.textWeight) style.fontWeight = useProps.textWeight
+  if (props.textSize) style.fontSize = useUnit(props.textSize)
+  if (props.textColor) style.color = useColor(props.textColor)
+  if (props.textWeight) style.fontWeight = props.textWeight
   return style
 })
 
 const isActive = computed(() => {
-  return active.value === useProps.activeValue
+  return active.value === props.activeValue
 })
 
 watch(
-  () => useProps.modelValue,
+  () => props.modelValue,
   (val) => {
     active.value = val
   },
 )
 
-watch(() => [useProps.size, useProps.gutter, useProps.customStyle], resize, { deep: true })
+watch(() => [props.size, props.gutter, props.customStyle], resize, { deep: true })
 
 async function resize() {
   await nextTick()
@@ -95,9 +93,9 @@ async function resize() {
 }
 
 function onClick() {
-  if (useProps.loading) return
-  if (useProps.disabled) return
-  updateValue(isActive.value ? useProps.inactiveValue : useProps.activeValue)
+  if (props.loading) return
+  if (props.disabled) return
+  updateValue(isActive.value ? props.inactiveValue : props.activeValue)
 }
 
 function updateValue(value: number | string | boolean) {
@@ -106,8 +104,8 @@ function updateValue(value: number | string | boolean) {
     emits("change", active.value)
     emits("update:modelValue", active.value)
   }
-  if (isFunction(useProps.beforeChange)) {
-    useProps.beforeChange(value, next)
+  if (isFunction(props.beforeChange)) {
+    props.beforeChange(value, next)
   } else {
     next()
   }

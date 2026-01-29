@@ -1,7 +1,6 @@
 import type AvatarGroup from "./ui-avatar-group.vue"
 import type { AvatarSize, AvatarShape } from "../ui-avatar"
 import type { InjectionKey, ExtractPropTypes } from "vue"
-import { createProps } from "../hooks"
 import { styleProp, makeStringProp, makeNumericProp } from "../utils/props"
 
 /**
@@ -9,7 +8,7 @@ import { styleProp, makeStringProp, makeNumericProp } from "../utils/props"
  */
 export type AvatarGroupDirection = "left" | "right"
 
-export const [avatarGroupProps, useAvatarGroupProps] = createProps("avatarGroup", {
+export const avatarGroupProps = {
   /**
    * 最多显示的头像数量
    */
@@ -54,8 +53,7 @@ export const [avatarGroupProps, useAvatarGroupProps] = createProps("avatarGroup"
    * 自定义样式
    */
   customStyle: styleProp,
-})
-
+}
 export const avatarGroupEmits = {
   /**
    * 点击头像组时触发
@@ -73,8 +71,6 @@ export const avatarGroupEmits = {
 export interface AvatarGroupProvide {
   /** 组件原始 props */
   props: AvatarGroupProps
-  /** 经全局配置合并后的 props */
-  useProps: AvatarGroupProps
   /** 获取子头像在组内的索引 */
   getIndex: () => number
   /** 获取最大显示数量 */

@@ -2,13 +2,13 @@
   <view>
     <!-- 弹层模式 -->
     <ui-popup
-      v-if="useProps.poppable"
-      :show="useProps.show"
+      v-if="props.poppable"
+      :show="props.show"
       mode="bottom"
-      :border-radius="useProps.borderRadius"
-      :close-on-click-overlay="useProps.closeOnClickOverlay"
-      :z-index="useProps.zIndex"
-      :safe-area-inset-bottom="useProps.safeAreaInsetBottom"
+      :border-radius="props.borderRadius"
+      :close-on-click-overlay="props.closeOnClickOverlay"
+      :z-index="props.zIndex"
+      :safe-area-inset-bottom="props.safeAreaInsetBottom"
       @update:show="onUpdateShow"
       @open="emits('open')"
       @opened="emits('opened')"
@@ -16,18 +16,18 @@
       @closed="emits('closed')"
       @click-overlay="emits('clickOverlay')"
     >
-      <view class="ui-calendar" :style="[calendarStyle]" :class="[useProps.customClass]">
+      <view class="ui-calendar" :style="[calendarStyle]" :class="[props.customClass]">
         <!-- 头部 -->
-        <view v-if="useProps.showTitle || useProps.closeable" class="ui-calendar__header">
-          <view v-if="useProps.closeable" class="ui-calendar__close" @click="onClose">
+        <view v-if="props.showTitle || props.closeable" class="ui-calendar__header">
+          <view v-if="props.closeable" class="ui-calendar__close" @click="onClose">
             <ui-icon name="cross" size="36rpx" color="#666666" />
           </view>
-          <text v-if="useProps.showTitle" class="ui-calendar__title">{{ useProps.title }}</text>
-          <view v-if="useProps.closeable" class="ui-calendar__close--placeholder" />
+          <text v-if="props.showTitle" class="ui-calendar__title">{{ props.title }}</text>
+          <view v-if="props.closeable" class="ui-calendar__close--placeholder" />
         </view>
 
         <!-- 副标题（年月切换） -->
-        <view v-if="useProps.showSubtitle" class="ui-calendar__subtitle">
+        <view v-if="props.showSubtitle" class="ui-calendar__subtitle">
           <view class="ui-calendar__nav" @click="onPrevYear">
             <ui-icon name="arrow-double-left" size="32rpx" :color="colorValue" />
           </view>
@@ -52,7 +52,7 @@
         <view class="ui-calendar__days">
           <view v-for="(day, index) in formattedDays" :key="index" class="ui-calendar__day" :class="[getDayClass(day)]" :style="[getDayStyle(day)]" @click="onClickDay(day)">
             <!-- 月份背景水印 -->
-            <text v-if="useProps.showMark && day.isCurrentMonth && day.date.getDate() === 15" class="ui-calendar__mark">
+            <text v-if="props.showMark && day.isCurrentMonth && day.date.getDate() === 15" class="ui-calendar__mark">
               {{ day.date.getMonth() + 1 }}
             </text>
 
@@ -71,23 +71,23 @@
         </view>
 
         <!-- 底部操作区 -->
-        <view v-if="useProps.showConfirm" class="ui-calendar__footer">
+        <view v-if="props.showConfirm" class="ui-calendar__footer">
           <ui-button block :color="colorValue" :disabled="!canConfirm" @click="onConfirm">
-            {{ canConfirm ? useProps.confirmText : useProps.confirmDisabledText }}
+            {{ canConfirm ? props.confirmText : props.confirmDisabledText }}
           </ui-button>
         </view>
       </view>
     </ui-popup>
 
     <!-- 内嵌模式 -->
-    <view v-else class="ui-calendar" :style="[calendarStyle]" :class="[useProps.customClass]">
+    <view v-else class="ui-calendar" :style="[calendarStyle]" :class="[props.customClass]">
       <!-- 头部 -->
-      <view v-if="useProps.showTitle" class="ui-calendar__header">
-        <text class="ui-calendar__title">{{ useProps.title }}</text>
+      <view v-if="props.showTitle" class="ui-calendar__header">
+        <text class="ui-calendar__title">{{ props.title }}</text>
       </view>
 
       <!-- 副标题（年月切换） -->
-      <view v-if="useProps.showSubtitle" class="ui-calendar__subtitle">
+      <view v-if="props.showSubtitle" class="ui-calendar__subtitle">
         <view class="ui-calendar__nav" @click="onPrevYear">
           <ui-icon name="arrow-double-left" size="32rpx" :color="colorValue" />
         </view>
@@ -112,7 +112,7 @@
       <view class="ui-calendar__days">
         <view v-for="(day, index) in formattedDays" :key="index" class="ui-calendar__day" :class="[getDayClass(day)]" :style="[getDayStyle(day)]" @click="onClickDay(day)">
           <!-- 月份背景水印 -->
-          <text v-if="useProps.showMark && day.isCurrentMonth && day.date.getDate() === 15" class="ui-calendar__mark">
+          <text v-if="props.showMark && day.isCurrentMonth && day.date.getDate() === 15" class="ui-calendar__mark">
             {{ day.date.getMonth() + 1 }}
           </text>
 
@@ -131,9 +131,9 @@
       </view>
 
       <!-- 底部操作区 -->
-      <view v-if="useProps.showConfirm" class="ui-calendar__footer">
+      <view v-if="props.showConfirm" class="ui-calendar__footer">
         <ui-button block :color="colorValue" :disabled="!canConfirm" @click="onConfirm">
-          {{ canConfirm ? useProps.confirmText : useProps.confirmDisabledText }}
+          {{ canConfirm ? props.confirmText : props.confirmDisabledText }}
         </ui-button>
       </view>
     </view>
@@ -145,9 +145,9 @@ import type { CSSProperties } from "vue"
 import type { CalendarDay, CalendarMonthChangeData } from "./index"
 import type { CalendarMode, CalendarDay as UseCalendarDay } from "../hooks/useCalendar"
 import { watch, computed } from "vue"
+import { calendarEmits, calendarProps } from "./index"
 import { useColor, useStyle, useCalendar } from "../hooks"
 import { parseDate, formatDate, getDaysDiff } from "../utils/date"
-import { calendarEmits, calendarProps, useCalendarProps } from "./index"
 
 // 定义组件名称
 defineOptions({ name: "ui-calendar" })
@@ -155,33 +155,31 @@ defineOptions({ name: "ui-calendar" })
 // 定义 props 和 emits
 const props = defineProps(calendarProps)
 const emits = defineEmits(calendarEmits)
-const useProps = useCalendarProps(props)
-
 // 解析最小/最大日期
 const minDate = computed(() => {
-  if (!useProps.minDate) return undefined
-  if (useProps.minDate instanceof Date) return useProps.minDate
-  return new Date(useProps.minDate)
+  if (!props.minDate) return undefined
+  if (props.minDate instanceof Date) return props.minDate
+  return new Date(props.minDate)
 })
 
 const maxDate = computed(() => {
-  if (!useProps.maxDate) return undefined
-  if (useProps.maxDate instanceof Date) return useProps.maxDate
-  return new Date(useProps.maxDate)
+  if (!props.maxDate) return undefined
+  if (props.maxDate instanceof Date) return props.maxDate
+  return new Date(props.maxDate)
 })
 
 // 解析默认日期
 const defaultDateValue = computed(() => {
-  if (!useProps.defaultDate) return undefined
-  if (useProps.defaultDate instanceof Date) return useProps.defaultDate
-  if (typeof useProps.defaultDate === "number") return new Date(useProps.defaultDate)
+  if (!props.defaultDate) return undefined
+  if (props.defaultDate instanceof Date) return props.defaultDate
+  if (typeof props.defaultDate === "number") return new Date(props.defaultDate)
   return undefined
 })
 
 // 解析多选默认日期
 const defaultSelectedDates = computed<string[]>(() => {
-  if (useProps.type !== "multiple" || !Array.isArray(useProps.defaultDate)) return []
-  return (useProps.defaultDate as (number | Date)[]).map((d) => {
+  if (props.type !== "multiple" || !Array.isArray(props.defaultDate)) return []
+  return (props.defaultDate as (number | Date)[]).map((d) => {
     if (d instanceof Date) return formatDate(d)
     return formatDate(new Date(d))
   })
@@ -189,8 +187,8 @@ const defaultSelectedDates = computed<string[]>(() => {
 
 // 解析范围默认日期
 const defaultRange = computed(() => {
-  if (useProps.type !== "range" || !Array.isArray(useProps.defaultDate)) return undefined
-  const arr = useProps.defaultDate as (number | Date)[]
+  if (props.type !== "range" || !Array.isArray(props.defaultDate)) return undefined
+  const arr = props.defaultDate as (number | Date)[]
   if (arr.length < 2) return undefined
   return {
     start: arr[0] instanceof Date ? arr[0] : new Date(arr[0]),
@@ -200,7 +198,7 @@ const defaultRange = computed(() => {
 
 // 转换选择模式
 const calendarMode = computed<CalendarMode>(() => {
-  return useProps.type as CalendarMode
+  return props.type as CalendarMode
 })
 
 // 初始化日历 hook
@@ -224,15 +222,15 @@ const {
   defaultDate: defaultDateValue.value,
   defaultSelectedDates: defaultSelectedDates.value,
   defaultRange: defaultRange.value,
-  markedDates: useProps.markedDates,
+  markedDates: props.markedDates,
   minDate: minDate.value,
   maxDate: maxDate.value,
-  firstDayOfWeek: Number(useProps.firstDayOfWeek),
+  firstDayOfWeek: Number(props.firstDayOfWeek),
 })
 
 // 监听标记日期变化
 watch(
-  () => useProps.markedDates,
+  () => props.markedDates,
   (dates) => {
     updateMarkedDates(dates)
   },
@@ -240,16 +238,16 @@ watch(
 
 // 主题色
 const colorValue = computed(() => {
-  return useColor(useProps.color) || "var(--ui-color-primary)"
+  return useColor(props.color) || "var(--ui-color-primary)"
 })
 
 // 日历样式
 const calendarStyle = computed(() => {
   const style: CSSProperties = {}
-  if (useProps.color) {
+  if (props.color) {
     style["--ui-calendar-color"] = colorValue.value
   }
-  return useStyle({ ...style, ...useStyle(useProps.customStyle) })
+  return useStyle({ ...style, ...useStyle(props.customStyle) })
 })
 
 // 格式化日期数据，应用自定义 formatter
@@ -275,8 +273,8 @@ const formattedDays = computed<CalendarDay[]>(() => {
     }
 
     // 应用自定义格式化函数
-    if (useProps.formatter) {
-      return useProps.formatter(calendarDay)
+    if (props.formatter) {
+      return props.formatter(calendarDay)
     }
 
     return calendarDay
@@ -304,11 +302,11 @@ function getDefaultBottomInfo(day: UseCalendarDay): string | undefined {
 
 // 是否可以确认
 const canConfirm = computed(() => {
-  if (useProps.type === "single") {
+  if (props.type === "single") {
     return !!selectedDate.value
-  } else if (useProps.type === "multiple") {
+  } else if (props.type === "multiple") {
     return selectedDates.value.length > 0
-  } else if (useProps.type === "range") {
+  } else if (props.type === "range") {
     return !!selectedRange.value.start && !!selectedRange.value.end
   }
   return false
@@ -372,19 +370,19 @@ function getDayStyle(day: CalendarDay): CSSProperties {
 
 // 点击日期
 function onClickDay(day: CalendarDay) {
-  if (useProps.readonly || day.disabled) return
+  if (props.readonly || day.disabled) return
 
   // 范围选择模式下检查最大可选天数
-  if (useProps.type === "range" && useProps.maxRange) {
+  if (props.type === "range" && props.maxRange) {
     const range = selectedRange.value
     if (range.start && !range.end) {
       const startDate = parseDate(range.start)
       const diff = Math.abs(getDaysDiff(startDate, day.date))
-      if (diff >= useProps.maxRange) {
+      if (diff >= props.maxRange) {
         emits("overRange")
-        if (useProps.rangePrompt) {
+        if (props.rangePrompt) {
           uni.showToast({
-            title: useProps.rangePrompt,
+            title: props.rangePrompt,
             icon: "none",
           })
         }
@@ -401,19 +399,19 @@ function onClickDay(day: CalendarDay) {
 
 // 触发选择事件
 function emitSelect() {
-  if (useProps.type === "single") {
+  if (props.type === "single") {
     if (selectedDate.value) {
       emits("select", {
         date: parseDate(selectedDate.value),
         dateStr: selectedDate.value,
       })
     }
-  } else if (useProps.type === "multiple") {
+  } else if (props.type === "multiple") {
     emits("select", {
       date: selectedDates.value.map((d) => parseDate(d)),
       dateStr: [...selectedDates.value],
     })
-  } else if (useProps.type === "range") {
+  } else if (props.type === "range") {
     const range = selectedRange.value
     if (range.start) {
       emits("select", {
@@ -428,17 +426,17 @@ function emitSelect() {
 function onConfirm() {
   if (!canConfirm.value) return
 
-  if (useProps.type === "single") {
+  if (props.type === "single") {
     emits("confirm", {
       date: parseDate(selectedDate.value),
       dateStr: selectedDate.value,
     })
-  } else if (useProps.type === "multiple") {
+  } else if (props.type === "multiple") {
     emits("confirm", {
       date: selectedDates.value.map((d) => parseDate(d)),
       dateStr: [...selectedDates.value],
     })
-  } else if (useProps.type === "range") {
+  } else if (props.type === "range") {
     const range = selectedRange.value
     emits("confirm", {
       date: {
@@ -453,7 +451,7 @@ function onConfirm() {
   }
 
   // 弹层模式下关闭弹层
-  if (useProps.poppable) {
+  if (props.poppable) {
     emits("update:show", false)
   }
 }
@@ -511,7 +509,7 @@ function reset() {
 function goToToday() {
   const today = formatDate(new Date())
   currentDate.value = new Date()
-  if (useProps.type === "single") {
+  if (props.type === "single") {
     selectDate(today)
   }
 }

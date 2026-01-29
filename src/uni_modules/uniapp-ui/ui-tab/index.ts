@@ -1,9 +1,8 @@
 import type Tab from "./ui-tab.vue"
 import type { PropType, CSSProperties, ExtractPropTypes } from "vue"
-import { createProps } from "../hooks"
 import { numericProp } from "../utils/props"
 
-export const [tabProps, useTabProps] = createProps("tab", {
+export const tabProps = {
   /**
    * 标题
    */
@@ -24,8 +23,7 @@ export const [tabProps, useTabProps] = createProps("tab", {
    * 自定义样式
    */
   customStyle: [String, Object] as PropType<string | CSSProperties>,
-})
-
+}
 export const tabEmits = {
   click: (name: number | string) => true,
 }

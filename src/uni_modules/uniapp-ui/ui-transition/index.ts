@@ -1,10 +1,9 @@
 import type Transition from "./ui-transition.vue"
 import type { PropType, CSSProperties, ExtractPropTypes } from "vue"
 import { isBoolean } from "../utils/check"
-import { createProps } from "../hooks"
 import { truthProp, numericProp, makeStringProp, makeNumericProp } from "../utils/props"
 
-export const [transitionProps, useTransitionProps] = createProps("transition", {
+export const transitionProps = {
   /**
    * 是否显示
    */
@@ -41,8 +40,7 @@ export const [transitionProps, useTransitionProps] = createProps("transition", {
    * 自定义样式
    */
   customStyle: [String, Object] as PropType<string | CSSProperties>,
-})
-
+}
 export const transitionEmits = {
   click: () => true,
   enter: () => true,

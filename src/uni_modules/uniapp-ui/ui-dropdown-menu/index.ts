@@ -1,10 +1,9 @@
 import type DropdownMenu from "./ui-dropdown-menu.vue"
 import type { Ref, PropType, InjectionKey, CSSProperties, ExtractPropTypes } from "vue"
-import { createProps } from "../hooks"
 import { truthProp, numericProp, makeStringProp, makeNumericProp } from "../utils/props"
 
 export const dropdownMenuKey: InjectionKey<DropdownMenuProvide> = Symbol("ui-dropdown-menu")
-export const [dropdownMenuProps, useDropdownMenuProps] = createProps("dropdownMenu", {
+export const dropdownMenuProps = {
   /**
    * 菜单高度
    */
@@ -125,7 +124,7 @@ export const [dropdownMenuProps, useDropdownMenuProps] = createProps("dropdownMe
    * 自定义样式
    */
   customStyle: [String, Object] as PropType<string | CSSProperties>,
-})
+}
 export const dropdownMenuEmits = {}
 
 export type DropdownMenuDirection = "up" | "down"
@@ -133,7 +132,6 @@ export type DropdownMenuEmits = typeof dropdownMenuEmits
 export type DropdownMenuProps = ExtractPropTypes<typeof dropdownMenuProps>
 export interface DropdownMenuProvide {
   props: DropdownMenuProps
-  useProps: DropdownMenuProps
   rect: Ref<UniApp.NodeInfo>
   close: () => void
   resize: () => Promise<void>

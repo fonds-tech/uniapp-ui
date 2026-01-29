@@ -1,9 +1,8 @@
 import type TabbarItem from "./ui-tabbar-item.vue"
 import type { ExtractPropTypes } from "vue"
-import { createProps } from "../hooks"
 import { styleProp, makeStringProp, makeNumericProp } from "../utils/props"
 
-export const [tabbarItemProps, useTabbarItemProps] = createProps("tabbarItem", {
+export const tabbarItemProps = {
   /**
    * 标签名称，作为匹配的标识符
    */
@@ -72,8 +71,7 @@ export const [tabbarItemProps, useTabbarItemProps] = createProps("tabbarItem", {
    * 自定义样式
    */
   customStyle: styleProp,
-})
-
+}
 export const tabbarItemEmits = {
   click: (name: string | number) => true,
 }

@@ -4,7 +4,7 @@
       <view class="ui-tabs__list" :style="[listStyle]">
         <slot />
         <!-- 外部指示器 -->
-        <view v-if="useProps.showIndicator" class="ui-tabs__indicator" :style="indicatorStyle" />
+        <view v-if="props.showIndicator" class="ui-tabs__indicator" :style="indicatorStyle" />
       </view>
     </scroll-view>
   </view>
@@ -13,7 +13,7 @@
 <script setup lang="ts">
 import type { TabRect } from "./index"
 import type { CSSProperties } from "vue"
-import { tabsKey, tabsEmits, tabsProps, useTabsProps } from "./index"
+import { tabsKey, tabsEmits, tabsProps } from "./index"
 import { useRect, useUnit, useColor, useStyle, useChildren } from "../hooks"
 import { ref, toRef, watch, computed, nextTick, onMounted, getCurrentInstance } from "vue"
 
@@ -21,7 +21,6 @@ defineOptions({ name: "ui-tabs" })
 
 const props = defineProps(tabsProps)
 const emits = defineEmits(tabsEmits)
-const useProps = useTabsProps(props)
 const { childrens, linkChildren } = useChildren(tabsKey)
 const instance = getCurrentInstance()!
 
@@ -34,36 +33,36 @@ const tabRects = ref<Map<number, TabRect>>(new Map())
 
 const style = computed(() => {
   const style: CSSProperties = {}
-  style.zIndex = useProps.zIndex
-  style.height = useUnit(useProps.height)
-  style.background = useColor(useProps.background)
-  return useStyle({ ...style, ...useStyle(useProps.customStyle) })
+  style.zIndex = props.zIndex
+  style.height = useUnit(props.height)
+  style.background = useColor(props.background)
+  return useStyle({ ...style, ...useStyle(props.customStyle) })
 })
 
 const classes = computed(() => {
   const list = []
-  if (useProps.borderBottom) list.push("ui-tabs--border")
+  if (props.borderBottom) list.push("ui-tabs--border")
   return list
 })
 
 const listStyle = computed(() => {
   const style: CSSProperties = {}
-  style.height = useUnit(useProps.height)
+  style.height = useUnit(props.height)
   return useStyle(style)
 })
 
-watch(() => useProps.modelValue, setCurrentName)
+watch(() => props.modelValue, setCurrentName)
 watch(
   () => childrens.length,
-  () => setCurrentName(useProps.modelValue),
+  () => setCurrentName(props.modelValue),
 )
 
 function findTabByName(name: string | number) {
-  return childrens.find((tab) => toRef(tab.exposed.name).value === name) || childrens.find((tab) => !tab.exposed.useProps.disabled)
+  return childrens.find((tab) => toRef(tab.exposed.name).value === name) || childrens.find((tab) => !tab.exposed.props.disabled)
 }
 
 async function scrollToTab(index: number) {
-  if (!useProps.scrollable) return
+  if (!props.scrollable) return
   await nextTick()
   const tabsRect = await useRect(".ui-tabs__scroll", instance)
   if (!tabsRect) return
@@ -114,7 +113,7 @@ function updateTabRect(index: number, rect: TabRect) {
  * @param animate 是否启用动画
  */
 function updateIndicatorStyle(animate: boolean = true) {
-  if (!useProps.showIndicator || childrens.length === 0) return
+  if (!props.showIndicator || childrens.length === 0) return
 
   // 找到当前激活的 tab 索引
   const activeTab = childrens.find((tab) => toRef(tab.exposed.name).value === currentName.value)
@@ -129,18 +128,18 @@ function updateIndicatorStyle(animate: boolean = true) {
   const style: CSSProperties = {}
 
   // 1. 计算宽度
-  if (useProps.autoIndicatorWidth) {
+  if (props.autoIndicatorWidth) {
     style.width = `${rect.titleWidth}px`
-  } else if (useProps.indicatorWidth) {
-    style.width = useUnit(useProps.indicatorWidth)
+  } else if (props.indicatorWidth) {
+    style.width = useUnit(props.indicatorWidth)
   }
 
   // 2. 计算高度和圆角
-  if (useProps.indicatorHeight) {
-    style.height = useUnit(useProps.indicatorHeight)
+  if (props.indicatorHeight) {
+    style.height = useUnit(props.indicatorHeight)
   }
-  if (useProps.indicatorRadius) {
-    style.borderRadius = useUnit(useProps.indicatorRadius)
+  if (props.indicatorRadius) {
+    style.borderRadius = useUnit(props.indicatorRadius)
   }
 
   // 3. 计算水平偏移量（使用子组件上报的尺寸）
@@ -151,13 +150,13 @@ function updateIndicatorStyle(animate: boolean = true) {
   style.transform = `translateX(${left}px) translateX(-50%)`
 
   // 5. 设置颜色
-  if (useProps.indicatorColor) {
-    style.background = useColor(useProps.indicatorColor)
+  if (props.indicatorColor) {
+    style.background = useColor(props.indicatorColor)
   }
 
   // 6. 设置过渡动画
   if (animate && indicatorInited.value) {
-    const duration = useProps.duration || 300
+    const duration = props.duration || 300
     style.transition = `transform ${duration}ms cubic-bezier(0.4, 0, 0.2, 1), width ${duration}ms cubic-bezier(0.4, 0, 0.2, 1)`
   }
 
@@ -180,7 +179,7 @@ watch(
   },
 )
 
-linkChildren({ props, useProps, currentName, tabRects, clickTab, setCurrentName, updateTabRect })
+linkChildren({ props, currentName, tabRects, clickTab, setCurrentName, updateTabRect })
 </script>
 
 <script lang="ts">

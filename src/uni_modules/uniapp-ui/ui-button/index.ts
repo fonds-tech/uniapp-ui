@@ -1,6 +1,5 @@
 import type Button from "./ui-button.vue"
 import type { PropType, ExtractPropTypes } from "vue"
-import { createProps } from "../hooks"
 import { styleProp, truthProp, numericProp, makeNumberProp, makeStringProp, makeNumericProp } from "../utils/props"
 
 export type ButtonType = "primary" | "success" | "warning" | "danger" | "info" | "default" | "error"
@@ -10,7 +9,7 @@ export type ButtonIconPosition = "left" | "right"
 export type ButtonOpenType = "contact" | "share" | "getPhoneNumber" | "getUserInfo" | "launchApp" | "openSetting" | "feedback" | "chooseAvatar" | "agreePrivacyAuthorization"
 export type ButtonLang = "zh_CN" | "zh_TW" | "en"
 
-export const [buttonProps, useButtonProps] = createProps("button", {
+export const buttonProps = {
   /**
    * 按钮类型
    */
@@ -179,8 +178,7 @@ export const [buttonProps, useButtonProps] = createProps("button", {
    * 自定义样式
    */
   customStyle: styleProp,
-})
-
+}
 export const buttonEmits = {
   click: (event: any) => true,
   error: (event: any) => true,

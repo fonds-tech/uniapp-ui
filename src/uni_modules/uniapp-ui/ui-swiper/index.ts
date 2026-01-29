@@ -1,9 +1,8 @@
 import type Swiper from "./ui-swiper.vue"
 import type { PropType, CSSProperties, ExtractPropTypes } from "vue"
-import { createProps } from "../hooks"
 import { truthProp, numericProp, makeNumberProp, makeStringProp } from "../utils/props"
 
-export const [swiperProps, useSwiperProps] = createProps("swiper", {
+export const swiperProps = {
   /**
    * 数据列表
    */
@@ -92,8 +91,7 @@ export const [swiperProps, useSwiperProps] = createProps("swiper", {
    * 自定义样式
    */
   customStyle: [String, Object] as PropType<string | CSSProperties>,
-})
-
+}
 export const swiperEmits = {
   "update:current": (index: number) => true,
   click: (index: number) => true,

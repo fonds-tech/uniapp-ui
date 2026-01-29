@@ -1,9 +1,8 @@
 import type Footer from "./ui-footer.vue"
 import type { ExtractPropTypes } from "vue"
-import { createProps } from "../hooks"
 import { styleProp, truthProp, makeStringProp, makeNumericProp } from "../utils/props"
 
-export const [footerProps, useFooterProps] = createProps("footer", {
+export const footerProps = {
   /**
    * 元素层级
    */
@@ -28,7 +27,7 @@ export const [footerProps, useFooterProps] = createProps("footer", {
    * 自定义样式
    */
   customStyle: styleProp,
-})
+}
 export const footerEmits = {
   rect: (rect: UniApp.NodeInfo) => true,
   height: (height: number) => true,

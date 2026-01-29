@@ -1,6 +1,5 @@
 import type Steps from "./ui-steps.vue"
 import type { Ref, PropType, InjectionKey, CSSProperties, ExtractPropTypes } from "vue"
-import { createProps } from "../hooks"
 import { numericProp, makeStringProp, makeNumericProp } from "../utils/props"
 
 /**
@@ -21,7 +20,7 @@ export const stepsKey: InjectionKey<StepsProvide> = Symbol("ui-steps")
 /**
  * 步骤条 Props 定义
  */
-export const [stepsProps, useStepsProps] = createProps("steps", {
+export const stepsProps = {
   /**
    * 当前步骤索引（从 0 开始）
    */
@@ -86,8 +85,7 @@ export const [stepsProps, useStepsProps] = createProps("steps", {
    * 自定义样式
    */
   customStyle: [String, Object] as PropType<string | CSSProperties>,
-})
-
+}
 /**
  * 步骤条事件定义
  */
@@ -109,10 +107,6 @@ export interface StepsProvide {
    * 原始 props
    */
   props: StepsProps
-  /**
-   * 经过全局配置合并的 props
-   */
-  useProps: StepsProps
   /**
    * 当前激活的步骤索引
    */

@@ -1,9 +1,8 @@
 import type Loading from "./ui-loading.vue"
 import type { PropType, CSSProperties, ExtractPropTypes } from "vue"
-import { createProps } from "../hooks"
 import { truthProp, numericProp, makeStringProp, makeNumericProp } from "../utils/props"
 
-export const [loadingProps, useLoadingProps] = createProps("loading", {
+export const loadingProps = {
   /**
    * 是否显示
    */
@@ -52,7 +51,7 @@ export const [loadingProps, useLoadingProps] = createProps("loading", {
    * 自定义样式
    */
   customStyle: [String, Object] as PropType<string | CSSProperties>,
-})
+}
 export const loadingEmits = {}
 
 export type LoadingType = "circular" | "spinner"

@@ -1,9 +1,8 @@
 import type FloatButton from "./ui-float-button.vue"
 import type { ExtractPropTypes } from "vue"
-import { createProps } from "../hooks"
 import { styleProp, truthProp, makeStringProp, makeNumericProp } from "../utils/props"
 
-export const [floatButtonProps, useFloatButtonProps] = createProps("floatButton", {
+export const floatButtonProps = {
   /**
    * 是否显示
    */
@@ -88,8 +87,7 @@ export const [floatButtonProps, useFloatButtonProps] = createProps("floatButton"
    * 自定义样式
    */
   customStyle: styleProp,
-})
-
+}
 export interface FloatButtonDragDetail {
   left: number
   top: number

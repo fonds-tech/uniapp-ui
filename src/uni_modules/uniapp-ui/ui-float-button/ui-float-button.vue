@@ -4,15 +4,15 @@
       class="ui-float-button"
       :hover-class="hoverClass"
       :hover-stay-time="100"
-      :class="[buttonClass, useProps.customClass]"
+      :class="[buttonClass, props.customClass]"
       :style="[buttonStyle]"
       @click="onClick"
       @mousedown="onMouseDown"
     >
       <slot>
         <view class="ui-float-button__content">
-          <ui-icon :name="useProps.icon" :color="useProps.foregroundColor" :size="useProps.iconSize" />
-          <view v-if="useProps.text" class="ui-float-button__text">{{ useProps.text }}</view>
+          <ui-icon :name="props.icon" :color="props.foregroundColor" :size="props.iconSize" />
+          <view v-if="props.text" class="ui-float-button__text">{{ props.text }}</view>
         </view>
       </slot>
     </view>
@@ -22,16 +22,14 @@
 <script setup lang="ts">
 import type { CSSProperties } from "vue"
 import type { FloatButtonDragDetail } from "./index"
+import { floatButtonEmits, floatButtonProps } from "./index"
 import { ref, watch, computed, reactive, onMounted, onUnmounted } from "vue"
 import { useUnit, useColor, useStyle, useUnitToPx, useSystemInfo } from "../hooks"
-import { floatButtonEmits, floatButtonProps, useFloatButtonProps } from "./index"
 
 defineOptions({ name: "ui-float-button" })
 
 const props = defineProps(floatButtonProps)
 const emits = defineEmits(floatButtonEmits)
-const useProps = useFloatButtonProps(props)
-
 const systemInfo = useSystemInfo()
 
 // 拖拽状态
@@ -51,20 +49,20 @@ let documentMouseBound = false
 // #endif
 
 const hoverClass = computed(() => {
-  if (useProps.disabled || dragging.value) return ""
+  if (props.disabled || dragging.value) return ""
   return "ui-float-button--hover"
 })
 
 const wrapperClass = computed(() => {
   const list: string[] = []
-  if (!useProps.show) list.push("ui-float-button-wrapper--hidden")
+  if (!props.show) list.push("ui-float-button-wrapper--hidden")
   if (dragging.value) list.push("ui-float-button-wrapper--dragging")
   return list
 })
 
 const wrapperStyle = computed(() => {
   const style: CSSProperties = {}
-  style.zIndex = +useProps.zIndex
+  style.zIndex = +props.zIndex
 
   if (inited.value) {
     // 已初始化：使用 top/left + px 直接定位
@@ -73,16 +71,16 @@ const wrapperStyle = computed(() => {
     style.transition = attractTransition.value ? "left 0.3s ease, top 0.3s ease" : "none"
   } else {
     // 未初始化：使用 props 定位（兼容非拖拽场景）
-    const offsetX = useUnit(useProps.offsetX)
-    const offsetY = useUnit(useProps.offsetY)
+    const offsetX = useUnit(props.offsetX)
+    const offsetY = useUnit(props.offsetY)
 
-    if (useProps.position.includes("right")) {
+    if (props.position.includes("right")) {
       style.right = offsetX
     } else {
       style.left = offsetX
     }
 
-    if (useProps.position.includes("bottom")) {
+    if (props.position.includes("bottom")) {
       style.bottom = offsetY
     } else {
       style.top = offsetY
@@ -94,31 +92,31 @@ const wrapperStyle = computed(() => {
 
 const buttonClass = computed(() => {
   const list: string[] = []
-  list.push(`ui-float-button--${useProps.type}`)
-  if (useProps.disabled) list.push("ui-float-button--disabled")
-  if (useProps.text) list.push("ui-float-button--with-text")
+  list.push(`ui-float-button--${props.type}`)
+  if (props.disabled) list.push("ui-float-button--disabled")
+  if (props.text) list.push("ui-float-button--with-text")
   return list
 })
 
 const buttonStyle = computed(() => {
   const style: CSSProperties = {}
-  style.width = useUnit(useProps.size)
-  style.height = useUnit(useProps.size)
-  if (useProps.color) {
-    style.background = useColor(useProps.color)
+  style.width = useUnit(props.size)
+  style.height = useUnit(props.size)
+  if (props.color) {
+    style.background = useColor(props.color)
   }
-  if (useProps.foregroundColor) {
-    style.color = useColor(useProps.foregroundColor)
+  if (props.foregroundColor) {
+    style.color = useColor(props.foregroundColor)
   }
-  if (useProps.draggable) {
+  if (props.draggable) {
     style.touchAction = "none"
     style.userSelect = "none"
   }
-  return useStyle({ ...style, ...useStyle(useProps.customStyle) })
+  return useStyle({ ...style, ...useStyle(props.customStyle) })
 })
 
 function onClick() {
-  if (useProps.disabled) return
+  if (props.disabled) return
   emits("click")
 }
 
@@ -131,9 +129,9 @@ function initPosition() {
   const { windowWidth, windowHeight } = systemInfo
   if (!windowWidth || !windowHeight) return
 
-  const size = useUnitToPx(useProps.size)
-  const offsetX = useUnitToPx(useProps.offsetX)
-  const offsetY = useUnitToPx(useProps.offsetY)
+  const size = useUnitToPx(props.size)
+  const offsetX = useUnitToPx(props.offsetX)
+  const offsetY = useUnitToPx(props.offsetY)
 
   // 计算边界
   bounding.minTop = 0
@@ -142,13 +140,13 @@ function initPosition() {
   bounding.maxLeft = windowWidth - size
 
   // 根据 position 计算初始 top/left
-  if (useProps.position.includes("right")) {
+  if (props.position.includes("right")) {
     pos.left = windowWidth - size - offsetX
   } else {
     pos.left = offsetX
   }
 
-  if (useProps.position.includes("bottom")) {
+  if (props.position.includes("bottom")) {
     pos.top = windowHeight - size - offsetY
   } else {
     pos.top = offsetY
@@ -161,7 +159,7 @@ function buildDragDetail(): FloatButtonDragDetail {
   return {
     left: pos.left,
     top: pos.top,
-    position: useProps.position,
+    position: props.position,
   }
 }
 
@@ -190,13 +188,13 @@ function onDocumentMouseUp() {
 // #endif
 
 function applyMagneticSnap() {
-  const magnetic = useProps.magnetic
+  const magnetic = props.magnetic
   if (!magnetic) return
 
   const { windowWidth, windowHeight } = systemInfo
   if (!windowWidth) return
 
-  const size = useUnitToPx(useProps.size)
+  const size = useUnitToPx(props.size)
 
   attractTransition.value = true
 
@@ -222,7 +220,7 @@ function applyMagneticSnap() {
 }
 
 function onTouchStart(e: TouchEvent) {
-  if (!useProps.draggable) return
+  if (!props.draggable) return
 
   const touch = e.touches[0]
   // 记录触摸点相对于元素左上角的偏移
@@ -235,7 +233,7 @@ function onTouchStart(e: TouchEvent) {
 }
 
 function onTouchMove(e: TouchEvent) {
-  if (!useProps.draggable || !dragging.value) return
+  if (!props.draggable || !dragging.value) return
 
   const touch = e.touches[0]
   // 直接计算新位置 = 触摸位置 - 偏移
@@ -243,7 +241,7 @@ function onTouchMove(e: TouchEvent) {
   let y = touch.clientY - touchOffset.y
 
   // 边界限制
-  if (useProps.dragBoundary) {
+  if (props.dragBoundary) {
     x = clamp(x, bounding.minLeft, bounding.maxLeft)
     y = clamp(y, bounding.minTop, bounding.maxTop)
   }
@@ -255,7 +253,7 @@ function onTouchMove(e: TouchEvent) {
 }
 
 function onTouchEnd() {
-  if (!useProps.draggable || !dragging.value) return
+  if (!props.draggable || !dragging.value) return
 
   dragging.value = false
   applyMagneticSnap()
@@ -264,7 +262,7 @@ function onTouchEnd() {
 
 function onMouseDown(e: MouseEvent) {
   // #ifdef H5
-  if (!useProps.draggable) return
+  if (!props.draggable) return
 
   e.preventDefault()
   touchOffset.x = e.clientX - pos.left
@@ -277,12 +275,12 @@ function onMouseDown(e: MouseEvent) {
 }
 
 function handleMouseMove(e: MouseEvent) {
-  if (!useProps.draggable || !dragging.value) return
+  if (!props.draggable || !dragging.value) return
 
   let x = e.clientX - touchOffset.x
   let y = e.clientY - touchOffset.y
 
-  if (useProps.dragBoundary) {
+  if (props.dragBoundary) {
     x = clamp(x, bounding.minLeft, bounding.maxLeft)
     y = clamp(y, bounding.minTop, bounding.maxTop)
   }
@@ -295,7 +293,7 @@ function handleMouseMove(e: MouseEvent) {
 
 function handleMouseEnd() {
   // #ifdef H5
-  if (!useProps.draggable || !dragging.value) {
+  if (!props.draggable || !dragging.value) {
     unbindDocumentMouse()
     return
   }
@@ -318,7 +316,7 @@ onUnmounted(() => {
 })
 
 watch(
-  () => useProps.show,
+  () => props.show,
   (val) => {
     emits("update:show", val)
   },
@@ -326,7 +324,7 @@ watch(
 
 // 监听 position 属性变化，重新初始化位置
 watch(
-  () => useProps.position,
+  () => props.position,
   () => {
     initPosition()
   },
@@ -334,7 +332,7 @@ watch(
 
 // 监听 offset 和 size 变化，重新计算边界和位置
 watch(
-  () => [useProps.offsetX, useProps.offsetY, useProps.size],
+  () => [props.offsetX, props.offsetY, props.size],
   () => {
     if (inited.value) {
       initPosition()

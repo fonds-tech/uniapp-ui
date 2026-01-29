@@ -1,9 +1,8 @@
 import type Empty from "./ui-empty.vue"
 import type { ExtractPropTypes } from "vue"
-import { createProps } from "../hooks"
 import { styleProp, truthProp, makeStringProp, makeNumericProp } from "../utils/props"
 
-export const [emptyProps, useEmptyProps] = createProps("empty", {
+export const emptyProps = {
   /**
    * 是否显示
    */
@@ -64,7 +63,7 @@ export const [emptyProps, useEmptyProps] = createProps("empty", {
    * 自定义样式
    */
   customStyle: styleProp,
-})
+}
 export const emptyEmits = {}
 
 export type EmptyEmits = typeof emptyEmits

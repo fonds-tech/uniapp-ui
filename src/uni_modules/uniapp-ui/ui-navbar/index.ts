@@ -1,9 +1,8 @@
 import type Navbar from "./ui-navbar.vue"
 import type { PropType, ExtractPropTypes } from "vue"
-import { createProps } from "../hooks"
 import { styleProp, truthProp, makeStringProp, makeNumericProp } from "../utils/props"
 
-export const [navbarProps, useNavbarProps] = createProps("navbar", {
+export const navbarProps = {
   /**
    * 高度
    */
@@ -129,8 +128,7 @@ export const [navbarProps, useNavbarProps] = createProps("navbar", {
    * 自定义样式
    */
   customStyle: styleProp,
-})
-
+}
 export const navbarEmits = {
   back: () => true,
   rect: (rect: UniApp.NodeInfo) => true,

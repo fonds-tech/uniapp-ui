@@ -1,9 +1,8 @@
 import type Stepper from "./ui-stepper.vue"
 import type { PropType, ExtractPropTypes } from "vue"
-import { createProps } from "../hooks"
 import { styleProp, truthProp, makeStringProp, makeNumericProp } from "../utils/props"
 
-export const [stepperProps, useStepperProps] = createProps("stepper", {
+export const stepperProps = {
   /**
    * 绑定值
    */
@@ -160,8 +159,7 @@ export const [stepperProps, useStepperProps] = createProps("stepper", {
    * 自定义样式
    */
   customStyle: styleProp,
-})
-
+}
 export const stepperEmits = {
   click: () => true,
   blur: (event: any) => true,
