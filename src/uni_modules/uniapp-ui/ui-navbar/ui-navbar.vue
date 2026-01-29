@@ -122,9 +122,10 @@ const bodyStyle = computed(() => {
   style.paddingLeft = useUnit(props.padding)
   // #ifdef MP
   // 小程序下需要考虑胶囊按钮的位置，避免右侧内容与胶囊重叠
+  // 右侧 padding = 到胶囊的距离 + padding 间距（和左侧保持一致）
   const menuOffset = systemInfo.windowWidth - menuButtonInfo.left
   const paddingPx = useUnitToPx(props.padding) || 0
-  style.paddingRight = `${Math.max(menuOffset, paddingPx)}px`
+  style.paddingRight = `${menuOffset + paddingPx}px`
   // #endif
   // #ifndef MP
   style.paddingRight = useUnit(props.padding)
@@ -284,8 +285,9 @@ async function updateSideWidth() {
 
   // #ifdef MP
   // 小程序下需要考虑胶囊按钮的位置
+  // 右侧偏移 = 到胶囊的距离 + padding 间距 + 右侧内容宽度 + margin
   const menuOffset = systemInfo.windowWidth - (menuButtonInfo.left || 0)
-  rightOffset.value = Math.max(rightContentOffset, menuOffset)
+  rightOffset.value = menuOffset + paddingPx + (rightRect?.width || 0) + marginPx
   // #endif
   // #ifndef MP
   rightOffset.value = rightContentOffset
