@@ -11,9 +11,8 @@
 
 <script setup lang="ts">
 import type { CSSProperties } from "vue"
-import { configProviderKey } from "../ui-config-provider"
 import { headerEmits, headerProps } from "./index"
-import { useRect, useColor, useStyle, useParent, useUnitToPx } from "../hooks"
+import { useMitt, useRect, useColor, useStyle, useUnitToPx } from "../hooks"
 import { ref, toRefs, computed, nextTick, onMounted, onBeforeMount, getCurrentInstance } from "vue"
 
 // 定义组件名称
@@ -22,8 +21,8 @@ defineOptions({ name: "ui-header" })
 // 定义props和emits
 const props = defineProps(headerProps)
 const emits = defineEmits(headerEmits)
-// 使用useParent hook获取父组件信息
-const { parent } = useParent(configProviderKey)
+
+const mitt = useMitt()
 
 // 解构常用属性
 const { customClass, safeAreaInsetTop } = toRefs(props)
@@ -69,7 +68,7 @@ async function resize() {
 }
 
 function onEvent() {
-  parent?.mitt.on("navbar:rect", (rect: UniApp.NodeInfo) => {
+  mitt?.on("navbar:rect", (rect: UniApp.NodeInfo) => {
     if (rect.height) {
       uiNavbarHeight.value = rect.height
     }

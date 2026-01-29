@@ -42,10 +42,9 @@
 <script setup lang="ts">
 import type { CSSProperties } from "vue"
 import { isNumber } from "../utils/check"
-import { configProviderKey } from "../ui-config-provider"
 import { navbarEmits, navbarProps } from "./index"
 import { ref, watch, computed, nextTick, useSlots, onMounted, onUnmounted, getCurrentInstance } from "vue"
-import { useRgb, useRect, useUnit, useColor, useStyle, useParent, useUnitToPx, useUnitToRpx, useSystemInfo } from "../hooks"
+import { useRgb, useMitt, useRect, useUnit, useColor, useStyle, useUnitToPx, useUnitToRpx, useSystemInfo } from "../hooks"
 
 // 定义组件名称
 defineOptions({ name: "ui-navbar" })
@@ -53,8 +52,9 @@ defineOptions({ name: "ui-navbar" })
 // 定义组件的 props 和 emits
 const props = defineProps(navbarProps)
 const emits = defineEmits(navbarEmits)
+
+const mitt = useMitt()
 const slots = useSlots()
-const { parent } = useParent(configProviderKey)
 
 // 获取系统信息，用于后续计算
 const systemInfo = useSystemInfo()
@@ -298,8 +298,7 @@ async function resize() {
   routes.value = getCurrentPages()
   rect.value = await useRect(".ui-navbar__content", instance)
   await updateSideWidth()
-  // 通过 mitt 广播尺寸信息，供 ui-header 等组件使用
-  parent?.mitt.emit("navbar:rect", rect.value)
+  mitt?.emit("navbar:rect", rect.value)
   emits("rect", rect.value)
   emits("height", rect.value.height)
 }
