@@ -139,7 +139,10 @@ function initTransition() {
  * 内部方法，被 show() 和 props.show 监听调用
  */
 function open() {
-  if (transition.visible.value) return
+  if (transition.visible.value) {
+    startTimer()
+    return
+  }
   initTransition()
   zIndex.value = useGlobalZIndex()
   visible.value = true
