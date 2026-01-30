@@ -1,121 +1,151 @@
 import type Keyboard from "./ui-keyboard.vue"
 import type { ExtractPropTypes } from "vue"
-import { styleProp, truthProp, makeStringProp, makeNumericProp } from "../utils/props"
+import { styleProp, buildDefaultProps } from "../utils/props"
 
 export interface KeyboardKeyItem {
   value: string
   type: "key" | "delete" | "close" | "switch"
 }
 
+const defaultProps = buildDefaultProps("keyboard", {
+  show: false,
+  title: "",
+  mode: "number",
+  maxlength: Infinity,
+  zIndex: "",
+  random: false,
+  overlay: true,
+  showDot: false,
+  vibrate: false,
+  modelValue: "",
+  autoSwitch: true,
+  showHeader: true,
+  showCancel: true,
+  cancelText: "取消",
+  cancelTextSize: "",
+  cancelTextColor: "error",
+  cancelTextWeight: "",
+  showConfirm: true,
+  confirmText: "确定",
+  confirmTextSize: "",
+  confirmTextColor: "",
+  confirmTextWeight: "",
+  background: "#f2f3f5",
+  safeAreaInsetBottom: true,
+  closeOnClickOverlay: true,
+  customClass: "",
+  customStyle: "",
+})
+
 export const keyboardProps = {
   /**
    * 是否显示
    */
-  show: Boolean,
+  show: defaultProps("show", { type: Boolean }),
   /**
    * 标题
    */
-  title: makeStringProp(""),
+  title: defaultProps("title", { type: String }),
   /**
    * 键盘类型，可选值car、card、number
    */
-  mode: { type: String, default: "number", validator: (v: string) => ["car", "card", "number"].includes(v) },
+  mode: defaultProps("mode", { type: String, validator: (v: string) => ["car", "card", "number"].includes(v) }),
   /**
    * 最大输入长度
    */
-  maxlength: makeNumericProp(Infinity),
+  maxlength: defaultProps("maxlength", { type: [Number, String] }),
   /**
    * 元素层级
    */
-  zIndex: makeNumericProp(""),
+  zIndex: defaultProps("zIndex", { type: [Number, String] }),
   /**
    * 是否打乱键盘按键的顺序
    */
-  random: Boolean,
+  random: defaultProps("random", { type: Boolean }),
   /**
    * 是否显示遮罩
    */
-  overlay: truthProp,
+  overlay: defaultProps("overlay", { type: Boolean }),
   /**
    * 是否显示小数点按钮
    */
-  showDot: Boolean,
+  showDot: defaultProps("showDot", { type: Boolean }),
   /**
    * 是否开启按键震动反馈
    */
-  vibrate: Boolean,
+  vibrate: defaultProps("vibrate", { type: Boolean }),
   /**
    * 当前输入值，用于 maxlength 限制和 change 事件
    */
-  modelValue: makeStringProp(""),
+  modelValue: defaultProps("modelValue", { type: String }),
   /**
    * 车牌键盘是否自动切换中英文（根据输入长度）
    */
-  autoSwitch: truthProp,
+  autoSwitch: defaultProps("autoSwitch", { type: Boolean }),
   /**
    * 是否显示顶部栏
    */
-  showHeader: truthProp,
+  showHeader: defaultProps("showHeader", { type: Boolean }),
   /**
    * 是否显示取消按钮
    */
-  showCancel: truthProp,
+  showCancel: defaultProps("showCancel", { type: Boolean }),
   /**
    * 关闭按钮文字
    */
-  cancelText: makeStringProp("取消"),
+  cancelText: defaultProps("cancelText", { type: String }),
   /**
    * 关闭按钮文字大小
    */
-  cancelTextSize: makeNumericProp(""),
+  cancelTextSize: defaultProps("cancelTextSize", { type: [Number, String] }),
   /**
    * 关闭按钮文字颜色
    */
-  cancelTextColor: makeStringProp("error"),
+  cancelTextColor: defaultProps("cancelTextColor", { type: String }),
   /**
    * 关闭按钮文字粗细
    */
-  cancelTextWeight: makeNumericProp(""),
+  cancelTextWeight: defaultProps("cancelTextWeight", { type: [Number, String] }),
   /**
    * 是否显示确认按钮
    */
-  showConfirm: truthProp,
+  showConfirm: defaultProps("showConfirm", { type: Boolean }),
   /**
    * 确认按钮文字
    */
-  confirmText: makeStringProp("确定"),
+  confirmText: defaultProps("confirmText", { type: String }),
   /**
    * 确认按钮文字大小
    */
-  confirmTextSize: makeNumericProp(""),
+  confirmTextSize: defaultProps("confirmTextSize", { type: [Number, String] }),
   /**
    * 确认按钮文字颜色
    */
-  confirmTextColor: makeStringProp(""),
+  confirmTextColor: defaultProps("confirmTextColor", { type: String }),
   /**
    * 确认按钮文字粗细
    */
-  confirmTextWeight: makeNumericProp(""),
+  confirmTextWeight: defaultProps("confirmTextWeight", { type: [Number, String] }),
   /**
    * 背景颜色
    */
-  background: makeStringProp("#f2f3f5"),
+  background: defaultProps("background", { type: String }),
   /**
    * 是否开启底部安全区适配
    */
-  safeAreaInsetBottom: truthProp,
+  safeAreaInsetBottom: defaultProps("safeAreaInsetBottom", { type: Boolean }),
   /**
    * 是否允许点击遮罩收起键盘
    */
-  closeOnClickOverlay: truthProp,
+  closeOnClickOverlay: defaultProps("closeOnClickOverlay", { type: Boolean }),
   /**
    * 自定义类名
    */
-  customClass: makeStringProp(""),
+  customClass: defaultProps("customClass", { type: String }),
   /**
    * 自定义样式
    */
-  customStyle: styleProp,
+  customStyle: defaultProps("customStyle", styleProp),
 }
 export const keyboardEmits = {
   open: () => true,

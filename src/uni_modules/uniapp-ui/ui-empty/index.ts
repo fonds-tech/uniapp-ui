@@ -1,68 +1,86 @@
 import type Empty from "./ui-empty.vue"
 import type { ExtractPropTypes } from "vue"
-import { styleProp, truthProp, makeStringProp, makeNumericProp } from "../utils/props"
+import { styleProp, buildDefaultProps } from "../utils/props"
+
+const defaultProps = buildDefaultProps("empty", {
+  show: true,
+  icon: "",
+  text: "暂无数据~",
+  textSize: "",
+  textColor: "",
+  textWeight: "",
+  iconSize: "",
+  iconColor: "",
+  iconWeight: "",
+  iconWidth: "",
+  iconHeight: "",
+  margin: "",
+  padding: "",
+  customClass: "",
+  customStyle: "",
+})
 
 export const emptyProps = {
   /**
    * 是否显示
    */
-  show: truthProp,
+  show: defaultProps("show", { type: Boolean }),
   /**
    * 图标内容
    */
-  icon: makeStringProp(""),
+  icon: defaultProps("icon", { type: String }),
   /**
    * 文本内容
    */
-  text: makeStringProp("暂无数据~"),
+  text: defaultProps("text", { type: String }),
   /**
    * 文本大小
    */
-  textSize: makeNumericProp(""),
+  textSize: defaultProps("textSize", { type: [Number, String] }),
   /**
    * 文本颜色
    */
-  textColor: makeStringProp(""),
+  textColor: defaultProps("textColor", { type: String }),
   /**
    * 文本粗细
    */
-  textWeight: makeNumericProp(""),
+  textWeight: defaultProps("textWeight", { type: [Number, String] }),
   /**
    * 图标大小
    */
-  iconSize: makeNumericProp(""),
+  iconSize: defaultProps("iconSize", { type: [Number, String] }),
   /**
    * 图标颜色
    */
-  iconColor: makeStringProp(""),
+  iconColor: defaultProps("iconColor", { type: String }),
   /**
    * 图标粗细
    */
-  iconWeight: makeNumericProp(""),
+  iconWeight: defaultProps("iconWeight", { type: [Number, String] }),
   /**
    * 图标宽度
    */
-  iconWidth: makeNumericProp(""),
+  iconWidth: defaultProps("iconWidth", { type: [Number, String] }),
   /**
    * 图标高度
    */
-  iconHeight: makeNumericProp(""),
+  iconHeight: defaultProps("iconHeight", { type: [Number, String] }),
   /**
    * 外边距
    */
-  margin: makeNumericProp(""),
+  margin: defaultProps("margin", { type: [Number, String] }),
   /**
    * 内边距
    */
-  padding: makeNumericProp(""),
+  padding: defaultProps("padding", { type: [Number, String] }),
   /**
    * 自定义类名
    */
-  customClass: makeStringProp(""),
+  customClass: defaultProps("customClass", { type: String }),
   /**
    * 自定义样式
    */
-  customStyle: styleProp,
+  customStyle: defaultProps("customStyle", styleProp),
 }
 export const emptyEmits = {}
 

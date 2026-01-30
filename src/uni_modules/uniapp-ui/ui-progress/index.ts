@@ -1,59 +1,74 @@
 import type Progress from "./ui-progress.vue"
-import type { ExtractPropTypes } from "vue"
-import { styleProp, truthProp, makeStringProp, makeNumericProp } from "../utils/props"
+import type { PropType, ExtractPropTypes } from "vue"
+import { styleProp, buildDefaultProps } from "../utils/props"
 
 export type ProgressTextPosition = "inside" | "outside" | "none"
+
+const defaultProps = buildDefaultProps("progress", {
+  percentage: 0,
+  color: "",
+  trackColor: "",
+  text: "",
+  showText: true,
+  textPosition: "inside",
+  textColor: "",
+  textSize: "",
+  textWeight: "",
+  height: "28rpx",
+  customClass: "",
+  customStyle: "",
+})
 
 export const progressProps = {
   /**
    * 进度百分比 (0-100)
    */
-  percentage: makeNumericProp(0),
+  percentage: defaultProps("percentage", { type: Number }),
   /**
    * 进度条填充色
    */
-  color: makeStringProp(""),
+  color: defaultProps("color", { type: String }),
   /**
    * 进度条轨道背景色
    */
-  trackColor: makeStringProp(""),
+  trackColor: defaultProps("trackColor", { type: String }),
   /**
    * 进度文本内容
    */
-  text: makeStringProp(""),
+  text: defaultProps("text", { type: String }),
   /**
    * 是否显示进度文本
    */
-  showText: truthProp,
+  showText: defaultProps("showText", { type: Boolean }),
   /**
    * 文本位置
    * @default 'inside'
    */
-  textPosition: makeStringProp<ProgressTextPosition>("inside"),
+  textPosition: defaultProps("textPosition", { type: String as PropType<ProgressTextPosition> }),
   /**
    * 进度文本颜色
    */
-  textColor: makeStringProp(""),
+  textColor: defaultProps("textColor", { type: String }),
   /**
    * 进度文本大小
    */
-  textSize: makeNumericProp(""),
+  textSize: defaultProps("textSize", { type: [Number, String] }),
   /**
    * 进度文本粗细
    */
-  textWeight: makeNumericProp(""),
+  textWeight: defaultProps("textWeight", { type: [Number, String] }),
   /**
    * 进度条的高度
    */
-  height: makeNumericProp("28rpx"),
+  height: defaultProps("height", { type: [Number, String] }),
   /**
    * 自定义类名
    */
-  customClass: makeStringProp(""),
+  customClass: defaultProps("customClass", { type: String }),
   /**
    * 自定义样式
    */
-  customStyle: styleProp,
+  customStyle: defaultProps("customStyle", styleProp),
 }
 export const progressEmits = {
   finish: () => true,

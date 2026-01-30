@@ -1,52 +1,66 @@
 import type NumberRoll from "./ui-number-roll.vue"
 import type { ExtractPropTypes } from "vue"
-import { styleProp, truthProp, makeNumberProp, makeStringProp, makeNumericProp } from "../utils/props"
+import { styleProp, buildDefaultProps } from "../utils/props"
+
+const defaultProps = buildDefaultProps("number-roll", {
+  value: 0,
+  color: "",
+  fontSize: 24,
+  fontWeight: "",
+  trimZero: true,
+  thousandsSep: "",
+  decimalPlaces: 2,
+  duration: "",
+  timingFunction: "",
+  customClass: "",
+  customStyle: "",
+})
 
 export const numberRollProps = {
   /**
    * 数据值
    */
-  value: makeNumericProp(0),
+  value: defaultProps("value", { type: [Number, String] }),
   /**
    * 字体颜色
    */
-  color: makeStringProp(""),
+  color: defaultProps("color", { type: String }),
   /**
    * 字体大小
    */
-  fontSize: makeNumericProp(24),
+  fontSize: defaultProps("fontSize", { type: [Number, String] }),
   /**
    * 字体粗细
    */
-  fontWeight: makeStringProp(""),
+  fontWeight: defaultProps("fontWeight", { type: String }),
   /**
    * 去除0
    */
-  trimZero: truthProp,
+  trimZero: defaultProps("trimZero", { type: Boolean }),
   /**
    * 千位分隔符
    */
-  thousandsSep: makeStringProp(""),
+  thousandsSep: defaultProps("thousandsSep", { type: String }),
   /**
    * 小数位数
    */
-  decimalPlaces: makeNumberProp(2),
+  decimalPlaces: defaultProps("decimalPlaces", { type: Number }),
   /**
    * 过渡时间
    */
-  duration: makeNumericProp(""),
+  duration: defaultProps("duration", { type: [Number, String] }),
   /**
    * 动画函数
    */
-  timingFunction: makeStringProp(""),
+  timingFunction: defaultProps("timingFunction", { type: String }),
   /**
    * 自定义类名
    */
-  customClass: makeStringProp(""),
+  customClass: defaultProps("customClass", { type: String }),
   /**
    * 自定义样式
    */
-  customStyle: styleProp,
+  customStyle: defaultProps("customStyle", styleProp),
 }
 export const numberRollEmits = {}
 

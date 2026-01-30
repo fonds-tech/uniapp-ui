@@ -1,60 +1,76 @@
 import type IndexAnchor from "./ui-index-anchor.vue"
 import type { ExtractPropTypes } from "vue"
-import { styleProp, makeStringProp, makeNumericProp } from "../utils/props"
+import { styleProp, buildDefaultProps } from "../utils/props"
+
+const defaultProps = buildDefaultProps("index-anchor", {
+  name: "",
+  text: "",
+  color: "",
+  height: "",
+  fontSize: "",
+  fontWeight: "",
+  background: "",
+  stickyColor: "",
+  stickyFontSize: "",
+  stickyFontWeight: "",
+  stickyBackground: "",
+  customClass: "",
+  customStyle: "",
+})
 
 export const indexAnchorProps = {
   /**
    * 索引名称，作为匹配的标识符
    */
-  name: makeNumericProp(""),
+  name: defaultProps("name", { type: [Number, String] }),
   /**
    * 索引字符
    */
-  text: makeNumericProp(""),
+  text: defaultProps("text", { type: [Number, String] }),
   /**
    * 字符颜色
    */
-  color: makeStringProp(""),
+  color: defaultProps("color", { type: String }),
   /**
    * 高度
    */
-  height: makeNumericProp(""),
+  height: defaultProps("height", { type: [Number, String] }),
   /**
    * 字符大小
    */
-  fontSize: makeNumericProp(""),
+  fontSize: defaultProps("fontSize", { type: [Number, String] }),
   /**
    * 字符粗细
    */
-  fontWeight: makeNumericProp(""),
+  fontWeight: defaultProps("fontWeight", { type: [Number, String] }),
   /**
    * 背景颜色
    */
-  background: makeStringProp(""),
+  background: defaultProps("background", { type: String }),
   /**
    * 吸顶时字符颜色
    */
-  stickyColor: makeStringProp(""),
+  stickyColor: defaultProps("stickyColor", { type: String }),
   /**
    * 吸顶时字符大小
    */
-  stickyFontSize: makeNumericProp(""),
+  stickyFontSize: defaultProps("stickyFontSize", { type: [Number, String] }),
   /**
    * 吸顶时字符粗细
    */
-  stickyFontWeight: makeNumericProp(""),
+  stickyFontWeight: defaultProps("stickyFontWeight", { type: [Number, String] }),
   /**
    * 吸顶时背景颜色
    */
-  stickyBackground: makeStringProp(""),
+  stickyBackground: defaultProps("stickyBackground", { type: String }),
   /**
    * 自定义类名
    */
-  customClass: makeStringProp(""),
+  customClass: defaultProps("customClass", { type: String }),
   /**
    * 自定义样式
    */
-  customStyle: styleProp,
+  customStyle: defaultProps("customStyle", styleProp),
 }
 export const indexAnchorEmits = {
   blur: () => true,

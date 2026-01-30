@@ -1,25 +1,32 @@
 import type CellGroup from "./ui-cell-group.vue"
 import type { PropType, InjectionKey, CSSProperties, ExtractPropTypes } from "vue"
-import { numericProp } from "../utils/props"
+import { buildDefaultProps } from "../utils/props"
 
 export const cellGroupKey: InjectionKey<CellGroupProvide> = Symbol("ui-cell-group")
+const defaultProps = buildDefaultProps("cell-group", {
+  radius: undefined,
+  background: undefined,
+  customClass: undefined,
+  customStyle: undefined,
+})
+
 export const cellGroupProps = {
   /**
    * 圆角值
    */
-  radius: numericProp,
+  radius: defaultProps("radius", { type: [Number, String] }),
   /**
    * 背景颜色
    */
-  background: String,
+  background: defaultProps("background", { type: String }),
   /**
    * 自定义类名
    */
-  customClass: String,
+  customClass: defaultProps("customClass", { type: String }),
   /**
    * 自定义样式
    */
-  customStyle: [String, Object] as PropType<string | CSSProperties>,
+  customStyle: defaultProps("customStyle", { type: [String, Object] as PropType<string | CSSProperties> }),
 }
 export const cellGroupEmits = {}
 

@@ -1,60 +1,76 @@
 import type Text from "./ui-text.vue"
 import type { ExtractPropTypes } from "vue"
-import { styleProp, makeStringProp, makeNumericProp } from "../utils/props"
+import { styleProp, buildDefaultProps } from "../utils/props"
+
+const defaultProps = buildDefaultProps("text", {
+  text: "",
+  size: "",
+  color: "",
+  weight: "",
+  align: "left",
+  rows: 0,
+  decoration: "",
+  lineHeight: "",
+  decode: false,
+  clickable: false,
+  selectable: false,
+  customClass: "",
+  customStyle: "",
+})
 
 export const textProps = {
   /**
    * 文本内容
    */
-  text: makeNumericProp(""),
+  text: defaultProps("text", { type: [Number, String] }),
   /**
    * 文本大小
    */
-  size: makeNumericProp(""),
+  size: defaultProps("size", { type: [Number, String] }),
   /**
    * 文本颜色
    */
-  color: makeStringProp(""),
+  color: defaultProps("color", { type: String }),
   /**
    * 文本粗细
    */
-  weight: makeNumericProp(""),
+  weight: defaultProps("weight", { type: [Number, String] }),
   /**
    * 文本对齐方式，可选值 left、center、right
    */
-  align: makeStringProp("left"),
+  align: defaultProps("align", { type: String }),
   /**
    * 展示的行数，0 表示不限制
    */
-  rows: makeNumericProp(0),
+  rows: defaultProps("rows", { type: Number }),
   /**
    * 文本修饰，可选值 underline、line-through
    */
-  decoration: makeStringProp(""),
+  decoration: defaultProps("decoration", { type: String }),
   /**
    * 文本行高
    */
-  lineHeight: makeNumericProp(""),
+  lineHeight: defaultProps("lineHeight", { type: [Number, String] }),
   /**
    * 是否解码
    */
-  decode: Boolean,
+  decode: defaultProps("decode", { type: Boolean }),
   /**
    * 是否可点击的，点击会有状态变化
    */
-  clickable: Boolean,
+  clickable: defaultProps("clickable", { type: Boolean }),
   /**
    * 文本是否可选
    */
-  selectable: Boolean,
+  selectable: defaultProps("selectable", { type: Boolean }),
   /**
    * 自定义类名
    */
-  customClass: makeStringProp(""),
+  customClass: defaultProps("customClass", { type: String }),
   /**
    * 自定义样式
    */
-  customStyle: styleProp,
+  customStyle: defaultProps("customStyle", styleProp),
 }
 export const textEmits = {
   click: () => true,

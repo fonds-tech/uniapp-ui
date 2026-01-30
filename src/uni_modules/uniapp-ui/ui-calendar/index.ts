@@ -1,6 +1,6 @@
 import type Calendar from "./ui-calendar.vue"
 import type { PropType, CSSProperties, ExtractPropTypes } from "vue"
-import { truthProp, numericProp, makeArrayProp, makeStringProp, makeNumericProp } from "../utils/props"
+import { buildDefaultProps } from "../utils/props"
 
 // ==================== 类型定义 ====================
 
@@ -85,140 +85,152 @@ export interface CalendarConfirmData {
 
 // ==================== Props 定义 ====================
 
+const defaultProps = buildDefaultProps("calendar", {
+  show: false,
+  type: "single",
+  title: "日期选择",
+  minDate: undefined,
+  maxDate: undefined,
+  defaultDate: undefined,
+  formatter: undefined,
+  showConfirm: true,
+  confirmText: "确定",
+  confirmDisabledText: "请选择日期",
+  showTitle: true,
+  showSubtitle: true,
+  firstDayOfWeek: 0,
+  readonly: false,
+  poppable: true,
+  maxRange: undefined,
+  rangePrompt: undefined,
+  color: undefined,
+  showMark: false,
+  closeOnClickOverlay: true,
+  closeable: false,
+  borderRadius: "16rpx",
+  zIndex: undefined,
+  safeAreaInsetBottom: true,
+  markedDates: () => [],
+  customStyle: "",
+  customClass: undefined,
+})
+
 export const calendarProps = {
   /**
    * 是否显示日历（弹层模式）
    */
-  show: Boolean,
+  show: defaultProps("show", { type: Boolean }),
   /**
    * 选择类型
    * - single: 单选
    * - multiple: 多选
    * - range: 范围选择
    */
-  type: makeStringProp<CalendarType>("single"),
+  type: defaultProps("type", { type: String as PropType<CalendarType> }),
   /**
    * 日历标题
    */
-  title: makeStringProp("日期选择"),
+  title: defaultProps("title", { type: String }),
   /**
    * 最小可选日期（时间戳或 Date 对象）
    */
-  minDate: {
-    type: [Number, Date] as PropType<number | Date>,
-    default: undefined,
-  },
+  minDate: defaultProps("minDate", { type: [Number, Date] as PropType<number | Date> }),
   /**
    * 最大可选日期（时间戳或 Date 对象）
    */
-  maxDate: {
-    type: [Number, Date] as PropType<number | Date>,
-    default: undefined,
-  },
+  maxDate: defaultProps("maxDate", { type: [Number, Date] as PropType<number | Date> }),
   /**
    * 默认选中日期
    * - 单选模式: number | Date
    * - 多选模式: (number | Date)[]
    * - 范围模式: [number | Date, number | Date]
    */
-  defaultDate: {
-    type: [Number, Date, Array] as PropType<number | Date | (number | Date)[]>,
-    default: undefined,
-  },
+  defaultDate: defaultProps("defaultDate", { type: [Number, Date, Array] as PropType<number | Date | (number | Date)[]> }),
   /**
    * 日期格式化函数
    */
-  formatter: {
-    type: Function as PropType<CalendarFormatter>,
-    default: undefined,
-  },
+  formatter: defaultProps("formatter", { type: Function as PropType<CalendarFormatter> }),
   /**
    * 是否显示确认按钮
    */
-  showConfirm: truthProp,
+  showConfirm: defaultProps("showConfirm", { type: Boolean }),
   /**
    * 确认按钮文字
    */
-  confirmText: makeStringProp("确定"),
+  confirmText: defaultProps("confirmText", { type: String }),
   /**
    * 确认按钮禁用文字
    */
-  confirmDisabledText: makeStringProp("请选择日期"),
+  confirmDisabledText: defaultProps("confirmDisabledText", { type: String }),
   /**
    * 是否显示标题
    */
-  showTitle: truthProp,
+  showTitle: defaultProps("showTitle", { type: Boolean }),
   /**
    * 是否显示副标题（当前年月）
    */
-  showSubtitle: truthProp,
+  showSubtitle: defaultProps("showSubtitle", { type: Boolean }),
   /**
    * 周起始日
    * 0-6，0 代表周日，1 代表周一，以此类推
    */
-  firstDayOfWeek: makeNumericProp(0),
+  firstDayOfWeek: defaultProps("firstDayOfWeek", { type: Number }),
   /**
    * 是否只读
    */
-  readonly: Boolean,
+  readonly: defaultProps("readonly", { type: Boolean }),
   /**
    * 是否以弹层形式展示
    */
-  poppable: truthProp,
+  poppable: defaultProps("poppable", { type: Boolean }),
   /**
    * 范围选择模式下的最大可选天数
    */
-  maxRange: {
-    type: Number,
-    default: undefined,
-  },
+  maxRange: defaultProps("maxRange", { type: Number }),
   /**
    * 超过最大可选天数时的提示文案
    */
-  rangePrompt: String,
+  rangePrompt: defaultProps("rangePrompt", { type: String }),
   /**
    * 主题色
    */
-  color: String,
+  color: defaultProps("color", { type: String }),
   /**
    * 是否显示月份背景水印
    */
-  showMark: Boolean,
+  showMark: defaultProps("showMark", { type: Boolean }),
   /**
    * 点击遮罩是否关闭弹层
    */
-  closeOnClickOverlay: truthProp,
+  closeOnClickOverlay: defaultProps("closeOnClickOverlay", { type: Boolean }),
   /**
    * 是否显示关闭按钮
    */
-  closeable: Boolean,
+  closeable: defaultProps("closeable", { type: Boolean }),
   /**
    * 弹层圆角
    */
-  borderRadius: makeNumericProp("16rpx"),
+  borderRadius: defaultProps("borderRadius", { type: [Number, String] }),
   /**
    * 弹层层级
    */
-  zIndex: numericProp,
+  zIndex: defaultProps("zIndex", { type: [Number, String] }),
   /**
    * 是否开启底部安全区
    */
-  safeAreaInsetBottom: truthProp,
+  safeAreaInsetBottom: defaultProps("safeAreaInsetBottom", { type: Boolean }),
   /**
    * 需要标记的日期数组 (YYYY-MM-DD 格式)
    */
-  markedDates: makeArrayProp<string>(),
+  markedDates: defaultProps("markedDates", { type: Array as PropType<string[]> }),
   /**
    * 自定义样式
    */
-  customStyle: {
-    type: [String, Object] as PropType<string | CSSProperties>,
-    default: "",
-  },
+  customStyle: defaultProps("customStyle", { type: [String, Object] as PropType<string | CSSProperties> }),
   /**
    * 自定义类名
    */
-  customClass: String,
+  customClass: defaultProps("customClass", { type: String }),
 }
 // ==================== Emits 定义 ====================
 

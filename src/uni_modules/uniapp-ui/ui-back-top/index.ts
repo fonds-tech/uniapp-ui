@@ -1,7 +1,32 @@
 import type BackTop from "./ui-back-top.vue"
 import type { TransitionName } from "../ui-transition"
 import type { PropType, CSSProperties, ExtractPropTypes } from "vue"
-import { numericProp, makeStringProp, makeNumericProp } from "../utils/props"
+import { buildDefaultProps } from "../utils/props"
+
+const defaultProps = buildDefaultProps("back-top", {
+  scrollTop: undefined,
+  offset: "200rpx",
+  right: undefined,
+  bottom: undefined,
+  zIndex: undefined,
+  duration: "200",
+  background: undefined,
+  borderRadius: undefined,
+  icon: "arrowup",
+  iconColor: "#fff",
+  iconSize: "40rpx",
+  iconWeight: "",
+  text: "",
+  textColor: "#fff",
+  textSize: "20rpx",
+  textWeight: "",
+  size: "80rpx",
+  width: undefined,
+  height: undefined,
+  transition: "fade",
+  customClass: undefined,
+  customStyle: undefined,
+})
 
 export const backTopProps = {
   /**
@@ -9,91 +34,91 @@ export const backTopProps = {
    * - 不传：组件自动监听页面滚动事件
    * - 传入：使用外部传入的滚动位置
    */
-  scrollTop: numericProp,
+  scrollTop: defaultProps("scrollTop", { type: [Number, String] }),
   /**
    * 滚动高度达到此参数值时才显示组件
    */
-  offset: makeNumericProp("200rpx"),
+  offset: defaultProps("offset", { type: [Number, String] }),
   /**
    * 距离页面右侧的距离
    */
-  right: numericProp,
+  right: defaultProps("right", { type: [Number, String] }),
   /**
    * 距离页面底部的距离
    */
-  bottom: numericProp,
+  bottom: defaultProps("bottom", { type: [Number, String] }),
   /**
    * 元素层级
    */
-  zIndex: numericProp,
+  zIndex: defaultProps("zIndex", { type: [Number, String] }),
   /**
    * 返回顶部过程中的过渡时间，单位ms
    */
-  duration: makeNumericProp("200"),
+  duration: defaultProps("duration", { type: [Number, String] }),
   /**
    * 背景颜色
    */
-  background: String,
+  background: defaultProps("background", { type: String }),
   /**
    * 圆角值
    */
-  borderRadius: numericProp,
+  borderRadius: defaultProps("borderRadius", { type: [Number, String] }),
   /**
    * 图标名称
    */
-  icon: makeStringProp("arrowup"),
+  icon: defaultProps("icon", { type: String }),
   /**
    * 图标颜色
    */
-  iconColor: makeStringProp("#fff"),
+  iconColor: defaultProps("iconColor", { type: String }),
   /**
    * 图标大小
    */
-  iconSize: makeNumericProp("40rpx"),
+  iconSize: defaultProps("iconSize", { type: [Number, String] }),
   /**
    * 图标粗细
    */
-  iconWeight: makeNumericProp(""),
+  iconWeight: defaultProps("iconWeight", { type: [Number, String] }),
   /**
    * 按钮文字
    */
-  text: makeStringProp(""),
+  text: defaultProps("text", { type: String }),
   /**
    * 文字颜色
    */
-  textColor: makeStringProp("#fff"),
+  textColor: defaultProps("textColor", { type: String }),
   /**
    * 文字大小
    */
-  textSize: makeNumericProp("20rpx"),
+  textSize: defaultProps("textSize", { type: [Number, String] }),
   /**
    * 文字粗细
    */
-  textWeight: makeNumericProp(""),
+  textWeight: defaultProps("textWeight", { type: [Number, String] }),
   /**
    * 按钮尺寸（宽高相等）
    */
-  size: makeNumericProp("80rpx"),
+  size: defaultProps("size", { type: [Number, String] }),
   /**
    * 按钮宽度（优先于 size）
    */
-  width: numericProp,
+  width: defaultProps("width", { type: [Number, String] }),
   /**
    * 按钮高度（优先于 size）
    */
-  height: numericProp,
+  height: defaultProps("height", { type: [Number, String] }),
   /**
    * 过渡动画类型
    */
-  transition: { type: String as PropType<TransitionName>, default: "fade" },
+  transition: defaultProps("transition", { type: String as PropType<TransitionName> }),
   /**
    * 自定义类名
    */
-  customClass: String,
+  customClass: defaultProps("customClass", { type: String }),
   /**
    * 自定义样式
    */
-  customStyle: [String, Object] as PropType<string | CSSProperties>,
+  customStyle: defaultProps("customStyle", { type: [String, Object] as PropType<string | CSSProperties> }),
 }
 export const backTopEmits = {
   click: () => true,

@@ -18,7 +18,7 @@ UiTransition 组件，属性与事件以源码注释为准。
 | ------------------- | ----------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------- | ------ | ------ |
 | show                | 是否显示                                                                                                                | boolean                                               | -      | -      |
 | name                | 动画名称，有效值fade、zoom-in、fade-up、fade-down、fade-left、fade-right、slide-up、slide-down、slide-left、slide-right | makeStringProp<TransitionName>("fade")                | -      | -      |
-| zIndex              | 元素层级                                                                                                                | numericProp                                           | -      | -      |
+| zIndex              | 元素层级                                                                                                                | [Number, String]                                           | -      | -      |
 | duration            | 过渡时间                                                                                                                | makeNumericProp(300)                                  | -      | -      |
 | lazyRender          | 是否在显示时才渲染节点                                                                                                  | truthProp                                             | -      | -      |
 | enterTimingFunction | 进入动画函数                                                                                                            | makeStringProp("ease-out")                            | -      | -      |

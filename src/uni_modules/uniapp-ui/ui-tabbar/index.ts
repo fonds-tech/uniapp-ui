@@ -1,68 +1,82 @@
 import type Tabbar from "./ui-tabbar.vue"
 import type { PropType, InjectionKey, ExtractPropTypes } from "vue"
-import { styleProp, truthProp, makeStringProp, makeNumericProp } from "../utils/props"
+import { styleProp, buildDefaultProps } from "../utils/props"
 
 export const tabbarKey: InjectionKey<TabbarProvide> = Symbol("ui-tabbar")
+const defaultProps = buildDefaultProps("tabbar", {
+  modelValue: 0,
+  fixed: true,
+  border: false,
+  zIndex: "",
+  activeColor: "",
+  inactiveColor: "",
+  route: false,
+  height: "100rpx",
+  background: "#ffffff",
+  safeAreaInsetBottom: true,
+  placeholder: true,
+  customClass: "",
+  customStyle: "",
+  beforeChange: null,
+})
+
 export const tabbarProps = {
   /**
    * 当前选中标签的名称或索引值
    */
-  modelValue: makeNumericProp(0),
+  modelValue: defaultProps("modelValue", { type: [Number, String] }),
   /**
    * 是否固定定位
    */
-  fixed: truthProp,
+  fixed: defaultProps("fixed", { type: Boolean }),
   /**
    * 是否显示边框线
    */
-  border: Boolean,
+  border: defaultProps("border", { type: Boolean }),
   /**
    * 元素层级
    */
-  zIndex: makeNumericProp(""),
+  zIndex: defaultProps("zIndex", { type: [Number, String] }),
   /**
    * 激活颜色
    */
-  activeColor: makeStringProp(""),
+  activeColor: defaultProps("activeColor", { type: String }),
   /**
    * 未激活颜色
    */
-  inactiveColor: makeStringProp(""),
+  inactiveColor: defaultProps("inactiveColor", { type: String }),
   /**
    * 是否开启路由模式
    */
-  route: Boolean,
+  route: defaultProps("route", { type: Boolean }),
   /**
    * 高度
    */
-  height: makeNumericProp("100rpx"),
+  height: defaultProps("height", { type: [Number, String] }),
   /**
    * 背景色
    */
-  background: makeStringProp("#ffffff"),
+  background: defaultProps("background", { type: String }),
   /**
    * 是否开启底部安全区适配
    */
-  safeAreaInsetBottom: truthProp,
+  safeAreaInsetBottom: defaultProps("safeAreaInsetBottom", { type: Boolean }),
   /**
    * 固定定位时是否生成占位元素
    */
-  placeholder: truthProp,
+  placeholder: defaultProps("placeholder", { type: Boolean }),
   /**
    * 自定义类名
    */
-  customClass: makeStringProp(""),
+  customClass: defaultProps("customClass", { type: String }),
   /**
    * 自定义样式
    */
-  customStyle: styleProp,
+  customStyle: defaultProps("customStyle", styleProp),
   /**
    * 切换前的回调函数，返回 false 或 Promise.reject 可阻止切换
    */
-  beforeChange: {
-    type: Function as PropType<(name: string | number) => boolean | Promise<boolean>>,
-    default: null,
-  },
+  beforeChange: defaultProps("beforeChange", { type: Function as PropType<(name: string | number) => boolean | Promise<boolean>> }),
 }
 export const tabbarEmits = {
   rect: (rect: UniApp.NodeInfo) => true,

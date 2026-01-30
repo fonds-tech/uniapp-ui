@@ -1,7 +1,7 @@
 import type Picker from "./ui-picker.vue"
 import type { PropType, ExtractPropTypes } from "vue"
 import type { PickerValue, PickerColumn, PickerChangeData, PickerColumnsType, PickerColumnFields } from "../ui-picker-panel"
-import { truthProp, numericProp, makeArrayProp, makeStringProp, makeNumericProp } from "../utils/props"
+import { buildDefaultProps } from "../utils/props"
 
 // 重新导出这些类型供其他文件使用
 export type { PickerChangeData, PickerColumn, PickerColumnFields, PickerColumnsType, PickerValue }
@@ -18,123 +18,147 @@ export type PopupMode = "top" | "bottom" | "left" | "right" | "center"
  * ui-picker Props 定义
  * 使用 buildProps 工具函数,与 ui-picker-panel 保持一致
  */
+const defaultProps = buildDefaultProps("picker", {
+  show: false,
+  mode: "bottom",
+  borderRadius: "16rpx",
+  closeOnClickOverlay: true,
+  overlay: true,
+  duration: 300,
+  zIndex: undefined,
+  background: undefined,
+  safeAreaInsetBottom: true,
+  showHeader: true,
+  title: undefined,
+  cancelText: "取消",
+  confirmText: "确认",
+  modelValue: undefined,
+  columns: () => [],
+  loading: false,
+  columnFields: () => ({ text: "text", value: "value", children: "children" }),
+  columnHeight: "88rpx",
+  visibleColumnNum: 5,
+  columnSize: undefined,
+  columnColor: undefined,
+  columnWeight: undefined,
+  activeColumnSize: undefined,
+  activeColumnColor: undefined,
+  activeColumnWeight: undefined,
+  customClass: undefined,
+  customStyle: undefined,
+})
+
 export const pickerProps = {
   /**
    * 是否显示弹窗
    */
-  show: Boolean,
+  show: defaultProps("show", { type: Boolean }),
   /**
    * 弹窗位置
    */
-  mode: makeStringProp<PopupMode>("bottom"),
+  mode: defaultProps("mode", { type: String as PropType<PopupMode> }),
   /**
    * 圆角大小
    */
-  borderRadius: makeNumericProp("16rpx"),
+  borderRadius: defaultProps("borderRadius", { type: [Number, String] }),
   /**
    * 点击遮罩是否关闭
    */
-  closeOnClickOverlay: truthProp,
+  closeOnClickOverlay: defaultProps("closeOnClickOverlay", { type: Boolean }),
   /**
    * 是否显示遮罩
    */
-  overlay: truthProp,
+  overlay: defaultProps("overlay", { type: Boolean }),
   /**
    * 动画时长
    */
-  duration: makeNumericProp(300),
+  duration: defaultProps("duration", { type: Number }),
   /**
    * 弹窗层级
    */
-  zIndex: numericProp,
+  zIndex: defaultProps("zIndex", { type: [Number, String] }),
   /**
    * 背景色
    */
-  background: String,
+  background: defaultProps("background", { type: String }),
   /**
    * 底部安全区
    */
-  safeAreaInsetBottom: truthProp,
+  safeAreaInsetBottom: defaultProps("safeAreaInsetBottom", { type: Boolean }),
   /**
    * 是否显示头部
    */
-  showHeader: truthProp,
+  showHeader: defaultProps("showHeader", { type: Boolean }),
   /**
    * 标题
    */
-  title: String,
+  title: defaultProps("title", { type: String }),
   /**
    * 取消按钮文字
    */
-  cancelText: makeStringProp("取消"),
+  cancelText: defaultProps("cancelText", { type: String }),
   /**
    * 确认按钮文字
    */
-  confirmText: makeStringProp("确认"),
+  confirmText: defaultProps("confirmText", { type: String }),
   /**
    * 绑定值
    * - 单列模式：string | number
    * - 多列/级联模式：(string | number)[]
    */
-  modelValue: {
-    type: [String, Number, Array] as PropType<PickerModelValue>,
-    default: undefined,
-  },
+  modelValue: defaultProps("modelValue", { type: [String, Number, Array] as PropType<PickerModelValue> }),
   /**
    * 列数据
    */
-  columns: makeArrayProp<PickerColumn>(),
+  columns: defaultProps("columns", { type: Array as PropType<PickerColumn[]> }),
   /**
    * 是否加载中
    */
-  loading: Boolean,
+  loading: defaultProps("loading", { type: Boolean }),
   /**
    * 字段映射
    */
-  columnFields: {
-    type: Object as PropType<Partial<PickerColumnFields>>,
-    default: () => ({ text: "text", value: "value", children: "children" }),
-  },
+  columnFields: defaultProps("columnFields", { type: Object as PropType<Partial<PickerColumnFields>> }),
   /**
    * 选项高度
    */
-  columnHeight: makeNumericProp("88rpx"),
+  columnHeight: defaultProps("columnHeight", { type: [Number, String] }),
   /**
    * 可见选项数
    */
-  visibleColumnNum: makeNumericProp(5),
+  visibleColumnNum: defaultProps("visibleColumnNum", { type: [Number, String] }),
   /**
    * 选项文字大小
    */
-  columnSize: numericProp,
+  columnSize: defaultProps("columnSize", { type: [Number, String] }),
   /**
    * 选项文字颜色
    */
-  columnColor: String,
+  columnColor: defaultProps("columnColor", { type: String }),
   /**
    * 选项文字字重
    */
-  columnWeight: numericProp,
+  columnWeight: defaultProps("columnWeight", { type: [Number, String] }),
   /**
    * 激活选项文字大小
    */
-  activeColumnSize: numericProp,
+  activeColumnSize: defaultProps("activeColumnSize", { type: [Number, String] }),
   /**
    * 激活选项文字颜色
    */
-  activeColumnColor: String,
+  activeColumnColor: defaultProps("activeColumnColor", { type: String }),
   /**
    * 激活选项文字字重
    */
-  activeColumnWeight: numericProp,
+  activeColumnWeight: defaultProps("activeColumnWeight", { type: [Number, String] }),
   /**
    * 自定义类名
    */
-  customClass: String,
+  customClass: defaultProps("customClass", { type: String }),
   /**
    * 自定义样式
    */
-  customStyle: [String, Object],
+  customStyle: defaultProps("customStyle", { type: [String, Object] }),
 }
 /**
  * 取消事件数据

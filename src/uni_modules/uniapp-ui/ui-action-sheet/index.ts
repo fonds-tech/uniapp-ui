@@ -1,136 +1,171 @@
 import type ActionSheet from "./ui-action-sheet.vue"
 import type { PropType, CSSProperties, ExtractPropTypes } from "vue"
-import { styleProp, truthProp, numericProp, makeArrayProp, makeStringProp, makeNumericProp } from "../utils/props"
+import { styleProp, buildDefaultProps } from "../utils/props"
+
+const defaultProps = buildDefaultProps("action-sheet", {
+  show: false,
+  actions: () => [],
+  height: undefined,
+  maxHeight: undefined,
+  title: "",
+  titleSize: undefined,
+  titleColor: "",
+  titleWeight: undefined,
+  description: "",
+  descriptionSize: undefined,
+  descriptionColor: "",
+  descriptionWeight: undefined,
+  showCancel: true,
+  cancelText: "取消",
+  cancelTextSize: undefined,
+  cancelTextColor: "",
+  cancelTextWeight: undefined,
+  cancelBackground: "",
+  actionTitleStyle: "",
+  actionDescriptionStyle: "",
+  duration: 300,
+  borderRadius: undefined,
+  zIndex: undefined,
+  overlay: true,
+  overlayStyle: "",
+  lazyRender: true,
+  beforeClose: undefined,
+  closeOnClickAction: true,
+  closeOnClickOverlay: true,
+  safeAreaInsetBottom: true,
+  customClass: "",
+  customStyle: "",
+})
 
 export const actionSheetProps = {
   /**
    * 是否显示
    */
-  show: Boolean,
+  show: defaultProps("show", { type: Boolean }),
   /**
    * 操作项列表
    */
-  actions: makeArrayProp<ActionSheetAction>(),
+  actions: defaultProps("actions", { type: Array as PropType<ActionSheetAction[]> }),
   /**
    * 操作面板的高度
    */
-  height: numericProp,
+  height: defaultProps("height", { type: [Number, String] }),
   /**
    * 操作面板的最大高度
    */
-  maxHeight: numericProp,
+  maxHeight: defaultProps("maxHeight", { type: [Number, String] }),
   /**
    * 标题文本
    */
-  title: makeStringProp(""),
+  title: defaultProps("title", { type: String }),
   /**
    * 标题文本大小
    */
-  titleSize: numericProp,
+  titleSize: defaultProps("titleSize", { type: [Number, String] }),
   /**
    * 标题文本颜色
    */
-  titleColor: makeStringProp(""),
+  titleColor: defaultProps("titleColor", { type: String }),
   /**
    * 标题文本粗细
    */
-  titleWeight: numericProp,
+  titleWeight: defaultProps("titleWeight", { type: [Number, String] }),
   /**
    * 描述文本
    */
-  description: makeStringProp(""),
+  description: defaultProps("description", { type: String }),
   /**
    * 描述文本大小
    */
-  descriptionSize: numericProp,
+  descriptionSize: defaultProps("descriptionSize", { type: [Number, String] }),
   /**
    * 描述文本颜色
    */
-  descriptionColor: makeStringProp(""),
+  descriptionColor: defaultProps("descriptionColor", { type: String }),
   /**
    * 描述文本粗细
    */
-  descriptionWeight: numericProp,
+  descriptionWeight: defaultProps("descriptionWeight", { type: [Number, String] }),
   /**
    * 是否显示取消按钮
    */
-  showCancel: truthProp,
+  showCancel: defaultProps("showCancel", { type: Boolean }),
   /**
    * 取消按钮文本
    */
-  cancelText: makeStringProp("取消"),
+  cancelText: defaultProps("cancelText", { type: String }),
   /**
    * 取消按钮文本大小
    */
-  cancelTextSize: numericProp,
+  cancelTextSize: defaultProps("cancelTextSize", { type: [Number, String] }),
   /**
    * 取消按钮文本颜色
    */
-  cancelTextColor: makeStringProp(""),
+  cancelTextColor: defaultProps("cancelTextColor", { type: String }),
   /**
    * 取消按钮文本粗细
    */
-  cancelTextWeight: numericProp,
+  cancelTextWeight: defaultProps("cancelTextWeight", { type: [Number, String] }),
   /**
    * 取消按钮背景颜色
    */
-  cancelBackground: makeStringProp(""),
+  cancelBackground: defaultProps("cancelBackground", { type: String }),
   /**
    * 操作项标题的样式
    */
-  actionTitleStyle: styleProp,
+  actionTitleStyle: defaultProps("actionTitleStyle", styleProp),
   /**
    * 操作项描述的样式
    */
-  actionDescriptionStyle: styleProp,
+  actionDescriptionStyle: defaultProps("actionDescriptionStyle", styleProp),
   /**
    * 动画过渡的时间
    */
-  duration: makeNumericProp(300),
+  duration: defaultProps("duration", { type: Number }),
   /**
    * 操作面板的圆角大小
    */
-  borderRadius: numericProp,
+  borderRadius: defaultProps("borderRadius", { type: [Number, String] }),
   /**
    * 元素层级
    */
-  zIndex: numericProp,
+  zIndex: defaultProps("zIndex", { type: [Number, String] }),
   /**
    * 是否显示遮罩层
    */
-  overlay: truthProp,
+  overlay: defaultProps("overlay", { type: Boolean }),
   /**
    * 遮罩层样式
    */
-  overlayStyle: styleProp,
+  overlayStyle: defaultProps("overlayStyle", styleProp),
   /**
    * 是否在显示时才渲染节点
    */
-  lazyRender: truthProp,
+  lazyRender: defaultProps("lazyRender", { type: Boolean }),
   /**
    * 点击action项关闭前的回调函数
    */
-  beforeClose: Function as PropType<(action: ActionSheetAction, index: number) => boolean | Promise<boolean>>,
+  beforeClose: defaultProps("beforeClose", { type: Function as PropType<(action: ActionSheetAction, index: number) => boolean | Promise<boolean>> }),
   /**
    * 点击操作项后是否关闭操作面板
    */
-  closeOnClickAction: truthProp,
+  closeOnClickAction: defaultProps("closeOnClickAction", { type: Boolean }),
   /**
    * 点击遮罩层后是否关闭操作面板
    */
-  closeOnClickOverlay: truthProp,
+  closeOnClickOverlay: defaultProps("closeOnClickOverlay", { type: Boolean }),
   /**
    * 是否显示底部安全区域
    */
-  safeAreaInsetBottom: truthProp,
+  safeAreaInsetBottom: defaultProps("safeAreaInsetBottom", { type: Boolean }),
   /**
    * 自定义类名
    */
-  customClass: makeStringProp(""),
+  customClass: defaultProps("customClass", { type: String }),
   /**
    * 自定义样式
    */
-  customStyle: styleProp,
+  customStyle: defaultProps("customStyle", styleProp),
 }
 export interface ActionSheetAction {
   /** 选项标题 */

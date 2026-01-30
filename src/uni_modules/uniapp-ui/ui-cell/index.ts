@@ -1,161 +1,202 @@
 import type Cell from "./ui-cell.vue"
 import type { PropType, CSSProperties, ExtractPropTypes } from "vue"
-import { truthProp, numericProp, makeStringProp } from "../utils/props"
+import { buildDefaultProps } from "../utils/props"
+
+const defaultProps = buildDefaultProps("cell", {
+  icon: undefined,
+  title: undefined,
+  titleWidth: undefined,
+  label: undefined,
+  value: undefined,
+  height: undefined,
+  padding: undefined,
+  background: undefined,
+  iconGap: undefined,
+  iconSize: undefined,
+  iconColor: undefined,
+  iconWeight: undefined,
+  titleSize: undefined,
+  titleColor: undefined,
+  titleWeight: undefined,
+  labelGap: undefined,
+  labelSize: undefined,
+  labelColor: undefined,
+  labelWeight: undefined,
+  valueSize: undefined,
+  valueColor: undefined,
+  valueWeight: undefined,
+  rightIcon: "right",
+  rightIconGap: undefined,
+  rightIconSize: undefined,
+  rightIconColor: undefined,
+  rightIconWeight: undefined,
+  url: undefined,
+  linkType: undefined,
+  border: true,
+  borderColor: undefined,
+  borderLeft: undefined,
+  borderRight: undefined,
+  borderWidth: undefined,
+  clickable: false,
+  isLink: false,
+  customClass: undefined,
+  customStyle: undefined,
+})
 
 export const cellProps = {
   /**
    * 图标
    */
-  icon: String,
+  icon: defaultProps("icon", { type: String }),
   /**
    * 标题
    */
-  title: String,
+  title: defaultProps("title", { type: String }),
   /**
    * 标题宽度，不设置则根据内容自适应
    */
-  titleWidth: numericProp,
+  titleWidth: defaultProps("titleWidth", { type: [Number, String] }),
   /**
    * 描述
    */
-  label: String,
+  label: defaultProps("label", { type: String }),
   /**
    * 内容
    */
-  value: String,
+  value: defaultProps("value", { type: String }),
   /**
    * 高度
    */
-  height: numericProp,
+  height: defaultProps("height", { type: [Number, String] }),
   /**
    * 内边距
    */
-  padding: numericProp,
+  padding: defaultProps("padding", { type: [Number, String] }),
   /**
    * 背景颜色
    */
-  background: String,
+  background: defaultProps("background", { type: String }),
   /**
    * 图标和右侧内容间隔
    */
-  iconGap: numericProp,
+  iconGap: defaultProps("iconGap", { type: [Number, String] }),
   /**
    * 图标大小
    */
-  iconSize: numericProp,
+  iconSize: defaultProps("iconSize", { type: [Number, String] }),
   /**
    * 图标颜色
    */
-  iconColor: String,
+  iconColor: defaultProps("iconColor", { type: String }),
   /**
    * 图标粗细
    */
-  iconWeight: numericProp,
+  iconWeight: defaultProps("iconWeight", { type: [Number, String] }),
   /**
    * 标题大小
    */
-  titleSize: numericProp,
+  titleSize: defaultProps("titleSize", { type: [Number, String] }),
   /**
    * 标题颜色
    */
-  titleColor: String,
+  titleColor: defaultProps("titleColor", { type: String }),
   /**
    * 标题粗细
    */
-  titleWeight: numericProp,
+  titleWeight: defaultProps("titleWeight", { type: [Number, String] }),
   /**
    * 描述信息顶部间隔
    */
-  labelGap: numericProp,
+  labelGap: defaultProps("labelGap", { type: [Number, String] }),
   /**
    * 描述信息大小
    */
-  labelSize: numericProp,
+  labelSize: defaultProps("labelSize", { type: [Number, String] }),
   /**
    * 描述信息颜色
    */
-  labelColor: String,
+  labelColor: defaultProps("labelColor", { type: String }),
   /**
    * 描述信息粗细
    */
-  labelWeight: numericProp,
+  labelWeight: defaultProps("labelWeight", { type: [Number, String] }),
   /**
    * 右侧值大小
    */
-  valueSize: numericProp,
+  valueSize: defaultProps("valueSize", { type: [Number, String] }),
   /**
    * 右侧值颜色
    */
-  valueColor: String,
+  valueColor: defaultProps("valueColor", { type: String }),
   /**
    * 右侧值粗细
    */
-  valueWeight: numericProp,
+  valueWeight: defaultProps("valueWeight", { type: [Number, String] }),
   /**
    * 右侧图标
    */
-  rightIcon: makeStringProp("right"),
+  rightIcon: defaultProps("rightIcon", { type: String }),
   /**
    * 右侧图标距离左边间隔
    */
-  rightIconGap: numericProp,
+  rightIconGap: defaultProps("rightIconGap", { type: [Number, String] }),
   /**
    * 右侧图标大小
    */
-  rightIconSize: numericProp,
+  rightIconSize: defaultProps("rightIconSize", { type: [Number, String] }),
   /**
    * 右侧图标颜色
    */
-  rightIconColor: String,
+  rightIconColor: defaultProps("rightIconColor", { type: String }),
   /**
    * 右侧图标粗细
    */
-  rightIconWeight: numericProp,
+  rightIconWeight: defaultProps("rightIconWeight", { type: [Number, String] }),
   /**
    * 跳转链接
    */
-  url: String,
+  url: defaultProps("url", { type: String }),
   /**
    * 跳转类型
    */
-  linkType: String as PropType<"navigateTo" | "redirectTo" | "reLaunch" | "switchTab">,
+  linkType: defaultProps("linkType", { type: String as PropType<"navigateTo" | "redirectTo" | "reLaunch" | "switchTab"> }),
   /**
    * 是否显示边框
    */
-  border: truthProp,
+  border: defaultProps("border", { type: Boolean }),
   /**
    * 边框颜色
    */
-  borderColor: String,
+  borderColor: defaultProps("borderColor", { type: String }),
   /**
    * 边框左侧位置
    */
-  borderLeft: numericProp,
+  borderLeft: defaultProps("borderLeft", { type: [Number, String] }),
   /**
    * 边框右侧位置
    */
-  borderRight: numericProp,
+  borderRight: defaultProps("borderRight", { type: [Number, String] }),
   /**
    * 边框宽度
    */
-  borderWidth: numericProp,
+  borderWidth: defaultProps("borderWidth", { type: [Number, String] }),
   /**
    * 是否可点击的
    */
-  clickable: Boolean,
+  clickable: defaultProps("clickable", { type: Boolean }),
   /**
    * 是否为链接
    */
-  isLink: Boolean,
+  isLink: defaultProps("isLink", { type: Boolean }),
 
   /**
    * 自定义类名
    */
-  customClass: String,
+  customClass: defaultProps("customClass", { type: String }),
   /**
    * 自定义样式
    */
-  customStyle: [String, Object] as PropType<string | CSSProperties>,
+  customStyle: defaultProps("customStyle", { type: [String, Object] as PropType<string | CSSProperties> }),
 }
 export const cellEmits = {
   click: () => true,

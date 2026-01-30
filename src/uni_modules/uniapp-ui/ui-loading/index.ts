@@ -1,56 +1,71 @@
 import type Loading from "./ui-loading.vue"
 import type { PropType, CSSProperties, ExtractPropTypes } from "vue"
-import { truthProp, numericProp, makeStringProp, makeNumericProp } from "../utils/props"
+import { buildDefaultProps } from "../utils/props"
+
+const defaultProps = buildDefaultProps("loading", {
+  show: true,
+  type: "circular",
+  size: "32rpx",
+  color: "#999999",
+  text: undefined,
+  textGap: "12rpx",
+  textSize: undefined,
+  textColor: undefined,
+  textWeight: undefined,
+  vertical: false,
+  customClass: undefined,
+  customStyle: undefined,
+})
 
 export const loadingProps = {
   /**
    * 是否显示
    */
-  show: truthProp,
+  show: defaultProps("show", { type: Boolean }),
   /**
    * 类型
    */
-  type: makeStringProp<LoadingType>("circular"),
+  type: defaultProps("type", { type: String as PropType<LoadingType> }),
   /**
    * 大小
    */
-  size: makeNumericProp("32rpx"),
+  size: defaultProps("size", { type: [Number, String] }),
   /**
    * 颜色
    */
-  color: makeStringProp("#999999"),
+  color: defaultProps("color", { type: String }),
   /**
    * 文本内容
    */
-  text: String,
+  text: defaultProps("text", { type: String }),
   /**
    * 文本和图标的间距
    */
-  textGap: makeNumericProp("12rpx"),
+  textGap: defaultProps("textGap", { type: [Number, String] }),
   /**
    * 文本大小
    */
-  textSize: numericProp,
+  textSize: defaultProps("textSize", { type: [Number, String] }),
   /**
    * 文本颜色
    */
-  textColor: String,
+  textColor: defaultProps("textColor", { type: String }),
   /**
    * 文本粗细
    */
-  textWeight: numericProp,
+  textWeight: defaultProps("textWeight", { type: [Number, String] }),
   /**
    * 垂直布局
    */
-  vertical: Boolean,
+  vertical: defaultProps("vertical", { type: Boolean }),
   /**
    * 自定义类名
    */
-  customClass: String,
+  customClass: defaultProps("customClass", { type: String }),
   /**
    * 自定义样式
    */
-  customStyle: [String, Object] as PropType<string | CSSProperties>,
+  customStyle: defaultProps("customStyle", { type: [String, Object] as PropType<string | CSSProperties> }),
 }
 export const loadingEmits = {}
 

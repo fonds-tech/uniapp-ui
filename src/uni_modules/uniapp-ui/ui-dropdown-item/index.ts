@@ -1,153 +1,192 @@
 import type DropdownItem from "./ui-dropdown-item.vue"
 import type { PropType, CSSProperties, ExtractPropTypes } from "vue"
-import { truthProp, numericProp, makeArrayProp, makeStringProp, makeNumericProp } from "../utils/props"
+import { buildDefaultProps } from "../utils/props"
 
 export const dropdownItemKey = Symbol("ui-dropdown-item")
+const defaultProps = buildDefaultProps("dropdown-item", {
+  modelValue: undefined,
+  mode: "single",
+  title: undefined,
+  options: () => [],
+  disabled: false,
+  minHeight: "auto",
+  maxHeight: "60vh",
+  titleColor: undefined,
+  titleSize: undefined,
+  titleWeight: undefined,
+  activeTitleColor: undefined,
+  activeTitleSize: undefined,
+  activeTitleWeight: undefined,
+  icon: undefined,
+  iconSize: undefined,
+  iconColor: undefined,
+  iconWeight: undefined,
+  activeIconColor: undefined,
+  showIcon: true,
+  overlay: true,
+  duration: undefined,
+  direction: undefined,
+  background: undefined,
+  borderRadius: undefined,
+  optionSize: undefined,
+  optionColor: undefined,
+  optionWeight: undefined,
+  activeOptionSize: undefined,
+  activeOptionColor: undefined,
+  activeOptionWeight: undefined,
+  closeOnClickOverlay: true,
+  zIndex: undefined,
+  labelField: "label",
+  valueField: "value",
+  customClass: undefined,
+  customStyle: undefined,
+})
+
 export const dropdownItemProps = {
   /**
    * 绑定值，多选时为数组
    */
-  modelValue: { type: [String, Number, Array] },
+  modelValue: defaultProps("modelValue", { type: [String, Number, Array] }),
   /**
    * 菜单模式，可选值 single 单选模式 multiple 多选模式
    */
-  mode: makeStringProp<DropdownItemMode>("single"),
+  mode: defaultProps("mode", { type: String as PropType<DropdownItemMode> }),
   /**
    * 菜单项标题
    */
-  title: numericProp,
+  title: defaultProps("title", { type: [Number, String] }),
   /**
    * 配置项数据
    */
-  options: makeArrayProp<DropdownItemOption>(),
+  options: defaultProps("options", { type: Array as PropType<DropdownItemOption[]> }),
   /**
    * 是否禁用
    */
-  disabled: Boolean,
+  disabled: defaultProps("disabled", { type: Boolean }),
   /**
    * 菜单最小高度
    */
-  minHeight: makeNumericProp("auto"),
+  minHeight: defaultProps("minHeight", { type: [Number, String] }),
   /**
    * 菜单最大高度
    */
-  maxHeight: makeNumericProp("60vh"),
+  maxHeight: defaultProps("maxHeight", { type: [Number, String] }),
   /**
    * 标题颜色
    */
-  titleColor: String,
+  titleColor: defaultProps("titleColor", { type: String }),
   /**
    * 标题大小
    */
-  titleSize: numericProp,
+  titleSize: defaultProps("titleSize", { type: [Number, String] }),
   /**
    * 标题粗细
    */
-  titleWeight: numericProp,
+  titleWeight: defaultProps("titleWeight", { type: [Number, String] }),
   /**
    * 激活标题颜色
    */
-  activeTitleColor: String,
+  activeTitleColor: defaultProps("activeTitleColor", { type: String }),
   /**
    * 激活标题大小
    */
-  activeTitleSize: numericProp,
+  activeTitleSize: defaultProps("activeTitleSize", { type: [Number, String] }),
   /**
    * 激活标题粗细
    */
-  activeTitleWeight: numericProp,
+  activeTitleWeight: defaultProps("activeTitleWeight", { type: [Number, String] }),
   /**
    * 图标
    */
-  icon: String,
+  icon: defaultProps("icon", { type: String }),
   /**
    * 图标大小
    */
-  iconSize: numericProp,
+  iconSize: defaultProps("iconSize", { type: [Number, String] }),
   /**
    * 图标颜色
    */
-  iconColor: String,
+  iconColor: defaultProps("iconColor", { type: String }),
   /**
    * 图标粗细
    */
-  iconWeight: numericProp,
+  iconWeight: defaultProps("iconWeight", { type: [Number, String] }),
   /**
    * 激活图标颜色
    */
-  activeIconColor: String,
+  activeIconColor: defaultProps("activeIconColor", { type: String }),
   /**
    * 是否显示图标
    */
-  showIcon: truthProp,
+  showIcon: defaultProps("showIcon", { type: Boolean }),
   /**
    * 是否显示遮罩层
    */
-  overlay: truthProp,
+  overlay: defaultProps("overlay", { type: Boolean }),
   /**
    * 动画时长，单位毫秒
    */
-  duration: numericProp,
+  duration: defaultProps("duration", { type: [Number, String] }),
   /**
    * 菜单展开方向，可选值up、down
    */
-  direction: String as PropType<DropdownItemDirection>,
+  direction: defaultProps("direction", { type: String as PropType<DropdownItemDirection> }),
   /**
    * 选项菜单背景颜色
    */
-  background: String,
+  background: defaultProps("background", { type: String }),
   /**
    * 选项菜单圆角值
    */
-  borderRadius: numericProp,
+  borderRadius: defaultProps("borderRadius", { type: [Number, String] }),
   /**
    * 选项文字图标大小
    */
-  optionSize: numericProp,
+  optionSize: defaultProps("optionSize", { type: [Number, String] }),
   /**
    * 选项文字图标颜色
    */
-  optionColor: String,
+  optionColor: defaultProps("optionColor", { type: String }),
   /**
    * 选项文字图标粗细
    */
-  optionWeight: numericProp,
+  optionWeight: defaultProps("optionWeight", { type: [Number, String] }),
   /**
    * 激活选项文字图标大小
    */
-  activeOptionSize: numericProp,
+  activeOptionSize: defaultProps("activeOptionSize", { type: [Number, String] }),
   /**
    * 激活选项文字图标颜色
    */
-  activeOptionColor: String,
+  activeOptionColor: defaultProps("activeOptionColor", { type: String }),
   /**
    * 激活选项文字图标粗细
    */
-  activeOptionWeight: numericProp,
+  activeOptionWeight: defaultProps("activeOptionWeight", { type: [Number, String] }),
   /**
    * 是否在点击遮罩层后关闭菜单
    */
-  closeOnClickOverlay: truthProp,
+  closeOnClickOverlay: defaultProps("closeOnClickOverlay", { type: Boolean }),
   /**
    * 弹出层 zIndex
    */
-  zIndex: numericProp,
+  zIndex: defaultProps("zIndex", { type: [Number, String] }),
   /**
    * option 名称字段
    */
-  labelField: makeStringProp("label"),
+  labelField: defaultProps("labelField", { type: String }),
   /**
    * option 内容字段
    */
-  valueField: makeStringProp("value"),
+  valueField: defaultProps("valueField", { type: String }),
   /**
    * 自定义类名
    */
-  customClass: String,
+  customClass: defaultProps("customClass", { type: String }),
   /**
    * 自定义样式
    */
-  customStyle: [String, Object] as PropType<string | CSSProperties>,
+  customStyle: defaultProps("customStyle", { type: [String, Object] as PropType<string | CSSProperties> }),
 }
 export const dropdownItemEmits = {
   open: () => true,

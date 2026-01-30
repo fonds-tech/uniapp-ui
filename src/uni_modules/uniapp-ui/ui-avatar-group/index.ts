@@ -1,58 +1,72 @@
 import type AvatarGroup from "./ui-avatar-group.vue"
-import type { AvatarSize, AvatarShape } from "../ui-avatar"
-import type { InjectionKey, ExtractPropTypes } from "vue"
-import { styleProp, makeStringProp, makeNumericProp } from "../utils/props"
+import type { AvatarShape } from "../ui-avatar"
+import type { PropType, InjectionKey, ExtractPropTypes } from "vue"
+import { styleProp, buildDefaultProps } from "../utils/props"
 
 /**
  * 头像组堆叠方向
  */
 export type AvatarGroupDirection = "left" | "right"
 
+const defaultProps = buildDefaultProps("avatar-group", {
+  max: 5,
+  size: "medium",
+  shape: "circle",
+  gap: -16,
+  direction: "right",
+  borderColor: "#fff",
+  borderWidth: "4rpx",
+  excessColor: "",
+  excessBackground: "",
+  customClass: "",
+  customStyle: "",
+})
+
 export const avatarGroupProps = {
   /**
    * 最多显示的头像数量
    */
-  max: makeNumericProp(5),
+  max: defaultProps("max", { type: Number }),
   /**
    * 头像尺寸，可选值为 mini/small/medium/large 或具体数值
    */
-  size: makeNumericProp<AvatarSize>("medium"),
+  size: defaultProps("size", { type: [Number, String] }),
   /**
    * 头像形状，可选值为 circle/square
    */
-  shape: makeStringProp<AvatarShape>("circle"),
+  shape: defaultProps("shape", { type: String as PropType<AvatarShape> }),
   /**
    * 头像间距（负数表示重叠）
    */
-  gap: makeNumericProp(-16),
+  gap: defaultProps("gap", { type: [Number, String] }),
   /**
    * 堆叠方向，left 表示左侧头像在上，right 表示右侧头像在上
    */
-  direction: makeStringProp<AvatarGroupDirection>("right"),
+  direction: defaultProps("direction", { type: String as PropType<AvatarGroupDirection> }),
   /**
    * 头像边框颜色（用于堆叠效果）
    */
-  borderColor: makeStringProp("#fff"),
+  borderColor: defaultProps("borderColor", { type: String }),
   /**
    * 头像边框宽度
    */
-  borderWidth: makeNumericProp("4rpx"),
+  borderWidth: defaultProps("borderWidth", { type: [Number, String] }),
   /**
    * 超出数量文本颜色
    */
-  excessColor: makeStringProp(""),
+  excessColor: defaultProps("excessColor", { type: String }),
   /**
    * 超出数量背景颜色
    */
-  excessBackground: makeStringProp(""),
+  excessBackground: defaultProps("excessBackground", { type: String }),
   /**
    * 自定义类名
    */
-  customClass: makeStringProp(""),
+  customClass: defaultProps("customClass", { type: String }),
   /**
    * 自定义样式
    */
-  customStyle: styleProp,
+  customStyle: defaultProps("customStyle", styleProp),
 }
 export const avatarGroupEmits = {
   /**

@@ -1,151 +1,182 @@
 import type CheckboxGroup from "./ui-checkbox-group.vue"
 import type { CheckboxShape, CheckboxLabelPosition } from "../ui-checkbox"
 import type { PropType, InjectionKey, ExtractPropTypes } from "vue"
-import { styleProp, makeStringProp, makeNumericProp } from "../utils/props"
+import { styleProp, buildDefaultProps } from "../utils/props"
 
 export const checkboxGroupKey: InjectionKey<CheckboxGroupProvide> = Symbol("ui-checkbox-group")
+
+const defaultProps = buildDefaultProps("checkbox-group", {
+  modelValue: () => [],
+  max: Infinity,
+  min: 0,
+  gap: 0,
+  columns: "",
+  disabled: false,
+  size: "36rpx",
+  shape: "dot",
+  round: false,
+  color: "",
+  checkedColor: "",
+  checkedIconColor: "",
+  icon: "",
+  iconSize: "",
+  iconColor: "",
+  iconWeight: "",
+  iconRadius: "",
+  iconPrefix: "ui-icon",
+  labelPosition: "right",
+  labelLeft: false,
+  labelSize: "",
+  labelColor: "",
+  labelWeight: "",
+  labelGap: "",
+  labelDisabled: false,
+  checkedLabelColor: "",
+  customClass: "",
+  customStyle: "",
+})
 
 export const checkboxGroupProps = {
   /**
    * 绑定值
    */
-  modelValue: { type: Array as PropType<unknown[]>, default: () => [] },
+  modelValue: defaultProps("modelValue", { type: Array as PropType<unknown[]> }),
 
   // ============ 数量限制 ============
 
   /**
    * 最大可选数量
    */
-  max: makeNumericProp(Infinity),
+  max: defaultProps("max", { type: [Number, String] }),
   /**
    * 最小可选数量（新增）
    * 设置后，当选中数量达到最小值时，无法继续取消选择
    */
-  min: makeNumericProp(0),
+  min: defaultProps("min", { type: [Number, String] }),
 
   // ============ 布局 ============
 
   /**
    * 复选框之间的间距
    */
-  gap: makeNumericProp(0),
+  gap: defaultProps("gap", { type: [Number, String] }),
   /**
    * 网格布局列数，设置后启用 grid 布局
    */
-  columns: makeNumericProp(""),
+  columns: defaultProps("columns", { type: [Number, String] }),
 
   // ============ 状态 ============
 
   /**
    * 是否禁用
    */
-  disabled: Boolean,
+  disabled: defaultProps("disabled", { type: Boolean }),
 
   // ============ 尺寸与形状（继承给子组件） ============
 
   /**
    * 复选框图标大小（继承给子组件）
    */
-  size: makeNumericProp("36rpx"),
+  size: defaultProps("size", { type: [Number, String] }),
   /**
    * 形状：dot（圆点）或 icon（勾选图标）
    */
-  shape: makeStringProp<CheckboxShape>("dot"),
+  shape: defaultProps("shape", { type: String as PropType<CheckboxShape> }),
   /**
    * 是否圆形图标
    */
-  round: Boolean,
+  round: defaultProps("round", { type: Boolean }),
 
   // ============ 颜色配置 ============
 
   /**
    * 主色（选中状态的颜色，继承给子组件）
    */
-  color: makeStringProp(""),
+  color: defaultProps("color", { type: String }),
   /**
    * @deprecated 使用 color 替代
    * 选中的颜色（向后兼容别名）
    */
-  checkedColor: makeStringProp(""),
+  checkedColor: defaultProps("checkedColor", { type: String }),
   /**
    * @deprecated 使用 color 替代
    * 选中的图标颜色（向后兼容别名）
    */
-  checkedIconColor: makeStringProp(""),
+  checkedIconColor: defaultProps("checkedIconColor", { type: String }),
 
   // ============ 图标配置 ============
 
   /**
    * 图标名称
    */
-  icon: makeStringProp(""),
+  icon: defaultProps("icon", { type: String }),
   /**
    * 图标大小
    */
-  iconSize: makeNumericProp(""),
+  iconSize: defaultProps("iconSize", { type: [Number, String] }),
   /**
    * 图标颜色
    */
-  iconColor: makeStringProp(""),
+  iconColor: defaultProps("iconColor", { type: String }),
   /**
    * 图标粗细
    */
-  iconWeight: makeNumericProp(""),
+  iconWeight: defaultProps("iconWeight", { type: [Number, String] }),
   /**
    * 图标圆角值
    */
-  iconRadius: makeNumericProp(""),
+  iconRadius: defaultProps("iconRadius", { type: [Number, String] }),
   /**
    * 图标前缀
    */
-  iconPrefix: makeStringProp("ui-icon"),
+  iconPrefix: defaultProps("iconPrefix", { type: String }),
 
   // ============ 标签配置 ============
 
   /**
    * 标签位置
    */
-  labelPosition: makeStringProp<CheckboxLabelPosition>("right"),
+  labelPosition: defaultProps("labelPosition", { type: String as PropType<CheckboxLabelPosition> }),
   /**
    * @deprecated 使用 labelPosition="left" 替代
    * 标签是否在图标左侧（向后兼容别名）
    */
-  labelLeft: Boolean,
+  labelLeft: defaultProps("labelLeft", { type: Boolean }),
   /**
    * 标签文本大小
    */
-  labelSize: makeNumericProp(""),
+  labelSize: defaultProps("labelSize", { type: [Number, String] }),
   /**
    * 标签文本颜色
    */
-  labelColor: makeStringProp(""),
+  labelColor: defaultProps("labelColor", { type: String }),
   /**
    * 标签文本粗细
    */
-  labelWeight: makeNumericProp(""),
+  labelWeight: defaultProps("labelWeight", { type: [Number, String] }),
   /**
    * 标签与图标的间距
    */
-  labelGap: makeNumericProp(""),
+  labelGap: defaultProps("labelGap", { type: [Number, String] }),
   /**
    * 是否禁用标签点击
    */
-  labelDisabled: { type: Boolean },
+  labelDisabled: defaultProps("labelDisabled", { type: Boolean }),
   /**
    * 选中的标签颜色
    */
-  checkedLabelColor: makeStringProp(""),
+  checkedLabelColor: defaultProps("checkedLabelColor", { type: String }),
 
   // ============ 自定义样式 ============
 
   /**
    * 自定义类名
    */
-  customClass: makeStringProp(""),
+  customClass: defaultProps("customClass", { type: String }),
   /**
    * 自定义样式
    */
-  customStyle: styleProp,
+  customStyle: defaultProps("customStyle", styleProp),
 }
 export const checkboxGroupEmits = {
   click: (event: any) => true,

@@ -1,60 +1,74 @@
 import type Notify from "./ui-notify.vue"
 import type { Ref, PropType, ExtractPropTypes } from "vue"
-import { styleProp, makeStringProp, makeNumericProp } from "../utils/props"
+import { styleProp, buildDefaultProps } from "../utils/props"
+
+const defaultProps = buildDefaultProps("notify", {
+  show: false,
+  type: "primary",
+  content: "",
+  duration: "3000",
+  color: "",
+  fontSize: "",
+  fontWeight: "",
+  background: "",
+  zIndex: "2000",
+  offsetTop: "",
+  customClass: "",
+  customStyle: "",
+})
 
 export const notifyProps = {
   /**
    * 是否显示
    */
-  show: Boolean,
+  show: defaultProps("show", { type: Boolean }),
   /**
    * 通知类型
    */
-  type: {
+  type: defaultProps("type", {
     type: String as PropType<NotifyType>,
-    default: "primary",
     validator: (t: string) => ["primary", "success", "warning", "danger"].includes(t),
-  },
+  }),
   /**
    * 展示内容
    */
-  content: makeStringProp(""),
+  content: defaultProps("content", { type: String }),
   /**
    * 展示时长，单位ms
    */
-  duration: makeNumericProp("3000"),
+  duration: defaultProps("duration", { type: [Number, String] }),
   /**
    * 字体颜色
    */
-  color: makeStringProp(""),
+  color: defaultProps("color", { type: String }),
   /**
    * 字体大小
    */
-  fontSize: makeNumericProp(""),
+  fontSize: defaultProps("fontSize", { type: [Number, String] }),
   /**
    * 字体粗细
    */
-  fontWeight: makeStringProp(""),
+  fontWeight: defaultProps("fontWeight", { type: String }),
   /**
    * 背景色
    */
-  background: makeStringProp(""),
+  background: defaultProps("background", { type: String }),
   /**
    * 元素层级
    */
-  zIndex: makeNumericProp("2000"),
+  zIndex: defaultProps("zIndex", { type: [Number, String] }),
   /**
    * 距离顶部偏移
    */
-  offsetTop: makeNumericProp(""),
+  offsetTop: defaultProps("offsetTop", { type: [Number, String] }),
   /**
    * 自定义类名
    */
-  customClass: makeStringProp(""),
+  customClass: defaultProps("customClass", { type: String }),
   /**
    * 自定义样式
    */
-  customStyle: styleProp,
+  customStyle: defaultProps("customStyle", styleProp),
 }
 export const notifyEmits = {
   open: () => true,

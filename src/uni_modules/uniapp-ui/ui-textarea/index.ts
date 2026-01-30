@@ -1,187 +1,231 @@
 import type Textarea from "./ui-textarea.vue"
 import type { PropType, ExtractPropTypes } from "vue"
-import { styleProp, truthProp, makeStringProp, makeNumericProp } from "../utils/props"
+import { styleProp, buildDefaultProps } from "../utils/props"
+
+const defaultProps = buildDefaultProps("textarea", {
+  modelValue: "",
+  disabled: false,
+  readonly: false,
+  clearable: true,
+  maxlength: 200,
+  background: "",
+  placeholder: "请输入内容",
+  placeholderColor: "",
+  placeholderStyle: "",
+  confirmType: "return",
+  confirmHold: false,
+  showConfirmBar: true,
+  focus: false,
+  fixed: false,
+  autoHeight: false,
+  inputAlign: "left",
+  ignoreCompositionEvent: true,
+  cursor: -1,
+  cursorColor: "",
+  cursorSpacing: 30,
+  selectionStart: -1,
+  selectionEnd: -1,
+  adjustPosition: true,
+  holdKeyboard: false,
+  color: "",
+  width: "",
+  padding: "",
+  minHeight: "150rpx",
+  fontSize: "",
+  fontWeight: "",
+  radius: "",
+  border: "",
+  showCount: false,
+  countSize: "",
+  countColor: "",
+  countWeight: "",
+  disableDefaultPadding: false,
+  clearIcon: "close",
+  clearIconSize: "24rpx",
+  clearIconColor: "#fff",
+  clearIconWeight: "",
+  clearIconBackground: "",
+  customClass: "",
+  customStyle: "",
+})
 
 export const textareaProps = {
   /**
    * 输入值
    */
-  modelValue: { type: String, default: () => "" },
+  modelValue: defaultProps("modelValue", { type: String }),
   /**
    * 是否禁用
    */
-  disabled: Boolean,
+  disabled: defaultProps("disabled", { type: Boolean }),
   /**
    * 是否只读，与disabled不同之处在于disabled会置灰组件，而readonly则不会
    */
-  readonly: Boolean,
+  readonly: defaultProps("readonly", { type: Boolean }),
   /**
    * 是否显示清除按钮
    */
-  clearable: truthProp,
+  clearable: defaultProps("clearable", { type: Boolean }),
   /**
    * 最大输入长度，设置为 -1 的时候不限制最大长度
    */
-  maxlength: makeNumericProp(200),
+  maxlength: defaultProps("maxlength", { type: Number }),
   /**
    * 背景颜色
    */
-  background: makeStringProp(""),
+  background: defaultProps("background", { type: String }),
   /**
    * 输入框为空时的占位符
    */
-  placeholder: makeStringProp("请输入内容"),
+  placeholder: defaultProps("placeholder", { type: String }),
   /**
    * 输入框为空时的占位符颜色
    */
-  placeholderColor: makeStringProp(""),
+  placeholderColor: defaultProps("placeholderColor", { type: String }),
   /**
    * 输入框为空时的占位符样式
    */
-  placeholderStyle: styleProp,
+  placeholderStyle: defaultProps("placeholderStyle", styleProp),
   /**
    * 设置右下角按钮的文字，兼容性详见uni-app文档
    */
-  confirmType: {
-    type: String as PropType<"send" | "search" | "next" | "go" | "done" | "return">,
-    default: "return",
-  },
+  confirmType: defaultProps("confirmType", { type: String as PropType<"send" | "search" | "next" | "go" | "done" | "return"> }),
   /**
    * 点击键盘右下角按钮时是否保持键盘不收起，H5无效
    */
-  confirmHold: Boolean,
+  confirmHold: defaultProps("confirmHold", { type: Boolean }),
   /**
    * 是否显示键盘上方带有”完成“按钮那一栏
    */
-  showConfirmBar: truthProp,
+  showConfirmBar: defaultProps("showConfirmBar", { type: Boolean }),
   /**
    * 自动获取焦点，在 H5 平台能否聚焦以及软键盘是否跟随弹出，取决于当前浏览器本身的实现。nvue 页面不支持，需使用组件的 focus()、blur() 方法控制焦点
    */
-  focus: Boolean,
+  focus: defaultProps("focus", { type: Boolean }),
   /**
    * 如果 textarea 是在一个 position:fixed 的区域，需要显示指定属性 fixed 为 true
    */
-  fixed: Boolean,
+  fixed: defaultProps("fixed", { type: Boolean }),
   /**
    * 是否自动增加高度
    */
-  autoHeight: Boolean,
+  autoHeight: defaultProps("autoHeight", { type: Boolean }),
   /**
    * 输入对齐方式，可选值为 left center right
    */
-  inputAlign: { type: String, default: "left", validator: (v: string) => ["left", "center", "right"].includes(v) },
+  inputAlign: defaultProps("inputAlign", { type: String, validator: (v: string) => ["left", "center", "right"].includes(v) }),
   /**
    * 是否忽略组件内对文本合成系统事件的处理。为 false 时将触发 compositionstart、compositionend、compositionupdate 事件，且在文本合成期间会触发 input 事件
    */
-  ignoreCompositionEvent: truthProp,
+  ignoreCompositionEvent: defaultProps("ignoreCompositionEvent", { type: Boolean }),
   /**
    * 指定focus时光标的位置
    */
-  cursor: makeNumericProp(-1),
+  cursor: defaultProps("cursor", { type: Number }),
   /**
    * 光标颜色
    */
-  cursorColor: makeStringProp(""),
+  cursorColor: defaultProps("cursorColor", { type: String }),
   /**
    * 输入框聚焦时底部与键盘的距离
    */
-  cursorSpacing: makeNumericProp(30),
+  cursorSpacing: defaultProps("cursorSpacing", { type: Number }),
   /**
    * 光标起始位置，自动聚集时有效，需与selection-end搭配使用
    */
-  selectionStart: makeNumericProp(-1),
+  selectionStart: defaultProps("selectionStart", { type: Number }),
   /**
    * 光标结束位置，自动聚集时有效，需与selection-start搭配使用
    */
-  selectionEnd: makeNumericProp(-1),
+  selectionEnd: defaultProps("selectionEnd", { type: Number }),
   /**
    * 键盘弹起时，是否自动上推页面
    */
-  adjustPosition: truthProp,
+  adjustPosition: defaultProps("adjustPosition", { type: Boolean }),
   /**
    * focus时，点击页面的时候不收起键盘，只微信小程序有效
    */
-  holdKeyboard: Boolean,
+  holdKeyboard: defaultProps("holdKeyboard", { type: Boolean }),
   /**
    * 输入框字体颜色
    */
-  color: makeStringProp(""),
+  color: defaultProps("color", { type: String }),
   /**
    * 输入框宽度
    */
-  width: makeNumericProp(""),
+  width: defaultProps("width", { type: [Number, String] }),
   /**
    * 内边距
    */
-  padding: makeNumericProp(""),
+  padding: defaultProps("padding", { type: [Number, String] }),
   /**
    * 最小输入框高度
    */
-  minHeight: makeNumericProp("150rpx"),
+  minHeight: defaultProps("minHeight", { type: [Number, String] }),
   /**
    * 输入框字体的大小
    */
-  fontSize: makeNumericProp(""),
+  fontSize: defaultProps("fontSize", { type: [Number, String] }),
   /**
    * 输入框字体的粗细
    */
-  fontWeight: makeNumericProp(""),
+  fontWeight: defaultProps("fontWeight", { type: [Number, String] }),
   /**
    * 圆角值
    */
-  radius: makeNumericProp(""),
+  radius: defaultProps("radius", { type: [Number, String] }),
   /**
    * 边框样式
    */
-  border: makeStringProp(""),
+  border: defaultProps("border", { type: String }),
   /**
    * 是否显示字数统计
    */
-  showCount: Boolean,
+  showCount: defaultProps("showCount", { type: Boolean }),
   /**
    * 字数统计字体大小
    */
-  countSize: makeNumericProp(""),
+  countSize: defaultProps("countSize", { type: [Number, String] }),
   /**
    * 字数统计字体颜色
    */
-  countColor: makeStringProp(""),
+  countColor: defaultProps("countColor", { type: String }),
   /**
    * 字数统计字体粗细
    */
-  countWeight: makeNumericProp(""),
+  countWeight: defaultProps("countWeight", { type: [Number, String] }),
   /**
    * 是否去掉 iOS 下的默认内边距
    */
-  disableDefaultPadding: Boolean,
+  disableDefaultPadding: defaultProps("disableDefaultPadding", { type: Boolean }),
   /**
    * 输入框清除图标
    */
-  clearIcon: makeStringProp("close"),
+  clearIcon: defaultProps("clearIcon", { type: String }),
   /**
    * 输入框清除图标大小
    */
-  clearIconSize: makeNumericProp("24rpx"),
+  clearIconSize: defaultProps("clearIconSize", { type: [Number, String] }),
   /**
    * 输入框清除图标颜色
    */
-  clearIconColor: makeStringProp("#fff"),
+  clearIconColor: defaultProps("clearIconColor", { type: String }),
   /**
    * 输入框清除图标粗细
    */
-  clearIconWeight: makeNumericProp(""),
+  clearIconWeight: defaultProps("clearIconWeight", { type: [Number, String] }),
   /**
    * 输入框清除图标背景色
    */
-  clearIconBackground: makeStringProp(""),
+  clearIconBackground: defaultProps("clearIconBackground", { type: String }),
   /**
    * 自定义类名
    */
-  customClass: makeStringProp(""),
+  customClass: defaultProps("customClass", { type: String }),
   /**
    * 自定义样式
    */
-  customStyle: styleProp,
+  customStyle: defaultProps("customStyle", styleProp),
 }
 export const textareaEmits = {
   clear: () => true,

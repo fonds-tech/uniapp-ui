@@ -1,76 +1,96 @@
 import type TabbarItem from "./ui-tabbar-item.vue"
 import type { ExtractPropTypes } from "vue"
-import { styleProp, makeStringProp, makeNumericProp } from "../utils/props"
+import { styleProp, buildDefaultProps } from "../utils/props"
+
+const defaultProps = buildDefaultProps("tabbar-item", {
+  name: "",
+  text: "",
+  icon: "",
+  activeIcon: "",
+  iconSize: "48rpx",
+  dot: false,
+  badge: "",
+  disabled: false,
+  activeColor: "",
+  inactiveColor: "",
+  iconWeight: "",
+  iconPrefix: "",
+  route: "",
+  routeParams: () => ({}),
+  routeType: "switchTab",
+  customClass: "",
+  customStyle: "",
+})
 
 export const tabbarItemProps = {
   /**
    * 标签名称，作为匹配的标识符
    */
-  name: makeNumericProp(""),
+  name: defaultProps("name", { type: [Number, String] }),
   /**
    * 文字内容
    */
-  text: makeStringProp(""),
+  text: defaultProps("text", { type: String }),
   /**
    * 图标名称或图片链接
    */
-  icon: makeStringProp(""),
+  icon: defaultProps("icon", { type: String }),
   /**
    * 激活时的图标
    */
-  activeIcon: makeStringProp(""),
+  activeIcon: defaultProps("activeIcon", { type: String }),
   /**
    * 图标大小
    */
-  iconSize: makeNumericProp("48rpx"),
+  iconSize: defaultProps("iconSize", { type: [Number, String] }),
   /**
    * 是否显示小红点
    */
-  dot: Boolean,
+  dot: defaultProps("dot", { type: Boolean }),
   /**
    * 徽标内容
    */
-  badge: makeStringProp(""),
+  badge: defaultProps("badge", { type: String }),
   /**
    * 是否禁用
    */
-  disabled: Boolean,
+  disabled: defaultProps("disabled", { type: Boolean }),
   /**
    * 激活颜色
    */
-  activeColor: makeStringProp(""),
+  activeColor: defaultProps("activeColor", { type: String }),
   /**
    * 未激活颜色
    */
-  inactiveColor: makeStringProp(""),
+  inactiveColor: defaultProps("inactiveColor", { type: String }),
   /**
    * 图标粗细
    */
-  iconWeight: makeNumericProp(""),
+  iconWeight: defaultProps("iconWeight", { type: [Number, String] }),
   /**
    * 图标前缀
    */
-  iconPrefix: makeStringProp(""),
+  iconPrefix: defaultProps("iconPrefix", { type: String }),
   /**
    * 跳转路由
    */
-  route: makeStringProp(""),
+  route: defaultProps("route", { type: String }),
   /**
    * 跳转参数
    */
-  routeParams: { type: Object, default: () => ({}) },
+  routeParams: defaultProps("routeParams", { type: Object }),
   /**
    * 跳转类型
    */
-  routeType: makeStringProp("switchTab"),
+  routeType: defaultProps("routeType", { type: String }),
   /**
    * 自定义类名
    */
-  customClass: makeStringProp(""),
+  customClass: defaultProps("customClass", { type: String }),
   /**
    * 自定义样式
    */
-  customStyle: styleProp,
+  customStyle: defaultProps("customStyle", styleProp),
 }
 export const tabbarItemEmits = {
   click: (name: string | number) => true,

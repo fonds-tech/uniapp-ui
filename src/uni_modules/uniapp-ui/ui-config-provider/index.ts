@@ -1,7 +1,7 @@
 import type ConfigProvider from "./ui-config-provider.vue"
 import type { Mitt } from "../utils/mitt"
 import type { PropType, InjectionKey, ExtractPropTypes } from "vue"
-import { styleProp, makeStringProp, makeNumericProp } from "../utils/props"
+import { styleProp, buildDefaultProps } from "../utils/props"
 
 /**
  * 主题色变量名称
@@ -40,6 +40,16 @@ export type CssVars = Record<string, string | number>
 export type ThemeMode = "light" | "dark" | "auto"
 
 export const configProviderKey: InjectionKey<ConfigProviderProvide> = Symbol("ui-config-provider")
+const defaultProps = buildDefaultProps("config-provider", {
+  theme: "light",
+  themeVars: () => ({}),
+  cssVars: () => ({}),
+  height: "",
+  background: "",
+  customClass: "",
+  customStyle: "",
+})
+
 export const configProviderProps = {
   /**
    * 主题模式
@@ -47,42 +57,33 @@ export const configProviderProps = {
    * - dark: 暗色模式
    * - auto: 跟随系统
    */
-  theme: {
-    type: String as PropType<ThemeMode>,
-    default: "light",
-  },
+  theme: defaultProps("theme", { type: String as PropType<ThemeMode> }),
   /**
    * 主题变量配置
    * 用于覆盖默认的主题颜色
    */
-  themeVars: {
-    type: Object as PropType<ThemeVars>,
-    default: () => ({}),
-  },
+  themeVars: defaultProps("themeVars", { type: Object as PropType<ThemeVars> }),
   /**
    * 自定义 CSS 变量
    * 支持 "--ui-xxx" 或 "ui-xxx" 或 "xxx" 三种写法
    */
-  cssVars: {
-    type: Object as PropType<CssVars>,
-    default: () => ({}),
-  },
+  cssVars: defaultProps("cssVars", { type: Object as PropType<CssVars> }),
   /**
    * 高度
    */
-  height: makeNumericProp(""),
+  height: defaultProps("height", { type: [Number, String] }),
   /**
    * 背景色
    */
-  background: makeStringProp(""),
+  background: defaultProps("background", { type: String }),
   /**
    * 自定义类名
    */
-  customClass: makeStringProp(""),
+  customClass: defaultProps("customClass", { type: String }),
   /**
    * 自定义样式
    */
-  customStyle: styleProp,
+  customStyle: defaultProps("customStyle", styleProp),
 }
 export const configProviderEmits = {
   scroll: (options: Page.PageScrollOption) => options,

@@ -110,7 +110,7 @@ user_invocable: true
 | `truthProp`               | `boolean`                 | `true`  |
 | `String`                  | `string`                  | -       |
 | `Number`                  | `number`                  | -       |
-| `numericProp`             | `string \| number`        | -       |
+| `[Number, String]`             | `string \| number`        | -       |
 | `makeStringProp<T>(val)`  | `T`                       | `val`   |
 | `makeNumericProp(val)`    | `string \| number`        | `val`   |
 | `makeNumberProp(val)`     | `number`                  | `val`   |

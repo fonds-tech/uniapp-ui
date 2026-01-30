@@ -20,21 +20,21 @@ UiFloatButton 组件，属性与事件以源码注释为准。
 | text           | 按钮文本，为空时只显示图标 | string                                                | ""                                  | -                                              |
 | type           | 按钮类型                   | string                                                | "primary"                           | primary, success, warning, danger, default     |
 | size           | 按钮尺寸                   | makeNumericProp("100rpx")                             | -                                   | -                                              |
-| width          | 按钮宽度，优先级高于size   | numericProp                                           | -                                   | -                                              |
-| height         | 按钮高度，优先级高于size   | numericProp                                           | -                                   | -                                              |
+| width          | 按钮宽度，优先级高于size   | [Number, String]                                           | -                                   | -                                              |
+| height         | 按钮高度，优先级高于size   | [Number, String]                                           | -                                   | -                                              |
 | position       | 位置                       | string                                                | "right-bottom"                      | left-bottom, right-bottom, left-top, right-top |
 | right          | 距离右侧的距离             | makeNumericProp("24rpx")                              | -                                   | -                                              |
 | bottom         | 距离底部的距离             | makeNumericProp("100rpx")                             | -                                   | -                                              |
-| left           | 距离左侧的距离             | numericProp                                           | -                                   | -                                              |
-| top            | 距离顶部的距离             | numericProp                                           | -                                   | -                                              |
+| left           | 距离左侧的距离             | [Number, String]                                           | -                                   | -                                              |
+| top            | 距离顶部的距离             | [Number, String]                                           | -                                   | -                                              |
 | zIndex         | 元素层级                   | makeNumericProp(100)                                  | -                                   | -                                              |
 | color          | 自定义背景色               | string                                                | ""                                  | -                                              |
 | iconColor      | 图标颜色                   | makeStringProp("#fff")                                | -                                   | -                                              |
 | iconSize       | 图标大小                   | makeNumericProp("40rpx")                              | -                                   | -                                              |
 | textColor      | 文本颜色                   | makeStringProp("#fff")                                | -                                   | -                                              |
-| textSize       | 文本大小                   | numericProp                                           | -                                   | -                                              |
+| textSize       | 文本大小                   | [Number, String]                                           | -                                   | -                                              |
 | shadow         | 阴影样式，传入box-shadow值 | string                                                | "0 4rpx 16rpx 0 rgba(0, 0, 0, 0.2)" | -                                              |
-| borderRadius   | 圆角大小                   | numericProp                                           | -                                   | -                                              |
+| borderRadius   | 圆角大小                   | [Number, String]                                           | -                                   | -                                              |
 | disabled       | 是否禁用                   | boolean                                               | false                               | -                                              |
 | loading        | 是否加载中                 | boolean                                               | false                               | -                                              |
 | safeAreaBottom | 是否适配底部安全区域       | boolean                                               | true                                | -                                              |

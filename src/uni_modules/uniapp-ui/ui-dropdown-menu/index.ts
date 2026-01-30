@@ -1,129 +1,162 @@
 import type DropdownMenu from "./ui-dropdown-menu.vue"
 import type { Ref, PropType, InjectionKey, CSSProperties, ExtractPropTypes } from "vue"
-import { truthProp, numericProp, makeStringProp, makeNumericProp } from "../utils/props"
+import { buildDefaultProps } from "../utils/props"
 
 export const dropdownMenuKey: InjectionKey<DropdownMenuProvide> = Symbol("ui-dropdown-menu")
+const defaultProps = buildDefaultProps("dropdown-menu", {
+  height: undefined,
+  titleColor: undefined,
+  titleSize: undefined,
+  titleWeight: undefined,
+  activeTitleColor: undefined,
+  activeTitleSize: undefined,
+  activeTitleWeight: undefined,
+  icon: "arrow-down",
+  iconSize: undefined,
+  iconColor: undefined,
+  iconWeight: undefined,
+  activeIconColor: undefined,
+  showIcon: true,
+  zIndex: undefined,
+  overlay: true,
+  duration: 300,
+  direction: "down",
+  borderRadius: undefined,
+  optionSize: undefined,
+  optionColor: undefined,
+  optionWeight: undefined,
+  activeOptionSize: undefined,
+  activeOptionColor: undefined,
+  activeOptionWeight: undefined,
+  background: undefined,
+  closeOnClickOverlay: true,
+  labelField: "label",
+  valueField: "value",
+  customClass: undefined,
+  customStyle: undefined,
+})
+
 export const dropdownMenuProps = {
   /**
    * 菜单高度
    */
-  height: numericProp,
+  height: defaultProps("height", { type: [Number, String] }),
   /**
    * 标题颜色
    */
-  titleColor: String,
+  titleColor: defaultProps("titleColor", { type: String }),
   /**
    * 标题大小
    */
-  titleSize: numericProp,
+  titleSize: defaultProps("titleSize", { type: [Number, String] }),
   /**
    * 标题粗细
    */
-  titleWeight: numericProp,
+  titleWeight: defaultProps("titleWeight", { type: [Number, String] }),
   /**
    * 激活标题颜色
    */
-  activeTitleColor: String,
+  activeTitleColor: defaultProps("activeTitleColor", { type: String }),
   /**
    * 激活标题大小
    */
-  activeTitleSize: numericProp,
+  activeTitleSize: defaultProps("activeTitleSize", { type: [Number, String] }),
   /**
    * 激活标题粗细
    */
-  activeTitleWeight: numericProp,
+  activeTitleWeight: defaultProps("activeTitleWeight", { type: [Number, String] }),
   /**
    * 图标
    */
-  icon: makeStringProp("arrow-down"),
+  icon: defaultProps("icon", { type: String }),
   /**
    * 图标大小
    */
-  iconSize: numericProp,
+  iconSize: defaultProps("iconSize", { type: [Number, String] }),
   /**
    * 图标颜色
    */
-  iconColor: String,
+  iconColor: defaultProps("iconColor", { type: String }),
   /**
    * 图标粗细
    */
-  iconWeight: numericProp,
+  iconWeight: defaultProps("iconWeight", { type: [Number, String] }),
   /**
    * 激活图标颜色
    */
-  activeIconColor: String,
+  activeIconColor: defaultProps("activeIconColor", { type: String }),
   /**
    * 是否显示图标
    */
-  showIcon: truthProp,
+  showIcon: defaultProps("showIcon", { type: Boolean }),
   /**
    * 元素层级
    */
-  zIndex: numericProp,
+  zIndex: defaultProps("zIndex", { type: [Number, String] }),
   /**
    * 是否显示遮罩层
    */
-  overlay: truthProp,
+  overlay: defaultProps("overlay", { type: Boolean }),
   /**
    * 动画时长，单位毫秒
    */
-  duration: makeNumericProp(300),
+  duration: defaultProps("duration", { type: Number }),
   /**
    * 菜单展开方向，可选值up、down
    */
-  direction: makeStringProp<DropdownMenuDirection>("down"),
+  direction: defaultProps("direction", { type: String as PropType<DropdownMenuDirection> }),
   /**
    * 选项菜单圆角值
    */
-  borderRadius: numericProp,
+  borderRadius: defaultProps("borderRadius", { type: [Number, String] }),
   /**
    * 选项文字图标大小
    */
-  optionSize: numericProp,
+  optionSize: defaultProps("optionSize", { type: [Number, String] }),
   /**
    * 选项文字图标颜色
    */
-  optionColor: String,
+  optionColor: defaultProps("optionColor", { type: String }),
   /**
    * 选项文字图标粗细
    */
-  optionWeight: numericProp,
+  optionWeight: defaultProps("optionWeight", { type: [Number, String] }),
   /**
    * 激活选项文字图标大小
    */
-  activeOptionSize: numericProp,
+  activeOptionSize: defaultProps("activeOptionSize", { type: [Number, String] }),
   /**
    * 激活选项文字图标颜色
    */
-  activeOptionColor: String,
+  activeOptionColor: defaultProps("activeOptionColor", { type: String }),
   /**
    * 激活选项文字图标粗细
    */
-  activeOptionWeight: numericProp,
+  activeOptionWeight: defaultProps("activeOptionWeight", { type: [Number, String] }),
   /**
    * 背景颜色
    */
-  background: String,
+  background: defaultProps("background", { type: String }),
   /**
    * 是否在点击遮罩层后关闭菜单
    */
-  closeOnClickOverlay: truthProp,
+  closeOnClickOverlay: defaultProps("closeOnClickOverlay", { type: Boolean }),
   /**
    * option 名称字段
    */
-  labelField: makeStringProp("label"),
+  labelField: defaultProps("labelField", { type: String }),
   /**
    * option 内容字段
    */
-  valueField: makeStringProp("value"),
+  valueField: defaultProps("valueField", { type: String }),
   /**
    * 自定义类名
    */
-  customClass: String,
+  customClass: defaultProps("customClass", { type: String }),
   /**
    * 自定义样式
    */
-  customStyle: [String, Object] as PropType<string | CSSProperties>,
+  customStyle: defaultProps("customStyle", { type: [String, Object] as PropType<string | CSSProperties> }),
 }
 export const dropdownMenuEmits = {}
 

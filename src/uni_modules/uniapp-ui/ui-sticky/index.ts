@@ -1,32 +1,41 @@
 import type Sticky from "./ui-sticky.vue"
 import type { PropType, CSSProperties, ExtractPropTypes } from "vue"
-import { numericProp, makeNumericProp } from "../utils/props"
+import { buildDefaultProps } from "../utils/props"
+
+const defaultProps = buildDefaultProps("sticky", {
+  zIndex: undefined,
+  offsetTop: 0,
+  disabled: false,
+  background: undefined,
+  customClass: undefined,
+  customStyle: undefined,
+})
 
 export const stickyProps = {
   /**
    * 元素层级
    */
-  zIndex: numericProp,
+  zIndex: defaultProps("zIndex", { type: [Number, String] }),
   /**
    * 吸顶时距离顶部距离
    */
-  offsetTop: makeNumericProp(0),
+  offsetTop: defaultProps("offsetTop", { type: [Number, String] }),
   /**
    * 是否禁用粘性效果
    */
-  disabled: Boolean,
+  disabled: defaultProps("disabled", { type: Boolean }),
   /**
    * 背景色
    */
-  background: String,
+  background: defaultProps("background", { type: String }),
   /**
    * 自定义类名
    */
-  customClass: String,
+  customClass: defaultProps("customClass", { type: String }),
   /**
    * 自定义样式
    */
-  customStyle: [String, Object] as PropType<string | CSSProperties>,
+  customStyle: defaultProps("customStyle", { type: [String, Object] as PropType<string | CSSProperties> }),
 }
 export const stickyEmits = {
   change: (sticky: boolean) => true,

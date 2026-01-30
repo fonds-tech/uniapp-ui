@@ -1,29 +1,37 @@
 import type IndexBar from "./ui-index-bar.vue"
 import type { Ref, PropType, InjectionKey, ExtractPropTypes } from "vue"
-import { styleProp, truthProp, makeStringProp, makeNumericProp } from "../utils/props"
+import { styleProp, buildDefaultProps } from "../utils/props"
 
 export const indexBarKey: InjectionKey<IndexBarProvide> = Symbol("ui-index-bar")
+const defaultProps = buildDefaultProps("index-bar", {
+  indexs: () => [],
+  zIndex: "1",
+  sticky: true,
+  customClass: "",
+  customStyle: "",
+})
+
 export const indexBarProps = {
   /**
    * 索引字符列表
    */
-  indexs: { type: Array as PropType<(string | number)[]>, default: () => [] },
+  indexs: defaultProps("indexs", { type: Array as PropType<(string | number)[]> }),
   /**
    * 元素层级
    */
-  zIndex: makeNumericProp("1"),
+  zIndex: defaultProps("zIndex", { type: [Number, String] }),
   /**
    * 是否自动吸顶
    */
-  sticky: truthProp,
+  sticky: defaultProps("sticky", { type: Boolean }),
   /**
    * 自定义类名
    */
-  customClass: makeStringProp(""),
+  customClass: defaultProps("customClass", { type: String }),
   /**
    * 自定义样式
    */
-  customStyle: styleProp,
+  customStyle: defaultProps("customStyle", styleProp),
 }
 export const indexBarEmits = {
   select: (index: number | string) => index,

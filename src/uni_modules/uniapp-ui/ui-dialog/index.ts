@@ -1,120 +1,151 @@
 import type Dialog from "./ui-dialog.vue"
 import type { Ref, PropType, CSSProperties, ExtractPropTypes } from "vue"
-import { truthProp, numericProp, makeStringProp, makeNumericProp } from "../utils/props"
+import { buildDefaultProps } from "../utils/props"
+
+const defaultProps = buildDefaultProps("dialog", {
+  show: false,
+  title: undefined,
+  width: "88vw",
+  height: undefined,
+  content: undefined,
+  contentAlign: "center",
+  showConfirmButton: true,
+  showCancelButton: false,
+  confirmButtonText: "确认",
+  confirmButtonColor: "primary",
+  cancelButtonText: "取消",
+  cancelButtonColor: undefined,
+  buttonReverse: false,
+  overlay: true,
+  overlayStyle: () => ({}),
+  closeOnClickOverlay: false,
+  lazyRender: true,
+  padding: undefined,
+  offsetTop: undefined,
+  asyncClose: false,
+  zIndex: undefined,
+  duration: 300,
+  background: undefined,
+  borderRadius: undefined,
+  enterTimingFunction: "cubic-bezier(0.5, 1.5, 0.5, 1)",
+  leaveTimingFunction: "cubic-bezier(0.4, 0.8, 0.74, 1)",
+  customClass: undefined,
+  customStyle: undefined,
+})
 
 export const dialogProps = {
   /**
    * 是否显示
    */
-  show: Boolean,
+  show: defaultProps("show", { type: Boolean }),
   /**
    * 标题
    */
-  title: String,
+  title: defaultProps("title", { type: String }),
   /**
    * 宽度
    */
-  width: makeNumericProp("88vw"),
+  width: defaultProps("width", { type: [Number, String] }),
   /**
    * 高度
    */
-  height: numericProp,
+  height: defaultProps("height", { type: [Number, String] }),
   /**
    * 内容
    */
-  content: String,
+  content: defaultProps("content", { type: String }),
   /**
    * 内容对齐方式
    */
-  contentAlign: makeStringProp<DialogContentAlign>("center"),
+  contentAlign: defaultProps("contentAlign", { type: String as PropType<DialogContentAlign> }),
   /**
    * 是否显示确认按钮
    */
-  showConfirmButton: truthProp,
+  showConfirmButton: defaultProps("showConfirmButton", { type: Boolean }),
   /**
    * 是否显示取消按钮
    */
-  showCancelButton: Boolean,
+  showCancelButton: defaultProps("showCancelButton", { type: Boolean }),
   /**
    * 确认按钮文字
    */
-  confirmButtonText: makeStringProp("确认"),
+  confirmButtonText: defaultProps("confirmButtonText", { type: String }),
   /**
    * 确认按钮文字颜色
    */
-  confirmButtonColor: makeStringProp("primary"),
+  confirmButtonColor: defaultProps("confirmButtonColor", { type: String }),
   /**
    * 取消按钮文字
    */
-  cancelButtonText: makeStringProp("取消"),
+  cancelButtonText: defaultProps("cancelButtonText", { type: String }),
   /**
    * 取消按钮文字颜色
    */
-  cancelButtonColor: String,
+  cancelButtonColor: defaultProps("cancelButtonColor", { type: String }),
   /**
    * 是否对调确认和取消按钮位置
    */
-  buttonReverse: Boolean,
+  buttonReverse: defaultProps("buttonReverse", { type: Boolean }),
   /**
    * 否显示遮罩层
    */
-  overlay: truthProp,
+  overlay: defaultProps("overlay", { type: Boolean }),
   /**
    * 自定义遮罩层样式
    */
-  overlayStyle: { type: [Object, String], default: () => ({}) },
+  overlayStyle: defaultProps("overlayStyle", { type: [Object, String] as PropType<string | CSSProperties> }),
   /**
    * 是否点击遮罩层后关闭
    */
-  closeOnClickOverlay: Boolean,
+  closeOnClickOverlay: defaultProps("closeOnClickOverlay", { type: Boolean }),
   /**
    * 是否在显示时才渲染节点
    */
-  lazyRender: truthProp,
+  lazyRender: defaultProps("lazyRender", { type: Boolean }),
   /**
    * 内边距
    */
-  padding: numericProp,
+  padding: defaultProps("padding", { type: [Number, String] }),
   /**
    * 弹窗顶部偏移
    */
-  offsetTop: numericProp,
+  offsetTop: defaultProps("offsetTop", { type: [Number, String] }),
   /**
    * 是否异步关闭
    */
-  asyncClose: Boolean,
+  asyncClose: defaultProps("asyncClose", { type: Boolean }),
   /**
    * 元素层级
    */
-  zIndex: numericProp,
+  zIndex: defaultProps("zIndex", { type: [Number, String] }),
   /**
    * 弹窗打开过渡时间,单位毫秒
    */
-  duration: makeNumericProp(300),
+  duration: defaultProps("duration", { type: Number }),
   /**
    * 背景颜色
    */
-  background: String,
+  background: defaultProps("background", { type: String }),
   /**
    * 弹窗圆角
    */
-  borderRadius: numericProp,
+  borderRadius: defaultProps("borderRadius", { type: [Number, String] }),
   /**
    * 进入动画函数
    */
-  enterTimingFunction: makeStringProp("cubic-bezier(0.5, 1.5, 0.5, 1)"),
+  enterTimingFunction: defaultProps("enterTimingFunction", { type: String }),
   /**
    * 离开动画函数
    */
-  leaveTimingFunction: makeStringProp("cubic-bezier(0.4, 0.8, 0.74, 1)"),
+  leaveTimingFunction: defaultProps("leaveTimingFunction", { type: String }),
   /**
    * 自定义类名
    */
-  customClass: String,
+  customClass: defaultProps("customClass", { type: String }),
   /**
    * 自定义样式
    */
-  customStyle: [String, Object] as PropType<string | CSSProperties>,
+  customStyle: defaultProps("customStyle", { type: [String, Object] as PropType<string | CSSProperties> }),
 }
 export type DialogOpenAction = "inner" | "outside"
 export type DialogDoneAction = "confirm" | "cancel" | "overlay"

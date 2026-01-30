@@ -38,7 +38,7 @@ src/uni_modules/uniapp-ui/ui-{name}/
 import type {Name} from "./ui-{name}.vue"
 import type { ExtractPropTypes } from "vue"
 import { createProps } from "../hooks"
-import { styleProp, truthProp, numericProp, makeStringProp, makeNumericProp } from "../utils/props"
+import { styleProp, truthProp, [Number, String], makeStringProp, makeNumericProp } from "../utils/props"
 
 // ===================== 类型定义 =====================
 

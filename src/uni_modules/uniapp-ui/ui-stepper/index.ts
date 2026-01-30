@@ -1,164 +1,206 @@
 import type Stepper from "./ui-stepper.vue"
 import type { PropType, ExtractPropTypes } from "vue"
-import { styleProp, truthProp, makeStringProp, makeNumericProp } from "../utils/props"
+import { styleProp, buildDefaultProps } from "../utils/props"
+
+const defaultProps = buildDefaultProps("stepper", {
+  modelValue: 0,
+  min: 0,
+  max: Infinity,
+  step: 1,
+  name: "",
+  size: "medium",
+  height: "",
+  theme: "button",
+  integer: false,
+  decimalLength: "",
+  disabled: false,
+  disablePlus: false,
+  disableMinus: false,
+  disabledInput: false,
+  inputGap: "",
+  inputWidth: "",
+  inputColor: "",
+  inputTextSize: "",
+  inputTextWeight: "",
+  inputTextColor: "",
+  minusWidth: "",
+  minusColor: "",
+  minusTextSize: "",
+  minusTextColor: "#333333",
+  minusBorderColor: "",
+  plusWidth: "",
+  plusColor: "",
+  plusTextSize: "",
+  plusTextColor: "#333333",
+  plusBorderColor: "",
+  borderColor: "",
+  borderWidth: "",
+  showPlus: true,
+  showMinus: true,
+  showInput: true,
+  longPress: false,
+  beforeChange: undefined,
+  customClass: "",
+  customStyle: "",
+})
 
 export const stepperProps = {
   /**
    * 绑定值
    */
-  modelValue: makeNumericProp(0),
+  modelValue: defaultProps("modelValue", { type: [Number, String] }),
   /**
    * 最小值
    */
-  min: makeNumericProp(0),
+  min: defaultProps("min", { type: [Number, String] }),
   /**
    * 最大值
    */
-  max: makeNumericProp(Infinity),
+  max: defaultProps("max", { type: [Number, String] }),
   /**
    * 步长，每次点击时改变的值
    */
-  step: makeNumericProp(1),
+  step: defaultProps("step", { type: [Number, String] }),
   /**
    * 标识符
    */
-  name: makeNumericProp(""),
+  name: defaultProps("name", { type: [Number, String] }),
   /**
    * 尺寸
    */
-  size: { type: String as PropType<StepperSize>, default: "medium" },
+  size: defaultProps("size", { type: String as PropType<StepperSize> }),
   /**
    * 高度（优先级高于 size）
    */
-  height: makeNumericProp(""),
+  height: defaultProps("height", { type: [Number, String] }),
   /**
    * 主题样式
    */
-  theme: { type: String as PropType<StepperTheme>, default: "button" },
+  theme: defaultProps("theme", { type: String as PropType<StepperTheme> }),
   /**
    * 是否只能输入正整数
    */
-  integer: Boolean,
+  integer: defaultProps("integer", { type: Boolean }),
   /**
    * 显示的小数位数
    */
-  decimalLength: makeNumericProp(""),
+  decimalLength: defaultProps("decimalLength", { type: [Number, String] }),
   /**
    * 是否禁用
    */
-  disabled: Boolean,
+  disabled: defaultProps("disabled", { type: Boolean }),
   /**
    * 是否禁用增加按钮
    */
-  disablePlus: Boolean,
+  disablePlus: defaultProps("disablePlus", { type: Boolean }),
   /**
    * 是否禁用减少按钮
    */
-  disableMinus: Boolean,
+  disableMinus: defaultProps("disableMinus", { type: Boolean }),
   /**
    * 是否禁止输入框
    */
-  disabledInput: Boolean,
+  disabledInput: defaultProps("disabledInput", { type: Boolean }),
   /**
    * 输入框左右间隙
    */
-  inputGap: makeNumericProp(""),
+  inputGap: defaultProps("inputGap", { type: [Number, String] }),
   /**
    * 输入框宽度
    */
-  inputWidth: makeNumericProp(""),
+  inputWidth: defaultProps("inputWidth", { type: [Number, String] }),
   /**
    * 输入框颜色
    */
-  inputColor: makeStringProp(""),
+  inputColor: defaultProps("inputColor", { type: String }),
   /**
    * 输入框文字大小
    */
-  inputTextSize: makeNumericProp(""),
+  inputTextSize: defaultProps("inputTextSize", { type: [Number, String] }),
   /**
    * 输入框文字粗细
    */
-  inputTextWeight: makeNumericProp(""),
+  inputTextWeight: defaultProps("inputTextWeight", { type: [Number, String] }),
   /**
    * 输入框文字颜色
    */
-  inputTextColor: makeStringProp(""),
+  inputTextColor: defaultProps("inputTextColor", { type: String }),
   /**
    * 减少按钮宽度
    */
-  minusWidth: makeNumericProp(""),
+  minusWidth: defaultProps("minusWidth", { type: [Number, String] }),
   /**
    * 减少按钮颜色
    */
-  minusColor: makeStringProp(""),
+  minusColor: defaultProps("minusColor", { type: String }),
   /**
    * 减少按钮文字大小
    */
-  minusTextSize: makeStringProp(""),
+  minusTextSize: defaultProps("minusTextSize", { type: String }),
   /**
    * 减少按钮文字颜色
    */
-  minusTextColor: makeStringProp("#333333"),
+  minusTextColor: defaultProps("minusTextColor", { type: String }),
   /**
    * border主题下的边框颜色
    */
-  minusBorderColor: makeStringProp(""),
+  minusBorderColor: defaultProps("minusBorderColor", { type: String }),
   /**
    * 增加按钮宽度
    */
-  plusWidth: makeNumericProp(""),
+  plusWidth: defaultProps("plusWidth", { type: [Number, String] }),
   /**
    * 增加按钮颜色
    */
-  plusColor: makeStringProp(""),
+  plusColor: defaultProps("plusColor", { type: String }),
   /**
    * 增加按钮文字大小
    */
-  plusTextSize: makeStringProp(""),
+  plusTextSize: defaultProps("plusTextSize", { type: String }),
   /**
    * 增加按钮文字颜色
    */
-  plusTextColor: makeStringProp("#333333"),
+  plusTextColor: defaultProps("plusTextColor", { type: String }),
   /**
    * border主题下的边框颜色
    */
-  plusBorderColor: makeStringProp(""),
+  plusBorderColor: defaultProps("plusBorderColor", { type: String }),
   /**
    * border主题下的边框颜色
    */
-  borderColor: makeStringProp(""),
+  borderColor: defaultProps("borderColor", { type: String }),
   /**
    * border主题下的边框宽度
    */
-  borderWidth: makeNumericProp(""),
+  borderWidth: defaultProps("borderWidth", { type: [Number, String] }),
   /**
    * 是否显示增加按钮
    */
-  showPlus: truthProp,
+  showPlus: defaultProps("showPlus", { type: Boolean }),
   /**
    * 是否显示减少按钮
    */
-  showMinus: truthProp,
+  showMinus: defaultProps("showMinus", { type: Boolean }),
   /**
    * 是否显示输入框
    */
-  showInput: truthProp,
+  showInput: defaultProps("showInput", { type: Boolean }),
   /**
    * 是否允许长按进行加减
    */
-  longPress: Boolean,
+  longPress: defaultProps("longPress", { type: Boolean }),
   /**
    * 输入值变化前的回调函数
    */
-  beforeChange: { type: Function },
+  beforeChange: defaultProps("beforeChange", { type: Function }),
   /**
    * 自定义类名
    */
-  customClass: makeStringProp(""),
+  customClass: defaultProps("customClass", { type: String }),
   /**
    * 自定义样式
    */
-  customStyle: styleProp,
+  customStyle: defaultProps("customStyle", styleProp),
 }
 export const stepperEmits = {
   click: () => true,

@@ -1,65 +1,82 @@
 import type Sidebar from "./ui-sidebar.vue"
 import type { Ref, PropType, InjectionKey, CSSProperties, ExtractPropTypes } from "vue"
-import { truthProp, numericProp, makeNumericProp } from "../utils/props"
+import { buildDefaultProps } from "../utils/props"
 
 export const sidebarKey: InjectionKey<SidebarProvide> = Symbol("ui-sidebar")
+const defaultProps = buildDefaultProps("sidebar", {
+  modelValue: 0,
+  width: undefined,
+  height: undefined,
+  duration: 300,
+  background: undefined,
+  lineColor: undefined,
+  lineWidth: undefined,
+  lineHeight: "40rpx",
+  lineRadius: undefined,
+  showLine: true,
+  autoScroll: true,
+  zIndex: undefined,
+  customClass: undefined,
+  customStyle: undefined,
+})
+
 export const sidebarProps = {
   /**
    * 绑定值
    */
-  modelValue: makeNumericProp(0),
+  modelValue: defaultProps("modelValue", { type: [Number, String] }),
   /**
    * 宽度
    */
-  width: numericProp,
+  width: defaultProps("width", { type: [Number, String] }),
   /**
    * 高度，默认自动
    */
-  height: numericProp,
+  height: defaultProps("height", { type: [Number, String] }),
   /**
    * 激活线条动画过渡时间，单位ms
    */
-  duration: makeNumericProp(300),
+  duration: defaultProps("duration", { type: Number }),
   /**
    * 背景颜色
    */
-  background: String,
+  background: defaultProps("background", { type: String }),
   /**
    * 激活线条颜色
    */
-  lineColor: String,
+  lineColor: defaultProps("lineColor", { type: String }),
   /**
    * 激活线条宽度
    */
-  lineWidth: numericProp,
+  lineWidth: defaultProps("lineWidth", { type: [Number, String] }),
   /**
    * 激活线条高度
    */
-  lineHeight: makeNumericProp("40rpx"),
+  lineHeight: defaultProps("lineHeight", { type: [Number, String] }),
   /**
    * 激活线条圆角
    */
-  lineRadius: numericProp,
+  lineRadius: defaultProps("lineRadius", { type: [Number, String] }),
   /**
    * 是否显示线条
    */
-  showLine: truthProp,
+  showLine: defaultProps("showLine", { type: Boolean }),
   /**
    * 是否自动滚动
    */
-  autoScroll: truthProp,
+  autoScroll: defaultProps("autoScroll", { type: Boolean }),
   /**
    * 元素层级
    */
-  zIndex: numericProp,
+  zIndex: defaultProps("zIndex", { type: [Number, String] }),
   /**
    * 自定义类名
    */
-  customClass: String,
+  customClass: defaultProps("customClass", { type: String }),
   /**
    * 自定义样式
    */
-  customStyle: [String, Object] as PropType<string | CSSProperties>,
+  customStyle: defaultProps("customStyle", { type: [String, Object] as PropType<string | CSSProperties> }),
 }
 export const sidebarEmits = {
   change: (name: number | string) => true,

@@ -22,20 +22,20 @@ UiFormItem 组件，属性与事件以源码注释为准。
 | border             | 是否显示边框                                                             | boolean                                                                   | undefined | -      |
 | borderColor        | 边框颜色                                                                 | string                                                                    | -         | -      |
 | required           | 是否为必填项，会显示标签文字右侧\*号                                     | boolean                                                                   | -         | -      |
-| padding            | 内边距                                                                   | numericProp                                                               | -         | -      |
-| labelGap           | 表单域标签文字和内容的间隔                                               | numericProp                                                               | -         | -      |
-| labelSize          | 表单域标签文字大小                                                       | numericProp                                                               | -         | -      |
+| padding            | 内边距                                                                   | [Number, String]                                                               | -         | -      |
+| labelGap           | 表单域标签文字和内容的间隔                                               | [Number, String]                                                               | -         | -      |
+| labelSize          | 表单域标签文字大小                                                       | [Number, String]                                                               | -         | -      |
 | labelColor         | 表单域标签文字颜色                                                       | string                                                                    | -         | -      |
-| labelWidth         | 表单域标签文字宽度                                                       | numericProp                                                               | -         | -      |
-| labelWeight        | 表单域标签文字字重                                                       | numericProp                                                               | -         | -      |
-| labelLineHeight    | 表单域标签文字行高                                                       | numericProp                                                               | -         | -      |
+| labelWidth         | 表单域标签文字宽度                                                       | [Number, String]                                                               | -         | -      |
+| labelWeight        | 表单域标签文字字重                                                       | [Number, String]                                                               | -         | -      |
+| labelLineHeight    | 表单域标签文字行高                                                       | [Number, String]                                                               | -         | -      |
 | labelAlign         | 表单域标签对齐方式                                                       | String as PropType<FormItemLabelAlign>                                    | -         | -      |
 | labelPosition      | 表单域标签文字位置，可选值为 left right top                              | String as PropType<FormLabelPosition>                                     | -         | -      |
 | contentAlign       | 输入内容对齐方式，可选值为 left center right                             | String as PropType<FormItemContentAlign>                                  | -         | -      |
 | errorMessage       | 校验错误信息文字                                                         | string                                                                    | -         | -      |
-| errorMessageSize   | 校验错误信息文字大小                                                     | numericProp                                                               | -         | -      |
+| errorMessageSize   | 校验错误信息文字大小                                                     | [Number, String]                                                               | -         | -      |
 | errorMessageColor  | 校验错误信息文字颜色                                                     | makeStringProp("error")                                                   | -         | -      |
-| errorMessageWeight | 校验错误信息文字字重                                                     | numericProp                                                               | -         | -      |
+| errorMessageWeight | 校验错误信息文字字重                                                     | [Number, String]                                                               | -         | -      |
 | errorMessageAlign  | 校验错误信息文字对齐方式，可选值为 left center right                     | String as PropType<FormErrorMessageAlign>                                 | ""        | -      |
 | showErrorMessage   | 是否在校验不通过时在输入框下方展示错误提示                               | truthProp                                                                 | -         | -      |
 | validateTrigger    | 表单校验触发时机，可选值为 blur change submit 支持通过数组同时设置多个值 | [String, Array] as PropType<FormValidateTrigger \| FormValidateTrigger[]> | "blur"    | -      |

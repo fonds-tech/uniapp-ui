@@ -1,40 +1,51 @@
 import type Row from "./ui-row.vue"
 import type { ExtractPropTypes } from "vue"
-import { styleProp, makeStringProp, makeNumericProp } from "../utils/props"
+import { styleProp, buildDefaultProps } from "../utils/props"
+
+const defaultProps = buildDefaultProps("row", {
+  gap: 0,
+  colGap: 0,
+  rowGap: 0,
+  align: "stretch",
+  justify: "start",
+  wrap: true,
+  customClass: "",
+  customStyle: "",
+})
 
 export const rowProps = {
   /**
    * 统一间距（同时设置行间距和列间距）
    */
-  gap: makeNumericProp(0),
+  gap: defaultProps("gap", { type: Number }),
   /**
    * 列间距（水平方向）
    */
-  colGap: makeNumericProp(0),
+  colGap: defaultProps("colGap", { type: Number }),
   /**
    * 行间距（垂直方向）
    */
-  rowGap: makeNumericProp(0),
+  rowGap: defaultProps("rowGap", { type: Number }),
   /**
    * 垂直对齐方式
    */
-  align: { type: String, default: "stretch", values: ["start", "end", "center", "stretch", "baseline"] },
+  align: defaultProps("align", { type: String, values: ["start", "end", "center", "stretch", "baseline"] }),
   /**
    * 水平对齐方式
    */
-  justify: { type: String, default: "start", values: ["start", "end", "center", "between", "around"] },
+  justify: defaultProps("justify", { type: String, values: ["start", "end", "center", "between", "around"] }),
   /**
    * 是否允许换行
    */
-  wrap: { type: Boolean, default: true },
+  wrap: defaultProps("wrap", { type: Boolean }),
   /**
    * 自定义类名
    */
-  customClass: makeStringProp(""),
+  customClass: defaultProps("customClass", { type: String }),
   /**
    * 自定义样式
    */
-  customStyle: styleProp,
+  customStyle: defaultProps("customStyle", styleProp),
 }
 export const rowEmits = {}
 

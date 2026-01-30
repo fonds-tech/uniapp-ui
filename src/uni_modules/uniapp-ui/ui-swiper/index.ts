@@ -1,96 +1,121 @@
 import type Swiper from "./ui-swiper.vue"
 import type { PropType, CSSProperties, ExtractPropTypes } from "vue"
-import { truthProp, numericProp, makeNumberProp, makeStringProp } from "../utils/props"
+import { buildDefaultProps } from "../utils/props"
+
+const defaultProps = buildDefaultProps("swiper", {
+  list: () => [],
+  width: undefined,
+  height: undefined,
+  radius: undefined,
+  current: 0,
+  circular: true,
+  interval: 3000,
+  duration: 500,
+  vertical: false,
+  autoplay: true,
+  disableTouch: false,
+  indicator: true,
+  indicatorType: "dot",
+  indicatorPosition: "bottom-right",
+  prevGap: undefined,
+  nextGap: undefined,
+  easingFunction: "default",
+  imageMode: "scaleToFill",
+  fieldKeys: undefined,
+  forKey: undefined,
+  customClass: undefined,
+  customStyle: undefined,
+})
 
 export const swiperProps = {
   /**
    * 数据列表
    */
-  list: { type: [Array, String], default: () => [] },
+  list: defaultProps("list", { type: [Array, String] }),
   /**
    * 宽度
    */
-  width: numericProp,
+  width: defaultProps("width", { type: [Number, String] }),
   /**
    * 高度
    */
-  height: numericProp,
+  height: defaultProps("height", { type: [Number, String] }),
   /**
    * 圆角
    */
-  radius: numericProp,
+  radius: defaultProps("radius", { type: [Number, String] }),
   /**
    * 当前所在滑块的 index
    */
-  current: makeNumberProp(0),
+  current: defaultProps("current", { type: Number }),
   /**
    * 是否开启循环播放
    */
-  circular: truthProp,
+  circular: defaultProps("circular", { type: Boolean }),
   /**
    * 自动切换时间间隔
    */
-  interval: makeNumberProp(3000),
+  interval: defaultProps("interval", { type: Number }),
   /**
    * 滑动动画时长
    */
-  duration: makeNumberProp(500),
+  duration: defaultProps("duration", { type: Number }),
   /**
    * 是否垂直滚动
    */
-  vertical: Boolean,
+  vertical: defaultProps("vertical", { type: Boolean }),
   /**
    * 是否自动切换
    */
-  autoplay: truthProp,
+  autoplay: defaultProps("autoplay", { type: Boolean }),
   /**
    * 是否禁止用户 touch 操作
    */
-  disableTouch: Boolean,
+  disableTouch: defaultProps("disableTouch", { type: Boolean }),
   /**
    * 是否显示指示器
    */
-  indicator: truthProp,
+  indicator: defaultProps("indicator", { type: Boolean }),
   /**
    * 指示器类型，可选值：dot、number
    */
-  indicatorType: makeStringProp<SwiperIndicatorType>("dot"),
+  indicatorType: defaultProps("indicatorType", { type: String as PropType<SwiperIndicatorType> }),
   /**
    * 指示器位置，可选值：left、top-left、top、top-right、bottom-left、bottom、bottom-right、right
    */
-  indicatorPosition: makeStringProp<SwiperIndicatorPosition>("bottom-right"),
+  indicatorPosition: defaultProps("indicatorPosition", { type: String as PropType<SwiperIndicatorPosition> }),
   /**
    * 前边距，可用于露出前一项的一小部分
    */
-  prevGap: numericProp,
+  prevGap: defaultProps("prevGap", { type: [Number, String] }),
   /**
    * 后边距，可用于露出后一项的一小部分
    */
-  nextGap: numericProp,
+  nextGap: defaultProps("nextGap", { type: [Number, String] }),
   /**
    * 指定切换缓动动画类型，有效值：default、linear、easeInCubic、easeOutCubic、easeInOutCubic
    */
-  easingFunction: makeStringProp<SwiperEasingFunction>("default"),
+  easingFunction: defaultProps("easingFunction", { type: String as PropType<SwiperEasingFunction> }),
   /**
    * 图片模式，可选值：https://uniapp.dcloud.net.cn/component/image.html#image
    */
-  imageMode: makeStringProp<UniHelper.ImageProps["mode"]>("scaleToFill"),
+  imageMode: defaultProps("imageMode", { type: String as PropType<UniHelper.ImageProps["mode"]> }),
   /**
    * 数据字段
    */
-  fieldKeys: { type: Object as PropType<SwiperFieldKeys> },
+  fieldKeys: defaultProps("fieldKeys", { type: Object as PropType<SwiperFieldKeys> }),
   /**
    * 循环 key
    */
-  forKey: String,
+  forKey: defaultProps("forKey", { type: String }),
   /**
    * 自定义类名
    */
-  customClass: String,
+  customClass: defaultProps("customClass", { type: String }),
   /**
    * 自定义样式
    */
-  customStyle: [String, Object] as PropType<string | CSSProperties>,
+  customStyle: defaultProps("customStyle", { type: [String, Object] as PropType<string | CSSProperties> }),
 }
 export const swiperEmits = {
   "update:current": (index: number) => true,

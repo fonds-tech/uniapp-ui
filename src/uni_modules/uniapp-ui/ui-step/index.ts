@@ -1,7 +1,7 @@
 import type Step from "./ui-step.vue"
 import type { StepStatus } from "../ui-steps"
 import type { PropType, CSSProperties, ExtractPropTypes } from "vue"
-import { numericProp } from "../utils/props"
+import { buildDefaultProps } from "../utils/props"
 
 /** 可从父组件继承的属性键 */
 export type InheritableStepPropKeys = "activeColor" | "inactiveColor" | "errorColor" | "activeIcon" | "inactiveIcon" | "finishIcon" | "errorIcon" | "iconSize"
@@ -9,19 +9,29 @@ export type InheritableStepPropKeys = "activeColor" | "inactiveColor" | "errorCo
 /**
  * 步骤项 Props 定义
  */
+const defaultProps = buildDefaultProps("step", {
+  title: undefined,
+  description: undefined,
+  icon: undefined,
+  status: undefined,
+  iconSize: undefined,
+  customClass: undefined,
+  customStyle: undefined,
+})
+
 export const stepProps = {
   /**
    * 步骤标题
    */
-  title: String,
+  title: defaultProps("title", { type: String }),
   /**
    * 步骤描述
    */
-  description: String,
+  description: defaultProps("description", { type: String }),
   /**
    * 自定义图标
    */
-  icon: String,
+  icon: defaultProps("icon", { type: String }),
   /**
    * 步骤状态（如果不设置则根据 active 自动判断）
    * - wait: 等待中
@@ -29,19 +39,19 @@ export const stepProps = {
    * - finish: 已完成
    * - error: 错误
    */
-  status: String as PropType<StepStatus>,
+  status: defaultProps("status", { type: String as PropType<StepStatus> }),
   /**
    * 图标大小
    */
-  iconSize: numericProp,
+  iconSize: defaultProps("iconSize", { type: [Number, String] }),
   /**
    * 自定义类名
    */
-  customClass: String,
+  customClass: defaultProps("customClass", { type: String }),
   /**
    * 自定义样式
    */
-  customStyle: [String, Object] as PropType<string | CSSProperties>,
+  customStyle: defaultProps("customStyle", { type: [String, Object] as PropType<string | CSSProperties> }),
 }
 /**
  * 步骤项事件定义

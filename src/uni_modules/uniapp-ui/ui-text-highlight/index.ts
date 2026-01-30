@@ -1,48 +1,61 @@
 import type TextHighlight from "./ui-text-highlight.vue"
 import type { ExtractPropTypes } from "vue"
-import { styleProp, makeStringProp, makeNumericProp } from "../utils/props"
+import { styleProp, buildDefaultProps } from "../utils/props"
+
+const defaultProps = buildDefaultProps("text-highlight", {
+  text: "",
+  match: "",
+  color: "",
+  textRow: "2",
+  fontSize: "",
+  fontWeight: "",
+  lineHeight: "",
+  highlightColor: "",
+  customClass: "",
+  customStyle: "",
+})
 
 export const textHighlightProps = {
   /**
    * 文本内容
    */
-  text: makeStringProp(""),
+  text: defaultProps("text", { type: String }),
   /**
    * 匹配文本内容
    */
-  match: makeStringProp(""),
+  match: defaultProps("match", { type: String }),
   /**
    * 文本颜色
    */
-  color: makeStringProp(""),
+  color: defaultProps("color", { type: String }),
   /**
    * 文本行数
    */
-  textRow: makeNumericProp("2"),
+  textRow: defaultProps("textRow", { type: [Number, String] }),
   /**
    * 文本大小
    */
-  fontSize: makeNumericProp(""),
+  fontSize: defaultProps("fontSize", { type: [Number, String] }),
   /**
    * 文本粗细
    */
-  fontWeight: makeNumericProp(""),
+  fontWeight: defaultProps("fontWeight", { type: [Number, String] }),
   /**
    * 文本行高
    */
-  lineHeight: makeNumericProp(""),
+  lineHeight: defaultProps("lineHeight", { type: [Number, String] }),
   /**
    * 文本高亮颜色
    */
-  highlightColor: makeStringProp(""),
+  highlightColor: defaultProps("highlightColor", { type: String }),
   /**
    * 自定义类名
    */
-  customClass: makeStringProp(""),
+  customClass: defaultProps("customClass", { type: String }),
   /**
    * 自定义样式
    */
-  customStyle: styleProp,
+  customStyle: defaultProps("customStyle", styleProp),
 }
 export const textHighlightEmits = {
   click: (value: string | number) => true,

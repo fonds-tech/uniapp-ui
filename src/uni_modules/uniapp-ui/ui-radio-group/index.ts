@@ -1,98 +1,123 @@
 import type RadioGroup from "./ui-radio-group.vue"
 import type { InjectionKey, ExtractPropTypes } from "vue"
 import { isNumber, isString } from "../utils/check"
-import { styleProp, truthProp, makeStringProp, makeNumericProp } from "../utils/props"
+import { styleProp, buildDefaultProps } from "../utils/props"
 
 export const radioGroupKey: InjectionKey<RadioGroupProvide> = Symbol("ui-radio-group")
+const defaultProps = buildDefaultProps("radio-group", {
+  modelValue: "",
+  gap: 0,
+  columns: "",
+  disabled: false,
+  icon: "",
+  shape: "dot",
+  round: true,
+  checkedColor: "",
+  iconSize: "36rpx",
+  iconColor: "",
+  iconWeight: "",
+  iconRadius: "",
+  labelSize: "",
+  labelColor: "",
+  labelWeight: "",
+  labelGap: "",
+  labelLeft: false,
+  labelDisabled: false,
+  checkedIconColor: "primary",
+  checkedLabelColor: "",
+  customClass: "",
+  customStyle: "",
+})
+
 export const radioGroupProps = {
   /**
    * 绑定值
    */
-  modelValue: makeNumericProp(""),
+  modelValue: defaultProps("modelValue", { type: [Number, String] }),
   /**
    * 单选框之间的间距
    */
-  gap: makeNumericProp(0),
+  gap: defaultProps("gap", { type: [Number, String] }),
   /**
    * 网格布局列数，设置后启用 grid 布局
    */
-  columns: makeNumericProp(""),
+  columns: defaultProps("columns", { type: [Number, String] }),
   /**
    * 是否禁用
    */
-  disabled: Boolean,
+  disabled: defaultProps("disabled", { type: Boolean }),
   /**
    * 图标名称
    */
-  icon: makeStringProp(""),
+  icon: defaultProps("icon", { type: String }),
   /**
    * 形状，icon 或 dot
    */
-  shape: makeStringProp("dot"),
+  shape: defaultProps("shape", { type: String }),
   /**
    * 是否圆形图标
    */
-  round: truthProp,
+  round: defaultProps("round", { type: Boolean }),
   /**
    * 选中的颜色
    */
-  checkedColor: makeStringProp(""),
+  checkedColor: defaultProps("checkedColor", { type: String }),
   /**
    * 图标大小
    */
-  iconSize: makeNumericProp("36rpx"),
+  iconSize: defaultProps("iconSize", { type: [Number, String] }),
   /**
    * 图标颜色
    */
-  iconColor: makeStringProp(""),
+  iconColor: defaultProps("iconColor", { type: String }),
   /**
    * 图标粗细
    */
-  iconWeight: makeNumericProp(""),
+  iconWeight: defaultProps("iconWeight", { type: [Number, String] }),
   /**
    * 图标圆角值
    */
-  iconRadius: makeNumericProp(""),
+  iconRadius: defaultProps("iconRadius", { type: [Number, String] }),
   /**
    * 标签文本大小
    */
-  labelSize: makeNumericProp(""),
+  labelSize: defaultProps("labelSize", { type: [Number, String] }),
   /**
    * 标签文本颜色
    */
-  labelColor: makeStringProp(""),
+  labelColor: defaultProps("labelColor", { type: String }),
   /**
    * 标签文本粗细
    */
-  labelWeight: makeNumericProp(""),
+  labelWeight: defaultProps("labelWeight", { type: [Number, String] }),
   /**
    * 标签与图标的间距
    */
-  labelGap: makeNumericProp(""),
+  labelGap: defaultProps("labelGap", { type: [Number, String] }),
   /**
    * 标签是否在图标左侧
    */
-  labelLeft: Boolean,
+  labelLeft: defaultProps("labelLeft", { type: Boolean }),
   /**
    * 是否禁用标签点击
    */
-  labelDisabled: { type: Boolean },
+  labelDisabled: defaultProps("labelDisabled", { type: Boolean }),
   /**
    * 选中的图标颜色
    */
-  checkedIconColor: makeStringProp("primary"),
+  checkedIconColor: defaultProps("checkedIconColor", { type: String }),
   /**
    * 选中的标签颜色
    */
-  checkedLabelColor: makeStringProp(""),
+  checkedLabelColor: defaultProps("checkedLabelColor", { type: String }),
   /**
    * 自定义类名
    */
-  customClass: makeStringProp(""),
+  customClass: defaultProps("customClass", { type: String }),
   /**
    * 自定义样式
    */
-  customStyle: styleProp,
+  customStyle: defaultProps("customStyle", styleProp),
 }
 export const radioGroupEmits = {
   click: () => true,

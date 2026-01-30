@@ -1,6 +1,6 @@
 import type Slider from "./ui-slider.vue"
 import type { PropType, ExtractPropTypes } from "vue"
-import { styleProp, truthProp, makeNumberProp, makeStringProp, makeNumericProp } from "../utils/props"
+import { styleProp, buildDefaultProps } from "../utils/props"
 
 /**
  * 滑块刻度标记配置
@@ -32,110 +32,118 @@ export type SliderShowValueMode = "always" | "dragging" | "never"
  */
 export type SliderSize = "small" | "medium" | "large"
 
+const defaultProps = buildDefaultProps("slider", {
+  modelValue: 0,
+  min: 0,
+  max: 100,
+  step: 1,
+  range: false,
+  vertical: false,
+  disabled: false,
+  readonly: false,
+  showValue: true,
+  showValueMode: "dragging",
+  size: "medium",
+  marks: undefined,
+  barHeight: "",
+  handleSize: "",
+  activeColor: "",
+  inactiveColor: "",
+  handleColor: "",
+  formatValue: undefined,
+  customClass: "",
+  customStyle: "",
+})
+
 export const sliderProps = {
   /**
    * 绑定值，支持单值或范围值
    */
-  modelValue: {
-    type: [Number, Array] as PropType<SliderValue>,
-    default: 0,
-  },
+  modelValue: defaultProps("modelValue", { type: [Number, Array] as PropType<SliderValue> }),
   /**
    * 最小值
    */
-  min: makeNumberProp(0),
+  min: defaultProps("min", { type: Number }),
   /**
    * 最大值
    */
-  max: makeNumberProp(100),
+  max: defaultProps("max", { type: Number }),
   /**
    * 步长，取值必须大于 0，并且可被 (max - min) 整除
    */
-  step: makeNumberProp(1),
+  step: defaultProps("step", { type: Number }),
   /**
    * 是否为范围选择（双滑块模式）
    */
-  range: Boolean,
+  range: defaultProps("range", { type: Boolean }),
   /**
    * 是否垂直方向展示
    */
-  vertical: Boolean,
+  vertical: defaultProps("vertical", { type: Boolean }),
   /**
    * 是否禁用滑块
    */
-  disabled: Boolean,
+  disabled: defaultProps("disabled", { type: Boolean }),
   /**
    * 是否只读（可查看但不可修改）
    */
-  readonly: Boolean,
+  readonly: defaultProps("readonly", { type: Boolean }),
   /**
    * 是否显示当前值提示
    */
-  showValue: truthProp,
+  showValue: defaultProps("showValue", { type: Boolean }),
   /**
    * 值提示显示模式
    * always: 始终显示
    * dragging: 拖动时显示
    * never: 不显示
    */
-  showValueMode: {
-    type: String as PropType<SliderShowValueMode>,
-    default: "dragging",
-  },
+  showValueMode: defaultProps("showValueMode", { type: String as PropType<SliderShowValueMode> }),
   /**
    * 滑块尺寸预设
    * small: 轨道 4px，把手 20px
    * medium: 轨道 6px，把手 28px（默认）
    * large: 轨道 8px，把手 36px
    */
-  size: {
-    type: String as PropType<SliderSize>,
-    default: "medium",
-  },
+  size: defaultProps("size", { type: String as PropType<SliderSize> }),
   /**
    * 刻度标记，key 为刻度值，value 为标签内容
    */
-  marks: {
-    type: Object as PropType<SliderMarks>,
-    default: undefined,
-  },
+  marks: defaultProps("marks", { type: Object as PropType<SliderMarks> }),
   /**
    * 轨道高度（水平模式）或宽度（垂直模式）
    * 传入具体值时会覆盖 size 预设
    */
-  barHeight: makeNumericProp(""),
+  barHeight: defaultProps("barHeight", { type: [Number, String] }),
   /**
    * 滑块把手尺寸
    * 传入具体值时会覆盖 size 预设
    */
-  handleSize: makeNumericProp(""),
+  handleSize: defaultProps("handleSize", { type: [Number, String] }),
   /**
    * 激活状态轨道颜色
    */
-  activeColor: makeStringProp(""),
+  activeColor: defaultProps("activeColor", { type: String }),
   /**
    * 非激活状态轨道颜色
    */
-  inactiveColor: makeStringProp(""),
+  inactiveColor: defaultProps("inactiveColor", { type: String }),
   /**
    * 滑块把手颜色
    */
-  handleColor: makeStringProp(""),
+  handleColor: defaultProps("handleColor", { type: String }),
   /**
    * 格式化显示值的函数
    */
-  formatValue: {
-    type: Function as PropType<(value: number) => string>,
-    default: undefined,
-  },
+  formatValue: defaultProps("formatValue", { type: Function as PropType<(value: number) => string> }),
   /**
    * 自定义类名
    */
-  customClass: makeStringProp(""),
+  customClass: defaultProps("customClass", { type: String }),
   /**
    * 自定义样式
    */
-  customStyle: styleProp,
+  customStyle: defaultProps("customStyle", styleProp),
 }
 export const sliderEmits = {
   /**

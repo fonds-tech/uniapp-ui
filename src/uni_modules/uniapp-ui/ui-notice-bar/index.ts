@@ -1,92 +1,116 @@
 import type NoticeBar from "./ui-notice-bar.vue"
 import type { PropType, ExtractPropTypes } from "vue"
-import { styleProp, truthProp, makeNumberProp, makeStringProp, makeNumericProp } from "../utils/props"
+import { styleProp, buildDefaultProps } from "../utils/props"
+
+const defaultProps = buildDefaultProps("notice-bar", {
+  text: "",
+  mode: "horizontal",
+  color: "",
+  speed: 60,
+  interval: 3000,
+  duration: 500,
+  scrollable: true,
+  minHeight: "72rpx",
+  fontSize: "",
+  fontWeight: "",
+  icon: "sound",
+  iconSize: "",
+  iconColor: "warning",
+  iconWeight: "",
+  rightIcon: "",
+  rightIconSize: "",
+  rightIconColor: "warning",
+  rightIconWeight: "",
+  background: "",
+  customClass: "",
+  customStyle: "",
+})
 
 export const noticeBarProps = {
   /**
    * 显示内容，vertical 垂直模式时要求内容为数组
    */
-  text: { type: [String, Array], default: "" },
+  text: defaultProps("text", { type: [String, Array] }),
   /**
    * 滚动模式
    */
-  mode: { type: String as PropType<NoticeBarMode>, default: "horizontal", validator: (v: string) => ["vertical", "horizontal"].includes(v) },
+  mode: defaultProps("mode", { type: String as PropType<NoticeBarMode>, validator: (v: string) => ["vertical", "horizontal"].includes(v) }),
   /**
    * 内容文本颜色
    */
-  color: makeStringProp(""),
+  color: defaultProps("color", { type: String }),
   /**
    * 滚动速率(px/s)
    */
-  speed: makeNumberProp(60),
+  speed: defaultProps("speed", { type: Number }),
   /**
    * 垂直滚动时自动切换时间间隔
    */
-  interval: makeNumberProp(3000),
+  interval: defaultProps("interval", { type: Number }),
   /**
    * 垂直滚动时滑动动画时长
    */
-  duration: makeNumberProp(500),
+  duration: defaultProps("duration", { type: Number }),
   /**
    * 是否开启滚动
    */
-  scrollable: truthProp,
+  scrollable: defaultProps("scrollable", { type: Boolean }),
   /**
    * 最小高度
    */
-  minHeight: makeNumericProp("72rpx"),
+  minHeight: defaultProps("minHeight", { type: [Number, String] }),
   /**
    * 内容文本大小
    */
-  fontSize: makeNumericProp(""),
+  fontSize: defaultProps("fontSize", { type: [Number, String] }),
   /**
    * 内容文本粗细
    */
-  fontWeight: makeNumericProp(""),
+  fontWeight: defaultProps("fontWeight", { type: [Number, String] }),
   /**
    * 左侧图标名称
    */
-  icon: { type: [String], default: "sound" },
+  icon: defaultProps("icon", { type: String }),
   /**
    * 左侧图标大小
    */
-  iconSize: makeNumericProp(""),
+  iconSize: defaultProps("iconSize", { type: [Number, String] }),
   /**
    * 左侧图标颜色
    */
-  iconColor: makeStringProp("warning"),
+  iconColor: defaultProps("iconColor", { type: String }),
   /**
    * 左侧图标粗细
    */
-  iconWeight: makeNumericProp(""),
+  iconWeight: defaultProps("iconWeight", { type: [Number, String] }),
   /**
    * 右侧图标名称
    */
-  rightIcon: { type: [String], default: "" },
+  rightIcon: defaultProps("rightIcon", { type: String }),
   /**
    * 右侧图标大小
    */
-  rightIconSize: makeNumericProp(""),
+  rightIconSize: defaultProps("rightIconSize", { type: [Number, String] }),
   /**
    * 右侧图标颜色
    */
-  rightIconColor: makeStringProp("warning"),
+  rightIconColor: defaultProps("rightIconColor", { type: String }),
   /**
    * 右侧图标粗细
    */
-  rightIconWeight: makeNumericProp(""),
+  rightIconWeight: defaultProps("rightIconWeight", { type: [Number, String] }),
   /**
    * 背景颜色
    */
-  background: makeStringProp(""),
+  background: defaultProps("background", { type: String }),
   /**
    * 自定义类名
    */
-  customClass: makeStringProp(""),
+  customClass: defaultProps("customClass", { type: String }),
   /**
    * 自定义样式
    */
-  customStyle: styleProp,
+  customStyle: defaultProps("customStyle", styleProp),
 }
 export const noticeBarEmits = {
   click: (index: number) => true,

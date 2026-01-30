@@ -1,87 +1,122 @@
 import type Search from "./ui-search.vue"
 import type { ExtractPropTypes } from "vue"
-import { styleProp, truthProp, makeNumberProp, makeStringProp, makeNumericProp } from "../utils/props"
+import { styleProp, buildDefaultProps } from "../utils/props"
+
+const defaultProps = buildDefaultProps("search", {
+  modelValue: "",
+  placeholder: "请输入搜索关键词",
+  maxlength: -1,
+  disabled: false,
+  focus: false,
+  clearable: true,
+  clearabled: undefined,
+  height: "72rpx",
+  margin: "",
+  round: false,
+  radius: "",
+  color: "",
+  fontSize: "",
+  placeholderColor: "#969799",
+  inputAlign: "left",
+  background: "",
+  border: "",
+  icon: "search",
+  iconSize: "40rpx",
+  iconColor: "",
+  iconWeight: "",
+  clearSize: "32",
+  clearColor: "",
+  clearWeight: "",
+  action: true,
+  actionText: "搜索",
+  actionSize: "",
+  actionColor: "",
+  actionWeight: "",
+  inputStyle: "",
+  customClass: "",
+  customStyle: "",
+})
 
 export const searchProps = {
   // ==================== 基础属性 ====================
   /** 绑定值 */
-  modelValue: makeStringProp(""),
+  modelValue: defaultProps("modelValue", { type: String }),
   /** 占位文字 */
-  placeholder: makeStringProp("请输入搜索关键词"),
+  placeholder: defaultProps("placeholder", { type: String }),
   /** 输入框最大输入长度，-1 表示不限制 */
-  maxlength: makeNumberProp(-1),
+  maxlength: defaultProps("maxlength", { type: Number }),
   /** 是否禁用输入框 */
-  disabled: Boolean,
+  disabled: defaultProps("disabled", { type: Boolean }),
   /** 是否自动获得焦点 */
-  focus: Boolean,
+  focus: defaultProps("focus", { type: Boolean }),
   /** 是否显示清除按钮（有内容时显示） */
-  clearable: truthProp,
+  clearable: defaultProps("clearable", { type: Boolean }),
   /** 是否显示清除按钮（兼容历史 clearabled） */
-  clearabled: { type: Boolean, default: undefined },
+  clearabled: defaultProps("clearabled", { type: Boolean }),
 
   // ==================== 尺寸与布局 ====================
   /** 输入框高度，支持 rpx/px 单位 */
-  height: makeNumericProp("72rpx"),
+  height: defaultProps("height", { type: [Number, String] }),
   /** 外边距 */
-  margin: makeNumericProp(""),
+  margin: defaultProps("margin", { type: [Number, String] }),
   /** 是否圆形搜索框 */
-  round: Boolean,
+  round: defaultProps("round", { type: Boolean }),
   /** 圆角值，覆盖默认圆角 */
-  radius: makeNumericProp(""),
+  radius: defaultProps("radius", { type: [Number, String] }),
 
   // ==================== 文字样式 ====================
   /** 输入文字颜色 */
-  color: makeStringProp(""),
+  color: defaultProps("color", { type: String }),
   /** 输入文字大小 */
-  fontSize: makeNumericProp(""),
+  fontSize: defaultProps("fontSize", { type: [Number, String] }),
   /** 占位文字颜色 */
-  placeholderColor: makeStringProp("#969799"),
+  placeholderColor: defaultProps("placeholderColor", { type: String }),
   /** 输入框内容水平对齐方式 */
-  inputAlign: { type: String, default: "left", validator: (v: string) => ["left", "center", "right"].includes(v) },
+  inputAlign: defaultProps("inputAlign", { type: String, validator: (v: string) => ["left", "center", "right"].includes(v) }),
 
   // ==================== 外观样式 ====================
   /** 背景颜色 */
-  background: makeStringProp(""),
+  background: defaultProps("background", { type: String }),
   /** 边框样式，如 "1px solid #eee" */
-  border: makeStringProp(""),
+  border: defaultProps("border", { type: String }),
 
   // ==================== 搜索图标 ====================
   /** 搜索图标名称 */
-  icon: makeStringProp("search"),
+  icon: defaultProps("icon", { type: String }),
   /** 搜索图标大小（移动端建议 20px 以上） */
-  iconSize: makeNumericProp("40rpx"),
+  iconSize: defaultProps("iconSize", { type: [Number, String] }),
   /** 搜索图标颜色 */
-  iconColor: makeStringProp(""),
+  iconColor: defaultProps("iconColor", { type: String }),
   /** 搜索图标粗细 */
-  iconWeight: makeStringProp(""),
+  iconWeight: defaultProps("iconWeight", { type: String }),
 
   // ==================== 清除图标 ====================
   /** 清除图标大小 */
-  clearSize: makeNumericProp("32"),
+  clearSize: defaultProps("clearSize", { type: [Number, String] }),
   /** 清除图标颜色 */
-  clearColor: makeStringProp(""),
+  clearColor: defaultProps("clearColor", { type: String }),
   /** 清除图标粗细 */
-  clearWeight: makeStringProp(""),
+  clearWeight: defaultProps("clearWeight", { type: String }),
 
   // ==================== 右侧操作按钮 ====================
   /** 是否显示右侧操作按钮 */
-  action: truthProp,
+  action: defaultProps("action", { type: Boolean }),
   /** 右侧操作按钮文字 */
-  actionText: makeStringProp("搜索"),
+  actionText: defaultProps("actionText", { type: String }),
   /** 右侧操作按钮文字大小 */
-  actionSize: makeNumericProp(""),
+  actionSize: defaultProps("actionSize", { type: [Number, String] }),
   /** 右侧操作按钮文字颜色 */
-  actionColor: makeStringProp(""),
+  actionColor: defaultProps("actionColor", { type: String }),
   /** 右侧操作按钮文字粗细 */
-  actionWeight: makeStringProp(""),
+  actionWeight: defaultProps("actionWeight", { type: String }),
 
   // ==================== 自定义样式 ====================
   /** 自定义输入框样式 */
-  inputStyle: styleProp,
+  inputStyle: defaultProps("inputStyle", styleProp),
   /** 自定义类名 */
-  customClass: makeStringProp(""),
+  customClass: defaultProps("customClass", { type: String }),
   /** 自定义根元素样式 */
-  customStyle: styleProp,
+  customStyle: defaultProps("customStyle", styleProp),
 }
 export const searchEmits = {
   blur: (event: any) => true,

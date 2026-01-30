@@ -1,6 +1,6 @@
 import type PullRefresh from "./ui-pull-refresh.vue"
 import type { PropType, CSSProperties, ExtractPropTypes } from "vue"
-import { makeStringProp, makeNumericProp } from "../utils/props"
+import { buildDefaultProps } from "../utils/props"
 
 /**
  * 下拉刷新状态类型
@@ -12,55 +12,70 @@ import { makeStringProp, makeNumericProp } from "../utils/props"
  */
 export type PullRefreshStatus = "normal" | "pulling" | "loosing" | "loading" | "success"
 
+const defaultProps = buildDefaultProps("pull-refresh", {
+  modelValue: false,
+  pullingText: "下拉即可刷新...",
+  loosingText: "释放即可刷新...",
+  loadingText: "加载中...",
+  successText: "刷新成功",
+  successDuration: 500,
+  headHeight: 50,
+  disabled: false,
+  pullDistance: undefined,
+  animationDuration: 300,
+  customClass: undefined,
+  customStyle: undefined,
+})
+
 export const pullRefreshProps = {
   /**
    * 是否处于加载中状态（v-model）
    */
-  modelValue: Boolean,
+  modelValue: defaultProps("modelValue", { type: Boolean }),
   /**
    * 下拉过程中的提示文案
    */
-  pullingText: makeStringProp("下拉即可刷新..."),
+  pullingText: defaultProps("pullingText", { type: String }),
   /**
    * 释放过程中的提示文案
    */
-  loosingText: makeStringProp("释放即可刷新..."),
+  loosingText: defaultProps("loosingText", { type: String }),
   /**
    * 加载过程中的提示文案
    */
-  loadingText: makeStringProp("加载中..."),
+  loadingText: defaultProps("loadingText", { type: String }),
   /**
    * 刷新成功的提示文案
    */
-  successText: makeStringProp("刷新成功"),
+  successText: defaultProps("successText", { type: String }),
   /**
    * 刷新成功提示展示时长（毫秒）
    */
-  successDuration: makeNumericProp(500),
+  successDuration: defaultProps("successDuration", { type: Number }),
   /**
    * 顶部内容高度，单位 px
    */
-  headHeight: makeNumericProp(50),
+  headHeight: defaultProps("headHeight", { type: Number }),
   /**
    * 是否禁用下拉刷新
    */
-  disabled: Boolean,
+  disabled: defaultProps("disabled", { type: Boolean }),
   /**
    * 触发刷新的下拉距离阈值，单位 px
    */
-  pullDistance: [Number, String] as PropType<number | string>,
+  pullDistance: defaultProps("pullDistance", { type: [Number, String] as PropType<number | string> }),
   /**
    * 动画持续时间（毫秒）
    */
-  animationDuration: makeNumericProp(300),
+  animationDuration: defaultProps("animationDuration", { type: Number }),
   /**
    * 自定义类名
    */
-  customClass: String,
+  customClass: defaultProps("customClass", { type: String }),
   /**
    * 自定义样式
    */
-  customStyle: [String, Object] as PropType<string | CSSProperties>,
+  customStyle: defaultProps("customStyle", { type: [String, Object] as PropType<string | CSSProperties> }),
 }
 export const pullRefreshEmits = {
   /** 更新 modelValue */

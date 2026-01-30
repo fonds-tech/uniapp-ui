@@ -1,32 +1,41 @@
 import type Footer from "./ui-footer.vue"
 import type { ExtractPropTypes } from "vue"
-import { styleProp, truthProp, makeStringProp, makeNumericProp } from "../utils/props"
+import { styleProp, buildDefaultProps } from "../utils/props"
+
+const defaultProps = buildDefaultProps("footer", {
+  zIndex: "",
+  offset: 0,
+  background: "",
+  safeAreaInsetBottom: true,
+  customClass: "",
+  customStyle: "",
+})
 
 export const footerProps = {
   /**
    * 元素层级
    */
-  zIndex: makeNumericProp(""),
+  zIndex: defaultProps("zIndex", { type: [Number, String] }),
   /**
    * 距离底部偏移
    */
-  offset: makeNumericProp(0),
+  offset: defaultProps("offset", { type: [Number, String] }),
   /**
    * 背景色
    */
-  background: makeStringProp(""),
+  background: defaultProps("background", { type: String }),
   /**
    * 是否开启底部安全区域
    */
-  safeAreaInsetBottom: truthProp,
+  safeAreaInsetBottom: defaultProps("safeAreaInsetBottom", { type: Boolean }),
   /**
    * 自定义类名
    */
-  customClass: makeStringProp(""),
+  customClass: defaultProps("customClass", { type: String }),
   /**
    * 自定义样式
    */
-  customStyle: styleProp,
+  customStyle: defaultProps("customStyle", styleProp),
 }
 export const footerEmits = {
   rect: (rect: UniApp.NodeInfo) => true,

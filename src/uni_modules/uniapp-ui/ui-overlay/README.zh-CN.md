@@ -17,7 +17,7 @@ UiOverlay 组件，属性与事件以源码注释为准。
 | 参数                | 说明                   | 类型                                                  | 默认值 | 可选值 |
 | ------------------- | ---------------------- | ----------------------------------------------------- | ------ | ------ |
 | show                | 是否显示               | boolean                                               | -      | -      |
-| zIndex              | 元素层级               | numericProp                                           | -      | -      |
+| zIndex              | 元素层级               | [Number, String]                                           | -      | -      |
 | opacity             | 透明度                 | makeNumericProp(0.7)                                  | -      | -      |
 | duration            | 过渡时间               | makeNumericProp(300)                                  | -      | -      |
 | lazyRender          | 是否在显示时才渲染节点 | truthProp                                             | -      | -      |

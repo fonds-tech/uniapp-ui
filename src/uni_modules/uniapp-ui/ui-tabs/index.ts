@@ -1,101 +1,127 @@
 import type Tabs from "./ui-tabs.vue"
 import type { Ref, PropType, InjectionKey, CSSProperties, ExtractPropTypes } from "vue"
-import { truthProp, numericProp, makeNumericProp } from "../utils/props"
+import { buildDefaultProps } from "../utils/props"
 
 export const tabsKey: InjectionKey<TabsProvide> = Symbol("ui-tabs")
+const defaultProps = buildDefaultProps("tabs", {
+  modelValue: 0,
+  height: undefined,
+  scrollable: false,
+  activeSize: undefined,
+  activeColor: undefined,
+  activeWeight: undefined,
+  inactiveSize: undefined,
+  inactiveColor: undefined,
+  inactiveWeight: undefined,
+  indicatorColor: undefined,
+  indicatorWidth: "40rpx",
+  indicatorHeight: undefined,
+  indicatorRadius: undefined,
+  showIndicator: true,
+  autoIndicatorWidth: false,
+  itemWidth: undefined,
+  itemMaxWidth: undefined,
+  background: undefined,
+  duration: 300,
+  borderBottom: false,
+  zIndex: undefined,
+  customClass: undefined,
+  customStyle: undefined,
+})
+
 export const tabsProps = {
   /**
    * 绑定值
    */
-  modelValue: makeNumericProp(0),
+  modelValue: defaultProps("modelValue", { type: [Number, String] }),
   /**
    * 高度
    */
-  height: numericProp,
+  height: defaultProps("height", { type: [Number, String] }),
   /**
    * 是否可以滚动
    */
-  scrollable: Boolean,
+  scrollable: defaultProps("scrollable", { type: Boolean }),
   /**
    * 激活文字大小
    */
-  activeSize: numericProp,
+  activeSize: defaultProps("activeSize", { type: [Number, String] }),
   /**
    * 激活文字颜色
    */
-  activeColor: String,
+  activeColor: defaultProps("activeColor", { type: String }),
   /**
    * 激活文字粗细
    */
-  activeWeight: numericProp,
+  activeWeight: defaultProps("activeWeight", { type: [Number, String] }),
   /**
    * 未激活文字大小
    */
-  inactiveSize: numericProp,
+  inactiveSize: defaultProps("inactiveSize", { type: [Number, String] }),
   /**
    * 未激活文字颜色
    */
-  inactiveColor: String,
+  inactiveColor: defaultProps("inactiveColor", { type: String }),
   /**
    * 未激活文字粗细
    */
-  inactiveWeight: numericProp,
+  inactiveWeight: defaultProps("inactiveWeight", { type: [Number, String] }),
   /**
    * 指示器颜色
    */
-  indicatorColor: String,
+  indicatorColor: defaultProps("indicatorColor", { type: String }),
   /**
    * 指示器宽度
    */
-  indicatorWidth: makeNumericProp("40rpx"),
+  indicatorWidth: defaultProps("indicatorWidth", { type: [Number, String] }),
   /**
    * 指示器高度
    */
-  indicatorHeight: numericProp,
+  indicatorHeight: defaultProps("indicatorHeight", { type: [Number, String] }),
   /**
    * 指示器圆角
    */
-  indicatorRadius: numericProp,
+  indicatorRadius: defaultProps("indicatorRadius", { type: [Number, String] }),
   /**
    * 是否显示指示器
    */
-  showIndicator: truthProp,
+  showIndicator: defaultProps("showIndicator", { type: Boolean }),
   /**
    * 指示器宽度是否自动匹配文字宽度
    */
-  autoIndicatorWidth: Boolean,
+  autoIndicatorWidth: defaultProps("autoIndicatorWidth", { type: Boolean }),
   /**
    * 单项宽度
    */
-  itemWidth: numericProp,
+  itemWidth: defaultProps("itemWidth", { type: [Number, String] }),
   /**
    * 单项最大宽度
    */
-  itemMaxWidth: numericProp,
+  itemMaxWidth: defaultProps("itemMaxWidth", { type: [Number, String] }),
   /**
    * 背景颜色
    */
-  background: String,
+  background: defaultProps("background", { type: String }),
   /**
    * 指示器动画过渡时间，单位ms
    */
-  duration: makeNumericProp(300),
+  duration: defaultProps("duration", { type: Number }),
   /**
    * 是否显示底部边框线
    */
-  borderBottom: Boolean,
+  borderBottom: defaultProps("borderBottom", { type: Boolean }),
   /**
    * 元素层级
    */
-  zIndex: numericProp,
+  zIndex: defaultProps("zIndex", { type: [Number, String] }),
   /**
    * 自定义类名
    */
-  customClass: String,
+  customClass: defaultProps("customClass", { type: String }),
   /**
    * 自定义样式
    */
-  customStyle: [String, Object] as PropType<string | CSSProperties>,
+  customStyle: defaultProps("customStyle", { type: [String, Object] as PropType<string | CSSProperties> }),
 }
 export const tabsEmits = {
   change: (name: string | number) => true,

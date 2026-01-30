@@ -1,45 +1,57 @@
 import type Overlay from "./ui-overlay.vue"
 import type { PropType, CSSProperties, ExtractPropTypes } from "vue"
 import { isBoolean } from "../utils/check"
-import { truthProp, numericProp, makeStringProp, makeNumericProp } from "../utils/props"
+import { buildDefaultProps } from "../utils/props"
+
+const defaultProps = buildDefaultProps("overlay", {
+  show: false,
+  zIndex: undefined,
+  opacity: 0.7,
+  duration: 300,
+  lazyRender: true,
+  enterTimingFunction: "ease-out",
+  leaveTimingFunction: "ease-in",
+  customClass: undefined,
+  customStyle: undefined,
+})
 
 export const overlayProps = {
   /**
    * 是否显示
    */
-  show: Boolean,
+  show: defaultProps("show", { type: Boolean }),
   /**
    * 元素层级
    */
-  zIndex: numericProp,
+  zIndex: defaultProps("zIndex", { type: [Number, String] }),
   /**
    * 透明度
    */
-  opacity: makeNumericProp(0.7),
+  opacity: defaultProps("opacity", { type: Number }),
   /**
    * 过渡时间
    */
-  duration: makeNumericProp(300),
+  duration: defaultProps("duration", { type: Number }),
   /**
    * 是否在显示时才渲染节点
    */
-  lazyRender: truthProp,
+  lazyRender: defaultProps("lazyRender", { type: Boolean }),
   /**
    * 进入动画函数
    */
-  enterTimingFunction: makeStringProp("ease-out"),
+  enterTimingFunction: defaultProps("enterTimingFunction", { type: String }),
   /**
    * 离开动画函数
    */
-  leaveTimingFunction: makeStringProp("ease-in"),
+  leaveTimingFunction: defaultProps("leaveTimingFunction", { type: String }),
   /**
    * 自定义类名
    */
-  customClass: String,
+  customClass: defaultProps("customClass", { type: String }),
   /**
    * 自定义样式
    */
-  customStyle: [String, Object] as PropType<string | CSSProperties>,
+  customStyle: defaultProps("customStyle", { type: [String, Object] as PropType<string | CSSProperties> }),
 }
 export const overlayEmits = {
   "update:show": (show: boolean) => isBoolean(show),

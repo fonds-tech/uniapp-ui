@@ -1,84 +1,106 @@
 import type Switch from "./ui-switch.vue"
 import type { ExtractPropTypes } from "vue"
-import { styleProp, makeStringProp, makeNumericProp } from "../utils/props"
+import { styleProp, buildDefaultProps } from "../utils/props"
+
+const defaultProps = buildDefaultProps("switch", {
+  modelValue: false,
+  size: "",
+  gutter: "",
+  loading: false,
+  disabled: false,
+  activeValue: true,
+  inactiveValue: false,
+  activeColor: "",
+  inactiveColor: "",
+  activeText: "",
+  inactiveText: "",
+  textSize: "",
+  textColor: "",
+  textWeight: "",
+  loadingIconSize: "",
+  loadingIconColor: "",
+  beforeChange: undefined,
+  customClass: "",
+  customStyle: "",
+})
 
 export const switchProps = {
   /**
    * 开关选中状态
    */
-  modelValue: { type: [Number, String, Boolean], default: false },
+  modelValue: defaultProps("modelValue", { type: [Number, String, Boolean] }),
   /**
    * 开关按钮的尺寸
    */
-  size: makeNumericProp(""),
+  size: defaultProps("size", { type: [Number, String] }),
   /**
    * 圆点与背景的间距
    */
-  gutter: makeNumericProp(""),
+  gutter: defaultProps("gutter", { type: [Number, String] }),
   /**
    * 是否为加载状态
    */
-  loading: Boolean,
+  loading: defaultProps("loading", { type: Boolean }),
   /**
    * 是否为禁用状态
    */
-  disabled: Boolean,
+  disabled: defaultProps("disabled", { type: Boolean }),
   /**
    * 打开时对应的值
    */
-  activeValue: { type: [Number, String, Boolean], default: true },
+  activeValue: defaultProps("activeValue", { type: [Number, String, Boolean] }),
   /**
    * 关闭时对应的值
    */
-  inactiveValue: { type: [Number, String, Boolean], default: false },
+  inactiveValue: defaultProps("inactiveValue", { type: [Number, String, Boolean] }),
   /**
    * 打开时的背景色
    */
-  activeColor: makeStringProp(""),
+  activeColor: defaultProps("activeColor", { type: String }),
   /**
    * 关闭时的背景色
    */
-  inactiveColor: makeStringProp(""),
+  inactiveColor: defaultProps("inactiveColor", { type: String }),
   /**
    * 打开时显示的文字
    */
-  activeText: makeStringProp(""),
+  activeText: defaultProps("activeText", { type: String }),
   /**
    * 关闭时显示的文字
    */
-  inactiveText: makeStringProp(""),
+  inactiveText: defaultProps("inactiveText", { type: String }),
   /**
    * 文字大小
    */
-  textSize: makeNumericProp(""),
+  textSize: defaultProps("textSize", { type: [Number, String] }),
   /**
    * 文字颜色
    */
-  textColor: makeStringProp(""),
+  textColor: defaultProps("textColor", { type: String }),
   /**
    * 文字粗细
    */
-  textWeight: makeNumericProp(""),
+  textWeight: defaultProps("textWeight", { type: [Number, String] }),
   /**
    * 加载中图标大小
    */
-  loadingIconSize: makeNumericProp(""),
+  loadingIconSize: defaultProps("loadingIconSize", { type: [Number, String] }),
   /**
    * 加载中图标颜色
    */
-  loadingIconColor: makeStringProp(""),
+  loadingIconColor: defaultProps("loadingIconColor", { type: String }),
   /**
    * 状态变化前的回调函数
    */
-  beforeChange: { type: Function },
+  beforeChange: defaultProps("beforeChange", { type: Function }),
   /**
    * 自定义类名
    */
-  customClass: makeStringProp(""),
+  customClass: defaultProps("customClass", { type: String }),
   /**
    * 自定义样式
    */
-  customStyle: styleProp,
+  customStyle: defaultProps("customStyle", styleProp),
 }
 export const switchEmits = {
   change: (value: number | string | boolean) => true,

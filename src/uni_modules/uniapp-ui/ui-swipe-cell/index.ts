@@ -1,6 +1,6 @@
 import type SwipeCell from "./ui-swipe-cell.vue"
 import type { PropType, CSSProperties, ExtractPropTypes } from "vue"
-import { truthProp, makeNumericProp } from "../utils/props"
+import { buildDefaultProps } from "../utils/props"
 
 /**
  * 滑动位置类型
@@ -22,43 +22,55 @@ export interface SwipeCellBeforeCloseParams {
  */
 export type SwipeCellBeforeClose = (params: SwipeCellBeforeCloseParams) => boolean | void | Promise<boolean | void>
 
+const defaultProps = buildDefaultProps("swipe-cell", {
+  name: undefined,
+  disabled: false,
+  leftWidth: 0,
+  rightWidth: 0,
+  beforeClose: undefined,
+  stopPropagation: true,
+  threshold: 0.3,
+  customClass: undefined,
+  customStyle: undefined,
+})
+
 export const swipeCellProps = {
   /**
    * 标识符，用于在点击事件中区分不同的滑动单元格
    */
-  name: [String, Number] as PropType<string | number>,
+  name: defaultProps("name", { type: [String, Number] as PropType<string | number> }),
   /**
    * 是否禁用滑动
    */
-  disabled: Boolean,
+  disabled: defaultProps("disabled", { type: Boolean }),
   /**
    * 左侧滑动区域宽度，单位为 px
    */
-  leftWidth: makeNumericProp(0),
+  leftWidth: defaultProps("leftWidth", { type: [Number, String] }),
   /**
    * 右侧滑动区域宽度，单位为 px
    */
-  rightWidth: makeNumericProp(0),
+  rightWidth: defaultProps("rightWidth", { type: [Number, String] }),
   /**
    * 关闭前的回调函数，返回 false 可阻止关闭
    */
-  beforeClose: Function as PropType<SwipeCellBeforeClose>,
+  beforeClose: defaultProps("beforeClose", { type: Function as PropType<SwipeCellBeforeClose> }),
   /**
    * 是否阻止滑动事件冒泡
    */
-  stopPropagation: truthProp,
+  stopPropagation: defaultProps("stopPropagation", { type: Boolean }),
   /**
    * 打开时触发的阈值比例，超过此比例自动打开，范围 0-1
    */
-  threshold: makeNumericProp(0.3),
+  threshold: defaultProps("threshold", { type: [Number, String] }),
   /**
    * 自定义类名
    */
-  customClass: String,
+  customClass: defaultProps("customClass", { type: String }),
   /**
    * 自定义样式
    */
-  customStyle: [String, Object] as PropType<string | CSSProperties>,
+  customStyle: defaultProps("customStyle", { type: [String, Object] as PropType<string | CSSProperties> }),
 }
 export const swipeCellEmits = {
   /** 打开时触发 */

@@ -1,72 +1,91 @@
 import type Rate from "./ui-rate.vue"
 import type { ExtractPropTypes } from "vue"
-import { styleProp, truthProp, makeNumberProp, makeStringProp, makeNumericProp } from "../utils/props"
+import { styleProp, buildDefaultProps } from "../utils/props"
+
+const defaultProps = buildDefaultProps("rate", {
+  modelValue: 0,
+  icon: "star-fill",
+  voidIcon: "star",
+  count: 5,
+  size: "40rpx",
+  color: "primary",
+  voidColor: "#c8c9cc",
+  gutter: "8rpx",
+  readonly: false,
+  touchable: true,
+  disabled: false,
+  disabledColor: "#c8c9cc",
+  allowHalf: false,
+  iconWeight: "",
+  customClass: "",
+  customStyle: "",
+})
 
 export const rateProps = {
   /**
    * 当前分值
    */
-  modelValue: makeNumberProp(0),
+  modelValue: defaultProps("modelValue", { type: Number }),
   /**
    * 图标选中时的名称
    */
-  icon: makeStringProp("star-fill"),
+  icon: defaultProps("icon", { type: String }),
   /**
    * 图标未选中时的名称
    */
-  voidIcon: makeStringProp("star"),
+  voidIcon: defaultProps("voidIcon", { type: String }),
   /**
    * 最多可选数量
    */
-  count: makeNumberProp(5),
+  count: defaultProps("count", { type: Number }),
   /**
    * 图标大小
    */
-  size: makeNumericProp("40rpx"),
+  size: defaultProps("size", { type: [Number, String] }),
   /**
    * 图标选中时的颜色
    */
-  color: makeStringProp("primary"),
+  color: defaultProps("color", { type: String }),
   /**
    * 图标未选中时的颜色
    */
-  voidColor: makeStringProp("#c8c9cc"),
+  voidColor: defaultProps("voidColor", { type: String }),
   /**
    * 图标间距
    */
-  gutter: makeNumericProp("8rpx"),
+  gutter: defaultProps("gutter", { type: [Number, String] }),
   /**
    * 是否为只读
    */
-  readonly: Boolean,
+  readonly: defaultProps("readonly", { type: Boolean }),
   /**
    * 是否可以通过滑动手势选择评分
    */
-  touchable: truthProp,
+  touchable: defaultProps("touchable", { type: Boolean }),
   /**
    * 是否禁用
    */
-  disabled: Boolean,
+  disabled: defaultProps("disabled", { type: Boolean }),
   /**
    * 图标禁用时的颜色
    */
-  disabledColor: makeStringProp("#c8c9cc"),
+  disabledColor: defaultProps("disabledColor", { type: String }),
   /**
    * 是否允许半星选择
    */
-  allowHalf: Boolean,
+  allowHalf: defaultProps("allowHalf", { type: Boolean }),
   /**
    * 图标粗细
    */
-  iconWeight: makeNumericProp(""),
+  iconWeight: defaultProps("iconWeight", { type: [Number, String] }),
   /**
    * 自定义类名
    */
-  customClass: makeStringProp(""),
+  customClass: defaultProps("customClass", { type: String }),
   /**
    * 自定义样式
    */
-  customStyle: styleProp,
+  customStyle: defaultProps("customStyle", styleProp),
 }
 export const rateEmits = {
   change: (value: number) => value,

@@ -1,32 +1,41 @@
 import type Header from "./ui-header.vue"
 import type { ExtractPropTypes } from "vue"
-import { styleProp, makeStringProp, makeNumericProp } from "../utils/props"
+import { styleProp, buildDefaultProps } from "../utils/props"
+
+const defaultProps = buildDefaultProps("header", {
+  zIndex: "",
+  offset: 0,
+  background: "",
+  safeAreaInsetTop: false,
+  customClass: "",
+  customStyle: "",
+})
 
 export const headerProps = {
   /**
    * 元素层级
    */
-  zIndex: makeNumericProp(""),
+  zIndex: defaultProps("zIndex", { type: [Number, String] }),
   /**
    * 距离顶部偏移
    */
-  offset: makeNumericProp(0),
+  offset: defaultProps("offset", { type: [Number, String] }),
   /**
    * 背景色
    */
-  background: makeStringProp(""),
+  background: defaultProps("background", { type: String }),
   /**
    * 是否开启顶部安全区域适配
    */
-  safeAreaInsetTop: { type: Boolean },
+  safeAreaInsetTop: defaultProps("safeAreaInsetTop", { type: Boolean }),
   /**
    * 自定义类名
    */
-  customClass: makeStringProp(""),
+  customClass: defaultProps("customClass", { type: String }),
   /**
    * 自定义样式
    */
-  customStyle: styleProp,
+  customStyle: defaultProps("customStyle", styleProp),
 }
 export const headerEmits = {
   rect: (rect: UniApp.NodeInfo) => true,

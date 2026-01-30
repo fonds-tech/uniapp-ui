@@ -1,64 +1,81 @@
 import type PickerPanel from "./ui-picker-panel.vue"
 import type { PropType, ExtractPropTypes } from "vue"
-import { numericProp, makeArrayProp, makeNumericProp } from "../utils/props"
+import { buildDefaultProps } from "../utils/props"
+
+const defaultProps = buildDefaultProps("picker-panel", {
+  modelValue: () => [],
+  columns: () => [],
+  loading: false,
+  columnFields: () => ({ text: "text", value: "value", children: "children" }),
+  columnHeight: "88rpx",
+  visibleColumnNum: 5,
+  columnSize: undefined,
+  columnColor: undefined,
+  columnWeight: undefined,
+  activeColumnSize: undefined,
+  activeColumnColor: undefined,
+  activeColumnWeight: undefined,
+  customClass: undefined,
+  customStyle: undefined,
+})
 
 export const pickerPanelProps = {
   /**
    * 绑定值
    */
-  modelValue: makeArrayProp<string | number>(),
+  modelValue: defaultProps("modelValue", { type: Array as PropType<PickerValue[]> }),
   /**
    * 列数据
    */
-  columns: makeArrayProp<PickerColumn>(),
+  columns: defaultProps("columns", { type: Array as PropType<PickerColumn[]> }),
   /**
    * 是否显示加载中
    */
-  loading: Boolean,
+  loading: defaultProps("loading", { type: Boolean }),
   /**
    * 自定义columns结构中的字段
    */
-  columnFields: { type: Object as PropType<Partial<PickerColumnFields>>, default: () => ({ text: "text", value: "value", children: "children" }) },
+  columnFields: defaultProps("columnFields", { type: Object as PropType<Partial<PickerColumnFields>> }),
   /**
    * 选项高度
    */
-  columnHeight: makeNumericProp("88rpx"),
+  columnHeight: defaultProps("columnHeight", { type: [Number, String] }),
   /**
    * 可见的选项个数
    */
-  visibleColumnNum: makeNumericProp(5),
+  visibleColumnNum: defaultProps("visibleColumnNum", { type: [Number, String] }),
   /**
    * 选项文字大小
    */
-  columnSize: numericProp,
+  columnSize: defaultProps("columnSize", { type: [Number, String] }),
   /**
    * 选项文字颜色
    */
-  columnColor: String,
+  columnColor: defaultProps("columnColor", { type: String }),
   /**
    * 选项文字字重
    */
-  columnWeight: numericProp,
+  columnWeight: defaultProps("columnWeight", { type: [Number, String] }),
   /**
    * 激活选项文字大小
    */
-  activeColumnSize: numericProp,
+  activeColumnSize: defaultProps("activeColumnSize", { type: [Number, String] }),
   /**
    * 激活选项文字颜色
    */
-  activeColumnColor: String,
+  activeColumnColor: defaultProps("activeColumnColor", { type: String }),
   /**
    * 激活选项文字字重
    */
-  activeColumnWeight: numericProp,
+  activeColumnWeight: defaultProps("activeColumnWeight", { type: [Number, String] }),
   /**
    * 自定义类名
    */
-  customClass: String,
+  customClass: defaultProps("customClass", { type: String }),
   /**
    * 自定义样式
    */
-  customStyle: [String, Object],
+  customStyle: defaultProps("customStyle", { type: [String, Object] }),
 }
 export const pickerPanelEmits = {
   change: (data: PickerChangeData) => data,

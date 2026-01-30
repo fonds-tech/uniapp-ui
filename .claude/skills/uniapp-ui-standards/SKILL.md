@@ -67,7 +67,7 @@ import { xxxProps, xxxEmits, useXxxProps } from "./index"  // 5. 组件定义
 import type XxxComponent from "./ui-xxx.vue"
 import type { PropType, ExtractPropTypes } from "vue"
 import { createProps } from "../hooks"
-import { styleProp, truthProp, numericProp, makeStringProp, makeNumericProp } from "../utils/props"
+import { styleProp, truthProp, [Number, String], makeStringProp, makeNumericProp } from "../utils/props"
 
 // 类型定义（使用 type 而非 enum）
 export type XxxSize = "mini" | "small" | "normal" | "medium" | "large"
@@ -107,7 +107,7 @@ export type XxxInstance = InstanceType<typeof XxxComponent>
 | --------------------- | ------------------ | -------------------------------------- |
 | `Boolean`             | 布尔值，默认 false | `disabled: Boolean`                    |
 | `truthProp`           | 布尔值，默认 true  | `show: truthProp`                      |
-| `numericProp`         | 数字或字符串       | `width: numericProp`                   |
+| `[Number, String]`         | 数字或字符串       | `width: [Number, String]`                   |
 | `makeStringProp<T>()` | 字符串带默认值     | `size: makeStringProp<Size>("normal")` |
 | `makeNumericProp()`   | 数字带默认值       | `throttle: makeNumericProp(200)`       |
 | `makeNumberProp()`    | 纯数字带默认值     | `delay: makeNumberProp(0)`             |

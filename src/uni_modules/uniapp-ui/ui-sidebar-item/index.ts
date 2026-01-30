@@ -1,76 +1,96 @@
 import type SidebarItem from "./ui-sidebar-item.vue"
 import type { PropType, CSSProperties, ExtractPropTypes } from "vue"
-import { numericProp, makeStringProp } from "../utils/props"
+import { buildDefaultProps } from "../utils/props"
+
+const defaultProps = buildDefaultProps("sidebar-item", {
+  name: undefined,
+  title: undefined,
+  height: undefined,
+  disabled: false,
+  dot: false,
+  badge: undefined,
+  titleColor: undefined,
+  titleSize: undefined,
+  titleWeight: undefined,
+  titleAlign: "center",
+  activeTitleColor: undefined,
+  activeTitleSize: undefined,
+  activeTitleWeight: undefined,
+  background: undefined,
+  activeBackground: undefined,
+  customClass: undefined,
+  customStyle: undefined,
+})
 
 export const sidebarItemProps = {
   /**
    * 标识符
    */
-  name: numericProp,
+  name: defaultProps("name", { type: [Number, String] }),
   /**
    * 标题
    */
-  title: String,
+  title: defaultProps("title", { type: String }),
   /**
    * 高度
    */
-  height: numericProp,
+  height: defaultProps("height", { type: [Number, String] }),
   /**
    * 是否禁用
    */
-  disabled: Boolean,
+  disabled: defaultProps("disabled", { type: Boolean }),
   /**
    * 是否显示圆点徽标
    */
-  dot: Boolean,
+  dot: defaultProps("dot", { type: Boolean }),
   /**
    * 徽标内容
    */
-  badge: numericProp,
+  badge: defaultProps("badge", { type: [Number, String] }),
   /**
    * 标题颜色
    */
-  titleColor: String,
+  titleColor: defaultProps("titleColor", { type: String }),
   /**
    * 标题大小
    */
-  titleSize: numericProp,
+  titleSize: defaultProps("titleSize", { type: [Number, String] }),
   /**
    * 标题粗细
    */
-  titleWeight: numericProp,
+  titleWeight: defaultProps("titleWeight", { type: [Number, String] }),
   /**
    * 文字对齐方式
    */
-  titleAlign: makeStringProp("center"),
+  titleAlign: defaultProps("titleAlign", { type: String }),
   /**
    * 标题激活颜色
    */
-  activeTitleColor: String,
+  activeTitleColor: defaultProps("activeTitleColor", { type: String }),
   /**
    * 标题激活大小
    */
-  activeTitleSize: numericProp,
+  activeTitleSize: defaultProps("activeTitleSize", { type: [Number, String] }),
   /**
    * 标题激活粗细
    */
-  activeTitleWeight: numericProp,
+  activeTitleWeight: defaultProps("activeTitleWeight", { type: [Number, String] }),
   /**
    * 背景颜色
    */
-  background: String,
+  background: defaultProps("background", { type: String }),
   /**
    * 激活背景颜色
    */
-  activeBackground: String,
+  activeBackground: defaultProps("activeBackground", { type: String }),
   /**
    * 自定义类名
    */
-  customClass: String,
+  customClass: defaultProps("customClass", { type: String }),
   /**
    * 自定义样式
    */
-  customStyle: [String, Object] as PropType<string | CSSProperties>,
+  customStyle: defaultProps("customStyle", { type: [String, Object] as PropType<string | CSSProperties> }),
 }
 export const sidebarItemEmits = {}
 

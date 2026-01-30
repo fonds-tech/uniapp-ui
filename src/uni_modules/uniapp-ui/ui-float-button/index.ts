@@ -1,92 +1,110 @@
 import type FloatButton from "./ui-float-button.vue"
 import type { ExtractPropTypes } from "vue"
-import { styleProp, truthProp, makeStringProp, makeNumericProp } from "../utils/props"
+import { styleProp, buildDefaultProps } from "../utils/props"
+
+const defaultProps = buildDefaultProps("float-button", {
+  show: true,
+  icon: "plus",
+  text: "",
+  type: "primary",
+  size: "100rpx",
+  position: "right-bottom",
+  offsetX: "24rpx",
+  offsetY: "100rpx",
+  zIndex: 100,
+  color: "",
+  foregroundColor: "#fff",
+  iconSize: "40rpx",
+  disabled: false,
+  draggable: false,
+  dragBoundary: true,
+  magnetic: false,
+  customClass: "",
+  customStyle: "",
+})
 
 export const floatButtonProps = {
   /**
    * 是否显示
    */
-  show: truthProp,
+  show: defaultProps("show", { type: Boolean }),
   /**
    * 图标名称
    */
-  icon: makeStringProp("plus"),
+  icon: defaultProps("icon", { type: String }),
   /**
    * 按钮文本
    */
-  text: { type: String, default: "" },
+  text: defaultProps("text", { type: String }),
   /**
    * 按钮类型
    */
-  type: {
+  type: defaultProps("type", {
     type: String,
-    default: "primary",
     validator: (v: string) => ["primary", "success", "warning", "danger", "default"].includes(v),
-  },
+  }),
   /**
    * 按钮尺寸
    */
-  size: makeNumericProp("100rpx"),
+  size: defaultProps("size", { type: [Number, String] }),
   /**
    * 位置
    */
-  position: {
+  position: defaultProps("position", {
     type: String,
-    default: "right-bottom",
     validator: (v: string) => ["left-bottom", "right-bottom", "left-top", "right-top"].includes(v),
-  },
+  }),
   /**
    * 横向偏移
    */
-  offsetX: makeNumericProp("24rpx"),
+  offsetX: defaultProps("offsetX", { type: [Number, String] }),
   /**
    * 纵向偏移
    */
-  offsetY: makeNumericProp("100rpx"),
+  offsetY: defaultProps("offsetY", { type: [Number, String] }),
   /**
    * 元素层级
    */
-  zIndex: makeNumericProp(100),
+  zIndex: defaultProps("zIndex", { type: [Number, String] }),
   /**
    * 自定义背景色
    */
-  color: { type: String, default: "" },
+  color: defaultProps("color", { type: String }),
   /**
    * 前景色（图标和文字颜色）
    */
-  foregroundColor: makeStringProp("#fff"),
+  foregroundColor: defaultProps("foregroundColor", { type: String }),
   /**
    * 图标大小
    */
-  iconSize: makeNumericProp("40rpx"),
+  iconSize: defaultProps("iconSize", { type: [Number, String] }),
   /**
    * 是否禁用
    */
-  disabled: Boolean,
+  disabled: defaultProps("disabled", { type: Boolean }),
   /**
    * 是否可拖拽
    */
-  draggable: Boolean,
+  draggable: defaultProps("draggable", { type: Boolean }),
   /**
    * 拖拽边界（是否限制在屏幕内）
    */
-  dragBoundary: truthProp,
+  dragBoundary: defaultProps("dragBoundary", { type: Boolean }),
   /**
    * 拖拽结束后是否吸附屏幕边缘
    */
-  magnetic: {
+  magnetic: defaultProps("magnetic", {
     type: [Boolean, String],
-    default: false,
     validator: (v: boolean | string) => typeof v === "boolean" || ["x", "y", "both"].includes(v),
-  },
+  }),
   /**
    * 自定义类名
    */
-  customClass: makeStringProp(""),
+  customClass: defaultProps("customClass", { type: String }),
   /**
    * 自定义样式
    */
-  customStyle: styleProp,
+  customStyle: defaultProps("customStyle", styleProp),
 }
 export interface FloatButtonDragDetail {
   left: number

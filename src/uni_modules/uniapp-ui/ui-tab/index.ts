@@ -1,28 +1,36 @@
 import type Tab from "./ui-tab.vue"
 import type { PropType, CSSProperties, ExtractPropTypes } from "vue"
-import { numericProp } from "../utils/props"
+import { buildDefaultProps } from "../utils/props"
+
+const defaultProps = buildDefaultProps("tab", {
+  title: undefined,
+  name: undefined,
+  disabled: false,
+  customClass: undefined,
+  customStyle: undefined,
+})
 
 export const tabProps = {
   /**
    * 标题
    */
-  title: String,
+  title: defaultProps("title", { type: String }),
   /**
    * 标识符
    */
-  name: numericProp,
+  name: defaultProps("name", { type: [Number, String] }),
   /**
    * 是否禁用
    */
-  disabled: Boolean,
+  disabled: defaultProps("disabled", { type: Boolean }),
   /**
    * 自定义类名
    */
-  customClass: String,
+  customClass: defaultProps("customClass", { type: String }),
   /**
    * 自定义样式
    */
-  customStyle: [String, Object] as PropType<string | CSSProperties>,
+  customStyle: defaultProps("customStyle", { type: [String, Object] as PropType<string | CSSProperties> }),
 }
 export const tabEmits = {
   click: (name: number | string) => true,
