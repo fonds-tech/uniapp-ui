@@ -31,7 +31,6 @@ const emits = defineEmits(toastEmits)
 // 使用transition hook
 const transition = useTransition()
 
-// 计算属性: 是否已初始化
 const inited = computed(() => transition.inited.value)
 
 // 定义响应式变量
@@ -60,7 +59,6 @@ const mergedOptions = computed(() => ({
   background: commandOptions.value.background ?? props.background,
 }))
 
-// 计算样式
 const style = computed(() => {
   const style: CSSProperties = {}
   style.zIndex = zIndex.value
@@ -83,7 +81,6 @@ const classs = computed(() => {
   return list
 })
 
-// 计算body样式
 const bodyStyle = computed(() => {
   const style: CSSProperties = {}
   style.maxWidth = useUnit(mergedOptions.value.width)
@@ -103,7 +100,6 @@ const bodyClass = computed(() => {
   return list
 })
 
-// 计算图标样式
 const iconStyle = computed(() => {
   const style: CSSProperties = {}
   style.width = useUnit(mergedOptions.value.iconSize)
@@ -114,7 +110,6 @@ const iconStyle = computed(() => {
 // 判断是否显示图标
 const isShowIcon = computed(() => mergedOptions.value.icon || ["loading", "await", "success", "fail"].includes(mergedOptions.value.type))
 
-// 监听transition的生命周期事件
 transition.on("before-enter", () => emits("open"))
 transition.on("after-enter", () => emits("opened"))
 transition.on("before-leave", () => emits("close"))
@@ -129,7 +124,6 @@ watch(
   { immediate: true },
 )
 
-// 初始化transition
 function initTransition() {
   transition.init({ name: "fade", duration: 300 })
 }
@@ -309,7 +303,6 @@ export default {
     flex-direction: row;
     justify-content: center;
 
-    // 带图标时使用正方形布局
     &--icon {
       width: 240rpx;
       padding: var(--ui-spacing-lg);

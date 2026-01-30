@@ -179,18 +179,15 @@ export interface PickerConfirmData {
 }
 
 export const pickerEmits = {
-  // Popup 事件
   "update:show": (show: boolean) => true,
   open: () => true,
   opened: () => true,
   close: (action: string) => true,
   closed: (action: string) => true,
 
-  // Panel 事件
   change: (data: PickerChangeData) => data,
   "update:modelValue": (value: PickerModelValue) => value,
 
-  // Picker 特有事件
   cancel: (data: PickerCancelData) => data,
   confirm: (data: PickerConfirmData) => data,
 }

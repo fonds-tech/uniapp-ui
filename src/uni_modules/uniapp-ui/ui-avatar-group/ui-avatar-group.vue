@@ -57,13 +57,11 @@ const gapValue = computed(() => {
   return useUnit(props.gap)
 })
 
-// 计算根元素样式
 const rootStyle = computed(() => {
   const style: CSSProperties = {}
   return useStyle({ ...style, ...useStyle(props.customStyle) })
 })
 
-// 容器样式
 const containerStyle = computed(() => {
   const style: CSSProperties = {
     display: "flex",
@@ -76,12 +74,10 @@ const containerStyle = computed(() => {
   return style
 })
 
-// 超出数量的形状类名
 const excessShapeClass = computed(() => {
   return `ui-avatar-group__excess--${props.shape}`
 })
 
-// 超出数量样式
 const excessStyle = computed(() => {
   const style: CSSProperties = {
     width: sizeValue.value,
@@ -126,7 +122,6 @@ function getTotal() {
   return childrens.length
 }
 
-// 点击事件
 function onClick(event: any) {
   emits("click", event)
 }
@@ -136,7 +131,6 @@ function onClickExcess(event: any) {
   emits("clickExcess", event)
 }
 
-// 提供给子组件的数据
 linkChildren({
   props,
   getIndex,

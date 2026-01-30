@@ -188,14 +188,11 @@ function onConfirm() {
 
 defineExpose({
   name: "ui-picker",
-  // 暴露 popup 方法
   open: () => emits("update:show", true),
   close: () => emits("update:show", false),
-  // 暴露 panel 方法
   getSelectedValues: () => panelRef.value?.getSelectedValues(),
   getSelectedIndexs: () => panelRef.value?.getSelectedIndexs(),
   getSelectedColumns: () => panelRef.value?.getSelectedColumns(),
-  // 暴露操作方法
   confirm: onConfirm,
   cancel: onCancel,
 })

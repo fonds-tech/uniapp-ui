@@ -58,7 +58,6 @@ const props = defineProps(searchProps)
 const emits = defineEmits(searchEmits)
 const modelValue = ref(props.modelValue)
 
-// 根元素样式
 const rootStyle = computed(() => {
   const styles: CSSProperties = {}
   styles.height = useUnit(props.height)
@@ -66,7 +65,6 @@ const rootStyle = computed(() => {
   return useStyle({ ...styles, ...useStyle(props.customStyle) })
 })
 
-// 搜索框容器样式
 const contentStyle = computed(() => {
   const styles: CSSProperties = {}
   styles.border = props.border
@@ -75,12 +73,10 @@ const contentStyle = computed(() => {
   return useStyle(styles)
 })
 
-// 搜索框容器类名
 const contentClass = computed(() => {
   return props.round ? ["ui-search__content--round"] : []
 })
 
-// 输入框样式
 const inputStyle = computed(() => {
   const styles: CSSProperties = {}
   styles.color = useColor(props.color)
@@ -91,12 +87,10 @@ const inputStyle = computed(() => {
   return useStyle({ ...styles, ...useStyle(props.inputStyle) })
 })
 
-// 输入框类名
 const inputClass = computed(() => {
   return props.disabled ? ["ui-search__value--disabled"] : []
 })
 
-// 右侧操作按钮样式
 const actionButtonStyle = computed(() => {
   const styles: CSSProperties = {}
   styles.color = useColor(props.actionColor)

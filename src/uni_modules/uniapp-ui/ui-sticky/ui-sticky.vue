@@ -25,7 +25,6 @@ const emits = defineEmits(stickyEmits)
 const stickyId = ref(`sticky-${uuid()}`)
 const instance = getCurrentInstance()!
 
-// 响应式状态
 const stickyState = reactive({
   // 非吸顶时用 absolute，吸顶时用 fixed
   position: "absolute" as "absolute" | "fixed",
@@ -134,7 +133,6 @@ function handleRelativeTo(result: { boundingClientRect: { top: number; bottom: n
   }
 }
 
-// 设置吸顶状态
 function setStickyState() {
   if (stickyState.state === "sticky") return // 防止重复触发
 
@@ -146,7 +144,6 @@ function setStickyState() {
   emits("scroll", { scrollTop: 0, isFixed: true })
 }
 
-// 设置正常状态
 function setNormalState() {
   if (stickyState.state === "normal") return // 防止重复触发
 
@@ -158,7 +155,6 @@ function setNormalState() {
   emits("scroll", { scrollTop: 0, isFixed: false })
 }
 
-// 监听元素滚动（使用 IntersectionObserver）
 async function observeScroll() {
   if (stickyState.height === 0 && stickyState.width === 0) return
   if (props.disabled) return
@@ -173,7 +169,6 @@ async function observeScroll() {
       handleRelativeTo(result)
     })
 
-  // 初始化时手动检查一次位置
   try {
     const rect = await useRect(`#${stickyId.value}`, instance)
     if (rect) {
@@ -198,7 +193,6 @@ async function handleResize(detail: { width: number; height: number }) {
   observeScroll()
 }
 
-// 监听 disabled 变化
 watch(
   () => props.disabled,
   (disabled) => {

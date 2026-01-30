@@ -55,7 +55,6 @@ export function merge<T extends MergeableValue>(target: T, ...sources: Array<Mer
       if (srcVal === undefined && hasKey) continue
 
       if (isMergeable(srcVal)) {
-        // 初始化合并目标：优先使用已有值，否则根据源值类型创建
         const mergeTarget = isMergeable(tgtVal) ? tgtVal : isArray(srcVal) ? [] : ({} as Record<string, unknown>)
 
         // 设置值并递归

@@ -87,7 +87,6 @@ defineOptions({ name: "ui-cascader" })
 const props = defineProps(cascaderProps)
 const emits = defineEmits(cascaderEmits)
 const instance = getCurrentInstance()
-// 定义响应式数据
 const visible = ref(false) // 弹窗显示状态
 const tabs = ref<CascaderTab[]>([]) // 存储级联选择器的标签页
 const tabsRect = ref<UniApp.NodeInfo[]>([]) // 存储标签页的位置信息
@@ -99,13 +98,11 @@ const currentValue = ref<string | number>("") // 当前选中的值
 const defaultFieldKeys = { text: "text", value: "value", children: "children", disabled: "disabled" }
 const { text: textKey, value: valueKey, children: childrenKey, disabled: disabledKey } = merge(defaultFieldKeys, props.fieldKeys)
 
-// 计算样式
 const style = computed(() => {
   const style: any = {}
   return useStyle({ ...style, ...useStyle(props.customStyle) })
 })
 
-// 标题样式
 const titleStyle = computed(() => {
   const style: any = {}
   if (props.titleSize) style.fontSize = props.titleSize
@@ -114,21 +111,18 @@ const titleStyle = computed(() => {
   return useStyle(style)
 })
 
-// 选项样式
 const optionStyle = computed(() => {
   const style: any = {}
   if (props.color) style.color = props.color
   return useStyle(style)
 })
 
-// 选中选项样式
 const activeOptionStyle = computed(() => {
   const style: any = {}
   if (props.activeColor) style.color = props.activeColor
   return useStyle(style)
 })
 
-// 计算标签页下划线的样式
 const tabsLineStyle = computed(() => {
   const style: any = {}
   if (tabsRect.value.length > 0 && tabsRect.value[activeTab.value]) {
@@ -138,7 +132,6 @@ const tabsLineStyle = computed(() => {
   return style
 })
 
-// 监听 props.modelValue 的变化
 watch(
   () => props.modelValue,
   (value) => {
@@ -169,10 +162,8 @@ watch(
   },
 )
 
-// 监听 props.options 的变化
 watch(() => props.options, updateTabs, { deep: true })
 
-// 监听activeTab的变化
 watch(() => activeTab.value, updateRect, { immediate: true })
 
 // 更新标签页
@@ -327,7 +318,6 @@ function reset() {
   activeTab.value = 0
 }
 
-// 暴露实例方法
 defineExpose({
   reset,
   updateTabs,

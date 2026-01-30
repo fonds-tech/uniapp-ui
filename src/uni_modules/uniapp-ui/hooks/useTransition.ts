@@ -65,7 +65,6 @@ export function useTransition() {
       })
     }
 
-    // 通配符监听器
     const wildcardHandlers = events.get("*")
     if (wildcardHandlers) {
       wildcardHandlers.slice().forEach((handler) => {
@@ -154,26 +153,21 @@ export function useTransition() {
         const names = classNames(options.value.name!)
         status.value = "enter"
 
-        // 触发进入前事件
         emit("before-enter")
 
-        // 设置过渡样式
         styles.value = {
           transitionDuration: `${options.value.duration}ms`,
           transitionTimingFunction: options.value.enterTimingFunction!,
         }
 
-        // 设置初始状态类名
         classs.value = names.enter
 
         // 标记已初始化并显示
         inited.value = true
         visible.value = true
 
-        // 触发进入事件
         emit("enter")
 
-        // 等待一帧确保初始状态渲染
         lifeCyclePromise.value = requestNextFrame()
         await lifeCyclePromise.value
 
@@ -207,7 +201,6 @@ export function useTransition() {
       const names = classNames(options.value.name!)
       status.value = "leave"
 
-      // 触发离开前事件
       emit("before-leave")
 
       // 设置离开时的过渡函数
@@ -216,17 +209,13 @@ export function useTransition() {
         transitionTimingFunction: options.value.leaveTimingFunction!,
       }
 
-      // 触发离开事件
       emit("leave")
 
-      // 设置离开初始类名
       classs.value = names.leave
 
-      // 等待一帧确保初始状态渲染
       lifeCyclePromise.value = requestNextFrame()
       await lifeCyclePromise.value
 
-      // 切换到离开结束状态
       classs.value = names["leave-to"]
 
       // 设置降级定时器：如果 transitionend 事件未触发，使用超时兜底
@@ -258,7 +247,6 @@ export function useTransition() {
       fallbackTimer.value = null
     }
 
-    // 根据当前状态触发相应事件
     if (status.value === "leave") {
       emit("after-leave")
       visible.value = false

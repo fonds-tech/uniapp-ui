@@ -211,18 +211,15 @@ export interface DatePickerConfirmData {
  * UI-Date-Picker Emits
  */
 export const datePickerEmits = {
-  // Popup 事件
   "update:show": (show: boolean) => true,
   open: () => true,
   opened: () => true,
   close: (action: string) => true,
   closed: (action: string) => true,
 
-  // Picker 事件
   change: (data: DatePickerChangeData) => data,
   "update:modelValue": (value: string) => value,
 
-  // 交互事件
   cancel: (data: DatePickerCancelData) => data,
   confirm: (data: DatePickerConfirmData) => data,
 }

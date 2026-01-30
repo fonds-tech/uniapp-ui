@@ -90,7 +90,6 @@ const { parent } = useParent(formItemKey)
 const pickerRef = ref<PickerInstance | null>(null)
 const currentValue = ref<PickerValue[]>([])
 const lastAction = ref<"confirm" | "cancel" | null>(null)
-// 内部管理弹窗显示状态
 const visible = ref(false)
 
 /**

@@ -315,7 +315,6 @@ function setCurrentValue(type: DatePickerColumnType, val: number) {
   }
 }
 
-// picker-view 的列数据
 const pickerColumns = computed(() => {
   return props.columns.map((type) => {
     const col = columnMap[type]
@@ -496,7 +495,6 @@ function onConfirm() {
   emits("update:show", false)
 }
 
-// 监听 modelValue 变化
 watch(
   () => props.modelValue,
   () => {

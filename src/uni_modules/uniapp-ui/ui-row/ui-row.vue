@@ -23,7 +23,6 @@ const gapInfo = computed(() => {
   }
 })
 
-// 计算样式
 const style = computed(() => {
   const style: CSSProperties = {}
   const { rowGap, colGap } = gapInfo.value

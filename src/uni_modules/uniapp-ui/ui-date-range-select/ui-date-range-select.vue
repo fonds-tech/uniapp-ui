@@ -111,7 +111,6 @@ const slots = useSlots()
 
 const { parent } = useParent(formItemKey)
 
-// 内部状态
 const startValue = ref<string>("")
 const endValue = ref<string>("")
 const activeType = ref<DateRangeSelectActiveType>("start")
@@ -638,10 +637,8 @@ function handleClick(type: DateRangeSelectActiveType) {
   if (!isInteractive.value) return
   emits("click", type)
   activeType.value = type
-  // 初始化临时值
   tempStartValue.value = startValue.value
   tempEndValue.value = endValue.value
-  // 初始化 picker 值
   const currentValue = type === "start" ? tempStartValue.value : tempEndValue.value
   initFromValue(currentValue)
   // 自动回填：用 picker 当前显示值更新临时值（即使用户不滑动也能确认）
@@ -826,7 +823,6 @@ export default {
     margin-left: var(--ui-spacing-md);
   }
 
-  // Header 样式
   &__header {
     height: 96rpx;
     display: flex;
@@ -841,7 +837,6 @@ export default {
     }
   }
 
-  // Tabs 样式
   &__tabs {
     gap: 32rpx;
     flex: 1;
@@ -873,7 +868,6 @@ export default {
     }
   }
 
-  // Picker 样式
   &__picker {
     z-index: 1;
     position: relative;

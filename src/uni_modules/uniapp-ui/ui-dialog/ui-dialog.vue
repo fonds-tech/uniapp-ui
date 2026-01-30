@@ -115,7 +115,6 @@ const mergedOptions = ref<DialogOptions>({})
 
 const inited = computed(() => !props.lazyRender || transition.inited.value)
 
-// 根元素样式
 const rootStyle = computed(() => {
   const style: CSSProperties = {
     zIndex: zIndex.value,
@@ -125,10 +124,8 @@ const rootStyle = computed(() => {
   return useStyle({ ...style, ...transition.styles.value })
 })
 
-// 根元素类名
 const rootClass = computed(() => [`ui-dialog--${mergedOptions.value.contentAlign}`, transition.classs.value])
 
-// 主体样式
 const bodyStyle = computed(() => {
   const style: CSSProperties = {
     width: useUnit(mergedOptions.value.width),
@@ -138,13 +135,10 @@ const bodyStyle = computed(() => {
   return useStyle({ ...style, ...useStyle(mergedOptions.value.customStyle) })
 })
 
-// 滚动区域样式
 const scrollStyle = computed(() => useStyle({ height: useUnit(mergedOptions.value.height) }))
 
-// 内容区域样式
 const contentStyle = computed(() => useStyle({ padding: useUnit(mergedOptions.value.padding) }))
 
-// 底部样式
 const footerStyle = computed(() =>
   useStyle({
     borderBottomLeftRadius: useUnit(mergedOptions.value.borderRadius),
@@ -152,10 +146,8 @@ const footerStyle = computed(() =>
   }),
 )
 
-// 内容文本类名
 const contentTextClass = computed(() => `ui-dialog__content__text--${mergedOptions.value.contentAlign}`)
 
-// 底部类名
 const footerClass = computed(() => (mergedOptions.value.buttonReverse ? "ui-dialog__footer--reverse" : ""))
 
 transition.on("before-enter", () => emits("open"))
@@ -163,7 +155,6 @@ transition.on("after-enter", () => emits("opened"))
 transition.on("before-leave", () => emits("close"))
 transition.on("after-leave", () => emits("closed"))
 
-// 监听 props 变化，更新配置
 watch(
   () => props,
   (options) => {
@@ -172,7 +163,6 @@ watch(
   { deep: true, immediate: true },
 )
 
-// 监听 show 属性变化
 watch(
   () => props.show,
   (val) => {
@@ -181,7 +171,6 @@ watch(
   { immediate: true },
 )
 
-// 监听动画相关属性变化
 watch(() => [props.duration, props.enterTimingFunction, props.leaveTimingFunction], initTransition, { immediate: true })
 
 /** 初始化过渡动画 */
@@ -461,7 +450,6 @@ export default {
     }
   }
 
-  // 弹出动画
   &-bounce-enter {
     opacity: 0;
     transform: translate3d(0, -50%, 0) scale(0.7);

@@ -32,7 +32,6 @@ const props = defineProps(floatButtonProps)
 const emits = defineEmits(floatButtonEmits)
 const systemInfo = useSystemInfo()
 
-// 拖拽状态
 const inited = ref(false)
 const dragging = ref(false)
 const attractTransition = ref(false)
@@ -124,7 +123,6 @@ function clamp(value: number, min: number, max: number) {
   return Math.max(min, Math.min(max, value))
 }
 
-// 初始化位置和边界
 function initPosition() {
   const { windowWidth, windowHeight } = systemInfo
   if (!windowWidth || !windowHeight) return
@@ -305,7 +303,6 @@ function handleMouseEnd() {
 }
 
 onMounted(() => {
-  // 初始化位置
   initPosition()
 })
 

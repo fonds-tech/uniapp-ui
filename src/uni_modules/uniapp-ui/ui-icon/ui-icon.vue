@@ -110,7 +110,6 @@ export default {
 }
 /*  #endif  */
 
-// 图标基础样式
 .ui-icon {
   display: inline-flex;
   position: relative;
@@ -129,6 +128,5 @@ export default {
   -moz-osx-font-smoothing: grayscale;
 }
 
-// 导入图标样式
 @import "./icons.scss";
 </style>

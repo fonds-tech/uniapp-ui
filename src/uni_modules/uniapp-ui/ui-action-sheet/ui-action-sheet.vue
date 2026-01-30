@@ -75,7 +75,6 @@ const transition = useTransition()
 const currentZIndex = ref<number>()
 const visible = ref(false)
 
-// 计算属性: 是否已初始化
 const inited = computed(() => !props.lazyRender || transition.inited.value)
 
 // 计算属性: 安全的 actions 数组
@@ -89,7 +88,6 @@ transition.on("after-enter", () => emits("opened"))
 transition.on("before-leave", () => emits("close"))
 transition.on("after-leave", () => emits("closed"))
 
-// 计算面板样式
 const panelStyle = computed(() => {
   const styles: CSSProperties = {}
   styles.zIndex = currentZIndex.value
@@ -98,10 +96,8 @@ const panelStyle = computed(() => {
   return useStyle({ ...styles, ...useStyle(props.customStyle), ...transition.styles.value })
 })
 
-// 计算类名
 const classNames = computed(() => [transition.classs.value])
 
-// 计算标题样式
 const headerTitleStyle = computed(() => {
   const styles: CSSProperties = {}
   styles.color = useColor(props.titleColor)
@@ -110,7 +106,6 @@ const headerTitleStyle = computed(() => {
   return useStyle(styles)
 })
 
-// 计算描述样式
 const headerDescStyle = computed(() => {
   const styles: CSSProperties = {}
   styles.color = useColor(props.descriptionColor)
@@ -119,7 +114,6 @@ const headerDescStyle = computed(() => {
   return useStyle(styles)
 })
 
-// 计算取消按钮样式
 const cancelBtnStyle = computed(() => {
   const styles: CSSProperties = {}
   styles.color = useColor(props.cancelTextColor)
@@ -129,7 +123,6 @@ const cancelBtnStyle = computed(() => {
   return useStyle(styles)
 })
 
-// 计算滚动区域样式
 const scrollStyle = computed(() => {
   const styles: CSSProperties = {}
   styles.height = useUnit(props.height)
@@ -137,13 +130,10 @@ const scrollStyle = computed(() => {
   return useStyle(styles)
 })
 
-// 计算操作项标题样式
 const actionTitleStyle = computed(() => useStyle(props.actionTitleStyle))
 
-// 计算操作项描述样式
 const actionDescStyle = computed(() => useStyle(props.actionDescriptionStyle))
 
-// 监听 show 属性变化
 watch(
   () => props.show,
   (val) => {
@@ -152,10 +142,8 @@ watch(
   { immediate: true },
 )
 
-// 监听 duration 属性变化
 watch(() => [props.duration], initTransition, { immediate: true })
 
-// 初始化 transition
 function initTransition() {
   transition.init({ name: "slide-up", duration: props.duration })
 }

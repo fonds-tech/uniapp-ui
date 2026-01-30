@@ -55,7 +55,6 @@ const current = ref(0)
 // 字段键名映射
 const fieldKeys = ref({ type: "type", url: "url", poster: "poster", title: "title" })
 
-// 计算处理后的列表数据
 const list = computed(() => {
   let data: any = []
   // 如果list是字符串,按逗号分割并转换为对象数组
@@ -83,7 +82,6 @@ const list = computed(() => {
   return data.filter(Boolean)
 })
 
-// 计算组件样式
 const style = computed(() => {
   const style: CSSProperties = {}
   style.width = useUnit(props.width)
@@ -92,7 +90,6 @@ const style = computed(() => {
   return useStyle({ ...style, ...useStyle(props.customStyle) })
 })
 
-// 计算列表样式
 const listStyle = computed(() => {
   const style: CSSProperties = {}
   style.width = useUnit(props.width)
@@ -101,7 +98,6 @@ const listStyle = computed(() => {
   return useStyle(style)
 })
 
-// 计算每个项目的样式
 const itemStyle = computed(() => (index: string | number) => {
   const style: CSSProperties = {}
   style.paddingLeft = useUnit(props.prevGap)
@@ -109,7 +105,6 @@ const itemStyle = computed(() => (index: string | number) => {
   return useStyle(style)
 })
 
-// 计算每个项目的类名
 const itemClass = computed(() => (index: string | number) => {
   const list: string[] = []
   const idx = +index
@@ -119,7 +114,6 @@ const itemClass = computed(() => (index: string | number) => {
   return list
 })
 
-// 计算指示器的类名
 const indicatorClass = computed(() => {
   const list: string[] = []
   list.push(`ui-swiper__indicator--${props.indicatorType}`)
@@ -128,7 +122,6 @@ const indicatorClass = computed(() => {
   return list
 })
 
-// 监听 props.current 的变化
 watch(
   () => props.current,
   (val) => {
@@ -137,7 +130,6 @@ watch(
   { immediate: true },
 )
 
-// 监听current的变化
 watch(
   () => current.value,
   (val) => {
@@ -146,7 +138,6 @@ watch(
   { immediate: true },
 )
 
-// 监听 props.fieldKeys 的变化
 watch(
   () => props.fieldKeys,
   (field) => {
@@ -218,7 +209,6 @@ function getFileType(link: string) {
   return "image"
 }
 
-// 暴露组件方法
 defineExpose({ name: "ui-swiper", prev, next, swiperTo })
 </script>
 

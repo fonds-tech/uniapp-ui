@@ -23,7 +23,6 @@ defineOptions({ name: "ui-resize" })
 
 const props = defineProps(resizeProps)
 const emits = defineEmits(resizeEmits)
-// 响应式状态
 const width = ref(0)
 const height = ref(0)
 const expandScrollTop = ref(0)
@@ -61,7 +60,6 @@ function scrollToBottom(lastWidth: number, lastHeight: number) {
   shrinkScrollLeft.value = 2.5 * width.value + lastWidth
 }
 
-// 触发 resize 事件
 function emitResize(rect: UniApp.NodeInfo) {
   emits("resize", pick(rect, ["top", "left", "right", "bottom", "width", "height"]))
 }
@@ -113,7 +111,6 @@ onMounted(async () => {
       hasChange = true
     }
 
-    // 有变化时触发 resize 事件
     if (hasChange) {
       emitResize(rect)
     }
@@ -122,7 +119,6 @@ onMounted(async () => {
     scrollToBottom(lastWidth, lastHeight)
   }
 
-  // 初始化：滚动到底部
   scrollToBottom(lastWidth, lastHeight)
 })
 

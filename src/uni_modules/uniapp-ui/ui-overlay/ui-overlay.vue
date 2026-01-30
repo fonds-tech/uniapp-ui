@@ -41,7 +41,6 @@ transition.on("after-enter", () => emits("opened"))
 transition.on("before-leave", () => emits("close"))
 transition.on("after-leave", () => emits("closed"))
 
-// 计算overlay的样式
 const style = computed(() => {
   const style: CSSProperties = {}
   style.zIndex = zIndex.value
@@ -62,7 +61,6 @@ watch(
 // 监听duration属性变化,重新初始化transition
 watch(() => [props.duration, props.enterTimingFunction, props.leaveTimingFunction], initTransition, { immediate: true })
 
-// 初始化transition
 function initTransition() {
   transition.init({
     name: "fade",
@@ -89,12 +87,10 @@ function close() {
   }
 }
 
-// 处理点击事件
 function onClick() {
   emits("click")
 }
 
-// 暴露open和close方法
 defineExpose({ open, close })
 </script>
 

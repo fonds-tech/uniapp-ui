@@ -26,7 +26,6 @@ const props = defineProps(textEllipsisProps)
 const emits = defineEmits(textEllipsisEmits)
 const instance = getCurrentInstance()
 
-// 状态
 const expanded = ref(false)
 const hasOverflow = ref(false)
 
@@ -36,7 +35,6 @@ function formatNumericStyle(value: string | number | undefined): string | undefi
   return typeof value === "number" ? `${value}rpx` : String(value)
 }
 
-// 根容器样式
 const rootStyle = computed(() => useStyle(props.customStyle))
 
 // 测量容器样式：隐藏但保持布局计算，用于获取文本完整高度
@@ -76,12 +74,10 @@ const contentStyle = computed(() => {
   return useStyle(style)
 })
 
-// 操作按钮样式
 const actionStyle = computed(() => {
   return useStyle({ color: props.actionColor || "var(--ui-color-primary)" })
 })
 
-// 渐变遮罩样式
 const gradientStyle = computed(() => {
   if (!props.gradientColor) return undefined
   return useStyle({ background: `linear-gradient(to bottom, transparent, ${props.gradientColor})` })
@@ -112,7 +108,6 @@ watch(() => props.rows, calcOverflow)
 
 onMounted(calcOverflow)
 
-// 暴露实例方法
 defineExpose({
   /** 切换展开/收起状态 */
   toggle: onToggle,
@@ -156,7 +151,6 @@ export default {
     pointer-events: none;
   }
 
-  // 内容区域
   &__content {
     color: var(--ui-color-text-primary);
     font-size: var(--ui-font-size-md);

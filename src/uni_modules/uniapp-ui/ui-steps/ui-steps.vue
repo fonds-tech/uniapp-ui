@@ -71,7 +71,6 @@ function onClickStep(index: number) {
   }
 }
 
-// 向子组件提供数据
 linkChildren({ props, active, count, onClickStep })
 </script>
 
@@ -100,7 +99,6 @@ export default {
     flex-direction: column;
   }
 
-  // 可点击状态
   &--clickable {
     cursor: pointer;
   }

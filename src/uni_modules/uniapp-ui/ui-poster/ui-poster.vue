@@ -253,7 +253,6 @@ export default {
     },
     // 绘制矩形
     startDrawRect(ctx, param) {
-      // 获取样式
       const styles = param.style || {}
       // 获取样式中的参数
       const {
@@ -287,10 +286,8 @@ export default {
         // 设置渐变的颜色和位置
         linearGradient.addColorStop(0, backgroundColor)
         linearGradient.addColorStop(1, gradientColor)
-        // 设置填充样式
         ctx.setFillStyle(linearGradient)
       } else {
-        // 设置填充样式
         ctx.setFillStyle(backgroundColor)
       }
 
@@ -324,7 +321,6 @@ export default {
         ctx.save()
         // 设置透明度
         ctx.setGlobalAlpha(opacity)
-        // 设置边框样式
         ctx.setStrokeStyle(borderColor)
         // 设置边框宽度
         ctx.setLineWidth(this.usePixel(borderWidth))
@@ -341,11 +337,9 @@ export default {
     },
     // 绘制线条
     startDrawLine(ctx, param) {
-      // 获取样式
       const styles = param.style
       // 解构赋值
       const { left, top, endLeft, endTop, color, width = 1, lineDash } = styles
-      // 保存当前画布状态
       ctx.save()
       // 开始新的路径
       ctx.beginPath()
@@ -364,7 +358,6 @@ export default {
       ctx.stroke()
       // 关闭路径
       ctx.closePath()
-      // 恢复画布状态
       ctx.restore()
     },
     judgeIosPermissionPhotoLibrary() {

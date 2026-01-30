@@ -31,7 +31,6 @@ const instance = getCurrentInstance()
 // 链接子组件
 linkChildren({ props, rect, close, resize })
 
-// 计算元素样式
 const style = computed(() => {
   const style: CSSProperties = {}
   style.zIndex = props.zIndex
@@ -40,7 +39,6 @@ const style = computed(() => {
   return useStyle({ ...style, ...useStyle(props.customStyle) })
 })
 
-// 计算菜单项类名
 const itemClass = computed(() => (item: any) => {
   const list: string[] = []
   if (item.exposed.props.disabled) list.push("is-disabled")
@@ -48,7 +46,6 @@ const itemClass = computed(() => (item: any) => {
   return list
 })
 
-// 计算标题样式
 const titleStyle = computed(() => {
   return (item: any) => {
     const style: CSSProperties = {}
@@ -93,7 +90,6 @@ function close() {
   childrens?.forEach((item: any) => item.exposed.toggle(false))
 }
 
-// 切换菜单展开状态
 async function toggleItem(index: number) {
   await resize()
   childrens?.forEach((item, childrenIndex) => {

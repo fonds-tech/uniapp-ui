@@ -358,7 +358,6 @@ $step-transition-duration: 0.3s;
     align-items: center;
   }
 
-  // 连接线基础样式
   &__line {
     flex: 1;
     height: $step-line-height;
@@ -402,7 +401,6 @@ $step-transition-duration: 0.3s;
     line-height: 1;
   }
 
-  // 内容区域
   &__content {
     display: flex;
     text-align: center;
@@ -410,7 +408,6 @@ $step-transition-duration: 0.3s;
     flex-direction: column;
   }
 
-  // 标题
   &__title {
     color: var(--ui-color-text-primary);
     font-size: 28rpx;
@@ -466,7 +463,6 @@ $step-transition-duration: 0.3s;
     }
   }
 
-  // 等待状态
   &--wait {
     .ui-step__circle {
       border-color: var(--ui-color-border);
@@ -474,7 +470,6 @@ $step-transition-duration: 0.3s;
     }
   }
 
-  // 进行中状态
   &--process {
     .ui-step__circle {
       transform: scale(1.05);
@@ -484,7 +479,6 @@ $step-transition-duration: 0.3s;
     }
   }
 
-  // 完成状态
   &--finish {
     .ui-step__circle {
       border-color: var(--ui-color-primary);
@@ -492,7 +486,6 @@ $step-transition-duration: 0.3s;
     }
   }
 
-  // 错误状态
   &--error {
     .ui-step__circle {
       border-color: var(--ui-color-danger);

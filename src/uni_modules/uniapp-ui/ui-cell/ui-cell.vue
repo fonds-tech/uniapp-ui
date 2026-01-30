@@ -41,7 +41,6 @@ const emits = defineEmits(cellEmits)
 // 使用useParent hook获取父组件信息
 const { index, parent: cellGroup } = useParent(cellGroupKey)
 
-// 计算样式
 const style = computed(() => {
   const style: any = {}
   style.height = useUnit(props.height)
@@ -81,14 +80,12 @@ const hoverClass = computed(() => {
   return props.clickable || props.isLink ? "ui-cell--active" : ""
 })
 
-// 计算图标样式
 const iconStyle = computed(() => {
   const style: CSSProperties = {}
   style.marginRight = useUnit(props.iconGap)
   return useStyle(style)
 })
 
-// 计算标题样式
 const titleStyle = computed(() => {
   const style: CSSProperties = {}
   style.color = useColor(props.titleColor)
@@ -97,7 +94,6 @@ const titleStyle = computed(() => {
   return useStyle(style)
 })
 
-// 计算 body 样式
 const bodyStyle = computed(() => {
   const style: CSSProperties = {}
   if (props.titleWidth) {
@@ -107,7 +103,6 @@ const bodyStyle = computed(() => {
   return useStyle(style)
 })
 
-// 计算标签样式
 const labelStyle = computed(() => {
   const style: CSSProperties = {}
   style.color = useColor(props.labelColor)
@@ -117,14 +112,12 @@ const labelStyle = computed(() => {
   return useStyle(style)
 })
 
-// 计算右侧图标样式
 const rightIconStyle = computed(() => {
   const style: CSSProperties = {}
   style.marginLeft = useUnit(props.rightIconGap)
   return useStyle(style)
 })
 
-// 计算值样式
 const valueStyle = computed(() => {
   const style: CSSProperties = {}
   style.color = useColor(props.valueColor)

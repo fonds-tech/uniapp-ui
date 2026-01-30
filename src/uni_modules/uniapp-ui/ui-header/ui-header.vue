@@ -27,14 +27,12 @@ const mitt = useMitt()
 // 解构常用属性
 const { customClass, safeAreaInsetTop } = toRefs(props)
 
-// 初始化rect和instance
 const rect = ref<UniApp.NodeInfo>({})
 const uiNavbarHeight = ref(0)
 const h5NavbarHeight = ref(0)
 
 const instance = getCurrentInstance()
 
-// 计算header样式
 const style = computed(() => {
   const style: CSSProperties = {}
   style.zIndex = props.zIndex
@@ -43,7 +41,6 @@ const style = computed(() => {
   return useStyle({ ...style, ...useStyle(props.customStyle) })
 })
 
-// 计算占位符样式
 const placeholderStyle = computed(() => {
   const style: CSSProperties = {}
   if (rect.value?.height) {

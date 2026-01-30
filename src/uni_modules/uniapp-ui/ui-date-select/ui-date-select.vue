@@ -91,7 +91,6 @@ const { parent } = useParent(formItemKey)
 const datePickerRef = ref<DatePickerInstance | null>(null)
 const currentValue = ref<string>("")
 const lastAction = ref<"confirm" | "cancel" | null>(null)
-// 内部管理弹窗显示状态
 const visible = ref(false)
 
 const isInteractive = computed(() => !props.disabled && !props.readonly)

@@ -179,7 +179,6 @@ const calendarMode = computed<CalendarMode>(() => {
   return props.type as CalendarMode
 })
 
-// 初始化日历 hook
 const {
   weeks,
   days,
@@ -206,7 +205,6 @@ const {
   firstDayOfWeek: Number(props.firstDayOfWeek),
 })
 
-// 监听标记日期变化
 watch(
   () => props.markedDates,
   (dates) => {
@@ -219,7 +217,6 @@ const colorValue = computed(() => {
   return useColor(props.color) || "var(--ui-color-primary)"
 })
 
-// 日历样式
 const calendarStyle = computed(() => {
   const style: CSSProperties = {}
   if (props.color) {
@@ -329,7 +326,6 @@ function getDayClass(day: CalendarDay): string[] {
   return classes
 }
 
-// 获取日期样式
 function getDayStyle(day: CalendarDay): CSSProperties {
   const style: CSSProperties = {}
 
@@ -371,11 +367,9 @@ function onClickDay(day: CalendarDay) {
 
   selectDate(day.fullDate)
 
-  // 触发选择事件
   emitSelect()
 }
 
-// 触发选择事件
 function emitSelect() {
   if (props.type === "single") {
     if (selectedDate.value) {
@@ -458,7 +452,6 @@ function onNextYear() {
   emitMonthChange()
 }
 
-// 触发月份变化事件
 function emitMonthChange() {
   const data: CalendarMonthChangeData = {
     year: currentDate.value.getFullYear(),
@@ -473,7 +466,6 @@ function onClose() {
   emits("update:show", false)
 }
 
-// 更新显示状态
 function onUpdateShow(show: boolean) {
   emits("update:show", show)
 }
@@ -498,7 +490,6 @@ function goToDate(date: Date | string) {
   currentDate.value = targetDate
 }
 
-// 暴露方法
 defineExpose({
   reset,
   goToToday,

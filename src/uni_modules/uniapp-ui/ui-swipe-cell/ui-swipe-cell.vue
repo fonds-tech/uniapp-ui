@@ -37,7 +37,6 @@ const opened = ref(false) // 是否已打开
 const position = ref<SwipeCellPosition>("") // 当前打开位置
 const lockClick = ref(false) // 防止点击事件
 
-// 触摸状态
 const touchStartX = ref(0)
 const touchStartY = ref(0)
 const touchDeltaX = ref(0)
@@ -49,13 +48,11 @@ const isVerticalScroll = ref(false)
 const leftWidth = ref(0)
 const rightWidth = ref(0)
 
-// 根样式
 const rootStyle = computed(() => {
   const style: CSSProperties = {}
   return useStyle({ ...style, ...useStyle(props.customStyle) })
 })
 
-// 包装器样式
 const wrapperStyle = computed(() => {
   const style: CSSProperties = {
     transform: `translateX(${offset.value}px)`,
@@ -95,7 +92,6 @@ async function getRightWidth(): Promise<number> {
   }
 }
 
-// 初始化宽度
 async function initWidths() {
   leftWidth.value = await getLeftWidth()
   rightWidth.value = await getRightWidth()
@@ -105,7 +101,6 @@ async function initWidths() {
 function onTouchStart(event: TouchEvent) {
   if (props.disabled) return
 
-  // 重置状态
   isVerticalScroll.value = false
   dragging.value = true
   lockClick.value = false
@@ -117,7 +112,6 @@ function onTouchStart(event: TouchEvent) {
   touchDeltaX.value = 0
   touchDeltaY.value = 0
 
-  // 初始化宽度
   initWidths()
 }
 
@@ -203,7 +197,6 @@ async function open(pos: SwipeCellPosition) {
 
   const targetOffset = pos === "left" ? leftWidth.value : -rightWidth.value
 
-  // 更新状态
   offset.value = targetOffset
   position.value = pos
 
@@ -268,7 +261,6 @@ function onRightClick() {
   emits("click", "right")
 }
 
-// 暴露方法
 defineExpose({
   /** 打开滑动单元格 */
   open,
@@ -276,7 +268,6 @@ defineExpose({
   close,
 })
 
-// 组件挂载时初始化
 onMounted(() => {
   initWidths()
 })

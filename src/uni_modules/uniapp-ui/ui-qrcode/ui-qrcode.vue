@@ -69,7 +69,6 @@ async function makeCode() {
   await nextTick()
   setTimeout(() => {
     if (props.type === "barcode") {
-      // 条形码生成逻辑
       try {
         const barcode = new CODE128AUTO(String(props.value), {})
         const barcodeResult = barcode.encode()

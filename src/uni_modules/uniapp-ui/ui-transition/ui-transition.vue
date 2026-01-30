@@ -21,7 +21,6 @@ const transition = useTransition()
 const zIndex = ref<number>()
 const inited = computed(() => !props.lazyRender || transition.inited.value)
 
-// 绑定过渡生命周期事件
 transition.on("enter", () => emits("enter"))
 transition.on("leave", () => emits("leave"))
 transition.on("before-enter", () => emits("beforeEnter"))
@@ -29,7 +28,6 @@ transition.on("after-enter", () => emits("afterEnter"))
 transition.on("before-leave", () => emits("beforeLeave"))
 transition.on("after-leave", () => emits("afterLeave"))
 
-// 计算最终样式
 const style = computed(() => {
   const baseStyle: Record<string, any> = {
     zIndex: zIndex.value,
@@ -52,10 +50,8 @@ watch(
   { immediate: true },
 )
 
-// 监听配置变化，重新初始化
 watch(() => [props.name, props.duration, props.enterTimingFunction, props.leaveTimingFunction], initTransition, { immediate: true })
 
-// 初始化过渡配置
 function initTransition() {
   transition.init({
     name: props.name,

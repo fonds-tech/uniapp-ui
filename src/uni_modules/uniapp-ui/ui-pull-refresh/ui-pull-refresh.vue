@@ -193,7 +193,6 @@ function onTouchMove(event: TouchEvent) {
   const actualDistance = deltaY * dampingRatio
   distance.value = Math.min(actualDistance, headHeightValue.value * 2)
 
-  // 更新状态
   if (distance.value >= pullDistanceValue.value) {
     setStatus("loosing")
   } else {
@@ -211,7 +210,6 @@ function onTouchEnd() {
 
   // 如果达到刷新阈值
   if (status.value === "loosing") {
-    // 设置为加载状态
     distance.value = headHeightValue.value
     setStatus("loading")
     emit("update:modelValue", true)

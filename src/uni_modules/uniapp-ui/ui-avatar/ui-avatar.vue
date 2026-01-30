@@ -56,13 +56,11 @@ const emits = defineEmits(avatarEmits)
 // 获取父级头像组组件
 const { parent: avatarGroup, index: avatarIndex } = useParent(avatarGroupKey)
 
-// 图片加载状态
 const hasError = ref(false)
 
 // 是否在头像组内
 const inGroup = computed(() => !!avatarGroup)
 
-// 从头像组获取配置
 const groupConfig = computed(() => {
   if (!avatarGroup) return null
   return avatarGroup.props
@@ -179,7 +177,6 @@ const fallbackIconColor = computed(() => {
   return "var(--ui-color-text-placeholder)"
 })
 
-// 计算根元素样式
 const rootStyle = computed(() => {
   const style: CSSProperties = {}
   style.width = sizeValue.value
@@ -230,7 +227,6 @@ const rootStyle = computed(() => {
   return useStyle(mergedStyle, "string")
 })
 
-// 计算文字样式
 const textStyle = computed(() => {
   const style: CSSProperties = {}
   style.fontSize = textSizeValue.value
@@ -240,7 +236,6 @@ const textStyle = computed(() => {
   return useStyle(style, "string")
 })
 
-// 计算类名
 const classNames = computed(() => {
   const classList: string[] = []
   classList.push(`ui-avatar--${actualShape.value}`)
@@ -248,7 +243,6 @@ const classNames = computed(() => {
   if (typeof size === "string" && size in sizeMap) {
     classList.push(`ui-avatar--${size}`)
   }
-  // 如果在组内添加特定类名
   if (inGroup.value) {
     classList.push("ui-avatar--in-group")
   }
@@ -267,12 +261,10 @@ function onImageError(event: any) {
   emits("error", event)
 }
 
-// 点击事件
 function onClick(event: any) {
   emits("click", event)
 }
 
-// 监听 src 变化，重置错误状态
 watch(
   () => props.src,
   () => {

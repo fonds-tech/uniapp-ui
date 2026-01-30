@@ -51,7 +51,6 @@ const action = ref("show") // 当前动作,用于关闭时的事件传递
 const visible = ref(false) // 控制弹出层的可见性
 const windowBottom = ref(0) // 窗口底部安全区域高度
 
-// 计算属性: 是否已初始化
 const inited = computed(() => !props.lazyRender || transition.inited.value)
 
 // 为transition的各个阶段绑定事件
@@ -60,7 +59,6 @@ transition.on("after-enter", () => emits("opened"))
 transition.on("before-leave", () => emits("close", action.value))
 transition.on("after-leave", () => emits("closed", action.value))
 
-// 计算弹出层的样式
 const style = computed(() => {
   const style: CSSProperties = {}
   style.zIndex = zIndex.value
@@ -69,13 +67,11 @@ const style = computed(() => {
   return useStyle({ ...style, ...useStyle(props.customStyle), ...transition.styles.value })
 })
 
-// 计算弹出层的类名
 const classs = computed(() => {
   const list: string[] = [`ui-popup--${props.mode}`, transition.classs.value]
   return list
 })
 
-// 计算关闭图标的类名
 const closeClass = computed(() => {
   const list: string[] = []
   const positions = { top: "top-right", right: "top-left", bottom: "top-right", left: "top-right" }
@@ -84,7 +80,6 @@ const closeClass = computed(() => {
   return list
 })
 
-// 计算滚动视图的样式
 const scrollViewStyle = computed(() => {
   const style: CSSProperties = {}
   style.width = useUnit(props.width)
@@ -94,7 +89,6 @@ const scrollViewStyle = computed(() => {
   return useStyle(style)
 })
 
-// 监听show属性变化,控制弹出层的显示和隐藏
 watch(
   () => props.show,
   (val) => {
@@ -107,7 +101,6 @@ watch(
 // 监听mode和duration属性变化,重新初始化transition
 watch(() => [props.mode, props.duration], initTransition, { immediate: true })
 
-// 初始化transition
 function initTransition() {
   const modes = { top: "slide-down", left: "slide-left", right: "slide-right", bottom: "slide-up", center: "fade" }
   transition.init({ name: modes[props.mode] as TransitionName, duration: props.duration })

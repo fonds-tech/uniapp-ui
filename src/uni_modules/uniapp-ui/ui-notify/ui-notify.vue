@@ -24,7 +24,6 @@ defineOptions({ name: "ui-notify" })
 
 const props = defineProps(notifyProps)
 const emits = defineEmits(notifyEmits)
-// 状态
 const inited = ref(false)
 const visible = ref(false)
 const useOptions = ref<NotifyOptions>({})
@@ -35,7 +34,6 @@ const animationTimer = ref<ReturnType<typeof setTimeout> | null>(null)
 // 动画时长（毫秒）
 const ANIMATION_DURATION = 300
 
-// 默认配置
 const baseOptions = ref<NotifyOptions>({
   type: "primary",
   content: "",
@@ -50,10 +48,8 @@ const baseOptions = ref<NotifyOptions>({
   customStyle: "",
 })
 
-// 类型类名
 const typeClass = computed(() => `ui-notify--${useOptions.value.type || "primary"}`)
 
-// 面板样式
 const panelStyle = computed(() => {
   const styles: Record<string, any> = {}
   styles.zIndex = useOptions.value.zIndex
@@ -62,7 +58,6 @@ const panelStyle = computed(() => {
   return useStyle({ ...styles, ...useStyle(useOptions.value.customStyle) })
 })
 
-// 内容样式
 const contentStyle = computed(() => {
   const styles: Record<string, any> = {}
   styles.color = useColor(useOptions.value.color)
@@ -71,7 +66,6 @@ const contentStyle = computed(() => {
   return useStyle(styles)
 })
 
-// 监听 props 变化
 watch(
   () => props,
   (options) => {
@@ -80,7 +74,6 @@ watch(
   { deep: true, immediate: true },
 )
 
-// 监听 show 属性
 watch(
   () => props.show,
   (val) => {
@@ -90,7 +83,6 @@ watch(
   { immediate: true },
 )
 
-// 监听 visible 变化
 watch(visible, (val) => {
   emits("update:show", val)
 })
@@ -124,13 +116,10 @@ function show(options: NotifyOptions = {}) {
     return
   }
 
-  // 初始化
   inited.value = true
 
-  // 触发 open 事件
   emits("open")
 
-  // 下一帧开始进入动画
   setTimeout(() => {
     visible.value = true
 
@@ -152,10 +141,8 @@ function close() {
   clearCloseTimer()
   clearAnimationTimer()
 
-  // 触发 close 事件
   emits("close")
 
-  // 开始离开动画
   visible.value = false
 
   // 动画结束后触发 closed

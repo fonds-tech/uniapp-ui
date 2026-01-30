@@ -77,7 +77,6 @@ const observerList = ref<UniApp.IntersectionObserver[]>([])
 
 const instance = getCurrentInstance()
 
-// 计算导航栏内容的样式
 const contentStyle = computed(() => {
   const style: CSSProperties = {}
   style.zIndex = props.zIndex
@@ -97,7 +96,6 @@ const contentStyle = computed(() => {
   return useStyle(style)
 })
 
-// 计算导航栏内容的类名
 const contentClass = computed(() => {
   const list: string[] = []
   if (props.fixed) list.push("is-fixed")
@@ -105,7 +103,6 @@ const contentClass = computed(() => {
   return list
 })
 
-// 计算状态栏样式
 const statusBarStyle = computed(() => {
   const style: CSSProperties = {}
   if (props.fixed) {
@@ -114,7 +111,6 @@ const statusBarStyle = computed(() => {
   return useStyle(style)
 })
 
-// 计算导航栏主体样式
 const bodyStyle = computed(() => {
   const style: CSSProperties = {}
   style.height = `${navbarHeight.value}px`
@@ -133,7 +129,6 @@ const bodyStyle = computed(() => {
   return useStyle({ ...style, ...useStyle(props.customStyle) })
 })
 
-// 计算返回按钮文本样式
 const backTextStyle = computed(() => {
   const style: CSSProperties = {}
   style.color = useColor(props.backTextColor)
@@ -142,14 +137,12 @@ const backTextStyle = computed(() => {
   return useStyle(style)
 })
 
-// 计算标题类名
 const titleClass = computed(() => {
   const list: string[] = []
   if (props.centerTitle) list.push("is-center")
   return list
 })
 
-// 计算标题样式
 const titleStyle = computed(() => {
   const style: CSSProperties = {}
   // 居中模式下，通过 left/right 限制标题区域避免与左右内容重叠
@@ -174,7 +167,6 @@ const placeholderStyle = computed(() => {
   return useStyle(style)
 })
 
-// 计算渐变触发区样式
 const gradientTriggerStyle = computed(() => {
   const style: CSSProperties = {}
   const gradientHeightPx = useUnitToPx(props.gradientHeight)
@@ -257,10 +249,8 @@ function observeGradient() {
     })
 }
 
-// 设置事件监听
 function onEvent() {
   // 监听获取导航栏尺寸的事件（保留 mitt 用于组件间通信）
-  // 初始化渐变监听
   if (props.gradient) {
     nextTick(() => observeGradient())
   }
@@ -421,7 +411,6 @@ export default {
     text-align: center;
     align-items: center;
 
-    // 标题文本样式
     &__text {
       overflow: hidden;
       white-space: nowrap;

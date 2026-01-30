@@ -25,23 +25,19 @@ const props = defineProps(badgeProps)
 const emits = defineEmits(badgeEmits)
 const slots = useSlots()
 
-// 计算主容器样式
 const style = computed(() => {
   const style: CSSProperties = {}
   style.zIndex = props.zIndex
   return useStyle(style)
 })
 
-// 计算徽章内部样式
 const innerStyle = computed(() => {
   const style: CSSProperties = {}
   style.background = useColor(props.color)
   if (props.dot) {
-    // 如果是圆点样式
     style.width = useUnit(props.dotSize)
     style.height = useUnit(props.dotSize)
   } else {
-    // 非圆点样式
     style.height = useUnit(props.height)
     style.minWidth = useUnit(props.height)
     style.borderRadius = useUnit(props.radius)
@@ -69,7 +65,6 @@ const innerStyle = computed(() => {
   return useStyle({ ...style, ...useStyle(props.customStyle) })
 })
 
-// 计算徽章类名
 const classs = computed(() => {
   const list = []
   list.push(`ui-badge__inner--${props.position}`)
@@ -78,7 +73,6 @@ const classs = computed(() => {
   return list
 })
 
-// 计算徽章值的样式
 const valueStyle = computed(() => {
   const style: CSSProperties = {}
   style.color = useColor(props.valueColor)

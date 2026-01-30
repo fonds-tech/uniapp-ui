@@ -105,7 +105,6 @@ const isActiveColumn = computed(() => {
 watch(
   () => props.modelValue,
   (val) => {
-    // 外部值变化时同步内部状态
     selectedValues.value = val
   },
   { immediate: true },

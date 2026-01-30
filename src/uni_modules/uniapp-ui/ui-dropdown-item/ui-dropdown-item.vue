@@ -49,10 +49,8 @@ const visible = ref(false)
 const current = ref<any>("")
 const windowHeight = ref(0)
 
-// 计算属性: 是否已初始化
 const inited = computed(() => transition.inited.value)
 
-// 计算样式
 const style = computed(() => {
   const style: CSSProperties = { zIndex: zIndex.value }
   const { top, bottom } = parent?.rect.value || {}
@@ -62,13 +60,11 @@ const style = computed(() => {
   return useStyle({ ...style, ...useStyle(props.customClass) })
 })
 
-// 计算类名
 const classs = computed(() => {
   const list: string[] = [`ui-dropdown-item--${prop("direction")}`]
   return list
 })
 
-// 计算遮罩层样式
 const overlayStyle = computed(() => {
   const style: CSSProperties = {}
   const direction = prop("direction")
@@ -81,7 +77,6 @@ const overlayStyle = computed(() => {
   return useStyle(style)
 })
 
-// 计算内容样式
 const contentStyle = computed(() => {
   const style: CSSProperties = { zIndex: zIndex.value }
   style.background = useColor(props.background)
@@ -97,13 +92,11 @@ const contentStyle = computed(() => {
   return useStyle({ ...style, ...transition.styles.value })
 })
 
-// 计算内容类名
 const contentClass = computed(() => {
   const list: string[] = [`ui-dropdown-item__content--${prop("direction")}`, transition.classs.value]
   return list
 })
 
-// 计算滚动视图样式
 const scrollViewStyle = computed(() => {
   const style: CSSProperties = {}
   style.minHeight = useUnit(props.minHeight)
@@ -111,7 +104,6 @@ const scrollViewStyle = computed(() => {
   return useStyle(style)
 })
 
-// 计算标签样式
 const labelStyle = computed(() => (option: DropdownItemOption) => {
   const style: CSSProperties = {}
   style.color = checkIsSelected(option) ? useColor(prop("activeOptionColor")) : useColor(prop("optionColor"))
@@ -133,7 +125,6 @@ const iconColor = computed(() => (option: DropdownItemOption) => (checkIsSelecte
 // 计算是否选中
 const isSelected = computed(() => (option: DropdownItemOption) => checkIsSelected(option))
 
-// 监听modelValue的变化
 watch(
   () => props.modelValue,
   (value) => {
@@ -160,7 +151,6 @@ function prop(name: string) {
   return ""
 }
 
-// 初始化transition
 function initTransition() {
   const modes = { up: "slide-up", down: "slide-down" }
   transition.init({ name: modes[prop("direction")] as TransitionName, duration: prop("duration") })
@@ -181,7 +171,6 @@ function close() {
   transition.leave()
 }
 
-// 切换下拉菜单状态
 function toggle(state = !visible.value) {
   state ? open() : close()
 }

@@ -97,7 +97,6 @@ const iconContainerStyle = computed(() => {
 const iconClass = computed(() => {
   const list: string[] = []
   if (prop("round")) list.push("ui-checkbox__icon--round")
-  // 不确定状态优先于选中状态
   if (isIndeterminate.value) {
     list.push("ui-checkbox__icon--indeterminate")
   } else if (checked.value && actualShape.value === "icon") {

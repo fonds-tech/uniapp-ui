@@ -65,7 +65,6 @@ const internalLoadingText = ref("")
 // 创建节流函数实例
 const throttledEmit = computed(() => createThrottle(+props.throttle))
 
-// 计算按钮样式
 const buttonStyle = computed(() => {
   const styles: CSSProperties = {}
   styles.width = useUnit(props.width)
@@ -83,7 +82,6 @@ const buttonStyle = computed(() => {
   return useStyle({ ...styles, ...useStyle(props.customStyle) })
 })
 
-// 计算按钮类名
 const classNames = computed(() => {
   const classList: string[] = []
   classList.push(`ui-button--${props.type}`)
@@ -97,7 +95,6 @@ const classNames = computed(() => {
   return classList
 })
 
-// 计算按钮状态
 const isLoading = computed(() => props.loading || internalLoading.value)
 const isDisabled = computed(() => props.disabled || internalDisabled.value)
 const resolvedLoadingText = computed(() => props.loadingText || internalLoadingText.value)
@@ -109,7 +106,6 @@ function handleClick(event: any) {
   throttledEmit.value(() => emits("click", event))
 }
 
-// 暴露控制方法
 function setLoading(state: boolean, text?: string) {
   internalLoading.value = state
   if (text !== undefined) internalLoadingText.value = text
@@ -185,7 +181,6 @@ export default {
 }
 
 .ui-button {
-  // 基础样式
   height: var(--ui-size-normal);
   margin: 0;
   display: flex;

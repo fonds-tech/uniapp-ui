@@ -320,7 +320,6 @@ export function useCalendar(options: UseCalendarOptions = {}): UseCalendarReturn
         selectedDates.value.push(date)
       }
     } else if (mode === "range") {
-      // 范围选择逻辑
       if (!selectedRange.value.start || (selectedRange.value.start && selectedRange.value.end)) {
         // 如果没有起始日期,或者已经完成一次选择,则重新开始
         selectedRange.value = { start: date, end: "" }

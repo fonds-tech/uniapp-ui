@@ -92,13 +92,11 @@ const SIZE_PRESETS = {
   large: { trackHeight: 8, handleSize: 36 },
 } as const
 
-// 状态
 const draggingIndex = ref<number>(-1)
 const startPosition = ref({ x: 0, y: 0 })
 const trackRect = ref<UniApp.NodeInfo>({})
 const lastTouchEndTime = ref(0)
 
-// 内部值状态
 const internalValue = ref<SliderValue>(props.modelValue)
 
 // 当前值（单滑块模式）
@@ -117,7 +115,6 @@ const rangeValue = computed<[number, number]>(() => {
   return [props.min, val as number]
 })
 
-// 监听外部值变化
 watch(
   () => props.modelValue,
   (newVal) => {
@@ -127,7 +124,6 @@ watch(
   },
 )
 
-// 获取尺寸配置
 const sizeConfig = computed(() => {
   const preset = SIZE_PRESETS[props.size] || SIZE_PRESETS.medium
   return {
@@ -172,7 +168,6 @@ const rootClass = computed(() => {
   return list
 })
 
-// 根样式
 const rootStyle = computed(() => {
   const style: CSSProperties = {}
   return useStyle({ ...style, ...useStyle(props.customStyle) })
@@ -197,7 +192,6 @@ const wrapperStyle = computed(() => {
   return useStyle(style)
 })
 
-// 轨道样式
 const trackStyle = computed(() => {
   const style: CSSProperties = {}
   const { trackHeight } = sizeConfig.value
@@ -213,7 +207,6 @@ const trackStyle = computed(() => {
   return useStyle(style)
 })
 
-// 非激活轨道样式
 const inactiveTrackStyle = computed(() => {
   const style: CSSProperties = {}
   if (props.inactiveColor) {
@@ -222,7 +215,6 @@ const inactiveTrackStyle = computed(() => {
   return useStyle(style)
 })
 
-// 激活轨道样式
 const activeTrackStyle = computed(() => {
   const style: CSSProperties = {}
   const range = props.max - props.min
@@ -257,7 +249,6 @@ const activeTrackStyle = computed(() => {
   return useStyle(style)
 })
 
-// 值指示器样式
 const indicatorStyle = computed(() => {
   const style: CSSProperties = {}
   if (props.activeColor) {
@@ -266,7 +257,6 @@ const indicatorStyle = computed(() => {
   return useStyle(style)
 })
 
-// 刻度标签容器样式
 const labelsStyle = computed(() => {
   const style: CSSProperties = {}
   const { handleSize } = sizeConfig.value
@@ -294,7 +284,6 @@ function getHandleClass(index: number): string[] {
   return classes
 }
 
-// 获取把手样式
 function getHandleStyle(index: number): CSSProperties {
   const style: CSSProperties = {}
   const range = props.max - props.min
@@ -326,7 +315,6 @@ function getHandleStyle(index: number): CSSProperties {
   return useStyle(style)
 }
 
-// 获取刻度样式
 // 使用 calc() 让刻度点始终在轨道内部，不超出边界
 // 0% 时刻度点左边缘对齐轨道左边缘，100% 时刻度点右边缘对齐轨道右边缘
 function getTickStyle(value: number): CSSProperties {
@@ -346,7 +334,6 @@ function getTickStyle(value: number): CSSProperties {
   return useStyle(style)
 }
 
-// 获取标签样式
 function getLabelStyle(mark: { value: number; labelStyle?: CSSProperties }): CSSProperties {
   const style: CSSProperties = {}
   const range = props.max - props.min
@@ -423,7 +410,6 @@ async function updateTrackRect() {
   trackRect.value = await useRect(".ui-slider__track", instance)
 }
 
-// 轨道点击事件
 async function onTrackClick(event: any) {
   if (props.disabled || props.readonly) return
   if (Date.now() - lastTouchEndTime.value < 300) return
@@ -436,15 +422,12 @@ async function onTrackClick(event: any) {
   let clientY: number
 
   if (event.detail && typeof event.detail.x === "number") {
-    // UniApp tap 事件
     clientX = event.detail.x
     clientY = event.detail.y
   } else if (event.touches && event.touches.length > 0) {
-    // touch 事件
     clientX = event.touches[0].clientX
     clientY = event.touches[0].clientY
   } else if (typeof event.clientX === "number") {
-    // H5 click 事件
     clientX = event.clientX
     clientY = event.clientY
   } else {
@@ -657,7 +640,6 @@ function onHandleMouseDown(event: MouseEvent, index: number) {
   }
 }
 
-// 组件卸载时清理事件监听
 onUnmounted(() => {
   if (typeof document !== "undefined") {
     document.removeEventListener("mousemove", handleMouseMove)
@@ -718,13 +700,11 @@ export default {
   user-select: none;
   touch-action: none;
 
-  // 禁用状态
   &--disabled {
     opacity: var(--ui-opacity-disabled);
     pointer-events: none;
   }
 
-  // 只读状态
   &--readonly {
     pointer-events: none;
   }

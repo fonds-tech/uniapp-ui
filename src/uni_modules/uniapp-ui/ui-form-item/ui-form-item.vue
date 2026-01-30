@@ -359,7 +359,6 @@ function getPropRules() {
  */
 async function resize() {
   await nextTick()
-  // 延迟确保 DOM 完全渲染
   await new Promise((resolve) => setTimeout(resolve, 50))
   labelRect.value = await useRect(".ui-form-item__label", instance)
   errorRect.value = await useRect(".ui-form-item__error__text", instance)

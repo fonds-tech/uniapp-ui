@@ -38,7 +38,6 @@ export interface UseDraggableOptions {
  * - 小程序: touches / changedTouches / detail
  */
 export function extractEventPosition(event: any): DragPosition | null {
-  // touch 事件
   if (event.touches && event.touches.length > 0) {
     const touch = event.touches[0]
     return { x: touch.clientX, y: touch.clientY }
@@ -55,7 +54,6 @@ export function extractEventPosition(event: any): DragPosition | null {
     return { x: event.detail.x, y: event.detail.y }
   }
 
-  // H5 mouse 事件
   if (typeof event.clientX === "number") {
     return { x: event.clientX, y: event.clientY }
   }
@@ -298,7 +296,6 @@ export function useDraggable(options: UseDraggableOptions = {}) {
   }
 
   return {
-    // 状态
     dragging,
     offset,
 
@@ -310,7 +307,6 @@ export function useDraggable(options: UseDraggableOptions = {}) {
       onMousedown: handleMouseDown,
     },
 
-    // 方法
     reset,
     setOffset,
     cleanup,

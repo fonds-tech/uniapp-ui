@@ -154,7 +154,6 @@ function updateIndicatorStyle(animate: boolean = true) {
     style.background = useColor(props.indicatorColor)
   }
 
-  // 6. 设置过渡动画
   if (animate && indicatorInited.value) {
     const duration = props.duration || 300
     style.transition = `transform ${duration}ms cubic-bezier(0.4, 0, 0.2, 1), width ${duration}ms cubic-bezier(0.4, 0, 0.2, 1)`
@@ -164,13 +163,11 @@ function updateIndicatorStyle(animate: boolean = true) {
   indicatorInited.value = true
 }
 
-// 初始化
 onMounted(async () => {
   await nextTick()
   updateIndicatorStyle(false)
 })
 
-// 监听子组件数量变化
 watch(
   () => childrens.length,
   async () => {
