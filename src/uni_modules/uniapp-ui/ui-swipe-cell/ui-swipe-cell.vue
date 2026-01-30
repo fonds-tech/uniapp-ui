@@ -1,16 +1,13 @@
 <template>
   <view class="ui-swipe-cell" :class="[customClass]" :style="[rootStyle]" @touchstart="onTouchStart" @touchmove="onTouchMove" @touchend="onTouchEnd" @touchcancel="onTouchEnd">
-    <!-- 左侧操作区域 -->
     <view ref="leftRef" class="ui-swipe-cell__left" @click="onLeftClick">
       <slot name="left" />
     </view>
 
-    <!-- 主内容区域 -->
     <view class="ui-swipe-cell__wrapper" :style="[wrapperStyle]" @click="onCellClick">
       <slot />
     </view>
 
-    <!-- 右侧操作区域 -->
     <view ref="rightRef" class="ui-swipe-cell__right" @click="onRightClick">
       <slot name="right" />
     </view>

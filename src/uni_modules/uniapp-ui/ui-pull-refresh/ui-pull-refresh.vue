@@ -8,10 +8,8 @@
     @touchend="onTouchEnd"
     @touchcancel="onTouchEnd"
   >
-    <!-- 下拉刷新头部 -->
     <view class="ui-pull-refresh__track" :style="[trackStyle]">
       <view class="ui-pull-refresh__head" :style="[headStyle]">
-        <!-- 各状态的插槽 -->
         <slot v-if="status === 'pulling'" name="pulling" :distance="distance">
           <text class="ui-pull-refresh__text">{{ props.pullingText }}</text>
         </slot>
@@ -30,7 +28,6 @@
         <slot v-else name="normal" />
       </view>
 
-      <!-- 内容区域 -->
       <view class="ui-pull-refresh__content">
         <slot />
       </view>

@@ -42,7 +42,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 新增：弹窗位置 -->
     <demo-section title="弹窗位置">
       <demo-block direction="column" align="start" :gap="16">
         <text class="demo-text">mode 可设置弹窗位置</text>
@@ -55,7 +54,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 新增：圆角设置 -->
     <demo-section title="圆角设置">
       <demo-block direction="column" align="start" :gap="16">
         <text class="demo-text">当前圆角: {{ currentBorderRadius }}</text>
@@ -68,7 +66,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 新增：遮罩控制 -->
     <demo-section title="遮罩控制">
       <demo-block direction="column" align="start" :gap="16">
         <demo-block align="center" :gap="16">
@@ -83,7 +80,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 新增：动画时长 -->
     <demo-section title="动画时长">
       <demo-block direction="column" align="start" :gap="16">
         <text class="demo-text">当前时长: {{ currentDuration }}ms</text>
@@ -96,7 +92,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 新增：层级设置 -->
     <demo-section title="层级设置">
       <demo-block direction="column" align="start" :gap="16">
         <text class="demo-text">z-index 设置弹窗层级</text>
@@ -104,7 +99,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 新增：背景色设置 -->
     <demo-section title="背景色设置">
       <demo-block direction="column" align="start" :gap="16">
         <text class="demo-text">自定义弹窗背景色</text>
@@ -112,7 +106,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 新增：安全区适配 -->
     <demo-section title="安全区适配">
       <demo-block direction="column" align="start" :gap="16">
         <demo-block align="center" :gap="16">
@@ -123,7 +116,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 新增：隐藏头部 -->
     <demo-section title="隐藏头部">
       <demo-block direction="column" align="start" :gap="16">
         <demo-block align="center" :gap="16">
@@ -134,14 +126,12 @@
       </demo-block>
     </demo-section>
 
-    <!-- 新增：自定义按钮文字 -->
     <demo-section title="自定义按钮文字">
       <demo-block>
         <ui-select v-model="value16" :columns="cities" placeholder="请选择城市" cancel-text="返回" confirm-text="好的" />
       </demo-block>
     </demo-section>
 
-    <!-- 新增：加载状态 -->
     <demo-section title="加载状态">
       <demo-block direction="column" align="start" :gap="16">
         <demo-block align="center" :gap="16">
@@ -152,7 +142,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 新增：选项样式 -->
     <demo-section title="选项样式">
       <demo-block direction="column" align="start" :gap="16">
         <text class="demo-text">自定义选项高度和可见数量</text>
@@ -160,7 +149,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 新增：选项文字样式 -->
     <demo-section title="选项文字样式">
       <demo-block direction="column" align="start" :gap="16">
         <text class="demo-text">设置选项文字大小、颜色和粗细</text>
@@ -177,7 +165,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 新增：占位文案样式 -->
     <demo-section title="占位文案样式">
       <demo-block direction="column" align="start" :gap="16">
         <ui-select v-model="value20" :columns="cities" placeholder="点击选择城市" placeholder-color="#1989fa" />
@@ -185,7 +172,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 新增：文字样式 -->
     <demo-section title="文字样式">
       <demo-block direction="column" align="start" :gap="16">
         <text class="demo-text">设置选中值的显示样式</text>
@@ -193,7 +179,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 新增：右侧图标 -->
     <demo-section title="右侧图标">
       <demo-block direction="column" align="start" :gap="16">
         <ui-select v-model="value22" :columns="cities" placeholder="自定义图标" right-icon="arrow-down" right-icon-size="28rpx" right-icon-color="#1989fa" />
@@ -201,7 +186,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 新增：展示格式化 -->
     <demo-section title="展示格式化">
       <demo-block direction="column" align="start" :gap="16">
         <text class="demo-text">通过 displayFormatter 自定义展示文案</text>
@@ -209,7 +193,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 新增：字段映射 -->
     <demo-section title="字段映射">
       <demo-block direction="column" align="start" :gap="16">
         <text class="demo-text">columns-fields 自定义数据字段</text>
@@ -217,7 +200,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 新增：事件处理 -->
     <demo-section title="事件处理">
       <demo-block direction="column" align="start" :gap="16">
         <ui-select
@@ -243,7 +225,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 新增：自定义样式 -->
     <demo-section title="自定义样式">
       <demo-block direction="column" :gap="16">
         <ui-select v-model="value26" :columns="cities" placeholder="自定义类名" custom-class="my-select" />
@@ -251,7 +232,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 综合示例 - 城市选择 -->
     <demo-section title="综合示例 - 城市选择">
       <demo-block direction="column" :gap="16">
         <view class="form-item">
@@ -269,7 +249,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 综合示例 - 地址选择 -->
     <demo-section title="综合示例 - 地址选择">
       <demo-block direction="column" :gap="16">
         <ui-select
@@ -288,7 +267,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 综合示例 - 商品规格 -->
     <demo-section title="综合示例 - 商品规格">
       <demo-block direction="column" :gap="16">
         <view class="product-card">

@@ -88,7 +88,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 回调信息展示 -->
     <demo-section title="回调信息">
       <demo-block>
         <view class="callback-info">

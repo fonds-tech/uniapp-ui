@@ -1,6 +1,5 @@
 <template>
   <view class="ui-select" :class="[classs, props.customClass]" :style="[style]">
-    <!-- 可点击的展示区域 -->
     <view class="ui-select__trigger" :hover-class="hoverClass" :hover-stay-time="50" @click="handleClick">
       <view class="ui-select__value" :style="[valueStyle]">
         <slot name="display" :text="displayText" :payload="displayPayload" :placeholder="props.placeholder">
@@ -15,7 +14,6 @@
       </view>
     </view>
 
-    <!-- Picker 弹窗 -->
     <ui-picker
       ref="pickerRef"
       :show="visible"

@@ -218,10 +218,8 @@
       </demo-block>
     </demo-section>
 
-    <!-- 占位内容 -->
     <demo-section v-for="i in 20" :key="i" :title="`占位内容 ${i}`" desc="这是一段占位内容，用于演示滚动效果" />
 
-    <!-- 返回顶部按钮 -->
     <ui-back-top
       :offset="currentOffset"
       :right="currentRight"

@@ -34,7 +34,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 新增：自定义尺寸 -->
     <demo-section title="自定义尺寸">
       <demo-block :cols="2" :gap="24">
         <view class="sidebar-wrap sidebar-wrap--small">
@@ -53,7 +52,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 新增：线条样式 -->
     <demo-section title="线条样式">
       <demo-block direction="column" :gap="24">
         <view class="sidebar-row">
@@ -95,7 +93,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 新增：动画时长 -->
     <demo-section title="动画时长">
       <demo-block direction="column" align="start" :gap="16">
         <demo-block :cols="3" :gap="16">
@@ -115,7 +112,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 新增：背景颜色 -->
     <demo-section title="自定义背景">
       <demo-block :cols="2" :gap="24">
         <view class="sidebar-wrap sidebar-wrap--small">
@@ -135,7 +131,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 新增：标题样式 -->
     <demo-section title="标题样式">
       <demo-block :cols="2" :gap="24">
         <view class="sidebar-wrap sidebar-wrap--small">
@@ -153,7 +148,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 新增：激活背景 -->
     <demo-section title="激活背景">
       <demo-block :cols="2" :gap="24">
         <view class="sidebar-wrap sidebar-wrap--small">
@@ -173,7 +167,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 新增：文字对齐 -->
     <demo-section title="文字对齐">
       <demo-block :cols="3" :gap="16">
         <view class="sidebar-wrap sidebar-wrap--mini">
@@ -197,7 +190,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 新增：自定义插槽 -->
     <demo-section title="自定义内容">
       <demo-block class="sidebar-wrap">
         <ui-sidebar v-model="activeSlot">
@@ -239,7 +231,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 新增：事件处理 -->
     <demo-section title="事件处理">
       <demo-block direction="column" align="start" :gap="16">
         <text class="demo-text">{{ eventLog }}</text>
@@ -253,7 +244,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 新增：自定义样式 -->
     <demo-section title="自定义样式">
       <demo-block :cols="2" :gap="24">
         <view class="sidebar-wrap sidebar-wrap--small">
@@ -273,7 +263,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 新增：综合示例 -->
     <demo-section title="综合示例">
       <demo-block class="sidebar-wrap sidebar-wrap--large">
         <ui-sidebar v-model="activeComplex" width="220rpx" background="#f7f8fa" line-color="#1989fa" line-width="8rpx" line-radius="4rpx" :duration="200">

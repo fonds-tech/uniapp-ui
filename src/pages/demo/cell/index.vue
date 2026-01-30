@@ -1,6 +1,5 @@
 <template>
   <demo-page padding-x="0">
-    <!-- 基础用法 -->
     <demo-section title="基础用法" :card="false">
       <ui-cell-group>
         <ui-cell title="标题" value="内容" />
@@ -8,7 +7,6 @@
       </ui-cell-group>
     </demo-section>
 
-    <!-- 左侧图标 -->
     <demo-section title="左侧图标" :card="false">
       <ui-cell-group>
         <ui-cell title="默认图标" icon="setting" value="内容" />
@@ -19,7 +17,6 @@
       </ui-cell-group>
     </demo-section>
 
-    <!-- 右侧内容样式 -->
     <demo-section title="右侧内容样式" :card="false">
       <ui-cell-group>
         <ui-cell title="默认样式" value="内容" />
@@ -29,14 +26,12 @@
       </ui-cell-group>
     </demo-section>
 
-    <!-- 链接与箭头 -->
     <demo-section title="链接与箭头" :card="false">
       <ui-cell-group>
         <ui-cell title="展示箭头" value="is-link" is-link />
       </ui-cell-group>
     </demo-section>
 
-    <!-- 页面跳转 -->
     <demo-section title="页面跳转" :card="false">
       <ui-cell-group>
         <ui-cell title="默认跳转" value="navigateTo" is-link url="/pages/demo/button/index" />
@@ -44,7 +39,6 @@
       </ui-cell-group>
     </demo-section>
 
-    <!-- 标题样式 -->
     <demo-section title="标题样式" :card="false">
       <ui-cell-group>
         <ui-cell title="标题大小" title-size="18rpx" value="title-size=18rpx" />
@@ -53,7 +47,6 @@
       </ui-cell-group>
     </demo-section>
 
-    <!-- 描述样式 -->
     <demo-section title="描述样式" :card="false">
       <ui-cell-group>
         <ui-cell title="默认描述" label="描述信息" value="内容" />
@@ -64,7 +57,6 @@
       </ui-cell-group>
     </demo-section>
 
-    <!-- 尺寸与间距 -->
     <demo-section title="尺寸与间距" :card="false">
       <ui-cell-group>
         <ui-cell title="自定义高度" value="height=120rpx" height="120rpx" />
@@ -72,7 +64,6 @@
       </ui-cell-group>
     </demo-section>
 
-    <!-- 点击交互 -->
     <demo-section title="点击交互" :card="false">
       <ui-cell-group>
         <ui-cell title="无点击态" value="默认" />
@@ -81,7 +72,6 @@
       </ui-cell-group>
     </demo-section>
 
-    <!-- 插槽用法 -->
     <demo-section title="插槽用法" :card="false">
       <ui-cell-group>
         <ui-cell title="标题">

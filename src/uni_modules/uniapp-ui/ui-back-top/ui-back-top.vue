@@ -18,15 +18,12 @@ import { backTopEmits, backTopProps } from "./index"
 import { useMitt, useUnit, useColor, useStyle, useUnitToPx } from "../hooks"
 import { ref, watch, computed, nextTick, onMounted, onUnmounted } from "vue"
 
-// ===================== Props/Emits =====================
 const props = defineProps(backTopProps)
 const emits = defineEmits(backTopEmits)
-// ===================== 响应式状态 =====================
 const mitt = useMitt()
 const innerScrollTop = ref(0)
 let bindRoute = ""
 
-// ===================== 计算属性 =====================
 const useExternalScrollTop = computed(() => isDef(props.scrollTop))
 
 const currentScrollTop = computed(() => (useExternalScrollTop.value ? Number(props.scrollTop) : innerScrollTop.value))
@@ -68,7 +65,6 @@ const textStyle = computed(() => {
   return useStyle(style)
 })
 
-// ===================== 侦听器 =====================
 watch(useExternalScrollTop, (useExternal) => {
   if (useExternal) {
     clearAutoListener()
@@ -77,7 +73,6 @@ watch(useExternalScrollTop, (useExternal) => {
   }
 })
 
-// ===================== 生命周期 =====================
 onMounted(() => {
   nextTick(initAutoListener)
 })
@@ -86,7 +81,6 @@ onUnmounted(() => {
   clearAutoListener()
 })
 
-// ===================== 方法 =====================
 function handleScroll(options: { scrollTop: number }) {
   innerScrollTop.value = options.scrollTop
 }

@@ -95,7 +95,6 @@ export function useDraggable(options: UseDraggableOptions = {}) {
     }
   }
 
-  // ========== Touch 事件处理 ==========
   function handleTouchStart(event: any) {
     if (isDisabled()) return
 
@@ -156,7 +155,6 @@ export function useDraggable(options: UseDraggableOptions = {}) {
     onDragEnd?.(buildDetail())
   }
 
-  // ========== H5 Mouse 事件处理 ==========
   function handleMouseDown(event: any) {
     // #ifdef H5
     if (isDisabled()) return
@@ -209,7 +207,6 @@ export function useDraggable(options: UseDraggableOptions = {}) {
     // #endif
   }
 
-  // ========== H5 Document 事件绑定 ==========
   // #ifdef H5
   function bindDocumentTouch() {
     if (documentTouchBound) return

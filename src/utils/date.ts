@@ -7,10 +7,7 @@ import "dayjs/locale/zh-cn"
 dayjs.extend(relativeTime)
 dayjs.locale("zh-cn")
 
-// ==================== 类型定义 ====================
 export type DateInput = ConfigType
-
-// ==================== 格式化 ====================
 
 /**
  * 格式化日期
@@ -42,8 +39,6 @@ export function formatDateTime(date: DateInput, format: string = "YYYY-MM-DD HH:
 export function formatTime(date: DateInput, format: string = "HH:mm:ss"): string {
   return dayjs(date).format(format)
 }
-
-// ==================== 相对时间 ====================
 
 /**
  * 获取相对时间描述
@@ -86,8 +81,6 @@ export function getSmartTime(date: DateInput): string {
 
   return target.format("YYYY-MM-DD HH:mm")
 }
-
-// ==================== 日期比较 ====================
 
 /**
  * 判断是否为今天
@@ -135,8 +128,6 @@ export function isBetween(date: DateInput, start: DateInput, end: DateInput): bo
   return target.isAfter(dayjs(start)) && target.isBefore(dayjs(end))
 }
 
-// ==================== 日期计算 ====================
-
 /**
  * 获取两个日期之间的天数差
  */
@@ -171,8 +162,6 @@ export function addDays(date: DateInput, days: number): Dayjs {
 export function subtractDays(date: DateInput, days: number): Dayjs {
   return dayjs(date).subtract(days, "day")
 }
-
-// ==================== 获取特定日期 ====================
 
 /**
  * 获取今天的开始时间（00:00:00）
@@ -215,8 +204,6 @@ export function getStartOfMonth(date: DateInput = new Date()): Dayjs {
 export function getEndOfMonth(date: DateInput = new Date()): Dayjs {
   return dayjs(date).endOf("month")
 }
-
-// ==================== 工具函数 ====================
 
 /**
  * 获取当前时间戳（毫秒）

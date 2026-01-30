@@ -1,11 +1,8 @@
 <template>
   <view class="ui-qrcode" :class="[props.customClass]" :style="[style]" @click="onClick">
-    <!-- #ifndef MP-ALIPAY -->
     <canvas class="ui-qrcode-canvas" :canvas-id="id" :style="{ width: `${canvasSize.width}px`, height: `${canvasSize.height}px` }" />
-    <!-- #endif -->
-    <!-- #ifdef MP-ALIPAY -->
+
     <canvas :id="id" class="ui-qrcode-canvas" :width="canvasSize.width" :height="canvasSize.height" />
-    <!-- #endif -->
 
     <text v-if="show && isError" class="ui-qrcode__fail" @click="makeCode">{{ type === "qrcode" ? "二维码" : "条形码" }}生成失败,点击重试</text>
     <text v-else-if="show && isLoading" class="ui-qrcode__loading">{{ loadingText }}</text>

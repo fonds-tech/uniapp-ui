@@ -9,9 +9,8 @@
     :aria-valuenow="validPercentage"
     :aria-valuetext="displayText"
   >
-    <!-- 进度条填充 -->
     <view class="ui-progress__portion" :style="[portionStyle]" />
-    <!-- 文本显示 -->
+
     <view v-if="showText && props.textPosition !== 'none'" class="ui-progress__pivot" :style="[pivotStyle]">
       <slot name="text" :percentage="validPercentage">
         <text class="ui-progress__text" :style="[textStyle]">{{ displayText }}</text>

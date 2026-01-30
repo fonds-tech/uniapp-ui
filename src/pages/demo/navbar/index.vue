@@ -53,7 +53,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 新增：标题样式 -->
     <demo-section title="标题样式" extra="自定义标题大小、颜色、粗细、宽度">
       <demo-block direction="column" :gap="16">
         <ui-navbar title="大标题" :fixed="false" show-back title-size="40rpx" title-weight="800" />
@@ -66,7 +65,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 新增：渐变背景 -->
     <demo-section title="渐变背景">
       <demo-block direction="column" align="start" :gap="16">
         <text class="demo-text">开启 gradient 后，导航栏背景会随滚动渐变</text>
@@ -75,7 +73,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 新增：自定义返回 -->
     <demo-section title="自定义返回">
       <demo-block direction="column" align="start" :gap="16">
         <text class="demo-text">通过 custom-back 自定义返回逻辑</text>
@@ -83,7 +80,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 新增：事件处理 -->
     <demo-section title="事件处理">
       <demo-block direction="column" align="start" :gap="16">
         <text class="demo-text">{{ eventLog }}</text>

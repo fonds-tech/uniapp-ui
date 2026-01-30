@@ -6,7 +6,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 新增：双向绑定 -->
     <demo-section title="双向绑定">
       <demo-block direction="column" align="start" :gap="16">
         <text class="demo-text">当前文件数: {{ fileList2.length }}</text>
@@ -39,7 +38,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 新增：文件类型 -->
     <demo-section title="文件类型">
       <demo-block direction="column" align="start" :gap="16">
         <text class="demo-text">通过 accept 限制文件类型</text>
@@ -52,7 +50,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 新增：拍摄模式 -->
     <demo-section title="拍摄模式">
       <demo-block direction="column" align="start" :gap="16">
         <text class="demo-text">通过 capture 设置拾取模式</text>
@@ -74,7 +71,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 新增：隐藏删除按钮 -->
     <demo-section title="隐藏删除按钮">
       <demo-block direction="column" align="start" :gap="16">
         <text class="demo-text">通过 deletable 控制删除按钮显示</text>
@@ -105,7 +101,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 新增：预览间距 -->
     <demo-section title="预览间距">
       <demo-block direction="column" align="start" :gap="16">
         <text class="demo-text">通过 preview-gap 设置预览图间距</text>
@@ -118,7 +113,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 新增：图片显示模式 -->
     <demo-section title="图片显示模式">
       <demo-block direction="column" align="start" :gap="16">
         <text class="demo-text">通过 image-mode 设置图片裁剪模式</text>
@@ -131,7 +125,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 新增：自定义背景 -->
     <demo-section title="自定义背景">
       <demo-block direction="column" align="start" :gap="16">
         <text class="demo-text">通过 background 设置上传区域背景色</text>
@@ -144,7 +137,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 新增：自定义上传图标 -->
     <demo-section title="自定义上传图标">
       <demo-block direction="column" align="start" :gap="16">
         <text class="demo-text">通过 icon/icon-size/icon-color 自定义上传图标</text>
@@ -157,7 +149,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 新增：自定义预览图标 -->
     <demo-section title="自定义预览图标">
       <demo-block direction="column" align="start" :gap="16">
         <text class="demo-text">通过 preview-icon-size/color 自定义删除图标</text>
@@ -165,7 +156,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 新增：删除前确认 -->
     <demo-section title="删除前确认">
       <demo-block direction="column" align="start" :gap="16">
         <text class="demo-text">通过 before-remove 在删除前进行确认</text>
@@ -173,7 +163,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 新增：上传前校验 -->
     <demo-section title="上传前校验">
       <demo-block direction="column" align="start" :gap="16">
         <text class="demo-text">通过 before-read 在上传前进行校验</text>
@@ -181,7 +170,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 新增：上传后处理 -->
     <demo-section title="上传后处理">
       <demo-block direction="column" align="start" :gap="16">
         <text class="demo-text">通过 after-read 在上传后进行处理</text>
@@ -189,7 +177,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 新增：事件处理 -->
     <demo-section title="事件处理">
       <demo-block direction="column" align="start" :gap="16">
         <ui-upload v-model="fileList19" @upload="onUpload" @delete="onDelete" @oversize="onOversizeEvent" />
@@ -202,7 +189,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 新增：自定义样式 -->
     <demo-section title="自定义样式">
       <demo-block direction="column" :gap="16">
         <demo-block :cols="2" :gap="24">
@@ -214,7 +200,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 新增：综合示例 - 头像上传 -->
     <demo-section title="综合示例 - 头像上传">
       <demo-block direction="column" align="center" :gap="16">
         <view class="avatar-upload">
@@ -236,7 +221,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 新增：综合示例 - 证件上传 -->
     <demo-section title="综合示例 - 证件上传">
       <demo-block direction="column" :gap="24">
         <view class="id-card-box">
@@ -252,7 +236,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 新增：综合示例 - 商品图片上传 -->
     <demo-section title="综合示例 - 商品图片上传">
       <demo-block direction="column" :gap="16">
         <view class="product-upload-header">

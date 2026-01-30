@@ -1,11 +1,9 @@
 <template>
   <view class="ui-avatar-group" :class="[customClass]" :style="[rootStyle]" @click="onClick">
-    <!-- 头像插槽容器 -->
     <view class="ui-avatar-group__container" :style="containerStyle">
       <slot />
     </view>
 
-    <!-- 超出数量显示 -->
     <view v-if="shouldShowExcess" class="ui-avatar-group__excess" :class="[excessShapeClass]" :style="excessStyle" @click.stop="onClickExcess">
       <text class="ui-avatar-group__excess-text">+{{ excessCount }}</text>
     </view>

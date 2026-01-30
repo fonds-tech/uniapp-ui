@@ -1,6 +1,5 @@
 <template>
   <demo-page>
-    <!-- 基础用法 -->
     <demo-section title="基础用法">
       <demo-block direction="column">
         <ui-text size="small" color="secondary">组件自动检测子元素尺寸并触发 resize 事件</ui-text>
@@ -15,7 +14,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 动态内容尺寸 -->
     <demo-section title="动态内容尺寸">
       <demo-block direction="column">
         <ui-text size="small" color="secondary">拖动滑块改变子元素尺寸，组件自动检测变化</ui-text>
@@ -42,7 +40,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 动态内容 -->
     <demo-section title="动态内容">
       <demo-block direction="column">
         <ui-text size="small" color="secondary">子元素内容变化导致尺寸变化时触发 resize</ui-text>
@@ -61,7 +58,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 禁用状态 -->
     <demo-section title="禁用状态">
       <demo-block direction="column">
         <ui-text size="small" color="secondary">禁用后不会触发 resize 事件</ui-text>
@@ -76,7 +72,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 回调数据 -->
     <demo-section title="回调数据">
       <demo-block direction="column">
         <ui-text size="small" color="secondary">resize 事件返回完整的位置和尺寸信息</ui-text>

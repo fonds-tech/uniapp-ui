@@ -225,7 +225,6 @@ export default {
     content: none;
   }
 
-  // ========== 内容区域 ==========
   &__content {
     display: flex;
     align-items: center;
@@ -262,7 +261,6 @@ export default {
     margin-left: 0;
   }
 
-  // ========== 尺寸变体 ==========
   &--mini {
     @include button-size(var(--ui-size-mini), var(--ui-font-size-xs));
   }
@@ -276,7 +274,6 @@ export default {
     @include button-size(var(--ui-size-large), var(--ui-font-size-md));
   }
 
-  // ========== 类型变体 ==========
   &--primary {
     @include button-type(var(--ui-color-primary));
   }
@@ -314,7 +311,6 @@ export default {
     }
   }
 
-  // ========== 形态变体 ==========
   &--text {
     height: fit-content;
     display: inline-flex;
@@ -331,7 +327,6 @@ export default {
     border-radius: var(--ui-radius-round);
   }
 
-  // ========== 状态变体 ==========
   &--disabled {
     opacity: var(--ui-opacity-disabled);
     pointer-events: none;

@@ -1,15 +1,12 @@
 <template>
   <view class="ui-step" :class="[classes, customClass]" :style="[style]" @click="onClick">
-    <!-- 头部区域：连接线 + 图标 -->
     <view class="ui-step__head">
-      <!-- 前连接线 -->
       <view class="ui-step__line ui-step__line--before" :style="[lineBeforeStyle]" />
-      <!-- 图标容器 -->
+
       <view class="ui-step__icon-wrapper">
         <slot name="icon" :status="currentStatus" :index="safeIndex" :active="isActive">
-          <!-- 自定义图标 -->
           <ui-icon v-if="currentIcon" :name="currentIcon" :size="currentIconSize" :color="currentColor" />
-          <!-- 默认圆圈 -->
+
           <view v-else class="ui-step__circle" :style="[circleStyle]">
             <ui-icon v-if="!isDot && isFinish" name="check" :size="circleIconSize" color="#fff" />
             <ui-icon v-else-if="!isDot && isError" name="close" :size="circleIconSize" color="#fff" />
@@ -17,11 +14,10 @@
           </view>
         </slot>
       </view>
-      <!-- 后连接线 -->
+
       <view class="ui-step__line ui-step__line--after" :style="[lineAfterStyle]" />
     </view>
 
-    <!-- 内容区域 -->
     <view class="ui-step__content">
       <slot :status="currentStatus" :index="safeIndex" :active="isActive">
         <view v-if="title" class="ui-step__title" :style="[titleStyle]">{{ title }}</view>
@@ -434,10 +430,6 @@ $step-transition-duration: 0.3s;
     line-height: 1.4;
   }
 
-  // === 边界情况 ===
-
-  // === 垂直模式 ===
-
   &--vertical {
     padding: 0;
     min-height: 100rpx;
@@ -474,8 +466,6 @@ $step-transition-duration: 0.3s;
     }
   }
 
-  // === 状态样式 ===
-
   // 等待状态
   &--wait {
     .ui-step__circle {
@@ -510,8 +500,6 @@ $step-transition-duration: 0.3s;
     }
   }
 
-  // === 点状模式 ===
-
   &--dot {
     .ui-step__circle {
       width: $step-dot-size;
@@ -523,8 +511,6 @@ $step-transition-duration: 0.3s;
       display: none;
     }
   }
-
-  // === 简洁模式 ===
 
   &--simple {
     .ui-step__content {

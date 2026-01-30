@@ -1,6 +1,5 @@
 <template>
   <demo-page>
-    <!-- 基础用法 -->
     <demo-section title="基础用法">
       <demo-block direction="column">
         <ui-tabs v-model="active1">
@@ -11,7 +10,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- Tab: name -->
     <demo-section title="name 标识符">
       <demo-block direction="column" align="start" :gap="12">
         <text class="demo-text">当前选中: {{ activeName }}</text>
@@ -23,7 +21,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- Tab: disabled -->
     <demo-section title="disabled 禁用">
       <demo-block direction="column">
         <ui-tabs v-model="activeDisabled">
@@ -34,7 +31,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- height -->
     <demo-section title="height 高度">
       <demo-block direction="column" align="start" :gap="16">
         <text class="demo-text">height="70rpx"</text>
@@ -52,7 +48,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- scrollable -->
     <demo-section title="scrollable 滚动">
       <demo-block direction="column">
         <ui-tabs v-model="activeScrollable" scrollable>
@@ -61,7 +56,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- activeSize / inactiveSize -->
     <demo-section title="activeSize / inactiveSize 文字大小">
       <demo-block direction="column" align="start" :gap="12">
         <text class="demo-text">activeSize="34rpx" inactiveSize="26rpx"</text>
@@ -73,7 +67,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- activeColor / inactiveColor -->
     <demo-section title="activeColor / inactiveColor 文字颜色">
       <demo-block direction="column" align="start" :gap="12">
         <text class="demo-text">activeColor="#07c160" inactiveColor="#999"</text>
@@ -85,7 +78,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- activeWeight / inactiveWeight -->
     <demo-section title="activeWeight / inactiveWeight 文字粗细">
       <demo-block direction="column" align="start" :gap="12">
         <text class="demo-text">activeWeight="700" inactiveWeight="400"</text>
@@ -97,7 +89,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- indicatorColor -->
     <demo-section title="indicatorColor 指示器颜色">
       <demo-block direction="column" align="start" :gap="12">
         <text class="demo-text">indicatorColor="#ee0a24"</text>
@@ -109,7 +100,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- indicatorWidth -->
     <demo-section title="indicatorWidth 指示器宽度">
       <demo-block direction="column" align="start" :gap="12">
         <text class="demo-text">indicatorWidth="80rpx"</text>
@@ -121,7 +111,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- autoIndicatorWidth -->
     <demo-section title="autoIndicatorWidth 自动宽度">
       <demo-block direction="column" align="start" :gap="12">
         <text class="demo-text">autoIndicatorWidth</text>
@@ -133,7 +122,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- indicatorHeight -->
     <demo-section title="indicatorHeight 指示器高度">
       <demo-block direction="column" align="start" :gap="12">
         <text class="demo-text">indicatorHeight="8rpx"</text>
@@ -145,7 +133,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- indicatorRadius -->
     <demo-section title="indicatorRadius 指示器圆角">
       <demo-block direction="column" align="start" :gap="12">
         <text class="demo-text">indicatorRadius="0"</text>
@@ -157,7 +144,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- showIndicator -->
     <demo-section title="showIndicator 显示指示器">
       <demo-block direction="column" align="start" :gap="12">
         <text class="demo-text">:showIndicator="false"</text>
@@ -169,7 +155,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- itemWidth -->
     <demo-section title="itemWidth 单项宽度">
       <demo-block direction="column" align="start" :gap="12">
         <text class="demo-text">itemWidth="200rpx"</text>
@@ -180,7 +165,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- itemMaxWidth -->
     <demo-section title="itemMaxWidth 单项最大宽度">
       <demo-block direction="column" align="start" :gap="12">
         <text class="demo-text">itemMaxWidth="180rpx"</text>
@@ -192,7 +176,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- background -->
     <demo-section title="background 背景颜色">
       <demo-block direction="column" align="start" :gap="16">
         <text class="demo-text">background="#f7f8fa"</text>
@@ -210,7 +193,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- duration -->
     <demo-section title="duration 动画时长">
       <demo-block direction="column" align="start" :gap="12">
         <demo-block :gap="16">
@@ -228,7 +210,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- borderBottom -->
     <demo-section title="borderBottom 底部边框">
       <demo-block direction="column">
         <ui-tabs v-model="activeBorder" border-bottom>
@@ -239,7 +220,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- zIndex -->
     <demo-section title="zIndex 层级">
       <demo-block direction="column" align="start" :gap="12">
         <text class="demo-text">zIndex="100"</text>
@@ -251,7 +231,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- Events -->
     <demo-section title="change 事件">
       <demo-block direction="column" align="start" :gap="12">
         <text class="demo-text">{{ changeLog }}</text>

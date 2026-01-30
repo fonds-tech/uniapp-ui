@@ -1,6 +1,5 @@
 <template>
   <view :class="rootClass" :style="rootStyle">
-    <!-- 轨道容器：包含触摸区域 -->
     <view
       class="ui-slider__wrapper"
       :style="wrapperStyle"
@@ -11,15 +10,11 @@
       @touchcancel.stop="onTouchEnd"
       @mousedown.stop="onMouseDown"
     >
-      <!-- 轨道背景 -->
       <view class="ui-slider__track" :style="trackStyle">
-        <!-- 非激活轨道 -->
         <view class="ui-slider__track-inactive" :style="inactiveTrackStyle" />
 
-        <!-- 激活轨道 -->
         <view class="ui-slider__track-active" :style="activeTrackStyle" />
 
-        <!-- 刻度标记 -->
         <template v-if="props.marks">
           <view
             v-for="(mark, key) in normalizedMarks"
@@ -30,7 +25,6 @@
           />
         </template>
 
-        <!-- 左侧把手（范围模式）- 放在轨道内部定位 -->
         <view
           v-if="props.range"
           class="ui-slider__handle"
@@ -40,14 +34,12 @@
           @mousedown.stop="onHandleMouseDown($event, 0)"
         >
           <slot name="left-handle" :value="rangeValue[0]" :dragging="draggingIndex === 0">
-            <!-- 值指示器 -->
             <view v-if="shouldShowValue(0)" class="ui-slider__indicator" :style="indicatorStyle">
               {{ formatDisplayValue(rangeValue[0]) }}
             </view>
           </slot>
         </view>
 
-        <!-- 右侧/单个把手 - 放在轨道内部定位 -->
         <view
           class="ui-slider__handle"
           :class="getHandleClass(props.range ? 1 : 0)"
@@ -56,7 +48,6 @@
           @mousedown.stop="onHandleMouseDown($event, props.range ? 1 : 0)"
         >
           <slot :name="props.range ? 'right-handle' : 'handle'" :value="props.range ? rangeValue[1] : currentValue" :dragging="draggingIndex === (props.range ? 1 : 0)">
-            <!-- 值指示器 -->
             <view v-if="shouldShowValue(props.range ? 1 : 0)" class="ui-slider__indicator" :style="indicatorStyle">
               {{ formatDisplayValue(props.range ? rangeValue[1] : currentValue) }}
             </view>
@@ -65,7 +56,6 @@
       </view>
     </view>
 
-    <!-- 刻度标签（在轨道外部显示） -->
     <view v-if="props.marks && hasMarkLabels" class="ui-slider__labels" :style="labelsStyle">
       <view
         v-for="(mark, key) in normalizedMarks"

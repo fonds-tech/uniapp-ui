@@ -1,18 +1,14 @@
 <template>
   <view class="min-h-screen bg-[#F6F7F9]">
-    <!-- 顶部导航栏 -->
     <view class="fixed left-0 top-0 z-50 w-full bg-white/95 backdrop-blur-md" :style="{ paddingTop: `${safeAreaInsets?.top}px` }">
       <view class="flex h-[88rpx] items-center px-[32rpx]">
         <text class="text-[36rpx] font-bold text-slate-800">业务模板</text>
       </view>
     </view>
 
-    <!-- 占位区域 -->
     <view :style="{ height: `${safeAreaInsets?.top + 44}px` }" />
 
-    <!-- 模板列表 -->
     <view class="px-[32rpx] py-[32rpx] pb-[180rpx]">
-      <!-- 介绍卡片 -->
       <view class="mb-[40rpx] rounded-[32rpx] bg-gradient-to-br from-amber-500 to-orange-600 p-[40rpx] text-white">
         <view class="flex items-center mb-[20rpx]">
           <view class="i-lucide-sparkles text-[48rpx] mr-[16rpx]" />
@@ -21,7 +17,6 @@
         <text class="text-[28rpx] opacity-90 leading-relaxed"> 精选常用业务场景模板，助你快速搭建页面，提升开发效率 </text>
       </view>
 
-      <!-- 模板分类 -->
       <view v-for="category in templateCategories" :key="category.name" class="mb-[48rpx]">
         <view class="flex items-center mb-[24rpx]">
           <view class="h-[28rpx] w-[6rpx] rounded-full bg-amber-500 mr-[16rpx]" />
@@ -58,7 +53,6 @@
         </view>
       </view>
 
-      <!-- 更多模板提示 -->
       <view class="flex flex-col items-center py-[60rpx]">
         <view class="i-lucide-package text-[64rpx] text-gray-300 mb-[20rpx]" />
         <text class="text-[28rpx] text-gray-400 mb-[8rpx]">更多模板持续更新中</text>

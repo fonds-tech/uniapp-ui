@@ -42,8 +42,6 @@ export const checkboxGroupProps = {
    */
   modelValue: defaultProps("modelValue", { type: Array as PropType<unknown[]> }),
 
-  // ============ 数量限制 ============
-
   /**
    * 最大可选数量
    */
@@ -54,8 +52,6 @@ export const checkboxGroupProps = {
    */
   min: defaultProps("min", { type: [Number, String] }),
 
-  // ============ 布局 ============
-
   /**
    * 复选框之间的间距
    */
@@ -65,14 +61,10 @@ export const checkboxGroupProps = {
    */
   columns: defaultProps("columns", { type: [Number, String] }),
 
-  // ============ 状态 ============
-
   /**
    * 是否禁用
    */
   disabled: defaultProps("disabled", { type: Boolean }),
-
-  // ============ 尺寸与形状（继承给子组件） ============
 
   /**
    * 复选框图标大小（继承给子组件）
@@ -86,8 +78,6 @@ export const checkboxGroupProps = {
    * 是否圆形图标
    */
   round: defaultProps("round", { type: Boolean }),
-
-  // ============ 颜色配置 ============
 
   /**
    * 主色（选中状态的颜色，继承给子组件）
@@ -103,8 +93,6 @@ export const checkboxGroupProps = {
    * 选中的图标颜色（向后兼容别名）
    */
   checkedIconColor: defaultProps("checkedIconColor", { type: String }),
-
-  // ============ 图标配置 ============
 
   /**
    * 图标名称
@@ -130,8 +118,6 @@ export const checkboxGroupProps = {
    * 图标前缀
    */
   iconPrefix: defaultProps("iconPrefix", { type: String }),
-
-  // ============ 标签配置 ============
 
   /**
    * 标签位置
@@ -166,8 +152,6 @@ export const checkboxGroupProps = {
    * 选中的标签颜色
    */
   checkedLabelColor: defaultProps("checkedLabelColor", { type: String }),
-
-  // ============ 自定义样式 ============
 
   /**
    * 自定义类名

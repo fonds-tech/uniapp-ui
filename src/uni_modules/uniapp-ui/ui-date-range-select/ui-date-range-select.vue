@@ -1,8 +1,6 @@
 <template>
   <view class="ui-date-range-select" :class="[classs, props.customClass]" :style="[style]">
-    <!-- 触发区域 -->
     <view class="ui-date-range-select__trigger" :hover-class="hoverClass" :hover-stay-time="50">
-      <!-- 开始日期 -->
       <view class="ui-date-range-select__item ui-date-range-select__start" :class="{ 'is-active': activeType === 'start' && visible }" @click="handleClick('start')">
         <slot name="start" :text="startDisplayText" :value="startValue" :placeholder="props.startPlaceholder">
           <text v-if="startDisplayText" class="ui-date-range-select__text" :style="[textStyle]">{{ startDisplayText }}</text>
@@ -10,14 +8,12 @@
         </slot>
       </view>
 
-      <!-- 分隔符 -->
       <view class="ui-date-range-select__separator" @click="handleClick('start')">
         <slot name="separator">
           <text class="ui-date-range-select__separator-text" :style="[separatorStyle]">{{ props.separator }}</text>
         </slot>
       </view>
 
-      <!-- 结束日期 -->
       <view class="ui-date-range-select__item ui-date-range-select__end" :class="{ 'is-active': activeType === 'end' && visible }" @click="handleClick('end')">
         <slot name="end" :text="endDisplayText" :value="endValue" :placeholder="props.endPlaceholder">
           <text v-if="endDisplayText" class="ui-date-range-select__text" :style="[textStyle]">{{ endDisplayText }}</text>
@@ -25,7 +21,6 @@
         </slot>
       </view>
 
-      <!-- 右侧图标 -->
       <view v-if="showRightIcon" class="ui-date-range-select__icon" @click="handleClick('start')">
         <slot name="right-icon">
           <ui-icon :name="props.rightIcon" :size="props.rightIconSize" :color="props.rightIconColor" :weight="props.rightIconWeight" />
@@ -33,7 +28,6 @@
       </view>
     </view>
 
-    <!-- Popup 弹窗 -->
     <ui-popup
       :show="visible"
       :mode="props.mode"
@@ -59,7 +53,6 @@
               </slot>
             </view>
 
-            <!-- Tab 切换 -->
             <view class="ui-date-range-select__tabs">
               <view class="ui-date-range-select__tab" :class="{ 'is-active': activeType === 'start' }" @click="switchTab('start')">
                 <text class="ui-date-range-select__tab-text">{{ startTabText }}</text>
@@ -78,7 +71,6 @@
         </slot>
       </template>
 
-      <!-- Picker 内容（直接使用 picker-view） -->
       <view class="ui-date-range-select__picker">
         <picker-view :style="[viewStyle]" :value="pickerIndexes" :indicator-style="optionStyle" @change="onPickerChange">
           <picker-view-column v-for="(column, colIdx) in pickerColumns" :key="colIdx">
@@ -128,15 +120,12 @@ const visible = ref(false)
 const tempStartValue = ref<string>("")
 const tempEndValue = ref<string>("")
 
-// ==================== Picker 核心状态 ====================
 const currentYear = ref(new Date().getFullYear())
 const currentMonth = ref(new Date().getMonth() + 1)
 const currentDay = ref(new Date().getDate())
 const currentHour = ref(new Date().getHours())
 const currentMinute = ref(new Date().getMinutes())
 const currentSecond = ref(new Date().getSeconds())
-
-// ==================== 工具函数 ====================
 
 function pad(n: number): string {
   return padZero(n)
@@ -183,8 +172,6 @@ function parseDate(value: string | number | Date | null | undefined): { y: numbe
 function clamp(val: number, min: number, max: number): number {
   return Math.max(min, Math.min(max, val))
 }
-
-// ==================== 日期范围边界 ====================
 
 const minBound = computed(() => {
   // 选择结束日期时，最小日期不能早于开始日期
@@ -237,8 +224,6 @@ const maxBound = computed(() => {
   const y = new Date().getFullYear() + 10
   return { y, m: 12, d: 31, h: 23, mi: 59, s: 59 }
 })
-
-// ==================== 列数据生成 ====================
 
 function genOptions(start: number, end: number, type: DatePickerColumnType): DatePickerOption[] {
   const safeStart = Math.min(start, end)
@@ -374,8 +359,6 @@ function setCurrentValue(type: DatePickerColumnType, val: number) {
   }
 }
 
-// ==================== Picker 数据 ====================
-
 const pickerColumns = computed(() => {
   return props.columns.map((type) => {
     const col = columnMap[type]
@@ -392,8 +375,6 @@ const pickerIndexes = computed(() => {
     return idx >= 0 ? idx : 0
   })
 })
-
-// ==================== Picker 样式 ====================
 
 const viewStyle = computed(() => {
   const height = useUnitToPx(props.columnHeight) * +props.visibleColumnNum
@@ -420,8 +401,6 @@ const columnStyle = computed(() => {
     })
   }
 })
-
-// ==================== 初始化与边界调整 ====================
 
 function initFromValue(value: string) {
   const parsed = parseDate(value)
@@ -477,8 +456,6 @@ function getSelectedValues(): string[] {
   return props.columns.map((type) => pad(getCurrentValue(type)))
 }
 
-// ==================== Picker 事件 ====================
-
 interface PickerViewChangeEvent {
   detail: { value: number[] }
 }
@@ -522,8 +499,6 @@ function emitPickerChange() {
   }
   emits("change", changeData)
 }
-
-// ==================== 原有逻辑 ====================
 
 const isInteractive = computed(() => !props.disabled && !props.readonly)
 

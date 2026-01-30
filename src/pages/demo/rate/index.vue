@@ -55,7 +55,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 新增：未选中颜色 -->
     <demo-section title="未选中颜色">
       <demo-block :cols="2" :gap="32">
         <view class="rate-item">
@@ -86,7 +85,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 新增：图标间距 -->
     <demo-section title="图标间距">
       <demo-block :cols="3" :gap="24">
         <view class="rate-item">
@@ -104,7 +102,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 新增：图标粗细 -->
     <demo-section title="图标粗细">
       <demo-block :cols="2" :gap="32">
         <view class="rate-item">
@@ -131,7 +128,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 新增：禁用颜色 -->
     <demo-section title="禁用颜色">
       <demo-block :cols="2" :gap="32">
         <view class="rate-item">
@@ -152,7 +148,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 新增：事件处理 -->
     <demo-section title="事件处理">
       <demo-block direction="column" align="start" :gap="16">
         <ui-rate v-model="valueEvent" @change="onRateChange" />
@@ -160,7 +155,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 新增：自定义样式 -->
     <demo-section title="自定义样式">
       <demo-block :cols="2" :gap="32">
         <view class="rate-item">
@@ -174,7 +168,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 新增：综合示例 -->
     <demo-section title="综合示例">
       <demo-block direction="column" align="start" :gap="24">
         <view class="rate-demo">

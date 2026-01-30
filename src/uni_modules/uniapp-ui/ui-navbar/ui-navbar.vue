@@ -3,7 +3,6 @@
     <view class="ui-navbar__content" :style="[contentStyle]" :class="[contentClass]">
       <view class="ui-navbar__status-bar" :style="[statusBarStyle]" />
       <view class="ui-navbar__body" :style="[bodyStyle]">
-        <!-- 左侧区域 -->
         <view class="ui-navbar__left">
           <view v-if="slots.left">
             <slot name="left" />
@@ -17,7 +16,7 @@
             </view>
           </view>
         </view>
-        <!-- 标题区域（始终居中） -->
+
         <view v-if="props.title || slots.title" class="ui-navbar__title" :class="[titleClass]" :style="[titleStyle]" @click="onTitleClick">
           <slot name="title">
             <text class="ui-navbar__title__text">{{ props.title }}</text>
@@ -26,15 +25,15 @@
         <view v-else-if="slots.default" class="ui-navbar__default">
           <slot />
         </view>
-        <!-- 右侧区域 -->
+
         <view class="ui-navbar__right">
           <slot name="right" />
         </view>
       </view>
     </view>
-    <!-- 渐变监听触发区：独立于 placeholder，始终存在于文档流中 -->
+
     <view v-if="props.gradient && props.fixed && !isNumber(props.scrollTop)" class="ui-navbar__gradient-trigger" :style="[gradientTriggerStyle]" />
-    <!-- 占位元素 -->
+
     <view v-if="props.fixed && props.placeholder && !props.immersive" class="ui-navbar__placeholder" :style="[placeholderStyle]" />
   </view>
 </template>

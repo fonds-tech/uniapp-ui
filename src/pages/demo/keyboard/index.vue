@@ -39,7 +39,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 新增：隐藏遮罩 -->
     <demo-section title="隐藏遮罩">
       <demo-block direction="column" align="start" :gap="16">
         <text class="demo-text">通过 overlay 控制是否显示遮罩层</text>
@@ -51,7 +50,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 新增：点击遮罩关闭 -->
     <demo-section title="点击遮罩关闭">
       <demo-block direction="column" align="start" :gap="16">
         <text class="demo-text">通过 close-on-click-overlay 控制点击遮罩是否关闭</text>
@@ -63,7 +61,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 新增：隐藏顶部栏 -->
     <demo-section title="隐藏顶部栏">
       <demo-block direction="column" align="start" :gap="16">
         <text class="demo-text">通过 show-header 控制顶部栏显示</text>
@@ -75,7 +72,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 新增：自定义按钮 -->
     <demo-section title="自定义按钮">
       <demo-block direction="column" align="start" :gap="16">
         <text class="demo-text">自定义取消/确认按钮的文字、颜色、大小</text>
@@ -86,7 +82,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 新增：隐藏取消/确认按钮 -->
     <demo-section title="隐藏按钮">
       <demo-block direction="column" align="start" :gap="16">
         <text class="demo-text">通过 show-cancel/show-confirm 控制按钮显示</text>
@@ -98,7 +93,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 新增：自定义背景 -->
     <demo-section title="自定义背景">
       <demo-block direction="column" align="start" :gap="16">
         <text class="demo-text">通过 background 设置键盘背景色</text>
@@ -110,7 +104,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 新增：层级设置 -->
     <demo-section title="层级设置">
       <demo-block direction="column" align="start" :gap="16">
         <text class="demo-text">通过 z-index 设置键盘层级</text>
@@ -118,7 +111,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 新增：安全区域适配 -->
     <demo-section title="安全区域适配">
       <demo-block direction="column" align="start" :gap="16">
         <text class="demo-text">通过 safe-area-inset-bottom 适配底部安全区</text>
@@ -130,7 +122,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 新增：事件处理 -->
     <demo-section title="事件处理">
       <demo-block direction="column" align="start" :gap="16">
         <ui-cell title="测试输入" :value="value12 || '点击输入'" is-link @click="openKeyboard('events')" />
@@ -143,7 +134,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 新增：自定义样式 -->
     <demo-section title="自定义样式">
       <demo-block direction="column" :gap="16">
         <demo-block :cols="2" :gap="24">
@@ -153,7 +143,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 新增：综合示例 - 支付密码 -->
     <demo-section title="综合示例 - 支付密码">
       <demo-block direction="column" :gap="16">
         <view class="password-box">
@@ -165,7 +154,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 新增：综合示例 - 短信验证码 -->
     <demo-section title="综合示例 - 短信验证码">
       <demo-block direction="column" :gap="16">
         <view class="code-box">
@@ -177,7 +165,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 新增：综合示例 - 车牌号输入 -->
     <demo-section title="综合示例 - 车牌号输入">
       <demo-block direction="column" :gap="16">
         <view class="plate-box">
@@ -189,8 +176,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- Keyboard 组件 -->
-    <!-- 基础键盘 -->
     <ui-keyboard
       v-model:show="showKeyboard"
       :mode="keyboardMode"

@@ -16,7 +16,6 @@
       @close="emits('close', $event)"
       @closed="emits('closed', $event)"
     >
-      <!-- Header 插槽 -->
       <template #header>
         <slot name="header">
           <view v-if="props.showHeader" class="ui-picker__header">
@@ -39,7 +38,6 @@
         </slot>
       </template>
 
-      <!-- Panel 内容 -->
       <ui-picker-panel
         ref="panelRef"
         v-model="internalValue"
@@ -57,10 +55,8 @@
         @change="handlePanelChange"
       />
 
-      <!-- Footer 底部插槽 -->
       <template #footer>
         <slot name="footer" :confirm="onConfirm" :cancel="onCancel">
-          <!-- 默认无底部内容,用户可以自定义底部按钮 -->
         </slot>
       </template>
     </ui-popup>

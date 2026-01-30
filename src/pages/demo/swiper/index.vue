@@ -6,7 +6,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 新增：双向绑定 -->
     <demo-section title="双向绑定">
       <demo-block direction="column" align="start" :gap="16">
         <text class="demo-text">当前索引: {{ currentIndex }}</text>
@@ -25,7 +24,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 新增：隐藏指示器 -->
     <demo-section title="隐藏指示器">
       <demo-block direction="column">
         <ui-swiper :list="images" height="300rpx" :indicator="false" />
@@ -76,7 +74,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 新增：动画时长 -->
     <demo-section title="动画时长">
       <demo-block direction="column" align="start" :gap="16">
         <text class="demo-text">通过 duration 设置滑动动画时长</text>
@@ -89,7 +86,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 新增：缓动函数 -->
     <demo-section title="缓动函数">
       <demo-block direction="column" align="start" :gap="16">
         <text class="demo-text">easing-function: 指定切换缓动动画类型</text>
@@ -102,7 +98,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 新增：循环播放 -->
     <demo-section title="循环播放">
       <demo-block direction="column" align="start" :gap="16">
         <demo-block align="center" :gap="16">
@@ -113,7 +108,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 新增：禁止触摸 -->
     <demo-section title="禁止触摸">
       <demo-block direction="column" align="start" :gap="16">
         <demo-block align="center" :gap="16">
@@ -124,7 +118,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 新增：圆角设置 -->
     <demo-section title="圆角设置">
       <demo-block direction="column" align="start" :gap="16">
         <text class="demo-text">通过 radius 设置圆角大小</text>
@@ -137,7 +130,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 新增：前后露出 -->
     <demo-section title="前后露出">
       <demo-block direction="column" align="start" :gap="16">
         <text class="demo-text">通过 prev-gap/next-gap 露出前后项</text>
@@ -145,7 +137,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 新增：图片模式 -->
     <demo-section title="图片模式">
       <demo-block direction="column" align="start" :gap="16">
         <text class="demo-text">image-mode 设置图片裁剪、缩放模式</text>
@@ -158,7 +149,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 新增：事件处理 -->
     <demo-section title="事件处理">
       <demo-block direction="column" align="start" :gap="16">
         <text class="demo-text">{{ eventLog }}</text>
@@ -166,14 +156,12 @@
       </demo-block>
     </demo-section>
 
-    <!-- 新增：自定义样式 -->
     <demo-section title="自定义样式">
       <demo-block direction="column" :gap="16">
         <ui-swiper :list="images" height="300rpx" custom-class="my-swiper" :custom-style="{ boxShadow: '0 8rpx 32rpx rgba(0,0,0,0.15)' }" />
       </demo-block>
     </demo-section>
 
-    <!-- 新增：综合示例 - 商品轮播 -->
     <demo-section title="综合示例 - 商品轮播">
       <demo-block direction="column">
         <ui-swiper

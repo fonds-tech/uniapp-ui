@@ -37,21 +37,18 @@
       </demo-block>
     </demo-section>
 
-    <!-- 新增：样式定制 -->
     <demo-section title="标题描述样式">
       <demo-block>
         <ui-button @click="showTitleStyle = true">自定义标题样式</ui-button>
       </demo-block>
     </demo-section>
 
-    <!-- 新增：取消按钮样式 -->
     <demo-section title="取消按钮样式">
       <demo-block>
         <ui-button @click="showCancelStyle = true">自定义取消按钮</ui-button>
       </demo-block>
     </demo-section>
 
-    <!-- 新增：圆角和高度 -->
     <demo-section title="面板外观">
       <demo-block :cols="2" :gap="24">
         <ui-button @click="showBorderRadius = true">自定义圆角</ui-button>
@@ -59,7 +56,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 新增：遮罩层配置 -->
     <demo-section title="遮罩层配置">
       <demo-block :cols="2" :gap="24">
         <ui-button @click="showClickOverlay = true">点击遮罩关闭</ui-button>
@@ -67,21 +63,18 @@
       </demo-block>
     </demo-section>
 
-    <!-- 新增：异步关闭 -->
     <demo-section title="异步关闭">
       <demo-block>
         <ui-button @click="showAsync = true">异步关闭</ui-button>
       </demo-block>
     </demo-section>
 
-    <!-- 新增：事件处理 -->
     <demo-section title="事件处理">
       <demo-block>
         <ui-button type="primary" @click="showEvent = true">监听事件</ui-button>
       </demo-block>
     </demo-section>
 
-    <!-- 新增：使用插槽 -->
     <demo-section title="自定义插槽">
       <demo-block :cols="2" :gap="24">
         <ui-button type="primary" @click="showHeaderSlot = true">自定义头部</ui-button>
@@ -92,29 +85,20 @@
       </demo-block>
     </demo-section>
 
-    <!-- ActionSheet Components -->
-    <!-- 基础用法 -->
     <ui-action-sheet v-model:show="show1" :actions="actions1" @select="onSelect" />
 
-    <!-- 展示取消按钮 -->
     <ui-action-sheet v-model:show="show2" :actions="actions1" cancel-text="取消" @cancel="onCancel" />
 
-    <!-- 展示描述信息 -->
     <ui-action-sheet v-model:show="show3" :actions="actions1" description="这是一段描述信息" cancel-text="取消" />
 
-    <!-- 选项描述 -->
     <ui-action-sheet v-model:show="showItemDesc" :actions="actionsWithDesc" cancel-text="取消" />
 
-    <!-- 选项状态 -->
     <ui-action-sheet v-model:show="show4" :actions="actions2" cancel-text="取消" />
 
-    <!-- 带图标选项 -->
     <ui-action-sheet v-model:show="showIcon" :actions="actionsWithIcon" cancel-text="取消" />
 
-    <!-- 自定义标题 -->
     <ui-action-sheet v-model:show="show5" :actions="actions1" title="标题" cancel-text="取消" />
 
-    <!-- 自定义标题样式 -->
     <ui-action-sheet
       v-model:show="showTitleStyle"
       :actions="actions1"
@@ -128,7 +112,6 @@
       cancel-text="取消"
     />
 
-    <!-- 自定义取消按钮样式 -->
     <ui-action-sheet
       v-model:show="showCancelStyle"
       :actions="actions1"
@@ -140,22 +123,16 @@
       cancel-background="#fff5f5"
     />
 
-    <!-- 自定义圆角 -->
     <ui-action-sheet v-model:show="showBorderRadius" :actions="actions1" title="自定义圆角" :border-radius="32" cancel-text="取消" />
 
-    <!-- 限制最大高度 -->
     <ui-action-sheet v-model:show="showMaxHeight" :actions="manyActions" title="最大高度限制" max-height="400rpx" cancel-text="取消" />
 
-    <!-- 点击遮罩关闭 -->
     <ui-action-sheet v-model:show="showClickOverlay" :actions="actions1" title="点击遮罩关闭" :close-on-click-overlay="true" @click-overlay="onClickOverlay" />
 
-    <!-- 无遮罩层 -->
     <ui-action-sheet v-model:show="showNoOverlay" :actions="actions1" title="无遮罩层" :overlay="false" cancel-text="取消" />
 
-    <!-- 异步关闭 -->
     <ui-action-sheet v-model:show="showAsync" :actions="actions1" title="异步关闭" :before-close="beforeClose" cancel-text="取消" />
 
-    <!-- 事件处理 -->
     <ui-action-sheet
       v-model:show="showEvent"
       :actions="actions1"
@@ -169,7 +146,6 @@
       @cancel="onCancel"
     />
 
-    <!-- 自定义头部插槽 -->
     <ui-action-sheet v-model:show="showHeaderSlot" :actions="actions1" cancel-text="取消">
       <template #header>
         <view class="custom-header">
@@ -180,7 +156,6 @@
       </template>
     </ui-action-sheet>
 
-    <!-- 自定义内容插槽 -->
     <ui-action-sheet v-model:show="showDefaultSlot" title="自定义内容" cancel-text="取消">
       <view class="custom-content">
         <view v-for="item in customItems" :key="item.id" class="custom-content__item" @click="onCustomSelect(item)">
@@ -190,7 +165,6 @@
       </view>
     </ui-action-sheet>
 
-    <!-- 自定义底部插槽 -->
     <ui-action-sheet v-model:show="showFooterSlot" :actions="actions1" title="自定义底部">
       <template #footer>
         <view class="custom-footer">

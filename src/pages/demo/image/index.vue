@@ -75,7 +75,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 新增：块级元素 -->
     <demo-section title="块级元素">
       <demo-block direction="column" :gap="16">
         <ui-image src="https://picsum.photos/600/200" height="200rpx" block radius="8rpx" />
@@ -132,7 +131,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 新增：懒加载 -->
     <demo-section title="懒加载">
       <demo-block direction="column" align="start" :gap="16">
         <demo-block :cols="3" :gap="24">
@@ -144,7 +142,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 新增：拖动配置 -->
     <demo-section title="拖动配置">
       <demo-block :cols="2" :gap="24">
         <view class="image-item">
@@ -158,7 +155,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 新增：webp 格式 -->
     <demo-section title="Webp 格式">
       <demo-block direction="column" align="start" :gap="16">
         <ui-image src="https://www.gstatic.com/webp/gallery/1.webp" width="300rpx" height="200rpx" webp radius="8rpx" />
@@ -166,7 +162,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 新增：长按菜单 -->
     <demo-section title="长按菜单">
       <demo-block direction="column" align="start" :gap="16">
         <ui-image src="https://picsum.photos/225" width="300rpx" height="200rpx" show-menu-by-longpress radius="8rpx" />
@@ -174,7 +169,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 新增：事件处理 -->
     <demo-section title="事件处理">
       <demo-block direction="column" align="start" :gap="16">
         <demo-block :cols="2" :gap="24">
@@ -191,7 +185,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 新增：自定义样式 -->
     <demo-section title="自定义样式">
       <demo-block :cols="2" :gap="24">
         <view class="image-item">

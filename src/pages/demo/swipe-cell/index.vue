@@ -1,6 +1,5 @@
 <template>
   <demo-page>
-    <!-- 基础用法 -->
     <demo-section title="基础用法" desc="左滑显示操作按钮">
       <ui-swipe-cell @open="onOpen" @close="onClose">
         <ui-cell title="单元格" value="内容" :border="false" />
@@ -10,7 +9,6 @@
       </ui-swipe-cell>
     </demo-section>
 
-    <!-- 左右滑动 -->
     <demo-section title="左右滑动" desc="同时设置左右操作按钮">
       <ui-swipe-cell>
         <ui-cell title="单元格" value="左右滑动试试" :border="false" />
@@ -24,7 +22,6 @@
       </ui-swipe-cell>
     </demo-section>
 
-    <!-- 自定义内容 -->
     <demo-section title="自定义内容" desc="自定义单元格和操作按钮样式">
       <ui-swipe-cell>
         <view class="custom-cell">
@@ -41,7 +38,6 @@
       </ui-swipe-cell>
     </demo-section>
 
-    <!-- 异步关闭 -->
     <demo-section title="异步关闭" desc="通过 beforeClose 控制关闭行为">
       <ui-swipe-cell :before-close="beforeClose">
         <ui-cell title="异步关闭" value="点击删除按钮" :border="false" />
@@ -51,7 +47,6 @@
       </ui-swipe-cell>
     </demo-section>
 
-    <!-- 禁用滑动 -->
     <demo-section title="禁用滑动" desc="设置 disabled 禁用滑动">
       <ui-swipe-cell disabled>
         <ui-cell title="禁用滑动" value="无法滑动" :border="false" />
@@ -61,7 +56,6 @@
       </ui-swipe-cell>
     </demo-section>
 
-    <!-- 列表场景 -->
     <demo-section title="列表场景" desc="在列表中使用滑动单元格">
       <view class="list-container">
         <ui-swipe-cell v-for="(item, index) in listData" :key="item.id" :name="item.id" @click="onItemClick">
@@ -74,7 +68,6 @@
       </view>
     </demo-section>
 
-    <!-- 事件回调展示 -->
     <demo-section title="事件回调" desc="展示各种事件的触发情况">
       <ui-swipe-cell name="event-demo" @open="onEventOpen" @close="onEventClose" @click="onEventClick">
         <ui-cell title="事件演示" :value="eventStatus" :border="false" />

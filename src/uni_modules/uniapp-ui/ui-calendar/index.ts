@@ -2,8 +2,6 @@ import type Calendar from "./ui-calendar.vue"
 import type { PropType, CSSProperties, ExtractPropTypes } from "vue"
 import { buildDefaultProps } from "../utils/props"
 
-// ==================== 类型定义 ====================
-
 /**
  * 日历选择模式
  * - single: 单选模式
@@ -82,8 +80,6 @@ export interface CalendarConfirmData {
   date: Date | Date[] | { start: Date; end: Date }
   dateStr: string | string[] | { start: string; end: string }
 }
-
-// ==================== Props 定义 ====================
 
 const defaultProps = buildDefaultProps("calendar", {
   show: false,
@@ -232,7 +228,6 @@ export const calendarProps = {
    */
   customClass: defaultProps("customClass", { type: String }),
 }
-// ==================== Emits 定义 ====================
 
 export const calendarEmits = {
   /** 显示状态变化 */
@@ -256,8 +251,6 @@ export const calendarEmits = {
   /** 超过最大可选天数时触发 */
   overRange: () => true,
 }
-
-// ==================== 类型导出 ====================
 
 export type CalendarProps = ExtractPropTypes<typeof calendarProps>
 export type CalendarEmits = typeof calendarEmits

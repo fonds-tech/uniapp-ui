@@ -62,7 +62,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 新增：加载配置 -->
     <demo-section title="加载配置">
       <demo-block :cols="2">
         <ui-button type="primary" loading loading-text="加载中...">加载文字</ui-button>
@@ -90,7 +89,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 新增：自定义尺寸 -->
     <demo-section title="自定义尺寸">
       <demo-block :cols="1">
         <ui-button type="primary" width="200rpx">固定宽度</ui-button>
@@ -129,7 +127,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 新增：图标样式 -->
     <demo-section title="图标样式">
       <demo-block :cols="2">
         <ui-button type="primary" icon="star" icon-size="36rpx">大图标</ui-button>
@@ -141,7 +138,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 新增：文字样式 -->
     <demo-section title="文字样式">
       <demo-block :cols="2">
         <ui-button type="primary" text-size="32rpx">大号文字</ui-button>
@@ -168,7 +164,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 新增：边框样式 -->
     <demo-section title="边框样式">
       <demo-block :cols="2">
         <ui-button type="default" border-radius="8rpx">小圆角</ui-button>
@@ -180,7 +175,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 新增：阴影效果 -->
     <demo-section title="阴影效果">
       <demo-block :cols="2">
         <ui-button type="primary" shadow="0 4rpx 12rpx rgba(25, 137, 250, 0.4)">蓝色阴影</ui-button>
@@ -188,7 +182,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 新增：边距配置 -->
     <demo-section title="边距配置">
       <demo-block>
         <ui-button type="primary" margin-right="24rpx">右边距</ui-button>
@@ -196,7 +189,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 新增：节流配置 -->
     <demo-section title="节流配置">
       <demo-block direction="column" align="start" :gap="16">
         <ui-button type="primary" :throttle="1000" @click="onThrottleClick">1秒节流（点击试试）</ui-button>
@@ -204,7 +196,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 新增：事件处理 -->
     <demo-section title="事件处理">
       <demo-block direction="column" align="start" :gap="16">
         <ui-button type="primary" @click="onButtonClick">点击触发事件</ui-button>
@@ -212,7 +203,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 新增：自定义样式 -->
     <demo-section title="自定义样式">
       <demo-block :cols="2">
         <ui-button

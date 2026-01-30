@@ -29,7 +29,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- Notify Component -->
     <ui-notify ref="notifyRef" />
   </demo-page>
 </template>

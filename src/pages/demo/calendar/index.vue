@@ -1,6 +1,5 @@
 <template>
   <demo-page>
-    <!-- 单选模式 -->
     <demo-section title="单选模式">
       <demo-block>
         <ui-cell title="选择日期" :value="date1 || '请选择'" is-link @click="show1 = true" />
@@ -8,7 +7,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 多选模式 -->
     <demo-section title="多选模式">
       <demo-block>
         <ui-cell title="选择多个日期" :value="date2 || '请选择'" is-link @click="show2 = true" />
@@ -16,7 +14,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 范围选择 -->
     <demo-section title="范围选择">
       <demo-block>
         <ui-cell title="选择日期范围" :value="date3 || '请选择'" is-link @click="show3 = true" />
@@ -24,7 +21,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 限制日期范围 -->
     <demo-section title="限制日期范围">
       <demo-block>
         <ui-cell title="限制可选范围" :value="date4 || '请选择'" is-link @click="show4 = true" />
@@ -32,7 +28,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 自定义日期格式化 -->
     <demo-section title="自定义日期格式化">
       <demo-block>
         <ui-cell title="标记特殊日期" :value="date5 || '请选择'" is-link @click="show5 = true" />
@@ -40,7 +35,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 自定义主题色 -->
     <demo-section title="自定义主题色">
       <demo-block>
         <ui-cell title="自定义颜色" :value="date6 || '请选择'" is-link @click="show6 = true" />
@@ -48,7 +42,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 范围选择最大天数限制 -->
     <demo-section title="最大可选天数">
       <demo-block>
         <ui-cell title="最多选择 7 天" :value="date7 || '请选择'" is-link @click="show7 = true" />
@@ -56,7 +49,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 标记日期 -->
     <demo-section title="标记日期">
       <demo-block>
         <ui-cell title="带标记点" :value="date8 || '请选择'" is-link @click="show8 = true" />
@@ -64,7 +56,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 内嵌模式 -->
     <demo-section title="内嵌模式">
       <demo-block>
         <ui-calendar :poppable="false" :show-confirm="false" @select="onSelect9" />
@@ -74,7 +65,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 显示月份水印 -->
     <demo-section title="月份水印">
       <demo-block>
         <ui-cell title="显示月份水印" :value="date10 || '请选择'" is-link @click="show10 = true" />

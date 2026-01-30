@@ -3,7 +3,7 @@
     <scroll-view class="ui-tabs__scroll" :scroll-x="scrollable" enable-flex :scroll-with-animation="inited" :scroll-left="scrollLeft">
       <view class="ui-tabs__list" :style="[listStyle]">
         <slot />
-        <!-- 外部指示器 -->
+
         <view v-if="props.showIndicator" class="ui-tabs__indicator" :style="indicatorStyle" />
       </view>
     </scroll-view>

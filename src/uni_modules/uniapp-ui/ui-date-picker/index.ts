@@ -2,8 +2,6 @@ import type DatePicker from "./ui-date-picker.vue"
 import type { PropType, ExtractPropTypes } from "vue"
 import { buildDefaultProps } from "../utils/props"
 
-// ==================== 通用类型定义 ====================
-
 /**
  * DatePicker 列类型
  */
@@ -35,8 +33,6 @@ export interface DatePickerChangeData {
   selectedValues: string[]
   selectedIndexes: number[]
 }
-
-// ==================== 组件定义 (ui-date-picker) ====================
 
 // Popup 模式类型
 export type PopupMode = "top" | "bottom" | "left" | "right" | "center"
@@ -81,7 +77,6 @@ const defaultProps = buildDefaultProps("date-picker", {
  * 完整的日期选择器,集成 ui-popup 和 picker-view
  */
 export const datePickerProps = {
-  // ===== Popup 相关 props =====
   /**
    * 是否显示弹窗
    */
@@ -119,7 +114,6 @@ export const datePickerProps = {
    */
   safeAreaInsetBottom: defaultProps("safeAreaInsetBottom", { type: Boolean }),
 
-  // ===== Header 相关 props =====
   /**
    * 是否显示头部
    */
@@ -137,7 +131,6 @@ export const datePickerProps = {
    */
   confirmText: defaultProps("confirmText", { type: String }),
 
-  // ===== Picker 相关 props =====
   /**
    * 绑定日期
    */

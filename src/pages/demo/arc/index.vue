@@ -1,20 +1,17 @@
 <template>
   <demo-page>
-    <!-- 基础用法 -->
     <demo-section title="基础用法">
       <demo-block class="arc-demo">
         <ui-arc background="#1989fa" />
       </demo-block>
     </demo-section>
 
-    <!-- 自定义高度 -->
     <demo-section title="自定义高度">
       <demo-block class="arc-demo">
         <ui-arc height="200rpx" background="#07c160" />
       </demo-block>
     </demo-section>
 
-    <!-- 曲率控制 -->
     <demo-section title="曲率控制">
       <demo-block direction="column" :gap="20">
         <view class="arc-item">
@@ -38,7 +35,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 弧形方向 -->
     <demo-section title="弧形方向">
       <demo-block direction="column" :gap="20">
         <view class="arc-item">
@@ -56,14 +52,12 @@
       </demo-block>
     </demo-section>
 
-    <!-- 渐变背景 -->
     <demo-section title="渐变背景">
       <demo-block class="arc-demo">
         <ui-arc height="180rpx" background="linear-gradient(135deg, #667eea 0%, #764ba2 100%)" />
       </demo-block>
     </demo-section>
 
-    <!-- 内容嵌套 -->
     <demo-section title="内容嵌套">
       <demo-block class="arc-combined">
         <ui-arc height="200rpx" background="linear-gradient(135deg, #ee0a24 0%, #ff6b6b 100%)">
@@ -75,7 +69,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 页面头部示例 -->
     <demo-section title="页面头部示例">
       <demo-block class="arc-header-demo">
         <ui-arc height="240rpx" :curvature="150" background="linear-gradient(135deg, #1890ff 0%, #096dd9 100%)">

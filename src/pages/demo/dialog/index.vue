@@ -1,6 +1,5 @@
 <template>
   <demo-page>
-    <!-- 用于函数式调用的全局 Dialog（不显示，仅用于 useDialog 调用） -->
     <ui-dialog ref="globalDialogRef" />
 
     <demo-section title="基础用法">
@@ -29,7 +28,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 新增：内容对齐方式 -->
     <demo-section title="内容对齐">
       <demo-block :cols="3" :gap="16">
         <ui-button size="small" @click="showAlignDialog('left')">左对齐</ui-button>
@@ -38,7 +36,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 新增：按钮样式定制 -->
     <demo-section title="按钮样式">
       <demo-block :cols="2" :gap="24">
         <ui-button @click="showCustomButtonDialog">自定义按钮</ui-button>
@@ -46,7 +43,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 新增：遮罩层配置 -->
     <demo-section title="遮罩层配置">
       <demo-block :cols="2" :gap="24">
         <ui-button @click="showClickOverlayDialog">点击遮罩关闭</ui-button>
@@ -54,7 +50,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 新增：样式定制 -->
     <demo-section title="样式定制">
       <demo-block :cols="2" :gap="24">
         <ui-button @click="showCustomStyleDialog">自定义样式</ui-button>
@@ -68,7 +63,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 新增：使用插槽 -->
     <demo-section title="自定义插槽">
       <demo-block :cols="2" :gap="24">
         <ui-button type="primary" @click="showSlotDialog = true">自定义内容</ui-button>
@@ -76,17 +70,14 @@
       </demo-block>
     </demo-section>
 
-    <!-- 新增：事件处理 -->
     <demo-section title="事件处理">
       <demo-block>
         <ui-button type="primary" @click="showEventDialog = true">监听事件</ui-button>
       </demo-block>
     </demo-section>
 
-    <!-- Dialog Component 基础 -->
     <ui-dialog v-model:show="showComponentDialog" title="标题" content="这是通过组件方式调用的对话框" show-cancel-button />
 
-    <!-- Dialog 自定义内容插槽 -->
     <ui-dialog v-model:show="showSlotDialog" title="自定义内容">
       <view class="custom-content">
         <ui-icon name="info" size="80rpx" color="primary" />
@@ -95,7 +86,6 @@
       </view>
     </ui-dialog>
 
-    <!-- Dialog 自定义底部插槽 -->
     <ui-dialog v-model:show="showFooterSlotDialog" title="自定义底部">
       <text>这是弹窗内容</text>
       <template #footer>
@@ -107,7 +97,6 @@
       </template>
     </ui-dialog>
 
-    <!-- Dialog 事件处理 -->
     <ui-dialog
       v-model:show="showEventDialog"
       title="事件监听"

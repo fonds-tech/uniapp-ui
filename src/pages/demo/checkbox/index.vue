@@ -2,7 +2,6 @@
   <demo-page>
     <demo-section title="Checkbox 复选框" desc="复选与复选组全部配置示例" :card="false" />
 
-    <!-- ==================== 基础用法 ==================== -->
     <demo-section title="基础用法">
       <demo-block direction="column">
         <ui-checkbox-group v-model="value1">
@@ -14,7 +13,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- ==================== 外观样式 ==================== -->
     <demo-section title="外观样式">
       <ui-text size="small" color="secondary" class="mb-8">形状对比</ui-text>
       <demo-block :cols="2" :gap="32">
@@ -143,7 +141,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- ==================== 状态与限制 ==================== -->
     <demo-section title="状态与限制">
       <ui-text size="small" color="secondary" class="mb-8">禁用与只读</ui-text>
       <demo-block :cols="2" :gap="32">
@@ -227,7 +224,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- ==================== 标签与布局 ==================== -->
     <demo-section title="标签与布局">
       <ui-text size="small" color="secondary" class="mb-8">标签配置</ui-text>
       <demo-block direction="column" align="start" :gap="24">
@@ -283,7 +279,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- ==================== 全选与高级应用 ==================== -->
     <demo-section title="全选与高级应用">
       <ui-text size="small" color="secondary" class="mb-8">全选与不确定状态</ui-text>
       <demo-block direction="column" :gap="16">
@@ -385,17 +380,14 @@ definePage({
 
 const toast = useToast()
 
-// ==================== 形状对比 ====================
 const shapeDot = ref(true)
 const shapeIcon = ref(true)
 
-// ==================== 形状 × 圆角 ====================
 const dotSquare = ref(true)
 const dotRound = ref(true)
 const iconSquare = ref(true)
 const iconRound = ref(true)
 
-// ==================== 形状 × 尺寸 ====================
 const dotSmall = ref(true)
 const dotMedium = ref(true)
 const dotLarge = ref(true)
@@ -403,14 +395,12 @@ const iconSmall = ref(true)
 const iconMedium = ref(true)
 const iconLarge = ref(true)
 
-// ==================== 勾选图标尺寸对比 ====================
 const iconXs = ref(true)
 const iconSm = ref(true)
 const iconMd = ref(true)
 const iconLg = ref(true)
 const iconXl = ref(true)
 
-// ==================== 形状 × 颜色 ====================
 const dotRed = ref(true)
 const dotGreen = ref(true)
 const dotPurple = ref(true)
@@ -418,13 +408,11 @@ const iconRed = ref(true)
 const iconGreen = ref(true)
 const iconPurple = ref(true)
 
-// ==================== 图标边框配置 ====================
 const borderColor1 = ref(true)
 const borderColor2 = ref(true)
 const borderRadius1 = ref(true)
 const borderRadius2 = ref(true)
 
-// ==================== 标签配置 ====================
 const labelSize1 = ref(true)
 const labelSize2 = ref(true)
 const labelColor1 = ref(true)
@@ -432,17 +420,14 @@ const labelWeight1 = ref(true)
 const labelGap1 = ref(true)
 const labelCheckedColor = ref(true)
 
-// ==================== 标签位置 ====================
 const labelPosRight = ref(true)
 const labelPosLeft = ref(true)
 const labelPosRightIcon = ref(true)
 const labelPosLeftIcon = ref(true)
 
-// ==================== 禁用标签点击 ====================
 const labelDisabledDot = ref(false)
 const labelDisabledIcon = ref(false)
 
-// ==================== 复选框组 ====================
 const groupValue = ref(["a"])
 const maxValue = ref(["a"])
 const minValue = ref(["a"])
@@ -453,11 +438,9 @@ function onGroupChange(value: string[]) {
   toast.text(`选中: ${value.join(", ") || "无"}`)
 }
 
-// ==================== 自定义插槽 ====================
 const slotIcon = ref(true)
 const slotDefault = ref(true)
 
-// ==================== 事件处理 ====================
 const eventCheck = ref(false)
 const eventLog = ref("点击复选框查看事件")
 
@@ -469,10 +452,8 @@ function onCheckboxChange(value: boolean) {
   eventLog.value = `触发了 change 事件，值: ${value}`
 }
 
-// ==================== 自定义样式 ====================
 const customStyleCheck = ref(false)
 
-// ==================== CheckboxGroup: 基础示例 ====================
 const value1 = ref(["a"])
 const value2 = ref(["1", "2"])
 const value3 = ref(["a", "c"])
@@ -486,7 +467,6 @@ const value9 = ref(["1"])
 const shapeValueDot = ref(["a"])
 const shapeValueIcon = ref(["a"])
 
-// ==================== 全选与不确定状态 ====================
 const ALL_ITEMS = ["apple", "banana", "orange", "grape"]
 const selectAllChecked = ref(false)
 const selectedItems = ref(["apple"])
@@ -504,7 +484,6 @@ function onGroupChangeAll(value: string[]) {
   selectAllChecked.value = value.length === ALL_ITEMS.length
 }
 
-// ==================== 不确定状态 × 形状 (dot) ====================
 const DOT_ITEMS = ["a", "b", "c"]
 const selectAllDot = ref(false)
 const selectedDotItems = ref(["a"])
@@ -522,7 +501,6 @@ function onDotGroupChange(value: string[]) {
   selectAllDot.value = value.length === DOT_ITEMS.length
 }
 
-// ==================== 不确定状态 × 形状 (icon) ====================
 const ICON_ITEMS = ["a", "b", "c"]
 const selectAllIcon = ref(false)
 const selectedIconItems = ref(["a"])
@@ -540,7 +518,6 @@ function onIconGroupChange(value: string[]) {
   selectAllIcon.value = value.length === ICON_ITEMS.length
 }
 
-// ==================== 不确定状态 × 颜色 (红) ====================
 const RED_ITEMS = ["a", "b", "c"]
 const selectAllRed = ref(false)
 const selectedRedItems = ref(["a"])
@@ -558,7 +535,6 @@ function onRedGroupChange(value: string[]) {
   selectAllRed.value = value.length === RED_ITEMS.length
 }
 
-// ==================== 不确定状态 × 颜色 (绿) ====================
 const GREEN_ITEMS = ["a", "b", "c"]
 const selectAllGreen = ref(false)
 const selectedGreenItems = ref(["a"])
@@ -576,7 +552,6 @@ function onGreenGroupChange(value: string[]) {
   selectAllGreen.value = value.length === GREEN_ITEMS.length
 }
 
-// ==================== 事件监听 ====================
 const eventValue = ref(["a"])
 const groupEventLog = ref("点击复选框查看事件")
 

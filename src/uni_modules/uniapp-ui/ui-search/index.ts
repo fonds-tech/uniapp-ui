@@ -38,7 +38,6 @@ const defaultProps = buildDefaultProps("search", {
 })
 
 export const searchProps = {
-  // ==================== 基础属性 ====================
   /** 绑定值 */
   modelValue: defaultProps("modelValue", { type: String }),
   /** 占位文字 */
@@ -54,7 +53,6 @@ export const searchProps = {
   /** 是否显示清除按钮（兼容历史 clearabled） */
   clearabled: defaultProps("clearabled", { type: Boolean }),
 
-  // ==================== 尺寸与布局 ====================
   /** 输入框高度，支持 rpx/px 单位 */
   height: defaultProps("height", { type: [Number, String] }),
   /** 外边距 */
@@ -64,7 +62,6 @@ export const searchProps = {
   /** 圆角值，覆盖默认圆角 */
   radius: defaultProps("radius", { type: [Number, String] }),
 
-  // ==================== 文字样式 ====================
   /** 输入文字颜色 */
   color: defaultProps("color", { type: String }),
   /** 输入文字大小 */
@@ -74,13 +71,11 @@ export const searchProps = {
   /** 输入框内容水平对齐方式 */
   inputAlign: defaultProps("inputAlign", { type: String, validator: (v: string) => ["left", "center", "right"].includes(v) }),
 
-  // ==================== 外观样式 ====================
   /** 背景颜色 */
   background: defaultProps("background", { type: String }),
   /** 边框样式，如 "1px solid #eee" */
   border: defaultProps("border", { type: String }),
 
-  // ==================== 搜索图标 ====================
   /** 搜索图标名称 */
   icon: defaultProps("icon", { type: String }),
   /** 搜索图标大小（移动端建议 20px 以上） */
@@ -90,7 +85,6 @@ export const searchProps = {
   /** 搜索图标粗细 */
   iconWeight: defaultProps("iconWeight", { type: String }),
 
-  // ==================== 清除图标 ====================
   /** 清除图标大小 */
   clearSize: defaultProps("clearSize", { type: [Number, String] }),
   /** 清除图标颜色 */
@@ -98,7 +92,6 @@ export const searchProps = {
   /** 清除图标粗细 */
   clearWeight: defaultProps("clearWeight", { type: String }),
 
-  // ==================== 右侧操作按钮 ====================
   /** 是否显示右侧操作按钮 */
   action: defaultProps("action", { type: Boolean }),
   /** 右侧操作按钮文字 */
@@ -110,7 +103,6 @@ export const searchProps = {
   /** 右侧操作按钮文字粗细 */
   actionWeight: defaultProps("actionWeight", { type: String }),
 
-  // ==================== 自定义样式 ====================
   /** 自定义输入框样式 */
   inputStyle: defaultProps("inputStyle", { type: [String, Object] as PropType<string | CSSProperties> }),
   /** 自定义类名 */

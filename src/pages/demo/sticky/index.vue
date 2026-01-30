@@ -79,7 +79,6 @@
       </ui-sticky>
     </view>
 
-    <!-- Content for scrolling -->
     <demo-section title="内容滚动演示" desc="向下滚动以查看上方元素的吸顶效果" />
     <view class="content-list">
       <view v-for="i in 10" :key="i" class="content-card">

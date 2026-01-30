@@ -16,7 +16,6 @@
       @close="emits('close', $event)"
       @closed="emits('closed', $event)"
     >
-      <!-- Header 插槽 -->
       <template #header>
         <slot name="header">
           <view v-if="props.showHeader" class="ui-date-picker__header">
@@ -39,7 +38,6 @@
         </slot>
       </template>
 
-      <!-- Picker 内容 -->
       <view class="ui-date-picker__options">
         <picker-view :style="[viewStyle]" :value="pickerIndexes" :indicator-style="optionStyle" @change="onPickerChange">
           <picker-view-column v-for="(column, colIdx) in pickerColumns" :key="colIdx">
@@ -56,7 +54,6 @@
         </picker-view>
       </view>
 
-      <!-- Footer 底部插槽 -->
       <template #footer>
         <slot name="footer" :confirm="onConfirm" :cancel="onCancel" />
       </template>
@@ -76,7 +73,6 @@ defineOptions({ name: "ui-date-picker" })
 
 const props = defineProps(datePickerProps)
 const emits = defineEmits(datePickerEmits)
-// ==================== 核心状态 ====================
 
 // 当前选中的日期各部分值 (year, month, day, hour, minute, second)
 // 使用独立的 ref 避免对象深层响应式导致的问题
@@ -86,8 +82,6 @@ const currentDay = ref(new Date().getDate())
 const currentHour = ref(new Date().getHours())
 const currentMinute = ref(new Date().getMinutes())
 const currentSecond = ref(new Date().getSeconds())
-
-// ==================== 工具函数 ====================
 
 /**
  * 补零
@@ -144,8 +138,6 @@ function parseDate(value: string | number | Date | null | undefined): { y: numbe
   return { y: date.getFullYear(), m: date.getMonth() + 1, d: date.getDate(), h: date.getHours(), mi: date.getMinutes(), s: date.getSeconds() }
 }
 
-// ==================== 日期范围 ====================
-
 const minBound = computed(() => {
   if (props.minDate) {
     return parseDate(props.minDate)
@@ -168,8 +160,6 @@ const maxBound = computed(() => {
 function clamp(val: number, min: number, max: number): number {
   return Math.max(min, Math.min(max, val))
 }
-
-// ==================== 列数据计算 ====================
 
 /**
  * 生成列选项
@@ -325,8 +315,6 @@ function setCurrentValue(type: DatePickerColumnType, val: number) {
   }
 }
 
-// ==================== Picker 数据 ====================
-
 // picker-view 的列数据
 const pickerColumns = computed(() => {
   return props.columns.map((type) => {
@@ -345,8 +333,6 @@ const pickerIndexes = computed(() => {
     return idx >= 0 ? idx : 0
   })
 })
-
-// ==================== 样式 ====================
 
 const viewStyle = computed(() => {
   const height = useUnitToPx(props.columnHeight) * +props.visibleColumnNum
@@ -374,8 +360,6 @@ const columnStyle = computed(() => {
     })
   }
 })
-
-// ==================== 初始化 ====================
 
 function initFromValue() {
   const parsed = parseDate(props.modelValue)
@@ -435,8 +419,6 @@ function adjustToBounds() {
   const maxS = isMaxYear && isMaxMonth && isMaxDay && isMaxHour && isMaxMinute ? maxBound.value.s : 59
   currentSecond.value = clamp(currentSecond.value, minS, maxS)
 }
-
-// ==================== 事件处理 ====================
 
 function handleUpdateShow(show: boolean) {
   emits("update:show", show)
@@ -514,8 +496,6 @@ function onConfirm() {
   emits("update:show", false)
 }
 
-// ==================== Watch ====================
-
 // 监听 modelValue 变化
 watch(
   () => props.modelValue,
@@ -534,8 +514,6 @@ watch(
     }
   },
 )
-
-// ==================== Expose ====================
 
 defineExpose({
   name: "ui-date-picker",

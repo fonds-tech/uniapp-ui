@@ -131,7 +131,6 @@ function getAdjustedWeeks(firstDayOfWeek: number): string[] {
 export function useCalendar(options: UseCalendarOptions = {}): UseCalendarReturn {
   const { mode = "single", defaultDate, defaultSelectedDates = [], defaultRange, markedDates = [], minDate, maxDate, disabledDate, firstDayOfWeek = 0 } = options
 
-  // === 响应式状态 ===
   const weeks = ref<string[]>(getAdjustedWeeks(firstDayOfWeek))
   const currentDate = ref<Date>(parseDate(defaultDate))
 
@@ -150,7 +149,6 @@ export function useCalendar(options: UseCalendarOptions = {}): UseCalendarReturn
   // 标记日期 - 改为响应式状态以支持动态更新
   const markedDatesValue = ref<string[]>(isRef(markedDates) ? unref(markedDates) : markedDates)
 
-  // === 计算属性 ===
   const today = computed(() => formatDate(new Date()))
 
   const currentYearMonth = computed(() => formatYearMonth(currentDate.value))
@@ -272,8 +270,6 @@ export function useCalendar(options: UseCalendarOptions = {}): UseCalendarReturn
 
     return result
   })
-
-  // === 操作方法 ===
 
   function prevMonth() {
     currentDate.value = addMonths(currentDate.value, -1)

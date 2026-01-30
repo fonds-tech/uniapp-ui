@@ -67,7 +67,6 @@ const defaultProps = buildDefaultProps("date-select", {
 })
 
 export const dateSelectProps = {
-  // ===== 基础 Props =====
   /**
    * 绑定日期值
    */
@@ -85,7 +84,6 @@ export const dateSelectProps = {
    */
   readonly: defaultProps("readonly", { type: Boolean }),
 
-  // ===== 日期配置 Props（透传 ui-date-picker）=====
   /**
    * 列类型
    */
@@ -111,7 +109,6 @@ export const dateSelectProps = {
    */
   columnFormatter: defaultProps("columnFormatter", { type: Function as PropType<DatePickerColumnFormatter> }),
 
-  // ===== 弹窗配置 Props =====
   /**
    * 弹窗位置
    */
@@ -145,7 +142,6 @@ export const dateSelectProps = {
    */
   safeAreaInsetBottom: defaultProps("safeAreaInsetBottom", { type: Boolean }),
 
-  // ===== Header 配置 Props =====
   /**
    * 是否显示头部
    */
@@ -163,7 +159,6 @@ export const dateSelectProps = {
    */
   confirmText: defaultProps("confirmText", { type: String }),
 
-  // ===== Picker 样式 Props =====
   /**
    * 选项高度
    */
@@ -197,7 +192,6 @@ export const dateSelectProps = {
    */
   activeColumnWeight: defaultProps("activeColumnWeight", { type: [Number, String] }),
 
-  // ===== 触发区样式 Props =====
   /**
    * 展示文案格式化
    */

@@ -1,11 +1,9 @@
 <template>
   <view class="demo-container">
-    <!-- 搜索栏 -->
     <view class="search-bar">
       <ui-input v-model="searchText" placeholder="搜索组件..." :clearable="true" />
     </view>
 
-    <!-- 组件分类列表 -->
     <view class="component-list">
       <view v-for="category in filteredCategories" :key="category.name" class="category-block">
         <view class="category-header">
@@ -22,7 +20,6 @@
         </view>
       </view>
 
-      <!-- 空状态 -->
       <view v-if="filteredCategories.length === 0" class="empty-state">
         <text class="empty-icon">🔍</text>
         <text class="empty-text">未找到相关组件</text>

@@ -1,5 +1,4 @@
 <template>
-  <!-- 遮罩层 -->
   <ui-overlay
     v-if="mergedOptions.overlay"
     :show="visible"
@@ -12,17 +11,14 @@
     @click="handleOverlayClick"
   />
 
-  <!-- 对话框主体 -->
   <view v-if="inited" class="ui-dialog" :class="[rootClass, props.customClass]" :style="rootStyle" @transitionend="transition.end" @touchmove.prevent.stop="noop">
     <view class="ui-dialog__body" :style="bodyStyle" @click.stop="noop">
-      <!-- 标题区域 -->
       <slot name="title">
         <view v-if="mergedOptions.title" class="ui-dialog__title">
           {{ mergedOptions.title }}
         </view>
       </slot>
 
-      <!-- 内容区域 -->
       <scroll-view class="ui-dialog__scroll" :style="scrollStyle" scroll-y enable-flex>
         <view class="ui-dialog__content" :style="contentStyle">
           <slot>
@@ -33,10 +29,8 @@
         </view>
       </scroll-view>
 
-      <!-- 底部按钮区域 -->
       <view class="ui-dialog__footer" :class="footerClass" :style="footerStyle">
         <slot name="footer">
-          <!-- 取消按钮 -->
           <slot name="cancel">
             <ui-button
               v-if="mergedOptions.showCancelButton"
@@ -55,10 +49,8 @@
             </ui-button>
           </slot>
 
-          <!-- 按钮分隔线 -->
           <view v-if="mergedOptions.showCancelButton && mergedOptions.showConfirmButton" class="ui-dialog__footer__line" />
 
-          <!-- 确认按钮 -->
           <slot name="confirm">
             <ui-button
               v-if="mergedOptions.showConfirmButton"
@@ -80,7 +72,6 @@
       </view>
     </view>
 
-    <!-- 外部插槽 -->
     <slot name="outside" />
   </view>
 </template>
@@ -96,10 +87,8 @@ import { useUnit, useColor, useStyle, useTransition, useGlobalZIndex } from "../
 
 defineOptions({ name: "ui-dialog" })
 
-// ===================== Props & Emits =====================
 const props = defineProps(dialogProps)
 const emits = defineEmits(dialogEmits)
-// ===================== 状态管理 =====================
 const transition = useTransition()
 const zIndex = ref<number | string>()
 const visible = ref(false)
@@ -124,7 +113,6 @@ const baseOptions = ref<DialogOptions>({
 const propOptions = ref<DialogOptions>({})
 const mergedOptions = ref<DialogOptions>({})
 
-// ===================== 计算属性 =====================
 const inited = computed(() => !props.lazyRender || transition.inited.value)
 
 // 根元素样式
@@ -170,13 +158,11 @@ const contentTextClass = computed(() => `ui-dialog__content__text--${mergedOptio
 // 底部类名
 const footerClass = computed(() => (mergedOptions.value.buttonReverse ? "ui-dialog__footer--reverse" : ""))
 
-// ===================== 过渡动画事件绑定 =====================
 transition.on("before-enter", () => emits("open"))
 transition.on("after-enter", () => emits("opened"))
 transition.on("before-leave", () => emits("close"))
 transition.on("after-leave", () => emits("closed"))
 
-// ===================== 监听器 =====================
 // 监听 props 变化，更新配置
 watch(
   () => props,
@@ -198,7 +184,6 @@ watch(
 // 监听动画相关属性变化
 watch(() => [props.duration, props.enterTimingFunction, props.leaveTimingFunction], initTransition, { immediate: true })
 
-// ===================== 内部方法 =====================
 /** 初始化过渡动画 */
 function initTransition() {
   mergedOptions.value.enterTimingFunction = props.enterTimingFunction
@@ -233,7 +218,6 @@ function resetLoading(action: DialogDoneAction) {
   }
 }
 
-// ===================== 事件处理 =====================
 /** 点击遮罩层 */
 function handleOverlayClick() {
   if (!mergedOptions.value.closeOnClickOverlay) return
@@ -284,7 +268,6 @@ function handleConfirm() {
   }
 }
 
-// ===================== 公开方法 =====================
 /** 打开对话框 */
 function open(options: DialogOptions = {}, action: DialogOpenAction = "outside") {
   if (visible.value) return
@@ -367,7 +350,6 @@ function alert(options?: string | DialogOptions): Promise<void> {
   })
 }
 
-// ===================== 暴露方法 =====================
 defineExpose({
   /** 打开对话框 */
   open,

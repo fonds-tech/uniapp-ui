@@ -75,7 +75,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 新增：动画缓动函数 -->
     <demo-section title="动画缓动函数">
       <demo-block direction="column" align="start" :gap="16">
         <text class="demo-text">enter-timing-function: 进入动画函数</text>
@@ -110,7 +109,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 新增：懒渲染 -->
     <demo-section title="懒渲染">
       <demo-block direction="column" align="start" :gap="16">
         <text class="demo-text">lazy-render: 是否在显示时才渲染节点 (默认 true)</text>
@@ -130,7 +128,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 新增：元素层级 -->
     <demo-section title="元素层级">
       <demo-block direction="column" align="start" :gap="16">
         <text class="demo-text">通过 z-index 设置元素层级</text>
@@ -151,7 +148,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 新增：事件处理 -->
     <demo-section title="事件处理">
       <demo-block direction="column" align="start" :gap="16">
         <ui-button type="primary" size="small" @click="showEvent = !showEvent">
@@ -182,7 +178,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 新增：自定义样式 -->
     <demo-section title="自定义样式">
       <demo-block direction="column" :gap="24">
         <demo-block :cols="2" :gap="24">
@@ -200,7 +195,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 新增：综合示例 - 轮播切换效果 -->
     <demo-section title="综合示例 - 图片切换">
       <demo-block direction="column" align="start" :gap="16">
         <demo-block :cols="4" :gap="16">
@@ -222,7 +216,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 新增：综合示例 - 弹窗效果 -->
     <demo-section title="综合示例 - 弹窗效果">
       <demo-block direction="column" :gap="16">
         <demo-block :cols="3" :gap="16">
@@ -233,10 +226,8 @@
       </demo-block>
     </demo-section>
 
-    <!-- 弹窗：使用 Flexbox 居中，避免 transform 冲突 -->
     <ui-transition :show="showModalOverlay" :duration="300">
       <view class="modal-overlay" @click="closeModal">
-        <!-- 弹窗内容嵌套在遮罩内，由遮罩的 flexbox 负责居中 -->
         <ui-transition :show="showModalContent" :name="modalAnimation" :duration="300" enter-timing-function="ease-out" leave-timing-function="ease-in">
           <view class="modal-content" @click.stop>
             <view class="modal-header">

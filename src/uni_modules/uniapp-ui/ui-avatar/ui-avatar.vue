@@ -1,6 +1,5 @@
 <template>
   <view v-if="isVisible" class="ui-avatar" :class="[classNames, props.customClass]" :style="rootStyle" @click="onClick">
-    <!-- 图片头像 -->
     <image
       v-if="props.src && !hasError"
       class="ui-avatar__image"
@@ -10,7 +9,7 @@
       @load="onImageLoad"
       @error="onImageError"
     />
-    <!-- 加载失败时的内容 -->
+
     <template v-else-if="hasError">
       <slot name="error">
         <view class="ui-avatar__fallback">
@@ -18,19 +17,19 @@
         </view>
       </slot>
     </template>
-    <!-- 图标头像 -->
+
     <template v-else-if="props.icon">
       <view class="ui-avatar__icon">
         <ui-icon :name="props.icon" :color="iconColorValue" :size="iconSizeValue" />
       </view>
     </template>
-    <!-- 文字头像 -->
+
     <template v-else-if="props.text">
       <view class="ui-avatar__text" :style="textStyle">
         {{ displayText }}
       </view>
     </template>
-    <!-- 默认插槽 -->
+
     <template v-else>
       <slot>
         <view class="ui-avatar__fallback">

@@ -102,7 +102,6 @@ const defaultProps = buildDefaultProps("date-range-select", {
 })
 
 export const dateRangeSelectProps = {
-  // ===== 基础 Props =====
   /**
    * 绑定日期区间值 [开始日期, 结束日期]
    */
@@ -132,7 +131,6 @@ export const dateRangeSelectProps = {
    */
   autoSwitchToEnd: defaultProps("autoSwitchToEnd", { type: Boolean }),
 
-  // ===== 日期配置 Props（透传 ui-date-picker）=====
   /**
    * 列类型
    */
@@ -158,7 +156,6 @@ export const dateRangeSelectProps = {
    */
   columnFormatter: defaultProps("columnFormatter", { type: Function as PropType<DatePickerColumnFormatter> }),
 
-  // ===== 弹窗配置 Props =====
   /**
    * 弹窗位置
    */
@@ -192,7 +189,6 @@ export const dateRangeSelectProps = {
    */
   safeAreaInsetBottom: defaultProps("safeAreaInsetBottom", { type: Boolean }),
 
-  // ===== Header 配置 Props =====
   /**
    * 是否显示头部
    */
@@ -210,7 +206,6 @@ export const dateRangeSelectProps = {
    */
   confirmText: defaultProps("confirmText", { type: String }),
 
-  // ===== Picker 样式 Props =====
   /**
    * 选项高度
    */
@@ -244,7 +239,6 @@ export const dateRangeSelectProps = {
    */
   activeColumnWeight: defaultProps("activeColumnWeight", { type: [Number, String] }),
 
-  // ===== 触发区样式 Props =====
   /**
    * 展示文案格式化
    */

@@ -1,15 +1,12 @@
 <template>
   <view class="min-h-screen bg-[#F6F7F9]">
-    <!-- 顶部导航栏占位 -->
     <view class="fixed left-0 top-0 z-50 w-full bg-white/80 backdrop-blur-md transition-all duration-300" :style="{ paddingTop: `${safeAreaInsets?.top}px` }">
       <view class="flex h-[88rpx] items-center px-[32rpx]">
         <text class="text-[36rpx] font-bold text-slate-800">Fonds UI</text>
       </view>
     </view>
 
-    <!-- 头部区域 -->
     <view class="relative overflow-hidden bg-white pt-[calc(var(--status-bar-height)+100rpx)] pb-[64rpx]">
-      <!-- 装饰背景 -->
       <view class="absolute right-0 top-0 -mr-[100rpx] -mt-[100rpx] h-[400rpx] w-[400rpx] rounded-full bg-indigo-500/10 blur-[80rpx] opacity-60" />
       <view class="absolute left-0 top-[200rpx] -ml-[100rpx] h-[300rpx] w-[300rpx] rounded-full bg-fuchsia-500/10 blur-[60rpx] opacity-60" />
 
@@ -27,7 +24,6 @@
           </view>
         </view>
 
-        <!-- 统计卡片 -->
         <view class="mt-[80rpx] relative overflow-hidden rounded-[40rpx] bg-gradient-to-r from-indigo-600 to-violet-600 p-[1rpx] shadow-xl shadow-indigo-500/25">
           <view class="relative h-full w-full bg-gradient-to-br from-white/10 to-transparent p-[48rpx]">
             <view class="flex justify-between text-white relative z-10">
@@ -47,7 +43,6 @@
               </view>
             </view>
 
-            <!-- 装饰圆环 -->
             <view class="absolute -right-[40rpx] -top-[40rpx] h-[200rpx] w-[200rpx] rounded-full border-[20rpx] border-white/5 opacity-50" />
             <view class="absolute -left-[40rpx] -bottom-[40rpx] h-[160rpx] w-[160rpx] rounded-full border-[16rpx] border-white/5 opacity-50" />
           </view>
@@ -55,7 +50,6 @@
       </view>
     </view>
 
-    <!-- 快捷入口 -->
     <view class="px-[32rpx] -mt-[32rpx] relative z-10">
       <view class="grid grid-cols-2 gap-[24rpx]">
         <view
@@ -81,7 +75,6 @@
         </view>
       </view>
 
-      <!-- 次级入口 -->
       <view class="mt-[24rpx] grid grid-cols-2 gap-[24rpx]">
         <view class="flex items-center rounded-[28rpx] bg-white p-[24rpx] shadow-sm active:bg-gray-50 transition-colors" @click="switchToTemplates">
           <view class="flex h-[72rpx] w-[72rpx] items-center justify-center rounded-[20rpx] bg-amber-50 mr-[20rpx]">
@@ -105,7 +98,6 @@
       </view>
     </view>
 
-    <!-- 组件分类 -->
     <view class="px-[32rpx] py-[64rpx] pb-[180rpx]">
       <view class="mb-[40rpx] flex items-center justify-between">
         <view class="flex items-center">

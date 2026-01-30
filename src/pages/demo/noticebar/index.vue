@@ -12,14 +12,12 @@
       </demo-block>
     </demo-section>
 
-    <!-- 新增：关闭滚动 -->
     <demo-section title="关闭滚动">
       <demo-block direction="column">
         <ui-notice-bar :scrollable="false" text="这是一条不会滚动的通知消息。" />
       </demo-block>
     </demo-section>
 
-    <!-- 新增：滚动速度 -->
     <demo-section title="滚动速度">
       <demo-block direction="column" align="start" :gap="16">
         <text class="demo-text">当前速度: {{ currentSpeed }}px/s</text>
@@ -40,7 +38,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 新增：图标样式 -->
     <demo-section title="图标样式">
       <demo-block direction="column" :gap="16">
         <text class="demo-text">自定义图标大小、颜色和粗细</text>
@@ -48,7 +45,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 新增：右侧图标 -->
     <demo-section title="右侧图标">
       <demo-block direction="column" :gap="16">
         <ui-notice-bar icon="sound" right-icon="right" text="点击查看详情" @click="onNoticeClick" />
@@ -56,7 +52,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 新增：右侧图标样式 -->
     <demo-section title="右侧图标样式">
       <demo-block direction="column" :gap="16">
         <text class="demo-text">自定义右侧图标大小、颜色和粗细</text>
@@ -72,7 +67,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 新增：文字样式 -->
     <demo-section title="文字样式">
       <demo-block direction="column" :gap="16">
         <text class="demo-text">自定义文字大小和粗细</text>
@@ -81,7 +75,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 新增：最小高度 -->
     <demo-section title="最小高度">
       <demo-block direction="column" :gap="16">
         <text class="demo-text">当前高度: {{ currentMinHeight }}</text>
@@ -100,7 +93,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 新增：垂直滚动间隔 -->
     <demo-section title="垂直滚动间隔">
       <demo-block direction="column" align="start" :gap="16">
         <text class="demo-text">当前间隔: {{ currentInterval }}ms</text>
@@ -113,7 +105,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 新增：垂直滚动动画时长 -->
     <demo-section title="垂直滚动动画时长">
       <demo-block direction="column" align="start" :gap="16">
         <text class="demo-text">当前动画时长: {{ currentDuration }}ms</text>
@@ -126,7 +117,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 新增：事件处理 -->
     <demo-section title="事件处理">
       <demo-block direction="column" align="start" :gap="16">
         <ui-notice-bar :text="notices" mode="vertical" icon="sound" right-icon="right" @click="onNoticeItemClick" />
@@ -134,7 +124,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 新增：自定义类名和样式 -->
     <demo-section title="自定义类名和样式">
       <demo-block direction="column" :gap="16">
         <ui-notice-bar icon="sound" text="自定义类名通知栏。" custom-class="my-notice-bar" />
@@ -142,7 +131,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 综合示例 - 活动公告 -->
     <demo-section title="综合示例 - 活动公告">
       <demo-block direction="column">
         <ui-notice-bar
@@ -162,7 +150,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 综合示例 - 系统通知 -->
     <demo-section title="综合示例 - 系统通知">
       <demo-block direction="column">
         <ui-notice-bar
@@ -178,7 +165,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 综合示例 - 紧急警告 -->
     <demo-section title="综合示例 - 紧急警告">
       <demo-block direction="column">
         <view class="warning-notice">
@@ -203,7 +189,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 综合示例 - 多条公告轮播 -->
     <demo-section title="综合示例 - 多条公告轮播">
       <demo-block direction="column">
         <view class="announcement-box">

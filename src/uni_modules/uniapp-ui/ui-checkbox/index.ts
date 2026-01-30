@@ -68,8 +68,6 @@ export const checkboxProps = {
    */
   readonly: defaultProps("readonly", { type: Boolean }),
 
-  // ============ 尺寸与形状 ============
-
   /**
    * 复选框图标大小，支持任意尺寸值如 "36rpx"、"20px"
    */
@@ -84,14 +82,10 @@ export const checkboxProps = {
    */
   round: defaultProps("round", { type: Boolean }),
 
-  // ============ 状态 ============
-
   /**
    * 不确定状态（用于父子关系场景）
    */
   indeterminate: defaultProps("indeterminate", { type: Boolean }),
-
-  // ============ 颜色配置（简化版） ============
 
   /**
    * 主色（选中状态的颜色，简化 API）
@@ -108,8 +102,6 @@ export const checkboxProps = {
    * 选中时的图标颜色（向后兼容别名）
    */
   checkedIconColor: defaultProps("checkedIconColor", { type: String }),
-
-  // ============ 图标配置 ============
 
   /**
    * 图标名称（shape="icon" 时使用）
@@ -131,8 +123,6 @@ export const checkboxProps = {
    * 图标圆角值
    */
   iconRadius: defaultProps("iconRadius", { type: [Number, String] }),
-
-  // ============ 标签配置 ============
 
   /**
    * 标签位置：left | right
@@ -162,8 +152,6 @@ export const checkboxProps = {
    * 选中时的标签文本颜色
    */
   checkedLabelColor: defaultProps("checkedLabelColor", { type: String }),
-
-  // ============ 自定义样式 ============
 
   /**
    * 自定义类名

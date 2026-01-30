@@ -1,6 +1,5 @@
 <template>
   <view>
-    <!-- 弹层模式 -->
     <ui-popup
       v-if="props.poppable"
       :show="props.show"
@@ -17,7 +16,6 @@
       @click-overlay="emits('clickOverlay')"
     >
       <view class="ui-calendar" :style="[calendarStyle]" :class="[props.customClass]">
-        <!-- 头部 -->
         <view v-if="props.showTitle || props.closeable" class="ui-calendar__header">
           <view v-if="props.closeable" class="ui-calendar__close" @click="onClose">
             <ui-icon name="cross" size="36rpx" color="#666666" />
@@ -26,7 +24,6 @@
           <view v-if="props.closeable" class="ui-calendar__close--placeholder" />
         </view>
 
-        <!-- 副标题（年月切换） -->
         <view v-if="props.showSubtitle" class="ui-calendar__subtitle">
           <view class="ui-calendar__nav" @click="onPrevYear">
             <ui-icon name="arrow-double-left" size="32rpx" :color="colorValue" />
@@ -43,34 +40,26 @@
           </view>
         </view>
 
-        <!-- 星期标题 -->
         <view class="ui-calendar__weekdays">
           <text v-for="week in weeks" :key="week" class="ui-calendar__weekday">{{ week }}</text>
         </view>
 
-        <!-- 日期网格 -->
         <view class="ui-calendar__days">
           <view v-for="(day, index) in formattedDays" :key="index" class="ui-calendar__day" :class="[getDayClass(day)]" :style="[getDayStyle(day)]" @click="onClickDay(day)">
-            <!-- 月份背景水印 -->
             <text v-if="props.showMark && day.isCurrentMonth && day.date.getDate() === 15" class="ui-calendar__mark">
               {{ day.date.getMonth() + 1 }}
             </text>
 
-            <!-- 上方信息 -->
             <text v-if="day.topInfo" class="ui-calendar__day-top">{{ day.topInfo }}</text>
 
-            <!-- 日期文字 -->
             <text class="ui-calendar__day-text">{{ day.text }}</text>
 
-            <!-- 下方信息 -->
             <text v-if="day.bottomInfo" class="ui-calendar__day-bottom">{{ day.bottomInfo }}</text>
 
-            <!-- 标记点 -->
             <view v-if="day.hasDot" class="ui-calendar__day-dot" :style="{ backgroundColor: colorValue }" />
           </view>
         </view>
 
-        <!-- 底部操作区 -->
         <view v-if="props.showConfirm" class="ui-calendar__footer">
           <ui-button block :color="colorValue" :disabled="!canConfirm" @click="onConfirm">
             {{ canConfirm ? props.confirmText : props.confirmDisabledText }}
@@ -79,14 +68,11 @@
       </view>
     </ui-popup>
 
-    <!-- 内嵌模式 -->
     <view v-else class="ui-calendar" :style="[calendarStyle]" :class="[props.customClass]">
-      <!-- 头部 -->
       <view v-if="props.showTitle" class="ui-calendar__header">
         <text class="ui-calendar__title">{{ props.title }}</text>
       </view>
 
-      <!-- 副标题（年月切换） -->
       <view v-if="props.showSubtitle" class="ui-calendar__subtitle">
         <view class="ui-calendar__nav" @click="onPrevYear">
           <ui-icon name="arrow-double-left" size="32rpx" :color="colorValue" />
@@ -103,34 +89,26 @@
         </view>
       </view>
 
-      <!-- 星期标题 -->
       <view class="ui-calendar__weekdays">
         <text v-for="week in weeks" :key="week" class="ui-calendar__weekday">{{ week }}</text>
       </view>
 
-      <!-- 日期网格 -->
       <view class="ui-calendar__days">
         <view v-for="(day, index) in formattedDays" :key="index" class="ui-calendar__day" :class="[getDayClass(day)]" :style="[getDayStyle(day)]" @click="onClickDay(day)">
-          <!-- 月份背景水印 -->
           <text v-if="props.showMark && day.isCurrentMonth && day.date.getDate() === 15" class="ui-calendar__mark">
             {{ day.date.getMonth() + 1 }}
           </text>
 
-          <!-- 上方信息 -->
           <text v-if="day.topInfo" class="ui-calendar__day-top">{{ day.topInfo }}</text>
 
-          <!-- 日期文字 -->
           <text class="ui-calendar__day-text">{{ day.text }}</text>
 
-          <!-- 下方信息 -->
           <text v-if="day.bottomInfo" class="ui-calendar__day-bottom">{{ day.bottomInfo }}</text>
 
-          <!-- 标记点 -->
           <view v-if="day.hasDot" class="ui-calendar__day-dot" :style="{ backgroundColor: colorValue }" />
         </view>
       </view>
 
-      <!-- 底部操作区 -->
       <view v-if="props.showConfirm" class="ui-calendar__footer">
         <ui-button block :color="colorValue" :disabled="!canConfirm" @click="onConfirm">
           {{ canConfirm ? props.confirmText : props.confirmDisabledText }}

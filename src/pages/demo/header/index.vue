@@ -1,9 +1,7 @@
 <template>
   <view class="demo-header">
-    <!-- 上半部分：预览区 -->
     <view class="preview-area">
       <view class="preview-box">
-        <!-- 模拟状态栏 -->
         <view class="status-bar">
           <text class="status-bar__time">9:41</text>
           <view class="status-bar__icons">
@@ -11,7 +9,6 @@
           </view>
         </view>
 
-        <!-- 场景1: 电商搜索栏 -->
         <view v-if="currentScene === 0" class="preview-header" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%)">
           <view class="header-shop">
             <view class="header-shop__location">
@@ -30,7 +27,6 @@
           </view>
         </view>
 
-        <!-- 场景2: 筛选排序栏 -->
         <view v-else-if="currentScene === 1" class="preview-header" style="background: #fff">
           <view class="header-filter">
             <view v-for="(item, index) in filterTabs" :key="item.key" class="header-filter__item" :class="{ active: activeFilter === index }" @click="activeFilter = index">
@@ -40,7 +36,6 @@
           </view>
         </view>
 
-        <!-- 场景3: 分类Tabs -->
         <view v-else-if="currentScene === 2" class="preview-header" style="background: #fff">
           <scroll-view scroll-x class="header-tabs">
             <view class="header-tabs__inner">
@@ -52,7 +47,6 @@
           </scroll-view>
         </view>
 
-        <!-- 场景4: 迷你播放器 -->
         <view v-else-if="currentScene === 3" class="preview-header" style="background: #fff">
           <view class="header-player">
             <image class="header-player__cover" src="https://picsum.photos/80/80?random=1" mode="aspectFill" />
@@ -70,7 +64,6 @@
           </view>
         </view>
 
-        <!-- 场景5: 步骤进度 -->
         <view v-else-if="currentScene === 4" class="preview-header" style="background: #fff">
           <view class="header-steps">
             <view v-for="(step, index) in steps" :key="step" class="header-steps__item">
@@ -84,7 +77,6 @@
           </view>
         </view>
 
-        <!-- 场景6: 公告栏 -->
         <view v-else-if="currentScene === 5" class="preview-header" style="background: #fffbe6">
           <view class="header-notice">
             <ui-icon name="sound" size="32rpx" color="#fa8c16" />
@@ -93,7 +85,6 @@
           </view>
         </view>
 
-        <!-- 模拟内容区 -->
         <view class="preview-content">
           <view class="preview-content__placeholder">
             <text>页面内容区域</text>
@@ -102,7 +93,6 @@
       </view>
     </view>
 
-    <!-- 下半部分：场景列表 -->
     <scroll-view scroll-y class="scene-list">
       <view class="scene-list__header">
         <text class="scene-list__title">选择场景</text>
@@ -129,13 +119,11 @@
         </view>
       </view>
 
-      <!-- 步骤场景的操作按钮 -->
       <view v-if="currentScene === 4" class="scene-actions">
         <ui-button size="small" :disabled="currentStep === 0" @click="currentStep--">上一步</ui-button>
         <ui-button size="small" type="primary" :disabled="currentStep === 2" @click="currentStep++">下一步</ui-button>
       </view>
 
-      <!-- 尺寸监听展示 -->
       <view class="size-monitor">
         <view class="size-monitor__header">
           <text class="size-monitor__title">尺寸监听</text>

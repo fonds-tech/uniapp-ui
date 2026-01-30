@@ -8,11 +8,9 @@ import { config } from "@vue/test-utils"
 import { nextTick } from "vue"
 import { vi, afterEach } from "vitest"
 
-// ============================================
 // 打破循环依赖：模拟 useDialog 模块
 // hooks/index.ts 按字母顺序导出，避免导出顺序导致的依赖问题
 // 通过模拟 useDialog 打破这个循环
-// ============================================
 vi.mock("@/uni_modules/uniapp-ui/hooks/useDialog", () => ({
   useDialog: vi.fn(() => ({
     show: vi.fn(),
@@ -22,9 +20,7 @@ vi.mock("@/uni_modules/uniapp-ui/hooks/useDialog", () => ({
   })),
 }))
 
-// ============================================
 // 测试辅助函数
-// ============================================
 
 /**
  * 等待过渡动画完成
@@ -64,9 +60,7 @@ export function getLastEmitted(wrapper: any, eventName: string): any[] | undefin
   return events[events.length - 1]
 }
 
-// ============================================
 // 静默 Vue 警告（UniApp 组件名与 HTML 保留元素冲突）
-// ============================================
 const originalWarn = console.warn
 console.warn = (...args: any[]) => {
   // 过滤 UniApp 内置组件的保留元素警告
@@ -93,17 +87,13 @@ config.global.config = {
   },
 }
 
-// ============================================
 // 全局 stub（避免“Failed to resolve component”类警告）
-// ============================================
 config.global.stubs = {
   ...(config.global.stubs as any),
   "ui-resize": true,
 }
 
-// ============================================
 // UniApp 全局 API Mock（使用 vi.stubGlobal）
-// ============================================
 vi.stubGlobal("uni", {
   // 单位转换（rpx 转 px）
   upx2px: vi.fn().mockImplementation((upx: number) => {
@@ -439,9 +429,7 @@ vi.stubGlobal(
   vi.fn(() => ({ globalData: {} })),
 )
 
-// ============================================
 // UniApp 生命周期 Mock
-// ============================================
 vi.stubGlobal("onLaunch", vi.fn())
 vi.stubGlobal("onShow", vi.fn())
 vi.stubGlobal("onHide", vi.fn())
@@ -463,9 +451,7 @@ vi.mock("@dcloudio/uni-app", () => ({
   onPullDownRefresh: vi.fn(),
 }))
 
-// ============================================
 // UniApp 内置组件配置
-// ============================================
 const uniappBuiltInComponents: Record<string, any> = {
   // 视图容器
   view: { name: "uni-view", template: "<div><slot></slot></div>" },
@@ -582,16 +568,12 @@ config.global.stubs = {
   },
 }
 
-// ============================================
 // 全局 provide/inject Mock
-// ============================================
 config.global.provide = {
   // 可在此添加全局 provide
 }
 
-// ============================================
 // 触摸事件 Mock
-// ============================================
 class MockTouchEvent extends Event {
   touches: Array<{ clientX: number; clientY: number }>
   constructor(type: string, options: any = {}) {
@@ -601,9 +583,7 @@ class MockTouchEvent extends Event {
 }
 vi.stubGlobal("TouchEvent", MockTouchEvent)
 
-// ============================================
 // CSS 变量注入
-// ============================================
 let injectedStyleElement: HTMLStyleElement | null = null
 
 if (typeof document !== "undefined") {
@@ -643,9 +623,7 @@ if (typeof document !== "undefined") {
   injectedStyleElement = style
 }
 
-// ============================================
 // 全局清理钩子 - 防止进程挂起
-// ============================================
 
 // 每个测试后清理定时器和 Mock
 afterEach(() => {

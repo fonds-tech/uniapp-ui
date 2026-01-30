@@ -1,18 +1,14 @@
 <template>
   <view class="min-h-screen bg-[#F6F7F9]">
-    <!-- 顶部导航栏 -->
     <view class="fixed left-0 top-0 z-50 w-full bg-white/95 backdrop-blur-md" :style="{ paddingTop: `${safeAreaInsets?.top}px` }">
       <view class="flex h-[88rpx] items-center px-[32rpx]">
         <text class="text-[36rpx] font-bold text-slate-800">关于</text>
       </view>
     </view>
 
-    <!-- 占位区域 -->
     <view :style="{ height: `${safeAreaInsets?.top + 44}px` }" />
 
-    <!-- 主体内容 -->
     <view class="px-[32rpx] py-[32rpx] pb-[180rpx]">
-      <!-- Logo 和版本信息 -->
       <view class="flex flex-col items-center py-[60rpx] bg-white rounded-[32rpx] mb-[32rpx]">
         <view
           class="flex h-[160rpx] w-[160rpx] items-center justify-center rounded-[40rpx] bg-gradient-to-br from-indigo-500 to-violet-600 shadow-lg shadow-indigo-500/30 mb-[32rpx]"
@@ -28,7 +24,6 @@
         </view>
       </view>
 
-      <!-- 项目介绍 -->
       <view class="bg-white rounded-[28rpx] p-[32rpx] mb-[24rpx]">
         <view class="flex items-center mb-[20rpx]">
           <view class="i-lucide-info text-[36rpx] text-indigo-500 mr-[16rpx]" />
@@ -39,7 +34,6 @@
         </text>
       </view>
 
-      <!-- 功能特性 -->
       <view class="bg-white rounded-[28rpx] p-[32rpx] mb-[24rpx]">
         <view class="flex items-center mb-[24rpx]">
           <view class="i-lucide-sparkles text-[36rpx] text-amber-500 mr-[16rpx]" />
@@ -56,7 +50,6 @@
         </view>
       </view>
 
-      <!-- 更新日志 -->
       <view class="bg-white rounded-[28rpx] p-[32rpx] mb-[24rpx]">
         <view class="flex items-center justify-between mb-[24rpx]">
           <view class="flex items-center">
@@ -80,7 +73,6 @@
         </view>
       </view>
 
-      <!-- 联系我们 -->
       <view class="bg-white rounded-[28rpx] p-[32rpx] mb-[24rpx]">
         <view class="flex items-center mb-[24rpx]">
           <view class="i-lucide-mail text-[36rpx] text-rose-500 mr-[16rpx]" />
@@ -105,7 +97,6 @@
         </view>
       </view>
 
-      <!-- 版权信息 -->
       <view class="flex flex-col items-center py-[40rpx]">
         <text class="text-[24rpx] text-gray-400">Made with ❤️ by Fonds Team</text>
         <text class="text-[22rpx] text-gray-300 mt-[12rpx]">© 2024 Fonds UI. MIT License.</text>

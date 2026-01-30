@@ -22,7 +22,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 新增：关闭图标位置 -->
     <demo-section title="图标位置">
       <demo-block :cols="2" :gap="24">
         <ui-button @click="showCloseTopLeft = true">左上角</ui-button>
@@ -39,7 +38,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 新增：自定义尺寸 -->
     <demo-section title="自定义尺寸">
       <demo-block :cols="2" :gap="24">
         <ui-button @click="showCustomSize = true">自定义宽高</ui-button>
@@ -47,7 +45,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 新增：动画时长 -->
     <demo-section title="动画时长">
       <demo-block :cols="3" :gap="16">
         <ui-button size="small" @click="showDuration(100)">100ms</ui-button>
@@ -56,7 +53,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 新增：遮罩层配置 -->
     <demo-section title="遮罩层配置">
       <demo-block :cols="2" :gap="24">
         <ui-button @click="showNoOverlay = true">无遮罩层</ui-button>
@@ -64,14 +60,12 @@
       </demo-block>
     </demo-section>
 
-    <!-- 新增：禁止点击遮罩关闭 -->
     <demo-section title="禁止点击遮罩关闭">
       <demo-block>
         <ui-button type="warning" @click="showNoCloseOnOverlay = true">禁止点击遮罩关闭</ui-button>
       </demo-block>
     </demo-section>
 
-    <!-- 新增：自定义背景 -->
     <demo-section title="自定义背景">
       <demo-block :cols="2" :gap="24">
         <ui-button @click="showCustomBg = true">自定义背景色</ui-button>
@@ -79,7 +73,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 新增：安全区域 -->
     <demo-section title="安全区域">
       <demo-block :cols="2" :gap="24">
         <ui-button @click="showSafeTop = true">顶部安全区</ui-button>
@@ -87,7 +80,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 新增：事件处理 -->
     <demo-section title="事件处理">
       <demo-block direction="column" align="start" :gap="16">
         <ui-button type="primary" @click="showEvent = true">监听事件</ui-button>
@@ -95,15 +87,12 @@
       </demo-block>
     </demo-section>
 
-    <!-- 新增：自定义样式 -->
     <demo-section title="自定义样式">
       <demo-block>
         <ui-button type="primary" @click="showCustomStyle = true">自定义样式</ui-button>
       </demo-block>
     </demo-section>
 
-    <!-- Popup Components -->
-    <!-- 基础弹窗 -->
     <ui-popup v-model:show="showCenter" position="center">
       <view class="popup-content center-content">
         <text>居中弹出内容</text>
@@ -134,7 +123,6 @@
       </view>
     </ui-popup>
 
-    <!-- 关闭图标 -->
     <ui-popup v-model:show="showClose" position="bottom" closeable>
       <view class="popup-content bottom-content">
         <text>带关闭图标的弹窗</text>
@@ -147,7 +135,6 @@
       </view>
     </ui-popup>
 
-    <!-- 关闭图标位置 -->
     <ui-popup v-model:show="showCloseTopLeft" position="center" closeable close-icon-position="top-left">
       <view class="popup-content center-content">
         <text>左上角关闭图标</text>
@@ -172,7 +159,6 @@
       </view>
     </ui-popup>
 
-    <!-- 圆角弹窗 -->
     <ui-popup v-model:show="showRound" position="bottom" round>
       <view class="popup-content bottom-content">
         <text>圆角弹窗内容</text>
@@ -185,7 +171,6 @@
       </view>
     </ui-popup>
 
-    <!-- 自定义尺寸 -->
     <ui-popup v-model:show="showCustomSize" position="center" width="600rpx" height="400rpx">
       <view class="popup-content" style="width: 100%; height: 100%">
         <text>自定义宽高 600rpx × 400rpx</text>
@@ -198,14 +183,12 @@
       </view>
     </ui-popup>
 
-    <!-- 动画时长 -->
     <ui-popup v-model:show="showDurationPopup" position="center" :duration="currentDuration">
       <view class="popup-content center-content">
         <text>动画时长: {{ currentDuration }}ms</text>
       </view>
     </ui-popup>
 
-    <!-- 遮罩层配置 -->
     <ui-popup v-model:show="showNoOverlay" position="bottom" :overlay="false" closeable>
       <view class="popup-content bottom-content">
         <text>无遮罩层弹窗</text>
@@ -218,14 +201,12 @@
       </view>
     </ui-popup>
 
-    <!-- 禁止点击遮罩关闭 -->
     <ui-popup v-model:show="showNoCloseOnOverlay" position="center" :close-on-click-overlay="false" closeable>
       <view class="popup-content center-content">
         <text>只能点击关闭图标关闭</text>
       </view>
     </ui-popup>
 
-    <!-- 自定义背景 -->
     <ui-popup v-model:show="showCustomBg" position="center" background="#e8f4ff">
       <view class="popup-content center-content" style="background: transparent">
         <text>浅蓝色背景</text>
@@ -238,7 +219,6 @@
       </view>
     </ui-popup>
 
-    <!-- 安全区域 -->
     <ui-popup v-model:show="showSafeTop" position="top" safe-area-inset-top closeable>
       <view class="popup-content top-content">
         <text>顶部安全区域</text>
@@ -251,7 +231,6 @@
       </view>
     </ui-popup>
 
-    <!-- 事件处理 -->
     <ui-popup
       v-model:show="showEvent"
       position="center"
@@ -269,7 +248,6 @@
       </view>
     </ui-popup>
 
-    <!-- 自定义样式 -->
     <ui-popup
       v-model:show="showCustomStyle"
       position="center"

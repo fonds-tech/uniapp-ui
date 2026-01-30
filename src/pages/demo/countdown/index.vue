@@ -1,6 +1,5 @@
 <template>
   <demo-page>
-    <!-- ==================== 基础功能 ==================== -->
     <demo-section title="基础用法">
       <demo-block>
         <ui-count-down :time="time" />
@@ -30,7 +29,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- ==================== 自定义样式 ==================== -->
     <demo-section title="自定义样式 - 方块">
       <demo-block>
         <ui-count-down :time="time">
@@ -114,7 +112,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- ==================== 计时模式 ==================== -->
     <demo-section title="正计时模式">
       <demo-block direction="column" align="start" :gap="16">
         <ui-count-down :time="countUpTime" mode="countup" format="mm:ss:SSS" millisecond>
@@ -133,7 +130,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- ==================== 进度展示 ==================== -->
     <demo-section title="进度条倒计时">
       <demo-block>
         <ui-count-down :time="progressTime">
@@ -149,7 +145,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- ==================== 手动控制 ==================== -->
     <demo-section title="手动控制">
       <demo-block direction="column" :gap="16">
         <ui-count-down ref="countDownRef" :time="3000" :auto-start="false" format="ss:SSS" millisecond @finish="onFinish" />
@@ -161,7 +156,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- ==================== 事件监听 ==================== -->
     <demo-section title="事件监听">
       <demo-block direction="column" align="start" :gap="16">
         <ui-count-down :time="eventTime" @change="onCountDownChange" @finish="onEventFinish" />
@@ -169,7 +163,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- ==================== 应用场景 ==================== -->
     <demo-section title="秒杀倒计时">
       <demo-block>
         <view class="scene-card scene-card--sale">
@@ -285,7 +278,6 @@ function formatTargetDate(timestamp: number): string {
 </script>
 
 <style lang="scss" scoped>
-/* ==================== 格式化示例 ==================== */
 .format-item {
   gap: 16rpx;
   display: flex;
@@ -298,7 +290,6 @@ function formatTargetDate(timestamp: number): string {
   min-width: 140rpx;
 }
 
-/* ==================== 方块样式 ==================== */
 .countdown-block {
   color: #fff;
   width: 48rpx;
@@ -318,7 +309,6 @@ function formatTargetDate(timestamp: number): string {
   font-weight: bold;
 }
 
-/* ==================== 圆形样式 ==================== */
 .countdown-circle {
   color: #fff;
   width: 60rpx;
@@ -339,7 +329,6 @@ function formatTargetDate(timestamp: number): string {
   font-weight: bold;
 }
 
-/* ==================== 渐变样式 ==================== */
 .countdown-gradient {
   color: #fff;
   padding: 10rpx 18rpx;
@@ -357,7 +346,6 @@ function formatTargetDate(timestamp: number): string {
   align-items: center;
 }
 
-/* ==================== 超长时间样式 ==================== */
 .long-time-countdown {
   gap: 8rpx;
   display: flex;
@@ -389,7 +377,6 @@ function formatTargetDate(timestamp: number): string {
   margin-left: 4rpx;
 }
 
-/* ==================== 通用样式 ==================== */
 .countdown-item {
   gap: 12rpx;
   display: flex;
@@ -407,14 +394,12 @@ function formatTargetDate(timestamp: number): string {
   font-size: 24rpx;
 }
 
-/* ==================== 正计时样式 ==================== */
 .countup-text {
   color: #07c160;
   font-size: 32rpx;
   font-weight: 600;
 }
 
-/* ==================== 进度条样式 ==================== */
 .progress-countdown {
   gap: 20rpx;
   width: 100%;
@@ -445,7 +430,6 @@ function formatTargetDate(timestamp: number): string {
   }
 }
 
-/* ==================== 场景卡片样式 ==================== */
 .scene-card {
   padding: 28rpx;
   background: #fff;
@@ -506,7 +490,6 @@ function formatTargetDate(timestamp: number): string {
   font-weight: bold;
 }
 
-/* ==================== 自定义类名样式 ==================== */
 :deep(.my-countdown) {
   color: #1989fa;
   padding: 10rpx 18rpx;

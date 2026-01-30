@@ -1,6 +1,5 @@
 <template>
   <demo-page class="bg-[#F7F8FA] min-h-screen flex flex-col">
-    <!-- 图标搜索 (固定在顶部) -->
     <view class="flex-shrink-0 bg-[#F7F8FA] mb-[16rpx]">
       <view class="bg-white rounded-full flex items-center px-[32rpx] py-[24rpx] shadow-sm border border-[#F0F0F2]">
         <ui-icon name="search" size="36rpx" class="text-[#86909C] mr-[16rpx]" />
@@ -11,7 +10,6 @@
       </view>
     </view>
 
-    <!-- 图标列表 (可滚动区域) -->
     <scroll-view class="flex-1" scroll-y enhanced :show-scrollbar="false">
       <view class="">
         <demo-block :cols="4" :gap="16">
@@ -25,7 +23,6 @@
           </view>
         </demo-block>
 
-        <!-- 空状态 -->
         <view v-if="filteredIcons.length === 0" class="flex flex-col items-center justify-center py-[100rpx]">
           <ui-icon name="search" size="80rpx" class="text-[#F2F3F5] mb-[24rpx]" />
           <text class="text-[#86909C] text-[28rpx]">未找到包含 "{{ keyword }}" 的图标</text>

@@ -1,16 +1,13 @@
 <template>
   <view class="demo-footer">
-    <!-- 上半部分：预览区 -->
     <view class="preview-area">
       <view class="preview-box">
-        <!-- 模拟内容区 -->
         <view class="preview-content">
           <view class="preview-content__placeholder">
             <text>页面内容区域</text>
           </view>
         </view>
 
-        <!-- 场景1: 商品详情栏 -->
         <view v-if="currentScene === 0" class="preview-footer" style="background: #fff">
           <view class="footer-product">
             <view class="footer-product__left">
@@ -35,7 +32,6 @@
           </view>
         </view>
 
-        <!-- 场景2: 购物车结算 -->
         <view v-else-if="currentScene === 1" class="preview-footer" style="background: #fff">
           <view class="footer-cart">
             <view class="footer-cart__left" @click="isAllChecked = !isAllChecked">
@@ -52,7 +48,6 @@
           </view>
         </view>
 
-        <!-- 场景3: 评论输入 -->
         <view v-else-if="currentScene === 2" class="preview-footer" style="background: #fff">
           <view class="footer-input">
             <view class="footer-input__box">
@@ -66,7 +61,6 @@
           </view>
         </view>
 
-        <!-- 场景4: 表单提交 -->
         <view v-else-if="currentScene === 3" class="preview-footer" style="background: #fff">
           <view class="footer-form">
             <view class="footer-form__btn footer-form__btn--default">取消</view>
@@ -74,7 +68,6 @@
           </view>
         </view>
 
-        <!-- 场景5: 版权信息 -->
         <view v-else-if="currentScene === 4" class="preview-footer" style="background: #f8f9fa">
           <view class="footer-copyright">
             <view class="footer-copyright__links">
@@ -88,7 +81,6 @@
           </view>
         </view>
 
-        <!-- 场景6: 快捷导航 -->
         <view v-else-if="currentScene === 5" class="preview-footer" style="background: #fff">
           <view class="footer-nav">
             <view v-for="(item, index) in navItems" :key="item.icon" class="footer-nav__item" :class="{ active: activeNav === index }" @click="activeNav = index">
@@ -100,7 +92,6 @@
       </view>
     </view>
 
-    <!-- 下半部分：场景列表 -->
     <scroll-view scroll-y class="scene-list">
       <view class="scene-list__header">
         <text class="scene-list__title">选择场景</text>
@@ -128,7 +119,6 @@
       </view>
     </scroll-view>
 
-    <!-- Toast -->
     <ui-toast ref="toast" />
   </view>
 </template>

@@ -20,7 +20,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 新增：动画时长 -->
     <demo-section title="动画时长">
       <demo-block direction="column" align="start" :gap="16">
         <text class="demo-text">通过 duration 设置过渡时间</text>
@@ -32,7 +31,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 新增：动画缓动函数 -->
     <demo-section title="动画缓动函数">
       <demo-block direction="column" align="start" :gap="16">
         <text class="demo-text">enter-timing-function: 进入动画</text>
@@ -44,7 +42,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 新增：层级设置 -->
     <demo-section title="层级设置">
       <demo-block direction="column" align="start" :gap="16">
         <text class="demo-text">通过 z-index 设置元素层级</text>
@@ -56,7 +53,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 新增：懒渲染 -->
     <demo-section title="懒渲染">
       <demo-block direction="column" align="start" :gap="16">
         <text class="demo-text">lazy-render 控制是否在显示时才渲染节点</text>
@@ -67,7 +63,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 新增：事件处理 -->
     <demo-section title="事件处理">
       <demo-block direction="column" align="start" :gap="16">
         <ui-button type="primary" @click="showEvent = true">监听事件</ui-button>
@@ -80,7 +75,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 新增：自定义样式 -->
     <demo-section title="自定义样式">
       <demo-block :cols="2" :gap="24">
         <ui-button size="small" @click="showCustomClass = true">自定义类名</ui-button>
@@ -88,32 +82,26 @@
       </demo-block>
     </demo-section>
 
-    <!-- 新增：综合示例 - 加载遮罩 -->
     <demo-section title="综合示例 - 加载遮罩">
       <demo-block>
         <ui-button type="primary" @click="showLoading">加载中遮罩</ui-button>
       </demo-block>
     </demo-section>
 
-    <!-- 新增：综合示例 - 确认弹窗 -->
     <demo-section title="综合示例 - 确认弹窗">
       <demo-block>
         <ui-button type="primary" @click="showConfirm = true">确认弹窗</ui-button>
       </demo-block>
     </demo-section>
 
-    <!-- 新增：综合示例 - 图片预览 -->
     <demo-section title="综合示例 - 图片预览">
       <demo-block>
         <ui-button type="primary" @click="showPreview = true">图片预览</ui-button>
       </demo-block>
     </demo-section>
 
-    <!-- Overlay Components -->
-    <!-- 基础遮罩 -->
     <ui-overlay v-model:show="show1" @click="show1 = false" />
 
-    <!-- 嵌入内容 -->
     <ui-overlay v-model:show="show2" @click="show2 = false">
       <view class="overlay-content" @click.stop>
         <text class="overlay-text">嵌入内容</text>
@@ -121,42 +109,36 @@
       </view>
     </ui-overlay>
 
-    <!-- 自定义透明度 -->
     <ui-overlay v-model:show="showOpacityOverlay" :opacity="currentOpacity" @click="showOpacityOverlay = false">
       <view class="overlay-content" @click.stop>
         <text class="overlay-text">透明度: {{ currentOpacity }}</text>
       </view>
     </ui-overlay>
 
-    <!-- 动画时长 -->
     <ui-overlay v-model:show="showDurationOverlay" :duration="currentDuration" @click="showDurationOverlay = false">
       <view class="overlay-content" @click.stop>
         <text class="overlay-text">时长: {{ currentDuration }}ms</text>
       </view>
     </ui-overlay>
 
-    <!-- 动画缓动 -->
     <ui-overlay v-model:show="showTimingOverlay" :duration="500" :enter-timing-function="currentTiming" :leave-timing-function="currentTiming" @click="showTimingOverlay = false">
       <view class="overlay-content" @click.stop>
         <text class="overlay-text">缓动: {{ currentTiming }}</text>
       </view>
     </ui-overlay>
 
-    <!-- 层级设置 -->
     <ui-overlay v-model:show="showZIndexOverlay" :z-index="currentZIndex" @click="showZIndexOverlay = false">
       <view class="overlay-content" @click.stop>
         <text class="overlay-text">z-index: {{ currentZIndex }}</text>
       </view>
     </ui-overlay>
 
-    <!-- 懒渲染 -->
     <ui-overlay v-model:show="showLazyOverlay" :lazy-render="currentLazyRender" @click="showLazyOverlay = false">
       <view class="overlay-content" @click.stop>
         <text class="overlay-text">lazy-render: {{ currentLazyRender }}</text>
       </view>
     </ui-overlay>
 
-    <!-- 事件处理 -->
     <ui-overlay v-model:show="showEvent" :duration="400" @open="onOverlayOpen" @opened="onOverlayOpened" @close="onOverlayClose" @closed="onOverlayClosed" @click="onOverlayClick">
       <view class="overlay-content" @click.stop>
         <text class="overlay-text">点击遮罩查看事件</text>
@@ -164,7 +146,6 @@
       </view>
     </ui-overlay>
 
-    <!-- 自定义类名 -->
     <ui-overlay v-model:show="showCustomClass" custom-class="my-overlay" @click="showCustomClass = false">
       <view class="overlay-content" @click.stop>
         <text class="overlay-text">自定义类名</text>
@@ -172,14 +153,12 @@
       </view>
     </ui-overlay>
 
-    <!-- 自定义样式 -->
     <ui-overlay v-model:show="showCustomStyle" :custom-style="{ backdropFilter: 'blur(10px)', background: 'rgba(255,255,255,0.3)' }" @click="showCustomStyle = false">
       <view class="overlay-content overlay-content--dark" @click.stop>
         <text class="overlay-text overlay-text--dark">毛玻璃效果</text>
       </view>
     </ui-overlay>
 
-    <!-- 加载遮罩 -->
     <ui-overlay v-model:show="showLoadingOverlay" :opacity="0.5">
       <view class="loading-content">
         <ui-loading size="48rpx" color="#fff" />
@@ -187,7 +166,6 @@
       </view>
     </ui-overlay>
 
-    <!-- 确认弹窗 -->
     <ui-overlay v-model:show="showConfirm" :opacity="0.6">
       <view class="confirm-dialog" @click.stop>
         <view class="confirm-header">
@@ -203,7 +181,6 @@
       </view>
     </ui-overlay>
 
-    <!-- 图片预览 -->
     <ui-overlay v-model:show="showPreview" :opacity="0.9" @click="showPreview = false">
       <view class="preview-content">
         <image class="preview-image" src="https://fastly.jsdelivr.net/npm/@vant/assets/cat.jpeg" mode="aspectFit" />

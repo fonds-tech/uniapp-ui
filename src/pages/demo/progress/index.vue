@@ -47,7 +47,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 新增：自定义颜色 -->
     <demo-section title="自定义颜色">
       <demo-block direction="column" :gap="24">
         <view v-for="item in customColorItems" :key="item.label" class="progress-item-group">
@@ -79,7 +78,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 新增：背景色 -->
     <demo-section title="轨道背景色">
       <demo-block direction="column" :gap="24">
         <text class="demo-text">自定义轨道背景色</text>
@@ -113,7 +111,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 新增：隐藏百分比 -->
     <demo-section title="隐藏百分比">
       <demo-block direction="column" :gap="24">
         <view class="progress-item-group">
@@ -129,7 +126,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 新增：自定义文本 -->
     <demo-section title="自定义文本">
       <demo-block direction="column" :gap="24">
         <view v-for="item in customTextItems" :key="item.label" class="progress-item-group">
@@ -146,7 +142,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 新增：文本样式 -->
     <demo-section title="文本样式">
       <demo-block direction="column" :gap="24">
         <text class="demo-text">自定义文本颜色、大小和粗细</text>
@@ -175,7 +170,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 新增：事件处理 -->
     <demo-section title="事件处理">
       <demo-block direction="column" :gap="16">
         <text class="demo-text">当进度达到 100% 时触发 finish 事件</text>
@@ -189,7 +183,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 新增：自定义样式 -->
     <demo-section title="自定义样式">
       <demo-block direction="column" :gap="24">
         <view v-for="item in customStyleItems" :key="item.label" class="progress-item-group">

@@ -28,7 +28,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- Hidden Poster Component -->
     <ui-poster ref="posterRef" :width="700" :height="900" @ready="onPosterReady" />
   </demo-page>
 </template>

@@ -1,15 +1,12 @@
 <template>
   <view class="h-screen flex flex-col bg-[#F7F8FA]">
-    <!-- 顶部搜索栏 (固定) -->
     <view class="bg-white z-50 flex-none" :style="{ paddingTop: `${safeAreaInsets?.top}px` }">
       <view class="px-[24rpx] py-[16rpx] flex items-center">
-        <!-- 搜索框 -->
         <view class="flex-1 h-[72rpx] bg-[#F5F7FA] rounded-full flex items-center px-[24rpx] active:bg-[#EFF1F4] transition-colors" @click="showSearch = true">
           <view class="i-lucide-search text-[32rpx] text-[#86909C] mr-[12rpx]" />
           <text class="text-[28rpx] text-[#86909C]">搜索组件...</text>
         </view>
 
-        <!-- 右侧小图标 (可选，如设置/关于) -->
         <!-- <view class="ml-[24rpx] w-[72rpx] h-[72rpx] flex items-center justify-center rounded-full active:bg-[#F5F7FA]">
           <view class="i-lucide-settings-2 text-[40rpx] text-[#1D1D1F]" />
         </view> -->
@@ -17,12 +14,9 @@
       <view class="h-[1rpx] w-full bg-[#F0F0F2]" />
     </view>
 
-    <!-- 主体内容区 (左右分栏) -->
     <view class="flex-1 flex overflow-hidden">
-      <!-- 左侧分类导航 -->
       <scroll-view scroll-y class="w-[180rpx] h-full bg-[#F7F8FA]" :show-scrollbar="false">
         <view class="pb-[180rpx]">
-          <!-- 底部垫高，防止被tabbar遮挡 -->
           <view
             v-for="(category, index) in componentCategories"
             :key="category.name"
@@ -30,7 +24,6 @@
             :class="activeCategoryIndex === index ? 'bg-white' : 'bg-transparent'"
             @click="activeCategoryIndex = index"
           >
-            <!-- 选中指示条 -->
             <view v-if="activeCategoryIndex === index" class="absolute left-0 top-[50%] translate-y-[-50%] w-[6rpx] h-[32rpx] rounded-r-full bg-[#2979FF]" />
 
             <text
@@ -43,10 +36,8 @@
         </view>
       </scroll-view>
 
-      <!-- 右侧组件列表 -->
       <scroll-view scroll-y class="flex-1 h-full bg-white" :show-scrollbar="false">
         <view class="px-[24rpx] pt-[24rpx] pb-[180rpx]">
-          <!-- 分类标题 -->
           <view class="flex items-center justify-between mb-[32rpx] pl-[8rpx]">
             <view>
               <text class="text-[36rpx] font-900 text-[#1D1D1F] block">{{ currentCategory.name }}</text>
@@ -55,7 +46,6 @@
             <view class="i-lucide-layers text-[48rpx] text-[#F0F0F2]" />
           </view>
 
-          <!-- 组件列表 -->
           <view class="grid grid-cols-1 gap-[24rpx]">
             <view
               v-for="comp in currentCategory.components"
@@ -63,18 +53,15 @@
               class="flex items-center p-[24rpx] bg-[#F9FAFB] rounded-[20rpx] active:scale-[0.99] active:bg-[#F2F3F5] transition-all border border-transparent active:border-[#E5E7EB]"
               @click="navigateToDemo(comp.path)"
             >
-              <!-- 图标容器 -->
               <view class="w-[80rpx] h-[80rpx] bg-white rounded-[16rpx] flex items-center justify-center shadow-sm mr-[24rpx]">
                 <view class="text-[40rpx] text-[#1D1D1F]" :class="[comp.icon]" />
               </view>
 
-              <!-- 文字 -->
               <view class="flex-1">
                 <text class="text-[30rpx] font-bold text-[#1D1D1F] block">{{ comp.name }}</text>
                 <text class="text-[22rpx] text-[#86909C] block mt-[4rpx]">{{ comp.desc }}</text>
               </view>
 
-              <!-- 箭头 -->
               <view class="i-lucide-chevron-right text-[32rpx] text-[#C0C4CC]" />
             </view>
           </view>
@@ -82,7 +69,6 @@
       </scroll-view>
     </view>
 
-    <!-- 搜索弹窗 -->
     <ui-popup v-model:show="showSearch" position="bottom" round custom-style="height: 90vh;">
       <view class="flex flex-col h-full bg-[#F7F8FA] rounded-t-[32rpx] overflow-hidden">
         <view class="px-[32rpx] py-[24rpx] bg-white border-b border-[#F0F0F2] flex items-center sticky top-0 z-10">

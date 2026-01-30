@@ -2,7 +2,6 @@
   <demo-page>
     <demo-section title="Radio 单选框" desc="用于在多个选项中选择单个结果" :card="false" />
 
-    <!-- ==================== 基础用法 ==================== -->
     <demo-section title="基础用法">
       <demo-block :cols="2" :gap="40">
         <view class="shape-group">
@@ -24,7 +23,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- ==================== 圆角设置 ==================== -->
     <demo-section title="圆角设置">
       <demo-block :cols="2" :gap="40">
         <view class="shape-group">
@@ -44,7 +42,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- ==================== 尺寸设置 ==================== -->
     <demo-section title="尺寸设置">
       <demo-block :cols="2" :gap="40">
         <view class="shape-group">
@@ -66,7 +63,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- ==================== 颜色主题 ==================== -->
     <demo-section title="颜色主题">
       <demo-block :cols="2" :gap="40">
         <view class="shape-group">
@@ -88,7 +84,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- ==================== 图标样式 ==================== -->
     <demo-section title="图标样式">
       <demo-block :cols="2" :gap="40">
         <view class="shape-group">
@@ -110,7 +105,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- ==================== 禁用状态 ==================== -->
     <demo-section title="禁用状态">
       <demo-block :cols="2" :gap="40">
         <view class="shape-group">
@@ -128,7 +122,7 @@
           </ui-radio-group>
         </view>
       </demo-block>
-      <!-- 整组禁用 -->
+
       <demo-block :cols="2" :gap="40" class="mt-20">
         <view class="shape-group">
           <ui-text size="small" color="secondary" class="group-label">整组禁用 (dot)</ui-text>
@@ -147,7 +141,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- ==================== 只读状态 ==================== -->
     <demo-section title="只读状态">
       <demo-block :cols="2" :gap="40">
         <view class="shape-group">
@@ -167,7 +160,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- ==================== 标签样式 ==================== -->
     <demo-section title="标签样式">
       <demo-block :cols="2" :gap="40">
         <view class="shape-group">
@@ -193,7 +185,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- ==================== 标签位置 ==================== -->
     <demo-section title="标签位置">
       <demo-block :cols="2" :gap="40">
         <view class="shape-group">
@@ -211,7 +202,7 @@
           </ui-radio-group>
         </view>
       </demo-block>
-      <!-- 整组标签位置 -->
+
       <demo-block :cols="2" :gap="40" class="mt-20">
         <view class="shape-group">
           <ui-text size="small" color="secondary" class="group-label">整组左侧 (dot)</ui-text>
@@ -230,7 +221,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- ==================== 交互限制 ==================== -->
     <demo-section title="交互限制">
       <demo-block :cols="2" :gap="40">
         <view class="shape-group">
@@ -250,7 +240,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- ==================== 排列方式 ==================== -->
     <demo-section title="排列方式">
       <demo-block direction="column" :gap="24">
         <view class="layout-group">
@@ -280,7 +269,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- ==================== Group 统一配置 ==================== -->
     <demo-section title="Group 统一配置">
       <demo-block :cols="2" :gap="40">
         <view class="shape-group">
@@ -300,7 +288,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- ==================== 自定义插槽 ==================== -->
     <demo-section title="自定义插槽">
       <demo-block :cols="2" :gap="40">
         <view class="shape-group">
@@ -340,7 +327,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- ==================== 事件监听 ==================== -->
     <demo-section title="事件监听">
       <demo-block :cols="2" :gap="40">
         <view class="shape-group">
@@ -362,7 +348,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- ==================== 搭配单元格 ==================== -->
     <demo-section title="搭配单元格">
       <demo-block direction="column">
         <ui-cell-group :radius="12">
@@ -398,58 +383,45 @@ definePage({
 
 const toast = useToast()
 
-// ==================== 基础用法 ====================
 const basicDot = ref("a")
 const basicIcon = ref("a")
 
-// ==================== 圆角设置 ====================
 const roundDot = ref("round")
 const roundIcon = ref("round")
 
-// ==================== 尺寸设置 ====================
 const sizeDot = ref("m")
 const sizeIcon = ref("m")
 
-// ==================== 颜色主题 ====================
 const colorDot = ref("green")
 const colorIcon = ref("green")
 
-// ==================== 图标样式 ====================
 const iconStyleDot = ref("color")
 const iconStyleIcon = ref("color")
 
-// ==================== 禁用状态 ====================
 const disabledGroupDot = ref("a")
 const disabledGroupIcon = ref("a")
 
-// ==================== 标签样式 ====================
 const labelStyleDot = ref("size")
 const labelStyleIcon = ref("size")
 
-// ==================== 标签位置 ====================
 const labelPosDot = ref("right")
 const labelPosIcon = ref("right")
 const labelLeftGroupDot = ref("a")
 const labelLeftGroupIcon = ref("a")
 
-// ==================== 交互限制 ====================
 const labelDisabledDot = ref("a")
 const labelDisabledIcon = ref("a")
 
-// ==================== 排列方式 ====================
 const layoutH = ref("a")
 const layoutV = ref("a")
 const layoutGap = ref("a")
 
-// ==================== Group 统一配置 ====================
 const groupConfigDot = ref("a")
 const groupConfigIcon = ref("a")
 
-// ==================== 自定义插槽 ====================
 const slotValue = ref("heart")
 const slotContentValue = ref("vip")
 
-// ==================== 事件监听 ====================
 const eventDot = ref("a")
 const eventIcon = ref("a")
 const eventLogDot = ref("点击查看事件")
@@ -465,7 +437,6 @@ function onChangeIcon(value: string | number) {
   toast.text(`icon: ${value}`)
 }
 
-// ==================== 搭配单元格 ====================
 const cellValue = ref("wechat")
 </script>
 

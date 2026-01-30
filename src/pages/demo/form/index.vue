@@ -29,7 +29,6 @@
       </ui-form>
     </demo-section>
 
-    <!-- 新增：冒号设置 -->
     <demo-section title="冒号设置">
       <ui-form :model="formDataColon" colon>
         <ui-form-item label="姓名">
@@ -68,7 +67,6 @@
       </view>
     </demo-section>
 
-    <!-- 新增：标签样式 -->
     <demo-section title="标签样式">
       <ui-form :model="formDataLabelStyle" label-width="180rpx" label-size="30rpx" label-color="#1989fa" label-weight="600">
         <ui-form-item label="自定义标签">
@@ -80,7 +78,6 @@
       </ui-form>
     </demo-section>
 
-    <!-- 新增：内容对齐方式 -->
     <demo-section title="内容对齐方式">
       <ui-form :model="formDataAlign1" content-align="left" label-width="140rpx">
         <ui-form-item label="左对齐">
@@ -99,7 +96,6 @@
       </ui-form>
     </demo-section>
 
-    <!-- 新增：边框设置 -->
     <demo-section title="边框设置">
       <ui-form :model="formDataBorder1" border>
         <ui-form-item label="有边框">
@@ -124,7 +120,6 @@
       </ui-form>
     </demo-section>
 
-    <!-- 新增：只读状态 -->
     <demo-section title="只读状态">
       <ui-form :model="formDataReadonly" readonly>
         <ui-form-item label="用户名">
@@ -136,7 +131,6 @@
       </ui-form>
     </demo-section>
 
-    <!-- 新增：验证触发时机 -->
     <demo-section title="验证触发时机">
       <demo-block :cols="3" :gap="16">
         <ui-button size="small" @click="currentTrigger = 'blur'">失焦触发</ui-button>
@@ -152,7 +146,6 @@
       <ui-button type="primary" size="small" @click="onTriggerSubmit">提交验证</ui-button>
     </demo-section>
 
-    <!-- 新增：自定义验证器 -->
     <demo-section title="自定义验证器">
       <ui-form ref="customFormRef" :model="formDataCustom" :rules="customRules">
         <ui-form-item label="年龄" prop="age">
@@ -171,7 +164,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 新增：异步验证 -->
     <demo-section title="异步验证">
       <ui-form ref="asyncFormRef" :model="formDataAsync" :rules="asyncRules">
         <ui-form-item label="用户名" prop="username">
@@ -181,7 +173,6 @@
       <ui-button type="primary" custom-style="margin-top: 24rpx" @click="onAsyncSubmit">检查用户名</ui-button>
     </demo-section>
 
-    <!-- 新增：错误信息样式 -->
     <demo-section title="错误信息样式">
       <ui-form ref="errorFormRef" :model="formDataError" :rules="errorRules" error-message-size="24rpx" error-message-color="#ff9500" error-message-align="right">
         <ui-form-item label="必填字段" prop="value">
@@ -191,7 +182,6 @@
       <ui-button type="primary" size="small" custom-style="margin-top: 24rpx" @click="onErrorSubmit">触发验证</ui-button>
     </demo-section>
 
-    <!-- 新增：表单项自定义 -->
     <demo-section title="表单项自定义">
       <ui-form :model="formDataItem">
         <ui-form-item label="自定义标签" label-width="200rpx" label-color="#ee0a24" label-size="28rpx" label-weight="500" :padding="20">
@@ -206,7 +196,6 @@
       </ui-form>
     </demo-section>
 
-    <!-- 新增：事件处理 -->
     <demo-section title="事件处理">
       <text class="demo-text">{{ eventLog }}</text>
       <ui-form ref="eventFormRef" :model="formDataEvent" :rules="eventRules" @submit="onFormSubmit" @failed="onFormFailed">

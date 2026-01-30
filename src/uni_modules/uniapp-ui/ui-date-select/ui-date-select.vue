@@ -1,6 +1,5 @@
 <template>
   <view class="ui-date-select" :class="[classs, props.customClass]" :style="[style]">
-    <!-- 可点击的展示区域 -->
     <view class="ui-date-select__trigger" :hover-class="hoverClass" :hover-stay-time="50" @click="handleClick">
       <view class="ui-date-select__value" :style="[valueStyle]">
         <slot name="display" :text="displayText" :value="currentValue" :placeholder="props.placeholder">
@@ -15,7 +14,6 @@
       </view>
     </view>
 
-    <!-- DatePicker 弹窗 -->
     <ui-date-picker
       ref="datePickerRef"
       :show="visible"

@@ -1,6 +1,5 @@
 <template>
   <demo-page>
-    <!-- 基础用法 -->
     <demo-section title="基础用法">
       <demo-block direction="column" :gap="16">
         <ui-steps :active="active1">
@@ -16,7 +15,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 带描述信息 -->
     <demo-section title="带描述信息">
       <demo-block direction="column">
         <ui-steps :active="active2">
@@ -32,7 +30,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 垂直方向 -->
     <demo-section title="垂直方向">
       <demo-block direction="column" :gap="16">
         <ui-steps :active="active3" direction="vertical">
@@ -48,7 +45,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 自定义颜色 -->
     <demo-section title="自定义颜色">
       <demo-block direction="column" :gap="24">
         <text class="demo-text">自定义激活颜色:</text>
@@ -74,7 +70,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 自定义图标 -->
     <demo-section title="自定义图标">
       <demo-block direction="column" :gap="24">
         <text class="demo-text">统一设置图标:</text>
@@ -100,7 +95,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 步骤状态 -->
     <demo-section title="步骤状态">
       <demo-block direction="column" :gap="24">
         <text class="demo-text">错误状态:</text>
@@ -127,7 +121,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 可点击步骤 -->
     <demo-section title="可点击步骤">
       <demo-block direction="column" align="start" :gap="16">
         <text class="demo-text">{{ clickLog }}</text>
@@ -144,7 +137,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 简洁模式 -->
     <demo-section title="简洁模式">
       <demo-block direction="column" :gap="24">
         <text class="demo-text">只显示图标，隐藏标题和描述:</text>
@@ -161,7 +153,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 点状模式 -->
     <demo-section title="点状模式">
       <demo-block direction="column" :gap="24">
         <text class="demo-text">用小圆点代替数字，更加简洁:</text>
@@ -178,7 +169,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 垂直居中对齐 -->
     <demo-section title="垂直居中对齐">
       <demo-block direction="column">
         <ui-steps :active="centerActive" direction="vertical" center>
@@ -193,7 +183,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 垂直带图标 -->
     <demo-section title="垂直带图标">
       <demo-block direction="column">
         <ui-steps :active="verticalIconActive" direction="vertical" active-icon="check-circle-fill" inactive-icon="time-circle" finish-icon="check-circle-fill" icon-size="44rpx">
@@ -213,7 +202,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 自定义内容插槽 -->
     <demo-section title="自定义内容">
       <demo-block direction="column">
         <ui-steps :active="customContentActive" direction="vertical">
@@ -250,7 +238,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 综合示例：订单跟踪 -->
     <demo-section title="订单跟踪示例">
       <demo-block direction="column">
         <view class="order-track">
@@ -269,7 +256,6 @@
       </demo-block>
     </demo-section>
 
-    <!-- 综合示例：表单步骤 -->
     <demo-section title="表单步骤示例">
       <demo-block direction="column" :gap="24">
         <ui-steps :active="formStep">

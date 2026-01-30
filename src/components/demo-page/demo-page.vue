@@ -1,7 +1,7 @@
 <template>
   <view class="demo-page" :class="[customClass]" :style="[style]">
     <slot />
-    <!-- 全局 Toast 组件，供 useToast() 使用 -->
+
     <ui-toast ref="toastRef" />
   </view>
 </template>
