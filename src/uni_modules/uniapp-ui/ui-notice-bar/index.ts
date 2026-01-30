@@ -1,6 +1,6 @@
 import type NoticeBar from "./ui-notice-bar.vue"
-import type { PropType, ExtractPropTypes } from "vue"
-import { styleProp, buildDefaultProps } from "../utils/props"
+import type { PropType, CSSProperties, ExtractPropTypes } from "vue"
+import { buildDefaultProps } from "../utils/props"
 
 const defaultProps = buildDefaultProps("notice-bar", {
   text: "",
@@ -110,7 +110,7 @@ export const noticeBarProps = {
   /**
    * 自定义样式
    */
-  customStyle: defaultProps("customStyle", styleProp),
+  customStyle: defaultProps("customStyle", { type: [String, Object] as PropType<string | CSSProperties> }),
 }
 export const noticeBarEmits = {
   click: (index: number) => true,

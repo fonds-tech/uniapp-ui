@@ -1,6 +1,6 @@
 import type IndexBar from "./ui-index-bar.vue"
-import type { Ref, PropType, InjectionKey, ExtractPropTypes } from "vue"
-import { styleProp, buildDefaultProps } from "../utils/props"
+import type { Ref, PropType, InjectionKey, CSSProperties, ExtractPropTypes } from "vue"
+import { buildDefaultProps } from "../utils/props"
 
 export const indexBarKey: InjectionKey<IndexBarProvide> = Symbol("ui-index-bar")
 const defaultProps = buildDefaultProps("index-bar", {
@@ -31,7 +31,7 @@ export const indexBarProps = {
   /**
    * 自定义样式
    */
-  customStyle: defaultProps("customStyle", styleProp),
+  customStyle: defaultProps("customStyle", { type: [String, Object] as PropType<string | CSSProperties> }),
 }
 export const indexBarEmits = {
   select: (index: number | string) => index,

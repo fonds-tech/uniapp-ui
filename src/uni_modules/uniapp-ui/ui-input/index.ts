@@ -1,7 +1,7 @@
 import type Input from "./ui-input.vue"
-import type { PropType, ExtractPropTypes } from "vue"
 import type { InputType, InputConfirmType } from "@uni-helper/uni-types"
-import { styleProp, buildDefaultProps } from "../utils/props"
+import type { PropType, CSSProperties, ExtractPropTypes } from "vue"
+import { buildDefaultProps } from "../utils/props"
 
 const defaultProps = buildDefaultProps("input", {
   modelValue: "",
@@ -117,7 +117,7 @@ export const inputProps = {
   /**
    * 输入框为空时的占位符样式
    */
-  placeholderStyle: defaultProps("placeholderStyle", styleProp),
+  placeholderStyle: defaultProps("placeholderStyle", { type: [String, Object] as PropType<string | CSSProperties> }),
   /**
    * 设置右下角按钮的文字，兼容性详见uni-app文档
    */
@@ -241,7 +241,7 @@ export const inputProps = {
   /**
    * 自定义样式
    */
-  customStyle: defaultProps("customStyle", styleProp),
+  customStyle: defaultProps("customStyle", { type: [String, Object] as PropType<string | CSSProperties> }),
 }
 export const inputEmits = {
   click: () => true,

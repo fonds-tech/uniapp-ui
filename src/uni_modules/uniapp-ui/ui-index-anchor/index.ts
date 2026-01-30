@@ -1,6 +1,6 @@
 import type IndexAnchor from "./ui-index-anchor.vue"
-import type { ExtractPropTypes } from "vue"
-import { styleProp, buildDefaultProps } from "../utils/props"
+import type { PropType, CSSProperties, ExtractPropTypes } from "vue"
+import { buildDefaultProps } from "../utils/props"
 
 const defaultProps = buildDefaultProps("index-anchor", {
   name: "",
@@ -70,7 +70,7 @@ export const indexAnchorProps = {
   /**
    * 自定义样式
    */
-  customStyle: defaultProps("customStyle", styleProp),
+  customStyle: defaultProps("customStyle", { type: [String, Object] as PropType<string | CSSProperties> }),
 }
 export const indexAnchorEmits = {
   blur: () => true,

@@ -1,7 +1,7 @@
 import type ConfigProvider from "./ui-config-provider.vue"
 import type { Mitt } from "../utils/mitt"
-import type { PropType, InjectionKey, ExtractPropTypes } from "vue"
-import { styleProp, buildDefaultProps } from "../utils/props"
+import type { PropType, InjectionKey, CSSProperties, ExtractPropTypes } from "vue"
+import { buildDefaultProps } from "../utils/props"
 
 /**
  * 主题色变量名称
@@ -83,7 +83,7 @@ export const configProviderProps = {
   /**
    * 自定义样式
    */
-  customStyle: defaultProps("customStyle", styleProp),
+  customStyle: defaultProps("customStyle", { type: [String, Object] as PropType<string | CSSProperties> }),
 }
 export const configProviderEmits = {
   scroll: (options: Page.PageScrollOption) => options,

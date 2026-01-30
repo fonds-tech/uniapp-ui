@@ -1,6 +1,6 @@
 import type Tabbar from "./ui-tabbar.vue"
-import type { PropType, InjectionKey, ExtractPropTypes } from "vue"
-import { styleProp, buildDefaultProps } from "../utils/props"
+import type { PropType, InjectionKey, CSSProperties, ExtractPropTypes } from "vue"
+import { buildDefaultProps } from "../utils/props"
 
 export const tabbarKey: InjectionKey<TabbarProvide> = Symbol("ui-tabbar")
 const defaultProps = buildDefaultProps("tabbar", {
@@ -72,7 +72,7 @@ export const tabbarProps = {
   /**
    * 自定义样式
    */
-  customStyle: defaultProps("customStyle", styleProp),
+  customStyle: defaultProps("customStyle", { type: [String, Object] as PropType<string | CSSProperties> }),
   /**
    * 切换前的回调函数，返回 false 或 Promise.reject 可阻止切换
    */

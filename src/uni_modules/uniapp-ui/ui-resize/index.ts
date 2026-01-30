@@ -1,6 +1,6 @@
 import type Resize from "./ui-resize.vue"
-import type { ExtractPropTypes } from "vue"
-import { styleProp, buildDefaultProps } from "../utils/props"
+import type { PropType, CSSProperties, ExtractPropTypes } from "vue"
+import { buildDefaultProps } from "../utils/props"
 
 const defaultProps = buildDefaultProps("resize", {
   width: undefined,
@@ -30,7 +30,7 @@ export const resizeProps = {
   /**
    * 自定义样式
    */
-  customStyle: defaultProps("customStyle", styleProp),
+  customStyle: defaultProps("customStyle", { type: [String, Object] as PropType<string | CSSProperties> }),
 }
 export const resizeEmits = {
   resize: (value: any) => true,

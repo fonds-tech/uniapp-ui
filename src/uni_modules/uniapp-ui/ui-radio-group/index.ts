@@ -1,7 +1,7 @@
 import type RadioGroup from "./ui-radio-group.vue"
-import type { InjectionKey, ExtractPropTypes } from "vue"
+import type { PropType, InjectionKey, CSSProperties, ExtractPropTypes } from "vue"
+import { buildDefaultProps } from "../utils/props"
 import { isNumber, isString } from "../utils/check"
-import { styleProp, buildDefaultProps } from "../utils/props"
 
 export const radioGroupKey: InjectionKey<RadioGroupProvide> = Symbol("ui-radio-group")
 const defaultProps = buildDefaultProps("radio-group", {
@@ -117,7 +117,7 @@ export const radioGroupProps = {
   /**
    * 自定义样式
    */
-  customStyle: defaultProps("customStyle", styleProp),
+  customStyle: defaultProps("customStyle", { type: [String, Object] as PropType<string | CSSProperties> }),
 }
 export const radioGroupEmits = {
   click: () => true,

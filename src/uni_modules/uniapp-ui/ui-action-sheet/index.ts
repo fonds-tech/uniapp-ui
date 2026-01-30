@@ -1,6 +1,6 @@
 import type ActionSheet from "./ui-action-sheet.vue"
 import type { PropType, CSSProperties, ExtractPropTypes } from "vue"
-import { styleProp, buildDefaultProps } from "../utils/props"
+import { buildDefaultProps } from "../utils/props"
 
 const defaultProps = buildDefaultProps("action-sheet", {
   show: false,
@@ -113,11 +113,11 @@ export const actionSheetProps = {
   /**
    * 操作项标题的样式
    */
-  actionTitleStyle: defaultProps("actionTitleStyle", styleProp),
+  actionTitleStyle: defaultProps("actionTitleStyle", { type: [String, Object] as PropType<string | CSSProperties> }),
   /**
    * 操作项描述的样式
    */
-  actionDescriptionStyle: defaultProps("actionDescriptionStyle", styleProp),
+  actionDescriptionStyle: defaultProps("actionDescriptionStyle", { type: [String, Object] as PropType<string | CSSProperties> }),
   /**
    * 动画过渡的时间
    */
@@ -137,7 +137,7 @@ export const actionSheetProps = {
   /**
    * 遮罩层样式
    */
-  overlayStyle: defaultProps("overlayStyle", styleProp),
+  overlayStyle: defaultProps("overlayStyle", { type: [String, Object] as PropType<string | CSSProperties> }),
   /**
    * 是否在显示时才渲染节点
    */
@@ -165,7 +165,7 @@ export const actionSheetProps = {
   /**
    * 自定义样式
    */
-  customStyle: defaultProps("customStyle", styleProp),
+  customStyle: defaultProps("customStyle", { type: [String, Object] as PropType<string | CSSProperties> }),
 }
 export interface ActionSheetAction {
   /** 选项标题 */

@@ -1,6 +1,6 @@
 import type NumberRoll from "./ui-number-roll.vue"
-import type { ExtractPropTypes } from "vue"
-import { styleProp, buildDefaultProps } from "../utils/props"
+import type { PropType, CSSProperties, ExtractPropTypes } from "vue"
+import { buildDefaultProps } from "../utils/props"
 
 const defaultProps = buildDefaultProps("number-roll", {
   value: 0,
@@ -60,7 +60,7 @@ export const numberRollProps = {
   /**
    * 自定义样式
    */
-  customStyle: defaultProps("customStyle", styleProp),
+  customStyle: defaultProps("customStyle", { type: [String, Object] as PropType<string | CSSProperties> }),
 }
 export const numberRollEmits = {}
 

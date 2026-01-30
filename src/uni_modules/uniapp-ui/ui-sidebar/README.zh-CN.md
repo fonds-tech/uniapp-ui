@@ -17,17 +17,17 @@ UiSidebar 组件，属性与事件以源码注释为准。
 | 参数        | 说明                         | 类型                                                  | 默认值 | 可选值 |
 | ----------- | ---------------------------- | ----------------------------------------------------- | ------ | ------ |
 | modelValue  | 绑定值                       | makeNumericProp(0)                                    | -      | -      |
-| width       | 宽度                         | [Number, String]                                           | -      | -      |
-| height      | 高度，默认自动               | [Number, String]                                           | -      | -      |
+| width       | 宽度                         | [Number, String]                                      | -      | -      |
+| height      | 高度，默认自动               | [Number, String]                                      | -      | -      |
 | duration    | 激活线条动画过渡时间，单位ms | makeNumericProp(300)                                  | -      | -      |
 | background  | 背景颜色                     | string                                                | -      | -      |
 | lineColor   | 激活线条颜色                 | string                                                | -      | -      |
-| lineWidth   | 激活线条宽度                 | [Number, String]                                           | -      | -      |
+| lineWidth   | 激活线条宽度                 | [Number, String]                                      | -      | -      |
 | lineHeight  | 激活线条高度                 | makeNumericProp("40rpx")                              | -      | -      |
-| lineRadius  | 激活线条圆角                 | [Number, String]                                           | -      | -      |
+| lineRadius  | 激活线条圆角                 | [Number, String]                                      | -      | -      |
 | showLine    | 是否显示线条                 | truthProp                                             | -      | -      |
 | autoScroll  | 是否自动滚动                 | truthProp                                             | -      | -      |
-| zIndex      | 元素层级                     | [Number, String]                                           | -      | -      |
+| zIndex      | 元素层级                     | [Number, String]                                      | -      | -      |
 | customClass | 自定义类名                   | string                                                | -      | -      |
 | customStyle | 自定义样式                   | [String, Object] as PropType<string \| CSSProperties> | -      | -      |
 

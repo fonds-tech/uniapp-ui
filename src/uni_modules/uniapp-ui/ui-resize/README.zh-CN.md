@@ -16,8 +16,8 @@ UiResize 组件，属性与事件以源码注释为准。
 
 | 参数        | 说明       | 类型             | 默认值 | 可选值 |
 | ----------- | ---------- | ---------------- | ------ | ------ |
-| width       | 初始宽度   | [Number, String]      | -      | -      |
-| height      | 初始高度   | [Number, String]      | -      | -      |
+| width       | 初始宽度   | [Number, String] | -      | -      |
+| height      | 初始高度   | [Number, String] | -      | -      |
 | disabled    | 是否禁用   | boolean          | -      | -      |
 | customClass | 自定义类名 | string           | ""     | -      |
 | customStyle | 自定义样式 | string \| object | ""     | -      |

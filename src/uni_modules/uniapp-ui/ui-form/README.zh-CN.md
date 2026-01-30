@@ -24,17 +24,17 @@ UiForm 组件，属性与事件以源码注释为准。
 | required           | 是否为必填项，会显示标签文字右侧\*号                                     | boolean                                                                   | -          | -      |
 | disabled           | 是否禁用表单                                                             | boolean                                                                   | -          | -      |
 | readonly           | 是否只读状态                                                             | boolean                                                                   | -          | -      |
-| labelGap           | 表单域标签文字和内容的间隔                                               | [Number, String]                                                               | -          | -      |
-| labelSize          | 表单域标签文字大小                                                       | [Number, String]                                                               | -          | -      |
+| labelGap           | 表单域标签文字和内容的间隔                                               | [Number, String]                                                          | -          | -      |
+| labelSize          | 表单域标签文字大小                                                       | [Number, String]                                                          | -          | -      |
 | labelColor         | 表单域标签文字颜色                                                       | string                                                                    | -          | -      |
-| labelWeight        | 表单域标签文字字重                                                       | [Number, String]                                                               | -          | -      |
+| labelWeight        | 表单域标签文字字重                                                       | [Number, String]                                                          | -          | -      |
 | labelWidth         | 表单域标签文字宽度                                                       | makeNumericProp("auto")                                                   | -          | -      |
-| labelLineHeight    | 表单域标签文字行高                                                       | [Number, String]                                                               | -          | -      |
+| labelLineHeight    | 表单域标签文字行高                                                       | [Number, String]                                                          | -          | -      |
 | labelPosition      | 表单域标签文字位置，可选值为 left right top                              | makeStringProp<FormLabelPosition>("left")                                 | -          | -      |
 | contentAlign       | 输入内容对齐方式，可选值为 left center right                             | makeStringProp<FormContentAlign>("left")                                  | -          | -      |
-| errorMessageSize   | 校验错误信息文字大小                                                     | [Number, String]                                                               | -          | -      |
+| errorMessageSize   | 校验错误信息文字大小                                                     | [Number, String]                                                          | -          | -      |
 | errorMessageColor  | 校验错误信息文字颜色                                                     | string                                                                    | -          | -      |
-| errorMessageWeight | 校验错误信息文字字重                                                     | [Number, String]                                                               | -          | -      |
+| errorMessageWeight | 校验错误信息文字字重                                                     | [Number, String]                                                          | -          | -      |
 | errorMessageAlign  | 校验错误信息文字对齐方式，可选值为 left center right                     | makeStringProp<FormErrorMessageAlign>("left")                             | -          | -      |
 | showErrorMessage   | 是否在校验不通过时在输入框下方展示错误提示                               | truthProp                                                                 | -          | -      |
 | validateFirst      | 是否在某一项校验不通过时停止校验                                         | boolean                                                                   | -          | -      |

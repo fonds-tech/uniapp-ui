@@ -1,6 +1,6 @@
 import type Search from "./ui-search.vue"
-import type { ExtractPropTypes } from "vue"
-import { styleProp, buildDefaultProps } from "../utils/props"
+import type { PropType, CSSProperties, ExtractPropTypes } from "vue"
+import { buildDefaultProps } from "../utils/props"
 
 const defaultProps = buildDefaultProps("search", {
   modelValue: "",
@@ -112,11 +112,11 @@ export const searchProps = {
 
   // ==================== 自定义样式 ====================
   /** 自定义输入框样式 */
-  inputStyle: defaultProps("inputStyle", styleProp),
+  inputStyle: defaultProps("inputStyle", { type: [String, Object] as PropType<string | CSSProperties> }),
   /** 自定义类名 */
   customClass: defaultProps("customClass", { type: String }),
   /** 自定义根元素样式 */
-  customStyle: defaultProps("customStyle", styleProp),
+  customStyle: defaultProps("customStyle", { type: [String, Object] as PropType<string | CSSProperties> }),
 }
 export const searchEmits = {
   blur: (event: any) => true,

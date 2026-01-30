@@ -1,6 +1,6 @@
 import type Notify from "./ui-notify.vue"
-import type { Ref, PropType, ExtractPropTypes } from "vue"
-import { styleProp, buildDefaultProps } from "../utils/props"
+import type { Ref, PropType, CSSProperties, ExtractPropTypes } from "vue"
+import { buildDefaultProps } from "../utils/props"
 
 const defaultProps = buildDefaultProps("notify", {
   show: false,
@@ -68,7 +68,7 @@ export const notifyProps = {
   /**
    * 自定义样式
    */
-  customStyle: defaultProps("customStyle", styleProp),
+  customStyle: defaultProps("customStyle", { type: [String, Object] as PropType<string | CSSProperties> }),
 }
 export const notifyEmits = {
   open: () => true,

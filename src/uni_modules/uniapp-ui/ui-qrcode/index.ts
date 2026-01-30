@@ -1,6 +1,6 @@
 import type Qrcode from "./ui-qrcode.vue"
-import type { ExtractPropTypes } from "vue"
-import { styleProp, buildDefaultProps } from "../utils/props"
+import type { PropType, CSSProperties, ExtractPropTypes } from "vue"
+import { buildDefaultProps } from "../utils/props"
 
 const defaultProps = buildDefaultProps("qrcode", {
   show: true,
@@ -73,7 +73,7 @@ export const qrcodeProps = {
   /**
    * 自定义样式
    */
-  customStyle: defaultProps("customStyle", styleProp),
+  customStyle: defaultProps("customStyle", { type: [String, Object] as PropType<string | CSSProperties> }),
   /**
    * 类型：qrcode-二维码 barcode-条形码
    */

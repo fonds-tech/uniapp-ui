@@ -26,7 +26,7 @@ UiCascader 组件，属性与事件以源码注释为准。
 | background          | 背景色                                                          | string                                                | -               | -      |
 | safeAreaInsetBottom | 底部安全区                                                      | boolean                                               | true            | -      |
 | lazyRender          | 是否在显示时才渲染                                              | boolean                                               | true            | -      |
-| modelValue          | 绑定值                                                          | [Number, String]                                           | -               | -      |
+| modelValue          | 绑定值                                                          | [Number, String]                                      | -               | -      |
 | title               | 顶部标题                                                        | string                                                | -               | -      |
 | options             | 可选项数据源                                                    | Array as PropType<CascaderOption[]>                   | () => []        | -      |
 | placeholder         | 未选中时的提示文案                                              | makeStringProp("请选择")                              | -               | -      |
@@ -35,13 +35,13 @@ UiCascader 组件，属性与事件以源码注释为准。
 | swipeable           | 是否开启手势左右滑动切换                                        | truthProp                                             | -               | -      |
 | closeable           | 是否显示关闭图标                                                | truthProp                                             | -               | -      |
 | showHeader          | 是否展示头部栏                                                  | truthProp                                             | -               | -      |
-| titleSize           | 标题大小                                                        | [Number, String]                                           | -               | -      |
-| titleColor          | 标题大小                                                        | [Number, String]                                           | -               | -      |
-| titleWeight         | 标题大小                                                        | [Number, String]                                           | -               | -      |
+| titleSize           | 标题大小                                                        | [Number, String]                                      | -               | -      |
+| titleColor          | 标题大小                                                        | [Number, String]                                      | -               | -      |
+| titleWeight         | 标题大小                                                        | [Number, String]                                      | -               | -      |
 | closeIcon           | 关闭图标名称或图片链接，等同于 Icon 组件的 name 属性            | makeStringProp("cross")                               | -               | -      |
 | closeIconSize       | 关闭图标大小                                                    | makeNumericProp("32rpx")                              | -               | -      |
 | closeIconColor      | 关闭图标颜色                                                    | makeStringProp("#333333")                             | -               | -      |
-| closeIconWeight     | 关闭图标粗细                                                    | [Number, String]                                           | -               | -      |
+| closeIconWeight     | 关闭图标粗细                                                    | [Number, String]                                      | -               | -      |
 | beforeChange        | 输入值变化前的回调函数，返回 false 可阻止输入，支持返回 Promise | Function as PropType<Interceptor>                     | -               | -      |
 | fieldKeys           | 数据字段                                                        | Object as PropType<CascaderFieldKeys>                 | () => ({})      | -      |
 | customClass         | 自定义类名                                                      | string                                                | -               | -      |

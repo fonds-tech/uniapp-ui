@@ -1,7 +1,7 @@
 import type FormItem from "./ui-form-item.vue"
-import type { PropType, InjectionKey, ExtractPropTypes } from "vue"
+import type { PropType, InjectionKey, CSSProperties, ExtractPropTypes } from "vue"
 import type { FormLabelPosition, FormValidateError, FormValidateTrigger, FormErrorMessageAlign } from "../ui-form"
-import { styleProp, buildDefaultProps } from "../utils/props"
+import { buildDefaultProps } from "../utils/props"
 
 const defaultProps = buildDefaultProps("form-item", {
   prop: undefined,
@@ -131,7 +131,7 @@ export const formItemProps = {
   /**
    * 自定义样式
    */
-  customStyle: defaultProps("customStyle", styleProp),
+  customStyle: defaultProps("customStyle", { type: [String, Object] as PropType<string | CSSProperties> }),
 }
 export const formItemEmits = {
   submit: (values: Record<string, unknown>) => values,

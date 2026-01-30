@@ -1,6 +1,6 @@
 import type Navbar from "./ui-navbar.vue"
-import type { PropType, ExtractPropTypes } from "vue"
-import { styleProp, buildDefaultProps } from "../utils/props"
+import type { PropType, CSSProperties, ExtractPropTypes } from "vue"
+import { buildDefaultProps } from "../utils/props"
 
 const defaultProps = buildDefaultProps("navbar", {
   height: "",
@@ -157,7 +157,7 @@ export const navbarProps = {
   /**
    * 自定义样式
    */
-  customStyle: defaultProps("customStyle", styleProp),
+  customStyle: defaultProps("customStyle", { type: [String, Object] as PropType<string | CSSProperties> }),
 }
 export const navbarEmits = {
   back: () => true,

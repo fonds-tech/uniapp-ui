@@ -1,6 +1,6 @@
 import type CountDown from "./ui-count-down.vue"
-import type { PropType, ExtractPropTypes } from "vue"
-import { styleProp, buildDefaultProps } from "../utils/props"
+import type { PropType, CSSProperties, ExtractPropTypes } from "vue"
+import { buildDefaultProps } from "../utils/props"
 
 const defaultProps = buildDefaultProps("count-down", {
   time: 0,
@@ -45,7 +45,7 @@ export const countDownProps = {
   /**
    * 自定义样式
    */
-  customStyle: defaultProps("customStyle", styleProp),
+  customStyle: defaultProps("customStyle", { type: [String, Object] as PropType<string | CSSProperties> }),
 }
 export const countDownEmits = {
   finish: () => true,

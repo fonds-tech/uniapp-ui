@@ -1,7 +1,7 @@
 import type AvatarGroup from "./ui-avatar-group.vue"
 import type { AvatarShape } from "../ui-avatar"
-import type { PropType, InjectionKey, ExtractPropTypes } from "vue"
-import { styleProp, buildDefaultProps } from "../utils/props"
+import type { PropType, InjectionKey, CSSProperties, ExtractPropTypes } from "vue"
+import { buildDefaultProps } from "../utils/props"
 
 /**
  * 头像组堆叠方向
@@ -66,7 +66,7 @@ export const avatarGroupProps = {
   /**
    * 自定义样式
    */
-  customStyle: defaultProps("customStyle", styleProp),
+  customStyle: defaultProps("customStyle", { type: [String, Object] as PropType<string | CSSProperties> }),
 }
 export const avatarGroupEmits = {
   /**

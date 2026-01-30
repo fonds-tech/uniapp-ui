@@ -107,7 +107,7 @@ export type XxxInstance = InstanceType<typeof XxxComponent>
 | --------------------- | ------------------ | -------------------------------------- |
 | `Boolean`             | 布尔值，默认 false | `disabled: Boolean`                    |
 | `truthProp`           | 布尔值，默认 true  | `show: truthProp`                      |
-| `[Number, String]`         | 数字或字符串       | `width: [Number, String]`                   |
+| `[Number, String]`    | 数字或字符串       | `width: [Number, String]`              |
 | `makeStringProp<T>()` | 字符串带默认值     | `size: makeStringProp<Size>("normal")` |
 | `makeNumericProp()`   | 数字带默认值       | `throttle: makeNumericProp(200)`       |
 | `makeNumberProp()`    | 纯数字带默认值     | `delay: makeNumberProp(0)`             |

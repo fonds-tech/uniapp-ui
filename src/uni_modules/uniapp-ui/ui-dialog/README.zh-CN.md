@@ -19,7 +19,7 @@ UiDialog 组件，属性与事件以源码注释为准。
 | show                | 是否显示                   | boolean                                               | -          | -      |
 | title               | 标题                       | string                                                | -          | -      |
 | width               | 宽度                       | makeNumericProp("88vw")                               | -          | -      |
-| height              | 高度                       | [Number, String]                                           | -          | -      |
+| height              | 高度                       | [Number, String]                                      | -          | -      |
 | content             | 内容                       | string                                                | -          | -      |
 | contentAlign        | 内容对齐方式               | makeStringProp<DialogContentAlign>("center")          | -          | -      |
 | showConfirmButton   | 是否显示确认按钮           | truthProp                                             | -          | -      |
@@ -33,13 +33,13 @@ UiDialog 组件，属性与事件以源码注释为准。
 | overlayStyle        | 自定义遮罩层样式           | object \| string                                      | () => ({}) | -      |
 | closeOnClickOverlay | 是否点击遮罩层后关闭       | boolean                                               | -          | -      |
 | lazyRender          | 是否在显示时才渲染节点     | truthProp                                             | -          | -      |
-| padding             | 内边距                     | [Number, String]                                           | -          | -      |
-| offsetTop           | 弹窗顶部偏移               | [Number, String]                                           | -          | -      |
+| padding             | 内边距                     | [Number, String]                                      | -          | -      |
+| offsetTop           | 弹窗顶部偏移               | [Number, String]                                      | -          | -      |
 | asyncClose          | 是否异步关闭               | boolean                                               | -          | -      |
-| zIndex              | 元素层级                   | [Number, String]                                           | -          | -      |
+| zIndex              | 元素层级                   | [Number, String]                                      | -          | -      |
 | duration            | 弹窗打开过渡时间,单位毫秒  | makeNumericProp(300)                                  | -          | -      |
 | background          | 背景颜色                   | string                                                | -          | -      |
-| borderRadius        | 弹窗圆角                   | [Number, String]                                           | -          | -      |
+| borderRadius        | 弹窗圆角                   | [Number, String]                                      | -          | -      |
 | enterTimingFunction | 进入动画函数               | makeStringProp("cubic-bezier(0.5, 1.5, 0.5, 1)")      | -          | -      |
 | leaveTimingFunction | 离开动画函数               | makeStringProp("cubic-bezier(0.4, 0.8, 0.74, 1)")     | -          | -      |
 | customClass         | 自定义类名                 | string                                                | -          | -      |

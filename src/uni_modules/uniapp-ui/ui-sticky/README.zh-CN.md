@@ -16,7 +16,7 @@ UiSticky 组件，属性与事件以源码注释为准。
 
 | 参数        | 说明               | 类型                                                  | 默认值 | 可选值 |
 | ----------- | ------------------ | ----------------------------------------------------- | ------ | ------ |
-| zIndex      | 元素层级           | [Number, String]                                           | -      | -      |
+| zIndex      | 元素层级           | [Number, String]                                      | -      | -      |
 | offsetTop   | 吸顶时距离顶部距离 | makeNumericProp(0)                                    | -      | -      |
 | background  | 背景色             | string                                                | -      | -      |
 | customClass | 自定义类名         | string                                                | -      | -      |
