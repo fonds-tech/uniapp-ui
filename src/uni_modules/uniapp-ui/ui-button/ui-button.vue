@@ -50,7 +50,6 @@ import { useUnit, useColor, useStyle } from "../hooks"
 // 定义组件名称
 defineOptions({ name: "ui-button" })
 
-// 定义props和emits
 const props = defineProps(buttonProps)
 const emits = defineEmits(buttonEmits)
 const slots = useSlots()

@@ -1,10 +1,15 @@
 import type { App } from "vue"
-import type { Config } from "./types"
+import type { Options } from "./types"
 import { globalMitt } from "./utils/mitt"
+import { initGlobalProps } from "./utils/props"
 
 const ui = {
-  install(app: App, _options: Config = {}): void {
+  install(app: App, options: Options = {}): void {
     const mitt = globalMitt
+
+    if (options.components) {
+      initGlobalProps(options.components)
+    }
 
     app.mixin({
       beforeCreate() {
@@ -56,4 +61,8 @@ export type { NotifyInstance, NotifyOptions, NotifyType } from "./ui-notify"
 export type { TextEllipsisInstance, TextEllipsisProps } from "./ui-text-ellipsis"
 export { provideToast } from "./ui-toast"
 export type { ToastInstance, ToastOptions } from "./ui-toast"
+
+// 导出全局配置相关（从 utils/props 导出）
+export { initGlobalProps, mergeGlobalProps, resetGlobalProps, resolveGlobalProps, setGlobalProps } from "./utils/props"
+
 export default ui
