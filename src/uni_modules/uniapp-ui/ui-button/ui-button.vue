@@ -16,12 +16,31 @@
     :show-message-card="props.showMessageCard"
     :send-message-title="props.sendMessageTitle"
     :hover-stop-propagation="props.hoverStopPropagation"
+    :group-id="props.groupId"
+    :guild-id="props.guildId"
+    :public-id="props.publicId"
+    :data-im-id="props.dataImId"
+    :data-im-type="props.dataImType"
+    :data-goods-id="props.dataGoodsId"
+    :data-order-id="props.dataOrderId"
+    :data-biz-line="props.dataBizLine"
+    :contact-type="props.contactType"
+    :contact-id="props.contactId"
     @error="handleError"
     @click="handleClick"
     @launchapp="handleLaunchApp"
     @getuserinfo="handleGetUserInfo"
     @opensetting="handleOpenSetting"
     @getphonenumber="handleGetPhoneNumber"
+    @contact="handleContact"
+    @chooseavatar="handleChooseAvatar"
+    @agreeprivacyauthorization="handleAgreePrivacyAuthorization"
+    @addgroupapp="handleAddGroupApp"
+    @chooseaddress="handleChooseAddress"
+    @chooseinvoicetitle="handleChooseInvoiceTitle"
+    @subscribe="handleSubscribe"
+    @login="handleLogin"
+    @im="handleIm"
   >
     <view class="ui-button__content" :class="{ 'ui-button__content--reverse': props.iconPosition === 'right' }">
       <view v-if="isLoading" class="ui-button__loading">
@@ -30,11 +49,13 @@
       <view v-else-if="props.icon" class="ui-button__icon">
         <ui-icon :name="props.icon" :color="props.iconColor" :size="props.iconSize" :weight="props.iconWeight" />
       </view>
-      <view v-if="isLoading && resolvedLoadingText" class="ui-button__text">
-        {{ resolvedLoadingText }}
-      </view>
-      <view v-else-if="!isLoading && hasSlotContent" class="ui-button__text">
-        <slot />
+      <view v-if="hasSlotContent || resolvedLoadingText" class="ui-button__text">
+        <template v-if="isLoading && resolvedLoadingText">
+          {{ resolvedLoadingText }}
+        </template>
+        <template v-else>
+          <slot />
+        </template>
       </view>
     </view>
   </button>
@@ -43,28 +64,36 @@
 <script setup lang="ts">
 import type { CSSProperties } from "vue"
 import { createThrottle } from "../utils/utils"
-import { ref, computed, useSlots } from "vue"
 import { buttonEmits, buttonProps } from "./index"
 import { useUnit, useColor, useStyle } from "../hooks"
+import { ref, watch, markRaw, computed, useSlots, shallowRef } from "vue"
 
-// 定义组件名称
 defineOptions({ name: "ui-button" })
 
 const props = defineProps(buttonProps)
 const emits = defineEmits(buttonEmits)
 const slots = useSlots()
 
+// 内部加载状态，用于通过 setLoading 方法控制
+const internalLoading = ref(false)
+// 内部禁用状态，用于通过 setDisabled 方法控制
+const internalDisabled = ref(false)
+// 内部加载文本，用于通过 setLoading 方法设置
+const internalLoadingText = ref("")
+// 创建节流函数实例
+const throttledEmit = shallowRef(markRaw(createThrottle(+props.throttle)))
+
 // 检测 slot 是否有内容
 const hasSlotContent = computed(() => !!slots.default)
-
-// 定义响应式变量
-const internalLoading = ref(false)
-const internalDisabled = ref(false)
-const internalLoadingText = ref("")
-
-// 创建节流函数实例
-const throttledEmit = computed(() => createThrottle(+props.throttle))
-
+// 合并后的加载状态
+const isLoading = computed(() => props.loading || internalLoading.value)
+// 合并后的禁用状态
+const isDisabled = computed(() => props.disabled || internalDisabled.value)
+// 解析后的加载文本
+const resolvedLoadingText = computed(() => props.loadingText || internalLoadingText.value)
+// 点击态的 CSS 类名
+const hoverClass = computed(() => (isDisabled.value || isLoading.value ? "" : "ui-button--active"))
+// 按钮样式对象
 const buttonStyle = computed(() => {
   const styles: CSSProperties = {}
   styles.width = useUnit(props.width)
@@ -81,24 +110,52 @@ const buttonStyle = computed(() => {
   styles.marginRight = useUnit(props.marginRight)
   return useStyle({ ...styles, ...useStyle(props.customStyle) })
 })
+// 按钮类名数组
+const classNames = computed(() => [
+  `ui-button--${props.type}`,
+  `ui-button--${props.size}`,
+  {
+    "ui-button--text": props.text,
+    "ui-button--plain": props.plain,
+    "ui-button--round": props.round,
+    "ui-button--block": props.block,
+    "ui-button--loading": isLoading.value,
+    "ui-button--disabled": isDisabled.value,
+  },
+])
 
-const classNames = computed(() => {
-  const classList: string[] = []
-  classList.push(`ui-button--${props.type}`)
-  classList.push(`ui-button--${props.size}`)
-  const modifiers = ["text", "plain", "round", "block"]
-  modifiers.forEach((modifier) => {
-    if (props[modifier]) classList.push(`ui-button--${modifier}`)
-  })
-  if (isLoading.value) classList.push("ui-button--loading")
-  if (isDisabled.value) classList.push("ui-button--disabled")
-  return classList
-})
+// 小程序开放能力事件处理
+const handleError = createEventHandler("error")
+const handleLaunchApp = createEventHandler("launchapp")
+const handleGetUserInfo = createEventHandler("getuserinfo")
+const handleOpenSetting = createEventHandler("opensetting")
+const handleGetPhoneNumber = createEventHandler("getphonenumber")
+const handleContact = createEventHandler("contact")
+const handleChooseAvatar = createEventHandler("chooseavatar")
+const handleAgreePrivacyAuthorization = createEventHandler("agreeprivacyauthorization")
+const handleAddGroupApp = createEventHandler("addgroupapp")
+const handleChooseAddress = createEventHandler("chooseaddress")
+const handleChooseInvoiceTitle = createEventHandler("chooseinvoicetitle")
+const handleSubscribe = createEventHandler("subscribe")
+const handleLogin = createEventHandler("login")
+const handleIm = createEventHandler("im")
 
-const isLoading = computed(() => props.loading || internalLoading.value)
-const isDisabled = computed(() => props.disabled || internalDisabled.value)
-const resolvedLoadingText = computed(() => props.loadingText || internalLoadingText.value)
-const hoverClass = computed(() => (isDisabled.value || isLoading.value ? "" : "ui-button--active"))
+// 监听 throttle 变化，动态更新节流函数
+watch(
+  () => props.throttle,
+  (newThrottle) => {
+    throttledEmit.value = markRaw(createThrottle(+newThrottle))
+  },
+)
+
+// 创建通用事件处理器
+function createEventHandler(name: keyof typeof buttonEmits) {
+  return (event: any) => {
+    if (isLoading.value || isDisabled.value) return
+    // @ts-ignore 忽略类型检查，因为 emits 的联合类型过于复杂
+    emits(name, event)
+  }
+}
 
 // 点击事件处理
 function handleClick(event: any) {
@@ -106,42 +163,18 @@ function handleClick(event: any) {
   throttledEmit.value(() => emits("click", event))
 }
 
+// 设置按钮加载状态
 function setLoading(state: boolean, text?: string) {
   internalLoading.value = state
   if (text !== undefined) internalLoadingText.value = text
 }
 
+// 设置按钮禁用状态
 function setDisabled(state: boolean) {
   internalDisabled.value = state
 }
 
 defineExpose({ setLoading, setDisabled })
-
-// 小程序开放能力事件处理
-function handleError(event: any) {
-  if (isLoading.value || isDisabled.value) return
-  emits("error", event)
-}
-
-function handleLaunchApp(event: any) {
-  if (isLoading.value || isDisabled.value) return
-  emits("launchapp", event)
-}
-
-function handleGetUserInfo(event: any) {
-  if (isLoading.value || isDisabled.value) return
-  emits("getuserinfo", event)
-}
-
-function handleOpenSetting(event: any) {
-  if (isLoading.value || isDisabled.value) return
-  emits("opensetting", event)
-}
-
-function handleGetPhoneNumber(event: any) {
-  if (isLoading.value || isDisabled.value) return
-  emits("getphonenumber", event)
-}
 </script>
 
 <script lang="ts">
@@ -152,7 +185,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-// 按钮类型样式 mixin
 @mixin button-type($color) {
   color: var(--ui-color-background);
   background: $color;
@@ -174,7 +206,6 @@ export default {
   }
 }
 
-// 按钮尺寸样式 mixin
 @mixin button-size($height, $font-size) {
   height: $height;
   font-size: $font-size;
@@ -199,7 +230,6 @@ export default {
   -webkit-appearance: none;
   -webkit-font-smoothing: auto;
 
-  // 点击态遮罩层
   &::before {
     top: 50%;
     left: 50%;
@@ -215,7 +245,6 @@ export default {
     border-radius: inherit;
   }
 
-  // 移除原生按钮边框
   &::after {
     content: none;
   }
@@ -241,13 +270,11 @@ export default {
     display: flex;
   }
 
-  // 图标与文字间距
   &__icon + &__text,
   &--loading &__loading + &__text {
     margin-left: var(--ui-spacing-sm);
   }
 
-  // 反向布局时的间距
   &__content--reverse &__icon {
     margin-left: var(--ui-spacing-sm);
   }
@@ -285,7 +312,6 @@ export default {
     @include button-type(var(--ui-color-info));
   }
 
-  // default 类型特殊处理
   &--default {
     color: var(--ui-color-text-primary);
     border: var(--ui-border-width) solid var(--ui-color-border);

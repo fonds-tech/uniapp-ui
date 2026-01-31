@@ -23,15 +23,15 @@ export const paginationProps = {
   /**
    * 当前分页
    */
-  page: defaultProps("page", { type: Number }),
+  page: defaultProps("page", { type: [Number, String] }),
   /**
    * 分页大小
    */
-  pageSize: defaultProps("pageSize", { type: Number }),
+  pageSize: defaultProps("pageSize", { type: [Number, String] }),
   /**
    * 列表总数
    */
-  total: defaultProps("total", { type: Number }),
+  total: defaultProps("total", { type: [Number, String] }),
   /**
    * 是否加载中
    */

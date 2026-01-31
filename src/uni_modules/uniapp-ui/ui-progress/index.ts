@@ -23,7 +23,7 @@ export const progressProps = {
   /**
    * 进度百分比 (0-100)
    */
-  percentage: defaultProps("percentage", { type: Number }),
+  percentage: defaultProps("percentage", { type: [Number, String] }),
   /**
    * 进度条填充色
    */

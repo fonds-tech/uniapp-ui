@@ -2,11 +2,50 @@ import type Button from "./ui-button.vue"
 import type { PropType, CSSProperties, ExtractPropTypes } from "vue"
 import { buildDefaultProps } from "../utils/props"
 
+/** 按钮类型 */
 export type ButtonType = "primary" | "success" | "warning" | "danger" | "info" | "default" | "error"
+
+/** 按钮尺寸 */
 export type ButtonSize = "mini" | "small" | "normal" | "large"
+
+/** 按钮表单类型 */
 export type ButtonFormType = "submit" | "reset"
+
+/** 按钮图标位置 */
 export type ButtonIconPosition = "left" | "right"
-export type ButtonOpenType = "contact" | "share" | "getPhoneNumber" | "getUserInfo" | "launchApp" | "openSetting" | "feedback" | "chooseAvatar" | "agreePrivacyAuthorization"
+
+/** 按钮开放能力类型 */
+export type ButtonOpenType =
+  | "feedback"
+  | "share"
+  | "getUserInfo"
+  | "contact"
+  | "getPhoneNumber"
+  | "getRealtimePhoneNumber"
+  | "launchApp"
+  | "openSetting"
+  | "chooseAvatar"
+  | "getAuthorize"
+  | "lifestyle"
+  | "contactShare"
+  | "openGroupProfile"
+  | "openGuildProfile"
+  | "openPublicProfile"
+  | "shareMessageToFriend"
+  | "addFriend"
+  | "addColorSign"
+  | "addGroupApp"
+  | "addToFavorites"
+  | "chooseAddress"
+  | "chooseInvoiceTitle"
+  | "login"
+  | "subscribe"
+  | "favorite"
+  | "watchLater"
+  | "openProfile"
+  | "agreePrivacyAuthorization"
+
+/** 指定返回用户信息的语言 */
 export type ButtonLang = "zh_CN" | "zh_TW" | "en"
 
 const defaultProps = buildDefaultProps("button", {
@@ -45,6 +84,16 @@ const defaultProps = buildDefaultProps("button", {
   sendMessagePath: undefined,
   sendMessageImg: undefined,
   showMessageCard: false,
+  groupId: undefined,
+  guildId: undefined,
+  publicId: undefined,
+  dataImId: undefined,
+  dataImType: undefined,
+  dataGoodsId: undefined,
+  dataOrderId: undefined,
+  dataBizLine: undefined,
+  contactType: undefined,
+  contactId: undefined,
   throttle: 200,
   hoverStartTime: 0,
   hoverStayTime: 50,
@@ -59,13 +108,13 @@ export const buttonProps = {
   type: defaultProps("type", { type: String as PropType<ButtonType> }),
   /** 按钮大小 */
   size: defaultProps("size", { type: String as PropType<ButtonSize> }),
-  /** 是否圆形的 */
+  /** 是否圆形按钮 */
   round: defaultProps("round", { type: Boolean }),
   /** 是否文本按钮 */
   text: defaultProps("text", { type: Boolean }),
-  /** 是否镂空的 */
+  /** 是否镂空按钮 */
   plain: defaultProps("plain", { type: Boolean }),
-  /** 是否块级的 */
+  /** 是否块级按钮 */
   block: defaultProps("block", { type: Boolean }),
   /** 按钮颜色 */
   color: defaultProps("color", { type: String }),
@@ -125,6 +174,26 @@ export const buttonProps = {
   sendMessageImg: defaultProps("sendMessageImg", { type: String }),
   /** 是否显示会话内消息卡片，open-type="contact"时有效 */
   showMessageCard: defaultProps("showMessageCard", { type: Boolean }),
+  /** 打开群资料卡时，传递的群号，open-type="openGroupProfile"时有效，QQ小程序 */
+  groupId: defaultProps("groupId", { type: String }),
+  /** 打开频道页面时，传递的频道号，open-type="openGuildProfile"时有效，QQ小程序 */
+  guildId: defaultProps("guildId", { type: String }),
+  /** 打开公众号资料卡时，传递的号码，open-type="openPublicProfile"时有效，QQ小程序 */
+  publicId: defaultProps("publicId", { type: String }),
+  /** 客服的抖音号，open-type="im"时有效，抖音小程序 */
+  dataImId: defaultProps("dataImId", { type: String }),
+  /** IM卡片类型，open-type="im"时有效，抖音小程序 */
+  dataImType: defaultProps("dataImType", { type: String }),
+  /** 商品的id，open-type="im"时有效，抖音小程序 */
+  dataGoodsId: defaultProps("dataGoodsId", { type: String }),
+  /** 订单的id，open-type="im"时有效，抖音小程序 */
+  dataOrderId: defaultProps("dataOrderId", { type: String }),
+  /** 商品类型，"1"代表生活服务，"2"代表泛知识，open-type="im"时有效，抖音小程序 */
+  dataBizLine: defaultProps("dataBizLine", { type: String }),
+  /** 客服类型，默认值seller，有效值：seller、goods、order，小红书小程序 */
+  contactType: defaultProps("contactType", { type: String }),
+  /** contact-type对应的key，open-type="contact"时有效，小红书小程序 */
+  contactId: defaultProps("contactId", { type: String }),
   /** 节流，一定时间内只能触发一次，默认为 200 */
   throttle: defaultProps("throttle", { type: Number }),
   /** 按住后多久出现点击态，单位毫秒 */
@@ -142,12 +211,36 @@ export const buttonProps = {
 }
 
 export const buttonEmits = {
+  /** 点击事件 */
   click: (event: any) => true,
+  /** 错误事件 */
   error: (event: any) => true,
+  /** 打开 APP 事件 */
   launchapp: (event: any) => true,
+  /** 获取用户信息事件 */
   getuserinfo: (event: any) => true,
+  /** 打开设置页事件 */
   opensetting: (event: any) => true,
+  /** 获取手机号事件 */
   getphonenumber: (event: any) => true,
+  /** 客服消息回调事件 */
+  contact: (event: any) => true,
+  /** 获取用户头像回调事件 */
+  chooseavatar: (event: any) => true,
+  /** 用户同意隐私协议事件回调 */
+  agreeprivacyauthorization: (event: any) => true,
+  /** 添加群应用的回调 */
+  addgroupapp: (event: any) => true,
+  /** 调起用户编辑并选择收货地址的回调 */
+  chooseaddress: (event: any) => true,
+  /** 用户选择发票抬头的回调 */
+  chooseinvoicetitle: (event: any) => true,
+  /** 订阅消息授权回调 */
+  subscribe: (event: any) => true,
+  /** 登录回调 */
+  login: (event: any) => true,
+  /** 监听跳转IM的成功回调 */
+  im: (event: any) => true,
 }
 
 export type ButtonEmits = typeof buttonEmits

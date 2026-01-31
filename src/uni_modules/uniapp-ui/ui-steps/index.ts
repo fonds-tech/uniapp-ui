@@ -43,7 +43,7 @@ export const stepsProps = {
   /**
    * 当前步骤索引（从 0 开始）
    */
-  active: defaultProps("active", { type: Number }),
+  active: defaultProps("active", { type: [Number, String] }),
   /**
    * 步骤条方向
    */

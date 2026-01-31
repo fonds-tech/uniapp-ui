@@ -15,7 +15,7 @@ export const skeletonParagraphProps = {
   /**
    * 段落占位图行数
    */
-  row: defaultProps("row", { type: Number }),
+  row: defaultProps("row", { type: [Number, String] }),
   /**
    * 段落占位图宽度，可传数组来设置每一行的宽度
    */

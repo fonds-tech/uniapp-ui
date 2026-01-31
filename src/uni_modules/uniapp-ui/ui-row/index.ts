@@ -17,15 +17,15 @@ export const rowProps = {
   /**
    * 统一间距（同时设置行间距和列间距）
    */
-  gap: defaultProps("gap", { type: Number }),
+  gap: defaultProps("gap", { type: [Number, String] }),
   /**
    * 列间距（水平方向）
    */
-  colGap: defaultProps("colGap", { type: Number }),
+  colGap: defaultProps("colGap", { type: [Number, String] }),
   /**
    * 行间距（垂直方向）
    */
-  rowGap: defaultProps("rowGap", { type: Number }),
+  rowGap: defaultProps("rowGap", { type: [Number, String] }),
   /**
    * 垂直对齐方式
    */

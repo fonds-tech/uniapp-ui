@@ -31,7 +31,7 @@ export const overlayProps = {
   /**
    * 过渡时间
    */
-  duration: defaultProps("duration", { type: Number }),
+  duration: defaultProps("duration", { type: [Number, String] }),
   /**
    * 是否在显示时才渲染节点
    */

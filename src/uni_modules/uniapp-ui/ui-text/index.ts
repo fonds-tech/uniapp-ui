@@ -42,7 +42,7 @@ export const textProps = {
   /**
    * 展示的行数，0 表示不限制
    */
-  rows: defaultProps("rows", { type: Number }),
+  rows: defaultProps("rows", { type: [Number, String] }),
   /**
    * 文本修饰，可选值 underline、line-through
    */
