@@ -25,10 +25,13 @@ import { watch, computed } from "vue"
 import { useUnit, useColor, useStyle } from "../hooks"
 import { progressEmits, progressProps } from "./index"
 
+// 定义组件名称
 defineOptions({ name: "ui-progress" })
 
+// 定义 props 和 emits
 const props = defineProps(progressProps)
 const emits = defineEmits(progressEmits)
+
 // 百分比边界校验
 const validPercentage = computed(() => {
   const value = Number(props.percentage)

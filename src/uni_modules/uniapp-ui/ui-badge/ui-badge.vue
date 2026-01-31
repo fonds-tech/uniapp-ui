@@ -17,20 +17,19 @@ import { computed, useSlots } from "vue"
 import { badgeEmits, badgeProps } from "./index"
 import { useUnit, useColor, useStyle } from "../hooks"
 
-// 定义组件名称
 defineOptions({ name: "ui-badge" })
 
-// 定义props和emits
 const props = defineProps(badgeProps)
 const emits = defineEmits(badgeEmits)
 const slots = useSlots()
 
+// 根节点样式
 const style = computed(() => {
   const style: CSSProperties = {}
   style.zIndex = props.zIndex
   return useStyle(style)
 })
-
+// 内部容器样式
 const innerStyle = computed(() => {
   const style: CSSProperties = {}
   style.background = useColor(props.color)
@@ -54,7 +53,7 @@ const innerStyle = computed(() => {
       style.right = useUnit(props.offset)
     }
   }
-  // 如果显示图标,添加内边距
+  // 如果显示图标，添加内边距
   if (isShowIcon.value) {
     style.padding = "4rpx"
   }
@@ -64,7 +63,7 @@ const innerStyle = computed(() => {
   }
   return useStyle({ ...style, ...useStyle(props.customStyle) })
 })
-
+// 类名数组
 const classs = computed(() => {
   const list = []
   list.push(`ui-badge__inner--${props.position}`)
@@ -72,7 +71,7 @@ const classs = computed(() => {
   if (slots.default) list.push("ui-badge__inner--absolute")
   return list
 })
-
+// 数值样式
 const valueStyle = computed(() => {
   const style: CSSProperties = {}
   style.color = useColor(props.valueColor)
@@ -80,19 +79,16 @@ const valueStyle = computed(() => {
   style.fontWeight = props.valueWeight
   return useStyle(style)
 })
-
 // 格式化显示的值
 const formatValue = computed(() => {
   // 检查 value 和 max 是否都为数字
   if (isNumber(props.value) && isNumber(props.max)) {
     // 如果 value 大于 max，显示 "max+"
-    // 否则直接显示 value
     return Number(props.value) > Number(props.max) ? `${props.max}+` : props.value
   }
   // 如果 value 或 max 不是数字，直接返回 value
   return props.value
 })
-
 // 是否显示
 const isShow = computed(() => {
   if (props.dot) return true
@@ -113,7 +109,7 @@ const isShow = computed(() => {
 // 是否显示图标
 const isShowIcon = computed(() => props.icon && !props.dot)
 
-// 点击事件处理函数
+// 点击事件处理
 function onClick() {
   emits("click")
 }

@@ -12,7 +12,9 @@ import { provide, computed } from "vue"
 
 defineOptions({ name: "ui-row" })
 
+// 组件 props
 const props = defineProps(rowProps)
+
 // 计算间距值（用于 provide 给 Col）
 const gapInfo = computed(() => {
   const rowGapVal = props.gap || props.rowGap
@@ -23,11 +25,12 @@ const gapInfo = computed(() => {
   }
 })
 
+// 根节点样式，设置负 margin 和对齐方式
 const style = computed(() => {
   const style: CSSProperties = {}
   const { rowGap, colGap } = gapInfo.value
 
-  // 使用负 margin 抵消子元素的 padding（兼容性更好）
+  // 使用负 margin 抵消子元素的 padding
   if (rowGap !== "0px" || colGap !== "0px") {
     const rowGapHalf = `calc(${rowGap} / -2)`
     const colGapHalf = `calc(${colGap} / -2)`

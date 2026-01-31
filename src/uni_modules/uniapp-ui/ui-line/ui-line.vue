@@ -8,9 +8,13 @@ import { computed } from "vue"
 import { lineProps } from "./index"
 import { useUnit, useColor, useStyle } from "../hooks"
 
+// 定义组件名称
 defineOptions({ name: "ui-line" })
 
+// 定义 props
 const props = defineProps(lineProps)
+
+// 根节点样式
 const style = computed(() => {
   const style: any = {}
   style.margin = useUnit(props.margin)

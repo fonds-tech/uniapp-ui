@@ -50,20 +50,22 @@ defineOptions({ name: "ui-swiper" })
 // 定义props和emits
 const props = defineProps(swiperProps)
 const emits = defineEmits(swiperEmits)
-// 当前活动项的索引
+
+// 当前活动项的索引，控制轮播图显示的位置
 const current = ref(0)
-// 字段键名映射
+// 字段键名映射，用于解析不同格式的数据源字段
 const fieldKeys = ref({ type: "type", url: "url", poster: "poster", title: "title" })
 
+// 处理后的轮播图列表数据，支持字符串、数组、对象等多种格式
 const list = computed(() => {
   let data: any = []
-  // 如果list是字符串,按逗号分割并转换为对象数组
+  // 如果list是字符串，按逗号分割并转换为对象数组
   if (isString(props.list)) {
     data = props.list.split(",").map((url: string) => {
       return { url, type: getFileType(url) }
     })
   }
-  // 如果list是数组,处理每一项
+  // 如果list是数组，处理每一项
   if (isArray(props.list)) {
     data = props.list.map((item: any) => {
       if (isString(item)) {
@@ -82,6 +84,7 @@ const list = computed(() => {
   return data.filter(Boolean)
 })
 
+// 组件外层容器的样式，包含宽度、高度、圆角等
 const style = computed(() => {
   const style: CSSProperties = {}
   style.width = useUnit(props.width)
@@ -90,6 +93,7 @@ const style = computed(() => {
   return useStyle({ ...style, ...useStyle(props.customStyle) })
 })
 
+// 轮播图列表容器的样式
 const listStyle = computed(() => {
   const style: CSSProperties = {}
   style.width = useUnit(props.width)
@@ -98,6 +102,7 @@ const listStyle = computed(() => {
   return useStyle(style)
 })
 
+// 每个轮播项的样式，根据索引返回对应的padding样式
 const itemStyle = computed(() => (index: string | number) => {
   const style: CSSProperties = {}
   style.paddingLeft = useUnit(props.prevGap)
@@ -105,6 +110,7 @@ const itemStyle = computed(() => (index: string | number) => {
   return useStyle(style)
 })
 
+// 每个轮播项的类名，根据索引判断是前一项、当前项还是后一项
 const itemClass = computed(() => (index: string | number) => {
   const list: string[] = []
   const idx = +index
@@ -114,6 +120,7 @@ const itemClass = computed(() => (index: string | number) => {
   return list
 })
 
+// 指示器的类名，根据类型、位置和方向生成对应的样式类
 const indicatorClass = computed(() => {
   const list: string[] = []
   list.push(`ui-swiper__indicator--${props.indicatorType}`)
@@ -122,6 +129,7 @@ const indicatorClass = computed(() => {
   return list
 })
 
+// 监听props.current变化，同步更新当前索引
 watch(
   () => props.current,
   (val) => {
@@ -130,6 +138,7 @@ watch(
   { immediate: true },
 )
 
+// 监听current变化，触发update:current事件实现双向绑定
 watch(
   () => current.value,
   (val) => {
@@ -138,6 +147,7 @@ watch(
   { immediate: true },
 )
 
+// 监听props.fieldKeys变化，合并自定义字段映射
 watch(
   () => props.fieldKeys,
   (field) => {
@@ -146,7 +156,7 @@ watch(
   { immediate: true },
 )
 
-// 切换到上一项
+// 切换到上一项，如果开启循环则在第一项时跳转到最后一项
 function prev() {
   if (current.value > 0) {
     current.value = current.value - 1
@@ -157,7 +167,7 @@ function prev() {
   }
 }
 
-// 切换到下一项
+// 切换到下一项，如果开启循环则在最后一项时跳转到第一项
 function next() {
   if (current.value < list.value.length - 1) {
     current.value = current.value + 1
@@ -174,28 +184,28 @@ function swiperTo(index: number) {
   emits("change", index)
 }
 
-// 点击事件处理
+// 点击轮播项的事件处理，触发click事件并传递索引
 function onClick(index: string | number) {
   emits("click", +index)
 }
 
-// 滑动改变事件处理
+// 轮播图滑动改变时触发，通知父组件当前索引变化
 function onChange(event: any) {
   emits("change", event.detail.current)
 }
 
-// 过渡动画事件处理
+// 轮播图滑动过渡时触发，传递滑动偏移量
 function onTransition(event: any) {
   emits("transition", { x: event.detail.dx, y: event.detail.dy })
 }
 
-// 动画完成事件处理
+// 轮播图动画完成时触发，同步当前索引并通知父组件
 function onAnimationFinish(event: any) {
   current.value = event.detail.current
   emits("animationfinish", event.detail.current)
 }
 
-// 根据文件链接获取文件类型
+// 根据文件链接获取文件类型，支持图片和视频格式识别
 function getFileType(link: string) {
   if (link) {
     const match = link.match(/\.([^.]+)$/)
@@ -209,6 +219,7 @@ function getFileType(link: string) {
   return "image"
 }
 
+// 暴露组件方法供父组件调用
 defineExpose({ name: "ui-swiper", prev, next, swiperTo })
 </script>
 

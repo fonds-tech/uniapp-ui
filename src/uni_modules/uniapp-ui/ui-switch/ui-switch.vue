@@ -23,13 +23,20 @@ defineOptions({ name: "ui-switch" })
 
 const props = defineProps(switchProps)
 const emits = defineEmits(switchEmits)
+
+// 唯一 ID
 const switchId = `switch-${Math.random().toString(36).slice(2, 10)}`
 
+// 当前激活值
 const active = ref(props.modelValue)
+// 开关容器尺寸
 const switchRect = ref<UniApp.NodeInfo>({})
+// 节点尺寸
 const nodeRect = ref<UniApp.NodeInfo>({})
+// 组件实例
 const instance = getCurrentInstance()!
 
+// 根节点样式
 const style = computed(() => {
   const style: any = {}
   style.background = isActive.value ? useColor(props.activeColor) : useColor(props.inactiveColor)
@@ -39,14 +46,14 @@ const style = computed(() => {
   }
   return useStyle({ ...style, ...useStyle(props.customStyle) })
 })
-
+// 类名数组
 const classs = computed(() => {
   const list: string[] = []
   if (isActive.value) list.push("ui-switch--active")
   if (props.disabled) list.push("ui-switch--disabled")
   return list
 })
-
+// 节点样式
 const nodeStyle = computed(() => {
   const style: any = {}
   const size = useUnitToPx(props.size || "40rpx")
@@ -64,7 +71,7 @@ const nodeStyle = computed(() => {
   }
   return useStyle(style)
 })
-
+// 文字样式
 const textStyle = computed(() => {
   const style: any = {}
   if (props.textSize) style.fontSize = useUnit(props.textSize)
@@ -72,32 +79,39 @@ const textStyle = computed(() => {
   if (props.textWeight) style.fontWeight = props.textWeight
   return style
 })
-
+// 是否激活
 const isActive = computed(() => {
   return active.value === props.activeValue
 })
 
+// 监听 modelValue 变化
 watch(
   () => props.modelValue,
   (val) => {
     active.value = val
   },
 )
-
+// 监听尺寸相关属性变化
 watch(() => [props.size, props.gutter, props.customStyle], resize, { deep: true })
 
+// 组件挂载时计算尺寸
+onMounted(() => resize())
+
+// 重新计算尺寸
 async function resize() {
   await nextTick()
   switchRect.value = await useRect(`#${switchId}`, instance)
   nodeRect.value = await useRect(`#${switchId} .ui-switch__node`, instance)
 }
 
+// 点击事件
 function onClick() {
   if (props.loading) return
   if (props.disabled) return
   updateValue(isActive.value ? props.inactiveValue : props.activeValue)
 }
 
+// 更新值
 function updateValue(value: number | string | boolean) {
   const next = (val: number | string | boolean = value) => {
     active.value = val
@@ -111,7 +125,6 @@ function updateValue(value: number | string | boolean) {
   }
 }
 
-onMounted(() => resize())
 defineExpose({ name: "ui-switch" })
 </script>
 

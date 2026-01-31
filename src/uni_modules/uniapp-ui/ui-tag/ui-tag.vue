@@ -26,8 +26,11 @@ defineOptions({ name: "ui-tag" })
 const props = defineProps(tagProps)
 const emits = defineEmits(tagEmits)
 const slots = useSlots()
+
+// 是否可见
 const visible = ref(true)
 
+// 根节点样式
 const style = computed(() => {
   const style: any = {}
   style.padding = props.padding
@@ -46,7 +49,7 @@ const style = computed(() => {
 
   return useStyle({ ...style, ...useStyle(props.customStyle) })
 })
-
+// 类名数组
 const classes = computed(() => {
   const list: string[] = []
   list.push(`ui-tag--${props.type}`)
@@ -55,7 +58,7 @@ const classes = computed(() => {
   if (props.closeable) list.push("ui-tag--closeable")
   return list
 })
-
+// 文字样式
 const textStyle = computed(() => {
   const style: any = {}
   style.fontSize = useUnit(props.textSize)
@@ -63,6 +66,7 @@ const textStyle = computed(() => {
   return useStyle(style)
 })
 
+// 监听 show 属性
 watch(
   () => props.show,
   (val) => {
@@ -70,7 +74,7 @@ watch(
   },
   { immediate: true },
 )
-
+// 监听可见性变化
 watch(
   () => visible.value,
   (val) => {
@@ -78,10 +82,12 @@ watch(
   },
 )
 
+// 点击事件
 function onClick() {
   emits("click")
 }
 
+// 关闭事件
 function onClose() {
   visible.value = false
   emits("close")

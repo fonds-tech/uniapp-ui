@@ -24,29 +24,45 @@ import { useRect, useRects, useStyle, useChildren } from "../hooks"
 import { indexBarKey, indexBarEmits, indexBarProps } from "../ui-index-bar"
 import { ref, toRef, watch, computed, getCurrentInstance } from "vue"
 
+// 定义组件名称
 defineOptions({ name: "ui-index-bar" })
 
+// 定义 props 和 emits
 const props = defineProps(indexBarProps)
 const emits = defineEmits(indexBarEmits)
+
+// 组件实例
 const instance = getCurrentInstance()
+
+// 收集子组件
 const { childrens, linkChildren } = useChildren(indexBarKey)
 
+// 是否已初始化
 const init = ref(false)
+// 容器位置信息
 const rect = ref<UniApp.NodeInfo>(null)
+// 索引项位置信息
 const itemsRect = ref<UniApp.NodeInfo[]>([])
+// 是否正在动画
 const animating = ref(false)
+// 滚动位置
 const scrollTop = ref(0.01)
+// 当前滚动位置
 const currentScrollTop = ref(0.01)
+// 当前激活的索引名称
 const currentName = ref(null)
 
+// 根节点样式
 const style = computed(() => {
   const style: any = {}
   style.zIndex = props.zIndex
   return useStyle({ ...style, ...useStyle(props.customStyle) })
 })
 
+// 索引项类名
 const itemClass = computed(() => (item: string | number) => (currentName.value === item ? "is-active" : ""))
 
+// 索引列表
 const indexList = computed(() => {
   if (props.indexs && props.indexs.length) {
     return props.indexs
@@ -54,8 +70,10 @@ const indexList = computed(() => {
   return childrens.map((child) => toRef(child.exposed?.name).value)
 })
 
+// 监听子组件数量变化
 watch(() => childrens.length, resize)
 
+// 重新计算布局
 async function resize() {
   debounce(async () => {
     rect.value = await useRect(".ui-index-bar", instance)
@@ -65,6 +83,7 @@ async function resize() {
   }, 100)
 }
 
+// 点击索引
 function onClick(name: number | string) {
   if (currentName.value === name) return
   const children = childrens.find((children) => toRef(children.exposed.name).value === name)
@@ -77,6 +96,7 @@ function onClick(name: number | string) {
   }
 }
 
+// 触摸移动事件
 function onTouchMove(event: any) {
   const y = event.changedTouches[0].pageY
   itemsRect.value?.forEach((item, index) => {
@@ -87,6 +107,7 @@ function onTouchMove(event: any) {
   })
 }
 
+// 滚动事件
 function onScroll(event: any) {
   if (animating.value) return
   if (init.value) {
@@ -107,7 +128,9 @@ function onScroll(event: any) {
   }
 }
 
+// 建立父子组件关联
 linkChildren({ props, currentName })
+
 defineExpose({ resize })
 </script>
 

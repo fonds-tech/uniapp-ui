@@ -66,25 +66,21 @@ defineOptions({ name: "ui-action-sheet" })
 
 const props = defineProps(actionSheetProps)
 const emits = defineEmits(actionSheetEmits)
+
 // 使用 transition hook
 const transition = useTransition()
-
+// 当前层级
 const currentZIndex = ref<number>()
+// 是否可见
 const visible = ref(false)
 
+// 是否已初始化（懒渲染场景）
 const inited = computed(() => !props.lazyRender || transition.inited.value)
-
 // 安全的 actions 数组
 const safeActions = computed(() => {
   return Array.isArray(props.actions) ? props.actions : []
 })
-
-// 为 transition 的各个阶段绑定事件
-transition.on("before-enter", () => emits("open"))
-transition.on("after-enter", () => emits("opened"))
-transition.on("before-leave", () => emits("close"))
-transition.on("after-leave", () => emits("closed"))
-
+// 面板样式
 const panelStyle = computed(() => {
   const styles: CSSProperties = {}
   styles.zIndex = currentZIndex.value
@@ -92,9 +88,9 @@ const panelStyle = computed(() => {
   styles.borderTopRightRadius = useUnit(props.borderRadius)
   return useStyle({ ...styles, ...useStyle(props.customStyle), ...transition.styles.value })
 })
-
+// 样式类名
 const classNames = computed(() => [transition.classs.value])
-
+// 头部标题样式
 const headerTitleStyle = computed(() => {
   const styles: CSSProperties = {}
   styles.color = useColor(props.titleColor)
@@ -102,7 +98,7 @@ const headerTitleStyle = computed(() => {
   styles.fontWeight = props.titleWeight
   return useStyle(styles)
 })
-
+// 头部描述样式
 const headerDescStyle = computed(() => {
   const styles: CSSProperties = {}
   styles.color = useColor(props.descriptionColor)
@@ -110,7 +106,7 @@ const headerDescStyle = computed(() => {
   styles.fontWeight = props.descriptionWeight
   return useStyle(styles)
 })
-
+// 取消按钮样式
 const cancelBtnStyle = computed(() => {
   const styles: CSSProperties = {}
   styles.color = useColor(props.cancelTextColor)
@@ -119,18 +115,25 @@ const cancelBtnStyle = computed(() => {
   styles.background = useColor(props.cancelBackground)
   return useStyle(styles)
 })
-
+// 滚动区域样式
 const scrollStyle = computed(() => {
   const styles: CSSProperties = {}
   styles.height = useUnit(props.height)
   styles.maxHeight = useUnit(props.maxHeight)
   return useStyle(styles)
 })
-
+// 操作项标题样式
 const actionTitleStyle = computed(() => useStyle(props.actionTitleStyle))
-
+// 操作项描述样式
 const actionDescStyle = computed(() => useStyle(props.actionDescriptionStyle))
 
+// 为 transition 的各个阶段绑定事件
+transition.on("before-enter", () => emits("open"))
+transition.on("after-enter", () => emits("opened"))
+transition.on("before-leave", () => emits("close"))
+transition.on("after-leave", () => emits("closed"))
+
+// 监听 show 属性变化
 watch(
   () => props.show,
   (val) => {
@@ -138,9 +141,10 @@ watch(
   },
   { immediate: true },
 )
-
+// 监听 duration 变化重新初始化 transition
 watch(() => [props.duration], initTransition, { immediate: true })
 
+// 初始化过渡动画
 function initTransition() {
   transition.init({ name: "slide-up", duration: props.duration })
 }

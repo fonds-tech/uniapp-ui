@@ -30,13 +30,16 @@ const props = defineProps(tabbarItemProps)
 const emits = defineEmits(tabbarItemEmits)
 const { parent, index } = useParent(tabbarKey)
 
+// 导航状态锁，防止重复跳转
 let navigating = false
 
+// 组件根元素样式
 const style = computed(() => {
   const style: CSSProperties = {}
   return useStyle(style)
 })
 
+// 组件根元素类名
 const classs = computed(() => {
   const list: string[] = []
   if (active.value) list.push("ui-tabbar-item--active")
@@ -44,6 +47,7 @@ const classs = computed(() => {
   return list
 })
 
+// 图标容器样式
 const iconStyle = computed(() => {
   const style: CSSProperties = {}
   style.fontSize = useUnit(props.iconSize)
@@ -51,19 +55,26 @@ const iconStyle = computed(() => {
   return useStyle(style)
 })
 
+// 文本样式
 const textStyle = computed(() => {
   const style: CSSProperties = {}
   style.color = active.value ? useColor(prop("activeColor")) : useColor(prop("inactiveColor"))
   return useStyle(style)
 })
 
+// 当前项标识，优先使用 name，否则使用索引
 const name = computed(() => (isDef(props.name) ? props.name : index.value))
+
+// 是否为激活状态
 const active = computed(() => parent?.props.modelValue === name.value)
+
+// 当前显示的图标（激活时优先使用 activeIcon）
 const currentIcon = computed(() => {
   if (active.value && props.activeIcon) return props.activeIcon
   return props.icon
 })
 
+// 是否为图片图标（URL 地址或图片文件路径）
 const isImageIcon = computed(() => {
   const icon = currentIcon.value
   if (!icon) return false
@@ -71,16 +82,19 @@ const isImageIcon = computed(() => {
   return /\.(?:png|jpe?g|gif|svg|webp|ico|bmp)$/i.test(icon)
 })
 
+// 获取配置属性，优先从当前组件获取，其次从父组件获取
 function prop(name: string) {
   if (isDef(props[name])) return props[name]
   if (isDef(parent?.props[name])) return parent.props[name]
   return ""
 }
 
+// 规范化路由路径，去除开头的斜杠
 function normalizeRoute(route: string) {
   return route.replace(/^\//, "")
 }
 
+// 点击事件处理
 function onClick() {
   if (props.disabled) return
   emits("click", name.value)

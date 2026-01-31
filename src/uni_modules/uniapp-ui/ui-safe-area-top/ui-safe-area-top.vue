@@ -1,46 +1,48 @@
 <template>
-  <view class="ui-safe-area-top" :class="[props.customClass]" :style="[style]" />
+  <view class="ui-safe-area-top" :class="[customClass]" :style="[style]">
+    <slot />
+  </view>
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onBeforeMount } from "vue"
-
-import { useColor, useStyle, useSystemInfo } from "../hooks"
-import { safeAreaTopEmits, safeAreaTopProps } from "./index"
+import type { CSSProperties } from "vue"
+import { safeAreaTopProps } from "./index"
+import { useStyle, useSystemInfo } from "../hooks"
 
 defineOptions({ name: "ui-safe-area-top" })
 
+// 组件 props
 const props = defineProps(safeAreaTopProps)
-const emits = defineEmits(safeAreaTopEmits)
-const height = ref(0)
-const style = computed(() => {
-  const style: any = {}
-  style.height = `${height.value}px`
-  style.background = useColor(props.background)
+
+// 系统信息，包含状态栏高度等
+const systemInfo = useSystemInfo()
+
+// 组件样式对象，计算状态栏高度和背景色
+const style = computed((): CSSProperties => {
+  // 解构获取状态栏高度
+  const { statusBarHeight } = systemInfo
+  // 基础样式对象
+  const style: CSSProperties = {}
+  // 设置高度为状态栏高度
+  style.height = `${statusBarHeight}px`
+  // 设置背景颜色
+  style.background = props.background
   return useStyle({ ...style, ...useStyle(props.customStyle) })
 })
 
-function resize() {
-  const { safeAreaInsets } = useSystemInfo()
-  if (safeAreaInsets) {
-    height.value = safeAreaInsets.top
-    emits("height", safeAreaInsets.top)
-  }
-}
-
-onBeforeMount(() => resize())
+// 暴露组件名称供外部使用
 defineExpose({ name: "ui-safe-area-top" })
 </script>
 
 <script lang="ts">
 export default {
+  name: "ui-safe-area-top",
   options: { virtualHost: true, multipleSlots: true, styleIsolation: "shared" },
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .ui-safe-area-top {
   width: 100%;
-  flex-shrink: 0;
 }
 </style>

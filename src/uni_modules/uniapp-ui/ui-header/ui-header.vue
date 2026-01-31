@@ -18,21 +18,27 @@ import { ref, toRefs, computed, nextTick, onMounted, onBeforeMount, getCurrentIn
 // 定义组件名称
 defineOptions({ name: "ui-header" })
 
-// 定义props和emits
+// 定义 props 和 emits
 const props = defineProps(headerProps)
 const emits = defineEmits(headerEmits)
 
+// mitt 事件总线实例
 const mitt = useMitt()
 
 // 解构常用属性
 const { customClass, safeAreaInsetTop } = toRefs(props)
 
+// 内容区域布局信息
 const rect = ref<UniApp.NodeInfo>({})
+// 导航栏高度
 const uiNavbarHeight = ref(0)
+// H5 平台导航栏高度
 const h5NavbarHeight = ref(0)
 
+// 当前组件实例
 const instance = getCurrentInstance()
 
+// 内容区域样式，设置层级、定位和背景色
 const style = computed(() => {
   const style: CSSProperties = {}
   style.zIndex = props.zIndex
@@ -41,6 +47,7 @@ const style = computed(() => {
   return useStyle({ ...style, ...useStyle(props.customStyle) })
 })
 
+// 占位元素样式，用于保持页面内容位置
 const placeholderStyle = computed(() => {
   const style: CSSProperties = {}
   if (rect.value?.height) {
@@ -49,6 +56,7 @@ const placeholderStyle = computed(() => {
   return useStyle(style)
 })
 
+// 初始化，获取 H5 平台导航栏高度
 function init() {
   // #ifdef WEB
   const { windowTop } = uni.getSystemInfoSync()
@@ -56,7 +64,7 @@ function init() {
   // #endif
 }
 
-// 重新计算尺寸的函数
+// 重新计算内容区域尺寸并触发事件
 async function resize() {
   await nextTick()
   rect.value = await useRect(".ui-header__content", instance)
@@ -64,6 +72,7 @@ async function resize() {
   emits("height", rect.value.height)
 }
 
+// 监听导航栏尺寸变化事件
 function onEvent() {
   mitt?.on("navbar:rect", (rect: UniApp.NodeInfo) => {
     if (rect.height) {
@@ -77,6 +86,8 @@ onMounted(() => {
   resize()
 })
 onBeforeMount(onEvent)
+
+// 暴露方法供外部调用
 defineExpose({ resize })
 </script>
 

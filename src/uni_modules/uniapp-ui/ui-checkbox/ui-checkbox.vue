@@ -28,11 +28,14 @@ const props = defineProps(checkboxProps)
 const emits = defineEmits(checkboxEmits)
 const slots = useSlots()
 
+// 获取父组件
 const { index, parent } = useParent(checkboxGroupKey)
 
+// 默认尺寸
 const DEFAULT_ICON_SIZE = "36rpx"
 const DEFAULT_LABEL_SIZE = "28rpx"
 
+// 实际图标尺寸
 const actualIconSize = computed(() => {
   const iconSize = prop("iconSize")
   if (iconSize) return useUnit(iconSize)
@@ -40,15 +43,15 @@ const actualIconSize = computed(() => {
   if (size) return useUnit(size)
   return DEFAULT_ICON_SIZE
 })
-
+// 实际标签尺寸
 const actualLabelSize = computed(() => {
   const labelSize = prop("labelSize")
   if (labelSize) return useUnit(labelSize)
   return DEFAULT_LABEL_SIZE
 })
-
+// 标签是否在左边
 const isLabelLeft = computed(() => prop("labelPosition") === "left")
-
+// 主色
 const primaryColor = computed(() => {
   const color = prop("color")
   if (color) return useColor(color)
@@ -58,16 +61,16 @@ const primaryColor = computed(() => {
   if (checkedColor) return useColor(checkedColor)
   return ""
 })
-
+// 是否半选状态
 const isIndeterminate = computed(() => prop("indeterminate"))
-
+// 实际形状
 const actualShape = computed(() => prop("shape") || "dot")
-
+// 根节点样式
 const rootStyle = computed(() => {
   const style: CSSProperties = {}
   return useStyle({ ...style, ...useStyle(props.customStyle) })
 })
-
+// 根节点类名
 const rootClass = computed(() => {
   const list: string[] = []
   if (checked.value) list.push("ui-checkbox--checked")
@@ -77,7 +80,7 @@ const rootClass = computed(() => {
   if (isLabelLeft.value) list.push("ui-checkbox--left")
   return list
 })
-
+// 图标容器样式
 const iconContainerStyle = computed(() => {
   const style: CSSProperties = {}
   style.width = actualIconSize.value
@@ -93,7 +96,7 @@ const iconContainerStyle = computed(() => {
 
   return useStyle(style)
 })
-
+// 图标类名
 const iconClass = computed(() => {
   const list: string[] = []
   if (prop("round")) list.push("ui-checkbox__icon--round")
@@ -105,21 +108,21 @@ const iconClass = computed(() => {
   if (disabled.value) list.push("ui-checkbox__icon--disabled")
   return list
 })
-
+// 点样式
 const dotStyle = computed(() => {
   const style: CSSProperties = {}
   style.borderRadius = prop("round") ? "9999px" : useUnit(prop("iconRadius")) || "2rpx"
   return useStyle(style)
 })
-
+// 是否有标签
 const hasLabel = computed(() => slots.default || props.label)
-
+// 内容区域类名
 const contentClass = computed(() => {
   const list: string[] = []
   if (isLabelLeft.value) list.push("ui-checkbox__content--left")
   return list
 })
-
+// 标签样式
 const labelStyle = computed(() => {
   const style: CSSProperties = {}
   style.color = useColor(prop("labelColor")) || undefined
@@ -137,7 +140,7 @@ const labelStyle = computed(() => {
   }
   return useStyle(style)
 })
-
+// 标签类名
 const labelClass = computed(() => {
   const list: string[] = []
   if (checked.value) list.push("ui-checkbox__label--checked")
@@ -145,31 +148,36 @@ const labelClass = computed(() => {
   if (isLabelLeft.value) list.push("ui-checkbox__label--left")
   return list
 })
-
+// 名称
 const name = computed(() => props.name || index.value)
+// 是否选中
 const checked = computed(() => (props.bindGroup && parent ? parent.props.modelValue.includes(name.value) : !!props.modelValue))
+// 是否禁用
 const disabled = computed(() => prop("disabled"))
+// 标签文本
 const label = computed(() => props.label)
 
+// 监听值变化
 watch(
   () => props.modelValue,
   (value) => emits("change", value),
 )
 
+// 获取属性值（优先子组件，否则父组件）
 function prop(name: string) {
   if (props.bindGroup && parent) {
-    // 子组件有显式定义的值时使用子组件的
     if (isDef(props[name])) return props[name]
-    // 否则使用父组件的值
     if (isDef(parent.props[name])) return parent.props[name]
   }
   return props[name]
 }
 
+// 更新值
 async function updateValue(value: CheckboxValueType) {
   emits("update:modelValue", toRaw(value))
 }
 
+// 切换选中状态
 function toggle(check?: boolean) {
   if (prop("disabled") || prop("readonly")) return
 
@@ -207,16 +215,19 @@ function toggle(check?: boolean) {
   }
 }
 
+// 点击事件
 function onClick(event: any) {
   toggle()
   emits("click", event)
 }
 
+// 点击图标
 function onClickIcon(event: any) {
   toggle()
   emits("click", event)
 }
 
+// 点击标签
 function onClickLabel(event: any) {
   if (prop("labelDisabled")) return
   toggle()

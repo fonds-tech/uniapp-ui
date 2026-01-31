@@ -80,29 +80,36 @@ import { cascaderEmits, cascaderProps } from "./index"
 import { isDef, isEmpty, isNoEmpty, isFunction } from "../utils/check"
 import { ref, toRaw, watch, computed, nextTick, getCurrentInstance } from "vue"
 
-// 定义组件名称
 defineOptions({ name: "ui-cascader" })
 
-// 定义props和emits
 const props = defineProps(cascaderProps)
 const emits = defineEmits(cascaderEmits)
-const instance = getCurrentInstance()
-const visible = ref(false) // 弹窗显示状态
-const tabs = ref<CascaderTab[]>([]) // 存储级联选择器的标签页
-const tabsRect = ref<UniApp.NodeInfo[]>([]) // 存储标签页的位置信息
-const loading = ref(false) // 加载状态
-const activeTab = ref(0) // 当前激活的标签页索引
-const currentValue = ref<string | number>("") // 当前选中的值
 
-// 定义默认的字段键名
+// 组件实例
+const instance = getCurrentInstance()
+// 弹窗显示状态
+const visible = ref(false)
+// 级联选择器的标签页
+const tabs = ref<CascaderTab[]>([])
+// 标签页的位置信息
+const tabsRect = ref<UniApp.NodeInfo[]>([])
+// 加载状态
+const loading = ref(false)
+// 当前激活的标签页索引
+const activeTab = ref(0)
+// 当前选中的值
+const currentValue = ref<string | number>("")
+
+// 默认的字段键名
 const defaultFieldKeys = { text: "text", value: "value", children: "children", disabled: "disabled" }
 const { text: textKey, value: valueKey, children: childrenKey, disabled: disabledKey } = merge(defaultFieldKeys, props.fieldKeys)
 
+// 根节点样式
 const style = computed(() => {
   const style: any = {}
   return useStyle({ ...style, ...useStyle(props.customStyle) })
 })
-
+// 标题样式
 const titleStyle = computed(() => {
   const style: any = {}
   if (props.titleSize) style.fontSize = props.titleSize
@@ -110,19 +117,19 @@ const titleStyle = computed(() => {
   if (props.titleWeight) style.fontWeight = props.titleWeight
   return useStyle(style)
 })
-
+// 选项样式
 const optionStyle = computed(() => {
   const style: any = {}
   if (props.color) style.color = props.color
   return useStyle(style)
 })
-
+// 选中选项样式
 const activeOptionStyle = computed(() => {
   const style: any = {}
   if (props.activeColor) style.color = props.activeColor
   return useStyle(style)
 })
-
+// 标签页下划线样式
 const tabsLineStyle = computed(() => {
   const style: any = {}
   if (tabsRect.value.length > 0 && tabsRect.value[activeTab.value]) {
@@ -132,6 +139,7 @@ const tabsLineStyle = computed(() => {
   return style
 })
 
+// 监听 modelValue 变化
 watch(
   () => props.modelValue,
   (value) => {
@@ -140,8 +148,7 @@ watch(
   },
   { immediate: true },
 )
-
-// 同步外部 show 与内部弹窗状态，保证受控与内部关闭一致
+// 同步外部 show 与内部弹窗状态
 watch(
   () => props.show,
   (value) => {
@@ -149,7 +156,7 @@ watch(
   },
   { immediate: true },
 )
-
+// 监听弹窗状态变化
 watch(
   () => visible.value,
   (value) => {
@@ -161,9 +168,9 @@ watch(
     emits("close")
   },
 )
-
+// 监听 options 变化
 watch(() => props.options, updateTabs, { deep: true })
-
+// 监听激活标签页变化
 watch(() => activeTab.value, updateRect, { immediate: true })
 
 // 更新标签页
@@ -225,17 +232,18 @@ async function updateRect() {
   tabsRect.value = await useRects(".ui-cascader__tabs__tab", instance)
 }
 
+// 更新弹窗显示状态
 function handleUpdateShow(value: boolean) {
   visible.value = value
 }
 
-// 点击标签页的处理函数
+// 点击标签页
 function onClickTab(item: CascaderTab, index: number) {
   activeTab.value = index
   emits("clickTab", { index })
 }
 
-// 点击选项的处理函数
+// 点击选项
 function onClickOption(option: CascaderOption, index: number, optionIndex: number) {
   if (option[disabledKey]) return
 
@@ -278,7 +286,7 @@ function onClickOption(option: CascaderOption, index: number, optionIndex: numbe
     }
   }
 
-  // 处理beforeChange拦截器
+  // 处理 beforeChange 拦截器
   if (isFunction(props.beforeChange)) {
     const indexs = [...tabs.value.filter((tab) => tab.selected).map((tab) => tab.options.findIndex((item: any) => item[valueKey] === tab.selected?.[valueKey]))]
     indexs[index] = optionIndex
@@ -301,12 +309,12 @@ function onClickOption(option: CascaderOption, index: number, optionIndex: numbe
   }
 }
 
-// 滑动切换标签页的处理函数
+// 滑动切换标签页
 function onSwiperChange(event: any) {
   activeTab.value = event.detail.current
 }
 
-// 点击关闭按钮的处理函数
+// 点击关闭按钮
 function onClickClose() {
   visible.value = false
 }

@@ -15,20 +15,28 @@ import { indexAnchorProps } from "./index"
 import { ref, computed, getCurrentInstance } from "vue"
 import { useRect, useUnit, useColor, useStyle, useParent } from "../hooks"
 
+// 定义组件名称
 defineOptions({ name: "ui-index-anchor" })
 
+// 定义 props
 const props = defineProps(indexAnchorProps)
+
+// 获取父组件
 const { index, parent } = useParent(indexBarKey)
 
+// 锚点元素位置信息
 const rect = ref<UniApp.NodeInfo>(null)
+// 组件实例
 const instance = getCurrentInstance()
 
+// 动态类名
 const classs = computed(() => {
   const list: any = []
   if (isActive.value) list.push("is-active")
   return list
 })
 
+// 根节点样式
 const style = computed(() => {
   const style: any = {}
   style.height = useUnit(props.height)
@@ -41,6 +49,7 @@ const style = computed(() => {
   return useStyle({ ...style, ...useStyle(props.customStyle) })
 })
 
+// 索引文字样式
 const indexStyle = computed(() => {
   const style: any = {}
   style.color = useColor(props.color)
@@ -54,9 +63,12 @@ const indexStyle = computed(() => {
   return useStyle(style)
 })
 
+// 锚点名称
 const name = computed(() => (isDef(props.name) ? props.name : index.value))
+// 是否激活
 const isActive = computed(() => parent.currentName.value === name.value)
 
+// 重新计算位置
 async function resize() {
   rect.value = await useRect(".ui-index-anchor", instance)
 }

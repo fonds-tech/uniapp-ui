@@ -13,21 +13,32 @@ import { numberRollProps } from "./index"
 import { useRect, useUnit, useColor, useStyle } from "../hooks"
 import { ref, watch, computed, nextTick, onMounted, getCurrentInstance } from "vue"
 
+// 定义组件名称
 defineOptions({ name: "ui-number-roll" })
 
+// 定义 props
 const props = defineProps(numberRollProps)
+
+// 组件实例
 const instance = getCurrentInstance()
+
+// 是否已初始化
 const isInit = ref(false)
+// 容器高度
 const height = ref(0)
+// 各列当前索引
 const indexs = ref<number[]>([])
+// 各列数据
 const columns = ref<string[][]>([])
+// 阿拉伯数字列表
 const arab = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
 
+// 转义正则表达式特殊字符
 function escapeRegExp(value: string) {
   return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")
 }
 
-// 兼容字符串输入，避免 NaN，并在必要时保留原始格式
+// 格式化数值（兼容字符串输入）
 function formatValue(value: string | number) {
   const options = {
     decimalPlaces: props.decimalPlaces,
@@ -63,16 +74,20 @@ function formatValue(value: string | number) {
   return String(formatDigit(parsed, options))
 }
 
+// 高度值
 const heightValue = computed(() => {
   if (props.fontSize) return useUnit(props.fontSize)
   return height.value > 0 ? `${height.value}px` : "auto"
 })
 
+// 根节点样式
 const style = computed(() => {
   const style: any = {}
   style.height = heightValue.value
   return useStyle({ ...style, ...useStyle(props.customStyle) })
 })
+
+// 列样式
 const columnStyle = computed(() => {
   return (index: number) => {
     const style: any = {}
@@ -84,6 +99,8 @@ const columnStyle = computed(() => {
     return useStyle(style)
   }
 })
+
+// 列项样式
 const columnItemStyle = computed(() => {
   const style: any = {}
   const h = heightValue.value
@@ -95,8 +112,10 @@ const columnItemStyle = computed(() => {
   return useStyle(style)
 })
 
+// 监听值变化
 watch(() => [props.value, props.decimalPlaces, props.trimZero, props.thousandsSep, props.fontSize], resize)
 
+// 重新计算布局
 async function resize() {
   await nextTick()
   const value = formatValue(isInit.value ? props.value : 0)
@@ -114,12 +133,14 @@ async function resize() {
   }
 }
 
+// 初始化尺寸
 function initRect() {
   useRect(".ui-number-roll", instance).then((rect: any) => {
     height.value = rect.height
   })
 }
 
+// 组件挂载时初始化
 onMounted(() => resize())
 defineExpose({ name: "ui-number-roll" })
 </script>

@@ -20,30 +20,37 @@ defineOptions({ name: "ui-rate" })
 
 const props = defineProps(rateProps)
 const emits = defineEmits(rateEmits)
+
+// 当前分数
 const score = ref(null)
+// 评分区域范围
 const ranges = ref([])
+// 组件容器位置信息
 const rect = ref<UniApp.NodeInfo>({})
+// 各评分项位置信息
 const rects = ref<UniApp.NodeInfo[]>([])
+// 组件实例
 const instance = getCurrentInstance()
 
+// 评分列表
 const list = computed(() =>
   Array.from({ length: props.count })
     .fill("")
     .map((_, i) => getRateStatus(props.modelValue, i + 1)),
 )
-
+// 根节点样式
 const style = computed(() => {
   const style: any = {}
   return useStyle({ ...style, ...useStyle(props.customStyle) })
 })
-
+// 类名数组
 const classes = computed(() => {
   const list: string[] = []
   if (props.disabled) list.push("ui-rate--disabled")
   if (props.readonly) list.push("ui-rate--readonly")
   return list
 })
-
+// 评分项样式
 const itemStyle = computed(() => {
   return (index: number) => {
     const style: any = {}
@@ -53,7 +60,7 @@ const itemStyle = computed(() => {
     return useStyle(style)
   }
 })
-
+// 半星样式
 const iconHalfStyle = computed(() => {
   return (item: any, index: number) => {
     const style: any = {}
@@ -62,25 +69,29 @@ const iconHalfStyle = computed(() => {
     return useStyle(style)
   }
 })
-
+// 图标名称
 const icon = computed(() => {
   return (item: any) => {
     return item.status === "full" ? props.icon : props.voidIcon
   }
 })
-
+// 图标颜色
 const iconColor = computed(() => {
   return (item: any) => {
     return item.value && item.status === "full" ? props.color : props.voidColor
   }
 })
-
+// 是否显示半星
 const isShowHalf = computed(() => {
   return (item: any) => {
     return item.value && item.status === "half"
   }
 })
 
+// 组件挂载时计算尺寸
+onMounted(() => resize())
+
+// 重新计算尺寸
 async function resize() {
   await nextTick()
   rect.value = await useRect(".ui-rate", instance)
@@ -90,6 +101,7 @@ async function resize() {
   updateRanges()
 }
 
+// 获取评分状态
 function getRateStatus(value: number, index: number) {
   if (value >= index) return { status: "full", value: 1 }
 
@@ -103,6 +115,7 @@ function getRateStatus(value: number, index: number) {
   return { status: "void", value: 0 }
 }
 
+// 更新评分区域范围
 async function updateRanges() {
   const gutter = useUnitToPx(props.gutter)
   rect.value = await useRect(".ui-rate", instance)
@@ -121,6 +134,7 @@ async function updateRanges() {
   })
 }
 
+// 根据位置获取分数
 function getScoreByPosition(x: number) {
   const minLeft = Math.min(...ranges.value.map((item) => item.left))
   const maxRight = Math.max(...ranges.value.map((item) => item.right))
@@ -134,22 +148,26 @@ function getScoreByPosition(x: number) {
   return props.modelValue
 }
 
+// 点击事件
 async function onClick(event: any) {
   await updateRanges()
   const value = getScoreByPosition(event.detail.x)
   updateValue(value)
 }
 
+// 触摸开始
 function onTouchstart() {
   updateRanges()
 }
 
+// 触摸移动
 function onTouchmove(event: any) {
   if (!props.touchable) return
   const value = getScoreByPosition(event.touches[0].clientX)
   updateValue(value)
 }
 
+// 更新值
 async function updateValue(value: number) {
   if (props.disabled) return
   if (props.readonly) return
@@ -160,7 +178,6 @@ async function updateValue(value: number) {
   score.value = value
 }
 
-onMounted(() => resize())
 defineExpose({ name: "ui-rate" })
 </script>
 

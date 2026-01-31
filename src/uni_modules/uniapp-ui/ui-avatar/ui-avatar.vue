@@ -43,19 +43,19 @@ defineOptions({ name: "ui-avatar" })
 
 const props = defineProps(avatarProps)
 const emits = defineEmits(avatarEmits)
+
 // 获取父级头像组组件
 const { parent: avatarGroup, index: avatarIndex } = useParent(avatarGroupKey)
-
+// 是否加载失败
 const hasError = ref(false)
 
 // 是否在头像组内
 const inGroup = computed(() => !!avatarGroup)
-
+// 头像组配置
 const groupConfig = computed(() => {
   if (!avatarGroup) return null
   return avatarGroup.props
 })
-
 // 是否可见（如果在组内，需要检查是否超出 max 限制）
 const isVisible = computed(() => {
   if (!inGroup.value || !avatarGroup) return true
@@ -71,7 +71,6 @@ const imageModeMap: Record<string, UniHelper.ImageProps["mode"]> = {
   none: "center",
   "scale-down": "aspectFit",
 }
-
 // 计算图片模式
 const imageMode = computed(() => {
   return imageModeMap[props.fit] || "aspectFill"
@@ -84,7 +83,6 @@ const sizeMap: Record<string, string> = {
   medium: "80rpx",
   large: "120rpx",
 }
-
 // 计算实际尺寸（优先使用组的配置）
 const actualSize = computed(() => {
   if (inGroup.value && groupConfig.value?.size) {
@@ -92,7 +90,6 @@ const actualSize = computed(() => {
   }
   return props.size
 })
-
 // 计算实际形状（优先使用组的配置）
 const actualShape = computed(() => {
   if (inGroup.value && groupConfig.value?.shape) {
@@ -100,7 +97,6 @@ const actualShape = computed(() => {
   }
   return props.shape
 })
-
 // 计算尺寸值
 const sizeValue = computed(() => {
   const size = actualSize.value
@@ -111,7 +107,6 @@ const sizeValue = computed(() => {
   }
   return useUnit(size, "px")
 })
-
 // 计算图标大小（默认为头像尺寸的 50%）
 const iconSizeValue = computed(() => {
   if (props.iconSize) {
@@ -119,7 +114,6 @@ const iconSizeValue = computed(() => {
   }
   const size = actualSize.value
   if (typeof size === "string" && size in sizeMap) {
-    // 预设尺寸对应的图标大小
     const iconSizeMap: Record<string, string> = {
       mini: "24rpx",
       small: "32rpx",
@@ -128,10 +122,8 @@ const iconSizeValue = computed(() => {
     }
     return useUnit(iconSizeMap[size], "px")
   }
-  // 自定义尺寸时，图标为头像的 50%
   return `calc(${sizeValue.value} * 0.5)`
 })
-
 // 计算文字大小（默认为头像尺寸的 40%）
 const textSizeValue = computed(() => {
   if (props.textSize) {
@@ -149,24 +141,21 @@ const textSizeValue = computed(() => {
   }
   return `calc(${sizeValue.value} * 0.4)`
 })
-
 // 显示的文字（截取前两个字符）
 const displayText = computed(() => {
   const text = props.text
   if (!text) return ""
   return text.slice(0, 2)
 })
-
 // 图标颜色
 const iconColorValue = computed(() => {
   return props.iconColor || "var(--ui-color-text-placeholder)"
 })
-
 // 回退图标颜色
 const fallbackIconColor = computed(() => {
   return "var(--ui-color-text-placeholder)"
 })
-
+// 根节点样式
 const rootStyle = computed(() => {
   const style: CSSProperties = {}
   style.width = sizeValue.value
@@ -199,10 +188,8 @@ const rootStyle = computed(() => {
 
     // 设置 z-index 实现堆叠效果
     if (direction === "right") {
-      // 右侧在上：索引越大 z-index 越大
       style.zIndex = avatarIndex.value + 1
     } else {
-      // 左侧在上：索引越小 z-index 越大
       style.zIndex = max - avatarIndex.value
     }
 
@@ -216,7 +203,7 @@ const rootStyle = computed(() => {
   const mergedStyle = useStyle({ ...style, ...(customStyle && typeof customStyle === "object" ? customStyle : {}) })
   return useStyle(mergedStyle, "string")
 })
-
+// 文字样式
 const textStyle = computed(() => {
   const style: CSSProperties = {}
   style.fontSize = textSizeValue.value
@@ -225,7 +212,7 @@ const textStyle = computed(() => {
   }
   return useStyle(style, "string")
 })
-
+// 类名数组
 const classNames = computed(() => {
   const classList: string[] = []
   classList.push(`ui-avatar--${actualShape.value}`)
@@ -239,6 +226,14 @@ const classNames = computed(() => {
   return classList
 })
 
+// 监听图片地址变化，重置错误状态
+watch(
+  () => props.src,
+  () => {
+    hasError.value = false
+  },
+)
+
 // 图片加载成功
 function onImageLoad(event: any) {
   hasError.value = false
@@ -251,16 +246,10 @@ function onImageError(event: any) {
   emits("error", event)
 }
 
+// 点击事件处理
 function onClick(event: any) {
   emits("click", event)
 }
-
-watch(
-  () => props.src,
-  () => {
-    hasError.value = false
-  },
-)
 </script>
 
 <script lang="ts">

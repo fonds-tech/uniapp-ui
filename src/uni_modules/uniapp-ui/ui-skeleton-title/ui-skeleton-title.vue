@@ -9,11 +9,16 @@ import { skeletonKey } from "../ui-skeleton"
 import { skeletonTitleProps } from "./index"
 import { useUnit, useStyle, useParent } from "../hooks"
 
+// 定义组件名称
 defineOptions({ name: "ui-skeleton-title" })
 
+// 定义 props
 const props = defineProps(skeletonTitleProps)
+
+// 获取父组件（ui-skeleton）
 const { parent } = useParent(skeletonKey)
 
+// 根节点样式，设置宽度、高度和圆角
 const style = computed(() => {
   const style: CSSProperties = {}
   if (props.width) style.width = useUnit(props.width)
@@ -22,8 +27,10 @@ const style = computed(() => {
   return useStyle({ ...style, ...useStyle(props.customStyle) })
 })
 
+// 类名数组，根据父组件动画状态设置
 const classes = computed(() => {
   const list: string[] = []
+  // 根据父组件设置是否添加动画类名
   if (parent?.props?.animate) list.push("ui-skeleton-title--animate")
   return list
 })

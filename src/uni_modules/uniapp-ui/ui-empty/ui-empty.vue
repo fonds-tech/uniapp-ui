@@ -14,6 +14,7 @@
 </template>
 
 <script setup lang="ts">
+// 默认空状态图片
 import emptyImg from "./lib/empty.png"
 import { computed } from "vue"
 import { emptyProps } from "./index"
@@ -21,7 +22,10 @@ import { useUnit, useColor, useStyle } from "../hooks"
 
 defineOptions({ name: "ui-empty" })
 
+// 组件 props
 const props = defineProps(emptyProps)
+
+// 根节点样式，合并边距和自定义样式
 const style = computed(() => {
   return useStyle({
     margin: useUnit(props.margin),
@@ -30,6 +34,7 @@ const style = computed(() => {
   })
 })
 
+// 图标样式，设置颜色、尺寸等
 const iconStyle = computed(() => {
   const style: any = {}
   style.color = useColor(props.iconColor)
@@ -39,6 +44,7 @@ const iconStyle = computed(() => {
   return useStyle(style)
 })
 
+// 文字样式，设置颜色和字重
 const textStyle = computed(() => {
   const style: any = {}
   style.color = useColor(props.iconColor)

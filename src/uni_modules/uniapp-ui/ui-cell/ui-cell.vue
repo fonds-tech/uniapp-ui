@@ -35,12 +35,13 @@ import { useUnit, useColor, useStyle, useParent } from "../hooks"
 
 defineOptions({ name: "ui-cell" })
 
-// 定义props和emits
 const props = defineProps(cellProps)
 const emits = defineEmits(cellEmits)
-// 使用useParent hook获取父组件信息
+
+// 获取父组件信息
 const { index, parent: cellGroup } = useParent(cellGroupKey)
 
+// 根节点样式
 const style = computed(() => {
   const style: any = {}
   style.height = useUnit(props.height)
@@ -58,34 +59,29 @@ const style = computed(() => {
   style["--ui-cell-border-color"] = useColor(props.borderColor)
   return useStyle({ ...style, ...useStyle(props.customStyle) })
 })
-
-// 判断是否是最后一个 cell（单独使用时视为最后一个，不显示边框）
+// 是否是最后一个 cell
 const isLastCell = computed(() => {
   if (!cellGroup?.childrens) return true
   return index.value === cellGroup.childrens.length - 1
 })
-
-// 计算class列表
+// 类名数组
 const classes = computed(() => {
   const list: string[] = []
-  // 最后一个 cell 不显示边框
   if (props.border && !isLastCell.value) list.push("ui-cell--border")
-
   if (props.clickable) list.push("ui-cell--clickable")
   return list
 })
-
-// 计算hover class
+// 点击态类名
 const hoverClass = computed(() => {
   return props.clickable || props.isLink ? "ui-cell--active" : ""
 })
-
+// 图标样式
 const iconStyle = computed(() => {
   const style: CSSProperties = {}
   style.marginRight = useUnit(props.iconGap)
   return useStyle(style)
 })
-
+// 标题样式
 const titleStyle = computed(() => {
   const style: CSSProperties = {}
   style.color = useColor(props.titleColor)
@@ -93,7 +89,7 @@ const titleStyle = computed(() => {
   style.fontWeight = props.titleWeight
   return useStyle(style)
 })
-
+// body 样式
 const bodyStyle = computed(() => {
   const style: CSSProperties = {}
   if (props.titleWidth) {
@@ -102,7 +98,7 @@ const bodyStyle = computed(() => {
   }
   return useStyle(style)
 })
-
+// 标签样式
 const labelStyle = computed(() => {
   const style: CSSProperties = {}
   style.color = useColor(props.labelColor)
@@ -111,13 +107,13 @@ const labelStyle = computed(() => {
   style.fontWeight = props.labelWeight
   return useStyle(style)
 })
-
+// 右侧图标样式
 const rightIconStyle = computed(() => {
   const style: CSSProperties = {}
   style.marginLeft = useUnit(props.rightIconGap)
   return useStyle(style)
 })
-
+// 值样式
 const valueStyle = computed(() => {
   const style: CSSProperties = {}
   style.color = useColor(props.valueColor)
@@ -125,12 +121,15 @@ const valueStyle = computed(() => {
   style.fontWeight = props.valueWeight
   return useStyle(style)
 })
-
-// 计算是否显示各个元素
+// 是否显示图标
 const isShowIcon = computed(() => props.icon)
+// 是否显示标题
 const isShowTitle = computed(() => props.title)
+// 是否显示标签
 const isShowLabel = computed(() => props.label)
+// 是否显示值
 const isShowValue = computed(() => props.value)
+// 是否显示右侧图标
 const isShowRightIcon = computed(() => props.isLink)
 
 // 点击事件处理

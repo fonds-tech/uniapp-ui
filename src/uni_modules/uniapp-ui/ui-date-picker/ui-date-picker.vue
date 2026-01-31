@@ -315,6 +315,7 @@ function setCurrentValue(type: DatePickerColumnType, val: number) {
   }
 }
 
+// picker 列数据
 const pickerColumns = computed(() => {
   return props.columns.map((type) => {
     const col = columnMap[type]
@@ -333,11 +334,13 @@ const pickerIndexes = computed(() => {
   })
 })
 
+// 视图样式
 const viewStyle = computed(() => {
   const height = useUnitToPx(props.columnHeight) * +props.visibleColumnNum
   return useStyle({ height: `${height}px` })
 })
 
+// 选项指示器样式
 const optionStyle = computed(() => {
   return useStyle({ height: useUnit(props.columnHeight) }, "string")
 })
@@ -419,6 +422,7 @@ function adjustToBounds() {
   currentSecond.value = clamp(currentSecond.value, minS, maxS)
 }
 
+// 更新显示状态
 function handleUpdateShow(show: boolean) {
   emits("update:show", show)
 }
@@ -476,6 +480,7 @@ function emitChange() {
   emits("update:modelValue", getFormattedValue())
 }
 
+// 取消事件
 function onCancel() {
   emits("cancel", {
     value: getFormattedValue(),
@@ -485,6 +490,7 @@ function onCancel() {
   emits("update:show", false)
 }
 
+// 确认事件
 function onConfirm() {
   emits("confirm", {
     value: getFormattedValue(),

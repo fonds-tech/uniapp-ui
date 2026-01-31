@@ -15,20 +15,25 @@ defineOptions({ name: "ui-config-provider" })
 
 const props = defineProps(configProviderProps)
 const emits = defineEmits(configProviderEmits)
+
+// 收集子组件
 const { linkChildren } = useChildren(configProviderKey)
 
+// 当前路由
 const route = ref("")
+// 系统主题
 const systemTheme = ref<"light" | "dark">("light")
-
+// 事件总线
 const mitt = useMitt()
 
+// 当前主题
 const currentTheme = computed(() => {
   if (props.theme === "auto") {
     return systemTheme.value
   }
   return props.theme
 })
-
+// 根节点样式
 const style = computed(() => {
   const style: CSSProperties = {}
 
@@ -47,6 +52,14 @@ const style = computed(() => {
   return useStyle({ ...style, ...useStyle(props.customStyle) })
 })
 
+// 组件挂载时初始化
+onMounted(init)
+// 组件卸载时清理
+onUnmounted(() => {
+  uni.offThemeChange?.(() => {})
+})
+
+// 初始化
 function init() {
   const pages = getCurrentPages()
   const page = pages[pages.length - 1]
@@ -55,6 +68,7 @@ function init() {
   initSystemTheme()
 }
 
+// 初始化系统主题
 function initSystemTheme() {
   try {
     const systemInfo = useSystemInfo()
@@ -68,6 +82,7 @@ function initSystemTheme() {
   })
 }
 
+// 生成颜色 CSS 变量
 function generateColorVars(name: string, color: string): Record<string, string> {
   const cssVarName = `--ui-color-${name}`
   const vars: Record<string, string> = {
@@ -82,6 +97,7 @@ function generateColorVars(name: string, color: string): Record<string, string> 
   return vars
 }
 
+// 标准化 CSS 变量键名
 function normalizeCssVarKey(key: string): string {
   if (!key) return ""
   const trimmed = key.trim()
@@ -91,6 +107,7 @@ function normalizeCssVarKey(key: string): string {
   return `--ui-${trimmed}`
 }
 
+// 应用自定义 CSS 变量
 function applyCustomCssVars(target: CSSProperties, vars: Record<string, string | number>) {
   if (!vars) return
   const cssVarsTarget = target as Record<string, string>
@@ -102,27 +119,27 @@ function applyCustomCssVars(target: CSSProperties, vars: Record<string, string |
   })
 }
 
+// 触摸开始
 function onTouchstart(e: any) {
   emits("touchstart", e)
   mitt.emit("touchstart", e)
 }
 
+// 触摸结束
 function onTouchend(e: any) {
   emits("touchend", e)
   mitt.emit("touchend", e)
 }
 
+// 触摸移动
 function onTouchmove(e: any) {
   emits("touchmove", e)
   mitt.emit("touchmove", e)
 }
 
-onMounted(init)
-onUnmounted(() => {
-  uni.offThemeChange?.(() => {})
-})
-
+// 建立父子组件关联
 linkChildren({ props, mitt })
+
 defineExpose({ mitt, currentTheme })
 </script>
 

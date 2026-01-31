@@ -20,27 +20,19 @@ import { ref, watch, computed } from "vue"
 import { overlayEmits, overlayProps } from "./index"
 import { useStyle, useTransition, useGlobalZIndex } from "../hooks"
 
-// 定义组件名称
 defineOptions({ name: "ui-overlay" })
 
-// 定义props和emits
 const props = defineProps(overlayProps)
 const emits = defineEmits(overlayEmits)
-// 使用transition钩子
-const transition = useTransition()
 
-// 用于存储z-index值
+// 过渡动画 hook
+const transition = useTransition()
+// z-index 值
 const zIndex = ref<number>()
 
-// 计算是否显示overlay
+// 是否已初始化
 const inited = computed(() => !props.lazyRender || transition.inited.value)
-
-// 为transition的各个阶段绑定事件
-transition.on("before-enter", () => emits("open"))
-transition.on("after-enter", () => emits("opened"))
-transition.on("before-leave", () => emits("close"))
-transition.on("after-leave", () => emits("closed"))
-
+// 根节点样式
 const style = computed(() => {
   const style: CSSProperties = {}
   style.zIndex = zIndex.value
@@ -49,7 +41,13 @@ const style = computed(() => {
   return useStyle({ ...style, ...useStyle(props.customStyle), ...transition.styles.value })
 })
 
-// 监听show属性变化,触发open或close方法
+// 过渡事件绑定
+transition.on("before-enter", () => emits("open"))
+transition.on("after-enter", () => emits("opened"))
+transition.on("before-leave", () => emits("close"))
+transition.on("after-leave", () => emits("closed"))
+
+// 监听 show 变化
 watch(
   () => props.show,
   (val) => {
@@ -57,10 +55,10 @@ watch(
   },
   { immediate: true },
 )
-
-// 监听duration属性变化,重新初始化transition
+// 监听动画相关属性变化
 watch(() => [props.duration, props.enterTimingFunction, props.leaveTimingFunction], initTransition, { immediate: true })
 
+// 初始化过渡动画
 function initTransition() {
   transition.init({
     name: "fade",
@@ -70,7 +68,7 @@ function initTransition() {
   })
 }
 
-// 打开overlay
+// 打开遮罩层
 function open() {
   if (transition.visible.value) return
   initTransition()
@@ -79,7 +77,7 @@ function open() {
   emits("update:show", true)
 }
 
-// 关闭overlay
+// 关闭遮罩层
 function close() {
   if (transition.visible.value) {
     transition.leave()
@@ -87,6 +85,7 @@ function close() {
   }
 }
 
+// 点击事件
 function onClick() {
   emits("click")
 }

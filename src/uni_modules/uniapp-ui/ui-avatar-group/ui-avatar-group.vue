@@ -16,24 +16,13 @@ import { computed } from "vue"
 import { useUnit, useColor, useStyle, useChildren } from "../hooks"
 import { avatarGroupKey, avatarGroupEmits, avatarGroupProps } from "./index"
 
-// 定义组件名称
 defineOptions({ name: "ui-avatar-group" })
 
-// 定义 props 和 emits
 const props = defineProps(avatarGroupProps)
 const emits = defineEmits(avatarGroupEmits)
+
 // 使用 useChildren 收集子头像组件
 const { childrens, linkChildren } = useChildren(avatarGroupKey)
-
-// 超出的数量
-const excessCount = computed(() => {
-  const total = childrens.length
-  const max = Number(props.max) || 5
-  return total > max ? total - max : 0
-})
-
-// 是否显示超出数量
-const shouldShowExcess = computed(() => excessCount.value > 0)
 
 // 预设尺寸映射
 const sizeMap: Record<string, string> = {
@@ -43,6 +32,14 @@ const sizeMap: Record<string, string> = {
   large: "120rpx",
 }
 
+// 超出的数量
+const excessCount = computed(() => {
+  const total = childrens.length
+  const max = Number(props.max) || 5
+  return total > max ? total - max : 0
+})
+// 是否显示超出数量
+const shouldShowExcess = computed(() => excessCount.value > 0)
 // 计算尺寸值
 const sizeValue = computed(() => {
   const size = props.size
@@ -51,17 +48,16 @@ const sizeValue = computed(() => {
   }
   return useUnit(size)
 })
-
 // 计算间距值
 const gapValue = computed(() => {
   return useUnit(props.gap)
 })
-
+// 根节点样式
 const rootStyle = computed(() => {
   const style: CSSProperties = {}
   return useStyle({ ...style, ...useStyle(props.customStyle) })
 })
-
+// 容器样式
 const containerStyle = computed(() => {
   const style: CSSProperties = {
     display: "flex",
@@ -73,11 +69,11 @@ const containerStyle = computed(() => {
   }
   return style
 })
-
+// 超出数量形状类名
 const excessShapeClass = computed(() => {
   return `ui-avatar-group__excess--${props.shape}`
 })
-
+// 超出数量样式
 const excessStyle = computed(() => {
   const style: CSSProperties = {
     width: sizeValue.value,
@@ -122,6 +118,7 @@ function getTotal() {
   return childrens.length
 }
 
+// 点击事件处理
 function onClick(event: any) {
   emits("click", event)
 }
@@ -131,6 +128,7 @@ function onClickExcess(event: any) {
   emits("clickExcess", event)
 }
 
+// 建立父子组件关联
 linkChildren({
   props,
   getIndex,

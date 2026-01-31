@@ -15,15 +15,23 @@ import { footerEmits, footerProps } from "./index"
 import { ref, computed, nextTick, onMounted, getCurrentInstance } from "vue"
 import { useMitt, useRect, useColor, useStyle, usePxToRpx, useUnitToPx } from "../hooks"
 
+// 定义组件名称
 defineOptions({ name: "ui-footer" })
 
+// 定义 props 和 emits
 const props = defineProps(footerProps)
 const emits = defineEmits(footerEmits)
+
+// 事件总线
 const mitt = useMitt()
+// 组件位置信息
 const rect = ref<UniApp.NodeInfo>({ height: 0 })
+// tabbar 高度
 const tabbarHeight = ref(0)
+// 组件实例
 const instance = getCurrentInstance()
 
+// 根节点样式
 const style = computed(() => {
   const style: CSSProperties = {}
   style.position = "fixed"
@@ -33,18 +41,21 @@ const style = computed(() => {
   return useStyle({ ...style, ...useStyle(props.customStyle) })
 })
 
+// 占位区样式
 const placeholderStyle = computed(() => {
   const style: CSSProperties = {}
   style.height = `${usePxToRpx(rect.value.height)}rpx`
   return useStyle(style)
 })
 
+// 初始化事件监听
 function onEvent() {
   mitt.on("ui-tabbar:rect", (rect: UniApp.NodeInfo) => {
     if (rect) tabbarHeight.value = rect.height
   })
 }
 
+// 重新计算尺寸
 async function resize() {
   await nextTick()
   rect.value = await useRect(".ui-footer__inner", instance)
@@ -55,8 +66,10 @@ async function resize() {
   })
 }
 
+// 初始化
 onEvent()
 onMounted(resize)
+
 defineExpose({ resize })
 </script>
 

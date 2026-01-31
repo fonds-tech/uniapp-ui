@@ -127,25 +127,23 @@ import { calendarEmits, calendarProps } from "./index"
 import { useColor, useStyle, useCalendar } from "../hooks"
 import { parseDate, formatDate, getDaysDiff } from "../utils/date"
 
-// 定义组件名称
 defineOptions({ name: "ui-calendar" })
 
-// 定义 props 和 emits
 const props = defineProps(calendarProps)
 const emits = defineEmits(calendarEmits)
-// 解析最小/最大日期
+
+// 解析最小日期
 const minDate = computed(() => {
   if (!props.minDate) return undefined
   if (props.minDate instanceof Date) return props.minDate
   return new Date(props.minDate)
 })
-
+// 解析最大日期
 const maxDate = computed(() => {
   if (!props.maxDate) return undefined
   if (props.maxDate instanceof Date) return props.maxDate
   return new Date(props.maxDate)
 })
-
 // 解析默认日期
 const defaultDateValue = computed(() => {
   if (!props.defaultDate) return undefined
@@ -153,7 +151,6 @@ const defaultDateValue = computed(() => {
   if (typeof props.defaultDate === "number") return new Date(props.defaultDate)
   return undefined
 })
-
 // 解析多选默认日期
 const defaultSelectedDates = computed<string[]>(() => {
   if (props.type !== "multiple" || !Array.isArray(props.defaultDate)) return []
@@ -162,7 +159,6 @@ const defaultSelectedDates = computed<string[]>(() => {
     return formatDate(new Date(d))
   })
 })
-
 // 解析范围默认日期
 const defaultRange = computed(() => {
   if (props.type !== "range" || !Array.isArray(props.defaultDate)) return undefined
@@ -173,12 +169,12 @@ const defaultRange = computed(() => {
     end: arr[1] instanceof Date ? arr[1] : new Date(arr[1]),
   }
 })
-
 // 转换选择模式
 const calendarMode = computed<CalendarMode>(() => {
   return props.type as CalendarMode
 })
 
+// 使用日历逻辑 hook
 const {
   weeks,
   days,
@@ -205,18 +201,11 @@ const {
   firstDayOfWeek: Number(props.firstDayOfWeek),
 })
 
-watch(
-  () => props.markedDates,
-  (dates) => {
-    updateMarkedDates(dates)
-  },
-)
-
 // 主题色
 const colorValue = computed(() => {
   return useColor(props.color) || "var(--ui-color-primary)"
 })
-
+// 日历样式
 const calendarStyle = computed(() => {
   const style: CSSProperties = {}
   if (props.color) {
@@ -224,11 +213,9 @@ const calendarStyle = computed(() => {
   }
   return useStyle({ ...style, ...useStyle(props.customStyle) })
 })
-
 // 格式化日期数据，应用自定义 formatter
 const formattedDays = computed<CalendarDay[]>(() => {
   return days.value.map((day: UseCalendarDay) => {
-    // 构建基础日期对象
     const calendarDay: CalendarDay = {
       date: parseDate(day.fullDate),
       type: getDayType(day),
@@ -255,6 +242,25 @@ const formattedDays = computed<CalendarDay[]>(() => {
     return calendarDay
   })
 })
+// 是否可以确认
+const canConfirm = computed(() => {
+  if (props.type === "single") {
+    return !!selectedDate.value
+  } else if (props.type === "multiple") {
+    return selectedDates.value.length > 0
+  } else if (props.type === "range") {
+    return !!selectedRange.value.start && !!selectedRange.value.end
+  }
+  return false
+})
+
+// 监听标记日期变化
+watch(
+  () => props.markedDates,
+  (dates) => {
+    updateMarkedDates(dates)
+  },
+)
 
 // 获取日期类型
 function getDayType(day: UseCalendarDay): CalendarDay["type"] {
@@ -274,18 +280,6 @@ function getDefaultBottomInfo(day: UseCalendarDay): string | undefined {
   if (day.isRangeEnd) return "结束"
   return undefined
 }
-
-// 是否可以确认
-const canConfirm = computed(() => {
-  if (props.type === "single") {
-    return !!selectedDate.value
-  } else if (props.type === "multiple") {
-    return selectedDates.value.length > 0
-  } else if (props.type === "range") {
-    return !!selectedRange.value.start && !!selectedRange.value.end
-  }
-  return false
-})
 
 // 获取日期样式类
 function getDayClass(day: CalendarDay): string[] {
@@ -326,6 +320,7 @@ function getDayClass(day: CalendarDay): string[] {
   return classes
 }
 
+// 获取日期样式
 function getDayStyle(day: CalendarDay): CSSProperties {
   const style: CSSProperties = {}
 
@@ -335,7 +330,6 @@ function getDayStyle(day: CalendarDay): CSSProperties {
   }
 
   if (day.inRange && colorValue.value) {
-    // 使用半透明的主题色作为范围背景
     style.backgroundColor = `color-mix(in srgb, ${colorValue.value} 15%, transparent)`
   }
 
@@ -370,6 +364,7 @@ function onClickDay(day: CalendarDay) {
   emitSelect()
 }
 
+// 触发选择事件
 function emitSelect() {
   if (props.type === "single") {
     if (selectedDate.value) {
@@ -452,6 +447,7 @@ function onNextYear() {
   emitMonthChange()
 }
 
+// 触发月份变化事件
 function emitMonthChange() {
   const data: CalendarMonthChangeData = {
     year: currentDate.value.getFullYear(),
@@ -466,6 +462,7 @@ function onClose() {
   emits("update:show", false)
 }
 
+// 更新显示状态
 function onUpdateShow(show: boolean) {
   emits("update:show", show)
 }

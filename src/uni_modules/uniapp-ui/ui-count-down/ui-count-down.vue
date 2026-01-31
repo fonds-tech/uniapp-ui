@@ -17,13 +17,22 @@ defineOptions({ name: "ui-count-down" })
 
 const props = defineProps(countDownProps)
 const emits = defineEmits(countDownEmits)
+
+// 定时器
 const timer = ref<ReturnType<typeof setTimeout> | null>(null)
+// 是否运行中
 const runing = ref(false)
+// 开始时间
 const startTime = ref<number>(0)
+// 结束时间
 const endTime = ref<number>(0)
+// 总时间
 const totalTime = ref<number>(0)
+// 剩余时间
 const remainTime = ref<number>(0)
+// RAF 上次执行时间
 const rafLastTime = ref<number>(0)
+// 时间数据
 const timeData = ref<CountDownTimeData>({
   days: 0,
   hours: 0,
@@ -33,17 +42,22 @@ const timeData = ref<CountDownTimeData>({
   total: 0,
   current: 0,
 })
+// 格式化后的时间文本
 const formatTimeText = ref("")
 
+// 是否为正计时模式
 const isCountUp = computed(() => props.mode === "countup")
-
+// 根节点样式
 const style = computed(() => {
   const style: any = {}
   return useStyle({ ...style, ...useStyle(props.customStyle) })
 })
 
+// 监听时间变化
 watch(() => props.time, reset, { immediate: true })
+// 监听目标时间变化
 watch(() => props.targetTime, reset)
+// 监听格式变化
 watch(
   () => props.format,
   () => {
@@ -51,6 +65,12 @@ watch(
   },
 )
 
+// 组件销毁前暂停
+onBeforeUnmount(() => {
+  pause()
+})
+
+// 计时
 function tick() {
   if (!runing.value) return
   const now = Date.now()
@@ -82,6 +102,7 @@ function tick() {
   }
 }
 
+// 开始计时
 function start() {
   if (runing.value) return
   runing.value = true
@@ -95,6 +116,7 @@ function start() {
   tick()
 }
 
+// 重置计时
 function reset() {
   pause()
   const target = +props.targetTime
@@ -120,6 +142,7 @@ function reset() {
   if (props.autoStart) start()
 }
 
+// 暂停计时
 function pause() {
   if (runing.value) {
     const now = Date.now()
@@ -133,10 +156,12 @@ function pause() {
   useCancelRequestAnimationFrame(timer.value)
 }
 
+// 判断是否为同一秒
 function isSameSecond(time1: number, time2: number) {
   return Math.floor(time1 / 1000) === Math.floor(time2 / 1000)
 }
 
+// 格式化时间
 function parseTimeFormat(time: CountDownTimeData, format: string) {
   let { days, hours, minutes, seconds, milliseconds } = time
   if (!format.includes("DD")) {
@@ -162,6 +187,7 @@ function parseTimeFormat(time: CountDownTimeData, format: string) {
   return format.replace("SSS", padZero(milliseconds, 3))
 }
 
+// 解析时间数据
 function parseTimeData(time: number, total: number): CountDownTimeData {
   const SECOND = 1000
   const MINUTE = 60 * SECOND
@@ -175,10 +201,12 @@ function parseTimeData(time: number, total: number): CountDownTimeData {
   return { days, hours, minutes, seconds, milliseconds, total, current: time }
 }
 
+// 获取帧间隔
 function getFrameInterval() {
   return props.millisecond ? 16 : 1000
 }
 
+// 模拟 requestAnimationFrame
 function useRequestAnimationFrame(callback: () => void) {
   const interval = getFrameInterval()
   const currTime = Date.now()
@@ -188,13 +216,10 @@ function useRequestAnimationFrame(callback: () => void) {
   return id
 }
 
+// 取消 requestAnimationFrame
 function useCancelRequestAnimationFrame(id: ReturnType<typeof setTimeout> | null) {
   if (id !== null) clearTimeout(id)
 }
-
-onBeforeUnmount(() => {
-  pause()
-})
 
 defineExpose({ start, reset, pause })
 </script>

@@ -111,33 +111,76 @@ const slots = useSlots()
 
 const { parent } = useParent(formItemKey)
 
+// ==================== 响应式状态 ====================
+
+// 开始日期的实际值（已确认的值）
 const startValue = ref<string>("")
+// 结束日期的实际值（已确认的值）
 const endValue = ref<string>("")
+// 当前激活的日期类型：'start' 开始日期 | 'end' 结束日期
 const activeType = ref<DateRangeSelectActiveType>("start")
+// 弹窗显示状态
 const visible = ref(false)
-// 临时值（弹窗内编辑时使用）
+// 开始日期的临时值（弹窗内编辑时使用，未确认）
 const tempStartValue = ref<string>("")
+// 结束日期的临时值（弹窗内编辑时使用，未确认）
 const tempEndValue = ref<string>("")
 
+// 当前 picker 中选中的年
 const currentYear = ref(new Date().getFullYear())
+// 当前 picker 中选中的月
 const currentMonth = ref(new Date().getMonth() + 1)
+// 当前 picker 中选中的日
 const currentDay = ref(new Date().getDate())
+// 当前 picker 中选中的时
 const currentHour = ref(new Date().getHours())
+// 当前 picker 中选中的分
 const currentMinute = ref(new Date().getMinutes())
+// 当前 picker 中选中的秒
 const currentSecond = ref(new Date().getSeconds())
 
+// ==================== 工具函数 ====================
+
+/**
+ * 将数字补零为两位字符串
+ * @param n 要补零的数字
+ * @returns 补零后的字符串，如 5 -> "05"
+ */
 function pad(n: number): string {
   return padZero(n)
 }
 
+/**
+ * 获取指定月份的天数
+ * @param year 年份
+ * @param month 月份（1-12）
+ * @returns 该月的天数
+ */
 function getDaysInMonth(year: number, month: number): number {
   return new Date(year, month, 0).getDate()
 }
 
+/**
+ * 将年月日时分秒格式化为指定格式的日期字符串
+ * @param y 年份
+ * @param m 月份
+ * @param d 日期
+ * @param h 小时
+ * @param mi 分钟
+ * @param s 秒
+ * @param format 格式模板，如 "YYYY-MM-DD HH:mm:ss"
+ * @returns 格式化后的日期字符串
+ */
 function formatDate(y: number, m: number, d: number, h: number, mi: number, s: number, format: string): string {
   return format.replace(/YYYY/g, String(y)).replace(/MM/g, pad(m)).replace(/DD/g, pad(d)).replace(/HH/g, pad(h)).replace(/mm/g, pad(mi)).replace(/ss/g, pad(s))
 }
 
+/**
+ * 解析各种格式的日期值为标准对象
+ * 支持 Date 对象、时间戳、ISO 字符串等多种格式
+ * @param value 要解析的日期值
+ * @returns 包含年月日时分秒的对象
+ */
 function parseDate(value: string | number | Date | null | undefined): { y: number; m: number; d: number; h: number; mi: number; s: number } {
   const now = new Date()
   if (!value) {
@@ -150,6 +193,7 @@ function parseDate(value: string | number | Date | null | undefined): { y: numbe
   } else if (typeof value === "number") {
     date = new Date(value)
   } else {
+    // 标准化日期字符串，处理 T、Z 等 ISO 格式字符
     const normalized = value.replace("T", " ").replace("Z", "")
     const parts = normalized.split(/[\s/:-]/)
     if (parts.length >= 3) {
@@ -168,17 +212,31 @@ function parseDate(value: string | number | Date | null | undefined): { y: numbe
   return { y: date.getFullYear(), m: date.getMonth() + 1, d: date.getDate(), h: date.getHours(), mi: date.getMinutes(), s: date.getSeconds() }
 }
 
+/**
+ * 将数值限制在指定范围内
+ * @param val 要限制的数值
+ * @param min 最小值
+ * @param max 最大值
+ * @returns 限制后的数值
+ */
 function clamp(val: number, min: number, max: number): number {
   return Math.max(min, Math.min(max, val))
 }
 
+// ==================== 边界计算 ====================
+
+/**
+ * 计算当前选择的最小边界
+ * 选择结束日期时，不能早于开始日期
+ * 选择开始日期时，使用 props.minDate 或默认的过去10年
+ */
 const minBound = computed(() => {
   // 选择结束日期时，最小日期不能早于开始日期
   if (activeType.value === "end" && tempStartValue.value) {
     const startParsed = parseDate(tempStartValue.value)
     if (props.minDate) {
       const minParsed = parseDate(props.minDate)
-      // 取较大者
+      // 取较大者：确保不小于开始日期，也不小于 minDate
       if (
         startParsed.y > minParsed.y ||
         (startParsed.y === minParsed.y && startParsed.m > minParsed.m) ||
@@ -198,13 +256,18 @@ const minBound = computed(() => {
   return { y, m: 1, d: 1, h: 0, mi: 0, s: 0 }
 })
 
+/**
+ * 计算当前选择的最大边界
+ * 选择开始日期时，不能晚于结束日期
+ * 选择结束日期时，使用 props.maxDate 或默认的未来10年
+ */
 const maxBound = computed(() => {
   // 选择开始日期时，最大日期不能晚于结束日期
   if (activeType.value === "start" && tempEndValue.value) {
     const endParsed = parseDate(tempEndValue.value)
     if (props.maxDate) {
       const maxParsed = parseDate(props.maxDate)
-      // 取较小者
+      // 取较小者：确保不大于结束日期，也不大于 maxDate
       if (
         endParsed.y < maxParsed.y ||
         (endParsed.y === maxParsed.y && endParsed.m < maxParsed.m) ||
@@ -224,6 +287,15 @@ const maxBound = computed(() => {
   return { y, m: 12, d: 31, h: 23, mi: 59, s: 59 }
 })
 
+// ==================== Picker 列数据生成 ====================
+
+/**
+ * 生成 picker 列的选项数据
+ * @param start 起始值
+ * @param end 结束值
+ * @param type 列类型（year/month/day/hour/minute/second）
+ * @returns 选项数组
+ */
 function genOptions(start: number, end: number, type: DatePickerColumnType): DatePickerOption[] {
   const safeStart = Math.min(start, end)
   const safeEnd = Math.max(start, end)
@@ -246,8 +318,10 @@ function genOptions(start: number, end: number, type: DatePickerColumnType): Dat
   return options
 }
 
+// 年份列数据
 const yearColumn = computed(() => genOptions(minBound.value.y, maxBound.value.y, "year"))
 
+// 月份列数据（根据当前选中年份动态计算范围）
 const monthColumn = computed(() => {
   const isMinYear = currentYear.value === minBound.value.y
   const isMaxYear = currentYear.value === maxBound.value.y
@@ -256,6 +330,7 @@ const monthColumn = computed(() => {
   return genOptions(minM, maxM, "month")
 })
 
+// 日期列数据（根据当前选中年月动态计算范围，考虑闰年和各月天数）
 const dayColumn = computed(() => {
   const isMinYear = currentYear.value === minBound.value.y
   const isMaxYear = currentYear.value === maxBound.value.y
@@ -267,6 +342,7 @@ const dayColumn = computed(() => {
   return genOptions(minD, maxD, "day")
 })
 
+// 小时列数据（根据当前选中年月日动态计算范围）
 const hourColumn = computed(() => {
   const isMinYear = currentYear.value === minBound.value.y
   const isMaxYear = currentYear.value === maxBound.value.y
@@ -279,6 +355,7 @@ const hourColumn = computed(() => {
   return genOptions(minH, maxH, "hour")
 })
 
+// 分钟列数据（根据当前选中年月日小时动态计算范围）
 const minuteColumn = computed(() => {
   const isMinYear = currentYear.value === minBound.value.y
   const isMaxYear = currentYear.value === maxBound.value.y
@@ -293,6 +370,7 @@ const minuteColumn = computed(() => {
   return genOptions(minMi, maxMi, "minute")
 })
 
+// 秒列数据（根据当前选中年月日小时分钟动态计算范围）
 const secondColumn = computed(() => {
   const isMinYear = currentYear.value === minBound.value.y
   const isMaxYear = currentYear.value === maxBound.value.y
@@ -309,6 +387,7 @@ const secondColumn = computed(() => {
   return genOptions(minS, maxS, "second")
 })
 
+// 列类型到列数据的映射表
 const columnMap: Record<DatePickerColumnType, typeof yearColumn> = {
   year: yearColumn,
   month: monthColumn,
@@ -318,6 +397,11 @@ const columnMap: Record<DatePickerColumnType, typeof yearColumn> = {
   second: secondColumn,
 }
 
+/**
+ * 获取当前选中的某类型值
+ * @param type 列类型
+ * @returns 当前值
+ */
 function getCurrentValue(type: DatePickerColumnType): number {
   switch (type) {
     case "year":
@@ -335,6 +419,11 @@ function getCurrentValue(type: DatePickerColumnType): number {
   }
 }
 
+/**
+ * 设置当前选中的某类型值
+ * @param type 列类型
+ * @param val 要设置的值
+ */
 function setCurrentValue(type: DatePickerColumnType, val: number) {
   switch (type) {
     case "year":
@@ -358,6 +447,9 @@ function setCurrentValue(type: DatePickerColumnType, val: number) {
   }
 }
 
+// ==================== Picker 相关计算属性 ====================
+
+// Picker 的所有列数据
 const pickerColumns = computed(() => {
   return props.columns.map((type) => {
     const col = columnMap[type]
@@ -365,6 +457,7 @@ const pickerColumns = computed(() => {
   })
 })
 
+// Picker 的选中索引数组
 const pickerIndexes = computed(() => {
   return props.columns.map((type, colIdx) => {
     const column = pickerColumns.value[colIdx]
@@ -375,21 +468,25 @@ const pickerIndexes = computed(() => {
   })
 })
 
+// Picker 视图容器的样式
 const viewStyle = computed(() => {
   const height = useUnitToPx(props.columnHeight) * +props.visibleColumnNum
   return useStyle({ height: `${height}px` })
 })
 
+// Picker 选项的样式
 const optionStyle = computed(() => {
   return useStyle({ height: useUnit(props.columnHeight) }, "string")
 })
 
+// 判断指定列的指定项是否为当前选中项
 const isActiveColumn = computed(() => {
   return (columnIndex: number, index: number) => {
     return pickerIndexes.value[columnIndex] === index
   }
 })
 
+// 获取指定列指定项的样式
 const columnStyle = computed(() => {
   return (columnIndex: number, index: number) => {
     const isActive = isActiveColumn.value(columnIndex, index)
@@ -401,6 +498,13 @@ const columnStyle = computed(() => {
   }
 })
 
+// ==================== 值初始化与边界调整 ====================
+
+/**
+ * 从日期字符串初始化 picker 的当前值
+ * 将日期解析并限制在有效范围内
+ * @param value 日期字符串
+ */
 function initFromValue(value: string) {
   const parsed = parseDate(value)
   currentYear.value = clamp(parsed.y, minBound.value.y, maxBound.value.y)
@@ -412,6 +516,11 @@ function initFromValue(value: string) {
   adjustToBounds()
 }
 
+/**
+ * 将当前 picker 值调整到边界范围内
+ * 逐级检查并调整：年 -> 月 -> 日 -> 时 -> 分 -> 秒
+ * 确保选择的日期时间在有效范围内
+ */
 function adjustToBounds() {
   currentYear.value = clamp(currentYear.value, minBound.value.y, maxBound.value.y)
 
@@ -447,18 +556,32 @@ function adjustToBounds() {
   currentSecond.value = clamp(currentSecond.value, minS, maxS)
 }
 
+/**
+ * 获取当前 picker 值的格式化字符串
+ * @returns 格式化后的日期字符串
+ */
 function getFormattedValue(): string {
   return formatDate(currentYear.value, currentMonth.value, currentDay.value, currentHour.value, currentMinute.value, currentSecond.value, props.format)
 }
 
+/**
+ * 获取当前选中的所有列值
+ * @returns 选中值的字符串数组
+ */
 function getSelectedValues(): string[] {
   return props.columns.map((type) => pad(getCurrentValue(type)))
 }
 
+// Picker 变化事件类型定义
 interface PickerViewChangeEvent {
   detail: { value: number[] }
 }
 
+/**
+ * 处理 Picker 变化事件
+ * 更新当前选中的年月日时分秒值
+ * @param e Picker 变化事件
+ */
 function onPickerChange(e: PickerViewChangeEvent) {
   const indexes = e.detail.value
 
@@ -477,6 +600,10 @@ function onPickerChange(e: PickerViewChangeEvent) {
   })
 }
 
+/**
+ * 触发 change 事件
+ * 更新临时值并通知外部
+ */
 function emitPickerChange() {
   const value = getFormattedValue()
 
@@ -499,8 +626,12 @@ function emitPickerChange() {
   emits("change", changeData)
 }
 
+// ==================== 样式相关计算属性 ====================
+
+// 组件是否可交互（非禁用且非只读）
 const isInteractive = computed(() => !props.disabled && !props.readonly)
 
+// 组件类名数组
 const classs = computed(() => {
   const list: string[] = []
   if (props.disabled) list.push("ui-date-range-select--disabled")
@@ -508,14 +639,17 @@ const classs = computed(() => {
   return list
 })
 
+// 悬停效果类名
 const hoverClass = computed(() => {
   return isInteractive.value ? "ui-date-range-select--active" : ""
 })
 
+// 组件根元素样式
 const style = computed(() => {
   return useStyle(props.customStyle)
 })
 
+// 选中日期的文本样式
 const textStyle = computed(() => {
   const style: Record<string, string | number> = {}
   style.color = useColor(props.textColor)
@@ -524,6 +658,7 @@ const textStyle = computed(() => {
   return useStyle(style)
 })
 
+// 占位符文本样式
 const placeholderStyle = computed(() => {
   const style: Record<string, string | number> = {}
   style.color = useColor(props.placeholderColor)
@@ -532,6 +667,7 @@ const placeholderStyle = computed(() => {
   return useStyle(style)
 })
 
+// 分隔符文本样式
 const separatorStyle = computed(() => {
   const style: Record<string, string | number> = {}
   if (props.separatorColor) {
@@ -540,10 +676,14 @@ const separatorStyle = computed(() => {
   return useStyle(style)
 })
 
+// 是否显示右侧图标
 const showRightIcon = computed(() => {
   return Boolean(slots["right-icon"] || props.rightIcon)
 })
 
+// ==================== 显示文本计算 ====================
+
+// 开始日期的显示文本
 const startDisplayText = computed(() => {
   if (!startValue.value) return ""
   if (props.displayFormatter) {
@@ -552,6 +692,7 @@ const startDisplayText = computed(() => {
   return formatDisplayText(startValue.value)
 })
 
+// 结束日期的显示文本
 const endDisplayText = computed(() => {
   if (!endValue.value) return ""
   if (props.displayFormatter) {
@@ -560,14 +701,22 @@ const endDisplayText = computed(() => {
   return formatDisplayText(endValue.value)
 })
 
+// 开始 Tab 的显示文本（有值显示值，无值显示占位符）
 const startTabText = computed(() => {
   return tempStartValue.value || props.startPlaceholder
 })
 
+// 结束 Tab 的显示文本（有值显示值，无值显示占位符）
 const endTabText = computed(() => {
   return tempEndValue.value || props.endPlaceholder
 })
 
+/**
+ * 格式化日期显示文本
+ * 根据配置的列类型决定显示的日期格式
+ * @param value 日期字符串
+ * @returns 格式化后的显示文本
+ */
 function formatDisplayText(value: string): string {
   if (!value) return ""
 
@@ -594,6 +743,7 @@ function formatDisplayText(value: string): string {
   const hasMinute = columns.includes("minute")
   const hasSecond = columns.includes("second")
 
+  // 组合日期部分
   if (hasYear || hasMonth || hasDay) {
     const dateParts: string[] = []
     if (hasYear) dateParts.push(year)
@@ -602,6 +752,7 @@ function formatDisplayText(value: string): string {
     textParts.push(dateParts.join("-"))
   }
 
+  // 组合时间部分
   if (hasHour || hasMinute || hasSecond) {
     const timeParts: string[] = []
     if (hasHour) timeParts.push(hour)
@@ -613,6 +764,11 @@ function formatDisplayText(value: string): string {
   return textParts.join(" ")
 }
 
+/**
+ * 解析日期范围值
+ * @param value 日期范围值 [start, end]
+ * @returns 包含 start 和 end 的对象
+ */
 function parseRangeValue(value: DateRangeSelectValue | undefined) {
   if (!value || !Array.isArray(value) || value.length < 2) {
     return { start: "", end: "" }
@@ -623,6 +779,9 @@ function parseRangeValue(value: DateRangeSelectValue | undefined) {
   }
 }
 
+// ==================== 监听 ====================
+
+// 监听 modelValue 变化，同步更新开始和结束值
 watch(
   () => props.modelValue,
   (val) => {
@@ -633,6 +792,13 @@ watch(
   { immediate: true, deep: true },
 )
 
+// ==================== 事件处理 ====================
+
+/**
+ * 处理点击事件
+ * 打开弹窗并初始化 picker 值
+ * @param type 点击的日期类型：'start' | 'end'
+ */
 function handleClick(type: DateRangeSelectActiveType) {
   if (!isInteractive.value) return
   emits("click", type)
@@ -650,6 +816,11 @@ function handleClick(type: DateRangeSelectActiveType) {
   visible.value = true
 }
 
+/**
+ * 切换 Tab
+ * 在开始和结束日期之间切换
+ * @param type 目标日期类型：'start' | 'end'
+ */
 function switchTab(type: DateRangeSelectActiveType) {
   activeType.value = type
   // 切换 Tab 时重新初始化 picker
@@ -663,6 +834,10 @@ function switchTab(type: DateRangeSelectActiveType) {
   }
 }
 
+/**
+ * 处理弹窗显示状态更新
+ * @param show 是否显示
+ */
 function handleUpdateShow(show: boolean) {
   visible.value = show
   if (!show) {
@@ -671,6 +846,10 @@ function handleUpdateShow(show: boolean) {
   }
 }
 
+/**
+ * 处理取消操作
+ * 关闭弹窗并触发 cancel 事件
+ */
 function handleCancel() {
   const range: DateRangeSelectValue = startValue.value && endValue.value ? [startValue.value, endValue.value] : []
   const cancelData: DateRangeSelectCancelData = { range }
@@ -679,6 +858,10 @@ function handleCancel() {
   parent?.onBlur(range)
 }
 
+/**
+ * 处理确认操作
+ * 保存临时值到实际值，触发 confirm 和 update:modelValue 事件
+ */
 function handleConfirm() {
   // 自动切换：当前是开始日期且开启了自动切换，则切换到结束日期而非关闭
   if (props.autoSwitchToEnd && activeType.value === "start") {
@@ -704,6 +887,12 @@ function handleConfirm() {
   parent?.onChange(range)
 }
 
+// ==================== 暴露的方法 ====================
+
+/**
+ * 打开日期选择弹窗
+ * @param type 默认选中的日期类型：'start' | 'end'，默认为 'start'
+ */
 function open(type: DateRangeSelectActiveType = "start") {
   if (!isInteractive.value) return
   activeType.value = type
@@ -720,18 +909,31 @@ function open(type: DateRangeSelectActiveType = "start") {
   visible.value = true
 }
 
+/**
+ * 关闭日期选择弹窗
+ */
 function close() {
   visible.value = false
 }
 
+/**
+ * 确认选择（外部调用）
+ */
 function confirm() {
   handleConfirm()
 }
 
+/**
+ * 取消选择（外部调用）
+ */
 function cancel() {
   handleCancel()
 }
 
+/**
+ * 获取当前选中的日期范围
+ * @returns 日期范围数组 [start, end]，未选择时返回空数组
+ */
 function getSelectedRange(): DateRangeSelectValue {
   if (startValue.value && endValue.value) {
     return [startValue.value, endValue.value]
@@ -739,6 +941,7 @@ function getSelectedRange(): DateRangeSelectValue {
   return []
 }
 
+// 暴露组件方法供外部调用
 defineExpose({
   name: "ui-date-range-select",
   open,

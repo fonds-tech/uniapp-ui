@@ -18,15 +18,22 @@ import { sidebarItemEmits, sidebarItemProps } from "./index"
 import { useRect, useUnit, useColor, useStyle, useParent } from "../hooks"
 import { ref, watch, computed, nextTick, onMounted, getCurrentInstance } from "vue"
 
+// 定义组件名称
 defineOptions({ name: "ui-sidebar-item" })
 
+// 定义 props 和 emits
 const props = defineProps(sidebarItemProps)
 const emits = defineEmits(sidebarItemEmits)
+
+// 获取父组件
 const { index, parent } = useParent(sidebarKey)
 
+// 元素位置信息
 const rect = ref<UniApp.NodeInfo>({})
+// 组件实例
 const instance = getCurrentInstance()
 
+// 根节点样式
 const style = computed(() => {
   const style: CSSProperties = {}
   style.height = useUnit(props.height)
@@ -37,6 +44,7 @@ const style = computed(() => {
   return useStyle({ ...style, ...useStyle(props.customStyle) })
 })
 
+// 动态类名
 const classs = computed(() => {
   const list: string[] = []
   if (active.value) list.push("ui-sidebar-item--active")
@@ -44,6 +52,7 @@ const classs = computed(() => {
   return list
 })
 
+// 标题样式
 const titleStyle = computed(() => {
   const style: CSSProperties = {}
   style.color = useColor(prop("titleColor"))
@@ -58,17 +67,22 @@ const titleStyle = computed(() => {
   return useStyle(style)
 })
 
+// 项目名称
 const name = computed(() => props.name ?? index.value)
+// 是否激活
 const active = computed(() => parent?.currentName.value === name.value)
 
+// 监听 props 变化
 watch(() => props, resize, { deep: true })
 
+// 获取属性值（优先使用自身，未定义则使用父组件）
 function prop(name: string) {
   if (isDef(props[name])) return props[name]
   if (isDef(parent.props[name])) return parent.props[name]
   return ""
 }
 
+// 重新计算布局
 async function resize() {
   await nextTick()
   rect.value = await useRect(".ui-sidebar-item", instance)
@@ -78,13 +92,16 @@ async function resize() {
   }
 }
 
+// 点击事件
 function onClick() {
   if (props.disabled) return
   parent.clickItem(name.value, index.value)
   parent.setCurrentName(name.value)
 }
 
+// 组件挂载时初始化
 onMounted(resize)
+
 defineExpose({ props, rect, name, index, resize })
 </script>
 

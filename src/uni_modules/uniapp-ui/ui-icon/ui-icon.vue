@@ -37,18 +37,21 @@ defineOptions({ name: "ui-icon" })
 
 const props = defineProps(iconProps)
 const emits = defineEmits(iconEmits)
+
+// 是否 hover 状态
 const isHover = ref(false)
 
+// 前缀类名
 const prefix = computed(() => {
   return props.customPrefix || "ui-icon"
 })
-
+// hover 类名
 const hoverClass = computed(() => {
   return props.hoverClass && isHover.value ? props.hoverClass : ""
 })
-
+// 图片模式
 const imageMode: any = computed(() => props.imageMode)
-
+// 图标样式
 const iconStyle = computed(() => {
   const style: any = {}
   style.color = useColor(props.color)
@@ -59,7 +62,7 @@ const iconStyle = computed(() => {
   style.background = useColor(props.background)
   return useStyle({ ...style, ...useStyle(props.customStyle) })
 })
-
+// 图片样式
 const imageStyle = computed(() => {
   const style: any = {}
   style.width = useUnit(props.width || props.size)
@@ -69,15 +72,18 @@ const imageStyle = computed(() => {
   return useStyle({ ...style, ...useStyle(props.customStyle) })
 })
 
+// 点击事件
 function onClick() {
   emits("click")
 }
 
+// hover 开始
 function onHoverStart() {
   if (!props.hoverClass) return
   isHover.value = true
 }
 
+// hover 结束
 function onHoverEnd() {
   if (!props.hoverClass) return
   isHover.value = false

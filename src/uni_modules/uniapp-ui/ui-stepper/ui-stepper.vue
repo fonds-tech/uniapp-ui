@@ -70,21 +70,35 @@ defineOptions({ name: "ui-stepper" })
 
 const props = defineProps(stepperProps)
 const emits = defineEmits(stepperEmits)
+
+// 定时器
 const timer = ref(null)
+// 加载状态
 const loading = ref(false)
+// 原始值
 const origin = ref(initialValue())
+// 当前值
 const current = ref(initialValue())
+// 是否长按中
 const isLongPress = ref(false)
 
+// 输入类型
 const inputType = computed(() => (props.integer ? "number" : "digit"))
+// 加号是否禁用
 const plusDisabled = computed(() => props.disabled || props.disablePlus || +current.value >= +props.max)
+// 减号是否禁用
 const minusDisabled = computed(() => props.disabled || props.disableMinus || +current.value <= +props.min)
+// 输入框是否禁用
 const inputDisabled = computed(() => props.disabled || props.disabledInput)
+// 是否显示减号
 const showMinus = computed(() => props.showMinus)
+// 是否显示加号
 const showPlus = computed(() => props.showPlus)
+// 是否显示输入框
 const showInput = computed(() => props.showInput)
+// 自定义类名
 const customClass = computed(() => props.customClass)
-
+// 根节点样式
 const style = computed(() => {
   const style: CSSProperties = {}
   if (props.height) {
@@ -92,7 +106,7 @@ const style = computed(() => {
   }
   return useStyle({ ...style, ...useStyle(props.customStyle) })
 })
-
+// 类名数组
 const classes = computed(() => {
   const list: string[] = []
   list.push(`ui-stepper--${props.size}`)
@@ -101,7 +115,7 @@ const classes = computed(() => {
   if (loading.value) list.push("ui-stepper--loading")
   return list
 })
-
+// 减号样式
 const minusStyle = computed(() => {
   const style: CSSProperties = {}
   style.width = useUnit(props.minusWidth)
@@ -111,7 +125,7 @@ const minusStyle = computed(() => {
   style["--stepper-minus-text-size"] = useUnit(props.minusTextSize)
   return useStyle(style)
 })
-
+// 加号样式
 const plusStyle = computed(() => {
   const style: CSSProperties = {}
   style.width = useUnit(props.plusWidth)
@@ -121,7 +135,7 @@ const plusStyle = computed(() => {
   style["--stepper-plus-text-size"] = useUnit(props.plusTextSize)
   return useStyle(style)
 })
-
+// 输入框样式
 const inputStyle = computed(() => {
   const style: CSSProperties = {}
   style.color = useColor(props.inputTextColor)
@@ -136,14 +150,14 @@ const inputStyle = computed(() => {
   }
   return useStyle(style)
 })
-
+// 输入框类名
 const inputClasses = computed(() => {
   const list: string[] = []
   list.push(`ui-stepper__input--${props.theme}`)
   if (inputDisabled.value) list.push("ui-stepper__input--disabled")
   return list
 })
-
+// 减号类名
 const minusClasses = computed(() => {
   const list: string[] = []
   list.push(`ui-stepper__minus--${props.theme}`)
@@ -151,7 +165,7 @@ const minusClasses = computed(() => {
   if (minusDisabled.value) list.push("ui-stepper__minus--disabled")
   return list
 })
-
+// 加号类名
 const plusClasses = computed(() => {
   const list: string[] = []
   list.push(`ui-stepper__plus--${props.theme}`)
@@ -160,8 +174,9 @@ const plusClasses = computed(() => {
   return list
 })
 
+// 监听边界值变化
 watch(() => [props.max, props.min, props.integer, props.decimalLength], checkValue)
-
+// 监听 modelValue 变化
 watch(
   () => props.modelValue,
   (value) => {
@@ -172,6 +187,7 @@ watch(
   },
 )
 
+// 点击加号
 function onPlus() {
   if (loading.value) return
   if (plusDisabled.value) {
@@ -182,6 +198,7 @@ function onPlus() {
   emits("plus")
 }
 
+// 点击减号
 function onMinus() {
   if (loading.value) return
   if (minusDisabled.value) {
@@ -192,6 +209,7 @@ function onMinus() {
   emits("minus")
 }
 
+// 输入框失焦
 function onBlur(event: any) {
   current.value = format(event.detail.value)
   if (+current.value !== +origin.value) {
@@ -200,16 +218,19 @@ function onBlur(event: any) {
   emits("blur", event)
 }
 
+// 输入框聚焦
 function onFocus() {
   emits("focus")
 }
 
+// 点击输入框区域
 function onClick() {
   if (props.disabledInput) {
     emits("click")
   }
 }
 
+// 输入事件
 function onInput(event: any) {
   const { value } = event.detail
   if (isEmpty(value)) return
@@ -236,6 +257,7 @@ function onInput(event: any) {
   })
 }
 
+// 减号长按开始
 function onMinusTouchstart() {
   if (props.longPress) {
     isLongPress.value = false
@@ -246,6 +268,8 @@ function onMinusTouchstart() {
     }, 500)
   }
 }
+
+// 加号长按开始
 function onPlusTouchstart(event: any) {
   if (props.longPress) {
     clearTimeout(timer.value)
@@ -253,17 +277,16 @@ function onPlusTouchstart(event: any) {
       isLongPress.value = true
       longPressStep("plus")
     }, 500)
-    // #ifdef WEB
-    // event.preventDefault()
-    // #endif
   }
 }
 
+// 触摸结束
 function onTouchend(event: TouchEvent) {
   if (!props.longPress) return
   clearInterval(timer.value)
 }
 
+// 长按步进
 function longPressStep(type = "plus") {
   timer.value = setTimeout(() => {
     type === "plus" ? onPlus() : onMinus()
@@ -271,6 +294,7 @@ function longPressStep(type = "plus") {
   }, 200)
 }
 
+// 检查并校正值
 function checkValue() {
   const value = format(current.value)
   if (!isEqual(value, current.value)) {
@@ -278,6 +302,7 @@ function checkValue() {
   }
 }
 
+// 更新值
 function updateValue(value: any) {
   if (isNumber(value)) {
     const next = () => {
@@ -311,6 +336,7 @@ function updateValue(value: any) {
   }
 }
 
+// 格式化值
 function format(value: number | string, fixed = true) {
   value = formatNumber(String(value), !props.integer)
   value = value === "" ? 0 : +value
@@ -320,6 +346,7 @@ function format(value: number | string, fixed = true) {
   return String(value)
 }
 
+// 初始化值
 function initialValue() {
   const defaultValue = props.modelValue
   const value = format(defaultValue)

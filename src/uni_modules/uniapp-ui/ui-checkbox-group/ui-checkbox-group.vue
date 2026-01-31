@@ -15,8 +15,11 @@ defineOptions({ name: "ui-checkbox-group" })
 
 const props = defineProps(checkboxGroupProps)
 const emits = defineEmits(checkboxGroupEmits)
+
+// 收集子组件
 const { childrens, linkChildren } = useChildren(checkboxGroupKey)
 
+// 根节点样式
 const rootStyle = computed(() => {
   const style: CSSProperties = {}
   if (props.gap) style.gap = useUnit(props.gap)
@@ -26,18 +29,20 @@ const rootStyle = computed(() => {
   }
   return useStyle({ ...style, ...useStyle(props.customStyle) })
 })
-
+// 根节点类名
 const rootClass = computed(() => {
   const list: string[] = []
   return list
 })
 
+// 监听值变化
 watch(
   () => props.modelValue,
   (value) => emits("change", value),
   { deep: true },
 )
 
+// 切换全选/全不选
 function toggleAll(checked?: boolean) {
   const checkeds = childrens.filter((children) => {
     if (isEmpty(children.exposed?.props?.bindGroup)) return false
@@ -58,24 +63,29 @@ function toggleAll(checked?: boolean) {
   updateValue(value)
 }
 
+// 获取已选中数量
 function getCheckedCount(): number {
   return props.modelValue.length
 }
 
+// 是否达到最小选中数量
 function isAtMinimum(): boolean {
   const min = props.min ?? 0
   return props.modelValue.length <= +min
 }
 
+// 是否达到最大选中数量
 function isAtMaximum(): boolean {
   const max = props.max ?? Infinity
   return props.modelValue.length >= +max
 }
 
+// 更新值
 async function updateValue(value: unknown[]) {
   emits("update:modelValue", toRaw(value))
 }
 
+// 建立父子组件关联
 linkChildren({ props, updateValue })
 
 defineExpose({

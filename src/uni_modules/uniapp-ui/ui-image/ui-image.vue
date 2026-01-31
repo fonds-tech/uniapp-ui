@@ -37,9 +37,13 @@ defineOptions({ name: "ui-image" })
 
 const props = defineProps(imageProps)
 const emits = defineEmits(imageEmits)
+
+// 加载错误状态
 const error = ref(false)
+// 加载中状态
 const loading = ref(true)
 
+// 根节点样式
 const style = computed(() => {
   const style: CSSProperties = {}
   style.width = useUnit(props.width)
@@ -48,7 +52,7 @@ const style = computed(() => {
   style.borderRadius = useUnit(props.radius)
   return useStyle({ ...style, ...useStyle(props.customStyle) })
 })
-
+// 类名数组
 const classs = computed(() => {
   const list = []
   if (props.round) list.push("ui-image--round")
@@ -56,10 +60,12 @@ const classs = computed(() => {
   if (props.square) list.push("ui-image--square")
   return list
 })
-
+// 是否显示加载中
 const showLoading = computed(() => !props.src || (loading.value && !error.value))
+// 是否显示错误
 const showError = computed(() => props.src && error.value)
 
+// 监听 src 变化
 watch(
   () => props.src,
   () => {
@@ -68,17 +74,20 @@ watch(
   },
 )
 
+// 图片加载成功
 function onImageLoad(event: any) {
   loading.value = false
   emits("load", event)
 }
 
+// 图片加载失败
 function onImageError(event: any) {
   loading.value = false
   error.value = true
   emits("error", event)
 }
 
+// 点击事件
 function onClick(event: any) {
   emits("click", event)
 }

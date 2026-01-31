@@ -88,13 +88,19 @@ const slots = useSlots()
 
 const { parent } = useParent(formItemKey)
 
+// date-picker 组件引用
 const datePickerRef = ref<DatePickerInstance | null>(null)
+// 当前选中的日期值
 const currentValue = ref<string>("")
+// 最后操作类型（用于处理弹窗关闭逻辑）
 const lastAction = ref<"confirm" | "cancel" | null>(null)
+// 弹窗显示状态
 const visible = ref(false)
 
+// 是否可交互（非禁用且非只读）
 const isInteractive = computed(() => !props.disabled && !props.readonly)
 
+// 根节点类名数组
 const classs = computed(() => {
   const list: string[] = []
   if (props.disabled) list.push("ui-date-select--disabled")
@@ -102,14 +108,17 @@ const classs = computed(() => {
   return list
 })
 
+// 点击态类名
 const hoverClass = computed(() => {
   return isInteractive.value ? "ui-date-select--active" : ""
 })
 
+// 根节点样式
 const style = computed(() => {
   return useStyle(props.customStyle)
 })
 
+// 值容器样式，处理文本对齐
 const valueStyle = computed(() => {
   const style: Record<string, string> = {}
   if (props.textAlign) {
@@ -118,6 +127,7 @@ const valueStyle = computed(() => {
   return useStyle(style)
 })
 
+// 文本样式
 const textStyle = computed(() => {
   const style: Record<string, string | number> = {}
   style.color = useColor(props.textColor)
@@ -126,6 +136,7 @@ const textStyle = computed(() => {
   return useStyle(style)
 })
 
+// 占位符样式
 const placeholderStyle = computed(() => {
   const style: Record<string, string | number> = {}
   style.color = useColor(props.placeholderColor)
@@ -134,6 +145,7 @@ const placeholderStyle = computed(() => {
   return useStyle(style)
 })
 
+// 是否显示右侧图标
 const showRightIcon = computed(() => {
   return Boolean(slots["right-icon"] || props.rightIcon)
 })

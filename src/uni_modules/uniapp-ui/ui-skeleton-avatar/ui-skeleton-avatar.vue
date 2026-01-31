@@ -9,11 +9,16 @@ import { skeletonKey } from "../ui-skeleton"
 import { skeletonAvatarProps } from "./index"
 import { useUnit, useStyle, useParent } from "../hooks"
 
+// 定义组件名称
 defineOptions({ name: "ui-skeleton-avatar" })
 
+// 定义 props
 const props = defineProps(skeletonAvatarProps)
+
+// 获取父组件（ui-skeleton）
 const { parent } = useParent(skeletonKey)
 
+// 根节点样式，设置尺寸
 const style = computed(() => {
   const style: CSSProperties = {}
   if (props.size) {
@@ -23,9 +28,12 @@ const style = computed(() => {
   return useStyle({ ...style, ...useStyle(props.customStyle) })
 })
 
+// 类名数组，根据形状和动画状态设置
 const classes = computed(() => {
   const list: string[] = []
+  // 添加形状类名
   list.push(`ui-skeleton-avatar--${props.shape}`)
+  // 根据父组件设置是否添加动画类名
   if (parent?.props?.animate) list.push("ui-skeleton-avatar--animate")
   return list
 })

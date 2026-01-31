@@ -28,11 +28,14 @@ const props = defineProps(radioProps)
 const emits = defineEmits(radioEmits)
 const slots = useSlots()
 
+// 父组件（RadioGroup）
 const { index, parent } = useParent(radioGroupKey)
 
+// 实际形状
 const actualShape = computed(() => prop("shape") || "dot")
+// 标签是否在左侧
 const isLabelLeft = computed(() => prop("labelLeft"))
-
+// 主色
 const primaryColor = computed(() => {
   const color = prop("checkedColor")
   if (color) return useColor(color)
@@ -40,12 +43,12 @@ const primaryColor = computed(() => {
   if (checkedIconColor) return useColor(checkedIconColor)
   return ""
 })
-
+// 根节点样式
 const rootStyle = computed(() => {
   const style: CSSProperties = {}
   return useStyle({ ...style, ...useStyle(props.customStyle) })
 })
-
+// 根节点类名
 const rootClass = computed(() => {
   const list: string[] = []
   if (checked.value) list.push("ui-radio--checked")
@@ -54,7 +57,7 @@ const rootClass = computed(() => {
   if (isLabelLeft.value) list.push("ui-radio--left")
   return list
 })
-
+// 图标容器样式
 const iconContainerStyle = computed(() => {
   const style: CSSProperties = {}
   style.width = useUnit(prop("iconSize")) || undefined
@@ -70,7 +73,7 @@ const iconContainerStyle = computed(() => {
 
   return useStyle(style)
 })
-
+// 图标类名
 const iconClass = computed(() => {
   const list: string[] = []
   if (prop("round")) list.push("ui-radio__icon--round")
@@ -78,21 +81,21 @@ const iconClass = computed(() => {
   if (disabled.value) list.push("ui-radio__icon--disabled")
   return list
 })
-
+// 圆点样式
 const dotStyle = computed(() => {
   const style: CSSProperties = {}
   style.borderRadius = prop("round") ? "9999px" : useUnit(prop("iconRadius")) || "2rpx"
   return useStyle(style)
 })
-
+// 是否有标签
 const hasLabel = computed(() => slots.default || props.label)
-
+// 内容类名
 const contentClass = computed(() => {
   const list: string[] = []
   if (isLabelLeft.value) list.push("ui-radio__content--left")
   return list
 })
-
+// 标签样式
 const labelStyle = computed(() => {
   const style: CSSProperties = {}
   style.color = useColor(prop("labelColor")) || undefined
@@ -110,7 +113,7 @@ const labelStyle = computed(() => {
   }
   return useStyle(style)
 })
-
+// 标签类名
 const labelClass = computed(() => {
   const list: string[] = []
   if (checked.value) list.push("ui-radio__label--checked")
@@ -118,22 +121,27 @@ const labelClass = computed(() => {
   if (isLabelLeft.value) list.push("ui-radio__label--left")
   return list
 })
-
+// 名称
 const name = computed(() => props.name || index.value)
+// 是否选中
 const checked = computed(() => {
   if (props.bindGroup && parent) {
     return parent.props.modelValue === name.value
   }
   return !!props.modelValue
 })
+// 是否禁用
 const disabled = computed(() => prop("disabled"))
+// 标签文本
 const label = computed(() => props.label)
 
+// 监听 modelValue 变化
 watch(
   () => props.modelValue,
   (value) => emits("change", value),
 )
 
+// 获取属性值（优先使用自身，否则使用父组件）
 function prop(name: string) {
   if (props.bindGroup && parent) {
     if (isDef(props[name]) && props[name] !== "") return props[name]
@@ -142,10 +150,12 @@ function prop(name: string) {
   return props[name]
 }
 
+// 更新值
 async function updateValue(value: RadioValueType) {
   emits("update:modelValue", toRaw(value))
 }
 
+// 切换选中状态
 function toggle(check?: boolean) {
   if (prop("disabled") || prop("readonly")) return
 
@@ -159,16 +169,19 @@ function toggle(check?: boolean) {
   }
 }
 
+// 点击事件
 function onClick(event: any) {
   toggle()
   emits("click")
 }
 
+// 点击图标事件
 function onClickIcon(event: any) {
   toggle()
   emits("click")
 }
 
+// 点击标签事件
 function onClickLabel(event: any) {
   if (prop("labelDisabled")) return
   toggle()

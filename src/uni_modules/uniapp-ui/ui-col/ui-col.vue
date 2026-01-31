@@ -12,10 +12,13 @@ import { inject, computed } from "vue"
 
 defineOptions({ name: "ui-col" })
 
+// 组件 props
 const props = defineProps(colProps)
+
 // 从 Row 注入间距信息
 const rowGapInfo = inject<ComputedRef<{ rowGap: string; colGap: string }> | null>("ui-row", null)
 
+// 根节点样式
 const style = computed(() => {
   const style: CSSProperties = {}
 

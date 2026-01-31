@@ -56,15 +56,18 @@ defineOptions({ name: "ui-search" })
 
 const props = defineProps(searchProps)
 const emits = defineEmits(searchEmits)
+
+// 当前搜索值
 const modelValue = ref(props.modelValue)
 
+// 根节点样式
 const rootStyle = computed(() => {
   const styles: CSSProperties = {}
   styles.height = useUnit(props.height)
   styles.margin = useUnit(props.margin)
   return useStyle({ ...styles, ...useStyle(props.customStyle) })
 })
-
+// 内容区样式
 const contentStyle = computed(() => {
   const styles: CSSProperties = {}
   styles.border = props.border
@@ -72,11 +75,11 @@ const contentStyle = computed(() => {
   styles.borderRadius = useUnit(props.radius)
   return useStyle(styles)
 })
-
+// 内容区类名
 const contentClass = computed(() => {
   return props.round ? ["ui-search__content--round"] : []
 })
-
+// 输入框样式
 const inputStyle = computed(() => {
   const styles: CSSProperties = {}
   styles.color = useColor(props.color)
@@ -86,11 +89,11 @@ const inputStyle = computed(() => {
   }
   return useStyle({ ...styles, ...useStyle(props.inputStyle) })
 })
-
+// 输入框类名
 const inputClass = computed(() => {
   return props.disabled ? ["ui-search__value--disabled"] : []
 })
-
+// 操作按钮样式
 const actionButtonStyle = computed(() => {
   const styles: CSSProperties = {}
   styles.color = useColor(props.actionColor)
@@ -98,54 +101,60 @@ const actionButtonStyle = computed(() => {
   styles.fontWeight = props.actionWeight
   return useStyle(styles)
 })
-
-// 占位符样式（返回字符串格式，用于 placeholder-style 属性）
+// 占位符样式
 const placeholderStyle = computed(() => {
   const styles: CSSProperties = {}
   if (props.fontSize) styles.fontSize = useUnit(props.fontSize)
   if (props.placeholderColor) styles.color = useColor(props.placeholderColor)
   return useStyle(styles, "string")
 })
-
 // 是否显示清除按钮
 const showClear = computed(() => {
   const clearable = props.clearabled !== undefined ? props.clearabled : props.clearable
   return clearable && modelValue.value
 })
 
+// 监听值变化
 watch(() => modelValue.value, updateValue)
 watch(
   () => props.modelValue,
   (val) => (modelValue.value = val),
 )
 
+// 更新值
 function updateValue(value: string) {
   emits("update:modelValue", value)
   nextTick(() => emits("change", value))
 }
 
+// 失焦事件
 function onBlur(event: any) {
   emits("blur", event)
 }
 
+// 聚焦事件
 function onFocus(event: any) {
   emits("focus", event)
 }
 
+// 确认搜索事件
 function onConfirm() {
   emits("search", modelValue.value)
 }
 
+// 点击事件
 function onClick(event: Event) {
   emits("click", event)
 }
 
+// 点击清除按钮
 function onClickClear(event: Event) {
   modelValue.value = ""
   updateValue("")
   emits("clear", event)
 }
 
+// 点击操作按钮
 function onClickAction(event: Event) {
   emits("action", event)
 }
@@ -202,15 +211,14 @@ export default {
     }
   }
 
-  // 清除按钮 - 视觉紧凑但触摸区域扩展
   &__clear {
+    margin: calc(var(--ui-spacing-sm) * -1);
     display: flex;
     padding: var(--ui-spacing-sm);
-    align-items: center;
-    justify-content: center; // 扩展触摸区域
-    margin: calc(var(--ui-spacing-sm) * -1); // 负 margin 保持视觉紧凑
     transition: opacity 0.2s ease;
+    align-items: center;
     margin-left: var(--ui-spacing-xs);
+    justify-content: center;
 
     &--active {
       opacity: var(--ui-opacity-active);

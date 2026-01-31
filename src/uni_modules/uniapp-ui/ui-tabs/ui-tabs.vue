@@ -21,16 +21,26 @@ defineOptions({ name: "ui-tabs" })
 
 const props = defineProps(tabsProps)
 const emits = defineEmits(tabsEmits)
+
+// 子组件管理
 const { childrens, linkChildren } = useChildren(tabsKey)
+// 组件实例
 const instance = getCurrentInstance()!
 
+// 是否已初始化
 const inited = ref(false)
+// 滚动距离
 const scrollLeft = ref(0)
+// 当前选中的标签名
 const currentName = ref<string | number | null>(null)
+// 指示器样式
 const indicatorStyle = ref("")
+// 指示器是否已初始化
 const indicatorInited = ref(false)
+// 标签尺寸信息
 const tabRects = ref<Map<number, TabRect>>(new Map())
 
+// 根节点样式
 const style = computed(() => {
   const style: CSSProperties = {}
   style.zIndex = props.zIndex
@@ -38,35 +48,38 @@ const style = computed(() => {
   style.background = useColor(props.background)
   return useStyle({ ...style, ...useStyle(props.customStyle) })
 })
-
+// 类名数组
 const classes = computed(() => {
   const list = []
   if (props.borderBottom) list.push("ui-tabs--border")
   return list
 })
-
+// 标签列表样式
 const listStyle = computed(() => {
   const style: CSSProperties = {}
   style.height = useUnit(props.height)
   return useStyle(style)
 })
 
+// 监听 modelValue 变化
 watch(() => props.modelValue, setCurrentName)
+// 监听子组件数量变化
 watch(
   () => childrens.length,
   () => setCurrentName(props.modelValue),
 )
 
+// 通过名称查找标签
 function findTabByName(name: string | number) {
   return childrens.find((tab) => toRef(tab.exposed.name).value === name) || childrens.find((tab) => !tab.exposed.props.disabled)
 }
 
+// 滚动到指定标签
 async function scrollToTab(index: number) {
   if (!props.scrollable) return
   await nextTick()
   const tabsRect = await useRect(".ui-tabs__scroll", instance)
   if (!tabsRect) return
-  // 使用子组件上报的尺寸信息
   const rects = Array.from(tabRects.value.entries()).sort((a, b) => a[0] - b[0])
   if (!rects.length || !tabRects.value.has(index)) return
   const tabRect = tabRects.value.get(index)!
@@ -76,6 +89,7 @@ async function scrollToTab(index: number) {
   scrollLeft.value = Math.max(0, tabCenter - scrollCenter)
 }
 
+// 设置当前选中的标签
 async function setCurrentName(name: string | number) {
   const tab = findTabByName(name)
   if (tab) {
@@ -92,49 +106,40 @@ async function setCurrentName(name: string | number) {
   }
 }
 
+// 标签点击事件
 function clickTab(name: string | number) {
   emits("tabClick", name)
 }
 
-/**
- * 子组件上报尺寸信息
- */
+// 子组件上报尺寸信息
 function updateTabRect(index: number, rect: TabRect) {
   tabRects.value.set(index, rect)
-  // 如果是当前激活的 tab，更新指示器
   const activeTab = childrens.find((tab) => toRef(tab.exposed.name).value === currentName.value)
   if (activeTab && toRef(activeTab.exposed.index).value === index) {
     updateIndicatorStyle(indicatorInited.value)
   }
 }
 
-/**
- * 更新指示器样式
- * @param animate 是否启用动画
- */
+// 更新指示器样式
 function updateIndicatorStyle(animate: boolean = true) {
   if (!props.showIndicator || childrens.length === 0) return
 
-  // 找到当前激活的 tab 索引
   const activeTab = childrens.find((tab) => toRef(tab.exposed.name).value === currentName.value)
   if (!activeTab) return
   const activeIndex = toRef(activeTab.exposed.index).value
 
-  // 使用子组件上报的尺寸
   const rects = Array.from(tabRects.value.entries()).sort((a, b) => a[0] - b[0])
   if (!rects.length || !tabRects.value.has(activeIndex)) return
 
   const rect = tabRects.value.get(activeIndex)!
   const style: CSSProperties = {}
 
-  // 1. 计算宽度
   if (props.autoIndicatorWidth) {
     style.width = `${rect.titleWidth}px`
   } else if (props.indicatorWidth) {
     style.width = useUnit(props.indicatorWidth)
   }
 
-  // 2. 计算高度和圆角
   if (props.indicatorHeight) {
     style.height = useUnit(props.indicatorHeight)
   }
@@ -142,14 +147,11 @@ function updateIndicatorStyle(animate: boolean = true) {
     style.borderRadius = useUnit(props.indicatorRadius)
   }
 
-  // 3. 计算水平偏移量（使用子组件上报的尺寸）
   const offsetLeft = rects.filter(([i]) => i < activeIndex).reduce((acc, [, r]) => acc + r.width, 0)
   const left = offsetLeft + rect.width / 2
 
-  // 4. 设置 transform
   style.transform = `translateX(${left}px) translateX(-50%)`
 
-  // 5. 设置颜色
   if (props.indicatorColor) {
     style.background = useColor(props.indicatorColor)
   }
@@ -163,11 +165,13 @@ function updateIndicatorStyle(animate: boolean = true) {
   indicatorInited.value = true
 }
 
+// 组件挂载时初始化指示器
 onMounted(async () => {
   await nextTick()
   updateIndicatorStyle(false)
 })
 
+// 监听子组件数量变化
 watch(
   () => childrens.length,
   async () => {

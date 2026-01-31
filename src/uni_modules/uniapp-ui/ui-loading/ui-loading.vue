@@ -23,18 +23,19 @@ const props = defineProps(loadingProps)
 const emits = defineEmits(loadingEmits)
 const slots = useSlots()
 
+// 根节点样式
 const style = computed(() => {
   const style: CSSProperties = {}
   style.color = useColor(props.color)
   return useStyle({ ...style, ...useStyle(props.customStyle) })
 })
-
+// 类名数组
 const classs = computed(() => {
   const list: string[] = []
   if (props.vertical) list.push("ui-loading--vertical")
   return list
 })
-
+// 图标样式
 const iconStyle = computed(() => {
   const style: CSSProperties = {}
   style.color = useColor(props.color)
@@ -42,13 +43,13 @@ const iconStyle = computed(() => {
   style.height = useUnit(props.size)
   return useStyle(style)
 })
-
+// 旋转类名
 const rotateClass = computed(() => {
   const list: string[] = []
   list.push(`ui-loading__rotate--${props.type}`)
   return list
 })
-
+// 文字样式
 const textStyle = computed(() => {
   const style: CSSProperties = {}
   style.color = useColor(props.textColor)
@@ -61,7 +62,7 @@ const textStyle = computed(() => {
   }
   return useStyle(style)
 })
-
+// 是否显示文字
 const isShowText = computed(() => props.text || slots.default)
 </script>
 

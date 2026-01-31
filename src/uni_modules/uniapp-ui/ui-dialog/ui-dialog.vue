@@ -89,11 +89,17 @@ defineOptions({ name: "ui-dialog" })
 
 const props = defineProps(dialogProps)
 const emits = defineEmits(dialogEmits)
+// 过渡动画 hook
 const transition = useTransition()
+// 当前层级
 const zIndex = ref<number | string>()
+// 是否可见
 const visible = ref(false)
+// 打开动作来源（内部/外部）
 const openAction = ref<DialogOpenAction>("outside")
+// 取消按钮加载状态
 const cancelLoading = ref(false)
+// 确认按钮加载状态
 const confirmLoading = ref(false)
 
 // 配置合并：基础配置 < props配置 < open()传入配置
@@ -113,8 +119,10 @@ const baseOptions = ref<DialogOptions>({
 const propOptions = ref<DialogOptions>({})
 const mergedOptions = ref<DialogOptions>({})
 
+// 是否已初始化（懒渲染场景）
 const inited = computed(() => !props.lazyRender || transition.inited.value)
 
+// 根节点样式
 const rootStyle = computed(() => {
   const style: CSSProperties = {
     zIndex: zIndex.value,
@@ -124,8 +132,10 @@ const rootStyle = computed(() => {
   return useStyle({ ...style, ...transition.styles.value })
 })
 
+// 根节点类名
 const rootClass = computed(() => [`ui-dialog--${mergedOptions.value.contentAlign}`, transition.classs.value])
 
+// 对话框主体样式
 const bodyStyle = computed(() => {
   const style: CSSProperties = {
     width: useUnit(mergedOptions.value.width),
@@ -135,8 +145,10 @@ const bodyStyle = computed(() => {
   return useStyle({ ...style, ...useStyle(mergedOptions.value.customStyle) })
 })
 
+// 滚动区域样式
 const scrollStyle = computed(() => useStyle({ height: useUnit(mergedOptions.value.height) }))
 
+// 内容区域样式
 const contentStyle = computed(() => useStyle({ padding: useUnit(mergedOptions.value.padding) }))
 
 const footerStyle = computed(() =>
@@ -146,8 +158,10 @@ const footerStyle = computed(() =>
   }),
 )
 
+// 内容文本对齐类名
 const contentTextClass = computed(() => `ui-dialog__content__text--${mergedOptions.value.contentAlign}`)
 
+// 底部按钮区域类名
 const footerClass = computed(() => (mergedOptions.value.buttonReverse ? "ui-dialog__footer--reverse" : ""))
 
 transition.on("before-enter", () => emits("open"))

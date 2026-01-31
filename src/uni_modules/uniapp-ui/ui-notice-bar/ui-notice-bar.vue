@@ -6,15 +6,7 @@
       </slot>
     </view>
 
-    <swiper
-      v-if="props.mode === 'vertical'"
-      class="ui-notice-bar__vertical"
-      circular
-      vertical
-      :autoplay="props.scrollable"
-      :interval="props.interval"
-      :duration="props.duration"
-    >
+    <swiper v-if="props.mode === 'vertical'" class="ui-notice-bar__vertical" circular vertical :autoplay="props.scrollable" :interval="props.interval" :duration="props.duration">
       <swiper-item v-for="(text, index) in list" :key="index" style="display: flex" @click="onClick(index)">
         <text class="ui-notice-bar__vertical__text" :style="[textStyle]">{{ text }}</text>
       </swiper-item>
@@ -53,13 +45,21 @@ defineOptions({ name: "ui-notice-bar" })
 const props = defineProps(noticeBarProps)
 const emits = defineEmits(noticeBarEmits)
 const slots = useSlots()
+
+// 是否暂停动画
 const pause = ref(false)
+// 动画持续时间
 const duration = ref(0)
+// 水平模式左边距
 const horizontalPaddingLeft = ref("0")
+// 水平模式右边距
 const horizontalPaddingRight = ref("100%")
+// 组件实例
 const instance = getCurrentInstance()
+// 动画令牌（用于取消旧动画）
 let animationToken = 0
 
+// 通知文本列表
 const list = computed(() => {
   if (isString(props.text)) return [props.text]
   if (isArray(props.text) && props.mode === "horizontal") {
@@ -67,13 +67,13 @@ const list = computed(() => {
   }
   return props.text
 })
-
+// 根节点样式
 const style = computed(() => {
   const style: any = {}
   style.background = useColor(props.background)
   return useStyle({ ...style, ...useStyle(props.customStyle) })
 })
-
+// 文字样式
 const textStyle = computed(() => {
   const style: any = {}
   style.color = useColor(props.color)
@@ -83,7 +83,7 @@ const textStyle = computed(() => {
   style.lineHeight = useUnit(props.minHeight)
   return useStyle(style)
 })
-
+// 水平模式文字样式
 const horizontalTextStyle = computed(() => {
   const style: any = {}
   style.animationDuration = `${duration.value}s`
@@ -95,7 +95,7 @@ const horizontalTextStyle = computed(() => {
   }
   return useStyle(style)
 })
-
+// 水平模式文字类名
 const horizontalTextClass = computed(() => {
   const list: string[] = []
   if (props.scrollable) list.push("ui-notice-bar__horizontal__text--scrollable")
@@ -103,6 +103,23 @@ const horizontalTextClass = computed(() => {
   return list
 })
 
+// 监听模式变化
+watch(() => props.mode, resize)
+// 监听滚动变化
+watch(() => props.scrollable, resize)
+// 监听速度变化
+watch(() => props.speed, resize)
+// 监听文本变化
+watch(
+  () => props.text,
+  () => resize(),
+  { deep: true },
+)
+
+// 组件挂载时初始化
+onMounted(() => resize())
+
+// 重新计算尺寸
 function resize() {
   if (props.mode !== "horizontal" || !props.scrollable) {
     animationToken += 1
@@ -112,6 +129,7 @@ function resize() {
   void horizontalAnimation()
 }
 
+// 水平滚动动画
 async function horizontalAnimation() {
   const token = (animationToken += 1)
   if (!instance) return
@@ -154,19 +172,11 @@ async function horizontalAnimation() {
   pause.value = false
 }
 
+// 点击事件
 function onClick(index: number) {
   emits("click", index)
 }
 
-watch(() => props.mode, resize)
-watch(() => props.scrollable, resize)
-watch(() => props.speed, resize)
-watch(
-  () => props.text,
-  () => resize(),
-  { deep: true },
-)
-onMounted(() => resize())
 defineExpose({ name: "ui-notice-bar" })
 </script>
 

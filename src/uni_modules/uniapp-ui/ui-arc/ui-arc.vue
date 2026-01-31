@@ -13,8 +13,10 @@ import { computed } from "vue"
 import { arcEmits, arcProps } from "./index"
 import { useUnit, useColor, useStyle } from "../hooks"
 
+// 定义 props 和 emits
 const props = defineProps(arcProps)
 const emits = defineEmits(arcEmits)
+
 // 曲率校验，限制在 50-500 范围内
 const validCurvature = computed(() => {
   const value = Number(props.curvature)

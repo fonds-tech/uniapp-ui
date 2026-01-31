@@ -23,11 +23,16 @@ const props = defineProps(tabbarProps)
 const emits = defineEmits(tabbarEmits)
 const { childrens, linkChildren } = useChildren(tabbarKey)
 
+// mitt 事件总线实例，用于跨组件通信
 const mitt = useMitt()
+// tabbar 容器元素尺寸信息
 const rect = ref<UniApp.NodeInfo>({ height: 0 })
+// 底部安全区域高度偏移量
 const offsetHeight = ref(0)
+// 当前组件实例
 const instance = getCurrentInstance()
 
+// tabbar 容器样式对象
 const style = computed(() => {
   const style: CSSProperties = {}
   style.height = `${useUnitToRpx(props.height) + usePxToRpx(offsetHeight.value)}rpx`
@@ -37,6 +42,7 @@ const style = computed(() => {
   return useStyle({ ...useStyle(props.customStyle), ...style })
 })
 
+// tabbar 容器类名数组
 const classs = computed(() => {
   const list: string[] = []
   if (props.border) list.push("ui-tabbar__content--border")
@@ -44,24 +50,29 @@ const classs = computed(() => {
   return list
 })
 
+// 占位元素样式对象，用于 fixed 布局时保持页面内容位置
 const placeholderStyle = computed(() => {
   const style: CSSProperties = {}
   style.height = `${useUnitToRpx(props.height) + usePxToRpx(offsetHeight.value)}rpx`
   return useStyle(style)
 })
 
+// 监听选中值变化，触发 change 事件
 watch(
   () => props.modelValue,
   (value) => emits("change", value),
 )
 
+// 监听子组件数量变化，重新计算尺寸
 watch(() => childrens.length, resize)
 
+// 获取 tabbar 容器元素尺寸信息的处理器
 async function rectGetHandler(cb: any) {
   const result = await useRect(".ui-tabbar__content", instance)
   isFunction(cb) && cb(result)
 }
 
+// 注册 mitt 事件监听
 function onEvent() {
   mitt.on("ui-tabbar:rect:get", rectGetHandler)
 }
@@ -70,6 +81,7 @@ onUnmounted(() => {
   mitt.off("ui-tabbar:rect:get", rectGetHandler)
 })
 
+// 重新计算 tabbar 容器尺寸并触发事件
 async function resize() {
   await nextTick()
   rect.value = await useRect(".ui-tabbar__content", instance)
@@ -80,6 +92,7 @@ async function resize() {
   }
 }
 
+// 更新选中值，支持 beforeChange 拦截
 async function updateValue(value: string | number) {
   if (props.beforeChange) {
     try {
@@ -92,6 +105,7 @@ async function updateValue(value: string | number) {
   emits("update:modelValue", value)
 }
 
+// 安全区域底部高度变化回调
 function onSafeAreaBottomHeight(height: number) {
   offsetHeight.value = height
   resize()

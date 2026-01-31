@@ -10,24 +10,19 @@ import { ref, watch, computed } from "vue"
 import { transitionEmits, transitionProps } from "./index"
 import { useStyle, useTransition, useGlobalZIndex } from "../hooks"
 
-// 定义组件名称
 defineOptions({ name: "ui-transition" })
 
-// 定义 props 和 emits
 const props = defineProps(transitionProps)
 const emits = defineEmits(transitionEmits)
+
+// 过渡动画 hook
 const transition = useTransition()
-
+// z-index 值
 const zIndex = ref<number>()
+
+// 是否已初始化
 const inited = computed(() => !props.lazyRender || transition.inited.value)
-
-transition.on("enter", () => emits("enter"))
-transition.on("leave", () => emits("leave"))
-transition.on("before-enter", () => emits("beforeEnter"))
-transition.on("after-enter", () => emits("afterEnter"))
-transition.on("before-leave", () => emits("beforeLeave"))
-transition.on("after-leave", () => emits("afterLeave"))
-
+// 根节点样式
 const style = computed(() => {
   const baseStyle: Record<string, any> = {
     zIndex: zIndex.value,
@@ -41,7 +36,15 @@ const style = computed(() => {
   })
 })
 
-// 监听 show 变化，触发进入或离开过渡
+// 过渡事件绑定
+transition.on("enter", () => emits("enter"))
+transition.on("leave", () => emits("leave"))
+transition.on("before-enter", () => emits("beforeEnter"))
+transition.on("after-enter", () => emits("afterEnter"))
+transition.on("before-leave", () => emits("beforeLeave"))
+transition.on("after-leave", () => emits("afterLeave"))
+
+// 监听 show 变化
 watch(
   () => props.show,
   (val) => {
@@ -49,9 +52,10 @@ watch(
   },
   { immediate: true },
 )
-
+// 监听动画相关属性变化
 watch(() => [props.name, props.duration, props.enterTimingFunction, props.leaveTimingFunction], initTransition, { immediate: true })
 
+// 初始化过渡动画
 function initTransition() {
   transition.init({
     name: props.name,
@@ -62,7 +66,6 @@ function initTransition() {
 }
 
 // 进入过渡
-// 移除 visible 检查，允许从任何状态（包括离开中）切换到进入状态
 function enter() {
   initTransition()
   zIndex.value = isNumber(props.zIndex) ? +props.zIndex : useGlobalZIndex()
@@ -78,13 +81,12 @@ function leave() {
 
 // transitionend 事件处理
 function onTransitionEnd(event: Event) {
-  // 只处理当前元素的事件，忽略子元素冒泡
   if (event.target === event.currentTarget) {
     transition.end()
   }
 }
 
-// 点击事件处理
+// 点击事件
 function onClick() {
   emits("click")
 }

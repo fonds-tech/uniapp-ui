@@ -36,29 +36,26 @@ import { popupEmits, popupProps } from "./index"
 import { ref, watch, computed, onMounted } from "vue"
 import { useUnit, useColor, useStyle, useTransition, useGlobalZIndex } from "../hooks"
 
-// 定义组件名称
 defineOptions({ name: "ui-popup" })
 
-// 定义props和emits
 const props = defineProps(popupProps)
 const emits = defineEmits(popupEmits)
-// 使用transition hook
+
+// 过渡动画 hook
 const transition = useTransition()
 
-// 定义响应式变量
-const zIndex = ref<number>() // 弹出层的z-index
-const action = ref("show") // 当前动作,用于关闭时的事件传递
-const visible = ref(false) // 控制弹出层的可见性
-const windowBottom = ref(0) // 窗口底部安全区域高度
+// 弹出层 z-index
+const zIndex = ref<number>()
+// 当前动作（用于关闭时事件传递）
+const action = ref("show")
+// 控制弹出层可见性
+const visible = ref(false)
+// 窗口底部安全区域高度
+const windowBottom = ref(0)
 
+// 是否已初始化
 const inited = computed(() => !props.lazyRender || transition.inited.value)
-
-// 为transition的各个阶段绑定事件
-transition.on("before-enter", () => emits("open"))
-transition.on("after-enter", () => emits("opened"))
-transition.on("before-leave", () => emits("close", action.value))
-transition.on("after-leave", () => emits("closed", action.value))
-
+// 根节点样式
 const style = computed(() => {
   const style: CSSProperties = {}
   style.zIndex = zIndex.value
@@ -66,12 +63,12 @@ const style = computed(() => {
   style["--ui-popup-border-radius"] = useUnit(props.borderRadius)
   return useStyle({ ...style, ...useStyle(props.customStyle), ...transition.styles.value })
 })
-
+// 类名数组
 const classs = computed(() => {
   const list: string[] = [`ui-popup--${props.mode}`, transition.classs.value]
   return list
 })
-
+// 关闭按钮类名
 const closeClass = computed(() => {
   const list: string[] = []
   const positions = { top: "top-right", right: "top-left", bottom: "top-right", left: "top-right" }
@@ -79,7 +76,7 @@ const closeClass = computed(() => {
   else list.push(`ui-popup__close--${positions[props.mode]}`)
   return list
 })
-
+// 滚动区域样式
 const scrollViewStyle = computed(() => {
   const style: CSSProperties = {}
   style.width = useUnit(props.width)
@@ -89,6 +86,13 @@ const scrollViewStyle = computed(() => {
   return useStyle(style)
 })
 
+// 过渡事件绑定
+transition.on("before-enter", () => emits("open"))
+transition.on("after-enter", () => emits("opened"))
+transition.on("before-leave", () => emits("close", action.value))
+transition.on("after-leave", () => emits("closed", action.value))
+
+// 监听 show 变化
 watch(
   () => props.show,
   (val) => {
@@ -97,10 +101,15 @@ watch(
   },
   { immediate: true },
 )
-
-// 监听mode和duration属性变化,重新初始化transition
+// 监听 mode 和 duration 变化
 watch(() => [props.mode, props.duration], initTransition, { immediate: true })
 
+// 组件挂载时获取窗口底部安全区域高度
+onMounted(() => {
+  getWindowBottom()
+})
+
+// 初始化过渡动画
 function initTransition() {
   const modes = { top: "slide-down", left: "slide-left", right: "slide-right", bottom: "slide-up", center: "fade" }
   transition.init({ name: modes[props.mode] as TransitionName, duration: props.duration })
@@ -126,18 +135,18 @@ function close(a = "show") {
   }
 }
 
-// 点击关闭图标时的处理函数
+// 点击关闭图标
 function onClickClose() {
   close("close")
   emits("clickClose")
 }
 
-// 点击弹出层主体时的处理函数
+// 点击弹出层主体
 function onClickBody() {
   emits("click")
 }
 
-// 点击遮罩层时的处理函数
+// 点击遮罩层
 function onClickOverlay() {
   if (props.closeOnClickOverlay) {
     close("overlay")
@@ -167,10 +176,6 @@ function getWindowBottom() {
   })
   // #endif
 }
-
-onMounted(() => {
-  getWindowBottom()
-})
 
 defineExpose({ open, close })
 </script>
