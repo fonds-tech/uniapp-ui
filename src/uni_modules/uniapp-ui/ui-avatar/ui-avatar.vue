@@ -1,14 +1,6 @@
 <template>
   <view v-if="isVisible" class="ui-avatar" :class="[classNames, props.customClass]" :style="rootStyle" @click="onClick">
-    <image
-      v-if="props.src && !hasError"
-      class="ui-avatar__image"
-      :src="props.src"
-      :mode="imageMode"
-      :lazy-load="props.lazyLoad"
-      @load="onImageLoad"
-      @error="onImageError"
-    />
+    <image v-if="props.src && !hasError" class="ui-avatar__image" :src="props.src" :mode="imageMode" :lazy-load="props.lazyLoad" @load="onImageLoad" @error="onImageError" />
 
     <template v-else-if="hasError">
       <slot name="error">
@@ -47,10 +39,8 @@ import { ref, watch, computed } from "vue"
 import { avatarEmits, avatarProps } from "./index"
 import { useUnit, useColor, useStyle, useParent } from "../hooks"
 
-// 定义组件名称
 defineOptions({ name: "ui-avatar" })
 
-// 定义 props 和 emits
 const props = defineProps(avatarProps)
 const emits = defineEmits(avatarEmits)
 // 获取父级头像组组件

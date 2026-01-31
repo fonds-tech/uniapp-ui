@@ -62,22 +62,19 @@ import { ref, watch, computed } from "vue"
 import { actionSheetEmits, actionSheetProps } from "./index"
 import { useUnit, useColor, useStyle, useTransition, useGlobalZIndex } from "../hooks"
 
-// 定义组件名称
 defineOptions({ name: "ui-action-sheet" })
 
-// 定义props和emits
 const props = defineProps(actionSheetProps)
 const emits = defineEmits(actionSheetEmits)
 // 使用 transition hook
 const transition = useTransition()
 
-// 定义响应式变量
 const currentZIndex = ref<number>()
 const visible = ref(false)
 
 const inited = computed(() => !props.lazyRender || transition.inited.value)
 
-// 计算属性: 安全的 actions 数组
+// 安全的 actions 数组
 const safeActions = computed(() => {
   return Array.isArray(props.actions) ? props.actions : []
 })

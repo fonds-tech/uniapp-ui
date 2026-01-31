@@ -38,135 +38,72 @@ const defaultProps = buildDefaultProps("action-sheet", {
 })
 
 export const actionSheetProps = {
-  /**
-   * 是否显示
-   */
+  /** 是否显示 */
   show: defaultProps("show", { type: Boolean }),
-  /**
-   * 操作项列表
-   */
+  /** 操作项列表 */
   actions: defaultProps("actions", { type: Array as PropType<ActionSheetAction[]> }),
-  /**
-   * 操作面板的高度
-   */
+  /** 操作面板的高度 */
   height: defaultProps("height", { type: [Number, String] }),
-  /**
-   * 操作面板的最大高度
-   */
+  /** 操作面板的最大高度 */
   maxHeight: defaultProps("maxHeight", { type: [Number, String] }),
-  /**
-   * 标题文本
-   */
+  /** 标题文本 */
   title: defaultProps("title", { type: String }),
-  /**
-   * 标题文本大小
-   */
+  /** 标题文本大小 */
   titleSize: defaultProps("titleSize", { type: [Number, String] }),
-  /**
-   * 标题文本颜色
-   */
+  /** 标题文本颜色 */
   titleColor: defaultProps("titleColor", { type: String }),
-  /**
-   * 标题文本粗细
-   */
+  /** 标题文本粗细 */
   titleWeight: defaultProps("titleWeight", { type: [Number, String] }),
-  /**
-   * 描述文本
-   */
+  /** 描述文本 */
   description: defaultProps("description", { type: String }),
-  /**
-   * 描述文本大小
-   */
+  /** 描述文本大小 */
   descriptionSize: defaultProps("descriptionSize", { type: [Number, String] }),
-  /**
-   * 描述文本颜色
-   */
+  /** 描述文本颜色 */
   descriptionColor: defaultProps("descriptionColor", { type: String }),
-  /**
-   * 描述文本粗细
-   */
+  /** 描述文本粗细 */
   descriptionWeight: defaultProps("descriptionWeight", { type: [Number, String] }),
-  /**
-   * 是否显示取消按钮
-   */
+  /** 是否显示取消按钮 */
   showCancel: defaultProps("showCancel", { type: Boolean }),
-  /**
-   * 取消按钮文本
-   */
+  /** 取消按钮文本 */
   cancelText: defaultProps("cancelText", { type: String }),
-  /**
-   * 取消按钮文本大小
-   */
+  /** 取消按钮文本大小 */
   cancelTextSize: defaultProps("cancelTextSize", { type: [Number, String] }),
-  /**
-   * 取消按钮文本颜色
-   */
+  /** 取消按钮文本颜色 */
   cancelTextColor: defaultProps("cancelTextColor", { type: String }),
-  /**
-   * 取消按钮文本粗细
-   */
+  /** 取消按钮文本粗细 */
   cancelTextWeight: defaultProps("cancelTextWeight", { type: [Number, String] }),
-  /**
-   * 取消按钮背景颜色
-   */
+  /** 取消按钮背景颜色 */
   cancelBackground: defaultProps("cancelBackground", { type: String }),
-  /**
-   * 操作项标题的样式
-   */
+  /** 操作项标题的样式 */
   actionTitleStyle: defaultProps("actionTitleStyle", { type: [String, Object] as PropType<string | CSSProperties> }),
-  /**
-   * 操作项描述的样式
-   */
+  /** 操作项描述的样式 */
   actionDescriptionStyle: defaultProps("actionDescriptionStyle", { type: [String, Object] as PropType<string | CSSProperties> }),
-  /**
-   * 动画过渡的时间
-   */
+  /** 动画过渡的时间 */
   duration: defaultProps("duration", { type: Number }),
-  /**
-   * 操作面板的圆角大小
-   */
+  /** 操作面板的圆角大小 */
   borderRadius: defaultProps("borderRadius", { type: [Number, String] }),
-  /**
-   * 元素层级
-   */
+  /** 元素层级 */
   zIndex: defaultProps("zIndex", { type: [Number, String] }),
-  /**
-   * 是否显示遮罩层
-   */
+  /** 是否显示遮罩层 */
   overlay: defaultProps("overlay", { type: Boolean }),
-  /**
-   * 遮罩层样式
-   */
+  /** 遮罩层样式 */
   overlayStyle: defaultProps("overlayStyle", { type: [String, Object] as PropType<string | CSSProperties> }),
-  /**
-   * 是否在显示时才渲染节点
-   */
+  /** 是否在显示时才渲染节点 */
   lazyRender: defaultProps("lazyRender", { type: Boolean }),
-  /**
-   * 点击action项关闭前的回调函数
-   */
+  /** 点击action项关闭前的回调函数 */
   beforeClose: defaultProps("beforeClose", { type: Function as PropType<(action: ActionSheetAction, index: number) => boolean | Promise<boolean>> }),
-  /**
-   * 点击操作项后是否关闭操作面板
-   */
+  /** 点击操作项后是否关闭操作面板 */
   closeOnClickAction: defaultProps("closeOnClickAction", { type: Boolean }),
-  /**
-   * 点击遮罩层后是否关闭操作面板
-   */
+  /** 点击遮罩层后是否关闭操作面板 */
   closeOnClickOverlay: defaultProps("closeOnClickOverlay", { type: Boolean }),
-  /**
-   * 是否显示底部安全区域
-   */
+  /** 是否显示底部安全区域 */
   safeAreaInsetBottom: defaultProps("safeAreaInsetBottom", { type: Boolean }),
-  /**
-   * 自定义类名
-   */
+  /** 自定义类名 */
   customClass: defaultProps("customClass", { type: String }),
-  /**
-   * 自定义样式
-   */
+  /** 自定义样式 */
   customStyle: defaultProps("customStyle", { type: [String, Object] as PropType<string | CSSProperties> }),
 }
+
 export interface ActionSheetAction {
   /** 选项标题 */
   title: string
@@ -187,15 +124,24 @@ export interface ActionSheetAction {
 }
 
 export const actionSheetEmits = {
+  /** 更新显示状态事件 */
   "update:show": (show: boolean) => true,
+  /** 点击遮罩层事件 */
   clickOverlay: () => true,
+  /** 打开面板事件 */
   open: () => true,
+  /** 关闭面板事件 */
   close: () => true,
+  /** 打开动画结束事件 */
   opened: () => true,
+  /** 关闭动画结束事件 */
   closed: () => true,
+  /** 点击取消按钮事件 */
   cancel: () => true,
+  /** 选择操作项事件 */
   select: (action: ActionSheetAction, index: number) => true,
 }
+
 export type ActionSheetEmits = typeof actionSheetEmits
 export type ActionSheetProps = ExtractPropTypes<typeof actionSheetProps>
 export type ActionSheetInstance = InstanceType<typeof ActionSheet>
