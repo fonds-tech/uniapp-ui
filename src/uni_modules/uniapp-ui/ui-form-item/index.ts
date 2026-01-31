@@ -32,109 +32,62 @@ const defaultProps = buildDefaultProps("form-item", {
 })
 
 export const formItemProps = {
-  /**
-   * model的键名
-   */
+  /** model的键名 */
   prop: defaultProps("prop", { type: String }),
-  /**
-   * 标签文本
-   */
+  /** 标签文本 */
   label: defaultProps("label", { type: String }),
-  /**
-   * 是否在标签文字后面添加冒号
-   */
+  /** 是否在标签文字后面添加冒号 */
   colon: defaultProps("colon", { type: Boolean }),
-  /**
-   * 是否显示边框
-   */
+  /** 是否显示边框 */
   border: defaultProps("border", { type: Boolean }),
-  /**
-   * 边框颜色
-   */
+  /** 边框颜色 */
   borderColor: defaultProps("borderColor", { type: String }),
-  /**
-   * 是否为必填项，会显示标签文字右侧*号
-   */
+  /** 是否为必填项，会显示标签文字右侧*号 */
   required: defaultProps("required", { type: Boolean }),
-  /**
-   * 内边距
-   */
+  /** 内边距 */
   padding: defaultProps("padding", { type: [Number, String] }),
-  /**
-   * 表单域标签文字和内容的间隔
-   */
+  /** 表单域标签文字和内容的间隔 */
   labelGap: defaultProps("labelGap", { type: [Number, String] }),
-  /**
-   * 表单域标签文字大小
-   */
+  /** 表单域标签文字大小 */
   labelSize: defaultProps("labelSize", { type: [Number, String] }),
-  /**
-   * 表单域标签文字颜色
-   */
+  /** 表单域标签文字颜色 */
   labelColor: defaultProps("labelColor", { type: String }),
-  /**
-   * 表单域标签文字宽度
-   */
+  /** 表单域标签文字宽度 */
   labelWidth: defaultProps("labelWidth", { type: [Number, String] }),
-  /**
-   * 表单域标签文字字重
-   */
+  /** 表单域标签文字字重 */
   labelWeight: defaultProps("labelWeight", { type: [Number, String] }),
-  /**
-   * 表单域标签文字行高
-   */
+  /** 表单域标签文字行高 */
   labelLineHeight: defaultProps("labelLineHeight", { type: [Number, String] }),
-  /**
-   * 表单域标签对齐方式
-   */
+  /** 表单域标签对齐方式 */
   labelAlign: defaultProps("labelAlign", { type: String as PropType<FormItemLabelAlign> }),
-  /**
-   * 表单域标签文字位置，可选值为 left right top
-   */
+  /** 表单域标签文字位置，可选值为 left right top */
   labelPosition: defaultProps("labelPosition", { type: String as PropType<FormLabelPosition> }),
-  /**
-   * 输入内容对齐方式，可选值为 left center right
-   */
+  /** 输入内容对齐方式，可选值为 left center right */
   contentAlign: defaultProps("contentAlign", { type: String as PropType<FormItemContentAlign> }),
-  /**
-   * 校验错误信息文字
-   */
+  /** 校验错误信息文字 */
   errorMessage: defaultProps("errorMessage", { type: String }),
-  /**
-   * 校验错误信息文字大小
-   */
+  /** 校验错误信息文字大小 */
   errorMessageSize: defaultProps("errorMessageSize", { type: [Number, String] }),
-  /**
-   * 校验错误信息文字颜色
-   */
+  /** 校验错误信息文字颜色 */
   errorMessageColor: defaultProps("errorMessageColor", { type: String }),
-  /**
-   * 校验错误信息文字字重
-   */
+  /** 校验错误信息文字字重 */
   errorMessageWeight: defaultProps("errorMessageWeight", { type: [Number, String] }),
-  /**
-   * 校验错误信息文字对齐方式，可选值为 left center right
-   */
+  /** 校验错误信息文字对齐方式，可选值为 left center right */
   errorMessageAlign: defaultProps("errorMessageAlign", { type: String as PropType<FormErrorMessageAlign> }),
-  /**
-   * 是否在校验不通过时在输入框下方展示错误提示
-   */
+  /** 是否在校验不通过时在输入框下方展示错误提示 */
   showErrorMessage: defaultProps("showErrorMessage", { type: Boolean }),
-  /**
-   * 表单校验触发时机，可选值为 blur change submit 支持通过数组同时设置多个值
-   */
+  /** 表单校验触发时机，可选值为 blur change submit，支持通过数组同时设置多个值 */
   validateTrigger: defaultProps("validateTrigger", { type: [String, Array] as PropType<FormValidateTrigger | FormValidateTrigger[]> }),
-  /**
-   * 自定义类名
-   */
+  /** 自定义类名 */
   customClass: defaultProps("customClass", { type: String }),
-  /**
-   * 自定义样式
-   */
+  /** 自定义样式 */
   customStyle: defaultProps("customStyle", { type: [String, Object] as PropType<string | CSSProperties> }),
 }
+
 export const formItemEmits = {
+  /** 提交表单事件 */
   submit: (values: Record<string, unknown>) => values,
+  /** 校验失败事件 */
   failed: (result: { values: Record<string, unknown>; errors: FormValidateError[] }) => result,
 }
 
@@ -144,10 +97,7 @@ export type FormItemEmits = typeof formItemEmits
 export type FormItemProps = ExtractPropTypes<typeof formItemProps>
 export type FormItemInstance = InstanceType<typeof FormItem>
 
-/**
- * FormItem 提供给子组件的上下文类型
- * 用于表单验证触发
- */
+/** FormItem 提供给子组件的上下文类型 */
 export interface FormItemProvide {
   props: FormItemProps
   prop: string

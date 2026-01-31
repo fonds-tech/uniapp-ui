@@ -28,100 +28,62 @@ const defaultProps = buildDefaultProps("swiper", {
 })
 
 export const swiperProps = {
-  /**
-   * 数据列表
-   */
+  /** 数据列表 */
   list: defaultProps("list", { type: [Array, String] }),
-  /**
-   * 宽度
-   */
+  /** 宽度 */
   width: defaultProps("width", { type: [Number, String] }),
-  /**
-   * 高度
-   */
+  /** 高度 */
   height: defaultProps("height", { type: [Number, String] }),
-  /**
-   * 圆角
-   */
+  /** 圆角 */
   radius: defaultProps("radius", { type: [Number, String] }),
-  /**
-   * 当前所在滑块的 index
-   */
+  /** 当前所在滑块的 index */
   current: defaultProps("current", { type: Number }),
-  /**
-   * 是否开启循环播放
-   */
+  /** 是否开启循环播放 */
   circular: defaultProps("circular", { type: Boolean }),
-  /**
-   * 自动切换时间间隔
-   */
+  /** 自动切换时间间隔 */
   interval: defaultProps("interval", { type: Number }),
-  /**
-   * 滑动动画时长
-   */
+  /** 滑动动画时长 */
   duration: defaultProps("duration", { type: Number }),
-  /**
-   * 是否垂直滚动
-   */
+  /** 是否垂直滚动 */
   vertical: defaultProps("vertical", { type: Boolean }),
-  /**
-   * 是否自动切换
-   */
+  /** 是否自动切换 */
   autoplay: defaultProps("autoplay", { type: Boolean }),
-  /**
-   * 是否禁止用户 touch 操作
-   */
+  /** 是否禁止用户 touch 操作 */
   disableTouch: defaultProps("disableTouch", { type: Boolean }),
-  /**
-   * 是否显示指示器
-   */
+  /** 是否显示指示器 */
   indicator: defaultProps("indicator", { type: Boolean }),
-  /**
-   * 指示器类型，可选值：dot、number
-   */
+  /** 指示器类型：dot/number */
   indicatorType: defaultProps("indicatorType", { type: String as PropType<SwiperIndicatorType> }),
-  /**
-   * 指示器位置，可选值：left、top-left、top、top-right、bottom-left、bottom、bottom-right、right
-   */
+  /** 指示器位置：left/top-left/top/top-right/bottom-left/bottom/bottom-right/right */
   indicatorPosition: defaultProps("indicatorPosition", { type: String as PropType<SwiperIndicatorPosition> }),
-  /**
-   * 前边距，可用于露出前一项的一小部分
-   */
+  /** 前边距，可用于露出前一项的一小部分 */
   prevGap: defaultProps("prevGap", { type: [Number, String] }),
-  /**
-   * 后边距，可用于露出后一项的一小部分
-   */
+  /** 后边距，可用于露出后一项的一小部分 */
   nextGap: defaultProps("nextGap", { type: [Number, String] }),
-  /**
-   * 指定切换缓动动画类型，有效值：default、linear、easeInCubic、easeOutCubic、easeInOutCubic
-   */
+  /** 指定切换缓动动画类型：default/linear/easeInCubic/easeOutCubic/easeInOutCubic */
   easingFunction: defaultProps("easingFunction", { type: String as PropType<SwiperEasingFunction> }),
-  /**
-   * 图片模式，可选值：https://uniapp.dcloud.net.cn/component/image.html#image
-   */
+  /** 图片模式 */
   imageMode: defaultProps("imageMode", { type: String as PropType<UniHelper.ImageProps["mode"]> }),
-  /**
-   * 数据字段
-   */
+  /** 数据字段 */
   fieldKeys: defaultProps("fieldKeys", { type: Object as PropType<SwiperFieldKeys> }),
-  /**
-   * 循环 key
-   */
+  /** 循环 key */
   forKey: defaultProps("forKey", { type: String }),
-  /**
-   * 自定义类名
-   */
+  /** 自定义类名 */
   customClass: defaultProps("customClass", { type: String }),
-  /**
-   * 自定义样式
-   */
+  /** 自定义样式 */
   customStyle: defaultProps("customStyle", { type: [String, Object] as PropType<string | CSSProperties> }),
 }
+
 export const swiperEmits = {
+  /** 更新当前索引事件 */
   "update:current": (index: number) => true,
+  /** 点击事件 */
   click: (index: number) => true,
+  /** 切换事件 */
   change: (index: number) => true,
+  /** 过渡事件 */
   transition: (detail: { x: number; y: number }) => true,
+  /** 动画结束事件 */
   animationfinish: (index: number) => true,
 }
 
@@ -131,6 +93,7 @@ export interface SwiperFieldKeys {
   poster?: string
   title?: string
 }
+
 export type SwiperIndicatorType = "dot" | "number"
 export type SwiperEasingFunction = "default" | "linear" | "easeInCubic" | "easeOutCubic" | "easeInOutCubic"
 export type SwiperIndicatorPosition = "left" | "top-left" | "top" | "top-right" | "bottom-left" | "bottom" | "bottom-right" | "right"

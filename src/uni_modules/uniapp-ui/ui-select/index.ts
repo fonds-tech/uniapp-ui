@@ -3,30 +3,18 @@ import type { PropType, CSSProperties, ExtractPropTypes } from "vue"
 import type { PopupMode, PickerValue, PickerColumn, PickerCancelData, PickerChangeData, PickerConfirmData, PickerColumnFields } from "../ui-picker"
 import { buildDefaultProps } from "../utils/props"
 
-/**
- * 选择器值类型：单选为单值，多选/级联/多列为数组
- */
+/** 选择器值类型：单选为单值，多选/级联/多列为数组 */
 export type SelectValue = PickerValue | PickerValue[]
 
-/**
- * 展示文案格式化入参
- */
+/** 展示文案格式化入参 */
 export interface SelectDisplayPayload {
-  /**
-   * 当前选中值数组
-   */
+  /** 当前选中值数组 */
   values: PickerValue[]
-  /**
-   * 当前选中索引数组
-   */
+  /** 当前选中索引数组 */
   indexs: number[]
-  /**
-   * 当前选中列项
-   */
+  /** 当前选中列项 */
   columns: PickerColumn[]
-  /**
-   * 选中项文本数组
-   */
+  /** 选中项文本数组 */
   texts: Array<string | number>
 }
 
@@ -75,183 +63,108 @@ const defaultProps = buildDefaultProps("select", {
 })
 
 export const selectProps = {
-  /**
-   * 绑定值
-   * - 单选模式：string | number
-   * - 多选/级联/多列模式：(string | number)[]
-   */
+  /** 绑定值：单选为单值，多选/级联/多列为数组 */
   modelValue: defaultProps("modelValue", { type: [String, Number, Array] as PropType<SelectValue> }),
-  /**
-   * 是否多选模式
-   * 注意：级联和多列选择器不受此属性影响，始终使用数组格式
-   */
+  /** 是否多选模式 */
   multiple: defaultProps("multiple", { type: Boolean }),
-  /**
-   * 列数据
-   */
+  /** 列数据 */
   columns: defaultProps("columns", { type: Array as PropType<PickerColumn[]> }),
-  /**
-   * 字段映射
-   */
+  /** 字段映射 */
   columnsFields: defaultProps("columnsFields", { type: Object as PropType<Partial<PickerColumnFields>> }),
-  /**
-   * 弹窗位置
-   */
+  /** 弹窗位置 */
   mode: defaultProps("mode", { type: String as PropType<PopupMode> }),
-  /**
-   * 圆角大小
-   */
+  /** 圆角大小 */
   borderRadius: defaultProps("borderRadius", { type: [Number, String] }),
-  /**
-   * 点击遮罩是否关闭
-   */
+  /** 点击遮罩是否关闭 */
   closeOnClickOverlay: defaultProps("closeOnClickOverlay", { type: Boolean }),
-  /**
-   * 是否显示遮罩
-   */
+  /** 是否显示遮罩 */
   overlay: defaultProps("overlay", { type: Boolean }),
-  /**
-   * 动画时长
-   */
+  /** 动画时长 */
   duration: defaultProps("duration", { type: Number }),
-  /**
-   * 弹窗层级
-   */
+  /** 弹窗层级 */
   zIndex: defaultProps("zIndex", { type: [Number, String] }),
-  /**
-   * 背景色
-   */
+  /** 背景色 */
   background: defaultProps("background", { type: String }),
-  /**
-   * 底部安全区
-   */
+  /** 底部安全区 */
   safeAreaInsetBottom: defaultProps("safeAreaInsetBottom", { type: Boolean }),
-  /**
-   * 是否显示头部
-   */
+  /** 是否显示头部 */
   showHeader: defaultProps("showHeader", { type: Boolean }),
-  /**
-   * 标题
-   */
+  /** 标题 */
   title: defaultProps("title", { type: String }),
-  /**
-   * 取消按钮文字
-   */
+  /** 取消按钮文字 */
   cancelText: defaultProps("cancelText", { type: String }),
-  /**
-   * 确认按钮文字
-   */
+  /** 确认按钮文字 */
   confirmText: defaultProps("confirmText", { type: String }),
-  /**
-   * 是否加载中
-   */
+  /** 是否加载中 */
   loading: defaultProps("loading", { type: Boolean }),
-  /**
-   * 选项高度
-   */
+  /** 选项高度 */
   columnHeight: defaultProps("columnHeight", { type: [Number, String] }),
-  /**
-   * 可见选项数
-   */
+  /** 可见选项数 */
   visibleColumnNum: defaultProps("visibleColumnNum", { type: [Number, String] }),
-  /**
-   * 选项文字大小
-   */
+  /** 选项文字大小 */
   columnSize: defaultProps("columnSize", { type: [Number, String] }),
-  /**
-   * 选项文字颜色
-   */
+  /** 选项文字颜色 */
   columnColor: defaultProps("columnColor", { type: String }),
-  /**
-   * 选项文字字重
-   */
+  /** 选项文字字重 */
   columnWeight: defaultProps("columnWeight", { type: [Number, String] }),
-  /**
-   * 激活选项文字大小
-   */
+  /** 激活选项文字大小 */
   activeColumnSize: defaultProps("activeColumnSize", { type: [Number, String] }),
-  /**
-   * 激活选项文字颜色
-   */
+  /** 激活选项文字颜色 */
   activeColumnColor: defaultProps("activeColumnColor", { type: String }),
-  /**
-   * 激活选项文字字重
-   */
+  /** 激活选项文字字重 */
   activeColumnWeight: defaultProps("activeColumnWeight", { type: [Number, String] }),
-  /**
-   * 占位文案
-   */
+  /** 占位文案 */
   placeholder: defaultProps("placeholder", { type: String }),
-  /**
-   * 是否禁用
-   */
+  /** 是否禁用 */
   disabled: defaultProps("disabled", { type: Boolean }),
-  /**
-   * 是否只读
-   */
+  /** 是否只读 */
   readonly: defaultProps("readonly", { type: Boolean }),
-  /**
-   * 展示文案分隔符
-   */
+  /** 展示文案分隔符 */
   displaySeparator: defaultProps("displaySeparator", { type: String }),
-  /**
-   * 展示文案格式化
-   */
+  /** 展示文案格式化 */
   displayFormatter: defaultProps("displayFormatter", { type: Function as PropType<(payload: SelectDisplayPayload) => string> }),
-  /**
-   * 右侧图标
-   */
+  /** 右侧图标 */
   rightIcon: defaultProps("rightIcon", { type: String }),
-  /**
-   * 右侧图标大小
-   */
+  /** 右侧图标大小 */
   rightIconSize: defaultProps("rightIconSize", { type: [Number, String] }),
-  /**
-   * 右侧图标颜色
-   */
+  /** 右侧图标颜色 */
   rightIconColor: defaultProps("rightIconColor", { type: String }),
-  /**
-   * 右侧图标粗细
-   */
+  /** 右侧图标粗细 */
   rightIconWeight: defaultProps("rightIconWeight", { type: [Number, String] }),
-  /**
-   * 文案颜色
-   */
+  /** 文案颜色 */
   textColor: defaultProps("textColor", { type: String }),
-  /**
-   * 占位文案颜色
-   */
+  /** 占位文案颜色 */
   placeholderColor: defaultProps("placeholderColor", { type: String }),
-  /**
-   * 文案大小
-   */
+  /** 文案大小 */
   textSize: defaultProps("textSize", { type: [Number, String] }),
-  /**
-   * 文案对齐方向
-   */
+  /** 文案对齐方向 */
   textAlign: defaultProps("textAlign", { type: String as PropType<"left" | "center" | "right"> }),
-  /**
-   * 文案字重
-   */
+  /** 文案字重 */
   textWeight: defaultProps("textWeight", { type: [Number, String] }),
-  /**
-   * 自定义类名
-   */
+  /** 自定义类名 */
   customClass: defaultProps("customClass", { type: String }),
-  /**
-   * 自定义样式
-   */
+  /** 自定义样式 */
   customStyle: defaultProps("customStyle", { type: [String, Object] as PropType<string | CSSProperties> }),
 }
+
 export const selectEmits = {
+  /** 更新绑定值事件 */
   "update:modelValue": (value: SelectValue) => value,
+  /** 打开事件 */
   open: () => true,
+  /** 打开动画结束事件 */
   opened: () => true,
+  /** 关闭事件 */
   close: (action: string) => action,
+  /** 关闭动画结束事件 */
   closed: (action: string) => action,
+  /** 值变化事件 */
   change: (data: PickerChangeData) => data,
+  /** 取消事件 */
   cancel: (data: PickerCancelData) => data,
+  /** 确认事件 */
   confirm: (data: PickerConfirmData) => data,
+  /** 点击事件 */
   click: () => true,
 }
 

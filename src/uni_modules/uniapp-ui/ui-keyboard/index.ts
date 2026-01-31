@@ -38,126 +38,84 @@ const defaultProps = buildDefaultProps("keyboard", {
 })
 
 export const keyboardProps = {
-  /**
-   * 是否显示
-   */
+  /** 是否显示 */
   show: defaultProps("show", { type: Boolean }),
-  /**
-   * 标题
-   */
+  /** 标题 */
   title: defaultProps("title", { type: String }),
-  /**
-   * 键盘类型，可选值car、card、number
-   */
+  /** 键盘类型，可选值car、card、number */
   mode: defaultProps("mode", { type: String, validator: (v: string) => ["car", "card", "number"].includes(v) }),
-  /**
-   * 最大输入长度
-   */
+  /** 最大输入长度 */
   maxlength: defaultProps("maxlength", { type: [Number, String] }),
-  /**
-   * 元素层级
-   */
+  /** 元素层级 */
   zIndex: defaultProps("zIndex", { type: [Number, String] }),
-  /**
-   * 是否打乱键盘按键的顺序
-   */
+  /** 是否打乱键盘按键的顺序 */
   random: defaultProps("random", { type: Boolean }),
-  /**
-   * 是否显示遮罩
-   */
+  /** 是否显示遮罩 */
   overlay: defaultProps("overlay", { type: Boolean }),
-  /**
-   * 是否显示小数点按钮
-   */
+  /** 是否显示小数点按钮 */
   showDot: defaultProps("showDot", { type: Boolean }),
-  /**
-   * 是否开启按键震动反馈
-   */
+  /** 是否开启按键震动反馈 */
   vibrate: defaultProps("vibrate", { type: Boolean }),
-  /**
-   * 当前输入值，用于 maxlength 限制和 change 事件
-   */
+  /** 当前输入值，用于 maxlength 限制和 change 事件 */
   modelValue: defaultProps("modelValue", { type: String }),
-  /**
-   * 车牌键盘是否自动切换中英文（根据输入长度）
-   */
+  /** 车牌键盘是否自动切换中英文（根据输入长度） */
   autoSwitch: defaultProps("autoSwitch", { type: Boolean }),
-  /**
-   * 是否显示顶部栏
-   */
+  /** 是否显示顶部栏 */
   showHeader: defaultProps("showHeader", { type: Boolean }),
-  /**
-   * 是否显示取消按钮
-   */
+  /** 是否显示取消按钮 */
   showCancel: defaultProps("showCancel", { type: Boolean }),
-  /**
-   * 关闭按钮文字
-   */
+  /** 关闭按钮文字 */
   cancelText: defaultProps("cancelText", { type: String }),
-  /**
-   * 关闭按钮文字大小
-   */
+  /** 关闭按钮文字大小 */
   cancelTextSize: defaultProps("cancelTextSize", { type: [Number, String] }),
-  /**
-   * 关闭按钮文字颜色
-   */
+  /** 关闭按钮文字颜色 */
   cancelTextColor: defaultProps("cancelTextColor", { type: String }),
-  /**
-   * 关闭按钮文字粗细
-   */
+  /** 关闭按钮文字粗细 */
   cancelTextWeight: defaultProps("cancelTextWeight", { type: [Number, String] }),
-  /**
-   * 是否显示确认按钮
-   */
+  /** 是否显示确认按钮 */
   showConfirm: defaultProps("showConfirm", { type: Boolean }),
-  /**
-   * 确认按钮文字
-   */
+  /** 确认按钮文字 */
   confirmText: defaultProps("confirmText", { type: String }),
-  /**
-   * 确认按钮文字大小
-   */
+  /** 确认按钮文字大小 */
   confirmTextSize: defaultProps("confirmTextSize", { type: [Number, String] }),
-  /**
-   * 确认按钮文字颜色
-   */
+  /** 确认按钮文字颜色 */
   confirmTextColor: defaultProps("confirmTextColor", { type: String }),
-  /**
-   * 确认按钮文字粗细
-   */
+  /** 确认按钮文字粗细 */
   confirmTextWeight: defaultProps("confirmTextWeight", { type: [Number, String] }),
-  /**
-   * 背景颜色
-   */
+  /** 背景颜色 */
   background: defaultProps("background", { type: String }),
-  /**
-   * 是否开启底部安全区适配
-   */
+  /** 是否开启底部安全区适配 */
   safeAreaInsetBottom: defaultProps("safeAreaInsetBottom", { type: Boolean }),
-  /**
-   * 是否允许点击遮罩收起键盘
-   */
+  /** 是否允许点击遮罩收起键盘 */
   closeOnClickOverlay: defaultProps("closeOnClickOverlay", { type: Boolean }),
-  /**
-   * 自定义类名
-   */
+  /** 自定义类名 */
   customClass: defaultProps("customClass", { type: String }),
-  /**
-   * 自定义样式
-   */
+  /** 自定义样式 */
   customStyle: defaultProps("customStyle", { type: [String, Object] as PropType<string | CSSProperties> }),
 }
+
 export const keyboardEmits = {
+  /** 打开弹出层事件 */
   open: () => true,
+  /** 打开动画结束事件 */
   opened: () => true,
+  /** 关闭弹出层事件 */
   close: () => true,
+  /** 关闭动画结束事件 */
   closed: () => true,
+  /** 取消事件 */
   cancel: () => true,
+  /** 确认事件 */
   confirm: () => true,
+  /** 输入事件 */
   input: (value: string) => typeof value === "string",
+  /** 删除事件 */
   delete: () => true,
+  /** 值变化事件 */
   change: (value: string) => typeof value === "string",
+  /** 更新显示状态事件 */
   "update:show": (show: boolean) => typeof show === "boolean",
+  /** 更新绑定值事件 */
   "update:modelValue": (value: string) => typeof value === "string",
 }
 

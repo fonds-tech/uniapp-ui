@@ -23,76 +23,44 @@ const defaultProps = buildDefaultProps("badge", {
 })
 
 export const badgeProps = {
-  /**
-   * 内容值
-   */
+  /** 内容值 */
   value: defaultProps("value", { type: [Number, String] }),
-  /**
-   * 是否显示圆点
-   */
+  /** 是否显示圆点 */
   dot: defaultProps("dot", { type: Boolean }),
-  /**
-   * 图标名称
-   */
+  /** 图标名称 */
   icon: defaultProps("icon", { type: String }),
-  /**
-   * 颜色
-   */
+  /** 颜色 */
   color: defaultProps("color", { type: String }),
-  /**
-   * 圆点大小
-   */
+  /** 圆点大小 */
   dotSize: defaultProps("dotSize", { type: [Number, String] }),
-  /**
-   * 最大值
-   */
+  /** 最大值 */
   max: defaultProps("max", { type: [Number, String] }),
-  /**
-   * 为零时是否显示
-   */
+  /** 为零时是否显示 */
   showZero: defaultProps("showZero", { type: Boolean }),
-  /**
-   * 高度
-   */
+  /** 高度 */
   height: defaultProps("height", { type: [Number, String] }),
-  /**
-   * 圆角值
-   */
+  /** 圆角值 */
   radius: defaultProps("radius", { type: [Number, String] }),
-  /**
-   * 位置偏移值
-   */
+  /** 位置偏移值 */
   offset: defaultProps("offset", { type: [String, Number, Array] }),
-  /**
-   * 元素层级
-   */
+  /** 元素层级 */
   zIndex: defaultProps("zIndex", { type: [Number, String] }),
-  /**
-   * 定位类型
-   */
+  /** 定位类型 */
   position: defaultProps("position", { type: String }),
-  /**
-   * 字体大小
-   */
+  /** 字体大小 */
   valueSize: defaultProps("valueSize", { type: [Number, String] }),
-  /**
-   * 字体颜色
-   */
+  /** 字体颜色 */
   valueColor: defaultProps("valueColor", { type: String }),
-  /**
-   * 字体粗细
-   */
+  /** 字体粗细 */
   valueWeight: defaultProps("valueWeight", { type: [Number, String] }),
-  /**
-   * 自定义类名
-   */
+  /** 自定义类名 */
   customClass: defaultProps("customClass", { type: String }),
-  /**
-   * 自定义样式
-   */
+  /** 自定义样式 */
   customStyle: defaultProps("customStyle", { type: [String, Object] as PropType<string | CSSProperties> }),
 }
+
 export const badgeEmits = {
+  /** 点击事件 */
   click: () => true,
 }
 

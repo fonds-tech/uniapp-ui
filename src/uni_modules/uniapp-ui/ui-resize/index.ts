@@ -11,28 +11,20 @@ const defaultProps = buildDefaultProps("resize", {
 })
 
 export const resizeProps = {
-  /**
-   * 初始宽度
-   */
+  /** 初始宽度 */
   width: defaultProps("width", { type: [Number, String] }),
-  /**
-   * 初始高度
-   */
+  /** 初始高度 */
   height: defaultProps("height", { type: [Number, String] }),
-  /**
-   * 是否禁用
-   */
+  /** 是否禁用 */
   disabled: defaultProps("disabled", { type: Boolean }),
-  /**
-   * 自定义类名
-   */
+  /** 自定义类名 */
   customClass: defaultProps("customClass", { type: String }),
-  /**
-   * 自定义样式
-   */
+  /** 自定义样式 */
   customStyle: defaultProps("customStyle", { type: [String, Object] as PropType<string | CSSProperties> }),
 }
+
 export const resizeEmits = {
+  /** 尺寸变化事件 */
   resize: (value: any) => true,
 }
 

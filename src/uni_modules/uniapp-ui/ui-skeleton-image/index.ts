@@ -13,34 +13,21 @@ const defaultProps = buildDefaultProps("skeleton-image", {
 })
 
 export const skeletonImageProps = {
-  /**
-   * 图片占位图大小
-   */
+  /** 图片占位图大小 */
   size: defaultProps("size", { type: [Number, String] }),
-  /**
-   * 图片占位图宽度
-   */
+  /** 图片占位图宽度 */
   width: defaultProps("width", { type: [Number, String] }),
-  /**
-   * 图片占位图高度
-   */
+  /** 图片占位图高度 */
   height: defaultProps("height", { type: [Number, String] }),
-  /**
-   * 图片占位图圆角
-   */
+  /** 图片占位图圆角 */
   radius: defaultProps("radius", { type: [Number, String] }),
-  /**
-   * 图片占位图是否为方形
-   */
+  /** 图片占位图是否为方形 */
   square: defaultProps("square", { type: Boolean }),
-  /**
-   * 自定义类名
-   */
+  /** 自定义类名 */
   customClass: defaultProps("customClass", { type: String }),
-  /**
-   * 自定义样式
-   */
+  /** 自定义样式 */
   customStyle: defaultProps("customStyle", { type: [String, Object] as PropType<string | CSSProperties> }),
 }
+
 export type SkeletonImageProps = ExtractPropTypes<typeof skeletonImageProps>
 export type SkeletonImageInstance = InstanceType<typeof SkeletonImage>

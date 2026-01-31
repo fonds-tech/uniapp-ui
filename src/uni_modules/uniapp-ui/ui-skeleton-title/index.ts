@@ -11,26 +11,17 @@ const defaultProps = buildDefaultProps("skeleton-title", {
 })
 
 export const skeletonTitleProps = {
-  /**
-   * 标题占位图宽度
-   */
+  /** 标题占位图宽度 */
   width: defaultProps("width", { type: [Number, String] }),
-  /**
-   * 标题占位图高度
-   */
+  /** 标题占位图高度 */
   height: defaultProps("height", { type: [Number, String] }),
-  /**
-   * 标题占位图圆角
-   */
+  /** 标题占位图圆角 */
   radius: defaultProps("radius", { type: [Number, String] }),
-  /**
-   * 自定义类名
-   */
+  /** 自定义类名 */
   customClass: defaultProps("customClass", { type: String }),
-  /**
-   * 自定义样式
-   */
+  /** 自定义样式 */
   customStyle: defaultProps("customStyle", { type: [String, Object] as PropType<string | CSSProperties> }),
 }
+
 export type SkeletonTitleProps = ExtractPropTypes<typeof skeletonTitleProps>
 export type SkeletonTitleInstance = InstanceType<typeof SkeletonTitle>

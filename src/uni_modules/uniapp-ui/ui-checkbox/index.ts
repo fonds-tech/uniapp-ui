@@ -2,14 +2,10 @@ import type Checkbox from "./ui-checkbox.vue"
 import type { PropType, CSSProperties, ExtractPropTypes } from "vue"
 import { buildDefaultProps } from "../utils/props"
 
-/**
- * 复选框形状类型
- */
+/** 复选框形状类型 */
 export type CheckboxShape = "dot" | "icon" | ""
 
-/**
- * 标签位置类型
- */
+/** 标签位置类型 */
 export type CheckboxLabelPosition = "left" | "right"
 
 const defaultProps = buildDefaultProps("checkbox", {
@@ -43,134 +39,75 @@ const defaultProps = buildDefaultProps("checkbox", {
 })
 
 export const checkboxProps = {
-  /**
-   * 绑定值
-   */
+  /** 绑定值 */
   modelValue: defaultProps("modelValue", { type: Boolean }),
-  /**
-   * 标识符，通常为一个唯一的字符串或数字
-   */
+  /** 标识符，通常为一个唯一的字符串或数字 */
   name: defaultProps("name", { type: [Number, String] }),
-  /**
-   * 标签文本内容
-   */
+  /** 标签文本内容 */
   label: defaultProps("label", { type: [Number, String] }),
-  /**
-   * 是否与复选框组绑定
-   */
+  /** 是否与复选框组绑定 */
   bindGroup: defaultProps("bindGroup", { type: Boolean }),
-  /**
-   * 是否禁用
-   */
+  /** 是否禁用 */
   disabled: defaultProps("disabled", { type: Boolean }),
-  /**
-   * 是否只读（可点击但不改变状态）
-   */
+  /** 是否只读（可点击但不改变状态） */
   readonly: defaultProps("readonly", { type: Boolean }),
-
-  /**
-   * 复选框图标大小，支持任意尺寸值如 "36rpx"、"20px"
-   */
+  /** 复选框图标大小 */
   size: defaultProps("size", { type: [Number, String] }),
-  /**
-   * 形状：dot（圆点）或 icon（勾选图标）
-   * 默认为 dot，作为项目特色保留
-   */
+  /** 形状：dot（圆点）或 icon（勾选图标） */
   shape: defaultProps("shape", { type: String as PropType<CheckboxShape> }),
-  /**
-   * 是否圆形
-   */
+  /** 是否圆形 */
   round: defaultProps("round", { type: Boolean }),
-
-  /**
-   * 不确定状态（用于父子关系场景）
-   */
+  /** 不确定状态（用于父子关系场景） */
   indeterminate: defaultProps("indeterminate", { type: Boolean }),
-
-  /**
-   * 主色（选中状态的颜色，简化 API）
-   * 同时影响图标边框色和背景色
-   */
+  /** 主色（选中状态的颜色） */
   color: defaultProps("color", { type: String }),
-  /**
-   * @deprecated 使用 color 替代
-   * 选中的颜色（向后兼容别名）
-   */
+  /** @deprecated 使用 color 替代，选中的颜色 */
   checkedColor: defaultProps("checkedColor", { type: String }),
-  /**
-   * @deprecated 使用 color 替代
-   * 选中时的图标颜色（向后兼容别名）
-   */
+  /** @deprecated 使用 color 替代，选中时的图标颜色 */
   checkedIconColor: defaultProps("checkedIconColor", { type: String }),
-
-  /**
-   * 图标名称（shape="icon" 时使用）
-   */
+  /** 图标名称（shape="icon" 时使用） */
   icon: defaultProps("icon", { type: String }),
-  /**
-   * 图标大小（覆盖 size 预设）
-   */
+  /** 图标大小（覆盖 size 预设） */
   iconSize: defaultProps("iconSize", { type: [Number, String] }),
-  /**
-   * 图标颜色（未选中状态）
-   */
+  /** 图标颜色（未选中状态） */
   iconColor: defaultProps("iconColor", { type: String }),
-  /**
-   * 图标粗细
-   */
+  /** 图标粗细 */
   iconWeight: defaultProps("iconWeight", { type: [Number, String] }),
-  /**
-   * 图标圆角值
-   */
+  /** 图标圆角值 */
   iconRadius: defaultProps("iconRadius", { type: [Number, String] }),
-
-  /**
-   * 标签位置：left | right
-   */
+  /** 标签位置：left | right */
   labelPosition: defaultProps("labelPosition", { type: String as PropType<CheckboxLabelPosition> }),
-  /**
-   * 标签文本大小（覆盖 size 预设）
-   */
+  /** 标签文本大小（覆盖 size 预设） */
   labelSize: defaultProps("labelSize", { type: [Number, String] }),
-  /**
-   * 标签文本颜色
-   */
+  /** 标签文本颜色 */
   labelColor: defaultProps("labelColor", { type: String }),
-  /**
-   * 标签文本粗细
-   */
+  /** 标签文本粗细 */
   labelWeight: defaultProps("labelWeight", { type: [Number, String] }),
-  /**
-   * 标签文本与图标的间距
-   */
+  /** 标签文本与图标的间距 */
   labelGap: defaultProps("labelGap", { type: [Number, String] }),
-  /**
-   * 是否禁用标签文本点击
-   */
+  /** 是否禁用标签文本点击 */
   labelDisabled: defaultProps("labelDisabled", { type: Boolean }),
-  /**
-   * 选中时的标签文本颜色
-   */
+  /** 选中时的标签文本颜色 */
   checkedLabelColor: defaultProps("checkedLabelColor", { type: String }),
-
-  /**
-   * 自定义类名
-   */
+  /** 自定义类名 */
   customClass: defaultProps("customClass", { type: String }),
-  /**
-   * 自定义样式
-   */
+  /** 自定义样式 */
   customStyle: defaultProps("customStyle", { type: [String, Object] as PropType<string | CSSProperties> }),
 }
+
 export const checkboxEmits = {
+  /** 点击事件 */
   click: (event: any) => true,
+  /** 值变化事件 */
   change: (value: CheckboxValueType) => true,
+  /** 更新绑定值事件 */
   "update:modelValue": (value: CheckboxValueType) => true,
 }
 
 export type CheckboxValueType = string | number | boolean
 export type CheckboxEmits = typeof checkboxEmits
 export type CheckboxProps = ExtractPropTypes<typeof checkboxProps>
+
 export interface CheckboxExpose {
   name: "ui-checkbox"
   /** 切换选中状态 */
@@ -178,4 +115,5 @@ export interface CheckboxExpose {
   /** 当前是否选中 */
   checked: boolean
 }
+
 export type CheckboxInstance = InstanceType<typeof Checkbox>

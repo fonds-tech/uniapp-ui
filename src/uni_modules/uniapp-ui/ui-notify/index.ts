@@ -18,64 +18,47 @@ const defaultProps = buildDefaultProps("notify", {
 })
 
 export const notifyProps = {
-  /**
-   * 是否显示
-   */
+  /** 是否显示 */
   show: defaultProps("show", { type: Boolean }),
-  /**
-   * 通知类型
-   */
+  /** 通知类型 */
   type: defaultProps("type", {
     type: String as PropType<NotifyType>,
     validator: (t: string) => ["primary", "success", "warning", "danger"].includes(t),
   }),
-  /**
-   * 展示内容
-   */
+  /** 展示内容 */
   content: defaultProps("content", { type: String }),
-  /**
-   * 展示时长，单位ms
-   */
+  /** 展示时长，单位ms */
   duration: defaultProps("duration", { type: [Number, String] }),
-  /**
-   * 字体颜色
-   */
+  /** 字体颜色 */
   color: defaultProps("color", { type: String }),
-  /**
-   * 字体大小
-   */
+  /** 字体大小 */
   fontSize: defaultProps("fontSize", { type: [Number, String] }),
-  /**
-   * 字体粗细
-   */
+  /** 字体粗细 */
   fontWeight: defaultProps("fontWeight", { type: String }),
-  /**
-   * 背景色
-   */
+  /** 背景色 */
   background: defaultProps("background", { type: String }),
-  /**
-   * 元素层级
-   */
+  /** 元素层级 */
   zIndex: defaultProps("zIndex", { type: [Number, String] }),
-  /**
-   * 距离顶部偏移
-   */
+  /** 距离顶部偏移 */
   offsetTop: defaultProps("offsetTop", { type: [Number, String] }),
-  /**
-   * 自定义类名
-   */
+  /** 自定义类名 */
   customClass: defaultProps("customClass", { type: String }),
-  /**
-   * 自定义样式
-   */
+  /** 自定义样式 */
   customStyle: defaultProps("customStyle", { type: [String, Object] as PropType<string | CSSProperties> }),
 }
+
 export const notifyEmits = {
+  /** 打开弹出层事件 */
   open: () => true,
+  /** 打开动画结束事件 */
   opened: () => true,
+  /** 关闭弹出层事件 */
   close: () => true,
+  /** 关闭动画结束事件 */
   closed: () => true,
+  /** 点击事件 */
   click: () => true,
+  /** 更新显示状态事件 */
   "update:show": (value: boolean) => true,
 }
 
@@ -93,46 +76,34 @@ export interface NotifyOptions {
   customClass?: string
   customStyle?: string | Record<string, any>
 }
+
 export type NotifyType = "primary" | "success" | "warning" | "danger"
 export type NotifyProps = ExtractPropTypes<typeof notifyProps>
 export type NotifyInstance = InstanceType<typeof Notify>
 
-/**
- * 全局 Notify 实例存储
- */
+/** 全局 Notify 实例存储 */
 let globalNotifyInstance: Ref<NotifyInstance | null> | null = null
 
-/**
- * 待执行的 notify 调用队列
- */
+/** 待执行的 notify 调用队列 */
 const pendingQueue: Array<{ action: "show" | "close"; options?: NotifyOptions }> = []
 
-/**
- * 注册全局 Notify 实例
- * @param instance Notify 组件实例的 ref
- */
+/** 注册全局 Notify 实例 */
 export function provideNotify(instance: Ref<NotifyInstance | null>) {
   globalNotifyInstance = instance
   flushPendingQueue()
 }
 
-/**
- * 获取全局 Notify 实例
- */
+/** 获取全局 Notify 实例 */
 export function getGlobalNotifyInstance(): Ref<NotifyInstance | null> | null {
   return globalNotifyInstance
 }
 
-/**
- * 将调用加入待执行队列
- */
+/** 将调用加入待执行队列 */
 export function enqueuePendingNotify(action: "show" | "close", options?: NotifyOptions) {
   pendingQueue.push({ action, options })
 }
 
-/**
- * 执行队列中的待处理调用
- */
+/** 执行队列中的待处理调用 */
 function flushPendingQueue() {
   if (!globalNotifyInstance?.value) return
 

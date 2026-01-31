@@ -20,62 +20,41 @@ const defaultProps = buildDefaultProps("progress", {
 })
 
 export const progressProps = {
-  /**
-   * 进度百分比 (0-100)
-   */
+  /** 进度百分比 (0-100) */
   percentage: defaultProps("percentage", { type: [Number, String] }),
-  /**
-   * 进度条填充色
-   */
+  /** 进度条填充色 */
   color: defaultProps("color", { type: String }),
-  /**
-   * 进度条轨道背景色
-   */
+  /** 进度条轨道背景色 */
   trackColor: defaultProps("trackColor", { type: String }),
-  /**
-   * 进度文本内容
-   */
+  /** 进度文本内容 */
   text: defaultProps("text", { type: String }),
-  /**
-   * 是否显示进度文本
-   */
+  /** 是否显示进度文本 */
   showText: defaultProps("showText", { type: Boolean }),
-  /**
-   * 文本位置
-   * @default 'inside'
-   */
+  /** 文本位置 */
   textPosition: defaultProps("textPosition", { type: String as PropType<ProgressTextPosition> }),
-  /**
-   * 进度文本颜色
-   */
+  /** 进度文本颜色 */
   textColor: defaultProps("textColor", { type: String }),
-  /**
-   * 进度文本大小
-   */
+  /** 进度文本大小 */
   textSize: defaultProps("textSize", { type: [Number, String] }),
-  /**
-   * 进度文本粗细
-   */
+  /** 进度文本粗细 */
   textWeight: defaultProps("textWeight", { type: [Number, String] }),
-  /**
-   * 进度条的高度
-   */
+  /** 进度条的高度 */
   height: defaultProps("height", { type: [Number, String] }),
-  /**
-   * 自定义类名
-   */
+  /** 自定义类名 */
   customClass: defaultProps("customClass", { type: String }),
-  /**
-   * 自定义样式
-   */
+  /** 自定义样式 */
   customStyle: defaultProps("customStyle", { type: [String, Object] as PropType<string | CSSProperties> }),
 }
+
 export const progressEmits = {
+  /** 进度完成事件 */
   finish: () => true,
 }
 
 export type ProgressProps = ExtractPropTypes<typeof progressProps>
+
 export interface ProgressExpose {
   name: "ui-progress"
 }
+
 export type ProgressInstance = InstanceType<typeof Progress>

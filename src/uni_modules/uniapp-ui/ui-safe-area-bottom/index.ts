@@ -10,26 +10,24 @@ const defaultProps = buildDefaultProps("safe-area-bottom", {
 })
 
 export const safeAreaBottomProps = {
-  /**
-   * 背景色
-   */
+  /** 背景色 */
   background: defaultProps("background", { type: String }),
-  /**
-   * 自定义类名
-   */
+  /** 自定义类名 */
   customClass: defaultProps("customClass", { type: String }),
-  /**
-   * 自定义样式
-   */
+  /** 自定义样式 */
   customStyle: defaultProps("customStyle", { type: [String, Object] as PropType<string | CSSProperties> }),
 }
+
 export const safeAreaBottomEmits = {
+  /** 高度变化事件 */
   height: (htight: number) => isNumber(htight),
 }
 
 export type SafeAreaBottomEmits = typeof safeAreaBottomEmits
 export type SafeAreaBottomProps = ExtractPropTypes<typeof safeAreaBottomProps>
+
 export interface SafeAreaBottomExpose {
   name: "ui-safe-area-bottom"
 }
+
 export type SafeAreaBottomInstance = InstanceType<typeof SafeAreaBottom>

@@ -12,33 +12,24 @@ const defaultProps = buildDefaultProps("header", {
 })
 
 export const headerProps = {
-  /**
-   * 元素层级
-   */
+  /** 元素层级 */
   zIndex: defaultProps("zIndex", { type: [Number, String] }),
-  /**
-   * 距离顶部偏移
-   */
+  /** 距离顶部偏移 */
   offset: defaultProps("offset", { type: [Number, String] }),
-  /**
-   * 背景色
-   */
+  /** 背景色 */
   background: defaultProps("background", { type: String }),
-  /**
-   * 是否开启顶部安全区域适配
-   */
+  /** 是否开启顶部安全区域适配 */
   safeAreaInsetTop: defaultProps("safeAreaInsetTop", { type: Boolean }),
-  /**
-   * 自定义类名
-   */
+  /** 自定义类名 */
   customClass: defaultProps("customClass", { type: String }),
-  /**
-   * 自定义样式
-   */
+  /** 自定义样式 */
   customStyle: defaultProps("customStyle", { type: [String, Object] as PropType<string | CSSProperties> }),
 }
+
 export const headerEmits = {
+  /** 获取元素尺寸事件 */
   rect: (rect: UniApp.NodeInfo) => true,
+  /** 高度变化事件 */
   height: (height: number) => true,
 }
 

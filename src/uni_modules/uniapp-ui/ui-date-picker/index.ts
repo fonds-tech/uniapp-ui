@@ -2,45 +2,31 @@ import type DatePicker from "./ui-date-picker.vue"
 import type { PropType, ExtractPropTypes } from "vue"
 import { buildDefaultProps } from "../utils/props"
 
-/**
- * DatePicker 列类型
- */
+/** DatePicker 列类型 */
 export type DatePickerColumnType = "year" | "month" | "day" | "hour" | "minute" | "second"
 
-/**
- * DatePicker 选项
- */
+/** DatePicker 选项 */
 export interface DatePickerOption {
   text: string
   value: string
 }
 
-/**
- * 列过滤函数
- */
+/** 列过滤函数 */
 export type DatePickerColumnFilter = (type: string, options: DatePickerOption[], values?: string[]) => DatePickerOption[]
 
-/**
- * 列格式化函数
- */
+/** 列格式化函数 */
 export type DatePickerColumnFormatter = (type: string, option: DatePickerOption) => DatePickerOption
 
-/**
- * 日期变化事件数据
- */
+/** 日期变化事件数据 */
 export interface DatePickerChangeData {
   value: string
   selectedValues: string[]
   selectedIndexes: number[]
 }
 
-// Popup 模式类型
+/** Popup 模式类型 */
 export type PopupMode = "top" | "bottom" | "left" | "right" | "center"
 
-/**
- * UI-Date-Picker Props
- * 完整的日期选择器,集成 ui-popup 和 picker-view
- */
 const defaultProps = buildDefaultProps("date-picker", {
   show: false,
   mode: "bottom",
@@ -72,129 +58,66 @@ const defaultProps = buildDefaultProps("date-picker", {
   activeColumnWeight: undefined,
 })
 
-/**
- * UI-Date-Picker Props
- * 完整的日期选择器,集成 ui-popup 和 picker-view
- */
 export const datePickerProps = {
-  /**
-   * 是否显示弹窗
-   */
+  /** 是否显示弹窗 */
   show: defaultProps("show", { type: Boolean }),
-  /**
-   * 弹窗位置
-   */
+  /** 弹窗位置 */
   mode: defaultProps("mode", { type: String as PropType<PopupMode> }),
-  /**
-   * 圆角大小
-   */
+  /** 圆角大小 */
   borderRadius: defaultProps("borderRadius", { type: [Number, String] }),
-  /**
-   * 点击遮罩是否关闭
-   */
+  /** 点击遮罩是否关闭 */
   closeOnClickOverlay: defaultProps("closeOnClickOverlay", { type: Boolean }),
-  /**
-   * 是否显示遮罩
-   */
+  /** 是否显示遮罩 */
   overlay: defaultProps("overlay", { type: Boolean }),
-  /**
-   * 动画时长
-   */
+  /** 动画时长 */
   duration: defaultProps("duration", { type: Number }),
-  /**
-   * 弹窗层级
-   */
+  /** 弹窗层级 */
   zIndex: defaultProps("zIndex", { type: Number }),
-  /**
-   * 背景色
-   */
+  /** 背景色 */
   background: defaultProps("background", { type: String }),
-  /**
-   * 底部安全区
-   */
+  /** 底部安全区 */
   safeAreaInsetBottom: defaultProps("safeAreaInsetBottom", { type: Boolean }),
-
-  /**
-   * 是否显示头部
-   */
+  /** 是否显示头部 */
   showHeader: defaultProps("showHeader", { type: Boolean }),
-  /**
-   * 标题
-   */
+  /** 标题 */
   title: defaultProps("title", { type: String }),
-  /**
-   * 取消按钮文字
-   */
+  /** 取消按钮文字 */
   cancelText: defaultProps("cancelText", { type: String }),
-  /**
-   * 确认按钮文字
-   */
+  /** 确认按钮文字 */
   confirmText: defaultProps("confirmText", { type: String }),
-
-  /**
-   * 绑定日期
-   */
+  /** 绑定日期 */
   modelValue: defaultProps("modelValue", { type: [String, Date, Number] }),
-  /**
-   * 列类型
-   */
+  /** 列类型 */
   columns: defaultProps("columns", { type: Array as PropType<DatePickerColumnType[]> }),
-  /**
-   * 最小时间
-   */
+  /** 最小时间 */
   minDate: defaultProps("minDate", { type: [String, Date, Number] }),
-  /**
-   * 最大时间
-   */
+  /** 最大时间 */
   maxDate: defaultProps("maxDate", { type: [String, Date, Number] }),
-  /**
-   * 时间格式
-   */
+  /** 时间格式 */
   format: defaultProps("format", { type: String }),
-  /**
-   * 选项过滤函数
-   */
+  /** 选项过滤函数 */
   columnFilter: defaultProps("columnFilter", { type: Function as PropType<DatePickerColumnFilter> }),
-  /**
-   * 选项格式化函数
-   */
+  /** 选项格式化函数 */
   columnFormatter: defaultProps("columnFormatter", { type: Function as PropType<DatePickerColumnFormatter> }),
-  /**
-   * 选项高度
-   */
+  /** 选项高度 */
   columnHeight: defaultProps("columnHeight", { type: [Number, String] }),
-  /**
-   * 可见的选项个数
-   */
+  /** 可见的选项个数 */
   visibleColumnNum: defaultProps("visibleColumnNum", { type: [Number, String] }),
-  /**
-   * 选项文字大小
-   */
+  /** 选项文字大小 */
   columnSize: defaultProps("columnSize", { type: [Number, String] }),
-  /**
-   * 选项文字颜色
-   */
+  /** 选项文字颜色 */
   columnColor: defaultProps("columnColor", { type: String }),
-  /**
-   * 选项文字字重
-   */
+  /** 选项文字字重 */
   columnWeight: defaultProps("columnWeight", { type: [Number, String] }),
-  /**
-   * 激活选项文字大小
-   */
+  /** 激活选项文字大小 */
   activeColumnSize: defaultProps("activeColumnSize", { type: [Number, String] }),
-  /**
-   * 激活选项文字颜色
-   */
+  /** 激活选项文字颜色 */
   activeColumnColor: defaultProps("activeColumnColor", { type: String }),
-  /**
-   * 激活选项文字字重
-   */
+  /** 激活选项文字字重 */
   activeColumnWeight: defaultProps("activeColumnWeight", { type: [Number, String] }),
 }
-/**
- * 取消/确认事件数据
- */
+
+/** 取消/确认事件数据 */
 export interface DatePickerCancelData {
   value: string
   selectedValues: string[]
@@ -207,20 +130,24 @@ export interface DatePickerConfirmData {
   selectedIndexes: number[]
 }
 
-/**
- * UI-Date-Picker Emits
- */
 export const datePickerEmits = {
+  /** 更新显示状态事件 */
   "update:show": (show: boolean) => true,
+  /** 打开弹窗事件 */
   open: () => true,
+  /** 打开动画结束事件 */
   opened: () => true,
+  /** 关闭弹窗事件 */
   close: (action: string) => true,
+  /** 关闭动画结束事件 */
   closed: (action: string) => true,
-
+  /** 值变化事件 */
   change: (data: DatePickerChangeData) => data,
+  /** 更新绑定值事件 */
   "update:modelValue": (value: string) => value,
-
+  /** 取消事件 */
   cancel: (data: DatePickerCancelData) => data,
+  /** 确认事件 */
   confirm: (data: DatePickerConfirmData) => data,
 }
 

@@ -37,134 +37,70 @@ const defaultProps = buildDefaultProps("checkbox-group", {
 })
 
 export const checkboxGroupProps = {
-  /**
-   * 绑定值
-   */
+  /** 绑定值 */
   modelValue: defaultProps("modelValue", { type: Array as PropType<unknown[]> }),
-
-  /**
-   * 最大可选数量
-   */
+  /** 最大可选数量 */
   max: defaultProps("max", { type: [Number, String] }),
-  /**
-   * 最小可选数量（新增）
-   * 设置后，当选中数量达到最小值时，无法继续取消选择
-   */
+  /** 最小可选数量，达到最小值时无法取消选择 */
   min: defaultProps("min", { type: [Number, String] }),
-
-  /**
-   * 复选框之间的间距
-   */
+  /** 复选框之间的间距 */
   gap: defaultProps("gap", { type: [Number, String] }),
-  /**
-   * 网格布局列数，设置后启用 grid 布局
-   */
+  /** 网格布局列数，设置后启用 grid 布局 */
   columns: defaultProps("columns", { type: [Number, String] }),
-
-  /**
-   * 是否禁用
-   */
+  /** 是否禁用 */
   disabled: defaultProps("disabled", { type: Boolean }),
-
-  /**
-   * 复选框图标大小（继承给子组件）
-   */
+  /** 复选框图标大小（继承给子组件） */
   size: defaultProps("size", { type: [Number, String] }),
-  /**
-   * 形状：dot（圆点）或 icon（勾选图标）
-   */
+  /** 形状：dot（圆点）或 icon（勾选图标） */
   shape: defaultProps("shape", { type: String as PropType<CheckboxShape> }),
-  /**
-   * 是否圆形图标
-   */
+  /** 是否圆形图标 */
   round: defaultProps("round", { type: Boolean }),
-
-  /**
-   * 主色（选中状态的颜色，继承给子组件）
-   */
+  /** 主色（选中状态的颜色，继承给子组件） */
   color: defaultProps("color", { type: String }),
-  /**
-   * @deprecated 使用 color 替代
-   * 选中的颜色（向后兼容别名）
-   */
+  /** @deprecated 使用 color 替代，选中的颜色 */
   checkedColor: defaultProps("checkedColor", { type: String }),
-  /**
-   * @deprecated 使用 color 替代
-   * 选中的图标颜色（向后兼容别名）
-   */
+  /** @deprecated 使用 color 替代，选中的图标颜色 */
   checkedIconColor: defaultProps("checkedIconColor", { type: String }),
-
-  /**
-   * 图标名称
-   */
+  /** 图标名称 */
   icon: defaultProps("icon", { type: String }),
-  /**
-   * 图标大小
-   */
+  /** 图标大小 */
   iconSize: defaultProps("iconSize", { type: [Number, String] }),
-  /**
-   * 图标颜色
-   */
+  /** 图标颜色 */
   iconColor: defaultProps("iconColor", { type: String }),
-  /**
-   * 图标粗细
-   */
+  /** 图标粗细 */
   iconWeight: defaultProps("iconWeight", { type: [Number, String] }),
-  /**
-   * 图标圆角值
-   */
+  /** 图标圆角值 */
   iconRadius: defaultProps("iconRadius", { type: [Number, String] }),
-  /**
-   * 图标前缀
-   */
+  /** 图标前缀 */
   iconPrefix: defaultProps("iconPrefix", { type: String }),
-
-  /**
-   * 标签位置
-   */
+  /** 标签位置 */
   labelPosition: defaultProps("labelPosition", { type: String as PropType<CheckboxLabelPosition> }),
-  /**
-   * @deprecated 使用 labelPosition="left" 替代
-   * 标签是否在图标左侧（向后兼容别名）
-   */
+  /** @deprecated 使用 labelPosition="left" 替代 */
   labelLeft: defaultProps("labelLeft", { type: Boolean }),
-  /**
-   * 标签文本大小
-   */
+  /** 标签文本大小 */
   labelSize: defaultProps("labelSize", { type: [Number, String] }),
-  /**
-   * 标签文本颜色
-   */
+  /** 标签文本颜色 */
   labelColor: defaultProps("labelColor", { type: String }),
-  /**
-   * 标签文本粗细
-   */
+  /** 标签文本粗细 */
   labelWeight: defaultProps("labelWeight", { type: [Number, String] }),
-  /**
-   * 标签与图标的间距
-   */
+  /** 标签与图标的间距 */
   labelGap: defaultProps("labelGap", { type: [Number, String] }),
-  /**
-   * 是否禁用标签点击
-   */
+  /** 是否禁用标签点击 */
   labelDisabled: defaultProps("labelDisabled", { type: Boolean }),
-  /**
-   * 选中的标签颜色
-   */
+  /** 选中的标签颜色 */
   checkedLabelColor: defaultProps("checkedLabelColor", { type: String }),
-
-  /**
-   * 自定义类名
-   */
+  /** 自定义类名 */
   customClass: defaultProps("customClass", { type: String }),
-  /**
-   * 自定义样式
-   */
+  /** 自定义样式 */
   customStyle: defaultProps("customStyle", { type: [String, Object] as PropType<string | CSSProperties> }),
 }
+
 export const checkboxGroupEmits = {
+  /** 点击事件 */
   click: (event: any) => true,
+  /** 值变化事件 */
   change: (value: unknown[]) => true,
+  /** 更新绑定值事件 */
   "update:modelValue": (value: unknown[]) => true,
 }
 

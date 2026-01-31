@@ -11,28 +11,20 @@ const defaultProps = buildDefaultProps("tab", {
 })
 
 export const tabProps = {
-  /**
-   * 标题
-   */
+  /** 标题 */
   title: defaultProps("title", { type: String }),
-  /**
-   * 标识符
-   */
+  /** 标识符 */
   name: defaultProps("name", { type: [Number, String] }),
-  /**
-   * 是否禁用
-   */
+  /** 是否禁用 */
   disabled: defaultProps("disabled", { type: Boolean }),
-  /**
-   * 自定义类名
-   */
+  /** 自定义类名 */
   customClass: defaultProps("customClass", { type: String }),
-  /**
-   * 自定义样式
-   */
+  /** 自定义样式 */
   customStyle: defaultProps("customStyle", { type: [String, Object] as PropType<string | CSSProperties> }),
 }
+
 export const tabEmits = {
+  /** 点击事件 */
   click: (name: number | string) => true,
 }
 

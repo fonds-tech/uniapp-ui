@@ -52,7 +52,6 @@ export const searchProps = {
   clearable: defaultProps("clearable", { type: Boolean }),
   /** 是否显示清除按钮（兼容历史 clearabled） */
   clearabled: defaultProps("clearabled", { type: Boolean }),
-
   /** 输入框高度，支持 rpx/px 单位 */
   height: defaultProps("height", { type: [Number, String] }),
   /** 外边距 */
@@ -61,7 +60,6 @@ export const searchProps = {
   round: defaultProps("round", { type: Boolean }),
   /** 圆角值，覆盖默认圆角 */
   radius: defaultProps("radius", { type: [Number, String] }),
-
   /** 输入文字颜色 */
   color: defaultProps("color", { type: String }),
   /** 输入文字大小 */
@@ -70,28 +68,24 @@ export const searchProps = {
   placeholderColor: defaultProps("placeholderColor", { type: String }),
   /** 输入框内容水平对齐方式 */
   inputAlign: defaultProps("inputAlign", { type: String, validator: (v: string) => ["left", "center", "right"].includes(v) }),
-
   /** 背景颜色 */
   background: defaultProps("background", { type: String }),
   /** 边框样式，如 "1px solid #eee" */
   border: defaultProps("border", { type: String }),
-
   /** 搜索图标名称 */
   icon: defaultProps("icon", { type: String }),
-  /** 搜索图标大小（移动端建议 20px 以上） */
+  /** 搜索图标大小 */
   iconSize: defaultProps("iconSize", { type: [Number, String] }),
   /** 搜索图标颜色 */
   iconColor: defaultProps("iconColor", { type: String }),
   /** 搜索图标粗细 */
   iconWeight: defaultProps("iconWeight", { type: String }),
-
   /** 清除图标大小 */
   clearSize: defaultProps("clearSize", { type: [Number, String] }),
   /** 清除图标颜色 */
   clearColor: defaultProps("clearColor", { type: String }),
   /** 清除图标粗细 */
   clearWeight: defaultProps("clearWeight", { type: String }),
-
   /** 是否显示右侧操作按钮 */
   action: defaultProps("action", { type: Boolean }),
   /** 右侧操作按钮文字 */
@@ -102,7 +96,6 @@ export const searchProps = {
   actionColor: defaultProps("actionColor", { type: String }),
   /** 右侧操作按钮文字粗细 */
   actionWeight: defaultProps("actionWeight", { type: String }),
-
   /** 自定义输入框样式 */
   inputStyle: defaultProps("inputStyle", { type: [String, Object] as PropType<string | CSSProperties> }),
   /** 自定义类名 */
@@ -110,14 +103,23 @@ export const searchProps = {
   /** 自定义根元素样式 */
   customStyle: defaultProps("customStyle", { type: [String, Object] as PropType<string | CSSProperties> }),
 }
+
 export const searchEmits = {
+  /** 失焦事件 */
   blur: (event: any) => true,
+  /** 聚焦事件 */
   focus: (event: any) => true,
+  /** 点击事件 */
   click: (event: any) => true,
+  /** 清除事件 */
   clear: (event: any) => true,
+  /** 操作按钮点击事件 */
   action: (event: any) => true,
+  /** 搜索事件 */
   search: (value: any) => true,
+  /** 值变化事件 */
   change: (value: any) => true,
+  /** 更新绑定值事件 */
   "update:modelValue": (value: string) => true,
 }
 

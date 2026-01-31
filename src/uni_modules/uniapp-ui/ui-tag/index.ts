@@ -27,94 +27,56 @@ const defaultProps = buildDefaultProps("tag", {
 })
 
 export const tagProps = {
-  /**
-   * 是否显示
-   */
+  /** 是否显示 */
   show: defaultProps("show", { type: Boolean }),
-  /**
-   * 主题类型
-   */
+  /** 主题类型 */
   type: defaultProps("type", { type: String, validator: (v: string) => ["primary", "success", "warning", "danger", "info"].includes(v) }),
-  /**
-   * 标签的文字内容
-   */
+  /** 标签的文字内容 */
   text: defaultProps("text", { type: String }),
-  /**
-   * 标签的文字大小
-   */
+  /** 标签的文字大小 */
   textSize: defaultProps("textSize", { type: [Number, String] }),
-  /**
-   * 标签的文字颜色
-   */
+  /** 标签的文字颜色 */
   textColor: defaultProps("textColor", { type: String }),
-  /**
-   * 标签的文字粗细
-   */
+  /** 标签的文字粗细 */
   textWeight: defaultProps("textWeight", { type: [Number, String] }),
-  /**
-   * 图标名称
-   */
+  /** 图标名称 */
   icon: defaultProps("icon", { type: String }),
-  /**
-   * 图标大小
-   */
+  /** 图标大小 */
   iconSize: defaultProps("iconSize", { type: [Number, String] }),
-  /**
-   * 图标颜色
-   */
+  /** 图标颜色 */
   iconColor: defaultProps("iconColor", { type: String }),
-  /**
-   * 图标粗细
-   */
+  /** 图标粗细 */
   iconWeight: defaultProps("iconWeight", { type: [Number, String] }),
-  /**
-   * 是否圆形的
-   */
+  /** 是否圆形的 */
   round: defaultProps("round", { type: Boolean }),
-  /**
-   * 是否镂空的
-   */
+  /** 是否镂空的 */
   plain: defaultProps("plain", { type: Boolean }),
-  /**
-   * 是否为可关闭标签
-   */
+  /** 是否为可关闭标签 */
   closeable: defaultProps("closeable", { type: Boolean }),
-  /**
-   * 高度
-   */
+  /** 高度 */
   height: defaultProps("height", { type: [Number, String] }),
-  /**
-   * 内边距
-   */
+  /** 内边距 */
   padding: defaultProps("padding", { type: String }),
-  /**
-   * 背景颜色
-   */
+  /** 背景颜色 */
   background: defaultProps("background", { type: String }),
-  /**
-   * 边框颜色
-   */
+  /** 边框颜色 */
   borderColor: defaultProps("borderColor", { type: String }),
-  /**
-   * 边框大小
-   */
+  /** 边框大小 */
   borderWidth: defaultProps("borderWidth", { type: [Number, String] }),
-  /**
-   * 圆角大小
-   */
+  /** 圆角大小 */
   borderRadius: defaultProps("borderRadius", { type: [Number, String] }),
-  /**
-   * 自定义类名
-   */
+  /** 自定义类名 */
   customClass: defaultProps("customClass", { type: String }),
-  /**
-   * 自定义样式
-   */
+  /** 自定义样式 */
   customStyle: defaultProps("customStyle", { type: [String, Object] as PropType<string | CSSProperties> }),
 }
+
 export const tagEmits = {
+  /** 点击事件 */
   click: () => true,
+  /** 关闭事件 */
   close: () => true,
+  /** 更新显示状态事件 */
   "update:show": (show: boolean) => typeof show === "boolean",
 }
 

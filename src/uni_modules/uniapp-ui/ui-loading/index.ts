@@ -18,55 +18,32 @@ const defaultProps = buildDefaultProps("loading", {
 })
 
 export const loadingProps = {
-  /**
-   * 是否显示
-   */
+  /** 是否显示 */
   show: defaultProps("show", { type: Boolean }),
-  /**
-   * 类型
-   */
+  /** 类型 */
   type: defaultProps("type", { type: String as PropType<LoadingType> }),
-  /**
-   * 大小
-   */
+  /** 大小 */
   size: defaultProps("size", { type: [Number, String] }),
-  /**
-   * 颜色
-   */
+  /** 颜色 */
   color: defaultProps("color", { type: String }),
-  /**
-   * 文本内容
-   */
+  /** 文本内容 */
   text: defaultProps("text", { type: String }),
-  /**
-   * 文本和图标的间距
-   */
+  /** 文本和图标的间距 */
   textGap: defaultProps("textGap", { type: [Number, String] }),
-  /**
-   * 文本大小
-   */
+  /** 文本大小 */
   textSize: defaultProps("textSize", { type: [Number, String] }),
-  /**
-   * 文本颜色
-   */
+  /** 文本颜色 */
   textColor: defaultProps("textColor", { type: String }),
-  /**
-   * 文本粗细
-   */
+  /** 文本粗细 */
   textWeight: defaultProps("textWeight", { type: [Number, String] }),
-  /**
-   * 垂直布局
-   */
+  /** 垂直布局 */
   vertical: defaultProps("vertical", { type: Boolean }),
-  /**
-   * 自定义类名
-   */
+  /** 自定义类名 */
   customClass: defaultProps("customClass", { type: String }),
-  /**
-   * 自定义样式
-   */
+  /** 自定义样式 */
   customStyle: defaultProps("customStyle", { type: [String, Object] as PropType<string | CSSProperties> }),
 }
+
 export const loadingEmits = {}
 
 export type LoadingType = "circular" | "spinner"

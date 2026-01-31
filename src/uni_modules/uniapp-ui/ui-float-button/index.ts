@@ -24,88 +24,53 @@ const defaultProps = buildDefaultProps("float-button", {
 })
 
 export const floatButtonProps = {
-  /**
-   * 是否显示
-   */
+  /** 是否显示 */
   show: defaultProps("show", { type: Boolean }),
-  /**
-   * 图标名称
-   */
+  /** 图标名称 */
   icon: defaultProps("icon", { type: String }),
-  /**
-   * 按钮文本
-   */
+  /** 按钮文本 */
   text: defaultProps("text", { type: String }),
-  /**
-   * 按钮类型
-   */
+  /** 按钮类型 */
   type: defaultProps("type", {
     type: String,
     validator: (v: string) => ["primary", "success", "warning", "danger", "default"].includes(v),
   }),
-  /**
-   * 按钮尺寸
-   */
+  /** 按钮尺寸 */
   size: defaultProps("size", { type: [Number, String] }),
-  /**
-   * 位置
-   */
+  /** 位置 */
   position: defaultProps("position", {
     type: String,
     validator: (v: string) => ["left-bottom", "right-bottom", "left-top", "right-top"].includes(v),
   }),
-  /**
-   * 横向偏移
-   */
+  /** 横向偏移 */
   offsetX: defaultProps("offsetX", { type: [Number, String] }),
-  /**
-   * 纵向偏移
-   */
+  /** 纵向偏移 */
   offsetY: defaultProps("offsetY", { type: [Number, String] }),
-  /**
-   * 元素层级
-   */
+  /** 元素层级 */
   zIndex: defaultProps("zIndex", { type: [Number, String] }),
-  /**
-   * 自定义背景色
-   */
+  /** 自定义背景色 */
   color: defaultProps("color", { type: String }),
-  /**
-   * 前景色（图标和文字颜色）
-   */
+  /** 前景色（图标和文字颜色） */
   foregroundColor: defaultProps("foregroundColor", { type: String }),
-  /**
-   * 图标大小
-   */
+  /** 图标大小 */
   iconSize: defaultProps("iconSize", { type: [Number, String] }),
-  /**
-   * 是否禁用
-   */
+  /** 是否禁用 */
   disabled: defaultProps("disabled", { type: Boolean }),
-  /**
-   * 是否可拖拽
-   */
+  /** 是否可拖拽 */
   draggable: defaultProps("draggable", { type: Boolean }),
-  /**
-   * 拖拽边界（是否限制在屏幕内）
-   */
+  /** 拖拽边界（是否限制在屏幕内） */
   dragBoundary: defaultProps("dragBoundary", { type: Boolean }),
-  /**
-   * 拖拽结束后是否吸附屏幕边缘
-   */
+  /** 拖拽结束后是否吸附屏幕边缘 */
   magnetic: defaultProps("magnetic", {
     type: [Boolean, String],
     validator: (v: boolean | string) => typeof v === "boolean" || ["x", "y", "both"].includes(v),
   }),
-  /**
-   * 自定义类名
-   */
+  /** 自定义类名 */
   customClass: defaultProps("customClass", { type: String }),
-  /**
-   * 自定义样式
-   */
+  /** 自定义样式 */
   customStyle: defaultProps("customStyle", { type: [String, Object] as PropType<string | CSSProperties> }),
 }
+
 export interface FloatButtonDragDetail {
   left: number
   top: number
@@ -113,10 +78,15 @@ export interface FloatButtonDragDetail {
 }
 
 export const floatButtonEmits = {
+  /** 点击事件 */
   click: () => true,
+  /** 更新显示状态事件 */
   "update:show": (show: boolean) => typeof show === "boolean",
+  /** 拖拽开始事件 */
   dragStart: (_detail: FloatButtonDragDetail) => true,
+  /** 拖拽移动事件 */
   dragMove: (_detail: FloatButtonDragDetail) => true,
+  /** 拖拽结束事件 */
   dragEnd: (_detail: FloatButtonDragDetail) => true,
 }
 
