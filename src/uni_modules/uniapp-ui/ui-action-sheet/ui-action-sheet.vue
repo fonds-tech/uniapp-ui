@@ -24,10 +24,10 @@
         <view class="ui-action-sheet__content">
           <view
             v-for="(item, index) in safeActions"
-            :key="index"
+            :key="item.id ?? index"
             class="ui-action-sheet__item"
             :class="{ 'ui-action-sheet__item--disabled': item.disabled, 'ui-action-sheet__item--loading': item.loading }"
-            @click="!item.disabled && !item.loading && handleSelectAction(item, index)"
+            @click="handleItemClick(item, index)"
           >
             <ui-loading v-if="item.loading" size="36rpx" />
             <template v-else>
@@ -67,20 +67,20 @@ defineOptions({ name: "ui-action-sheet" })
 const props = defineProps(actionSheetProps)
 const emits = defineEmits(actionSheetEmits)
 
-// 使用 transition hook
+// 使用 transition hook 管理动画状态
 const transition = useTransition()
-// 当前层级
+// 当前层级（动态计算，用于多个弹窗层级管理）
 const currentZIndex = ref<number>()
-// 是否可见
+// 面板是否可见（控制遮罩层显示）
 const visible = ref(false)
 
-// 是否已初始化（懒渲染场景）
+// 是否已初始化（懒渲染场景：首次打开后才渲染内容）
 const inited = computed(() => !props.lazyRender || transition.inited.value)
-// 安全的 actions 数组
+// 安全的 actions 数组（防御性处理，确保始终为数组）
 const safeActions = computed(() => {
   return Array.isArray(props.actions) ? props.actions : []
 })
-// 面板样式
+// 面板样式（包含层级、圆角、过渡动画、自定义样式）
 const panelStyle = computed(() => {
   const styles: CSSProperties = {}
   styles.zIndex = currentZIndex.value
@@ -88,9 +88,9 @@ const panelStyle = computed(() => {
   styles.borderTopRightRadius = useUnit(props.borderRadius)
   return useStyle({ ...styles, ...useStyle(props.customStyle), ...transition.styles.value })
 })
-// 样式类名
+// 样式类名（过渡动画相关类名）
 const classNames = computed(() => [transition.classs.value])
-// 头部标题样式
+// 头部标题样式（颜色、大小、粗细）
 const headerTitleStyle = computed(() => {
   const styles: CSSProperties = {}
   styles.color = useColor(props.titleColor)
@@ -98,7 +98,7 @@ const headerTitleStyle = computed(() => {
   styles.fontWeight = props.titleWeight
   return useStyle(styles)
 })
-// 头部描述样式
+// 头部描述样式（颜色、大小、粗细）
 const headerDescStyle = computed(() => {
   const styles: CSSProperties = {}
   styles.color = useColor(props.descriptionColor)
@@ -106,7 +106,7 @@ const headerDescStyle = computed(() => {
   styles.fontWeight = props.descriptionWeight
   return useStyle(styles)
 })
-// 取消按钮样式
+// 取消按钮样式（颜色、大小、粗细、背景）
 const cancelBtnStyle = computed(() => {
   const styles: CSSProperties = {}
   styles.color = useColor(props.cancelTextColor)
@@ -115,16 +115,16 @@ const cancelBtnStyle = computed(() => {
   styles.background = useColor(props.cancelBackground)
   return useStyle(styles)
 })
-// 滚动区域样式
+// 滚动区域样式（高度、最大高度）
 const scrollStyle = computed(() => {
   const styles: CSSProperties = {}
   styles.height = useUnit(props.height)
   styles.maxHeight = useUnit(props.maxHeight)
   return useStyle(styles)
 })
-// 操作项标题样式
+// 操作项标题样式（合并默认样式与用户自定义样式）
 const actionTitleStyle = computed(() => useStyle(props.actionTitleStyle))
-// 操作项描述样式
+// 操作项描述样式（合并默认样式与用户自定义样式）
 const actionDescStyle = computed(() => useStyle(props.actionDescriptionStyle))
 
 // 为 transition 的各个阶段绑定事件
@@ -144,22 +144,24 @@ watch(
 // 监听 duration 变化重新初始化 transition
 watch(() => [props.duration], initTransition, { immediate: true })
 
-// 初始化过渡动画
+// 初始化过渡动画（配置滑入动画和持续时间）
 function initTransition() {
   transition.init({ name: "slide-up", duration: props.duration })
 }
 
-// 打开面板
+// 打开面板（初始化动画、设置层级、触发事件）
 function open() {
+  // 防止重复打开
   if (transition.visible.value) return
   initTransition()
+  // 使用指定层级或自动生成全局层级
   currentZIndex.value = isNumber(props.zIndex) ? +props.zIndex : useGlobalZIndex()
   visible.value = true
   transition.enter()
   emits("update:show", true)
 }
 
-// 关闭面板
+// 关闭面板（触发离开动画、更新状态）
 function close() {
   if (transition.visible.value) {
     visible.value = false
@@ -168,10 +170,18 @@ function close() {
   }
 }
 
-// 选择操作项
+// 点击操作项（处理禁用和加载状态，触发选择事件）
+function handleItemClick(item: ActionSheetAction, index: number) {
+  // 禁用或加载中时不响应点击
+  if (item.disabled || item.loading) return
+  handleSelectAction(item, index)
+}
+
+// 选择操作项（触发事件并根据配置关闭面板）
 function handleSelectAction(item: ActionSheetAction, index: number) {
   emits("select", item, index)
   if (props.closeOnClickAction) {
+    // 存在拦截器时先执行拦截器
     if (isFunction(props.beforeClose)) {
       callInterceptor(props.beforeClose, {
         args: [item, index],
@@ -183,13 +193,13 @@ function handleSelectAction(item: ActionSheetAction, index: number) {
   }
 }
 
-// 点击取消按钮
+// 点击取消按钮（触发取消事件并关闭面板）
 function handleCancel() {
   emits("cancel")
   close()
 }
 
-// 点击遮罩层
+// 点击遮罩层（触发事件并根据配置关闭面板）
 function handleOverlayClick() {
   emits("clickOverlay")
   if (props.closeOnClickOverlay) close()
@@ -219,8 +229,8 @@ export default {
   flex-direction: column;
   background-color: var(--ui-color-background);
   transition-duration: var(--ui-transition-duration);
-  border-top-left-radius: var(--ui-radius-lg);
-  border-top-right-radius: var(--ui-radius-lg);
+  border-top-left-radius: var(--ui-radius-md);
+  border-top-right-radius: var(--ui-radius-md);
 
   &__header {
     display: grid;

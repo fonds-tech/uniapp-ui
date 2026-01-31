@@ -37,7 +37,7 @@ src/uni_modules/uniapp-ui/ui-{name}/
 ```typescript
 import type {Name} from "./ui-{name}.vue"
 import type { ExtractPropTypes } from "vue"
-import { createProps } from "../hooks"
+import { buildDefaultProps } from "../utils/props"
 import { styleProp, truthProp, [Number, String], makeStringProp, makeNumericProp } from "../utils/props"
 
 // ===================== 类型定义 =====================
@@ -46,24 +46,31 @@ export type {Name}Size = "mini" | "small" | "normal" | "medium" | "large"
 
 // ===================== Props 定义 =====================
 
-export const [{name}Props, use{Name}Props] = createProps("{name}", {
+const defaultProps = buildDefaultProps("{name}", {
+  size: "normal",
+  disabled: false,
+  customClass: "",
+  customStyle: "",
+})
+
+export const {name}Props = {
   /**
    * 尺寸
    */
-  size: makeStringProp<{Name}Size>("normal"),
+  size: defaultProps("size", { type: String as PropType<{Name}Size> }),
   /**
    * 是否禁用
    */
-  disabled: Boolean,
+  disabled: defaultProps("disabled", { type: Boolean }),
   /**
    * 自定义类名
    */
-  customClass: makeStringProp(""),
+  customClass: defaultProps("customClass", { type: String }),
   /**
    * 自定义样式
    */
-  customStyle: styleProp,
-})
+  customStyle: defaultProps("customStyle", { type: [String, Object] as PropType<string | CSSProperties> }),
+}
 
 // ===================== Emits 定义 =====================
 

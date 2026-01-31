@@ -105,6 +105,8 @@ export const actionSheetProps = {
 }
 
 export interface ActionSheetAction {
+  /** 唯一标识，用于优化列表渲染 */
+  id?: string | number
   /** 选项标题 */
   title: string
   /** 选项描述 */

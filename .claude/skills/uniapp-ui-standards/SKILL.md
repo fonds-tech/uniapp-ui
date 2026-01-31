@@ -66,28 +66,34 @@ import { xxxProps, xxxEmits, useXxxProps } from "./index"  // 5. 组件定义
 ```typescript
 import type XxxComponent from "./ui-xxx.vue"
 import type { PropType, ExtractPropTypes } from "vue"
-import { createProps } from "../hooks"
+import { buildDefaultProps } from "../utils/props"
 import { styleProp, truthProp, [Number, String], makeStringProp, makeNumericProp } from "../utils/props"
 
 // 类型定义（使用 type 而非 enum）
 export type XxxSize = "mini" | "small" | "normal" | "medium" | "large"
 export type XxxType = "primary" | "success" | "warning" | "danger" | "info" | "default"
 
-// Props 定义（使用 createProps）
-export const [xxxProps, useXxxProps] = createProps("xxx", {
+// Props 定义（使用 buildDefaultProps）
+const defaultProps = buildDefaultProps("xxx", {
+  size: "normal",
+  disabled: false,
+  customStyle: "",
+})
+
+export const xxxProps = {
   /**
-   * 中文注释说明
+   * 尺寸
    */
-  size: makeStringProp<XxxSize>("normal"),
+  size: defaultProps("size", { type: String as PropType<XxxSize> }),
   /**
    * 是否禁用
    */
-  disabled: Boolean,
+  disabled: defaultProps("disabled", { type: Boolean }),
   /**
    * 自定义样式
    */
-  customStyle: styleProp,
-})
+  customStyle: defaultProps("customStyle", { type: [String, Object] as PropType<string | CSSProperties> }),
+}
 
 // Emits 定义
 export const xxxEmits = {
@@ -252,7 +258,13 @@ const event: Event = e
 ### 6.1 Props 注释
 
 ```typescript
-export const [xxxProps, useXxxProps] = createProps("xxx", {
+const defaultProps = buildDefaultProps("xxx", {
+  size: "normal",
+  disabled: false,
+  customStyle: "",
+})
+
+export const xxxProps = {
   /**
    * 按钮类型
    */
@@ -308,7 +320,7 @@ const throttledEmit = computed(() => createThrottle(+useProps.throttle))
 
 - [ ] 使用 `<script setup lang="ts">`
 - [ ] 使用 `defineOptions({ name: "ui-xxx" })`
-- [ ] Props 使用 `createProps` 和工具函数
+- [ ] Props 使用 `buildDefaultProps` 和工具函数
 - [ ] 导入顺序正确（类型 → Vue → Hooks → 组件定义）
 - [ ] 样式使用 CSS 变量，遵循 BEM 命名
 - [ ] 使用 `useUnit`、`useColor`、`useStyle` 处理样式

@@ -107,7 +107,12 @@ export function useDebouncedValue<T>(value: Ref<T>, delay = 300): Ref<T> {
 }
 
 // Props 定义
-export const [buttonProps, useButtonProps] = createProps("button", {
+const defaultProps = buildDefaultProps("button", {
+  type: "primary",
+  size: "normal",
+})
+
+export const buttonProps = {
   type: makeStringProp<ButtonType>("primary"),
 })
 

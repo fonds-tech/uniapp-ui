@@ -28,7 +28,7 @@ user_invocable: true
 
 | 检查项             | 标准                                                        | 问题级别 |
 | ------------------ | ----------------------------------------------------------- | -------- |
-| 使用 `createProps` | 必须使用 `createProps` 创建 props                           | 错误     |
+| 使用 `buildDefaultProps` | 必须使用 `buildDefaultProps` 创建 props                           | 错误     |
 | 类型定义           | 使用 `type` 而非 `enum` 定义联合类型                        | 警告     |
 | 默认值             | 使用正确的工具函数 (`makeStringProp`, `makeNumericProp` 等) | 错误     |
 | 注释               | 每个 prop 需有中文注释说明                                  | 警告     |
@@ -36,20 +36,26 @@ user_invocable: true
 
 ```typescript
 // ✅ 正确示例
-export const [buttonProps, useButtonProps] = createProps("button", {
+const defaultProps = buildDefaultProps("button", {
+  type: "primary",
+  size: "normal",
+  disabled: false,
+})
+
+export const buttonProps = {
   /**
    * 按钮类型
    */
-  type: makeStringProp<ButtonType>("default"),
+  type: defaultProps("type", { type: String as PropType<ButtonType> }),
   /**
    * 是否禁用
    */
-  disabled: Boolean,
-})
+  disabled: defaultProps("disabled", { type: Boolean }),
+}
 
 // ❌ 问题示例
 export const buttonProps = {
-  type: { type: String, default: "default" },  // 未使用 createProps
+  type: { type: String, default: "default" },  // 未使用 buildDefaultProps
   disabled: { type: Boolean },                  // 缺少注释
 }
 ```
@@ -78,10 +84,15 @@ export const buttonProps = {
 
 ```typescript
 // ❌ 错误：中性组件使用主题色作为默认值
-export const [noticeBarProps, useNoticeBarProps] = createProps("noticeBar", {
-  iconColor: makeStringProp("primary"),      // 通知栏图标不应默认主题色
-  rightIconColor: makeStringProp("primary"), // 同上
+const defaultProps = buildDefaultProps("noticeBar", {
+  iconColor: "primary",      // 通知栏图标不应默认主题色
+  rightIconColor: "primary", // 同上
 })
+
+export const noticeBarProps = {
+  iconColor: defaultProps("iconColor", { type: String }),
+  rightIconColor: defaultProps("rightIconColor", { type: String }),
+}
 
 // ❌ 错误：CSS 中硬编码主题色
 .ui-notice-bar__text {
@@ -89,15 +100,24 @@ export const [noticeBarProps, useNoticeBarProps] = createProps("noticeBar", {
 }
 
 // ✅ 正确：中性组件使用空默认值，由用户或 CSS 变量控制
-export const [noticeBarProps, useNoticeBarProps] = createProps("noticeBar", {
-  color: makeStringProp(""),      // 空值，CSS 中使用 --ui-color-text-primary
-  iconColor: makeStringProp(""),  // 空值，继承文字颜色或使用文本色
+const defaultProps = buildDefaultProps("noticeBar", {
+  color: "",      // 空值，CSS 中使用 --ui-color-text-primary
+  iconColor: "",  // 空值，继承文字颜色或使用文本色
 })
 
+export const noticeBarProps = {
+  color: defaultProps("color", { type: String }),
+  iconColor: defaultProps("iconColor", { type: String }),
+}
+
 // ✅ 正确：强主题组件可以有主题默认值
-export const [buttonProps, useButtonProps] = createProps("button", {
-  type: makeStringProp<ButtonType>("primary"),  // 按钮默认主题色合理
+const defaultProps = buildDefaultProps("button", {
+  type: "primary",  // 按钮默认主题色合理
 })
+
+export const buttonProps = {
+  type: defaultProps("type", { type: String as PropType<ButtonType> }),
+}
 
 // ✅ 正确：CSS 使用中性文本色
 .ui-notice-bar__text {
@@ -547,9 +567,9 @@ await delay(ANIMATION_DURATION)
 
 ### 错误 (必须修复)
 
-1. **[Props]** 第 15 行：未使用 `createProps` 创建 props
+1. **[Props]** 第 15 行：未使用 `buildDefaultProps` 创建 props
    - 当前：`export const xxxProps = { ... }`
-   - 建议：`export const [xxxProps, useXxxProps] = createProps("xxx", { ... })`
+   - 建议：使用 `const defaultProps = buildDefaultProps("xxx", { ... })` 和 `defaultProps("prop", { type: String })`
 
 ### 警告 (建议修复)
 
@@ -586,7 +606,7 @@ await delay(ANIMATION_DURATION)
 
 分析完成后确保已检查：
 
-- [ ] Props 定义规范（createProps、工具函数、注释）
+- [ ] Props 定义规范（buildDefaultProps、工具函数、注释）
 - [ ] Props 默认值设计（组件类型判断、颜色默认值、CSS 硬编码）
 - [ ] 响应式状态设计（ref/reactive 选择、命名）
 - [ ] 模板结构（根元素、类名/样式绑定）
