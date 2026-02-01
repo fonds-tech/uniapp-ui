@@ -89,7 +89,7 @@
 
     <ui-action-sheet v-model:show="show2" :actions="actions1" cancel-text="取消" @cancel="onCancel" />
 
-    <ui-action-sheet v-model:show="show3" :actions="actions1" description="这是一段描述信息" cancel-text="取消" />
+    <ui-action-sheet v-model:show="show3" :actions="actions1" title="我是标题" description="这是一段描述信息" cancel-text="取消" />
 
     <ui-action-sheet v-model:show="showItemDesc" :actions="actionsWithDesc" cancel-text="取消" />
 

@@ -229,21 +229,31 @@ export default {
   flex-direction: column;
   background-color: var(--ui-color-background);
   transition-duration: var(--ui-transition-duration);
-  border-top-left-radius: var(--ui-radius-md);
-  border-top-right-radius: var(--ui-radius-md);
+  border-top-left-radius: var(--ui-radius-lg);
+  border-top-right-radius: var(--ui-radius-lg);
 
   &__header {
     display: grid;
-    padding: var(--ui-spacing-lg);
+    padding: var(--ui-spacing-md);
     row-gap: var(--ui-spacing-xs);
-    padding-bottom: var(--ui-spacing-md);
+    position: relative;
     grid-template-columns: repeat(1, minmax(0, 1fr));
+    &::after {
+      left: var(--ui-spacing-lg);
+      right: var(--ui-spacing-lg);
+      bottom: 0;
+      height: var(--ui-border-width-thin);
+      content: "";
+      position: absolute;
+      background-color: var(--ui-color-border-light);
+    }
   }
 
   &__title {
     color: var(--ui-color-text-primary);
     font-size: var(--ui-font-size-md);
     text-align: center;
+    font-weight: var(--ui-font-weight-bold);
   }
 
   &__description {
@@ -264,8 +274,9 @@ export default {
 
   &__item {
     display: grid;
-    padding: var(--ui-spacing-lg);
+    padding: var(--ui-spacing-md);
     row-gap: var(--ui-spacing-xs);
+    position: relative;
     transition: background-color var(--ui-transition-fast);
     align-items: center;
     justify-items: center;
@@ -274,6 +285,22 @@ export default {
 
     &:active {
       background-color: var(--ui-color-background-dark);
+    }
+
+    // 操作项分割线
+    &::after {
+      left: var(--ui-spacing-lg);
+      right: var(--ui-spacing-lg);
+      bottom: 0;
+      height: var(--ui-border-width-thin);
+      content: "";
+      position: absolute;
+      background-color: var(--ui-color-border-light);
+    }
+
+    // 最后一项不显示分割线
+    &:last-child::after {
+      display: none;
     }
 
     &--disabled {
@@ -310,7 +337,7 @@ export default {
     }
 
     &__icon {
-      font-size: var(--ui-font-size-lg);
+      font-size: var(--ui-icon-size-md);
     }
 
     &__description {
@@ -321,7 +348,7 @@ export default {
   }
 
   &__gap {
-    height: var(--ui-spacing-sm);
+    height: var(--ui-spacing-md);
     background-color: var(--ui-color-background-light);
   }
 

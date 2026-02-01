@@ -26,13 +26,13 @@ user_invocable: true
 
 #### 1.1 Props 定义检查
 
-| 检查项             | 标准                                                        | 问题级别 |
-| ------------------ | ----------------------------------------------------------- | -------- |
-| 使用 `buildDefaultProps` | 必须使用 `buildDefaultProps` 创建 props                           | 错误     |
-| 类型定义           | 使用 `type` 而非 `enum` 定义联合类型                        | 警告     |
-| 默认值             | 使用正确的工具函数 (`makeStringProp`, `makeNumericProp` 等) | 错误     |
-| 注释               | 每个 prop 需有中文注释说明                                  | 警告     |
-| 命名               | 遵循 camelCase，语义明确                                    | 警告     |
+| 检查项                   | 标准                                                        | 问题级别 |
+| ------------------------ | ----------------------------------------------------------- | -------- |
+| 使用 `buildDefaultProps` | 必须使用 `buildDefaultProps` 创建 props                     | 错误     |
+| 类型定义                 | 使用 `type` 而非 `enum` 定义联合类型                        | 警告     |
+| 默认值                   | 使用正确的工具函数 (`makeStringProp`, `makeNumericProp` 等) | 错误     |
+| 注释                     | 每个 prop 需有中文注释说明                                  | 警告     |
+| 命名                     | 遵循 camelCase，语义明确                                    | 警告     |
 
 ```typescript
 // ✅ 正确示例
