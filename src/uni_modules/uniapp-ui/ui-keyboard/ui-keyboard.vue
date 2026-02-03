@@ -112,18 +112,6 @@ const cars = ref<KeyboardKeyItem[]>([
 const language = ref("zh-cn")
 const inputValue = ref("")
 
-watch(
-  () => props.modelValue,
-  (val) => {
-    inputValue.value = val
-    // 车牌键盘自动切换：根据输入长度判断显示中文还是英文
-    if (props.mode === "car" && props.autoSwitch) {
-      language.value = val.length === 0 ? "zh-cn" : "en-us"
-    }
-  },
-  { immediate: true },
-)
-
 const style = computed(() => {
   const styles: Record<string, string> = {}
   return useStyle({ ...styles, ...useStyle(props.customStyle) })
@@ -179,6 +167,18 @@ const keys = computed(() => {
 
   return list
 })
+
+watch(
+  () => props.modelValue,
+  (val) => {
+    inputValue.value = val
+    // 车牌键盘自动切换：根据输入长度判断显示中文还是英文
+    if (props.mode === "car" && props.autoSwitch) {
+      language.value = val.length === 0 ? "zh-cn" : "en-us"
+    }
+  },
+  { immediate: true },
+)
 
 watch(
   () => props.show,

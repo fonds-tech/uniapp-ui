@@ -212,6 +212,7 @@ const componentCategories = [
       { name: "DropdownMenu", path: "dropdown-menu", icon: "i-lucide-list-filter", desc: "下拉菜单" },
       { name: "FloatButton", path: "float-button", icon: "i-lucide-plus", desc: "浮动按钮" },
       { name: "Steps", path: "steps", icon: "i-lucide-footprints", desc: "步骤条" },
+      { name: "Timeline", path: "timeline", icon: "i-lucide-history", desc: "时间轴" },
     ],
   },
   {

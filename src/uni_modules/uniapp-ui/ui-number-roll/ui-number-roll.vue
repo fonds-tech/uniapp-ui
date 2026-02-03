@@ -33,47 +33,6 @@ const columns = ref<string[][]>([])
 // 阿拉伯数字列表
 const arab = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
 
-// 转义正则表达式特殊字符
-function escapeRegExp(value: string) {
-  return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")
-}
-
-// 格式化数值（兼容字符串输入）
-function formatValue(value: string | number) {
-  const options = {
-    decimalPlaces: props.decimalPlaces,
-    trimZero: props.trimZero,
-    thousandsSep: props.thousandsSep,
-  }
-
-  if (typeof value === "number") {
-    if (!Number.isFinite(value)) return "0"
-    return String(formatDigit(value, options))
-  }
-
-  const rawValue = String(value).trim()
-  if (!rawValue) return "0"
-
-  const { thousandsSep } = options
-  const escapedSep = thousandsSep ? escapeRegExp(thousandsSep) : ""
-  const allowedPattern = new RegExp(`^[0-9\\-\\.,${escapedSep}]+$`)
-  if (!allowedPattern.test(rawValue)) return rawValue
-
-  if (/^-?0\d+$/.test(rawValue)) return rawValue
-
-  if (thousandsSep) {
-    const parsed = Number(rawValue.split(thousandsSep).join(""))
-    if (Number.isFinite(parsed)) return String(formatDigit(parsed, options))
-    return rawValue
-  }
-
-  if (rawValue.includes(",")) return rawValue
-
-  const parsed = Number(rawValue)
-  if (!Number.isFinite(parsed)) return rawValue
-  return String(formatDigit(parsed, options))
-}
-
 // 高度值
 const heightValue = computed(() => {
   if (props.fontSize) return useUnit(props.fontSize)
@@ -114,6 +73,47 @@ const columnItemStyle = computed(() => {
 
 // 监听值变化
 watch(() => [props.value, props.decimalPlaces, props.trimZero, props.thousandsSep, props.fontSize], resize)
+
+// 转义正则表达式特殊字符
+function escapeRegExp(value: string) {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")
+}
+
+// 格式化数值（兼容字符串输入）
+function formatValue(value: string | number) {
+  const options = {
+    decimalPlaces: props.decimalPlaces,
+    trimZero: props.trimZero,
+    thousandsSep: props.thousandsSep,
+  }
+
+  if (typeof value === "number") {
+    if (!Number.isFinite(value)) return "0"
+    return String(formatDigit(value, options))
+  }
+
+  const rawValue = String(value).trim()
+  if (!rawValue) return "0"
+
+  const { thousandsSep } = options
+  const escapedSep = thousandsSep ? escapeRegExp(thousandsSep) : ""
+  const allowedPattern = new RegExp(`^[0-9\\-\\.,${escapedSep}]+$`)
+  if (!allowedPattern.test(rawValue)) return rawValue
+
+  if (/^-?0\d+$/.test(rawValue)) return rawValue
+
+  if (thousandsSep) {
+    const parsed = Number(rawValue.split(thousandsSep).join(""))
+    if (Number.isFinite(parsed)) return String(formatDigit(parsed, options))
+    return rawValue
+  }
+
+  if (rawValue.includes(",")) return rawValue
+
+  const parsed = Number(rawValue)
+  if (!Number.isFinite(parsed)) return rawValue
+  return String(formatDigit(parsed, options))
+}
 
 // 重新计算布局
 async function resize() {

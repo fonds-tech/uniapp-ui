@@ -1,13 +1,5 @@
 <template>
-  <text
-    class="ui-text"
-    :class="[classes, customClass]"
-    :style="[style]"
-    :decode="decode"
-    :selectable="selectable"
-    :user-select="selectable"
-    @click="onClick"
-  >
+  <text class="ui-text" :class="[classes, customClass]" :style="[style]" :decode="decode" :selectable="selectable" :user-select="selectable" @click="onClick">
     <slot>{{ text }}</slot>
   </text>
 </template>

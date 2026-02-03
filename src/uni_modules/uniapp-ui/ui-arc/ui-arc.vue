@@ -13,6 +13,8 @@ import { computed } from "vue"
 import { arcEmits, arcProps } from "./index"
 import { useUnit, useColor, useStyle } from "../hooks"
 
+defineOptions({ name: "ui-arc" })
+
 // 定义 props 和 emits
 const props = defineProps(arcProps)
 const emits = defineEmits(arcEmits)

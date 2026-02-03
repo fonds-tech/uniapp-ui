@@ -56,8 +56,7 @@
       />
 
       <template #footer>
-        <slot name="footer" :confirm="onConfirm" :cancel="onCancel">
-        </slot>
+        <slot name="footer" :confirm="onConfirm" :cancel="onCancel"> </slot>
       </template>
     </ui-popup>
   </view>
@@ -104,6 +103,26 @@ const isSingleValueMode = computed(() => {
   return columnsType.value === "default"
 })
 
+// 监听外部 modelValue 变化,使用 immediate 确保初始值同步
+watch(
+  () => props.modelValue,
+  (val) => {
+    internalValue.value = parseValue(val)
+  },
+  { immediate: true, deep: true },
+)
+
+// 监听 show 变化,弹窗打开时同步最新值
+watch(
+  () => props.show,
+  (val) => {
+    if (val) {
+      // 弹窗打开时,确保内部值与外部同步
+      internalValue.value = parseValue(props.modelValue)
+    }
+  },
+)
+
 /**
  * 将外部传入的值解析为内部数组格式
  */
@@ -126,26 +145,6 @@ function formatValue(values: PickerValue[]): PickerModelValue {
   }
   return values
 }
-
-// 监听外部 modelValue 变化,使用 immediate 确保初始值同步
-watch(
-  () => props.modelValue,
-  (val) => {
-    internalValue.value = parseValue(val)
-  },
-  { immediate: true, deep: true },
-)
-
-// 监听 show 变化,弹窗打开时同步最新值
-watch(
-  () => props.show,
-  (val) => {
-    if (val) {
-      // 弹窗打开时,确保内部值与外部同步
-      internalValue.value = parseValue(props.modelValue)
-    }
-  },
-)
 
 /**
  * 处理弹窗显示状态变化

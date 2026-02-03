@@ -83,61 +83,6 @@ const currentHour = ref(new Date().getHours())
 const currentMinute = ref(new Date().getMinutes())
 const currentSecond = ref(new Date().getSeconds())
 
-/**
- * 补零
- */
-function pad(n: number): string {
-  return padZero(n)
-}
-
-/**
- * 获取指定年月的天数
- */
-function getDaysInMonth(year: number, month: number): number {
-  return new Date(year, month, 0).getDate()
-}
-
-/**
- * 格式化日期
- */
-function formatDate(y: number, m: number, d: number, h: number, mi: number, s: number, format: string): string {
-  return format.replace(/YYYY/g, String(y)).replace(/MM/g, pad(m)).replace(/DD/g, pad(d)).replace(/HH/g, pad(h)).replace(/mm/g, pad(mi)).replace(/ss/g, pad(s))
-}
-
-/**
- * 解析日期值
- */
-function parseDate(value: string | number | Date | null | undefined): { y: number; m: number; d: number; h: number; mi: number; s: number } {
-  const now = new Date()
-  if (!value) {
-    return { y: now.getFullYear(), m: now.getMonth() + 1, d: now.getDate(), h: now.getHours(), mi: now.getMinutes(), s: now.getSeconds() }
-  }
-
-  let date: Date
-  if (value instanceof Date) {
-    date = value
-  } else if (typeof value === "number") {
-    date = new Date(value)
-  } else {
-    // 字符串解析
-    const normalized = value.replace("T", " ").replace("Z", "")
-    const parts = normalized.split(/[\s/:-]/)
-    if (parts.length >= 3) {
-      const y = Number.parseInt(parts[0]) || now.getFullYear()
-      const m = Number.parseInt(parts[1]) || 1
-      const d = Number.parseInt(parts[2]) || 1
-      const h = Number.parseInt(parts[3]) || 0
-      const mi = Number.parseInt(parts[4]) || 0
-      const s = Number.parseInt(parts[5]) || 0
-      return { y, m, d, h, mi, s }
-    }
-    date = new Date(value)
-    if (Number.isNaN(date.getTime())) date = now
-  }
-
-  return { y: date.getFullYear(), m: date.getMonth() + 1, d: date.getDate(), h: date.getHours(), mi: date.getMinutes(), s: date.getSeconds() }
-}
-
 const minBound = computed(() => {
   if (props.minDate) {
     return parseDate(props.minDate)
@@ -153,44 +98,6 @@ const maxBound = computed(() => {
   const y = new Date().getFullYear() + 10
   return { y, m: 12, d: 31, h: 23, mi: 59, s: 59 }
 })
-
-/**
- * 限制值在范围内
- */
-function clamp(val: number, min: number, max: number): number {
-  return Math.max(min, Math.min(max, val))
-}
-
-/**
- * 生成列选项
- * @param start - 起始值
- * @param end - 结束值
- * @param type - 列类型
- */
-function genOptions(start: number, end: number, type: DatePickerColumnType): DatePickerOption[] {
-  // 边界保护：确保 start <= end
-  const safeStart = Math.min(start, end)
-  const safeEnd = Math.max(start, end)
-  const options: DatePickerOption[] = []
-
-  // 默认 formatter：直接返回 option
-  const defaultFormatter = (_type: string, option: DatePickerOption) => option
-  const formatter = props.columnFormatter ?? defaultFormatter
-
-  for (let i = safeStart; i <= safeEnd; i++) {
-    const text = pad(i)
-    const option: DatePickerOption = { text, value: text }
-    const formatted = formatter(type, option)
-    options.push(formatted ?? option)
-  }
-
-  // 过滤器
-  const filter = props.columnFilter
-  if (typeof filter === "function") {
-    return filter(type, options, [])
-  }
-  return options
-}
 
 // 年份列
 const yearColumn = computed(() => {
@@ -273,48 +180,6 @@ const columnMap: Record<DatePickerColumnType, typeof yearColumn> = {
   second: secondColumn,
 }
 
-// 当前值映射
-function getCurrentValue(type: DatePickerColumnType): number {
-  switch (type) {
-    case "year":
-      return currentYear.value
-    case "month":
-      return currentMonth.value
-    case "day":
-      return currentDay.value
-    case "hour":
-      return currentHour.value
-    case "minute":
-      return currentMinute.value
-    case "second":
-      return currentSecond.value
-  }
-}
-
-// 设置当前值
-function setCurrentValue(type: DatePickerColumnType, val: number) {
-  switch (type) {
-    case "year":
-      currentYear.value = val
-      break
-    case "month":
-      currentMonth.value = val
-      break
-    case "day":
-      currentDay.value = val
-      break
-    case "hour":
-      currentHour.value = val
-      break
-    case "minute":
-      currentMinute.value = val
-      break
-    case "second":
-      currentSecond.value = val
-      break
-  }
-}
-
 // picker 列数据
 const pickerColumns = computed(() => {
   return props.columns.map((type) => {
@@ -362,6 +227,159 @@ const columnStyle = computed(() => {
     })
   }
 })
+
+watch(
+  () => props.modelValue,
+  () => {
+    initFromValue()
+  },
+  { immediate: true },
+)
+
+// 监听 show 变化，弹窗打开时重新初始化
+watch(
+  () => props.show,
+  (val) => {
+    if (val) {
+      initFromValue()
+    }
+  },
+)
+
+/**
+ * 补零
+ */
+function pad(n: number): string {
+  return padZero(n)
+}
+
+/**
+ * 获取指定年月的天数
+ */
+function getDaysInMonth(year: number, month: number): number {
+  return new Date(year, month, 0).getDate()
+}
+
+/**
+ * 格式化日期
+ */
+function formatDate(y: number, m: number, d: number, h: number, mi: number, s: number, format: string): string {
+  return format.replace(/YYYY/g, String(y)).replace(/MM/g, pad(m)).replace(/DD/g, pad(d)).replace(/HH/g, pad(h)).replace(/mm/g, pad(mi)).replace(/ss/g, pad(s))
+}
+
+/**
+ * 解析日期值
+ */
+function parseDate(value: string | number | Date | null | undefined): { y: number; m: number; d: number; h: number; mi: number; s: number } {
+  const now = new Date()
+  if (!value) {
+    return { y: now.getFullYear(), m: now.getMonth() + 1, d: now.getDate(), h: now.getHours(), mi: now.getMinutes(), s: now.getSeconds() }
+  }
+
+  let date: Date
+  if (value instanceof Date) {
+    date = value
+  } else if (typeof value === "number") {
+    date = new Date(value)
+  } else {
+    // 字符串解析
+    const normalized = value.replace("T", " ").replace("Z", "")
+    const parts = normalized.split(/[\s/:-]/)
+    if (parts.length >= 3) {
+      const y = Number.parseInt(parts[0]) || now.getFullYear()
+      const m = Number.parseInt(parts[1]) || 1
+      const d = Number.parseInt(parts[2]) || 1
+      const h = Number.parseInt(parts[3]) || 0
+      const mi = Number.parseInt(parts[4]) || 0
+      const s = Number.parseInt(parts[5]) || 0
+      return { y, m, d, h, mi, s }
+    }
+    date = new Date(value)
+    if (Number.isNaN(date.getTime())) date = now
+  }
+
+  return { y: date.getFullYear(), m: date.getMonth() + 1, d: date.getDate(), h: date.getHours(), mi: date.getMinutes(), s: date.getSeconds() }
+}
+
+/**
+ * 限制值在范围内
+ */
+function clamp(val: number, min: number, max: number): number {
+  return Math.max(min, Math.min(max, val))
+}
+
+/**
+ * 生成列选项
+ * @param start - 起始值
+ * @param end - 结束值
+ * @param type - 列类型
+ */
+function genOptions(start: number, end: number, type: DatePickerColumnType): DatePickerOption[] {
+  // 边界保护：确保 start <= end
+  const safeStart = Math.min(start, end)
+  const safeEnd = Math.max(start, end)
+  const options: DatePickerOption[] = []
+
+  // 默认 formatter：直接返回 option
+  const defaultFormatter = (_type: string, option: DatePickerOption) => option
+  const formatter = props.columnFormatter ?? defaultFormatter
+
+  for (let i = safeStart; i <= safeEnd; i++) {
+    const text = pad(i)
+    const option: DatePickerOption = { text, value: text }
+    const formatted = formatter(type, option)
+    options.push(formatted ?? option)
+  }
+
+  // 过滤器
+  const filter = props.columnFilter
+  if (typeof filter === "function") {
+    return filter(type, options, [])
+  }
+  return options
+}
+
+// 当前值映射
+function getCurrentValue(type: DatePickerColumnType): number {
+  switch (type) {
+    case "year":
+      return currentYear.value
+    case "month":
+      return currentMonth.value
+    case "day":
+      return currentDay.value
+    case "hour":
+      return currentHour.value
+    case "minute":
+      return currentMinute.value
+    case "second":
+      return currentSecond.value
+  }
+}
+
+// 设置当前值
+function setCurrentValue(type: DatePickerColumnType, val: number) {
+  switch (type) {
+    case "year":
+      currentYear.value = val
+      break
+    case "month":
+      currentMonth.value = val
+      break
+    case "day":
+      currentDay.value = val
+      break
+    case "hour":
+      currentHour.value = val
+      break
+    case "minute":
+      currentMinute.value = val
+      break
+    case "second":
+      currentSecond.value = val
+      break
+  }
+}
 
 function initFromValue() {
   const parsed = parseDate(props.modelValue)
@@ -500,24 +518,6 @@ function onConfirm() {
   emits("update:modelValue", getFormattedValue())
   emits("update:show", false)
 }
-
-watch(
-  () => props.modelValue,
-  () => {
-    initFromValue()
-  },
-  { immediate: true },
-)
-
-// 监听 show 变化，弹窗打开时重新初始化
-watch(
-  () => props.show,
-  (val) => {
-    if (val) {
-      initFromValue()
-    }
-  },
-)
 
 defineExpose({
   name: "ui-date-picker",

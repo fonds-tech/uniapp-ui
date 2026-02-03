@@ -165,6 +165,14 @@ const displayText = computed(() => {
   return formatDisplayText(currentValue.value)
 })
 
+watch(
+  () => props.modelValue,
+  (val) => {
+    currentValue.value = parseValue(val)
+  },
+  { immediate: true },
+)
+
 /**
  * 根据列配置格式化展示文案
  * @param value 日期值
@@ -260,14 +268,6 @@ function formatDate(date: Date): string {
   // 根据 format 配置返回
   return props.format.replace(/YYYY/g, String(year)).replace(/MM/g, month).replace(/DD/g, day).replace(/HH/g, hour).replace(/mm/g, minute).replace(/ss/g, second)
 }
-
-watch(
-  () => props.modelValue,
-  (val) => {
-    currentValue.value = parseValue(val)
-  },
-  { immediate: true },
-)
 
 /**
  * 点击展示区

@@ -94,6 +94,18 @@ const containerStyle = computed(() => {
 // 判断是否吸顶
 const isFixed = computed(() => stickyState.state === "sticky")
 
+watch(
+  () => props.disabled,
+  (disabled) => {
+    if (disabled) {
+      setNormalState()
+      clearObserver()
+    } else {
+      observeScroll()
+    }
+  },
+)
+
 // 清除所有观察器
 function clearObserver() {
   while (observerList.value.length > 0) {
@@ -192,18 +204,6 @@ async function handleResize(detail: { width: number; height: number }) {
   await nextTick()
   observeScroll()
 }
-
-watch(
-  () => props.disabled,
-  (disabled) => {
-    if (disabled) {
-      setNormalState()
-      clearObserver()
-    } else {
-      observeScroll()
-    }
-  },
-)
 
 // 手动重新计算
 async function resize() {

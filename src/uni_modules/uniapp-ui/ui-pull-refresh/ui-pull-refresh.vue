@@ -72,6 +72,34 @@ const pullDistanceValue = computed(() => {
 })
 
 /**
+ * 监听 modelValue 变化
+ * 当父组件设置 modelValue 为 false 时，表示刷新完成
+ */
+watch(
+  () => props.modelValue,
+  (newVal, oldVal) => {
+    if (oldVal && !newVal) {
+      // 从 true 变为 false，表示刷新完成
+      showSuccessTip()
+    } else if (newVal) {
+      // 从 false 变为 true，设置加载状态
+      distance.value = headHeightValue.value
+      setStatus("loading")
+    }
+  },
+)
+
+/**
+ * 组件卸载时清理
+ */
+onBeforeUnmount(() => {
+  if (successTimer) {
+    clearTimeout(successTimer)
+    successTimer = null
+  }
+})
+
+/**
  * 头部高度（px）
  */
 const headHeightValue = computed(() => {
@@ -246,34 +274,6 @@ function showSuccessTip() {
     setStatus("normal")
   }
 }
-
-/**
- * 监听 modelValue 变化
- * 当父组件设置 modelValue 为 false 时，表示刷新完成
- */
-watch(
-  () => props.modelValue,
-  (newVal, oldVal) => {
-    if (oldVal && !newVal) {
-      // 从 true 变为 false，表示刷新完成
-      showSuccessTip()
-    } else if (newVal) {
-      // 从 false 变为 true，设置加载状态
-      distance.value = headHeightValue.value
-      setStatus("loading")
-    }
-  },
-)
-
-/**
- * 组件卸载时清理
- */
-onBeforeUnmount(() => {
-  if (successTimer) {
-    clearTimeout(successTimer)
-    successTimer = null
-  }
-})
 </script>
 
 <script lang="ts">

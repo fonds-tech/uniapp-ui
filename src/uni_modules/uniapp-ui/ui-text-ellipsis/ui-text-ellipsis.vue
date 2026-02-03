@@ -29,12 +29,6 @@ const instance = getCurrentInstance()
 const expanded = ref(false)
 const hasOverflow = ref(false)
 
-// 格式化数值类型的样式值
-function formatNumericStyle(value: string | number | undefined): string | undefined {
-  if (value === undefined) return undefined
-  return typeof value === "number" ? `${value}rpx` : String(value)
-}
-
 const rootStyle = computed(() => useStyle(props.customStyle))
 
 // 测量容器样式：隐藏但保持布局计算，用于获取文本完整高度
@@ -83,6 +77,16 @@ const gradientStyle = computed(() => {
   return useStyle({ background: `linear-gradient(to bottom, transparent, ${props.gradientColor})` })
 })
 
+// 监听内容和行数变化，重新计算溢出状态
+watch(() => props.content, calcOverflow, { immediate: true })
+watch(() => props.rows, calcOverflow)
+
+// 格式化数值类型的样式值
+function formatNumericStyle(value: string | number | undefined): string | undefined {
+  if (value === undefined) return undefined
+  return typeof value === "number" ? `${value}rpx` : String(value)
+}
+
 // 计算文本是否溢出：比较测量容器与内容容器的高度差
 async function calcOverflow() {
   await nextTick()
@@ -101,10 +105,6 @@ function onToggle() {
 function onClick(event: Event) {
   emits("click", event)
 }
-
-// 监听内容和行数变化，重新计算溢出状态
-watch(() => props.content, calcOverflow, { immediate: true })
-watch(() => props.rows, calcOverflow)
 
 onMounted(calcOverflow)
 

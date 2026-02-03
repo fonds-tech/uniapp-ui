@@ -31,14 +31,14 @@ const emits = defineEmits(toastEmits)
 // 使用transition hook
 const transition = useTransition()
 
-const inited = computed(() => transition.inited.value)
-
 // 定义响应式变量
 const timer = ref<ReturnType<typeof setTimeout> | null>(null) // 用于存储定时器
 const visible = ref(false) // 控制toast是否可见
 const zIndex = ref<number>() // 存储z-index值
 const icons: Record<string, string> = { await: "time-circle-fill", fail: "close-circle", success: "check-circle-fill" } // 定义不同类型的图标
 const commandOptions = ref<ToastOptions>({}) // 命令式调用时传入的选项
+
+const inited = computed(() => transition.inited.value)
 
 /**
  * 合并后的配置选项

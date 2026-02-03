@@ -114,6 +114,41 @@ const buttonStyle = computed(() => {
   return useStyle({ ...style, ...useStyle(props.customStyle) })
 })
 
+onMounted(() => {
+  initPosition()
+})
+
+onUnmounted(() => {
+  // #ifdef H5
+  unbindDocumentMouse()
+  // #endif
+})
+
+watch(
+  () => props.show,
+  (val) => {
+    emits("update:show", val)
+  },
+)
+
+// 监听 position 属性变化，重新初始化位置
+watch(
+  () => props.position,
+  () => {
+    initPosition()
+  },
+)
+
+// 监听 offset 和 size 变化，重新计算边界和位置
+watch(
+  () => [props.offsetX, props.offsetY, props.size],
+  () => {
+    if (inited.value) {
+      initPosition()
+    }
+  },
+)
+
 function onClick() {
   if (props.disabled) return
   emits("click")
@@ -301,41 +336,6 @@ function handleMouseEnd() {
   emits("dragEnd", buildDragDetail())
   // #endif
 }
-
-onMounted(() => {
-  initPosition()
-})
-
-onUnmounted(() => {
-  // #ifdef H5
-  unbindDocumentMouse()
-  // #endif
-})
-
-watch(
-  () => props.show,
-  (val) => {
-    emits("update:show", val)
-  },
-)
-
-// 监听 position 属性变化，重新初始化位置
-watch(
-  () => props.position,
-  () => {
-    initPosition()
-  },
-)
-
-// 监听 offset 和 size 变化，重新计算边界和位置
-watch(
-  () => [props.offsetX, props.offsetY, props.size],
-  () => {
-    if (inited.value) {
-      initPosition()
-    }
-  },
-)
 </script>
 
 <script lang="ts">
