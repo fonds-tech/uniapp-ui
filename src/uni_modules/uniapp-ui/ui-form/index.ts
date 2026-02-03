@@ -10,7 +10,7 @@ const defaultProps = buildDefaultProps("form", {
   colon: false,
   border: false,
   borderColor: "#F6F6F6",
-  required: false,
+  required: "auto",
   disabled: false,
   readonly: false,
   labelGap: undefined,
@@ -43,8 +43,8 @@ export const formProps = {
   border: defaultProps("border", { type: Boolean }),
   /** 边框颜色 */
   borderColor: defaultProps("borderColor", { type: String }),
-  /** 是否为必填项，会显示标签文字右侧*号 */
-  required: defaultProps("required", { type: Boolean }),
+  /** 必填星号显示模式：true 始终显示，false 始终隐藏，'auto' 根据 rules 自动判断 */
+  required: defaultProps("required", { type: [Boolean, String] as PropType<boolean | "auto"> }),
   /** 是否禁用表单 */
   disabled: defaultProps("disabled", { type: Boolean }),
   /** 是否只读状态 */

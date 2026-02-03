@@ -101,6 +101,17 @@ describe("ui-tag 标签组件", () => {
 
       expect(wrapper.find(".ui-tag").exists()).toBe(false)
     })
+
+    it("关闭后应触发 update:show", async () => {
+      const wrapper = mount(UiTag, {
+        props: { closeable: true, show: true, text: "标签" },
+      })
+
+      await wrapper.find(".ui-tag__close").trigger("click")
+
+      expect(wrapper.emitted("update:show")).toBeTruthy()
+      expect(wrapper.emitted("update:show")?.at(-1)).toEqual([false])
+    })
   })
 
   describe("显示控制", () => {
@@ -118,6 +129,18 @@ describe("ui-tag 标签组件", () => {
       })
 
       expect(wrapper.find(".ui-tag").exists()).toBe(false)
+    })
+  })
+
+  describe("点击事件", () => {
+    it("点击标签应触发 click 事件", async () => {
+      const wrapper = mount(UiTag, {
+        props: { text: "标签" },
+      })
+
+      await wrapper.find(".ui-tag").trigger("click")
+
+      expect(wrapper.emitted("click")).toBeTruthy()
     })
   })
 

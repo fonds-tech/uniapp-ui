@@ -70,4 +70,59 @@ describe("ui-text-ellipsis 文本省略组件", () => {
     expect(wrapper.emitted("change")?.[0]).toEqual([true])
     expect(wrapper.find(".ui-text-ellipsis__action").text()).toBe("收起")
   })
+
+  it("showAction 为 false 时不应显示操作区", async () => {
+    mockedUseRects.mockImplementation(async (selector: string) => {
+      if (selector.includes("measure")) return [{ height: 80 } as any]
+      return [{ height: 40 } as any]
+    })
+
+    const wrapper = mount(UiTextEllipsis, {
+      props: {
+        content: "文本内容",
+        showAction: false,
+      },
+    })
+
+    await nextTick()
+    await flushPromises()
+
+    expect(wrapper.find(".ui-text-ellipsis__footer").exists()).toBe(false)
+  })
+
+  it("应暴露 expand/collapse/toggle 方法并触发 change", async () => {
+    mockedUseRects.mockResolvedValue([{ height: 20 } as any])
+
+    const wrapper = mount(UiTextEllipsis, {
+      props: {
+        content: "文本内容",
+      },
+    })
+
+    wrapper.vm.expand()
+    await nextTick()
+    expect(wrapper.emitted("change")?.[0]).toEqual([true])
+
+    wrapper.vm.collapse()
+    await nextTick()
+    expect(wrapper.emitted("change")?.[1]).toEqual([false])
+
+    wrapper.vm.toggle()
+    await nextTick()
+    expect(wrapper.emitted("change")?.[2]).toEqual([true])
+  })
+
+  it("点击根元素应触发 click 事件", async () => {
+    mockedUseRects.mockResolvedValue([{ height: 20 } as any])
+
+    const wrapper = mount(UiTextEllipsis, {
+      props: {
+        content: "文本内容",
+      },
+    })
+
+    await wrapper.trigger("click")
+
+    expect(wrapper.emitted("click")).toBeTruthy()
+  })
 })

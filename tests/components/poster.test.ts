@@ -110,6 +110,16 @@ describe("ui-poster 海报生成组件", () => {
     })
   })
 
+  describe("事件触发", () => {
+    it("挂载后应触发 ready 事件", async () => {
+      const wrapper = mount(UiPoster)
+
+      await vi.advanceTimersByTimeAsync(60)
+
+      expect(wrapper.emitted("ready")).toBeTruthy()
+    })
+  })
+
   describe("内部状态", () => {
     it("应有 canvasId", () => {
       const wrapper = mount(UiPoster)
@@ -128,6 +138,42 @@ describe("ui-poster 海报生成组件", () => {
       const wrapper = mount(UiPoster)
 
       expect(wrapper.vm.cv_height).toBeDefined()
+    })
+  })
+
+  describe("方法与状态联动", () => {
+    it("usePixel 应按像素比计算", () => {
+      const wrapper = mount(UiPoster, {
+        props: { pixel: 3 },
+      })
+
+      const result = wrapper.vm.usePixel(100)
+      // 100rpx -> 50px, 再乘以像素比 3
+      expect(result).toBe(150)
+    })
+
+    it("width/height 变化应更新 cv_width/cv_height", async () => {
+      const wrapper = mount(UiPoster, {
+        props: { width: 100, height: 200, pixel: 2 },
+      })
+
+      const initialWidth = wrapper.vm.cv_width
+      const initialHeight = wrapper.vm.cv_height
+
+      await wrapper.setProps({ width: 200, height: 300 })
+      await vi.advanceTimersByTimeAsync(0)
+
+      expect(wrapper.vm.cv_width).not.toBe(initialWidth)
+      expect(wrapper.vm.cv_height).not.toBe(initialHeight)
+    })
+
+    it("toast 方法应调用 uni.showToast", () => {
+      const wrapper = mount(UiPoster)
+      const toastSpy = vi.spyOn(uni, "showToast")
+
+      wrapper.vm.toast("提示文案")
+
+      expect(toastSpy).toHaveBeenCalled()
     })
   })
 

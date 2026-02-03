@@ -241,6 +241,69 @@ describe("ui-qrcode 二维码组件", () => {
     })
   })
 
+  describe("方法与事件", () => {
+    it("auto 为 false 时不应自动生成", async () => {
+      const wrapper = mount(UiQrcode, {
+        props: { auto: false, value: "123" },
+      })
+
+      await waitForTransition()
+
+      expect(wrapper.emitted("success")).toBeFalsy()
+      expect(wrapper.emitted("error")).toBeFalsy()
+    })
+
+    it("点击组件应触发 click 事件", async () => {
+      const wrapper = mount(UiQrcode)
+
+      await waitForTransition()
+      await wrapper.trigger("click")
+
+      expect(wrapper.emitted("click")).toBeTruthy()
+    })
+
+    it("makeCode 应生成条形码并触发 success 事件", async () => {
+      const wrapper = mount(UiQrcode, {
+        props: {
+          auto: false,
+          type: "barcode",
+          value: "1234567890",
+          barcodeWidth: "300rpx",
+          barcodeHeight: "100rpx",
+        },
+      })
+
+      wrapper.vm.makeCode()
+      await vi.advanceTimersByTimeAsync(220)
+
+      expect(wrapper.emitted("success")).toBeTruthy()
+      expect(wrapper.emitted("error")).toBeFalsy()
+    })
+
+    it("saveCode 在生成成功后应保存图片", async () => {
+      const wrapper = mount(UiQrcode, {
+        props: {
+          auto: false,
+          type: "barcode",
+          value: "1234567890",
+          barcodeWidth: "300rpx",
+          barcodeHeight: "100rpx",
+        },
+      })
+
+      const saveSpy = vi.spyOn(uni, "saveImageToPhotosAlbum")
+      const toastSpy = vi.spyOn(uni, "showToast")
+
+      wrapper.vm.makeCode()
+      await vi.advanceTimersByTimeAsync(220)
+
+      wrapper.vm.saveCode()
+
+      expect(saveSpy).toHaveBeenCalled()
+      expect(toastSpy).toHaveBeenCalled()
+    })
+  })
+
   describe("边界情况", () => {
     it("无内容时应正常渲染", async () => {
       const wrapper = mount(UiQrcode)

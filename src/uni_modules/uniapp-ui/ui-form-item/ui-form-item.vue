@@ -99,10 +99,25 @@ const labelStyle = computed(() => {
   return useStyle(style)
 })
 
+// 判断是否显示必填星号
+const showRequiredMark = computed(() => {
+  const requiredValue = prop("required")
+  // true: 始终显示
+  if (requiredValue === true) return true
+  // false: 始终隐藏
+  if (requiredValue === false) return false
+  // 'auto': 根据 rules 中是否有 required: true 自动判断
+  if (!props.prop) return false
+  const rules = getPropRules()
+  if (!rules) return false
+  const rulesArray = Array.isArray(rules) ? rules : [rules]
+  return rulesArray.some((rule: any) => rule?.required === true)
+})
+
 const labelClass = computed(() => {
   const list: string[] = []
   list.push(`ui-form-item__label--${prop("labelPosition")}`)
-  if (prop("required")) {
+  if (showRequiredMark.value) {
     list.push("ui-form-item__label--required")
   }
   if (isLabelEffective.value) {

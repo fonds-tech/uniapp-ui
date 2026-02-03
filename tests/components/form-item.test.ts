@@ -180,6 +180,40 @@ describe("ui-form-item 表单项组件", () => {
       await waitForTransition()
       expect(wrapper.find(".ui-form-item__label--required").exists()).toBe(false)
     })
+
+    it("required 为 auto 时应根据 rules 自动判断", async () => {
+      const model = ref({ username: "" })
+      const initialModel = ref({ username: "" })
+      const rules = {
+        username: [{ required: true, message: "请输入用户名" }],
+      }
+      const wrapper = createFormItemWrapper(
+        {
+          props: { label: "用户名", prop: "username", required: "auto" },
+        },
+        { model, rules, initialModel },
+      )
+      await waitForTransition()
+      // auto 模式下，rules 中有 required: true 时应显示星号
+      expect(wrapper.find(".ui-form-item__label--required").exists()).toBe(true)
+    })
+
+    it("required 为 auto 时 rules 无 required 不显示星号", async () => {
+      const model = ref({ username: "" })
+      const initialModel = ref({ username: "" })
+      const rules = {
+        username: [{ message: "请输入用户名" }],
+      }
+      const wrapper = createFormItemWrapper(
+        {
+          props: { label: "用户名", prop: "username", required: "auto" },
+        },
+        { model, rules, initialModel },
+      )
+      await waitForTransition()
+      // auto 模式下，rules 中无 required: true 时不显示星号
+      expect(wrapper.find(".ui-form-item__label--required").exists()).toBe(false)
+    })
   })
 
   describe("内容对齐", () => {

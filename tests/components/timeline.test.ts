@@ -74,4 +74,35 @@ describe("ui-timeline 时间轴组件", () => {
     expect(wrapper.emitted("clickItem")?.[0]).toEqual([1])
     expect(items[1].emitted("click")?.[0]).toEqual([1])
   })
+
+  it("应支持自定义类名与样式", () => {
+    const wrapper = mount(UiTimeline, {
+      props: {
+        customClass: "my-timeline",
+        customStyle: { marginTop: "10px" },
+      },
+      slots: {
+        default: h(UiTimelineItem, { title: "节点1" }),
+      },
+    })
+
+    expect(wrapper.classes()).toContain("my-timeline")
+    expect(wrapper.attributes("style")).toContain("margin-top")
+  })
+
+  it("lineStyle 为 dashed 时应渲染虚线", () => {
+    const wrapper = mount(UiTimeline, {
+      props: {
+        lineStyle: "dashed",
+        lineColor: "#ff0000",
+      },
+      slots: {
+        default: [h(UiTimelineItem, { title: "节点1" }), h(UiTimelineItem, { title: "节点2" })],
+      },
+    })
+
+    const line = wrapper.find(".ui-timeline-item__line--after")
+    expect(line.attributes("style")).toContain("border-left-style: dashed")
+    expect(line.attributes("style")).toContain("border-left-color")
+  })
 })

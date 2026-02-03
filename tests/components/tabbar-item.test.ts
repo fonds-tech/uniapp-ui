@@ -156,6 +156,21 @@ describe("ui-tabbar-item 标签栏项组件", () => {
 
       expect(wrapper.props("iconPrefix")).toBe("custom-icon")
     })
+
+    it("激活时应优先使用 activeIcon", async () => {
+      const wrapper = mount(UiTabbarItem, {
+        props: { name: 1, icon: "home", activeIcon: "https://example.com/active.png" },
+        global: {
+          provide: {
+            [tabbarKey]: createMockTabbarProvide(1),
+          },
+        },
+      })
+      await waitForTransition()
+
+      expect(wrapper.find(".ui-tabbar-item--active").exists()).toBe(true)
+      expect(wrapper.find(".ui-tabbar-item__image").exists()).toBe(true)
+    })
   })
 
   describe("路由配置", () => {
@@ -284,6 +299,45 @@ describe("ui-tabbar-item 标签栏项组件", () => {
       await waitForTransition()
 
       expect(wrapper.emitted("click")![0]).toEqual([2])
+    })
+
+    it("disabled 时点击不应触发 click", async () => {
+      const wrapper = mount(UiTabbarItem, {
+        props: { name: "home", disabled: true },
+        global: {
+          provide: {
+            [tabbarKey]: mockTabbarProvide,
+          },
+        },
+      })
+      await waitForTransition()
+
+      await wrapper.find(".ui-tabbar-item").trigger("click")
+
+      expect(wrapper.emitted("click")).toBeFalsy()
+    })
+
+    it("route 模式下点击应触发路由跳转", async () => {
+      const switchTabSpy = vi.spyOn(uni, "switchTab")
+      const wrapper = mount(UiTabbarItem, {
+        props: { name: "home", route: "/pages/other/index" },
+        global: {
+          provide: {
+            [tabbarKey]: {
+              ...createMockTabbarProvide("home"),
+              props: {
+                ...createMockTabbarProvide("home").props,
+                route: true,
+              },
+            },
+          },
+        },
+      })
+      await waitForTransition()
+
+      await wrapper.find(".ui-tabbar-item").trigger("click")
+
+      expect(switchTabSpy).toHaveBeenCalled()
     })
   })
 

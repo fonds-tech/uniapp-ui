@@ -18,15 +18,48 @@
       </demo-block>
     </demo-section>
 
-    <demo-section title="必填项标记">
-      <ui-form :model="formData2" required>
-        <ui-form-item label="姓名">
-          <ui-input v-model="formData2.name" placeholder="请输入姓名" />
-        </ui-form-item>
-        <ui-form-item label="邮箱">
-          <ui-input v-model="formData2.email" placeholder="请输入邮箱" />
-        </ui-form-item>
-      </ui-form>
+    <demo-section title="必填星号模式">
+      <view class="form-section">
+        <text class="form-section__label">auto 模式（默认）：根据 rules 自动判断</text>
+        <ui-form :model="formData" :rules="rules">
+          <ui-form-item label="用户名" prop="username">
+            <ui-input v-model="formData.username" placeholder="rules 有 required，显示星号" />
+          </ui-form-item>
+          <ui-form-item label="备注" prop="remark">
+            <ui-input v-model="formData.remark" placeholder="rules 无 required，不显示星号" />
+          </ui-form-item>
+        </ui-form>
+      </view>
+      <view class="form-section">
+        <text class="form-section__label">required=true：全部显示星号</text>
+        <ui-form :model="formData2" :required="true">
+          <ui-form-item label="姓名">
+            <ui-input v-model="formData2.name" placeholder="始终显示星号" />
+          </ui-form-item>
+          <ui-form-item label="邮箱">
+            <ui-input v-model="formData2.email" placeholder="始终显示星号" />
+          </ui-form-item>
+        </ui-form>
+      </view>
+      <view class="form-section">
+        <text class="form-section__label">required=false：全部隐藏星号</text>
+        <ui-form :model="formDataNoMark" :rules="rulesNoMark" :required="false">
+          <ui-form-item label="姓名" prop="name">
+            <ui-input v-model="formDataNoMark.name" placeholder="即使 rules 有 required 也不显示" />
+          </ui-form-item>
+        </ui-form>
+      </view>
+      <view class="form-section">
+        <text class="form-section__label">单个表单项覆盖</text>
+        <ui-form :model="formDataOverride" :required="false">
+          <ui-form-item label="姓名" :required="true">
+            <ui-input v-model="formDataOverride.name" placeholder="form 为 false，item 强制 true" />
+          </ui-form-item>
+          <ui-form-item label="备注">
+            <ui-input v-model="formDataOverride.remark" placeholder="继承 form 的 false" />
+          </ui-form-item>
+        </ui-form>
+      </view>
     </demo-section>
 
     <demo-section title="冒号设置">
@@ -224,6 +257,7 @@ const formData = ref({
   username: "",
   password: "",
   phone: "",
+  remark: "",
 })
 
 const rules = {
@@ -233,12 +267,25 @@ const rules = {
     { required: true, message: "请输入手机号" },
     { pattern: /^1\d{10}$/, message: "手机号格式不正确" },
   ],
+  remark: [{ message: "备注为选填" }],
 }
 
 // 必填项表单
 const formData2 = ref({
   name: "",
   email: "",
+})
+
+// 隐藏星号表单
+const formDataNoMark = ref({ name: "" })
+const rulesNoMark = {
+  name: [{ required: true, message: "请输入姓名" }],
+}
+
+// 覆盖表单
+const formDataOverride = ref({
+  name: "",
+  remark: "",
 })
 
 // 冒号设置
@@ -416,6 +463,7 @@ function onReset() {
     username: "",
     password: "",
     phone: "",
+    remark: "",
   }
   formRef.value?.resetValidation()
 }

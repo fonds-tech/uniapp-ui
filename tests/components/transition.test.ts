@@ -201,6 +201,43 @@ describe("uiTransition 组件", () => {
       await wrapper.find(".ui-transition").trigger("click")
       expect(wrapper.emitted("click")).toBeTruthy()
     })
+
+    it("show 从 false 变为 true 应触发 enter 系列事件", async () => {
+      const wrapper = mount(UiTransition, {
+        props: { show: false },
+      })
+
+      await wrapper.setProps({ show: true })
+      await waitForTransition()
+
+      expect(wrapper.emitted("beforeEnter")).toBeTruthy()
+      expect(wrapper.emitted("enter")).toBeTruthy()
+      expect(wrapper.emitted("afterEnter")).toBeTruthy()
+      expect(wrapper.emitted("update:show")?.[0]).toEqual([true])
+    })
+
+    it("show 从 true 变为 false 应触发 leave 系列事件", async () => {
+      const wrapper = mount(UiTransition, {
+        props: { show: true },
+      })
+
+      await waitForTransition()
+      await wrapper.setProps({ show: false })
+      await waitForTransition()
+
+      expect(wrapper.emitted("beforeLeave")).toBeTruthy()
+      expect(wrapper.emitted("leave")).toBeTruthy()
+      expect(wrapper.emitted("afterLeave")).toBeTruthy()
+      expect(wrapper.emitted("update:show")?.some((item) => item[0] === false)).toBe(true)
+    })
+  })
+
+  describe("暴露的方法", () => {
+    it("应暴露 enter/leave 方法", () => {
+      const wrapper = mount(UiTransition)
+      expect(typeof wrapper.vm.enter).toBe("function")
+      expect(typeof wrapper.vm.leave).toBe("function")
+    })
   })
 
   describe("自定义样式测试", () => {

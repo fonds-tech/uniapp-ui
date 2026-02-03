@@ -401,6 +401,21 @@ describe("uiProgress 组件", () => {
       await waitForTransition()
       expect(wrapper.props("textPosition")).toBe("none")
     })
+
+    it("textPosition 为 inside 且百分比过小时应使用最小 left", async () => {
+      const wrapper = mount(UiProgress, { props: { percentage: 0, textPosition: "inside" } })
+      await waitForTransition()
+      const pivot = wrapper.find(".ui-progress__pivot")
+      expect(pivot.attributes("style")).toContain("left: 10%")
+    })
+
+    it("textPosition 为 outside 时应固定在右侧", async () => {
+      const wrapper = mount(UiProgress, { props: { percentage: 50, textPosition: "outside" } })
+      await waitForTransition()
+      const pivot = wrapper.find(".ui-progress__pivot")
+      expect(pivot.attributes("style")).toContain("right: 0")
+      expect(pivot.attributes("style")).toContain("transform: none")
+    })
   })
 
   describe("无障碍属性测试", () => {

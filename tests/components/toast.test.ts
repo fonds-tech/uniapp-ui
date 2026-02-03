@@ -275,6 +275,58 @@ describe("ui-toast 轻提示组件", () => {
     })
   })
 
+  describe("事件与方法", () => {
+    it("show/hide 方法应生效", async () => {
+      const wrapper = mount(UiToast)
+
+      wrapper.vm.show("提示内容")
+      await waitForTransition()
+      expect(wrapper.find(".ui-toast__text").text()).toBe("提示内容")
+
+      wrapper.vm.hide()
+      await waitForTransition()
+      expect(getLastEmitted(wrapper, "update:show")).toEqual([false])
+    })
+
+    it("success/fail/await/text 方法应切换类型", async () => {
+      const wrapper = mount(UiToast)
+
+      wrapper.vm.success("成功")
+      await waitForTransition()
+      expect(wrapper.find(".ui-toast__body--success").exists()).toBe(true)
+
+      wrapper.vm.fail("失败")
+      await waitForTransition()
+      expect(wrapper.find(".ui-toast__body--fail").exists()).toBe(true)
+
+      wrapper.vm.await("等待")
+      await waitForTransition()
+      expect(wrapper.find(".ui-toast__body--await").exists()).toBe(true)
+
+      wrapper.vm.text("文本")
+      await waitForTransition()
+      expect(wrapper.find(".ui-toast__body--default").exists()).toBe(true)
+    })
+
+    it("show/close 应触发 open/close 系列事件", async () => {
+      const wrapper = mount(UiToast, {
+        props: { show: false },
+      })
+
+      await wrapper.setProps({ show: true, content: "提示" })
+      await waitForTransition()
+
+      expect(wrapper.emitted("open")).toBeTruthy()
+      expect(wrapper.emitted("opened")).toBeTruthy()
+
+      await wrapper.setProps({ show: false })
+      await waitForTransition()
+
+      expect(wrapper.emitted("close")).toBeTruthy()
+      expect(wrapper.emitted("closed")).toBeTruthy()
+    })
+  })
+
   describe("样式配置", () => {
     it("应支持自定义宽度", async () => {
       const wrapper = mount(UiToast, {

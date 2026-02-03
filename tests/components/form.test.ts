@@ -122,18 +122,26 @@ describe("uiForm 组件", () => {
   })
 
   describe("required 属性测试", () => {
-    it("默认不显示必填星号", async () => {
+    it("默认为 auto 模式", async () => {
       const wrapper = mount(UiForm)
       await waitForTransition()
-      expect(wrapper.props("required")).toBe(false)
+      expect(wrapper.props("required")).toBe("auto")
     })
 
-    it("应该支持显示必填星号", async () => {
+    it("应该支持设置为 true 始终显示星号", async () => {
       const wrapper = mount(UiForm, {
         props: { required: true },
       })
       await waitForTransition()
       expect(wrapper.props("required")).toBe(true)
+    })
+
+    it("应该支持设置为 false 始终隐藏星号", async () => {
+      const wrapper = mount(UiForm, {
+        props: { required: false },
+      })
+      await waitForTransition()
+      expect(wrapper.props("required")).toBe(false)
     })
   })
 

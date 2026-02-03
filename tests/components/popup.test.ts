@@ -375,6 +375,18 @@ describe("ui-popup 弹出层组件", () => {
       expect(wrapper.emitted("open")).toBeTruthy()
     })
 
+    it("打开弹出层后应触发 opened 事件", async () => {
+      const wrapper = mount(UiPopup, {
+        props: { show: false },
+        global: { stubs },
+      })
+
+      await wrapper.setProps({ show: true })
+      await waitForTransition()
+
+      expect(wrapper.emitted("opened")).toBeTruthy()
+    })
+
     it("应触发 update:show 事件", async () => {
       const wrapper = mount(UiPopup, {
         props: { show: false },
@@ -401,6 +413,20 @@ describe("ui-popup 弹出层组件", () => {
       expect(wrapper.emitted("clickOverlay")).toBeTruthy()
     })
 
+    it("点击弹出层主体应触发 click 事件", async () => {
+      const wrapper = mount(UiPopup, {
+        props: { show: true },
+        global: { stubs },
+      })
+
+      await waitForTransition()
+
+      const body = wrapper.find(".ui-popup__scroll")
+      await body.trigger("click")
+
+      expect(wrapper.emitted("click")).toBeTruthy()
+    })
+
     it("点击遮罩层且 closeOnClickOverlay 为 true 时应触发关闭", async () => {
       const wrapper = mount(UiPopup, {
         props: { show: true, overlay: true, closeOnClickOverlay: true },
@@ -415,6 +441,24 @@ describe("ui-popup 弹出层组件", () => {
       const updateShowEvents = wrapper.emitted("update:show") as boolean[][]
       // 第一次是打开时触发的 true，第二次是点击遮罩关闭时触发的 false
       expect(updateShowEvents.some((event) => event[0] === false)).toBe(true)
+    })
+
+    it("关闭弹出层应触发 close/closed 事件并携带 action", async () => {
+      const wrapper = mount(UiPopup, {
+        props: { show: true, overlay: true, closeOnClickOverlay: true },
+        global: { stubs },
+      })
+
+      await waitForTransition()
+
+      const overlay = wrapper.find(".ui-overlay-stub")
+      await overlay.trigger("click")
+      await waitForTransition()
+
+      const closeEvents = wrapper.emitted("close") as Array<[string]>
+      const closedEvents = wrapper.emitted("closed") as Array<[string]>
+      expect(closeEvents?.some((event) => event[0] === "overlay")).toBe(true)
+      expect(closedEvents?.some((event) => event[0] === "overlay")).toBe(true)
     })
 
     it("closeOnClickOverlay 为 false 时点击遮罩层不应触发关闭", async () => {
@@ -461,6 +505,24 @@ describe("ui-popup 弹出层组件", () => {
 
       const updateShowEvents = wrapper.emitted("update:show") as boolean[][]
       expect(updateShowEvents.some((event) => event[0] === false)).toBe(true)
+    })
+
+    it("点击关闭按钮应触发 close/closed 事件并携带 action", async () => {
+      const wrapper = mount(UiPopup, {
+        props: { show: true, closeable: true },
+        global: { stubs },
+      })
+
+      await waitForTransition()
+
+      const closeBtn = wrapper.find(".ui-popup__close")
+      await closeBtn.trigger("click")
+      await waitForTransition()
+
+      const closeEvents = wrapper.emitted("close") as Array<[string]>
+      const closedEvents = wrapper.emitted("closed") as Array<[string]>
+      expect(closeEvents?.some((event) => event[0] === "close")).toBe(true)
+      expect(closedEvents?.some((event) => event[0] === "close")).toBe(true)
     })
   })
 
