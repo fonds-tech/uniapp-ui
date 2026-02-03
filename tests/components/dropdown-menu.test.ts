@@ -209,6 +209,27 @@ describe("uiDropdownMenu 组件", () => {
       expect(typeof wrapper.vm.resize).toBe("function")
     })
   })
+
+  describe("交互行为", () => {
+    it("点击菜单项应激活并可被关闭", async () => {
+      const wrapper = createWrapper({}, {}, [
+        { label: "选项1", value: "1" },
+        { label: "选项2", value: "2" },
+      ])
+      await waitForTransition()
+
+      const item = wrapper.find(".ui-dropdown-menu__item")
+      await item.trigger("click")
+      await waitForTransition()
+
+      expect(item.classes()).toContain("is-active")
+
+      wrapper.vm.close()
+      await waitForTransition()
+
+      expect(item.classes()).not.toContain("is-active")
+    })
+  })
 })
 
 describe("uiDropdownItem 组件", () => {

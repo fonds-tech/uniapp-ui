@@ -73,6 +73,19 @@ describe("ui-cell-group 单元格组组件", () => {
 
       expect(wrapper.find(".ui-cell-group").exists()).toBe(true)
     })
+
+    it("自定义样式应覆盖默认背景", () => {
+      const wrapper = mount(UiCellGroup, {
+        props: {
+          background: "#ffffff",
+          customStyle: { background: "#000000" },
+        },
+      })
+
+      const style = wrapper.find(".ui-cell-group").attributes("style") || ""
+      expect(style).toContain("background: #000000")
+      expect(style).not.toContain("#ffffff")
+    })
   })
 
   describe("插槽", () => {

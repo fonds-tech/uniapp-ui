@@ -79,6 +79,38 @@ describe("uiCountDown 组件", () => {
     })
   })
 
+  describe("mode 属性测试", () => {
+    it("countup 模式应从 0 开始累加", async () => {
+      const wrapper = mount(UiCountDown, {
+        props: { time: 3000, mode: "countup", autoStart: false },
+      })
+      await waitForTransition()
+
+      wrapper.vm.start()
+      await vi.advanceTimersByTimeAsync(1100)
+      wrapper.vm.pause()
+
+      const text = wrapper.find(".ui-count-down__text").text()
+      expect(text).toMatch(/00:00:0(0|1)/)
+    })
+  })
+
+  describe("targetTime 属性测试", () => {
+    it("targetTime 应优先于 time 生效", async () => {
+      const base = new Date("2024-01-01T00:00:00Z")
+      vi.setSystemTime(base)
+      const targetTime = base.getTime() + 2000
+
+      const wrapper = mount(UiCountDown, {
+        props: { time: 10000, targetTime, autoStart: false },
+      })
+      await waitForTransition()
+
+      const text = wrapper.find(".ui-count-down__text").text()
+      expect(text).toMatch(/00:00:0(1|2)/)
+    })
+  })
+
   describe("format 属性测试", () => {
     it("默认格式应该是 HH:mm:ss", async () => {
       const wrapper = mount(UiCountDown, {

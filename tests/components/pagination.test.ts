@@ -243,6 +243,26 @@ describe("uiPagination 组件", () => {
       // 检查空状态
       expect(wrapper.find(".ui-pagination__empty").exists()).toBe(true)
     })
+
+    it("应支持 empty 插槽", async () => {
+      const wrapper = mount(UiPagination, {
+        props: { list: [], loading: true },
+        slots: {
+          empty: "<div class=\"custom-empty\">空数据</div>",
+        },
+        global: {
+          stubs: {
+            "ui-empty": true,
+            "ui-loading": true,
+          },
+        },
+      })
+      await waitForTransition()
+      await wrapper.setProps({ loading: false })
+      await waitForTransition()
+
+      expect(wrapper.find(".custom-empty").exists()).toBe(true)
+    })
   })
 
   describe("加载文字测试", () => {

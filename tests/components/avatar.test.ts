@@ -489,6 +489,27 @@ describe("ui-avatar-group 头像组组件", () => {
 
       expect(wrapper.find(".ui-avatar-group__excess--circle").exists()).toBe(true)
     })
+
+    it("头像组 size 应覆盖子头像 size", async () => {
+      const wrapper = createAvatarGroup(2, { size: "large" })
+      await nextTick()
+
+      const firstAvatar = wrapper.findAllComponents(UiAvatar)[0]
+      expect(firstAvatar.classes()).toContain("ui-avatar--large")
+    })
+
+    it("头像组 shape 应覆盖子头像 shape", async () => {
+      const wrapper = mount(UiAvatarGroup, {
+        props: { shape: "square" },
+        slots: {
+          default: () => [h(UiAvatar, { shape: "circle", text: "用户1" })],
+        },
+      })
+      await nextTick()
+
+      const childAvatar = wrapper.findComponent(UiAvatar)
+      expect(childAvatar.classes()).toContain("ui-avatar--square")
+    })
   })
 
   describe("堆叠方向", () => {
@@ -560,6 +581,22 @@ describe("ui-avatar-group 头像组组件", () => {
       const excessStyle = wrapper.find(".ui-avatar-group__excess").attributes("style") || ""
       expect(excessStyle).toContain("background")
     })
+
+    it("direction 为 right 时超出层级应在最上层", async () => {
+      const wrapper = createAvatarGroup(7, { direction: "right" })
+      await nextTick()
+
+      const excessStyle = wrapper.find(".ui-avatar-group__excess").attributes("style") || ""
+      expect(excessStyle).toContain("z-index: 6")
+    })
+
+    it("direction 为 left 时超出层级应为 0", async () => {
+      const wrapper = createAvatarGroup(7, { direction: "left" })
+      await nextTick()
+
+      const excessStyle = wrapper.find(".ui-avatar-group__excess").attributes("style") || ""
+      expect(excessStyle).toContain("z-index: 0")
+    })
   })
 
   describe("事件处理", () => {
@@ -615,6 +652,13 @@ describe("ui-avatar-group 头像组组件", () => {
 
       expect(wrapper.find(".ui-avatar-group").exists()).toBe(true)
       expect(wrapper.find(".ui-avatar-group__excess").exists()).toBe(false)
+    })
+
+    it("超过 max 的头像应隐藏", async () => {
+      const wrapper = createAvatarGroup(2, { max: 1 })
+      await nextTick()
+
+      expect(wrapper.findAll(".ui-avatar").length).toBe(1)
     })
 
     it("max 为 0 时所有头像都应超出", async () => {

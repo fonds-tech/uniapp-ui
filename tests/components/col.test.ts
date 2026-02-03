@@ -5,6 +5,7 @@
 
 import UiCol from "@/uni_modules/uniapp-ui/ui-col/ui-col.vue"
 import { mount } from "@vue/test-utils"
+import { computed } from "vue"
 import { waitForTransition } from "../setup"
 import { it, vi, expect, describe, afterEach, beforeEach } from "vitest"
 
@@ -97,6 +98,35 @@ describe("ui-col 列布局组件", () => {
       const style = wrapper.find(".ui-col").attributes("style")
       expect(style).toContain("margin-left")
     })
+
+    it("offset 超出可用范围时应被限制", async () => {
+      const wrapper = mount(UiCol, {
+        props: { span: 20, offset: 10 },
+      })
+      await waitForTransition()
+
+      const style = wrapper.find(".ui-col").attributes("style") || ""
+      expect(style).toContain("margin-left: 16.666")
+    })
+  })
+
+  describe("行列间距", () => {
+    it("应从 Row 注入间距并应用 padding", async () => {
+      const wrapper = mount(UiCol, {
+        global: {
+          provide: {
+            "ui-row": computed(() => ({
+              rowGap: "8px",
+              colGap: "12px",
+            })),
+          },
+        },
+      })
+      await waitForTransition()
+
+      const style = wrapper.find(".ui-col").attributes("style") || ""
+      expect(style).toContain("padding: calc(8px / 2) calc(12px / 2)")
+    })
   })
 
   describe("自定义样式", () => {
@@ -166,6 +196,16 @@ describe("ui-col 列布局组件", () => {
       await waitForTransition()
 
       const style = wrapper.find(".ui-col").attributes("style")
+      expect(style).toContain("width: 0%")
+    })
+
+    it("span 为负数时宽度应为 0%", async () => {
+      const wrapper = mount(UiCol, {
+        props: { span: -6 },
+      })
+      await waitForTransition()
+
+      const style = wrapper.find(".ui-col").attributes("style") || ""
       expect(style).toContain("width: 0%")
     })
   })

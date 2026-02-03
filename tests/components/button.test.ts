@@ -368,6 +368,25 @@ describe("ui-button 按钮组件", () => {
 
       expect(wrapper.classes()).toContain("ui-button--disabled")
     })
+
+    it("setLoading 可设置加载文案", async () => {
+      const wrapper = mount(UiButton)
+
+      wrapper.vm.setLoading(true, "加载中")
+      await wrapper.vm.$nextTick()
+
+      expect(wrapper.text()).toContain("加载中")
+    })
+  })
+
+  describe("开放能力事件", () => {
+    it("触发 getuserinfo 事件应向外 emit", async () => {
+      const wrapper = mount(UiButton)
+
+      await wrapper.find(".ui-button").trigger("getuserinfo")
+
+      expect(wrapper.emitted("getuserinfo")).toBeTruthy()
+    })
   })
 
   describe("边界情况", () => {

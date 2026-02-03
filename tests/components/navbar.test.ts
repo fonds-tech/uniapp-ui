@@ -300,6 +300,15 @@ describe("ui-navbar 导航栏组件", () => {
       await wrapper.find(".ui-navbar__back").trigger("click")
       expect(wrapper.emitted("back")).toBeTruthy()
     })
+
+    it("点击标题应触发 titleClick 事件", async () => {
+      const wrapper = mount(UiNavbar, {
+        props: { title: "标题" },
+      })
+      await waitForTransition()
+      await wrapper.find(".ui-navbar__title").trigger("click")
+      expect(wrapper.emitted("titleClick")).toBeTruthy()
+    })
   })
 
   describe("插槽", () => {
@@ -364,6 +373,19 @@ describe("ui-navbar 导航栏组件", () => {
       await waitForTransition()
       expect(wrapper.props("scrollTop")).toBe(100)
     })
+
+    it("gradient 模式下 scrollTop 变化应触发 gradient 事件", async () => {
+      const wrapper = mount(UiNavbar, {
+        props: { gradient: true, scrollTop: 0 },
+      })
+      await waitForTransition()
+
+      await wrapper.setProps({ scrollTop: 50 })
+      await waitForTransition()
+
+      expect(wrapper.emitted("gradient")).toBeTruthy()
+      expect(wrapper.emitted("gradient")?.slice(-1)[0]).toEqual([50])
+    })
   })
 
   describe("边界情况", () => {
@@ -373,6 +395,47 @@ describe("ui-navbar 导航栏组件", () => {
       })
       await waitForTransition()
       expect(wrapper.find(".ui-navbar").exists()).toBe(true)
+    })
+  })
+
+  describe("返回行为", () => {
+    it("多页场景应调用 navigateBack", async () => {
+      ;(globalThis as any).getCurrentPages = vi.fn(() => [{ route: "a" }, { route: "b" }])
+      ;(uni.navigateBack as any).mockClear()
+
+      const wrapper = mount(UiNavbar, {
+        props: { showBack: true },
+      })
+      await waitForTransition()
+
+      await wrapper.find(".ui-navbar__back").trigger("click")
+      expect(uni.navigateBack).toHaveBeenCalled()
+    })
+
+    it("单页场景 homeType=tab 应调用 switchTab", async () => {
+      ;(globalThis as any).getCurrentPages = vi.fn(() => [{ route: "a" }])
+      ;(uni.switchTab as any).mockClear()
+
+      const wrapper = mount(UiNavbar, {
+        props: { showBack: true, homeType: "tab", homePath: "/pages/home/home" },
+      })
+      await waitForTransition()
+
+      await wrapper.find(".ui-navbar__back").trigger("click")
+      expect(uni.switchTab).toHaveBeenCalled()
+    })
+
+    it("单页场景 homeType=page 应调用 reLaunch", async () => {
+      ;(globalThis as any).getCurrentPages = vi.fn(() => [{ route: "a" }])
+      ;(uni.reLaunch as any).mockClear()
+
+      const wrapper = mount(UiNavbar, {
+        props: { showBack: true, homeType: "page", homePath: "/pages/home/home" },
+      })
+      await waitForTransition()
+
+      await wrapper.find(".ui-navbar__back").trigger("click")
+      expect(uni.reLaunch).toHaveBeenCalled()
     })
   })
 })

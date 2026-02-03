@@ -236,6 +236,24 @@ describe("ui-index-anchor 索引锚点组件", () => {
     })
   })
 
+  describe("吸顶样式", () => {
+    it("sticky 为 true 时应应用 sticky 定位", async () => {
+      const wrapper = mount(UiIndexAnchor, {
+        props: { name: "A" },
+        global: {
+          provide: {
+            [indexBarKey as symbol]: createMockParentProvide("A"),
+          },
+        },
+      })
+      await waitForTransition()
+
+      const style = wrapper.find(".ui-index-anchor").attributes("style") || ""
+      expect(style).toContain("position: sticky")
+      expect(style).toContain("top: 0")
+    })
+  })
+
   describe("插槽", () => {
     it("应支持默认插槽", async () => {
       const wrapper = mount(UiIndexAnchor, {

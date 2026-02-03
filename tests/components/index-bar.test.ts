@@ -5,8 +5,8 @@
 
 import UiIndexBar from "@/uni_modules/uniapp-ui/ui-index-bar/ui-index-bar.vue"
 import UiIndexAnchor from "@/uni_modules/uniapp-ui/ui-index-anchor/ui-index-anchor.vue"
-import { ref } from "vue"
 import { mount } from "@vue/test-utils"
+import { h, ref } from "vue"
 import { indexBarKey } from "@/uni_modules/uniapp-ui/ui-index-bar"
 import { waitForTransition } from "../setup"
 import { it, vi, expect, describe, afterEach, beforeEach } from "vitest"
@@ -48,6 +48,28 @@ describe("uiIndexBar 组件", () => {
       await waitForTransition()
       const indexItems = wrapper.findAll(".ui-index-bar__index")
       expect(indexItems.length).toBe(mockIndexs.length)
+    })
+  })
+
+  describe("交互行为", () => {
+    it("点击索引项应触发 select 事件", async () => {
+      const wrapper = mount(UiIndexBar, {
+        slots: {
+          default: [h(UiIndexAnchor, { name: "A", text: "A" }), h(UiIndexAnchor, { name: "B", text: "B" })],
+        },
+        global: {
+          stubs: {
+            "scroll-view": true,
+          },
+        },
+      })
+      await waitForTransition()
+
+      const items = wrapper.findAll(".ui-index-bar__index")
+      await items[0].trigger("click")
+      await waitForTransition()
+
+      expect(wrapper.emitted("select")?.[0]).toEqual(["A"])
     })
   })
 

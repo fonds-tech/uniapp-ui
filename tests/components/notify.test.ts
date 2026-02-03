@@ -248,6 +248,19 @@ describe("ui-notify 通知组件", () => {
 
       expect(wrapper.emitted("click")).toBeTruthy()
     })
+
+    it("打开与关闭应触发 opened/closed 事件", async () => {
+      const wrapper = mount(UiNotify, {
+        props: { show: true, content: "通知" },
+      })
+
+      await waitForAnimation()
+      expect(wrapper.emitted("opened")).toBeTruthy()
+
+      await wrapper.setProps({ show: false })
+      await waitForAnimation()
+      expect(wrapper.emitted("closed")).toBeTruthy()
+    })
   })
 
   describe("自定义样式", () => {
@@ -287,6 +300,19 @@ describe("ui-notify 通知组件", () => {
       const wrapper = mount(UiNotify)
 
       expect(typeof wrapper.vm.close).toBe("function")
+    })
+
+    it("show 方法应支持自定义选项", async () => {
+      const wrapper = mount(UiNotify, {
+        props: { show: false },
+      })
+
+      wrapper.vm.show({ type: "success", content: "成功" })
+      await waitForAnimation()
+
+      const notify = wrapper.find(".ui-notify")
+      expect(notify.classes()).toContain("ui-notify--success")
+      expect(notify.text()).toContain("成功")
     })
   })
 

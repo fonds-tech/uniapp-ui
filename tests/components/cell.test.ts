@@ -262,6 +262,15 @@ describe("ui-cell 单元格组件", () => {
 
       expect(wrapper.props("background")).toBe("#f5f5f5")
     })
+
+    it("未设置 background 且不在组内应使用默认背景", () => {
+      const wrapper = mount(UiCell, {
+        props: { title: "标题" },
+      })
+
+      const style = wrapper.find(".ui-cell").attributes("style") || ""
+      expect(style).toContain("background: var(--ui-color-background)")
+    })
   })
 
   describe("事件处理", () => {
@@ -274,6 +283,28 @@ describe("ui-cell 单元格组件", () => {
 
       expect(wrapper.emitted("click")).toBeTruthy()
       expect(wrapper.emitted("click")?.length).toBe(1)
+    })
+
+    it("设置 url 时应触发默认导航", async () => {
+      ;(uni as any).navigateTo.mockClear()
+      const wrapper = mount(UiCell, {
+        props: { title: "标题", url: "/pages/demo/index" },
+      })
+
+      await wrapper.find(".ui-cell").trigger("click")
+
+      expect((uni as any).navigateTo).toHaveBeenCalled()
+    })
+
+    it("设置 linkType 时应触发对应导航", async () => {
+      ;(uni as any).redirectTo.mockClear()
+      const wrapper = mount(UiCell, {
+        props: { title: "标题", url: "/pages/demo/index", linkType: "redirectTo" },
+      })
+
+      await wrapper.find(".ui-cell").trigger("click")
+
+      expect((uni as any).redirectTo).toHaveBeenCalled()
     })
   })
 

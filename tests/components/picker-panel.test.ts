@@ -91,6 +91,23 @@ describe("ui-picker-panel 选择器面板组件", () => {
     })
   })
 
+  describe("事件处理", () => {
+    it("选择变化应触发 update:modelValue 与 change", async () => {
+      const wrapper = mount(UiPickerPanel, {
+        props: { columns: singleColumns, modelValue: ["1"] },
+        global: { stubs },
+      })
+
+      await waitForTransition()
+
+      await wrapper.find(".ui-picker-panel__view").trigger("change", { detail: { value: [1] } })
+      await waitForTransition()
+
+      expect(wrapper.emitted("change")).toBeTruthy()
+      expect(wrapper.emitted("update:modelValue")?.[0]).toEqual([["2"]])
+    })
+  })
+
   describe("单列选择器", () => {
     it("应正确渲染单列选项", () => {
       const wrapper = mount(UiPickerPanel, {

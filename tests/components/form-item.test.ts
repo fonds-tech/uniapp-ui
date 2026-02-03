@@ -43,8 +43,8 @@ describe("ui-form-item 表单项组件", () => {
   })
 
   // 辅助函数：创建带有 form 上下文的 FormItem 包装器
-  const createFormItemWrapper = (options: any = {}) => {
-    const mockFormProvide = createMockFormProvide()
+  const createFormItemWrapper = (options: any = {}, formOverrides: Record<string, any> = {}) => {
+    const mockFormProvide = { ...createMockFormProvide(), ...formOverrides }
     return mount(UiFormItem, {
       global: {
         provide: {
@@ -339,6 +339,55 @@ describe("ui-form-item 表单项组件", () => {
       })
       await waitForTransition()
       expect(wrapper.find(".ui-form-item__content").exists()).toBe(true)
+    })
+  })
+
+  describe("校验逻辑", () => {
+    it("required 规则应返回错误信息", async () => {
+      const model = ref({ username: "" })
+      const initialModel = ref({ username: "" })
+      const rules = {
+        username: [{ required: true, message: "请输入用户名" }],
+      }
+      const wrapper = createFormItemWrapper(
+        {
+          props: { prop: "username" },
+        },
+        {
+          model,
+          initialModel,
+          rules,
+        },
+      )
+      await waitForTransition()
+
+      const result = await wrapper.vm.validate()
+      expect(result).toEqual({ prop: "username", message: "请输入用户名" })
+      expect(wrapper.find(".ui-form-item__error--failed").exists()).toBe(true)
+    })
+
+    it("resetField 应恢复初始值并清理状态", async () => {
+      const model = ref({ username: "changed" })
+      const initialModel = ref({ username: "init" })
+      const rules = {
+        username: [{ required: true, message: "请输入用户名" }],
+      }
+      const wrapper = createFormItemWrapper(
+        {
+          props: { prop: "username" },
+        },
+        {
+          model,
+          initialModel,
+          rules,
+        },
+      )
+      await waitForTransition()
+
+      await wrapper.vm.resetField()
+      await waitForTransition()
+
+      expect(model.value.username).toBe("init")
     })
   })
 })

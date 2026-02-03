@@ -259,6 +259,23 @@ describe("uiNoticeBar 组件", () => {
       expect(wrapper.emitted("click")).toBeTruthy()
       expect(wrapper.emitted("click")![0]).toEqual([0])
     })
+
+    it("垂直模式点击应触发 click 事件", async () => {
+      const wrapper = mount(UiNoticeBar, {
+        props: { text: ["通知1", "通知2"], mode: "vertical" },
+        global: {
+          stubs: {
+            "ui-icon": true,
+            swiper: { template: "<div><slot /></div>" },
+            "swiper-item": { template: "<div class=\"swiper-item-stub\" @click=\"$emit('click')\"><slot /></div>" },
+          },
+        },
+      })
+      await waitForTransition()
+
+      await wrapper.find(".swiper-item-stub").trigger("click")
+      expect(wrapper.emitted("click")?.[0]).toEqual([0])
+    })
   })
 
   describe("插槽测试", () => {

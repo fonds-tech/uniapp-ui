@@ -316,6 +316,26 @@ describe("ui-checkbox 复选框组件", () => {
       expect(wrapper.props("labelGap")).toBe("16rpx")
     })
 
+    it("labelGap 应在默认右侧布局应用 margin-left", async () => {
+      const wrapper = mount(UiCheckbox, {
+        props: { label: "选项", labelGap: "12rpx" },
+      })
+      await waitForTransition()
+
+      const style = wrapper.find(".ui-checkbox__label").attributes("style") || ""
+      expect(style).toContain("margin-left: 12rpx")
+    })
+
+    it("labelPosition 为 left 时 labelGap 应应用 margin-right", async () => {
+      const wrapper = mount(UiCheckbox, {
+        props: { label: "选项", labelPosition: "left", labelGap: "12rpx" },
+      })
+      await waitForTransition()
+
+      const style = wrapper.find(".ui-checkbox__label").attributes("style") || ""
+      expect(style).toContain("margin-right: 12rpx")
+    })
+
     it("labelPosition 为 left 时标签应在左侧", async () => {
       const wrapper = mount(UiCheckbox, {
         props: { label: "选项", labelPosition: "left" },

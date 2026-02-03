@@ -17,7 +17,7 @@ import type { CSSProperties } from "vue"
 import { pick, uuid } from "../utils/utils"
 import { resizeEmits, resizeProps } from "./index"
 import { useRect, useUnit, useStyle } from "../hooks"
-import { ref, computed, onMounted, getCurrentInstance } from "vue"
+import { ref, computed, onMounted, onUnmounted, getCurrentInstance } from "vue"
 
 defineOptions({ name: "ui-resize" })
 
@@ -32,6 +32,10 @@ const shrinkScrollLeft = ref(0)
 
 const id = ref<string>(`resize-${uuid()}`)
 const instance = getCurrentInstance()
+
+// 组件状态
+let isUnmounted = false
+let debounceTimer: ReturnType<typeof setTimeout> | null = null
 
 // 根容器样式：设置动态宽高
 const style = computed(() => {
@@ -53,11 +57,11 @@ const contentStyle = computed(() => {
 let onScrollHandler = () => {}
 
 // 滚动到底部，确保能检测到尺寸变化
-function scrollToBottom(lastWidth: number, lastHeight: number) {
-  expandScrollTop.value = 100000 + lastHeight
-  shrinkScrollTop.value = 2.5 * height.value + lastHeight
-  expandScrollLeft.value = 100000 + lastWidth
-  shrinkScrollLeft.value = 2.5 * width.value + lastWidth
+function scrollToBottom(w: number, h: number) {
+  expandScrollTop.value = 100000 + h
+  shrinkScrollTop.value = 2.5 * h + h
+  expandScrollLeft.value = 100000 + w
+  shrinkScrollLeft.value = 2.5 * w + w
 }
 
 function emitResize(rect: UniApp.NodeInfo) {
@@ -71,55 +75,70 @@ onMounted(async () => {
   // 闭包保存上次尺寸，避免额外的 ref 开销
   let lastWidth = rect.width
   let lastHeight = rect.height
-  let scrollEventCount = 0
+  // 初始化阶段标记：跳过前两次初始化触发的滚动事件
+  let initPhase = 2
+  // 是否已触发首次 resize 事件
+  let hasEmittedInitial = false
 
   // 立即填充容器宽高
   width.value = lastWidth
   height.value = lastHeight
 
-  // 定义滚动处理函数（闭包方式）
-  onScrollHandler = async () => {
-    // 禁用状态下不处理
-    if (props.disabled) return
+  // 定义滚动处理函数（闭包方式 + 防抖）
+  onScrollHandler = () => {
+    // 禁用或已卸载时不处理
+    if (props.disabled || isUnmounted) return
 
-    const rect = await useRect(`#${id.value}`, instance)
+    // 防抖：合并短时间内的多次触发
+    if (debounceTimer) clearTimeout(debounceTimer)
+    debounceTimer = setTimeout(async () => {
+      if (isUnmounted) return
 
-    // 首次滚动事件触发时，通知用户初始尺寸
-    if (scrollEventCount++ === 0) {
-      emitResize(rect)
-    }
+      const rect = await useRect(`#${id.value}`, instance)
+      if (isUnmounted) return
 
-    // 前两次滚动事件是初始化触发的，跳过处理
-    if (scrollEventCount < 3) return
+      // 初始化阶段跳过处理
+      if (initPhase > 0) {
+        initPhase--
+        // 首次滚动时触发初始尺寸通知
+        if (!hasEmittedInitial) {
+          hasEmittedInitial = true
+          emitResize(rect)
+        }
+        return
+      }
 
-    // 获取新尺寸
-    const newWidth = rect.width
-    const newHeight = rect.height
+      // 获取新尺寸
+      const newWidth = rect.width
+      const newHeight = rect.height
 
-    // 更新容器宽高
-    width.value = newWidth
-    height.value = newHeight
+      // 更新容器宽高
+      width.value = newWidth
+      height.value = newHeight
 
-    // 检测宽高是否变化，合并触发（宽高同时变化只触发一次）
-    let hasChange = false
-    if (newWidth !== lastWidth) {
-      lastWidth = newWidth
-      hasChange = true
-    }
-    if (newHeight !== lastHeight) {
-      lastHeight = newHeight
-      hasChange = true
-    }
+      // 检测宽高是否变化，合并触发（宽高同时变化只触发一次）
+      const hasChange = newWidth !== lastWidth || newHeight !== lastHeight
 
-    if (hasChange) {
-      emitResize(rect)
-    }
+      if (hasChange) {
+        lastWidth = newWidth
+        lastHeight = newHeight
+        emitResize(rect)
+      }
 
-    // 滚动到底部，准备下次检测
-    scrollToBottom(lastWidth, lastHeight)
+      // 滚动到底部，准备下次检测
+      scrollToBottom(lastWidth, lastHeight)
+    }, 16)
   }
 
   scrollToBottom(lastWidth, lastHeight)
+})
+
+onUnmounted(() => {
+  isUnmounted = true
+  if (debounceTimer) {
+    clearTimeout(debounceTimer)
+    debounceTimer = null
+  }
 })
 
 function onExpandScroll() {

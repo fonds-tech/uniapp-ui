@@ -69,6 +69,17 @@ describe("ui-arc 弧形组件", () => {
 
       expect(wrapper.props("curvature")).toBe(120)
     })
+
+    it("弧度超过最大值时应进行限制", async () => {
+      const wrapper = mount(UiArc, {
+        props: { curvature: 800 },
+      })
+
+      await waitForTransition()
+
+      const innerStyle = wrapper.find(".ui-arc__inner").attributes("style") || ""
+      expect(innerStyle).toContain("left: -200%")
+    })
   })
 
   describe("位置配置", () => {
@@ -102,6 +113,27 @@ describe("ui-arc 弧形组件", () => {
       })
 
       expect(wrapper.props("fixed")).toBe(true)
+    })
+
+    it("fixed 为 true 时应设置 fixed 定位", async () => {
+      const wrapper = mount(UiArc, {
+        props: { fixed: true },
+      })
+
+      await waitForTransition()
+
+      const style = wrapper.find(".ui-arc").attributes("style") || ""
+      expect(style).toContain("position: fixed")
+    })
+  })
+
+  describe("方向配置", () => {
+    it("direction 为 top 时应添加对应类名", () => {
+      const wrapper = mount(UiArc, {
+        props: { direction: "top" },
+      })
+
+      expect(wrapper.classes()).toContain("ui-arc--top")
     })
   })
 

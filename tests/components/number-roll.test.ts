@@ -271,6 +271,17 @@ describe("ui-number-roll 数字滚动组件", () => {
 
       expect(wrapper.props("timingFunction")).toBe("ease-in-out")
     })
+
+    it("动画时长应应用到列样式", async () => {
+      const wrapper = mount(UiNumberRoll, {
+        props: { value: 12, duration: 800 },
+      })
+
+      await waitForTransition()
+
+      const style = wrapper.find(".ui-number-roll__column").attributes("style") || ""
+      expect(style).toContain("transition-duration: 800ms")
+    })
   })
 
   describe("暴露的属性", () => {
@@ -308,6 +319,19 @@ describe("ui-number-roll 数字滚动组件", () => {
       await waitForTransition()
 
       expect(wrapper.find(".ui-number-roll").exists()).toBe(true)
+    })
+
+    it("value 变更应重新渲染列", async () => {
+      const wrapper = mount(UiNumberRoll, {
+        props: { value: 12 },
+      })
+
+      await waitForTransition()
+      expect(getColumnPattern(wrapper)).toBe("dd")
+
+      await wrapper.setProps({ value: 345 })
+      await waitForTransition()
+      expect(getColumnPattern(wrapper)).toBe("ddd")
     })
   })
 })

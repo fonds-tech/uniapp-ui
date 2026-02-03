@@ -118,6 +118,26 @@ describe("ui-line 分割线组件", () => {
 
       expect(wrapper.props("vertical")).toBe(true)
     })
+
+    it("水平线条应应用 border-top 样式", () => {
+      const wrapper = mount(UiLine, {
+        props: { color: "#ccc", thickness: "4rpx", type: "dashed" },
+      })
+
+      const style = wrapper.find(".ui-line").attributes("style") || ""
+      expect(style).toContain("border-top")
+      expect(style).toContain("dashed")
+    })
+
+    it("垂直线条应应用 border-left 样式", () => {
+      const wrapper = mount(UiLine, {
+        props: { vertical: true, color: "#ccc", thickness: "4rpx", type: "dotted" },
+      })
+
+      const style = wrapper.find(".ui-line").attributes("style") || ""
+      expect(style).toContain("border-left")
+      expect(style).toContain("dotted")
+    })
   })
 
   describe("间距属性", () => {

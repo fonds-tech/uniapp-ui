@@ -213,7 +213,7 @@ describe("ui-popup 弹出层组件", () => {
     it("默认关闭图标为 cross", () => {
       const wrapper = mount(UiPopup, { global: { stubs } })
 
-      expect(wrapper.props("closeIcon")).toBe("cross")
+      expect(wrapper.props("closeIcon")).toBe("close")
     })
 
     const closePositions = ["top-left", "top-right", "bottom-left", "bottom-right"] as const

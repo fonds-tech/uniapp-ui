@@ -3,6 +3,21 @@ import { mount } from "@vue/test-utils"
 import { waitForTransition } from "../setup"
 import { it, vi, expect, describe, afterEach, beforeEach } from "vitest"
 
+const pickerPanelStub = {
+  name: "ui-picker-panel",
+  template: "<div class=\"ui-picker-panel-stub\"></div>",
+  props: ["modelValue"],
+  emits: ["update:modelValue", "change"],
+  setup(props: { modelValue: any }, { expose }: { expose: (exposed: Record<string, any>) => void }) {
+    expose({
+      getSelectedValues: () => (Array.isArray(props.modelValue) ? props.modelValue : [props.modelValue]),
+      getSelectedIndexs: () => [0],
+      getSelectedColumns: () => [{ text: "选项1", value: "1" }],
+    })
+    return {}
+  },
+}
+
 describe("uiPicker 组件", () => {
   beforeEach(() => {
     vi.useFakeTimers()
@@ -790,12 +805,88 @@ describe("uiPicker 组件", () => {
         global: {
           stubs: {
             "ui-popup": true,
-            "ui-picker-panel": true,
+            "ui-picker-panel": pickerPanelStub,
             "ui-button": true,
           },
         },
       })
       expect(typeof wrapper.vm.getSelectedColumns).toBe("function")
+    })
+  })
+
+  describe("交互与方法", () => {
+    it("confirm 方法应触发 confirm 与 update:modelValue", async () => {
+      const wrapper = mount(UiPicker, {
+        props: {
+          show: true,
+          columns: [{ text: "选项1", value: "1" }],
+          modelValue: "1",
+        },
+        global: {
+          stubs: {
+            "ui-popup": true,
+            "ui-picker-panel": pickerPanelStub,
+            "ui-button": true,
+          },
+        },
+      })
+      await waitForTransition()
+
+      wrapper.vm.confirm()
+      await waitForTransition()
+
+      expect(wrapper.emitted("confirm")).toBeTruthy()
+      expect(wrapper.emitted("update:modelValue")?.[0]).toEqual(["1"])
+      expect(wrapper.emitted("update:show")?.slice(-1)[0]).toEqual([false])
+    })
+
+    it("cancel 方法应触发 cancel 并关闭", async () => {
+      const wrapper = mount(UiPicker, {
+        props: {
+          show: true,
+          columns: [{ text: "选项1", value: "1" }],
+          modelValue: "1",
+        },
+        global: {
+          stubs: {
+            "ui-popup": true,
+            "ui-picker-panel": pickerPanelStub,
+            "ui-button": true,
+          },
+        },
+      })
+      await waitForTransition()
+
+      wrapper.vm.cancel()
+      await waitForTransition()
+
+      expect(wrapper.emitted("cancel")).toBeTruthy()
+      expect(wrapper.emitted("update:show")?.slice(-1)[0]).toEqual([false])
+    })
+
+    it("open/close 方法应更新 show", async () => {
+      const wrapper = mount(UiPicker, {
+        props: {
+          show: false,
+          columns: [{ text: "选项1", value: "1" }],
+        },
+        global: {
+          stubs: {
+            "ui-popup": true,
+            "ui-picker-panel": pickerPanelStub,
+            "ui-button": true,
+          },
+        },
+      })
+      await waitForTransition()
+
+      wrapper.vm.open()
+      await waitForTransition()
+      expect(wrapper.emitted("update:show")?.slice(-1)[0]).toEqual([true])
+
+      wrapper.vm.close()
+      await waitForTransition()
+      expect(wrapper.emitted("update:show")?.slice(-1)[0]).toEqual([false])
     })
   })
 

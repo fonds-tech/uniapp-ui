@@ -79,6 +79,26 @@ describe("ui-config-provider 全局配置组件", () => {
       // auto 模式下默认跟随系统，测试环境中默认为 light
       expect(["light", "dark"]).toContain(wrapper.attributes("data-theme"))
     })
+
+    it("auto 主题应随系统主题变化", async () => {
+      let handler: ((result: { theme: string }) => void) | null = null
+      const onThemeChange = vi.fn((cb: (result: { theme: string }) => void) => {
+        handler = cb
+      })
+      uni.onThemeChange = onThemeChange as typeof uni.onThemeChange
+
+      const wrapper = mount(UiConfigProvider, {
+        props: { theme: "auto" },
+      })
+      await waitForTransition()
+
+      expect(onThemeChange).toHaveBeenCalled()
+
+      handler?.({ theme: "dark" })
+      await waitForTransition()
+
+      expect(wrapper.attributes("data-theme")).toBe("dark")
+    })
   })
 
   describe("主题变量配置", () => {
@@ -267,6 +287,18 @@ describe("ui-config-provider 全局配置组件", () => {
       await wrapper.find(".ui-config-provider").trigger("touchmove")
 
       expect(wrapper.emitted("touchmove")).toBeTruthy()
+    })
+
+    it("触摸事件应通过 mitt 广播", async () => {
+      const wrapper = mount(UiConfigProvider)
+      await waitForTransition()
+
+      const handler = vi.fn()
+      wrapper.vm.mitt.on("touchstart", handler)
+
+      await wrapper.find(".ui-config-provider").trigger("touchstart")
+
+      expect(handler).toHaveBeenCalled()
     })
   })
 

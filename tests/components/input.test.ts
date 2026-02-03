@@ -203,6 +203,24 @@ describe("ui-input 输入框组件", () => {
 
       expect(wrapper.find(".ui-input__clear").exists()).toBe(false)
     })
+
+    it("聚焦且有内容时应显示清除按钮并触发 clear", async () => {
+      const wrapper = mount(UiInput, {
+        props: { modelValue: "内容", clearable: true },
+      })
+      await waitForTransition()
+
+      await wrapper.find("input").trigger("focus")
+      await waitForTransition()
+
+      expect(wrapper.find(".ui-input__clear").exists()).toBe(true)
+
+      await wrapper.find(".ui-input__clear").trigger("click")
+      await waitForTransition()
+
+      expect(wrapper.emitted("clear")).toBeTruthy()
+      expect(wrapper.emitted("update:modelValue")?.slice(-1)[0]).toEqual([""])
+    })
   })
 
   describe("最大长度", () => {
@@ -332,6 +350,15 @@ describe("ui-input 输入框组件", () => {
       await wrapper.find("input").trigger("confirm")
 
       expect(wrapper.emitted("confirm")).toBeTruthy()
+    })
+
+    it("键盘高度变化应触发 keyboardheightchange 事件", async () => {
+      const wrapper = mount(UiInput)
+      await waitForTransition()
+
+      await wrapper.find("input").trigger("keyboardheightchange")
+
+      expect(wrapper.emitted("keyboardheightchange")).toBeTruthy()
     })
 
     it("点击输入框应触发 click 事件", async () => {
@@ -477,6 +504,30 @@ describe("ui-input 输入框组件", () => {
       await waitForTransition()
 
       expect(wrapper.find(".ui-input").exists()).toBe(true)
+    })
+  })
+
+  describe("插槽", () => {
+    it("应支持 prefix 插槽", async () => {
+      const wrapper = mount(UiInput, {
+        slots: {
+          prefix: "<span class='custom-prefix'>前缀</span>",
+        },
+      })
+      await waitForTransition()
+
+      expect(wrapper.find(".custom-prefix").exists()).toBe(true)
+    })
+
+    it("应支持 suffix 插槽", async () => {
+      const wrapper = mount(UiInput, {
+        slots: {
+          suffix: "<span class='custom-suffix'>后缀</span>",
+        },
+      })
+      await waitForTransition()
+
+      expect(wrapper.find(".custom-suffix").exists()).toBe(true)
     })
   })
 

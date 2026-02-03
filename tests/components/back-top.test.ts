@@ -1,5 +1,6 @@
 import UiBackTop from "@/uni_modules/uniapp-ui/ui-back-top/ui-back-top.vue"
 import { mount } from "@vue/test-utils"
+import { nextTick } from "vue"
 import { waitForTransition } from "../setup"
 import { it, vi, expect, describe, afterEach, beforeEach } from "vitest"
 
@@ -185,6 +186,97 @@ describe("uiBackTop 组件", () => {
       await waitForTransition()
       await wrapper.find(".ui-back-top").trigger("click")
       expect(wrapper.emitted("click")).toBeTruthy()
+    })
+  })
+
+  describe("显示逻辑", () => {
+    it("scrollTop 小于 offset 时应隐藏", async () => {
+      const wrapper = mount(UiBackTop, {
+        props: { scrollTop: 0, offset: 200 },
+        global: {
+          stubs: {
+            "ui-icon": true,
+            "ui-transition": {
+              name: "ui-transition",
+              props: ["show", "name", "customStyle"],
+              template: "<div class=\"ui-transition\" :data-show=\"show\"><slot /></div>",
+            },
+          },
+        },
+      })
+
+      await nextTick()
+
+      const transition = wrapper.findComponent({ name: "ui-transition" })
+      expect(transition.props("show")).toBe(false)
+    })
+
+    it("scrollTop 大于 offset 时应显示", async () => {
+      const wrapper = mount(UiBackTop, {
+        props: { scrollTop: 300, offset: 200 },
+        global: {
+          stubs: {
+            "ui-icon": true,
+            "ui-transition": {
+              name: "ui-transition",
+              props: ["show", "name", "customStyle"],
+              template: "<div class=\"ui-transition\" :data-show=\"show\"><slot /></div>",
+            },
+          },
+        },
+      })
+
+      await nextTick()
+
+      const transition = wrapper.findComponent({ name: "ui-transition" })
+      expect(transition.props("show")).toBe(true)
+    })
+  })
+
+  describe("尺寸优先级", () => {
+    it("width/height 应优先于 size", async () => {
+      const wrapper = mount(UiBackTop, {
+        props: { size: 80, width: 100, height: 120 },
+        global: {
+          stubs: {
+            "ui-icon": true,
+            "ui-transition": {
+              name: "ui-transition",
+              props: ["show", "name", "customStyle"],
+              template: "<div class=\"ui-transition\"><slot /></div>",
+            },
+          },
+        },
+      })
+
+      await waitForTransition()
+
+      const style = wrapper.find(".ui-back-top__content").attributes("style") || ""
+      expect(style).toContain("width")
+      expect(style).toContain("height")
+    })
+  })
+
+  describe("滚动行为", () => {
+    it("点击时应调用 pageScrollTo 并携带 duration", async () => {
+      const wrapper = mount(UiBackTop, {
+        props: { duration: 500 },
+        global: {
+          stubs: {
+            "ui-icon": true,
+            "ui-transition": {
+              name: "ui-transition",
+              props: ["show", "name", "customStyle"],
+              template: "<div class=\"ui-transition\"><slot /></div>",
+            },
+          },
+        },
+      })
+
+      await waitForTransition()
+      await wrapper.find(".ui-back-top").trigger("click")
+
+      expect((uni as any).pageScrollTo).toHaveBeenCalledWith({ scrollTop: 0, duration: 500 })
     })
   })
 

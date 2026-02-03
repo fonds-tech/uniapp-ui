@@ -453,6 +453,16 @@ describe("ui-action-sheet 动作面板组件", () => {
 
       expect(wrapper.props("safeAreaInsetBottom")).toBe(true)
     })
+
+    it("safeAreaInsetBottom 为 false 时不应渲染安全区", async () => {
+      const wrapper = mount(UiActionSheet, {
+        props: { show: true, actions: defaultActions, safeAreaInsetBottom: false },
+      })
+
+      await waitForTransition()
+
+      expect(wrapper.findComponent({ name: "ui-safe-area-bottom" }).exists()).toBe(false)
+    })
   })
 
   describe("beforeClose 回调", () => {
@@ -484,6 +494,39 @@ describe("ui-action-sheet 动作面板组件", () => {
       // 由于 beforeClose 返回 false，不应触发关闭
       // 但 select 事件仍应触发
       expect(wrapper.emitted("select")).toBeTruthy()
+    })
+
+    it("beforeClose 返回 Promise.resolve(true) 时应关闭", async () => {
+      const beforeClose = vi.fn(() => Promise.resolve(true))
+
+      const wrapper = mount(UiActionSheet, {
+        props: { show: true, actions: defaultActions, beforeClose },
+      })
+
+      await waitForTransition()
+
+      await wrapper.findAll(".ui-action-sheet__item")[0].trigger("click")
+      await Promise.resolve()
+
+      expect(beforeClose).toHaveBeenCalled()
+      expect(getLastEmitted(wrapper, "update:show")).toEqual([false])
+    })
+
+    it("beforeClose 返回 Promise.reject 时不应关闭", async () => {
+      const beforeClose = vi.fn(() => Promise.reject(new Error("reject")))
+
+      const wrapper = mount(UiActionSheet, {
+        props: { show: true, actions: defaultActions, beforeClose },
+      })
+
+      await waitForTransition()
+
+      await wrapper.findAll(".ui-action-sheet__item")[0].trigger("click")
+      await Promise.resolve()
+
+      const events = wrapper.emitted("update:show") || []
+      const hasClosed = events.some((event) => event[0] === false)
+      expect(hasClosed).toBeFalsy()
     })
   })
 
@@ -530,6 +573,22 @@ describe("ui-action-sheet 动作面板组件", () => {
       await waitForTransition()
 
       expect(wrapper.find(".ui-action-sheet").exists()).toBe(true)
+    })
+
+    it("应支持遮罩层自定义样式", async () => {
+      const wrapper = mount(UiActionSheet, {
+        props: {
+          show: true,
+          actions: defaultActions,
+          overlayStyle: { backgroundColor: "rgba(0,0,0,0.6)" },
+        },
+      })
+
+      await waitForTransition()
+
+      const overlay = wrapper.findComponent({ name: "ui-overlay" })
+      expect(overlay.exists()).toBe(true)
+      expect(overlay.props("customStyle")).toEqual({ backgroundColor: "rgba(0,0,0,0.6)" })
     })
   })
 

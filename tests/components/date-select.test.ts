@@ -3,6 +3,23 @@ import { mount } from "@vue/test-utils"
 import { waitForTransition } from "../setup"
 import { it, vi, expect, describe, afterEach, beforeEach } from "vitest"
 
+const datePickerStub = {
+  name: "ui-date-picker",
+  template: "<div class=\"ui-date-picker-stub\"></div>",
+  props: ["show", "modelValue"],
+  emits: ["update:modelValue", "update:show", "change", "cancel", "confirm"],
+  setup(props: { modelValue: string }, { emit, expose }: { emit: (event: string, payload?: any) => void; expose: (exposed: Record<string, any>) => void }) {
+    expose({
+      confirm: () => emit("confirm", { value: props.modelValue }),
+      cancel: () => emit("cancel", { value: props.modelValue }),
+      getSelectedValue: () => props.modelValue,
+      getSelectedValues: () => [props.modelValue],
+      getSelectedIndexes: () => [0],
+    })
+    return {}
+  },
+}
+
 describe("uiDateSelect 组件", () => {
   beforeEach(() => {
     vi.useFakeTimers()
@@ -24,6 +41,96 @@ describe("uiDateSelect 组件", () => {
       })
       await waitForTransition()
       expect(wrapper.find(".ui-date-select").exists()).toBe(true)
+    })
+  })
+
+  describe("交互行为", () => {
+    it("点击触发区域应打开弹窗并触发 click", async () => {
+      const wrapper = mount(UiDateSelect, {
+        global: {
+          stubs: {
+            "ui-icon": true,
+            "ui-date-picker": datePickerStub,
+          },
+        },
+      })
+      await waitForTransition()
+
+      await wrapper.find(".ui-date-select__trigger").trigger("click")
+      await waitForTransition()
+
+      expect(wrapper.emitted("click")).toBeTruthy()
+      expect(wrapper.findComponent({ name: "ui-date-picker" }).props("show")).toBe(true)
+    })
+
+    it("disabled 时不应响应点击", async () => {
+      const wrapper = mount(UiDateSelect, {
+        props: { disabled: true },
+        global: {
+          stubs: {
+            "ui-icon": true,
+            "ui-date-picker": datePickerStub,
+          },
+        },
+      })
+      await waitForTransition()
+
+      await wrapper.find(".ui-date-select__trigger").trigger("click")
+      await waitForTransition()
+
+      expect(wrapper.emitted("click")).toBeFalsy()
+      expect(wrapper.findComponent({ name: "ui-date-picker" }).props("show")).toBe(false)
+    })
+
+    it("date-picker 更新应同步 modelValue", async () => {
+      const wrapper = mount(UiDateSelect, {
+        global: {
+          stubs: {
+            "ui-icon": true,
+            "ui-date-picker": datePickerStub,
+          },
+        },
+      })
+      await waitForTransition()
+
+      wrapper.findComponent({ name: "ui-date-picker" }).vm.$emit("update:modelValue", "2024-01-02")
+      await waitForTransition()
+
+      expect(wrapper.emitted("update:modelValue")?.[0]).toEqual(["2024-01-02"])
+    })
+
+    it("displayFormatter 应生效", async () => {
+      const displayFormatter = vi.fn(() => "自定义展示")
+      const wrapper = mount(UiDateSelect, {
+        props: { modelValue: "2024-01-15", displayFormatter },
+        global: {
+          stubs: {
+            "ui-icon": true,
+            "ui-date-picker": datePickerStub,
+          },
+        },
+      })
+      await waitForTransition()
+
+      expect(wrapper.text()).toContain("自定义展示")
+    })
+
+    it("confirm 方法应触发 confirm 事件", async () => {
+      const wrapper = mount(UiDateSelect, {
+        props: { modelValue: "2024-01-15" },
+        global: {
+          stubs: {
+            "ui-icon": true,
+            "ui-date-picker": datePickerStub,
+          },
+        },
+      })
+      await waitForTransition()
+
+      wrapper.vm.confirm()
+      await waitForTransition()
+
+      expect(wrapper.emitted("confirm")).toBeTruthy()
     })
   })
 

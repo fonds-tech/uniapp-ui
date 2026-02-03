@@ -251,6 +251,29 @@ describe("uiFloatButton 组件", () => {
       await wrapper.find(".ui-float-button").trigger("click")
       expect(wrapper.emitted("click")).toBeFalsy()
     })
+
+    it("拖拽时应触发 dragStart/dragMove/dragEnd", async () => {
+      const wrapper = mount(UiFloatButton, {
+        props: { draggable: true },
+        global: { stubs: commonStubs },
+      })
+      await waitForTransition()
+
+      const root = wrapper.find(".ui-float-button-wrapper")
+      await root.trigger("touchstart", {
+        touches: [{ clientX: 100, clientY: 100 }],
+      })
+      expect(wrapper.find(".ui-float-button-wrapper").classes()).toContain("ui-float-button-wrapper--dragging")
+
+      await root.trigger("touchmove", {
+        touches: [{ clientX: 120, clientY: 120 }],
+      })
+      await root.trigger("touchend")
+
+      expect(wrapper.emitted("dragStart")).toBeTruthy()
+      expect(wrapper.emitted("dragMove")).toBeTruthy()
+      expect(wrapper.emitted("dragEnd")).toBeTruthy()
+    })
   })
 
   describe("自定义样式测试", () => {
@@ -281,6 +304,16 @@ describe("uiFloatButton 组件", () => {
       expect(wrapper.props("icon")).toBe("plus")
       expect(wrapper.props("type")).toBe("primary")
       expect(wrapper.props("position")).toBe("right-bottom")
+    })
+
+    it("show 变化应触发 update:show", async () => {
+      const wrapper = mount(UiFloatButton, { global: { stubs: commonStubs } })
+      await waitForTransition()
+
+      await wrapper.setProps({ show: false })
+      await waitForTransition()
+
+      expect(wrapper.emitted("update:show")?.[0]).toEqual([false])
     })
   })
 })

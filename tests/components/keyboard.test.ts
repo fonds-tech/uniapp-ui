@@ -20,6 +20,16 @@ const stubs = {
     name: "ui-safe-area-bottom",
     template: "<div class=\"ui-safe-area-bottom-stub\"></div>",
   },
+  "ui-icon": {
+    name: "ui-icon",
+    template: "<i class=\"ui-icon-stub\"></i>",
+    props: ["name", "size"],
+  },
+  "ui-button": {
+    name: "ui-button",
+    template: "<button class=\"ui-button-stub\" @click=\"$emit('click')\"><slot /></button>",
+    props: ["text", "textColor", "textSize", "textWeight"],
+  },
 }
 
 describe("ui-keyboard 虚拟键盘组件", () => {
@@ -201,6 +211,51 @@ describe("ui-keyboard 虚拟键盘组件", () => {
     })
   })
 
+  describe("按键交互", () => {
+    it("点击数字键应更新值", async () => {
+      const wrapper = mount(UiKeyboard, {
+        props: { show: true, modelValue: "" },
+        global: { stubs },
+      })
+      await waitForTransition()
+
+      const key = wrapper.findAll(".ui-keyboard__keys__key").find((item) => item.text() === "1")
+      await key?.trigger("click")
+
+      expect(wrapper.emitted("update:modelValue")?.[0]).toEqual(["1"])
+      expect(wrapper.emitted("change")).toBeTruthy()
+      expect(wrapper.emitted("input")).toBeTruthy()
+    })
+
+    it("点击删除键应触发 delete 并更新值", async () => {
+      const wrapper = mount(UiKeyboard, {
+        props: { show: true, modelValue: "12" },
+        global: { stubs },
+      })
+      await waitForTransition()
+
+      const keys = wrapper.findAll(".ui-keyboard__keys__key")
+      await keys[keys.length - 1].trigger("click")
+
+      expect(wrapper.emitted("delete")).toBeTruthy()
+      expect(wrapper.emitted("update:modelValue")?.slice(-1)[0]).toEqual(["1"])
+    })
+
+    it("点击关闭键应触发 close 并隐藏", async () => {
+      const wrapper = mount(UiKeyboard, {
+        props: { show: true, showDot: false },
+        global: { stubs },
+      })
+      await waitForTransition()
+
+      const keys = wrapper.findAll(".ui-keyboard__keys__key")
+      await keys[9].trigger("click")
+
+      expect(wrapper.emitted("close")).toBeTruthy()
+      expect(wrapper.emitted("update:show")?.slice(-1)[0]).toEqual([false])
+    })
+  })
+
   describe("弹出层配置", () => {
     it("默认应显示遮罩层", () => {
       const wrapper = mount(UiKeyboard, {
@@ -284,6 +339,66 @@ describe("ui-keyboard 虚拟键盘组件", () => {
       })
 
       expect(wrapper.vm.name).toBe("ui-keyboard")
+    })
+  })
+
+  describe("暴露的方法", () => {
+    it("open/close 方法应控制显示状态", async () => {
+      const wrapper = mount(UiKeyboard, {
+        props: { show: false },
+        global: { stubs },
+      })
+      await waitForTransition()
+
+      wrapper.vm.open()
+      await waitForTransition()
+      expect(wrapper.emitted("update:show")?.slice(-1)[0]).toEqual([true])
+
+      wrapper.vm.close()
+      await waitForTransition()
+      expect(wrapper.emitted("update:show")?.slice(-1)[0]).toEqual([false])
+    })
+
+    it("clear 方法应清空值并触发 change", async () => {
+      const wrapper = mount(UiKeyboard, {
+        props: { show: true, modelValue: "123" },
+        global: { stubs },
+      })
+      await waitForTransition()
+
+      wrapper.vm.clear()
+      await waitForTransition()
+
+      expect(wrapper.emitted("change")?.slice(-1)[0]).toEqual([""])
+      expect(wrapper.emitted("update:modelValue")?.slice(-1)[0]).toEqual([""])
+    })
+  })
+
+  describe("取消与确认", () => {
+    it("点击取消按钮应触发 cancel 并关闭", async () => {
+      const wrapper = mount(UiKeyboard, {
+        props: { show: true, showHeader: true, showCancel: true },
+        global: { stubs },
+      })
+      await waitForTransition()
+
+      await wrapper.find(".ui-keyboard__cancel .ui-button-stub").trigger("click")
+
+      expect(wrapper.emitted("cancel")).toBeTruthy()
+      expect(wrapper.emitted("update:show")?.slice(-1)[0]).toEqual([false])
+    })
+
+    it("点击确认按钮应触发 confirm 并关闭", async () => {
+      const wrapper = mount(UiKeyboard, {
+        props: { show: true, showHeader: true, showConfirm: true },
+        global: { stubs },
+      })
+      await waitForTransition()
+
+      await wrapper.find(".ui-keyboard__confirm .ui-button-stub").trigger("click")
+
+      expect(wrapper.emitted("confirm")).toBeTruthy()
+      expect(wrapper.emitted("update:show")?.slice(-1)[0]).toEqual([false])
     })
   })
 

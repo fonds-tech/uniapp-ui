@@ -95,6 +95,17 @@ describe("ui-header 头部固定组件", () => {
     })
   })
 
+  describe("安全区域", () => {
+    it("safeAreaInsetTop 为 true 时应添加安全区类名", async () => {
+      const wrapper = mount(UiHeader, {
+        props: { safeAreaInsetTop: true },
+      })
+      await waitForTransition()
+
+      expect(wrapper.find(".ui-header__content").classes()).toContain("safe-area-inset-top")
+    })
+  })
+
   describe("边界情况", () => {
     it("无内容时应正常渲染", async () => {
       const wrapper = mount(UiHeader)
@@ -102,6 +113,18 @@ describe("ui-header 头部固定组件", () => {
       await waitForTransition()
 
       expect(wrapper.find(".ui-header").exists()).toBe(true)
+    })
+
+    it("resize 方法应触发 rect 与 height 事件", async () => {
+      const wrapper = mount(UiHeader)
+      await waitForTransition()
+
+      await wrapper.vm.resize()
+      await waitForTransition()
+
+      expect(wrapper.emitted("rect")).toBeTruthy()
+      expect(wrapper.emitted("height")).toBeTruthy()
+      expect(wrapper.emitted("height")?.[0]?.[0]).toBe(100)
     })
   })
 })

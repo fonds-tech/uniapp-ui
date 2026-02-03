@@ -3,6 +3,23 @@ import { mount } from "@vue/test-utils"
 import { waitForTransition } from "../setup"
 import { it, vi, expect, describe, afterEach, beforeEach } from "vitest"
 
+const popupStub = {
+  name: "ui-popup",
+  template: "<div class=\"ui-popup-stub\" :data-show=\"show\"><slot name=\"header\" /><slot /><slot name=\"footer\" /></div>",
+  props: ["show"],
+}
+
+const pickerViewStub = {
+  name: "picker-view",
+  template: "<div class=\"picker-view-stub\"><slot /></div>",
+  props: ["value", "indicatorStyle"],
+}
+
+const pickerViewColumnStub = {
+  name: "picker-view-column",
+  template: "<div class=\"picker-view-column-stub\"><slot /></div>",
+}
+
 describe("uiDateRangeSelect 组件", () => {
   beforeEach(() => {
     vi.useFakeTimers()
@@ -51,6 +68,99 @@ describe("uiDateRangeSelect 组件", () => {
       })
       await waitForTransition()
       expect(wrapper.find(".ui-date-range-select__separator").exists()).toBe(true)
+    })
+  })
+
+  describe("交互行为", () => {
+    it("点击开始区域应触发 click 并打开弹窗", async () => {
+      const wrapper = mount(UiDateRangeSelect, {
+        global: {
+          stubs: {
+            "ui-popup": popupStub,
+            "picker-view": pickerViewStub,
+            "picker-view-column": pickerViewColumnStub,
+            "ui-icon": true,
+            "ui-button": true,
+          },
+        },
+      })
+      await waitForTransition()
+
+      await wrapper.find(".ui-date-range-select__start").trigger("click")
+      await waitForTransition()
+
+      expect(wrapper.emitted("click")?.[0]).toEqual(["start"])
+      expect(wrapper.find(".ui-popup-stub").attributes("data-show")).toBe("true")
+    })
+
+    it("disabled 时点击不应触发 click", async () => {
+      const wrapper = mount(UiDateRangeSelect, {
+        props: { disabled: true },
+        global: {
+          stubs: {
+            "ui-popup": popupStub,
+            "picker-view": pickerViewStub,
+            "picker-view-column": pickerViewColumnStub,
+            "ui-icon": true,
+          },
+        },
+      })
+      await waitForTransition()
+
+      await wrapper.find(".ui-date-range-select__start").trigger("click")
+      await waitForTransition()
+
+      expect(wrapper.emitted("click")).toBeFalsy()
+      expect(wrapper.find(".ui-popup-stub").attributes("data-show")).toBe("false")
+    })
+
+    it("displayFormatter 应生效", async () => {
+      const displayFormatter = vi.fn((value: string, type: string) => `${type}-${value}`)
+      const wrapper = mount(UiDateRangeSelect, {
+        props: {
+          modelValue: ["2024-01-01", "2024-01-02"],
+          displayFormatter,
+        },
+        global: {
+          stubs: {
+            "ui-icon": true,
+            "ui-date-picker": true,
+          },
+        },
+      })
+      await waitForTransition()
+
+      const text = wrapper.text()
+      expect(text).toContain("start-2024-01-01")
+      expect(text).toContain("end-2024-01-02")
+    })
+
+    it("autoSwitchToEnd 为 false 时 confirm 应提交范围", async () => {
+      const wrapper = mount(UiDateRangeSelect, {
+        props: {
+          modelValue: ["2024-01-01", "2024-01-02"],
+          autoSwitchToEnd: false,
+        },
+        global: {
+          stubs: {
+            "ui-popup": popupStub,
+            "picker-view": pickerViewStub,
+            "picker-view-column": pickerViewColumnStub,
+            "ui-icon": true,
+            "ui-button": true,
+          },
+        },
+      })
+      await waitForTransition()
+
+      wrapper.vm.open("start")
+      await waitForTransition()
+
+      wrapper.vm.confirm()
+      await waitForTransition()
+
+      expect(wrapper.emitted("confirm")).toBeTruthy()
+      expect(wrapper.emitted("update:modelValue")?.[0][0]).toEqual(["2024-01-01", "2024-01-02"])
     })
   })
 

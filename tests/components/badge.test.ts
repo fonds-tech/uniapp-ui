@@ -146,6 +146,15 @@ describe("ui-badge 徽章组件", () => {
 
       expect(wrapper.find(".ui-badge__value").exists()).toBe(false)
     })
+
+    it("dot 与 icon 同时存在时应优先显示圆点", () => {
+      const wrapper = mount(UiBadge, {
+        props: { dot: true, icon: "star" },
+      })
+
+      expect(wrapper.find(".ui-badge__inner--dot").exists()).toBe(true)
+      expect(wrapper.find(".ui-badge__value").exists()).toBe(false)
+    })
   })
 
   describe("位置定位", () => {
@@ -178,6 +187,16 @@ describe("ui-badge 徽章组件", () => {
       })
 
       expect(wrapper.props("offset")).toEqual([5, 10])
+    })
+
+    it("应支持字符串类型的偏移量", () => {
+      const wrapper = mount(UiBadge, {
+        props: { value: 5, offset: "10rpx" },
+      })
+
+      const style = wrapper.find(".ui-badge__inner").attributes("style") || ""
+      expect(style).toContain("top")
+      expect(style).toContain("right")
     })
   })
 
@@ -213,6 +232,15 @@ describe("ui-badge 徽章组件", () => {
       })
 
       expect(wrapper.props("zIndex")).toBe(100)
+    })
+
+    it("zIndex 应应用到根节点样式", () => {
+      const wrapper = mount(UiBadge, {
+        props: { value: 5, zIndex: 10 },
+      })
+
+      const style = wrapper.find(".ui-badge").attributes("style") || ""
+      expect(style).toContain("z-index")
     })
   })
 

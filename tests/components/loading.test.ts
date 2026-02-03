@@ -163,6 +163,24 @@ describe("ui-loading 加载组件", () => {
 
       expect(wrapper.props("textGap")).toBe(20)
     })
+
+    it("横向布局应使用 margin-left", () => {
+      const wrapper = mount(UiLoading, {
+        props: { text: "加载中", textGap: 12, vertical: false },
+      })
+
+      const textStyle = wrapper.find(".ui-loading__text").attributes("style") || ""
+      expect(textStyle).toContain("margin-left")
+    })
+
+    it("纵向布局应使用 margin-top", () => {
+      const wrapper = mount(UiLoading, {
+        props: { text: "加载中", textGap: 12, vertical: true },
+      })
+
+      const textStyle = wrapper.find(".ui-loading__text").attributes("style") || ""
+      expect(textStyle).toContain("margin-top")
+    })
   })
 
   describe("自定义样式", () => {

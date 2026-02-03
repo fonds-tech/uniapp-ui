@@ -256,7 +256,7 @@ describe("uiCascader 组件", () => {
         props: { options: mockOptions },
         global: globalStubs,
       })
-      expect(wrapper.props("closeIcon")).toBe("cross")
+      expect(wrapper.props("closeIcon")).toBe("close")
     })
 
     it("默认 closeIconSize 应该是 32rpx", () => {
@@ -315,6 +315,85 @@ describe("uiCascader 组件", () => {
     })
   })
 
+  describe("交互流程", () => {
+    it("选择到叶子节点应触发 finish 与 update:modelValue", async () => {
+      const wrapper = mount(UiCascader, {
+        props: { options: mockOptions, show: true },
+        global: {
+          ...globalStubs,
+          stubs: {
+            ...globalStubs.stubs,
+            "ui-popup": {
+              name: "ui-popup",
+              template: "<div class=\"ui-popup\"><slot /></div>",
+              props: ["show"],
+            },
+          },
+        },
+      })
+
+      await waitForTransition()
+
+      const firstLevel = wrapper.findAll(".ui-cascader__options__option")
+      await firstLevel[0].trigger("click")
+      await waitForTransition()
+
+      const secondLevel = wrapper.findAll(".ui-cascader__options__option")
+      await secondLevel[0].trigger("click")
+      await waitForTransition()
+
+      const thirdLevel = wrapper.findAll(".ui-cascader__options__option")
+      await thirdLevel[0].trigger("click")
+
+      expect(wrapper.emitted("finish")).toBeTruthy()
+      expect(wrapper.emitted("update:modelValue")).toBeTruthy()
+    })
+
+    it("禁用选项点击不应触发 change", async () => {
+      const options = [
+        { text: "禁用项", value: "disabled", disabled: true },
+      ]
+      const wrapper = mount(UiCascader, {
+        props: { options },
+        global: globalStubs,
+      })
+
+      await waitForTransition()
+
+      await wrapper.find(".ui-cascader__options__option").trigger("click")
+      expect(wrapper.emitted("change")).toBeFalsy()
+    })
+
+    it("beforeChange Promise reject 时不应更新选中", async () => {
+      const beforeChange = vi.fn(() => Promise.reject(new Error("reject")))
+      const wrapper = mount(UiCascader, {
+        props: { options: mockOptions, beforeChange },
+        global: globalStubs,
+      })
+
+      await waitForTransition()
+
+      await wrapper.findAll(".ui-cascader__options__option")[0].trigger("click")
+      await Promise.resolve()
+
+      expect(wrapper.emitted("change")).toBeFalsy()
+      expect(wrapper.emitted("finish")).toBeFalsy()
+      expect(wrapper.emitted("update:modelValue")).toBeFalsy()
+    })
+
+    it("点击标签应触发 clickTab 事件", async () => {
+      const wrapper = mount(UiCascader, {
+        props: { options: mockOptions },
+        global: globalStubs,
+      })
+
+      await waitForTransition()
+
+      await wrapper.findAll(".ui-cascader__tabs__tab")[0].trigger("click")
+      expect(wrapper.emitted("clickTab")).toBeTruthy()
+    })
+  })
+
   describe("插槽测试", () => {
     it("应该支持 title 插槽", async () => {
       const wrapper = mount(UiCascader, {
@@ -338,6 +417,18 @@ describe("uiCascader 组件", () => {
       })
       await waitForTransition()
       expect(wrapper.find(".custom-close").exists()).toBe(true)
+    })
+
+    it("应该支持 empty 插槽", async () => {
+      const wrapper = mount(UiCascader, {
+        props: { options: [] },
+        slots: {
+          empty: "<span class=\"custom-empty\">空数据</span>",
+        },
+        global: globalStubs,
+      })
+      await waitForTransition()
+      expect(wrapper.find(".custom-empty").exists()).toBe(true)
     })
   })
 

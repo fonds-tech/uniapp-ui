@@ -154,5 +154,19 @@ describe("ui-footer 底部固定组件", () => {
 
       expect(wrapper.find(".ui-footer").exists()).toBe(true)
     })
+
+    it("resize 方法应触发 rect 与 height 事件", async () => {
+      const wrapper = mount(UiFooter, {
+        global: { stubs },
+      })
+      await waitForTransition()
+
+      await wrapper.vm.resize()
+      await waitForTransition()
+
+      expect(wrapper.emitted("rect")).toBeTruthy()
+      expect(wrapper.emitted("height")).toBeTruthy()
+      expect(wrapper.emitted("height")?.[0]?.[0]).toBe(100)
+    })
   })
 })

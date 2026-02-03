@@ -3,6 +3,23 @@ import { mount } from "@vue/test-utils"
 import { waitForTransition } from "../setup"
 import { it, vi, expect, describe, afterEach, beforeEach } from "vitest"
 
+const popupStub = {
+  name: "ui-popup",
+  template: "<div class=\"ui-popup-stub\" :data-show=\"show\"><slot name=\"header\" /><slot /><slot name=\"footer\" /></div>",
+  props: ["show"],
+}
+
+const pickerViewStub = {
+  name: "picker-view",
+  template: "<div class=\"picker-view-stub\"><slot /></div>",
+  props: ["value", "indicatorStyle"],
+}
+
+const pickerViewColumnStub = {
+  name: "picker-view-column",
+  template: "<div class=\"picker-view-column-stub\"><slot /></div>",
+}
+
 describe("uiDatePicker 组件", () => {
   beforeEach(() => {
     vi.useFakeTimers()
@@ -637,6 +654,123 @@ describe("uiDatePicker 组件", () => {
     })
   })
 
+  describe("交互与方法", () => {
+    it("confirm 方法应触发 confirm 与 update:modelValue", async () => {
+      const wrapper = mount(UiDatePicker, {
+        props: { show: true, modelValue: "2024-01-15", format: "YYYY-MM-DD" },
+        global: {
+          stubs: {
+            "ui-popup": popupStub,
+            "picker-view": pickerViewStub,
+            "picker-view-column": pickerViewColumnStub,
+            "ui-button": true,
+          },
+        },
+      })
+      await waitForTransition()
+
+      wrapper.vm.confirm()
+      await waitForTransition()
+
+      expect(wrapper.emitted("confirm")).toBeTruthy()
+      expect(wrapper.emitted("update:modelValue")).toBeTruthy()
+      expect(wrapper.emitted("update:show")?.slice(-1)[0]).toEqual([false])
+    })
+
+    it("cancel 方法应触发 cancel 并关闭", async () => {
+      const wrapper = mount(UiDatePicker, {
+        props: { show: true, modelValue: "2024-01-15", format: "YYYY-MM-DD" },
+        global: {
+          stubs: {
+            "ui-popup": popupStub,
+            "picker-view": pickerViewStub,
+            "picker-view-column": pickerViewColumnStub,
+            "ui-button": true,
+          },
+        },
+      })
+      await waitForTransition()
+
+      wrapper.vm.cancel()
+      await waitForTransition()
+
+      expect(wrapper.emitted("cancel")).toBeTruthy()
+      expect(wrapper.emitted("update:show")?.slice(-1)[0]).toEqual([false])
+    })
+
+    it("open/close 方法应更新 show", async () => {
+      const wrapper = mount(UiDatePicker, {
+        global: {
+          stubs: {
+            "ui-popup": popupStub,
+            "picker-view": pickerViewStub,
+            "picker-view-column": pickerViewColumnStub,
+          },
+        },
+      })
+      await waitForTransition()
+
+      wrapper.vm.open()
+      await waitForTransition()
+      expect(wrapper.emitted("update:show")?.slice(-1)[0]).toEqual([true])
+
+      wrapper.vm.close()
+      await waitForTransition()
+      expect(wrapper.emitted("update:show")?.slice(-1)[0]).toEqual([false])
+    })
+  })
+
+  describe("渲染逻辑补充", () => {
+    it("showHeader 为 false 时不应渲染 header", async () => {
+      const wrapper = mount(UiDatePicker, {
+        props: { show: true, showHeader: false },
+        global: {
+          stubs: {
+            "ui-popup": popupStub,
+            "picker-view": pickerViewStub,
+            "picker-view-column": pickerViewColumnStub,
+          },
+        },
+      })
+      await waitForTransition()
+
+      expect(wrapper.find(".ui-date-picker__header").exists()).toBe(false)
+    })
+
+    it("columnFilter 与 columnFormatter 应生效", async () => {
+      const columnFormatter = vi.fn((_type, option) => ({
+        ...option,
+        text: `${option.text}年`,
+      }))
+      const columnFilter = vi.fn((_type, options) => options.filter((option) => Number(option.value) % 2 === 0))
+
+      const wrapper = mount(UiDatePicker, {
+        props: {
+          show: true,
+          columns: ["year"],
+          minDate: "2024-01-01",
+          maxDate: "2025-12-31",
+          columnFormatter,
+          columnFilter,
+        },
+        global: {
+          stubs: {
+            "ui-popup": popupStub,
+            "picker-view": pickerViewStub,
+            "picker-view-column": pickerViewColumnStub,
+          },
+        },
+      })
+      await waitForTransition()
+
+      expect(columnFormatter).toHaveBeenCalled()
+      expect(columnFilter).toHaveBeenCalled()
+      const text = wrapper.find(".ui-date-picker__options").text()
+      expect(text).toContain("2024年")
+      expect(text).not.toContain("2025年")
+    })
+  })
+
   describe("边界情况测试", () => {
     it("不设置任何 props 时应该使用默认值", () => {
       const wrapper = mount(UiDatePicker, {
@@ -651,6 +785,28 @@ describe("uiDatePicker 组件", () => {
       expect(wrapper.props("show")).toBe(false)
       expect(wrapper.props("modelValue")).toBe("")
       expect(wrapper.props("columns")).toEqual(["year", "month", "day"])
+    })
+
+    it("modelValue 超出范围时应被限制", async () => {
+      const wrapper = mount(UiDatePicker, {
+        props: {
+          show: true,
+          modelValue: "2010-01-01",
+          minDate: "2020-01-01",
+          maxDate: "2025-12-31",
+          format: "YYYY-MM-DD",
+        },
+        global: {
+          stubs: {
+            "ui-popup": popupStub,
+            "picker-view": pickerViewStub,
+            "picker-view-column": pickerViewColumnStub,
+          },
+        },
+      })
+      await waitForTransition()
+
+      expect(wrapper.vm.getSelectedValue()).toBe("2020-01-01")
     })
   })
 })
