@@ -1,15 +1,6 @@
 <template>
   <view class="ui-timeline" :class="[classes, customClass]" :style="[style]">
     <slot />
-    <!-- 加载中状态 -->
-    <view v-if="pending" class="ui-timeline__pending">
-      <view class="ui-timeline__pending-dot">
-        <ui-loading size="24rpx" />
-      </view>
-      <view class="ui-timeline__pending-content">
-        <slot name="pending">加载中...</slot>
-      </view>
-    </view>
   </view>
 </template>
 
@@ -47,9 +38,6 @@ const classes = computed(() => {
   if (props.reverse) {
     list.push("ui-timeline--reverse")
   }
-  if (props.pending) {
-    list.push("ui-timeline--pending")
-  }
   return list
 })
 
@@ -76,27 +64,6 @@ export default {
 
   &--reverse {
     flex-direction: column-reverse;
-  }
-
-  &__pending {
-    display: flex;
-    align-items: flex-start;
-  }
-
-  &__pending-dot {
-    width: 48rpx;
-    height: 48rpx;
-    display: flex;
-    align-items: center;
-    flex-shrink: 0;
-    justify-content: center;
-  }
-
-  &__pending-content {
-    flex: 1;
-    color: var(--ui-color-text-secondary);
-    font-size: 28rpx;
-    padding-left: 24rpx;
   }
 }
 </style>
