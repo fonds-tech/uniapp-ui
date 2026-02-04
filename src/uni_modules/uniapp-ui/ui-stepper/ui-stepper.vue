@@ -372,6 +372,7 @@ export default {
   flex-shrink: 0;
   user-select: none;
   justify-content: center;
+  height: var(--stepper-height);
 
   // 尺寸
   &--small {
@@ -397,8 +398,6 @@ export default {
     --stepper-button-size: 88rpx;
     --stepper-input-width: 96rpx;
   }
-
-  height: var(--stepper-height);
 
   &--disabled {
     opacity: var(--ui-opacity-disabled);

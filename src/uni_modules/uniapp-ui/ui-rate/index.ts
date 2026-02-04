@@ -4,8 +4,8 @@ import { buildDefaultProps } from "../utils/props"
 
 const defaultProps = buildDefaultProps("rate", {
   modelValue: 0,
-  icon: "star-fill",
-  voidIcon: "star",
+  icon: "star",
+  voidIcon: "star-o",
   count: 5,
   size: "40rpx",
   color: "primary",
