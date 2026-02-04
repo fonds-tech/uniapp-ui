@@ -1,33 +1,32 @@
 <template>
-  <view class="ui-tooltip-wrapper">
-    <!-- 触发元素容器 -->
-    <view
-      class="ui-tooltip__reference"
-      @click="onClickReference"
-      @mouseenter="onMouseEnter"
-      @mouseleave="onMouseLeave"
-    >
-      <slot />
-    </view>
-    <!-- 提示内容 -->
-    <view
-      v-if="inited"
-      class="ui-tooltip"
-      :class="[tooltipClass, props.customClass]"
-      :style="[tooltipStyle]"
-      @transitionend="transition.end"
-      @touchmove.stop="() => {}"
-      @mouseenter="onTooltipMouseEnter"
-      @mouseleave="onTooltipMouseLeave"
-    >
-      <!-- 箭头 -->
-      <view v-if="props.showArrow" class="ui-tooltip__arrow" :class="[arrowClass]" :style="arrowStyle" />
-      <!-- 内容区域 -->
-      <view class="ui-tooltip__content">
-        <slot name="content">
-          <text class="ui-tooltip__text">{{ props.content }}</text>
-        </slot>
+  <view class="ui-tooltip" :class="[props.customClass]" :style="[rootStyle]" @click.stop="noop">
+    <!-- 用于测量尺寸的隐藏元素 -->
+    <view id="measure" class="ui-tooltip__measure">
+      <view class="ui-tooltip__popup">
+        <view v-if="!$slots.content" class="ui-tooltip__inner">{{ props.content }}</view>
+        <slot v-else name="content" />
       </view>
+    </view>
+
+    <!-- 提示框 -->
+    <ui-transition :show="showTooltip" name="fade" :duration="props.duration" custom-class="ui-tooltip__pos" :custom-style="popupStyle">
+      <view class="ui-tooltip__popup">
+        <!-- 箭头 -->
+        <view v-if="props.showArrow" class="ui-tooltip__arrow" :class="[arrowClass]" :style="[arrowStyle]" />
+        <!-- 内容 -->
+        <view class="ui-tooltip__inner">
+          <slot name="content">
+            <text class="ui-tooltip__text">{{ props.content }}</text>
+          </slot>
+        </view>
+        <!-- 关闭按钮 -->
+        <ui-icon v-if="props.showClose" name="close" class="ui-tooltip__close" size="24rpx" @click="close" />
+      </view>
+    </ui-transition>
+
+    <!-- 触发元素 -->
+    <view id="target" class="ui-tooltip__target" @click="onClickTarget">
+      <slot />
     </view>
   </view>
 </template>
@@ -35,10 +34,9 @@
 <script setup lang="ts">
 import type { CSSProperties } from "vue"
 import type { TooltipPlacement } from "./index"
-import { isNumber } from "../utils/check"
 import { tooltipEmits, tooltipProps } from "./index"
-import { ref, watch, computed, onMounted, onUnmounted, getCurrentInstance } from "vue"
-import { useRect, useUnit, useColor, useStyle, useTransition, useGlobalZIndex } from "../hooks"
+import { ref, watch, computed, onMounted, getCurrentInstance } from "vue"
+import { useRect, useUnit, useColor, useStyle, useGlobalZIndex } from "../hooks"
 
 defineOptions({ name: "ui-tooltip" })
 
@@ -48,88 +46,218 @@ const emits = defineEmits(tooltipEmits)
 // 组件实例
 const instance = getCurrentInstance()
 
-// 过渡动画 hook
-const transition = useTransition()
+// 控制显示
+const showTooltip = ref(false)
 
-// 层级管理
-const currentZIndex = ref<number>()
+// 触发元素尺寸
+const targetWidth = ref(0)
+const targetHeight = ref(0)
 
-// 控制提示框可见性
-const visible = ref(false)
+// 弹出框尺寸
+const popupWidth = ref(0)
+const popupHeight = ref(0)
 
-// 触发元素位置信息
-const referenceRect = ref<UniApp.NodeInfo>({})
+// 弹出框位置样式
+const popupPositionStyle = ref<CSSProperties>({})
 
-// 计算后的提示框位置
-const tooltipPosition = ref<{ top?: string; left?: string; right?: string; bottom?: string }>({})
+// 层级
+const zIndex = ref<number>()
 
-// 是否已初始化
-const inited = computed(() => transition.inited.value)
+// 箭头大小
+const ARROW_SIZE = 5
 
-// hover 延时定时器
-let hoverTimer: ReturnType<typeof setTimeout> | null = null
+// 根节点样式
+const rootStyle = computed(() => {
+  return useStyle(props.customStyle)
+})
 
-// 是否支持 hover（仅 H5 平台支持）
-let supportsHover = false
-// #ifdef H5
-supportsHover = true
-// #endif
-
-// 提示框样式
-const tooltipStyle = computed(() => {
-  const style: CSSProperties = {}
-  style.zIndex = currentZIndex.value
-
-  // 背景色
+// 弹出框样式
+const popupStyle = computed(() => {
+  const style: CSSProperties = {
+    zIndex: zIndex.value,
+  }
   if (props.bgColor) {
     style.backgroundColor = useColor(props.bgColor)
   }
-
-  // 文字颜色
   if (props.textColor) {
     style.color = useColor(props.textColor)
   }
-
-  // 最大宽度
   if (props.maxWidth) {
     style.maxWidth = useUnit(props.maxWidth)
   }
-
-  // 合并位置样式
-  Object.assign(style, tooltipPosition.value)
-  return useStyle({ ...style, ...useStyle(props.customStyle), ...transition.styles.value })
-})
-
-// 提示框类名
-const tooltipClass = computed(() => {
-  const list: string[] = [`ui-tooltip--${props.placement}`, transition.classs.value]
-  return list
+  Object.assign(style, popupPositionStyle.value)
+  return useStyle(style)
 })
 
 // 箭头类名
 const arrowClass = computed(() => {
   const placement = props.placement as TooltipPlacement
-  // 根据位置确定箭头方向
-  if (placement === "top") return "ui-tooltip__arrow--bottom"
-  if (placement === "bottom") return "ui-tooltip__arrow--top"
-  if (placement === "left") return "ui-tooltip__arrow--right"
-  if (placement === "right") return "ui-tooltip__arrow--left"
-  return ""
-})
-
-// 箭头样式（自定义背景色时同步）
-const arrowStyle = computed<CSSProperties>(() => {
-  if (props.bgColor) {
-    return { backgroundColor: useColor(props.bgColor) }
+  const map: Record<string, string> = {
+    top: "ui-tooltip__arrow--down",
+    "top-start": "ui-tooltip__arrow--down",
+    "top-end": "ui-tooltip__arrow--down",
+    bottom: "ui-tooltip__arrow--up",
+    "bottom-start": "ui-tooltip__arrow--up",
+    "bottom-end": "ui-tooltip__arrow--up",
+    left: "ui-tooltip__arrow--right",
+    "left-start": "ui-tooltip__arrow--right",
+    "left-end": "ui-tooltip__arrow--right",
+    right: "ui-tooltip__arrow--left",
+    "right-start": "ui-tooltip__arrow--left",
+    "right-end": "ui-tooltip__arrow--left",
   }
-  return {}
+  return map[placement] || "ui-tooltip__arrow--down"
 })
 
-// 过渡事件绑定
-transition.on("before-enter", () => emits("open"))
-transition.on("after-leave", () => emits("close"))
+// 箭头样式
+const arrowStyle = computed<CSSProperties>(() => {
+  const style: CSSProperties = {}
+  if (props.bgColor) {
+    style.borderTopColor = useColor(props.bgColor)
+  }
+  return style
+})
 
-// 监听 visible 变化
+// 空操作
+function noop() {}
+
+// 初始化尺寸
+async function initRect() {
+  if (!instance) return
+
+  const [targetRect, popupRect] = await Promise.all([
+    useRect("#target", instance),
+    useRect("#measure", instance),
+  ])
+
+  if (targetRect) {
+    targetWidth.value = targetRect.width || 0
+    targetHeight.value = targetRect.height || 0
+  }
+  if (popupRect) {
+    popupWidth.value = popupRect.width || 0
+    popupHeight.value = popupRect.height || 0
+  }
+}
+
+// 计算位置
+function calculatePosition() {
+  const placement = props.placement as TooltipPlacement
+  const offset = typeof props.offset === "number" ? props.offset : 0
+  const arrowOffset = props.showArrow ? ARROW_SIZE + 4 : 4
+
+  const tw = targetWidth.value
+  const th = targetHeight.value
+  const pw = popupWidth.value
+  const ph = popupHeight.value
+
+  const style: CSSProperties = {}
+
+  // 基于 placement 计算位置
+  switch (placement) {
+    // 上方
+    case "top":
+      style.bottom = `${th + arrowOffset + offset}px`
+      style.left = `${(tw - pw) / 2}px`
+      break
+    case "top-start":
+      style.bottom = `${th + arrowOffset + offset}px`
+      style.left = "0"
+      break
+    case "top-end":
+      style.bottom = `${th + arrowOffset + offset}px`
+      style.right = "0"
+      break
+
+    // 下方
+    case "bottom":
+      style.top = `${th + arrowOffset + offset}px`
+      style.left = `${(tw - pw) / 2}px`
+      break
+    case "bottom-start":
+      style.top = `${th + arrowOffset + offset}px`
+      style.left = "0"
+      break
+    case "bottom-end":
+      style.top = `${th + arrowOffset + offset}px`
+      style.right = "0"
+      break
+
+    // 左侧
+    case "left":
+      style.right = `${tw + arrowOffset + offset}px`
+      style.top = `${(th - ph) / 2}px`
+      break
+    case "left-start":
+      style.right = `${tw + arrowOffset + offset}px`
+      style.top = "0"
+      break
+    case "left-end":
+      style.right = `${tw + arrowOffset + offset}px`
+      style.bottom = "0"
+      break
+
+    // 右侧
+    case "right":
+      style.left = `${tw + arrowOffset + offset}px`
+      style.top = `${(th - ph) / 2}px`
+      break
+    case "right-start":
+      style.left = `${tw + arrowOffset + offset}px`
+      style.top = "0"
+      break
+    case "right-end":
+      style.left = `${tw + arrowOffset + offset}px`
+      style.bottom = "0"
+      break
+
+    default:
+      style.bottom = `${th + arrowOffset + offset}px`
+      style.left = `${(tw - pw) / 2}px`
+  }
+
+  popupPositionStyle.value = style
+}
+
+// 打开
+async function open() {
+  if (props.disabled) return
+  if (showTooltip.value) return
+
+  await initRect()
+  calculatePosition()
+  zIndex.value = useGlobalZIndex()
+  showTooltip.value = true
+  emits("update:visible", true)
+  emits("open")
+}
+
+// 关闭
+function close() {
+  if (!showTooltip.value) return
+  showTooltip.value = false
+  emits("update:visible", false)
+  emits("close")
+}
+
+// 切换
+function toggle() {
+  if (showTooltip.value) {
+    close()
+  } else {
+    open()
+  }
+}
+
+// 点击触发元素
+function onClickTarget() {
+  if (props.disabled) return
+  if (props.trigger === "click") {
+    toggle()
+  }
+}
+
+// 监听 visible
 watch(
   () => props.visible,
   (val) => {
@@ -139,154 +267,19 @@ watch(
   { immediate: true },
 )
 
-// 监听 duration 变化
-watch(() => props.duration, initTransition, { immediate: true })
+// 监听 placement 变化
+watch(
+  () => props.placement,
+  () => {
+    if (showTooltip.value) {
+      calculatePosition()
+    }
+  },
+)
 
-// 组件挂载
 onMounted(() => {
-  // 初始获取位置
-  updateReferenceRect()
+  initRect()
 })
-
-// 组件卸载时清理定时器
-onUnmounted(() => {
-  clearHoverTimer()
-})
-
-// 清除 hover 定时器
-function clearHoverTimer() {
-  if (hoverTimer) {
-    clearTimeout(hoverTimer)
-    hoverTimer = null
-  }
-}
-
-// 初始化过渡动画
-function initTransition() {
-  transition.init({ name: "fade", duration: props.duration })
-}
-
-// 更新触发元素位置
-async function updateReferenceRect() {
-  if (!instance) return
-  referenceRect.value = await useRect(".ui-tooltip__reference", instance)
-  calculatePosition()
-}
-
-// 计算提示框位置
-function calculatePosition() {
-  const rect = referenceRect.value
-  if (!rect || rect.width === undefined) return
-
-  const offsetValue = isNumber(props.offset) ? Number(props.offset) : 8
-  const placement = props.placement as TooltipPlacement
-  const position: { top?: string; left?: string; right?: string; bottom?: string } = {}
-
-  // 基于触发元素的位置计算提示框位置
-  const top = rect.top || 0
-  const left = rect.left || 0
-  const width = rect.width || 0
-  const height = rect.height || 0
-
-  switch (placement) {
-    case "top":
-      position.top = `${top - offsetValue}px`
-      position.left = `${left + width / 2}px`
-      break
-    case "bottom":
-      position.top = `${top + height + offsetValue}px`
-      position.left = `${left + width / 2}px`
-      break
-    case "left":
-      position.top = `${top + height / 2}px`
-      position.left = `${left - offsetValue}px`
-      break
-    case "right":
-      position.top = `${top + height / 2}px`
-      position.left = `${left + width + offsetValue}px`
-      break
-  }
-
-  tooltipPosition.value = position
-}
-
-// 打开提示框
-async function open() {
-  if (props.disabled) return
-  if (transition.visible.value) return
-  initTransition()
-  await updateReferenceRect()
-  currentZIndex.value = isNumber(props.zIndex) ? +props.zIndex! : useGlobalZIndex()
-  visible.value = true
-  transition.enter()
-  emits("update:visible", true)
-}
-
-// 关闭提示框
-function close() {
-  if (transition.visible.value) {
-    visible.value = false
-    transition.leave()
-    emits("update:visible", false)
-  }
-}
-
-// 切换显示状态
-function toggle() {
-  if (visible.value) {
-    close()
-  } else {
-    open()
-  }
-}
-
-// 点击触发元素
-function onClickReference() {
-  if (props.disabled) return
-  if (props.trigger === "click") {
-    toggle()
-  }
-}
-
-// 鼠标进入触发元素
-function onMouseEnter() {
-  if (!supportsHover) return
-  if (props.disabled) return
-  if (props.trigger !== "hover") return
-  // 清除关闭定时器
-  clearHoverTimer()
-  open()
-}
-
-// 鼠标离开触发元素
-function onMouseLeave() {
-  if (!supportsHover) return
-  if (props.disabled) return
-  if (props.trigger !== "hover") return
-  // 延迟关闭，避免快速移动时闪烁
-  hoverTimer = setTimeout(() => {
-    close()
-    hoverTimer = null
-  }, 100)
-}
-
-// 鼠标进入提示框（保持显示）
-function onTooltipMouseEnter() {
-  if (!supportsHover) return
-  if (props.trigger !== "hover") return
-  clearHoverTimer()
-}
-
-// 鼠标离开提示框
-function onTooltipMouseLeave() {
-  if (!supportsHover) return
-  if (props.disabled) return
-  if (props.trigger !== "hover") return
-  hoverTimer = setTimeout(() => {
-    close()
-    hoverTimer = null
-  }, 100)
-}
 
 defineExpose({ open, close, toggle })
 </script>
@@ -299,91 +292,111 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@use "../styles/animation.scss";
-
-.ui-tooltip-wrapper {
+.ui-tooltip {
   display: inline-block;
   position: relative;
-}
 
-.ui-tooltip__reference {
-  display: inline-block;
-}
-
-.ui-tooltip {
-  color: var(--ui-color-white);
-  padding: var(--ui-spacing-sm) var(--ui-spacing-md);
-  position: fixed;
-  font-size: var(--ui-font-size-sm);
-  word-wrap: break-word;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-  line-height: 1.4;
-  border-radius: var(--ui-radius-sm);
-  background-color: #4a4a4a;
-  transform-origin: center;
-  transition-duration: var(--ui-transition-duration);
-
-  // 位置相关样式 - transform 用于居中调整
-  &--top {
-    transform: translateX(-50%) translateY(-100%);
-    transform-origin: bottom center;
+  // 隐藏的测量元素
+  &__measure {
+    top: 0;
+    left: -9999px;
+    opacity: 0;
+    z-index: -1;
+    position: absolute;
+    visibility: hidden;
+    pointer-events: none;
   }
 
-  &--bottom {
-    transform: translateX(-50%);
-    transform-origin: top center;
+  // 弹出框定位容器
+  :deep(.ui-tooltip__pos) {
+    position: absolute;
+    min-width: 10px;
   }
 
-  &--left {
-    transform: translateX(-100%) translateY(-50%);
-    transform-origin: right center;
+  // 弹出框
+  &__popup {
+    color: #fff;
+    padding: 8px 12px;
+    position: relative;
+    font-size: var(--ui-font-size-sm);
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15);
+    line-height: 1.5;
+    white-space: nowrap;
+    border-radius: 4px;
+    backdrop-filter: blur(10px);
+    background-color: rgba(38, 39, 40, 0.85);
   }
 
-  &--right {
-    transform: translateY(-50%);
-    transform-origin: left center;
+  // 箭头基础样式
+  &__arrow {
+    width: 0;
+    height: 0;
+    position: absolute;
+    border-color: transparent;
+    border-style: solid;
+    border-width: 5px;
+
+    // 箭头朝上（弹出框在下方）
+    &--up {
+      top: -5px;
+      left: 50%;
+      transform: translateX(-50%);
+      border-top-width: 0;
+      border-bottom-color: rgba(38, 39, 40, 0.85);
+    }
+
+    // 箭头朝下（弹出框在上方）
+    &--down {
+      left: 50%;
+      bottom: -5px;
+      transform: translateX(-50%);
+      border-top-color: rgba(38, 39, 40, 0.85);
+      border-bottom-width: 0;
+    }
+
+    // 箭头朝左（弹出框在右侧）
+    &--left {
+      top: 50%;
+      left: -5px;
+      transform: translateY(-50%);
+      border-left-width: 0;
+      border-right-color: rgba(38, 39, 40, 0.85);
+    }
+
+    // 箭头朝右（弹出框在左侧）
+    &--right {
+      top: 50%;
+      right: -5px;
+      transform: translateY(-50%);
+      border-left-color: rgba(38, 39, 40, 0.85);
+      border-right-width: 0;
+    }
   }
-}
 
-.ui-tooltip__arrow {
-  width: 16rpx;
-  height: 16rpx;
-  position: absolute;
-  transform: rotate(45deg);
-  background-color: #4a4a4a;
-
-  &--top {
-    top: -8rpx;
-    left: 50%;
-    margin-left: -8rpx;
+  &__inner {
+    overflow: hidden;
   }
 
-  &--bottom {
-    left: 50%;
-    bottom: -8rpx;
-    margin-left: -8rpx;
+  &__text {
+    color: inherit;
+    font-size: inherit;
+    line-height: inherit;
   }
 
-  &--left {
-    top: 50%;
-    left: -8rpx;
-    margin-top: -8rpx;
+  &__close {
+    top: 4px;
+    color: rgba(255, 255, 255, 0.6);
+    right: 4px;
+    cursor: pointer;
+    position: absolute;
+
+    &:active {
+      opacity: 0.7;
+    }
   }
 
-  &--right {
-    top: 50%;
-    right: -8rpx;
-    margin-top: -8rpx;
+  &__target {
+    display: inline-block;
   }
-}
-
-.ui-tooltip__content {
-  overflow: hidden;
-}
-
-.ui-tooltip__text {
-  color: inherit;
-  font-size: inherit;
-  line-height: inherit;
 }
 </style>

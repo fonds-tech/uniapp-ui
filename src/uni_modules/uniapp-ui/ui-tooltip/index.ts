@@ -5,7 +5,19 @@ import { buildDefaultProps } from "../utils/props"
 /**
  * 提示框弹出位置类型
  */
-export type TooltipPlacement = "top" | "bottom" | "left" | "right"
+export type TooltipPlacement =
+  | "top"
+  | "top-start"
+  | "top-end"
+  | "bottom"
+  | "bottom-start"
+  | "bottom-end"
+  | "left"
+  | "left-start"
+  | "left-end"
+  | "right"
+  | "right-start"
+  | "right-end"
 
 /**
  * 提示框触发方式
@@ -19,12 +31,13 @@ const defaultProps = buildDefaultProps("tooltip", {
   trigger: "click",
   visible: false,
   disabled: false,
-  offset: 8,
+  offset: 0,
   showArrow: true,
+  showClose: false,
   bgColor: undefined,
   textColor: undefined,
   maxWidth: "300rpx",
-  duration: 300,
+  duration: 200,
   zIndex: undefined,
   customClass: "",
   customStyle: undefined,
@@ -45,6 +58,8 @@ export const tooltipProps = {
   offset: defaultProps("offset", { type: [Number, String] }),
   /** 是否显示箭头 */
   showArrow: defaultProps("showArrow", { type: Boolean }),
+  /** 是否显示关闭按钮 */
+  showClose: defaultProps("showClose", { type: Boolean }),
   /** 背景颜色 */
   bgColor: defaultProps("bgColor", { type: String }),
   /** 文字颜色 */
