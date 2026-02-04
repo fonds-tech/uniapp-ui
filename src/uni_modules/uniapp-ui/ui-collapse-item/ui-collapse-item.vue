@@ -1,24 +1,46 @@
 <template>
   <view class="ui-collapse-item" :class="[rootClass, props.customClass]" :style="[rootStyle]">
     <!-- 头部区域 -->
-    <view class="ui-collapse-item__header" :class="[headerClass]" :style="[headerStyle]" :hover-class="hoverClass" :hover-stay-time="0" @click="onClickHeader">
-      <slot name="title" :expanded="expanded" :disabled="props.disabled">
-        <text class="ui-collapse-item__title">{{ props.title }}</text>
-      </slot>
-      <!-- 右侧箭头 -->
-      <view v-if="props.isLink" class="ui-collapse-item__arrow" :class="[arrowClass]">
-        <ui-icon name="down" />
+    <view
+      class="ui-collapse-item__header"
+      :class="[headerClassList, props.headerClass]"
+      :style="[headerStyleComputed]"
+      :hover-class="hoverClass"
+      :hover-stay-time="0"
+      @click="onClickHeader"
+    >
+      <!-- 左侧图标 -->
+      <view v-if="props.icon" class="ui-collapse-item__icon" :style="[iconStyle]">
+        <ui-icon :name="props.icon" :size="props.iconSize" :color="iconColorValue" :weight="props.iconWeight" />
       </view>
+
+      <!-- 标题区域 -->
+      <view class="ui-collapse-item__title-wrapper">
+        <slot name="title" :expanded="expanded" :disabled="props.disabled">
+          <text class="ui-collapse-item__title" :style="[titleStyle]">{{ props.title }}</text>
+        </slot>
+        <!-- 描述标签 -->
+        <text v-if="props.label" class="ui-collapse-item__label" :style="[labelStyle]">{{ props.label }}</text>
+      </view>
+
+      <!-- 右侧值 -->
+      <text v-if="props.value" class="ui-collapse-item__value" :style="[valueStyle]">{{ props.value }}</text>
+
+      <!-- 右侧箭头 -->
+      <view v-if="props.isLink" class="ui-collapse-item__arrow" :class="[arrowClassList]" :style="[arrowStyle]">
+        <ui-icon name="down" :size="props.arrowSize" :color="arrowColorValue" />
+      </view>
+
       <!-- 分割线 -->
-      <view class="ui-collapse-item__divider" :style="[dividerStyle]" />
+      <view v-if="props.border" class="ui-collapse-item__divider" :style="[dividerStyle]" />
     </view>
 
     <!-- 内容区域（带展开/收起动画） -->
     <view class="ui-collapse-item__wrapper" :style="[wrapperStyle]" @transitionend="onTransitionEnd">
-      <view :id="contentId" class="ui-collapse-item__body" :style="[bodyStyle]">
+      <view :id="contentId" class="ui-collapse-item__body" :class="[props.bodyClass]" :style="[bodyStyleComputed]">
         <slot />
         <!-- 展开时的分割线 -->
-        <view v-if="expanded" class="ui-collapse-item__divider" :style="[dividerStyle]" />
+        <view v-if="expanded && props.border" class="ui-collapse-item__divider" :style="[dividerStyle]" />
       </view>
     </view>
   </view>
@@ -28,8 +50,8 @@
 import type { CSSProperties } from "vue"
 import { uuid } from "../utils/utils"
 import { collapseKey } from "../ui-collapse"
-import { useRect, useStyle, useParent } from "../hooks"
 import { collapseItemEmits, collapseItemProps } from "./index"
+import { useRect, useUnit, useColor, useStyle, useParent } from "../hooks"
 import { ref, watch, computed, onMounted, getCurrentInstance } from "vue"
 
 defineOptions({ name: "ui-collapse-item" })
@@ -38,7 +60,7 @@ const props = defineProps(collapseItemProps)
 const emits = defineEmits(collapseItemEmits)
 
 // 获取父组件
-const { index, parent } = useParent(collapseKey)
+const { parent } = useParent(collapseKey)
 
 // 组件实例
 const instance = getCurrentInstance()!
@@ -64,41 +86,28 @@ const isSelected = computed(() => {
 // 计算 padding 值
 const paddingValue = computed(() => {
   if (!props.padding) return ""
-  return typeof props.padding === "number" ? `${props.padding}rpx` : props.padding
+  return useUnit(props.padding)
+})
+
+// 图标颜色值
+const iconColorValue = computed(() => {
+  if (!props.iconColor) return ""
+  return useColor(props.iconColor)
+})
+
+// 箭头颜色值
+const arrowColorValue = computed(() => {
+  if (!props.arrowColor) return ""
+  return useColor(props.arrowColor)
 })
 
 // 根节点样式
 const rootStyle = computed(() => {
   const style: CSSProperties = {}
+  if (props.background) {
+    style.backgroundColor = useColor(props.background)
+  }
   return useStyle({ ...style, ...useStyle(props.customStyle) })
-})
-
-// 头部样式
-const headerStyle = computed(() => {
-  const style: CSSProperties = {}
-  if (paddingValue.value) {
-    style.padding = paddingValue.value
-  }
-  return style
-})
-
-// 内容区域样式
-const bodyStyle = computed(() => {
-  const style: CSSProperties = {}
-  if (paddingValue.value) {
-    style.padding = paddingValue.value
-  }
-  return style
-})
-
-// 分割线样式
-const dividerStyle = computed(() => {
-  const style: CSSProperties = {}
-  if (paddingValue.value) {
-    style.left = paddingValue.value
-    style.right = paddingValue.value
-  }
-  return style
 })
 
 // 根节点类名
@@ -110,11 +119,115 @@ const rootClass = computed(() => {
   return list
 })
 
+// 头部样式
+const headerStyleComputed = computed(() => {
+  const style: CSSProperties = {}
+  if (paddingValue.value) {
+    style.padding = paddingValue.value
+  }
+  return useStyle({ ...style, ...useStyle(props.headerStyle) })
+})
+
 // 头部类名
-const headerClass = computed(() => {
+const headerClassList = computed(() => {
   const list: string[] = []
   if (expanded.value) list.push("ui-collapse-item__header--expanded")
   return list
+})
+
+// 标题样式
+const titleStyle = computed(() => {
+  const style: CSSProperties = {}
+  if (props.titleSize) {
+    style.fontSize = useUnit(props.titleSize)
+  }
+  if (props.titleColor) {
+    style.color = useColor(props.titleColor)
+  }
+  if (props.titleWeight) {
+    style.fontWeight = String(props.titleWeight)
+  }
+  return style
+})
+
+// 描述标签样式
+const labelStyle = computed(() => {
+  const style: CSSProperties = {}
+  if (props.labelSize) {
+    style.fontSize = useUnit(props.labelSize)
+  }
+  if (props.labelColor) {
+    style.color = useColor(props.labelColor)
+  }
+  if (props.labelWeight) {
+    style.fontWeight = String(props.labelWeight)
+  }
+  if (props.labelGap) {
+    style.marginTop = useUnit(props.labelGap)
+  }
+  return style
+})
+
+// 右侧值样式
+const valueStyle = computed(() => {
+  const style: CSSProperties = {}
+  if (props.valueSize) {
+    style.fontSize = useUnit(props.valueSize)
+  }
+  if (props.valueColor) {
+    style.color = useColor(props.valueColor)
+  }
+  if (props.valueWeight) {
+    style.fontWeight = String(props.valueWeight)
+  }
+  return style
+})
+
+// 图标样式
+const iconStyle = computed(() => {
+  const style: CSSProperties = {}
+  if (props.iconGap) {
+    style.marginRight = useUnit(props.iconGap)
+  }
+  return style
+})
+
+// 箭头样式
+const arrowStyle = computed(() => {
+  const style: CSSProperties = {}
+  return style
+})
+
+// 箭头类名
+const arrowClassList = computed(() => {
+  const list: string[] = []
+  if (expanded.value) list.push("ui-collapse-item__arrow--expanded")
+  return list
+})
+
+// 内容区域样式
+const bodyStyleComputed = computed(() => {
+  const style: CSSProperties = {}
+  if (paddingValue.value) {
+    style.padding = paddingValue.value
+  }
+  return useStyle({ ...style, ...useStyle(props.bodyStyle) })
+})
+
+// 分割线样式
+const dividerStyle = computed(() => {
+  const style: CSSProperties = {}
+  if (paddingValue.value) {
+    style.left = paddingValue.value
+    style.right = paddingValue.value
+  }
+  if (props.borderColor) {
+    style.borderBottomColor = useColor(props.borderColor)
+  }
+  if (props.borderWidth) {
+    style.borderBottomWidth = useUnit(props.borderWidth)
+  }
+  return style
 })
 
 // 点击态类名
@@ -123,20 +236,14 @@ const hoverClass = computed(() => {
   return "ui-collapse-item__header--active"
 })
 
-// 箭头类名
-const arrowClass = computed(() => {
-  const list: string[] = []
-  if (expanded.value) list.push("ui-collapse-item__arrow--expanded")
-  return list
-})
-
 // 包裹器样式（控制展开/收起动画）
 const wrapperStyle = computed(() => {
   const style: CSSProperties = {}
+  const duration = props.duration || 300
 
   // 初始化后启用动画
   if (inited.value) {
-    style.transition = "height 0.3s ease-in-out"
+    style.transition = `height ${duration}ms ease-in-out`
   }
 
   // 收起状态
@@ -240,7 +347,19 @@ export default {
       color: var(--ui-color-text-disabled);
     }
 
+    .ui-collapse-item__label {
+      color: var(--ui-color-text-disabled);
+    }
+
+    .ui-collapse-item__value {
+      color: var(--ui-color-text-disabled);
+    }
+
     .ui-collapse-item__arrow {
+      color: var(--ui-color-text-disabled);
+    }
+
+    .ui-collapse-item__icon {
       color: var(--ui-color-text-disabled);
     }
   }
@@ -250,6 +369,7 @@ export default {
   }
 
   &__header {
+    gap: var(--ui-spacing-sm);
     cursor: pointer;
     display: flex;
     padding: var(--ui-spacing-md);
@@ -257,10 +377,54 @@ export default {
     position: relative;
     align-items: center;
     user-select: none;
-    justify-content: space-between;
 
     &--active {
       background-color: var(--ui-color-active);
+    }
+  }
+
+  &__icon {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+    margin-right: var(--ui-spacing-sm);
+  }
+
+  &__title-wrapper {
+    flex: 1;
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+  }
+
+  &__title {
+    color: var(--ui-color-text-primary);
+    font-size: var(--ui-font-size-sm);
+    font-weight: 500;
+  }
+
+  &__label {
+    color: var(--ui-color-text-tertiary);
+    font-size: var(--ui-font-size-xs);
+    margin-top: var(--ui-spacing-xs);
+  }
+
+  &__value {
+    color: var(--ui-color-text-secondary);
+    font-size: var(--ui-font-size-sm);
+    flex-shrink: 0;
+  }
+
+  &__arrow {
+    color: var(--ui-color-text-tertiary);
+    display: flex;
+    font-size: 24rpx;
+    transition: transform 0.3s;
+    align-items: center;
+    flex-shrink: 0;
+
+    &--expanded {
+      transform: rotate(-180deg);
     }
   }
 
@@ -288,26 +452,6 @@ export default {
   // 最后一个 item 展开时不显示内容底部分割线
   &:last-child &__body > &__divider {
     display: none;
-  }
-
-  &__title {
-    flex: 1;
-    color: var(--ui-color-text-primary);
-    font-size: var(--ui-font-size-sm);
-    font-weight: 500;
-  }
-
-  &__arrow {
-    color: var(--ui-color-text-tertiary);
-    display: block;
-    font-size: 24rpx;
-    transition: transform 0.3s;
-    flex-shrink: 0;
-    margin-left: var(--ui-spacing-sm);
-
-    &--expanded {
-      transform: rotate(-180deg);
-    }
   }
 
   &__wrapper {

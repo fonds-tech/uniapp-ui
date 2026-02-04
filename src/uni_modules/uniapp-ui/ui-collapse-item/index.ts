@@ -3,6 +3,7 @@ import type { PropType, CSSProperties, ExtractPropTypes } from "vue"
 import { buildDefaultProps } from "../utils/props"
 
 const defaultProps = buildDefaultProps("collapse-item", {
+  // 基础属性
   name: "",
   title: "",
   value: "",
@@ -14,6 +15,37 @@ const defaultProps = buildDefaultProps("collapse-item", {
   border: true,
   duration: 300,
   padding: "",
+  background: "",
+  // 标题样式
+  titleSize: "",
+  titleColor: "",
+  titleWeight: "",
+  // 描述样式
+  labelSize: "",
+  labelColor: "",
+  labelWeight: "",
+  labelGap: "",
+  // 右侧值样式
+  valueSize: "",
+  valueColor: "",
+  valueWeight: "",
+  // 图标样式
+  iconSize: "",
+  iconColor: "",
+  iconWeight: "",
+  iconGap: "",
+  // 箭头样式
+  arrowSize: "",
+  arrowColor: "",
+  // 边框样式
+  borderColor: "",
+  borderWidth: "",
+  // 区域样式
+  headerClass: "",
+  headerStyle: "",
+  bodyClass: "",
+  bodyStyle: "",
+  // 通用
   customClass: "",
   customStyle: "",
 })
@@ -41,6 +73,60 @@ export const collapseItemProps = {
   duration: defaultProps("duration", { type: Number }),
   /** 内边距 */
   padding: defaultProps("padding", { type: [String, Number] }),
+  /** 背景颜色 */
+  background: defaultProps("background", { type: String }),
+
+  /** 标题字体大小 */
+  titleSize: defaultProps("titleSize", { type: [String, Number] }),
+  /** 标题颜色 */
+  titleColor: defaultProps("titleColor", { type: String }),
+  /** 标题字重 */
+  titleWeight: defaultProps("titleWeight", { type: [String, Number] }),
+
+  /** 描述字体大小 */
+  labelSize: defaultProps("labelSize", { type: [String, Number] }),
+  /** 描述颜色 */
+  labelColor: defaultProps("labelColor", { type: String }),
+  /** 描述字重 */
+  labelWeight: defaultProps("labelWeight", { type: [String, Number] }),
+  /** 描述与标题间距 */
+  labelGap: defaultProps("labelGap", { type: [String, Number] }),
+
+  /** 右侧值字体大小 */
+  valueSize: defaultProps("valueSize", { type: [String, Number] }),
+  /** 右侧值颜色 */
+  valueColor: defaultProps("valueColor", { type: String }),
+  /** 右侧值字重 */
+  valueWeight: defaultProps("valueWeight", { type: [String, Number] }),
+
+  /** 图标大小 */
+  iconSize: defaultProps("iconSize", { type: [String, Number] }),
+  /** 图标颜色 */
+  iconColor: defaultProps("iconColor", { type: String }),
+  /** 图标字重 */
+  iconWeight: defaultProps("iconWeight", { type: [String, Number] }),
+  /** 图标与标题间距 */
+  iconGap: defaultProps("iconGap", { type: [String, Number] }),
+
+  /** 箭头大小 */
+  arrowSize: defaultProps("arrowSize", { type: [String, Number] }),
+  /** 箭头颜色 */
+  arrowColor: defaultProps("arrowColor", { type: String }),
+
+  /** 边框颜色 */
+  borderColor: defaultProps("borderColor", { type: String }),
+  /** 边框宽度 */
+  borderWidth: defaultProps("borderWidth", { type: [String, Number] }),
+
+  /** 头部区域类名 */
+  headerClass: defaultProps("headerClass", { type: String }),
+  /** 头部区域样式 */
+  headerStyle: defaultProps("headerStyle", { type: [String, Object] as PropType<string | CSSProperties> }),
+  /** 内容区域类名 */
+  bodyClass: defaultProps("bodyClass", { type: String }),
+  /** 内容区域样式 */
+  bodyStyle: defaultProps("bodyStyle", { type: [String, Object] as PropType<string | CSSProperties> }),
+
   /** 自定义类名 */
   customClass: defaultProps("customClass", { type: String }),
   /** 自定义样式 */

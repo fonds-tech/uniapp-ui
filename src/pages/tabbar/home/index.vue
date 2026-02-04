@@ -2,7 +2,7 @@
   <view class="min-h-screen bg-[#F6F7F9]">
     <view class="fixed left-0 top-0 z-50 w-full bg-white/80 backdrop-blur-md transition-all duration-300" :style="{ paddingTop: `${safeAreaInsets?.top}px` }">
       <view class="flex h-[88rpx] items-center px-[32rpx]">
-        <text class="text-[36rpx] font-bold text-slate-800">Fonds UI</text>
+        <text class="text-[36rpx] font-bold text-slate-800">UNIAPP UI</text>
       </view>
     </view>
 
@@ -139,7 +139,7 @@
 definePage({
   type: "home",
   style: {
-    navigationBarTitleText: "Fonds UI",
+    navigationBarTitleText: "UNIAPP UI",
     navigationStyle: "custom",
   },
 })

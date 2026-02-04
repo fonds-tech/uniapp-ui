@@ -15,7 +15,7 @@
         >
           <view class="i-lucide-layers text-[80rpx] text-white" />
         </view>
-        <text class="text-[40rpx] font-bold text-slate-800 mb-[12rpx]">Fonds UI</text>
+        <text class="text-[40rpx] font-bold text-slate-800 mb-[12rpx]">UNIAPP UI</text>
         <text class="text-[28rpx] text-gray-400">v{{ version }}</text>
         <view class="flex items-center mt-[24rpx] space-x-[16rpx]">
           <view class="px-[20rpx] py-[8rpx] rounded-full bg-emerald-50 text-[24rpx] text-emerald-600"> Vue 3 </view>
@@ -30,7 +30,7 @@
           <text class="text-[30rpx] font-bold text-slate-800">项目介绍</text>
         </view>
         <text class="text-[28rpx] text-gray-600 leading-relaxed">
-          Fonds UI 是一套基于 Vue 3 + TypeScript 的跨端 UI 组件库，专为 UniApp 生态打造。 提供 80+ 高质量组件，覆盖移动端开发常见场景，助力开发者快速构建优雅的应用界面。
+          UNIAPP UI 是一套基于 Vue 3 + TypeScript 的跨端 UI 组件库，专为 UniApp 生态打造。 提供 80+ 高质量组件，覆盖移动端开发常见场景，助力开发者快速构建优雅的应用界面。
         </text>
       </view>
 
@@ -95,11 +95,6 @@
             </view>
           </view>
         </view>
-      </view>
-
-      <view class="flex flex-col items-center py-[40rpx]">
-        <text class="text-[24rpx] text-gray-400">Made with ❤️ by Fonds Team</text>
-        <text class="text-[22rpx] text-gray-300 mt-[12rpx]">© 2024 Fonds UI. MIT License.</text>
       </view>
     </view>
   </view>
@@ -172,14 +167,8 @@ const contacts = [
   {
     icon: "i-lucide-github",
     label: "GitHub",
-    value: "fonds-ui",
+    value: "uniapp-ui",
     action: "github",
-  },
-  {
-    icon: "i-lucide-book-open",
-    label: "文档",
-    value: "docs.fonds-ui.com",
-    action: "docs",
   },
   {
     icon: "i-lucide-message-circle",

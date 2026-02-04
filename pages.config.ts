@@ -5,7 +5,7 @@ export default defineUniPages({
     navigationStyle: "default",
     backgroundColor: "#f5f6fa",
     navigationBarTextStyle: "black",
-    navigationBarTitleText: "Fonds UI",
+    navigationBarTitleText: "UNIAPP UI",
     navigationBarBackgroundColor: "#ffffff",
   },
   easycom: {
