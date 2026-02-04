@@ -250,7 +250,7 @@ export default {
   }
 
   &__title {
-    color: var(--ui-color-text-primary);
+    color: var(--ui-color-text);
     font-size: var(--ui-font-size-md);
     text-align: center;
     font-weight: var(--ui-font-weight-bold);
@@ -284,7 +284,7 @@ export default {
     grid-template-columns: repeat(1, minmax(0, 1fr));
 
     &:active {
-      background-color: var(--ui-color-background-dark);
+      background-color: var(--ui-color-background-hover);
     }
 
     // 操作项分割线
@@ -324,7 +324,7 @@ export default {
     }
 
     &__title {
-      color: var(--ui-color-text-primary);
+      color: var(--ui-color-text);
       font-size: var(--ui-font-size-md);
       text-align: center;
     }
@@ -349,11 +349,11 @@ export default {
 
   &__gap {
     height: var(--ui-spacing-md);
-    background-color: var(--ui-color-background-light);
+    background-color: var(--ui-color-background-page);
   }
 
   &__cancel {
-    color: var(--ui-color-text-primary);
+    color: var(--ui-color-text);
     height: var(--ui-size-large);
     margin: 0;
     display: flex;
@@ -376,9 +376,9 @@ export default {
       opacity: 0;
       position: absolute;
       transform: translate3d(-50%, -50%, -1px);
-      background: var(--ui-color-text-primary);
+      background: var(--ui-color-text);
       user-select: none;
-      border-color: var(--ui-color-text-primary);
+      border-color: var(--ui-color-text);
       border-radius: inherit;
     }
 
@@ -387,7 +387,7 @@ export default {
     }
 
     &--active {
-      background-color: var(--ui-color-background-dark);
+      background-color: var(--ui-color-background-hover);
     }
   }
 }

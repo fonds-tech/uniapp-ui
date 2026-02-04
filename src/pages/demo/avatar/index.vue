@@ -176,7 +176,7 @@ function handleClick() {
 }
 
 .demo-text {
-  color: var(--ui-color-text-primary);
+  color: var(--ui-color-text);
   font-size: 28rpx;
 }
 
@@ -197,7 +197,7 @@ function handleClick() {
 }
 
 .user-name {
-  color: var(--ui-color-text-primary);
+  color: var(--ui-color-text);
   font-size: 32rpx;
   font-weight: 500;
 }

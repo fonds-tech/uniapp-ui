@@ -185,7 +185,7 @@ export default {
       box-shadow 0.2s ease;
     align-items: center;
     border-radius: var(--ui-radius-sm);
-    background-color: var(--ui-color-background-light);
+    background-color: var(--ui-color-background-page);
 
     &--round {
       border-radius: var(--ui-radius-round);

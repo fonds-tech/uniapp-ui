@@ -92,7 +92,7 @@ export default {
 
   &.is-active {
     color: var(--ui-color-primary);
-    background-color: #fff;
+    background-color: var(--ui-color-text-inverse);
   }
 
   &__index {

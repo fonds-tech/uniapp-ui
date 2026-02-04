@@ -194,7 +194,7 @@ export default {
     height: 100%;
     overflow: hidden;
     flex-shrink: 0;
-    background-color: var(--ui-color-background-light);
+    background-color: var(--ui-color-background-page);
   }
 
   &__nav-item {
@@ -203,7 +203,7 @@ export default {
     position: relative;
     align-items: center;
     justify-content: flex-start;
-    background-color: var(--ui-color-background-light);
+    background-color: var(--ui-color-background-page);
 
     // 激活状态
     &--active {

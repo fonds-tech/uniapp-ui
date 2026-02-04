@@ -437,7 +437,7 @@ type StepDirection = "horizontal" | "vertical"
 | --ui-color-primary          | 主题色       | `#1890ff` |
 | --ui-color-danger           | 错误颜色     | `#ff4d4f` |
 | --ui-color-border           | 边框颜色     | `#ebedf0` |
-| --ui-color-text-primary     | 主文本颜色   | `#323233` |
+| --ui-color-text     | 主文本颜色   | `#323233` |
 | --ui-color-text-secondary   | 次要文本颜色 | `#969799` |
 | --ui-color-text-placeholder | 占位符颜色   | `#c8c9cc` |
 | --ui-color-background       | 背景颜色     | `#ffffff` |

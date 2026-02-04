@@ -254,8 +254,9 @@ export default {
   }
 
   &__clear {
+    cursor: pointer;
     display: flex;
-    padding: var(--ui-spacing-xs);
+    padding: var(--ui-spacing-xxs);
     box-sizing: content-box;
     align-items: center;
     margin-left: var(--ui-spacing-sm);

@@ -265,7 +265,7 @@ export default {
     }
 
     &--number {
-      color: #fff;
+      color: var(--ui-color-text-inverse);
       padding: 6rpx 20rpx;
       font-size: 22rpx;
       background: rgba(0, 0, 0, 0.4);
@@ -339,7 +339,7 @@ export default {
       opacity: 0.3;
       transition: all 0.3s ease;
       border-radius: 50%;
-      background-color: #fff;
+      background-color: var(--ui-color-text-inverse);
 
       &--active {
         opacity: 1;
@@ -347,7 +347,7 @@ export default {
     }
 
     &__number {
-      color: #fff;
+      color: var(--ui-color-text-inverse);
     }
   }
 }

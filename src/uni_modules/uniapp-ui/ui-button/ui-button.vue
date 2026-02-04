@@ -186,7 +186,7 @@ export default {
 
 <style lang="scss" scoped>
 @mixin button-type($color) {
-  color: var(--ui-color-background);
+  color: var(--ui-color-text-inverse);
   background: $color;
 
   &.ui-button--plain {
@@ -239,7 +239,7 @@ export default {
     opacity: 0;
     position: absolute;
     transform: translate(-50%, -50%);
-    background: var(--ui-color-text-primary);
+    background: var(--ui-color-text);
     transition: opacity var(--ui-transition-fast) var(--ui-transition-timing);
     user-select: none;
     border-radius: inherit;
@@ -313,7 +313,7 @@ export default {
   }
 
   &--default {
-    color: var(--ui-color-text-primary);
+    color: var(--ui-color-text);
     border: var(--ui-border-width) solid var(--ui-color-border);
     background: var(--ui-color-background);
 

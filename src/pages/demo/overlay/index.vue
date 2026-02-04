@@ -361,7 +361,7 @@ const showPreview = ref(false)
 }
 
 .overlay-text {
-  color: var(--ui-color-text-primary);
+  color: var(--ui-color-text);
   font-size: 28rpx;
 
   &--sub {
@@ -400,7 +400,7 @@ const showPreview = ref(false)
 }
 
 .confirm-title {
-  color: var(--ui-color-text-primary);
+  color: var(--ui-color-text);
   font-size: 32rpx;
   font-weight: 600;
 }

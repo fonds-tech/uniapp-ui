@@ -151,7 +151,7 @@ export default {
 
   &__badge {
     top: 50%;
-    color: #fff;
+    color: var(--ui-color-text-inverse);
     right: var(--ui-spacing-md);
     height: 32rpx;
     display: flex;

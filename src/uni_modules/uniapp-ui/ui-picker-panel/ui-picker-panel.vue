@@ -3,7 +3,22 @@
     <view v-if="loading" class="ui-picker-panel__loading">
       <ui-loading size="40rpx" />
     </view>
-    <picker-view v-if="visible" class="ui-picker-panel__view" :style="[viewStyle]" :indicator-style="indicatorStyle" :value="selectedIndexes" @change="onChange">
+    <picker-view
+      v-if="visible"
+      class="ui-picker-panel__view"
+      :style="[viewStyle]"
+      :indicator-style="indicatorStyle"
+      :indicator-class="props.indicatorClass"
+      :mask-style="props.maskStyle"
+      :mask-top-style="props.maskTopStyle"
+      :mask-bottom-style="props.maskBottomStyle"
+      :mask-class="props.maskClass"
+      :immediate-change="props.immediateChange"
+      :value="selectedIndexes"
+      @change="onChange"
+      @pickstart="onPickstart"
+      @pickend="onPickend"
+    >
       <picker-view-column v-for="(column, columnIndex) in columns" :key="columnIndex" class="ui-picker-panel__columns">
         <view
           v-for="(item, index) in column"
@@ -23,8 +38,8 @@
 import type { PickerColumn, PickerChangeEvent, PickerColumnsType, PickerColumnFields } from "./index"
 import { merge } from "../utils/utils"
 import { isNoEmpty } from "../utils/check"
-import { ref, watch, computed, nextTick } from "vue"
 import { pickerPanelEmits, pickerPanelProps } from "./index"
+import { ref, toRaw, watch, computed, nextTick } from "vue"
 import { useUnit, useColor, useStyle, useUnitToPx } from "../hooks"
 
 defineOptions({ name: "ui-picker-panel" })
@@ -155,6 +170,14 @@ function onChange(data: PickerChangeEvent) {
     columns: getSelectedColumns(),
   })
   nextTick(() => emits("update:modelValue", getSelectedValues()))
+}
+
+function onPickstart() {
+  emits("pickstart")
+}
+
+function onPickend() {
+  emits("pickend")
 }
 
 /**

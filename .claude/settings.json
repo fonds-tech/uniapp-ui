@@ -25,37 +25,9 @@
     "ask": []
   },
   "hooks": {
-    "Stop": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": ".claude/hooks/stop-notify.sh"
-          }
-        ]
-      }
-    ],
+    "Stop": [],
     "PreToolUse": [],
-    "PostToolUse": [
-      {
-        "matcher": "Write",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "pnpm run lint:fix"
-          }
-        ]
-      },
-      {
-        "matcher": "Edit",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "pnpm run lint:fix"
-          }
-        ]
-      }
-    ],
+    "PostToolUse": [],
     "Notification": [],
     "UserPromptSubmit": [
       {

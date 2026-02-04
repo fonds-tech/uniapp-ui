@@ -52,7 +52,15 @@
         :active-column-size="props.activeColumnSize"
         :active-column-color="props.activeColumnColor"
         :active-column-weight="props.activeColumnWeight"
+        :indicator-class="props.indicatorClass"
+        :mask-style="props.maskStyle"
+        :mask-top-style="props.maskTopStyle"
+        :mask-bottom-style="props.maskBottomStyle"
+        :mask-class="props.maskClass"
+        :immediate-change="props.immediateChange"
         @change="handlePanelChange"
+        @pickstart="emits('pickstart')"
+        @pickend="emits('pickend')"
       />
 
       <template #footer>
@@ -214,7 +222,7 @@ export default {
     justify-content: space-between;
 
     &__title {
-      color: var(--ui-color-text-primary);
+      color: var(--ui-color-text);
       font-size: var(--ui-font-size-lg);
       font-weight: var(--ui-font-weight-bold);
     }

@@ -151,7 +151,7 @@ export type XxxInstance = InstanceType<typeof XxxComponent>
   margin: var(--ui-spacing-md);
 
   // 颜色
-  color: var(--ui-color-text-primary);
+  color: var(--ui-color-text);
   background: var(--ui-color-primary);
   border-color: var(--ui-color-border);
 

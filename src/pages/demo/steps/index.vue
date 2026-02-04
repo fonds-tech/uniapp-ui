@@ -406,7 +406,7 @@ function handleFormNext() {
 }
 
 .custom-title {
-  color: var(--ui-color-text-primary);
+  color: var(--ui-color-text);
   font-size: 28rpx;
   font-weight: 500;
 }
@@ -430,7 +430,7 @@ function handleFormNext() {
   }
 
   &__title {
-    color: var(--ui-color-text-primary);
+    color: var(--ui-color-text);
     font-size: 32rpx;
     font-weight: 600;
   }
@@ -454,7 +454,7 @@ function handleFormNext() {
   flex-direction: column;
 
   &__title {
-    color: var(--ui-color-text-primary);
+    color: var(--ui-color-text);
     font-size: 32rpx;
     font-weight: 600;
     margin-bottom: 12rpx;

@@ -304,7 +304,7 @@ const selectedProducts = computed(() => {
   padding: var(--ui-spacing-lg);
 
   &__title {
-    color: var(--ui-color-text-primary);
+    color: var(--ui-color-text);
     display: block;
     font-size: 32rpx;
     font-weight: 600;

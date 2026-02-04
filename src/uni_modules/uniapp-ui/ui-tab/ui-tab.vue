@@ -125,7 +125,7 @@ export default {
   justify-content: center;
 
   &--active {
-    color: var(--ui-color-text-primary);
+    color: var(--ui-color-text);
     font-weight: bold;
   }
 

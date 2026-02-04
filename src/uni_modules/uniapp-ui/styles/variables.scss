@@ -19,13 +19,14 @@ page {
   --ui-color-primary-light: rgba(var(--ui-color-primary-rgb), 0.1); // 主色浅背景（用于选中态/区间）
 
   // 文本色彩
-  --ui-color-text-primary: #323233; // 主要文本
+  --ui-color-text: #323233; // 默认文本
   --ui-color-text-secondary: #646566; // 次要文本
   --ui-color-text-tertiary: #969799; // 辅助文本
   --ui-color-text-placeholder: #c8c9cc; // 占位文本
   --ui-color-text-disabled: #bdbec2; // 禁用文本
+  --ui-color-text-inverse: #ffffff; // 反色文本（用于深色背景）
 
-  --ui-color-text-primary-rgb: 50, 50, 51; // 主要文本 RGB
+  --ui-color-text-rgb: 50, 50, 51; // 默认文本 RGB
   --ui-color-text-secondary-rgb: 100, 101, 102; // 次要文本 RGB
   --ui-color-text-tertiary-rgb: 150, 151, 153; // 辅助文本 RGB
   --ui-color-text-placeholder-rgb: 200, 201, 204; // 占位文本 RGB
@@ -37,9 +38,12 @@ page {
   --ui-color-border-dark: #dcdee0; // 深色边框
 
   // 背景色彩
-  --ui-color-background: #ffffff; // 默认背景
-  --ui-color-background-light: #f7f8fa; // 浅色背景
-  --ui-color-background-dark: #f2f3f5; // 深色背景
+  --ui-color-background: #ffffff; // 默认背景（卡片、弹窗）
+  --ui-color-background-page: #f7f8fa; // 页面背景
+  --ui-color-background-section: #f2f3f5; // 区块背景
+  --ui-color-background-input: #fafafa; // 输入框背景
+  --ui-color-background-hover: #f5f5f5; // 悬停状态背景
+  --ui-color-background-disabled: #ebedf0; // 禁用状态背景
 
   // 遮罩色彩
   --ui-color-mask: rgba(0, 0, 0, 0.5); // 默认遮罩
@@ -48,9 +52,9 @@ page {
 
   // 组件尺寸（用于按钮、输入框、步进器等组件的高度基准）
   --ui-size-mini: 48rpx;
-  --ui-size-large: 96rpx;
   --ui-size-small: 64rpx;
   --ui-size-normal: 80rpx;
+  --ui-size-large: 96rpx;
 
   // 图标尺寸
   --ui-icon-size-xs: 24rpx; // 超小图标
@@ -72,6 +76,7 @@ page {
   --ui-font-weight-bold: 700; // 粗体
 
   // 间距
+  --ui-spacing-xxs: 4rpx; // 微小间距
   --ui-spacing-xs: 8rpx; // 超小间距
   --ui-spacing-sm: 16rpx; // 小间距
   --ui-spacing-md: 24rpx; // 中等间距
@@ -149,13 +154,14 @@ page {
   --ui-color-info-rgb: 166, 169, 173; // 信息 RGB
 
   // 文本色彩
-  --ui-color-text-primary: #e8e8e8; // 主要文本
+  --ui-color-text: #e8e8e8; // 默认文本
   --ui-color-text-secondary: #a8a8a8; // 次要文本
   --ui-color-text-tertiary: #787878; // 辅助文本
   --ui-color-text-placeholder: #686868; // 占位文本
   --ui-color-text-disabled: #585858; // 禁用文本
+  --ui-color-text-inverse: #1a1a1a; // 反色文本（用于浅色背景）
 
-  --ui-color-text-primary-rgb: 232, 232, 232; // 主要文本 RGB
+  --ui-color-text-rgb: 232, 232, 232; // 默认文本 RGB
   --ui-color-text-secondary-rgb: 168, 168, 168; // 次要文本 RGB
   --ui-color-text-tertiary-rgb: 120, 120, 120; // 辅助文本 RGB
   --ui-color-text-placeholder-rgb: 104, 104, 104; // 占位文本 RGB
@@ -167,9 +173,12 @@ page {
   --ui-color-border-dark: #4a4a4a; // 深色边框
 
   // 背景色彩
-  --ui-color-background: #1a1a1a; // 默认背景
-  --ui-color-background-light: #2a2a2a; // 浅色背景
-  --ui-color-background-dark: #0f0f0f; // 深色背景
+  --ui-color-background: #1a1a1a; // 默认背景（卡片、弹窗）
+  --ui-color-background-page: #0f0f0f; // 页面背景
+  --ui-color-background-section: #252525; // 区块背景
+  --ui-color-background-input: #2a2a2a; // 输入框背景
+  --ui-color-background-hover: #333333; // 悬停状态
+  --ui-color-background-disabled: #1f1f1f; // 禁用状态
 
   // 遮罩色彩
   --ui-color-mask: rgba(0, 0, 0, 0.7); // 默认遮罩

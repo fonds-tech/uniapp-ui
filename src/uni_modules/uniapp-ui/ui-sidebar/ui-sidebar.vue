@@ -188,7 +188,7 @@ export default {
   position: relative;
   flex-direction: column;
   justify-content: space-between;
-  background-color: var(--ui-color-background-light);
+  background-color: var(--ui-color-background-page);
 
   &__scroll {
     top: 0;

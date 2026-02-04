@@ -205,7 +205,7 @@ export default {
       transition: background-color var(--ui-transition-fast);
 
       &:active {
-        background-color: var(--ui-color-background-dark);
+        background-color: var(--ui-color-background-hover);
       }
     }
 
@@ -237,7 +237,7 @@ export default {
   }
 
   &__text {
-    color: var(--ui-color-text-primary);
+    color: var(--ui-color-text);
     font-size: var(--ui-font-size-sm);
     margin-top: 16rpx;
     word-break: break-all;

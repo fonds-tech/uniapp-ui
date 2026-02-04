@@ -8,8 +8,8 @@
           <ui-icon v-if="currentIcon" :name="currentIcon" :size="currentIconSize" :color="currentColor" />
 
           <view v-else class="ui-step__circle" :style="[circleStyle]">
-            <ui-icon v-if="!isDot && isFinish" name="checked" :size="circleIconSize" color="#fff" />
-            <ui-icon v-else-if="!isDot && isError" name="cross" :size="circleIconSize" color="#fff" />
+            <ui-icon v-if="!isDot && isFinish" name="checked" :size="circleIconSize" color="text-inverse" />
+            <ui-icon v-else-if="!isDot && isError" name="cross" :size="circleIconSize" color="text-inverse" />
             <text v-else-if="!isDot" class="ui-step__index" :style="[indexStyle]">{{ safeIndex + 1 }}</text>
           </view>
         </slot>
@@ -314,7 +314,7 @@ const indexStyle = computed(() => {
   if (isWait.value) {
     style.color = inactiveColor.value
   } else {
-    style.color = "#fff"
+    style.color = "var(--ui-color-text-inverse)"
   }
   return useStyle(style)
 })
@@ -409,7 +409,7 @@ $step-transition-duration: 0.3s;
   }
 
   &__title {
-    color: var(--ui-color-text-primary);
+    color: var(--ui-color-text);
     font-size: 28rpx;
     transition: color $step-transition-duration ease;
     word-break: break-word;

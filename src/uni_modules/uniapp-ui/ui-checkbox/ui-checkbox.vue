@@ -296,7 +296,7 @@ $indeterminate-icon: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/sv
 
     &--disabled {
       border-color: var(--ui-color-border-dark);
-      background-color: var(--ui-color-background-dark);
+      background-color: var(--ui-color-background-disabled);
     }
   }
 
@@ -304,7 +304,7 @@ $indeterminate-icon: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/sv
     width: 40%;
     height: 40%;
     border-radius: 2rpx;
-    background-color: #fff;
+    background-color: var(--ui-color-text-inverse);
   }
 
   &__content {
@@ -320,7 +320,7 @@ $indeterminate-icon: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/sv
 
   &__label {
     flex: 1;
-    color: var(--ui-color-text-primary);
+    color: var(--ui-color-text);
     word-break: break-word;
     line-height: 1.4;
 

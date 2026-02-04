@@ -157,7 +157,7 @@ export default {
   }
 
   &__text {
-    color: #fff;
+    color: var(--ui-color-text-inverse);
     padding: 0 8rpx;
     z-index: 1;
     font-size: 20rpx;

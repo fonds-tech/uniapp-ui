@@ -178,7 +178,7 @@ const currentIconColor = computed(() => {
   if (props.iconColor) return useColor(props.iconColor)
   // 空心节点时图标颜色跟随节点颜色
   if (isHollow.value) return currentDotColor.value
-  return "#fff"
+  return "var(--ui-color-text-inverse)"
 })
 
 /** 当前节点颜色 */
@@ -355,7 +355,7 @@ export default {
   }
 
   &__title {
-    color: var(--ui-color-text-primary);
+    color: var(--ui-color-text);
     font-size: var(--ui-timeline-title-font-size);
     font-weight: 500;
     line-height: 1.4;

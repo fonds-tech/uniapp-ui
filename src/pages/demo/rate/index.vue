@@ -263,7 +263,7 @@ function onDemoChange(value: number) {
   align-items: center;
 
   &__label {
-    color: var(--ui-color-text-primary);
+    color: var(--ui-color-text);
     width: 140rpx;
     font-size: 28rpx;
   }

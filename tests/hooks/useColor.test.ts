@@ -9,7 +9,7 @@ import { it, expect, describe } from "vitest"
 describe("useColor", () => {
   it("应正确映射内置颜色", () => {
     expect(useColor("primary")).toBe("var(--ui-color-primary)")
-    expect(useColor("text-main")).toBe("var(--ui-color-text-primary)")
+    expect(useColor("text-main")).toBe("var(--ui-color-text)")
   })
 
   it("非内置颜色应原样返回", () => {

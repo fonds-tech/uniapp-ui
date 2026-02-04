@@ -140,7 +140,7 @@ export default {
   &__measure {
     top: 0;
     left: 0;
-    color: var(--ui-color-text-primary);
+    color: var(--ui-color-text);
     right: 0;
     opacity: 0;
     z-index: -1;
@@ -152,7 +152,7 @@ export default {
   }
 
   &__content {
-    color: var(--ui-color-text-primary);
+    color: var(--ui-color-text);
     font-size: var(--ui-font-size-md);
     word-break: break-all;
     line-height: 1.5;
@@ -180,7 +180,7 @@ export default {
     right: 0;
     height: 60rpx;
     position: absolute;
-    background: linear-gradient(to bottom, transparent, #ffffff);
+    background: linear-gradient(to bottom, transparent, var(--ui-color-background));
     pointer-events: none;
   }
 

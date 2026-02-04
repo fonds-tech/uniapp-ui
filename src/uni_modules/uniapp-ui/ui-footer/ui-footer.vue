@@ -89,7 +89,7 @@ export default {
   &__inner {
     left: 0;
     width: 100%;
-    background-color: #ffffff;
+    background-color: var(--ui-color-text-inverse);
   }
 }
 </style>

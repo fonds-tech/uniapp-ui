@@ -199,7 +199,7 @@ function onGridItemClick(text: string) {
   flex-direction: column;
 
   &__title {
-    color: var(--ui-color-text-primary);
+    color: var(--ui-color-text);
     font-size: var(--ui-font-size-sm);
   }
 
@@ -223,7 +223,7 @@ function onGridItemClick(text: string) {
   justify-content: center;
 
   &__text {
-    color: var(--ui-color-text-primary);
+    color: var(--ui-color-text);
     font-size: var(--ui-font-size-sm);
     margin-top: 16rpx;
   }

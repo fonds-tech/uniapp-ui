@@ -326,7 +326,7 @@ function getDayStyle(day: CalendarDay): CSSProperties {
 
   if ((day.selected || day.isRangeStart || day.isRangeEnd) && colorValue.value) {
     style.backgroundColor = colorValue.value
-    style.color = "#ffffff"
+    style.color = "var(--ui-color-text-inverse)"
   }
 
   if (day.inRange && colorValue.value) {
@@ -562,7 +562,7 @@ export default {
     justify-content: center;
 
     &:active {
-      background-color: var(--ui-color-background-dark);
+      background-color: var(--ui-color-background-hover);
     }
   }
 
@@ -614,7 +614,7 @@ export default {
 
     &--selected {
       .ui-calendar__day-text {
-        color: #ffffff;
+        color: var(--ui-color-text-inverse);
         width: 64rpx;
         height: 64rpx;
         display: flex;
@@ -630,7 +630,7 @@ export default {
       border-bottom-left-radius: 8rpx;
 
       .ui-calendar__day-text {
-        color: #ffffff;
+        color: var(--ui-color-text-inverse);
         width: 64rpx;
         height: 64rpx;
         display: flex;
@@ -646,7 +646,7 @@ export default {
       border-bottom-right-radius: 8rpx;
 
       .ui-calendar__day-text {
-        color: #ffffff;
+        color: var(--ui-color-text-inverse);
         width: 64rpx;
         height: 64rpx;
         display: flex;
@@ -667,7 +667,7 @@ export default {
   }
 
   &__day-text {
-    color: var(--ui-color-text-primary);
+    color: var(--ui-color-text);
     font-size: var(--ui-calendar-day-font-size);
     line-height: 1;
   }

@@ -344,7 +344,7 @@ export default {
     padding: var(--ui-spacing-sm);
 
     &__key {
-      color: var(--ui-color-text-primary);
+      color: var(--ui-color-text);
       display: flex;
       box-shadow: var(--ui-shadow-xs);
       transition: background-color var(--ui-transition-fast) var(--ui-transition-timing);

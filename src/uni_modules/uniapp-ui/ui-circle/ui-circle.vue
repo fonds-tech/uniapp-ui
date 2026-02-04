@@ -427,7 +427,7 @@ export default {
   }
 
   &__text {
-    color: var(--ui-color-text-primary);
+    color: var(--ui-color-text);
     font-size: var(--ui-font-size-md);
     font-weight: 500;
   }

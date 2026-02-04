@@ -10,12 +10,13 @@ const colorMap: Record<string, string> = {
   info: "--ui-color-info",
 
   // 文本色彩（4 级梯度）
-  "text-primary": "--ui-color-text-primary",
-  "text-main": "--ui-color-text-primary", // 别名，兼容旧代码
+  "text-primary": "--ui-color-text",
+  "text-main": "--ui-color-text", // 别名，兼容旧代码
   "text-secondary": "--ui-color-text-secondary",
   "text-tertiary": "--ui-color-text-tertiary",
   "text-placeholder": "--ui-color-text-placeholder",
   "text-disabled": "--ui-color-text-disabled",
+  "text-inverse": "--ui-color-text-inverse",
 
   // 边框色彩
   border: "--ui-color-border",
@@ -24,8 +25,12 @@ const colorMap: Record<string, string> = {
 
   // 背景色彩
   background: "--ui-color-background",
-  "background-light": "--ui-color-background-light",
-  "background-dark": "--ui-color-background-dark",
+  "background-base": "--ui-color-background",
+  "background-page": "--ui-color-background-page",
+  "background-section": "--ui-color-background-section",
+  "background-input": "--ui-color-background-input",
+  "background-hover": "--ui-color-background-hover",
+  "background-disabled": "--ui-color-background-disabled",
 
   // 遮罩色彩
   mask: "--ui-color-mask",
@@ -40,8 +45,8 @@ const colorMap: Record<string, string> = {
  *
  * @example
  * useColor('primary')        // -> var(--ui-color-primary)
- * useColor('text-primary')   // -> var(--ui-color-text-primary)
- * useColor('text-main')      // -> var(--ui-color-text-primary) // 别名
+ * useColor('text-primary')   // -> var(--ui-color-text)
+ * useColor('text-main')      // -> var(--ui-color-text) // 别名
  * useColor('#ff0000')        // -> #ff0000
  * useColor('rgb(255,0,0)')   // -> rgb(255,0,0)
  */

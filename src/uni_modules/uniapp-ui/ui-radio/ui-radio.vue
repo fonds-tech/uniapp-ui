@@ -247,7 +247,7 @@ $check-icon: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewB
 
     &--disabled {
       border-color: var(--ui-color-border-dark);
-      background-color: var(--ui-color-background-dark);
+      background-color: var(--ui-color-background-disabled);
     }
   }
 
@@ -255,7 +255,7 @@ $check-icon: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewB
     width: 40%;
     height: 40%;
     border-radius: 9999px;
-    background-color: #fff;
+    background-color: var(--ui-color-text-inverse);
   }
 
   &__content {
@@ -271,7 +271,7 @@ $check-icon: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewB
 
   &__label {
     flex: 1;
-    color: var(--ui-color-text-primary);
+    color: var(--ui-color-text);
     font-size: 28rpx;
     word-break: break-word;
     line-height: 1.4;

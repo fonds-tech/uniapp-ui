@@ -452,7 +452,7 @@ export default {
       content: "";
       position: absolute;
       transform: translate(-50%, -50%);
-      background-color: var(--ui-color-text-primary);
+      background-color: var(--ui-color-text);
     }
 
     &--disabled {
@@ -465,7 +465,7 @@ export default {
 
     &--button {
       border-radius: var(--ui-radius-md) 0 0 var(--ui-radius-md);
-      background-color: var(--ui-color-background-dark);
+      background-color: var(--ui-color-background-section);
     }
 
     &--round {
@@ -518,7 +518,7 @@ export default {
 
     &--button {
       border-radius: 0 var(--ui-radius-md) var(--ui-radius-md) 0;
-      background-color: var(--ui-color-background-dark);
+      background-color: var(--ui-color-background-section);
     }
 
     &--round {
@@ -552,7 +552,7 @@ export default {
     font-variant-numeric: tabular-nums;
 
     &--button {
-      background-color: var(--ui-color-background-dark);
+      background-color: var(--ui-color-background-input);
     }
 
     &--disabled {

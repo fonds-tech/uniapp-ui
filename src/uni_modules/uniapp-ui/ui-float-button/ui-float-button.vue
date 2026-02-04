@@ -347,7 +347,7 @@ export default {
 
 <style lang="scss">
 $ui-float-button-danger-color: var(--ui-color-danger, #ee0a24);
-$ui-float-button-default-color: #fff;
+$ui-float-button-default-color: var(--ui-color-text-inverse);
 $ui-float-button-primary-color: var(--ui-color-primary, #1989fa);
 $ui-float-button-success-color: var(--ui-color-success, #07c160);
 $ui-float-button-warning-color: var(--ui-color-warning, #ff976a);
@@ -390,22 +390,22 @@ $ui-float-button-warning-color: var(--ui-color-warning, #ff976a);
   }
 
   &--primary {
-    color: #fff;
+    color: var(--ui-color-text-inverse);
     background: $ui-float-button-primary-color;
   }
 
   &--success {
-    color: #fff;
+    color: var(--ui-color-text-inverse);
     background: $ui-float-button-success-color;
   }
 
   &--warning {
-    color: #fff;
+    color: var(--ui-color-text-inverse);
     background: $ui-float-button-warning-color;
   }
 
   &--danger {
-    color: #fff;
+    color: var(--ui-color-text-inverse);
     background: $ui-float-button-danger-color;
   }
 

@@ -197,7 +197,7 @@ function onStickyScroll(data: { scrollTop: number; isFixed: boolean }) {
 }
 
 .log-value {
-  color: var(--ui-color-text-primary);
+  color: var(--ui-color-text);
   font-size: 24rpx;
   font-family: monospace;
 
@@ -244,7 +244,7 @@ function onStickyScroll(data: { scrollTop: number; isFixed: boolean }) {
   }
 
   .card-title {
-    color: var(--ui-color-text-primary);
+    color: var(--ui-color-text);
     font-size: 28rpx;
     font-weight: bold;
   }

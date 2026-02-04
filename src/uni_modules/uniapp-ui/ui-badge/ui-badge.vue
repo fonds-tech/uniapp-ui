@@ -130,7 +130,7 @@ export default {
   position: relative;
 
   &__inner {
-    color: #fff;
+    color: var(--ui-color-text-inverse);
     height: 40rpx;
     display: flex;
     padding: 0;
@@ -197,8 +197,14 @@ export default {
   }
 
   &__value {
+    font-family:
+      -apple-system-font,
+      helvetica neue,
+      arial,
+      sans-serif;
     line-height: 1;
     white-space: nowrap;
+    font-variant-numeric: tabular-nums;
   }
 }
 </style>

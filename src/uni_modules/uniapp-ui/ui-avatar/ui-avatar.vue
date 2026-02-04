@@ -269,7 +269,7 @@ export default {
   flex-shrink: 0;
   vertical-align: middle;
   justify-content: center;
-  background-color: var(--ui-color-background-light);
+  background-color: var(--ui-color-background-page);
 
   &__image {
     width: 100%;

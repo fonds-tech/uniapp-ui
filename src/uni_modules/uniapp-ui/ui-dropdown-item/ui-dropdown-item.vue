@@ -247,7 +247,7 @@ export default {
   right: 0;
   overflow: hidden;
   position: fixed;
-  border-top: var(--ui-border-width) solid var(--ui-color-background-dark);
+  border-top: var(--ui-border-width) solid var(--ui-color-border-light);
 
   &--up {
     top: 0;

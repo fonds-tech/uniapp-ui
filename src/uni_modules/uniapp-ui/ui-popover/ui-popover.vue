@@ -298,7 +298,7 @@ export default {
 
   // 主题样式
   &--light {
-    color: var(--ui-color-text-primary);
+    color: var(--ui-color-text);
     background-color: var(--ui-color-background);
 
     .ui-popover__arrow {
@@ -409,7 +409,7 @@ export default {
   white-space: nowrap;
 
   &:active {
-    background-color: var(--ui-color-background-dark);
+    background-color: var(--ui-color-background-hover);
   }
 
   // 分割线

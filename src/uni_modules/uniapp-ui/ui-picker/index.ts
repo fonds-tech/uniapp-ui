@@ -38,6 +38,13 @@ const defaultProps = buildDefaultProps("picker", {
   activeColumnSize: undefined,
   activeColumnColor: undefined,
   activeColumnWeight: undefined,
+  // picker-view 原生属性
+  indicatorClass: undefined,
+  maskStyle: undefined,
+  maskTopStyle: undefined,
+  maskBottomStyle: undefined,
+  maskClass: undefined,
+  immediateChange: true,
   customClass: undefined,
   customStyle: undefined,
 })
@@ -93,6 +100,18 @@ export const pickerProps = {
   activeColumnColor: defaultProps("activeColumnColor", { type: String }),
   /** 激活选项文字字重 */
   activeColumnWeight: defaultProps("activeColumnWeight", { type: [Number, String] }),
+  /** 设置选择器中间选中框的类名 */
+  indicatorClass: defaultProps("indicatorClass", { type: String }),
+  /** 设置蒙层的样式 */
+  maskStyle: defaultProps("maskStyle", { type: String }),
+  /** 设置蒙层上半部分的样式（仅 app-nvue 支持） */
+  maskTopStyle: defaultProps("maskTopStyle", { type: String }),
+  /** 设置蒙层下半部分的样式（仅 app-nvue 支持） */
+  maskBottomStyle: defaultProps("maskBottomStyle", { type: String }),
+  /** 设置蒙层的类名 */
+  maskClass: defaultProps("maskClass", { type: String }),
+  /** 是否在手指松开时立即触发 change 事件 */
+  immediateChange: defaultProps("immediateChange", { type: Boolean }),
   /** 自定义类名 */
   customClass: defaultProps("customClass", { type: String }),
   /** 自定义样式 */
@@ -132,6 +151,10 @@ export const pickerEmits = {
   cancel: (data: PickerCancelData) => data,
   /** 确认事件 */
   confirm: (data: PickerConfirmData) => data,
+  /** 滚动选择开始事件 */
+  pickstart: () => true,
+  /** 滚动选择结束事件 */
+  pickend: () => true,
 }
 
 export type PickerProps = ExtractPropTypes<typeof pickerProps>

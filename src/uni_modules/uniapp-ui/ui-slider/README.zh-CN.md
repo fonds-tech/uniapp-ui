@@ -200,7 +200,7 @@ const rangeValue = ref([20, 80])
 | --ui-color-primary         | -      | 激活轨道颜色   |
 | --ui-color-background      | -      | 滑块按钮颜色   |
 | --ui-color-background-dark | -      | 非激活轨道颜色 |
-| --ui-color-text-primary    | -      | 值提示背景颜色 |
+| --ui-color-text    | -      | 值提示背景颜色 |
 | --ui-font-size-xs          | -      | 值提示文字大小 |
 | --ui-radius-round          | -      | 圆角大小       |
 

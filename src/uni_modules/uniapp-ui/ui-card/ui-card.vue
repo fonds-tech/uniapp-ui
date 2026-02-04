@@ -188,7 +188,7 @@ export default {
 
   // 标题
   &__title {
-    color: var(--ui-color-text-primary);
+    color: var(--ui-color-text);
     overflow: hidden;
     font-size: var(--ui-font-size-md);
     font-weight: 500;

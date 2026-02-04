@@ -2,15 +2,15 @@
   <view class="ui-upload" :class="[classs, props.customClass]" :style="[style]">
     <view v-for="(item, index) in renderList" :key="index" class="ui-upload__preview" :style="[previewStyle(index)]" @click="previewImage(item)">
       <view v-if="isShowStatus(item)" class="ui-upload__status">
-        <ui-icon v-if="item.status === 'fail'" name="cross" color="#fff" size="40rpx" />
-        <ui-loading v-else-if="item.status === 'uploading'" color="#fff" size="40rpx" />
+        <ui-icon v-if="item.status === 'fail'" name="cross" color="text-inverse" size="40rpx" />
+        <ui-loading v-else-if="item.status === 'uploading'" color="text-inverse" size="40rpx" />
         <text class="ui-upload__status__message">
           {{ item.message }}
         </text>
       </view>
       <view v-if="isShowDelete(item)" class="ui-upload__delete" @click.stop="deleteFile(index)">
         <slot name="delete">
-          <ui-icon custom-class="ui-upload__delete__icon" name="cross" color="#fff" size="20rpx" />
+          <ui-icon custom-class="ui-upload__delete__icon" name="cross" color="text-inverse" size="20rpx" />
         </slot>
       </view>
       <ui-image v-if="isImage(item.name || item.url)" :src="item.url" :width="props.width" :height="props.height" :mode="props.imageMode" />
@@ -431,7 +431,7 @@ export default {
     background-color: rgb(50 50 51 / 88%);
 
     &__message {
-      color: #fff;
+      color: var(--ui-color-text-inverse);
       margin-top: 12rpx;
     }
   }

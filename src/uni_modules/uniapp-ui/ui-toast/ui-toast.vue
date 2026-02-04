@@ -4,9 +4,9 @@
       <view class="ui-toast__body" :style="[bodyStyle]" :class="[bodyClass]">
         <view v-if="isShowIcon" class="ui-toast__icon" :style="[iconStyle]">
           <image v-if="isImage(mergedOptions.icon)" class="image" :src="mergedOptions.icon" mode="aspectFit" />
-          <ui-icon v-else-if="mergedOptions.icon" :name="mergedOptions.icon" :size="mergedOptions.iconSize" color="#ffffff" />
+          <ui-icon v-else-if="mergedOptions.icon" :name="mergedOptions.icon" :size="mergedOptions.iconSize" color="text-inverse" />
           <view v-else-if="mergedOptions.type === 'loading'" class="loading" />
-          <ui-icon v-else-if="['await', 'fail', 'success'].includes(mergedOptions.type)" :name="icons[mergedOptions.type]" :size="mergedOptions.iconSize" color="#ffffff" />
+          <ui-icon v-else-if="['await', 'fail', 'success'].includes(mergedOptions.type)" :name="icons[mergedOptions.type]" :size="mergedOptions.iconSize" color="text-inverse" />
         </view>
         <view v-if="mergedOptions.content" class="ui-toast__text">{{ mergedOptions.content }}</view>
       </view>
@@ -326,7 +326,7 @@ export default {
       width: 100%;
       height: 100%;
       animation: rotate 1s linear infinite;
-      border-color: #ffffff var(--ui-color-mask-light) var(--ui-color-mask-light);
+      border-color: var(--ui-color-text-inverse) var(--ui-color-mask-light) var(--ui-color-mask-light);
       border-style: solid;
       border-width: var(--ui-spacing-xs);
       border-radius: 50%;
@@ -346,7 +346,7 @@ export default {
   }
 
   &__text {
-    color: #ffffff;
+    color: var(--ui-color-text-inverse);
     text-align: center;
     white-space: pre-wrap;
   }

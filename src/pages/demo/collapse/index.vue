@@ -115,7 +115,7 @@ function onItemClick(name: number) {
   align-items: center;
 
   &__text {
-    color: var(--ui-color-text-primary);
+    color: var(--ui-color-text);
     font-size: var(--ui-font-size-sm);
   }
 }

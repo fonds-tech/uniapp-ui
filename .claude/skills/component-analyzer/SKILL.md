@@ -101,7 +101,7 @@ export const noticeBarProps = {
 
 // ✅ 正确：中性组件使用空默认值，由用户或 CSS 变量控制
 const defaultProps = buildDefaultProps("noticeBar", {
-  color: "",      // 空值，CSS 中使用 --ui-color-text-primary
+  color: "",      // 空值，CSS 中使用 --ui-color-text
   iconColor: "",  // 空值，继承文字颜色或使用文本色
 })
 
@@ -121,7 +121,7 @@ export const buttonProps = {
 
 // ✅ 正确：CSS 使用中性文本色
 .ui-notice-bar__text {
-  color: var(--ui-color-text-primary);  // 中性文本色
+  color: var(--ui-color-text);  // 中性文本色
 }
 ```
 
@@ -132,7 +132,7 @@ export const buttonProps = {
 1. 判断组件类型 → 强主题 or 中性？
 2. 若为中性组件：
    - 颜色类 props 默认值 = ""
-   - CSS 默认色 = 文本色 (--ui-color-text-primary)
+   - CSS 默认色 = 文本色 (--ui-color-text)
    - 通过 props 覆盖实现自定义
 3. 若为强主题组件：
    - 可设置 type/color 默认值
@@ -200,7 +200,7 @@ export const buttonProps = {
 .ui-button {
   height: var(--ui-size-normal);
   padding: 0 var(--ui-spacing-md);
-  color: var(--ui-color-text-primary);
+  color: var(--ui-color-text);
 
   &--disabled {
     opacity: var(--ui-opacity-disabled);
@@ -575,7 +575,7 @@ await delay(ANIMATION_DURATION)
 
 1. **[样式]** 第 45 行：硬编码颜色值
    - 当前：`color: #333;`
-   - 建议：`color: var(--ui-color-text-primary);`
+   - 建议：`color: var(--ui-color-text);`
 
 ### 建议 (可选优化)
 

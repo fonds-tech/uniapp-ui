@@ -264,7 +264,7 @@ function onProductClick(index: number) {
 }
 
 .switch-label {
-  color: var(--ui-color-text-primary);
+  color: var(--ui-color-text);
   font-size: 28rpx;
 }
 
@@ -276,7 +276,7 @@ function onProductClick(index: number) {
 }
 
 .product-name {
-  color: var(--ui-color-text-primary);
+  color: var(--ui-color-text);
   font-size: 30rpx;
   font-weight: 600;
 }

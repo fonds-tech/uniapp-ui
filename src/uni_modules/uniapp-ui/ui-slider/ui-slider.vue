@@ -688,7 +688,7 @@ export default {
   --slider-active-color: var(--ui-color-primary);
   --slider-handle-color: var(--ui-color-background);
   --slider-handle-shadow: 0 2px 6px rgba(0, 0, 0, 0.16);
-  --slider-inactive-color: var(--ui-color-background-dark);
+  --slider-inactive-color: var(--ui-color-background-disabled);
   --slider-indicator-color: var(--ui-color-primary);
   --slider-tick-active-color: var(--ui-color-primary);
   --slider-handle-shadow-active: 0 4px 12px rgba(0, 0, 0, 0.24);

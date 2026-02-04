@@ -312,7 +312,7 @@ export default {
 
   // 弹出框
   &__popup {
-    color: #fff;
+    color: var(--ui-color-text-inverse);
     padding: 8px 12px;
     position: relative;
     font-size: var(--ui-font-size-sm);

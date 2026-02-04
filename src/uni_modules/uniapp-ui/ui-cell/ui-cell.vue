@@ -175,8 +175,8 @@ export default {
     opacity: 0;
     position: absolute;
     transform: translate(-50%, -50%);
-    background: var(--ui-color-text-primary);
-    border-color: var(--ui-color-text-primary);
+    background: var(--ui-color-text);
+    border-color: var(--ui-color-text);
     border-radius: inherit;
   }
 
@@ -198,7 +198,7 @@ export default {
   }
 
   &__title {
-    color: var(--ui-color-text-primary);
+    color: var(--ui-color-text);
     overflow: hidden;
     font-size: var(--ui-font-size-sm);
     white-space: nowrap;

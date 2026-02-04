@@ -422,7 +422,7 @@ function formatTargetDate(timestamp: number): string {
   }
 
   &__text {
-    color: var(--ui-color-text-primary);
+    color: var(--ui-color-text);
     font-size: 30rpx;
     min-width: 120rpx;
     text-align: right;
@@ -465,7 +465,7 @@ function formatTargetDate(timestamp: number): string {
   }
 
   &__code-title {
-    color: var(--ui-color-text-primary);
+    color: var(--ui-color-text);
     font-size: 28rpx;
   }
 }

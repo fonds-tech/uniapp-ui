@@ -81,7 +81,7 @@ const excessStyle = computed(() => {
     marginLeft: gapValue.value,
     borderWidth: useUnit(props.borderWidth) || "4rpx",
     borderStyle: "solid",
-    borderColor: useColor(props.borderColor) || "#fff",
+    borderColor: useColor(props.borderColor) || "var(--ui-color-text-inverse)",
   }
 
   if (props.excessColor) {
@@ -162,7 +162,7 @@ export default {
     align-items: center;
     flex-shrink: 0;
     justify-content: center;
-    background-color: var(--ui-color-background-light);
+    background-color: var(--ui-color-background-page);
 
     &--circle {
       border-radius: 50%;

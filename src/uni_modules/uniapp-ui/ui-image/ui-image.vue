@@ -124,7 +124,7 @@ export default {
     align-items: center;
     flex-shrink: 0;
     justify-content: center;
-    background-color: var(--ui-color-background-light);
+    background-color: var(--ui-color-background-page);
   }
 
   &__icon {
@@ -159,7 +159,7 @@ export default {
       position: absolute;
       transform: translateX(-50%);
       border-radius: 2rpx;
-      background-color: #fff;
+      background-color: var(--ui-color-text-inverse);
     }
 
     &--error::after {
@@ -171,7 +171,7 @@ export default {
       position: absolute;
       transform: translateX(-50%);
       border-radius: 50%;
-      background-color: #fff;
+      background-color: var(--ui-color-text-inverse);
     }
   }
 
