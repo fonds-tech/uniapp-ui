@@ -23,22 +23,25 @@
             class="relative h-[108rpx] flex items-center justify-center px-[20rpx] mb-[8rpx] transition-all duration-300 group"
             @click="activeCategoryIndex = index"
           >
+            <!-- 选中背景 -->
             <view
               class="absolute inset-0 transition-all duration-300 rounded-l-[32rpx] ml-[24rpx]"
               :class="activeCategoryIndex === index ? 'bg-white shadow-[-4rpx_4rpx_12rpx_rgba(0,0,0,0.02)]' : 'bg-transparent'"
             />
 
-            <view class="relative z-10 flex flex-col items-center">
+            <!-- 选中指示条 -->
+            <view
+              v-if="activeCategoryIndex === index"
+              class="absolute left-[24rpx] top-[50%] translate-y-[-50%] w-[8rpx] h-[36rpx] rounded-full transition-all duration-300 bg-indigo-600"
+            />
+
+            <view class="relative z-10 flex flex-col items-center pl-[10rpx]">
               <text
                 class="text-[28rpx] transition-all duration-300"
                 :class="activeCategoryIndex === index ? 'text-indigo-600 font-bold scale-105' : 'text-slate-500 font-medium group-active:scale-95'"
               >
                 {{ category.name }}
               </text>
-              <view
-                class="mt-[6rpx] h-[4rpx] w-[24rpx] rounded-full transition-all duration-300"
-                :class="activeCategoryIndex === index ? 'bg-indigo-500' : 'bg-transparent'"
-              />
             </view>
           </view>
         </view>
@@ -46,31 +49,33 @@
 
       <!-- Content -->
       <scroll-view scroll-y class="flex-1 h-full bg-white rounded-tl-[40rpx] overflow-hidden shadow-[-4rpx_0_16rpx_rgba(0,0,0,0.01)]" :show-scrollbar="false">
-        <view class="px-[32rpx] pt-[40rpx] pb-[180rpx] min-h-full">
-          <view class="flex items-end justify-between mb-[48rpx]">
+        <view class="px-[32rpx] pt-[40rpx] pb-[180rpx] min-h-full relative overflow-hidden">
+          <!-- 背景装饰大图标 -->
+          <view class="absolute right-[-80rpx] top-[-40rpx] opacity-[0.05] pointer-events-none text-slate-900 z-0">
+            <view class="text-[420rpx] rotate-[15deg]" :class="currentCategory.icon" />
+          </view>
+
+          <view class="flex items-end justify-between mb-[48rpx] relative z-10">
             <view>
-              <text class="text-[44rpx] font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-slate-900 to-slate-700 block leading-tight">
+              <text class="text-[44rpx] font-extrabold text-slate-900 block leading-tight">
                 {{ currentCategory.name }}
               </text>
               <text class="text-[24rpx] font-medium text-slate-400 mt-[8rpx] block uppercase tracking-wider">{{ currentCategory.desc }}</text>
             </view>
-            <view class="flex h-[80rpx] w-[80rpx] items-center justify-center rounded-[24rpx] bg-slate-50">
-              <view class="i-lucide-layers text-[40rpx] text-slate-300" />
-            </view>
           </view>
 
-          <view class="grid grid-cols-2 gap-[20rpx]">
+          <view class="grid grid-cols-2 gap-[20rpx] relative z-10">
             <view
               v-for="comp in currentCategory.components"
               :key="comp.name"
-              class="group flex flex-col p-[24rpx] bg-white rounded-[28rpx] border border-slate-100 shadow-[0_2rpx_12rpx_rgba(0,0,0,0.02)] active:scale-[0.98] active:border-indigo-100 active:shadow-none transition-all duration-200"
+              class="group flex flex-col p-[24rpx] rounded-[28rpx] border border-slate-100 shadow-[0_2rpx_12rpx_rgba(0,0,0,0.02)] active:scale-[0.98] active:border-indigo-100 active:shadow-none transition-all duration-200"
               @click="navigateToDemo(comp.path)"
             >
-              <view class="mb-[20rpx] flex h-[80rpx] w-[80rpx] items-center justify-center rounded-[20rpx] bg-slate-50 group-active:bg-indigo-50 transition-colors duration-200">
-                <view class="text-[40rpx] text-slate-600 group-active:text-indigo-600 transition-colors duration-200" :class="[comp.icon]" />
+              <view class="mb-[20rpx] flex h-[80rpx] w-[80rpx] items-center justify-center rounded-[20rpx] bg-indigo-50 group-active:bg-indigo-100 transition-colors duration-200">
+                <view class="text-[40rpx] text-indigo-500 group-active:text-indigo-600 transition-colors duration-200" :class="[comp.icon]" />
               </view>
 
-              <text class="text-[30rpx] font-bold text-slate-800 group-active:text-indigo-700 transition-colors">{{ comp.name }}</text>
+              <text class="text-[30rpx] font-bold text-slate-800 group-active:text-indigo-600 transition-colors">{{ comp.name }}</text>
               <text class="mt-[6rpx] text-[22rpx] text-slate-400 line-clamp-1">{{ comp.desc }}</text>
             </view>
           </view>
@@ -138,6 +143,7 @@ const componentCategories = [
   {
     name: "基础",
     desc: "Basic Components",
+    icon: "i-lucide-box",
     components: [
       { name: "Button", path: "button", icon: "i-lucide-mouse-pointer-2", desc: "按钮" },
       { name: "Icon", path: "icon", icon: "i-lucide-stars", desc: "图标" },
@@ -155,6 +161,7 @@ const componentCategories = [
   {
     name: "表单",
     desc: "Form Components",
+    icon: "i-lucide-check-square",
     components: [
       { name: "Input", path: "input", icon: "i-lucide-text-cursor-input", desc: "输入框" },
       { name: "Textarea", path: "textarea", icon: "i-lucide-align-left", desc: "多行输入" },
@@ -179,6 +186,7 @@ const componentCategories = [
   {
     name: "反馈",
     desc: "Feedback Components",
+    icon: "i-lucide-message-circle",
     components: [
       { name: "Toast", path: "toast", icon: "i-lucide-message-circle", desc: "轻提示" },
       { name: "Dialog", path: "dialog", icon: "i-lucide-alert-triangle", desc: "对话框" },
@@ -197,6 +205,7 @@ const componentCategories = [
   {
     name: "展示",
     desc: "Display Components",
+    icon: "i-lucide-image",
     components: [
       { name: "Card", path: "card", icon: "i-lucide-square", desc: "卡片" },
       { name: "Cell", path: "cell", icon: "i-lucide-table", desc: "单元格" },
@@ -219,6 +228,7 @@ const componentCategories = [
   {
     name: "导航",
     desc: "Navigation Components",
+    icon: "i-lucide-compass",
     components: [
       { name: "Navbar", path: "navbar", icon: "i-lucide-panel-top", desc: "导航栏" },
       { name: "Tabbar", path: "tabbar", icon: "i-lucide-panel-bottom", desc: "标签栏" },
@@ -236,6 +246,7 @@ const componentCategories = [
   {
     name: "布局",
     desc: "Layout Components",
+    icon: "i-lucide-layout-grid",
     components: [
       { name: "Layout", path: "layout", icon: "i-lucide-layout-grid", desc: "布局" },
       { name: "Grid", path: "grid", icon: "i-lucide-grid-3x3", desc: "宫格" },
