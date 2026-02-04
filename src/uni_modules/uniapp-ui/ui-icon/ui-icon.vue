@@ -103,15 +103,15 @@ export default {
 // CDN 字体（默认）
 @font-face {
   src:
-    url("//at.alicdn.com/t/c/font_5102197_4kmrr4c1n2i.woff2?t=1769000769287") format("woff2"),
-    url("//at.alicdn.com/t/c/font_5102197_4kmrr4c1n2i.woff?t=1769000769287") format("woff"),
-    url("//at.alicdn.com/t/c/font_5102197_4kmrr4c1n2i.ttf?t=1769000769287") format("truetype");
+    url("//at.alicdn.com/t/c/font_5123149_67xboiexucw.woff2?t=1770194339167") format("woff2"),
+    url("//at.alicdn.com/t/c/font_5123149_67xboiexucw.woff?t=1770194339167") format("woff"),
+    url("//at.alicdn.com/t/c/font_5123149_67xboiexucw.ttf?t=1770194339167") format("truetype");
   font-family: "ui-icon";
 }
 /*  #ifdef  APP-PLUS  */
 // APP 端使用本地字体
 @font-face {
-  src: url("./ui-icon.ttf") format("truetype");
+  src: url("./iconfont.ttf") format("truetype");
   font-family: "ui-icon";
 }
 /*  #endif  */
@@ -134,5 +134,5 @@ export default {
   -moz-osx-font-smoothing: grayscale;
 }
 
-@import "./icons.scss";
+@import "./iconfont.scss";
 </style>

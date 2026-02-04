@@ -20,7 +20,7 @@
           </slot>
         </view>
         <!-- 关闭按钮 -->
-        <ui-icon v-if="props.showClose" name="close" class="ui-tooltip__close" size="24rpx" @click="close" />
+        <ui-icon v-if="props.showClose" name="cross" class="ui-tooltip__close" size="24rpx" @click="close" />
       </view>
     </ui-transition>
 
@@ -125,10 +125,7 @@ function noop() {}
 async function initRect() {
   if (!instance) return
 
-  const [targetRect, popupRect] = await Promise.all([
-    useRect("#target", instance),
-    useRect("#measure", instance),
-  ])
+  const [targetRect, popupRect] = await Promise.all([useRect("#target", instance), useRect("#measure", instance)])
 
   if (targetRect) {
     targetWidth.value = targetRect.width || 0

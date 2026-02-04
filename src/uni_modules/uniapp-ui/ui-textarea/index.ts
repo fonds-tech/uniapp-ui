@@ -40,7 +40,7 @@ const defaultProps = buildDefaultProps("textarea", {
   countColor: "",
   countWeight: "",
   disableDefaultPadding: false,
-  clearIcon: "close",
+  clearIcon: "cross",
   clearIconSize: "24rpx",
   clearIconColor: "#fff",
   clearIconWeight: "",

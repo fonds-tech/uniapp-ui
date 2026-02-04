@@ -2,7 +2,7 @@
   <view class="ui-upload" :class="[classs, props.customClass]" :style="[style]">
     <view v-for="(item, index) in renderList" :key="index" class="ui-upload__preview" :style="[previewStyle(index)]" @click="previewImage(item)">
       <view v-if="isShowStatus(item)" class="ui-upload__status">
-        <ui-icon v-if="item.status === 'fail'" name="close" color="#fff" size="40rpx" />
+        <ui-icon v-if="item.status === 'fail'" name="cross" color="#fff" size="40rpx" />
         <ui-loading v-else-if="item.status === 'uploading'" color="#fff" size="40rpx" />
         <text class="ui-upload__status__message">
           {{ item.message }}
@@ -14,8 +14,8 @@
         </slot>
       </view>
       <ui-image v-if="isImage(item.name || item.url)" :src="item.url" :width="props.width" :height="props.height" :mode="props.imageMode" />
-      <ui-icon v-else-if="isDocument(item.name || item.url)" name="document" :size="props.previewIconSize" :color="props.previewIconColor" :weight="props.previewIconWeight" />
-      <ui-icon v-else name="file" :size="props.previewIconSize" :color="props.previewIconColor" :weight="props.previewIconWeight" />
+      <ui-icon v-else-if="isDocument(item.name || item.url)" name="description" :size="props.previewIconSize" :color="props.previewIconColor" :weight="props.previewIconWeight" />
+      <ui-icon v-else name="description" :size="props.previewIconSize" :color="props.previewIconColor" :weight="props.previewIconWeight" />
     </view>
     <view v-if="list.length < props.maxCount" class="ui-upload__trigger" :hover-class="triggerHoverClass" :hover-stay-time="100" :style="[triggerStyle]" @click="triggerUpload">
       <slot name="trigger">

@@ -144,7 +144,7 @@ const keys = computed(() => {
   if (props.mode === "number") {
     list = random ? shuffleArray(clone(numbers.value)) : clone(numbers.value)
     // 在位置9插入小数点或关闭按钮，0在位置10，删除在位置11
-    showDot ? list.splice(9, 0, { value: ".", type: "key" }) : list.splice(9, 0, { value: "keyboard", type: "close" })
+    showDot ? list.splice(9, 0, { value: ".", type: "key" }) : list.splice(9, 0, { value: "keyboard-hide", type: "close" })
     list.push({ value: "backspace", type: "delete" })
   }
   if (props.mode === "car") {

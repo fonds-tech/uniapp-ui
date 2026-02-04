@@ -12,7 +12,7 @@ const defaultProps = buildDefaultProps("back-top", {
   duration: "200",
   background: undefined,
   borderRadius: undefined,
-  icon: "arrowup",
+  icon: "back-top",
   iconColor: "#fff",
   iconSize: "40rpx",
   iconWeight: "",

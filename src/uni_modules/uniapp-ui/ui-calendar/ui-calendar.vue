@@ -26,17 +26,17 @@
 
         <view v-if="props.showSubtitle" class="ui-calendar__subtitle">
           <view class="ui-calendar__nav" @click="onPrevYear">
-            <ui-icon name="arrow-double-left" size="32rpx" :color="colorValue" />
+            <ui-icon name="arrow-left" size="32rpx" :color="colorValue" />
           </view>
           <view class="ui-calendar__nav" @click="onPrevMonth">
             <ui-icon name="arrow-left" size="32rpx" :color="colorValue" />
           </view>
           <text class="ui-calendar__subtitle-text">{{ currentYearMonth }}</text>
           <view class="ui-calendar__nav" @click="onNextMonth">
-            <ui-icon name="arrow-right" size="32rpx" :color="colorValue" />
+            <ui-icon name="arrow" size="32rpx" :color="colorValue" />
           </view>
           <view class="ui-calendar__nav" @click="onNextYear">
-            <ui-icon name="arrow-double-right" size="32rpx" :color="colorValue" />
+            <ui-icon name="arrow" size="32rpx" :color="colorValue" />
           </view>
         </view>
 
@@ -75,17 +75,17 @@
 
       <view v-if="props.showSubtitle" class="ui-calendar__subtitle">
         <view class="ui-calendar__nav" @click="onPrevYear">
-          <ui-icon name="arrow-double-left" size="32rpx" :color="colorValue" />
+          <ui-icon name="arrow-left" size="32rpx" :color="colorValue" />
         </view>
         <view class="ui-calendar__nav" @click="onPrevMonth">
           <ui-icon name="arrow-left" size="32rpx" :color="colorValue" />
         </view>
         <text class="ui-calendar__subtitle-text">{{ currentYearMonth }}</text>
         <view class="ui-calendar__nav" @click="onNextMonth">
-          <ui-icon name="arrow-right" size="32rpx" :color="colorValue" />
+          <ui-icon name="arrow" size="32rpx" :color="colorValue" />
         </view>
         <view class="ui-calendar__nav" @click="onNextYear">
-          <ui-icon name="arrow-double-right" size="32rpx" :color="colorValue" />
+          <ui-icon name="arrow" size="32rpx" :color="colorValue" />
         </view>
       </view>
 

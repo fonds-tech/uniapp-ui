@@ -25,7 +25,7 @@ const defaultProps = buildDefaultProps("cell", {
   valueSize: undefined,
   valueColor: undefined,
   valueWeight: undefined,
-  rightIcon: "right",
+  rightIcon: "arrow",
   rightIconGap: undefined,
   rightIconSize: undefined,
   rightIconColor: undefined,

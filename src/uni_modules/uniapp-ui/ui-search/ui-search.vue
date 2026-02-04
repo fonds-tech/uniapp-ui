@@ -25,7 +25,7 @@
       />
       <view v-if="showClear" class="ui-search__clear" hover-class="ui-search__clear--active" role="button" aria-label="清除" @click.stop="onClickClear">
         <slot name="clear">
-          <ui-icon name="close-circle" :size="props.clearSize" :color="props.clearColor" :weight="props.clearWeight" />
+          <ui-icon name="clear" :size="props.clearSize" :color="props.clearColor" :weight="props.clearWeight" />
         </slot>
       </view>
     </view>

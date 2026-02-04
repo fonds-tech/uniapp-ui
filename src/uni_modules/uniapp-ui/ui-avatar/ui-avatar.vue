@@ -5,7 +5,7 @@
     <template v-else-if="hasError">
       <slot name="error">
         <view class="ui-avatar__fallback">
-          <ui-icon name="image-error" :color="fallbackIconColor" :size="iconSizeValue" />
+          <ui-icon name="photo-fail" :color="fallbackIconColor" :size="iconSizeValue" />
         </view>
       </slot>
     </template>
@@ -25,7 +25,7 @@
     <template v-else>
       <slot>
         <view class="ui-avatar__fallback">
-          <ui-icon name="user" :color="fallbackIconColor" :size="iconSizeValue" />
+          <ui-icon name="user-o" :color="fallbackIconColor" :size="iconSizeValue" />
         </view>
       </slot>
     </template>

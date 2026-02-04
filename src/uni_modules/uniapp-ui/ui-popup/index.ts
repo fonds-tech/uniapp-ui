@@ -14,7 +14,7 @@ const defaultProps = buildDefaultProps("popup", {
   zIndex: undefined,
   background: undefined,
   closeable: false,
-  closeIcon: "close",
+  closeIcon: "cross",
   closeIconPosition: "",
   borderRadius: "16rpx",
   closeOnClickOverlay: true,

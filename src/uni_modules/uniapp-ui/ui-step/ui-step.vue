@@ -8,8 +8,8 @@
           <ui-icon v-if="currentIcon" :name="currentIcon" :size="currentIconSize" :color="currentColor" />
 
           <view v-else class="ui-step__circle" :style="[circleStyle]">
-            <ui-icon v-if="!isDot && isFinish" name="check" :size="circleIconSize" color="#fff" />
-            <ui-icon v-else-if="!isDot && isError" name="close" :size="circleIconSize" color="#fff" />
+            <ui-icon v-if="!isDot && isFinish" name="checked" :size="circleIconSize" color="#fff" />
+            <ui-icon v-else-if="!isDot && isError" name="cross" :size="circleIconSize" color="#fff" />
             <text v-else-if="!isDot" class="ui-step__index" :style="[indexStyle]">{{ safeIndex + 1 }}</text>
           </view>
         </slot>

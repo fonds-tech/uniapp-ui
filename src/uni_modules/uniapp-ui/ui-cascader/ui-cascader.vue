@@ -58,7 +58,7 @@
                 <view class="option-text">
                   {{ option[textKey] }}
                 </view>
-                <ui-icon v-if="item.selected && option[valueKey] === item.selected[valueKey]" name="check" />
+                <ui-icon v-if="item.selected && option[valueKey] === item.selected[valueKey]" name="checked" />
               </view>
             </view>
           </scroll-view>

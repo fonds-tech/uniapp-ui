@@ -36,7 +36,7 @@
 
 <script setup lang="ts">
 import type { ToastInstance } from "@/uni_modules/uniapp-ui/ui-toast"
-import iconsData from "@/uni_modules/uniapp-ui/ui-icon/icons.json"
+import iconsData from "@/uni_modules/uniapp-ui/ui-icon/iconfont.json"
 import { ref, computed } from "vue"
 
 definePage({ style: { navigationBarTitleText: "Icon 图标" } })

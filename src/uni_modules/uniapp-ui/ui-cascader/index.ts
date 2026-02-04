@@ -29,7 +29,7 @@ const defaultProps = buildDefaultProps("cascader", {
   titleSize: undefined,
   titleColor: undefined,
   titleWeight: undefined,
-  closeIcon: "close",
+  closeIcon: "cross",
   closeIconSize: "32rpx",
   closeIconColor: "#333333",
   closeIconWeight: undefined,

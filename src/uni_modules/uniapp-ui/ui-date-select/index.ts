@@ -49,7 +49,7 @@ const defaultProps = buildDefaultProps("date-select", {
   activeColumnColor: undefined,
   activeColumnWeight: undefined,
   displayFormatter: undefined,
-  rightIcon: "right",
+  rightIcon: "arrow",
   rightIconSize: undefined,
   rightIconColor: undefined,
   rightIconWeight: undefined,

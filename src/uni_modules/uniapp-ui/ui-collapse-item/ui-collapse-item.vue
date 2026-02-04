@@ -28,7 +28,7 @@
 
       <!-- 右侧箭头 -->
       <view v-if="props.isLink" class="ui-collapse-item__arrow" :class="[arrowClassList]" :style="[arrowStyle]">
-        <ui-icon name="down" :size="props.arrowSize" :color="arrowColorValue" />
+        <ui-icon name="arrow-down" :size="props.arrowSize" :color="arrowColorValue" />
       </view>
 
       <!-- 分割线 -->

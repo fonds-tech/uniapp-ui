@@ -6,7 +6,7 @@ const defaultProps = buildDefaultProps("navbar", {
   height: "",
   padding: "20rpx",
   backIconColor: "#333333",
-  backIconName: "left",
+  backIconName: "arrow-left",
   backIconSize: "44rpx",
   backText: "",
   backTextSize: "30rpx",
