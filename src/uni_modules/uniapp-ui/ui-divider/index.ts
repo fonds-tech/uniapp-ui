@@ -8,6 +8,8 @@ const defaultProps = buildDefaultProps("divider", {
   contentPosition: "center",
   borderColor: "",
   margin: "",
+  length: "",
+  thickness: "",
   dashed: false,
   hairline: false,
   customClass: "",
@@ -34,6 +36,10 @@ export const dividerProps = {
   borderColor: defaultProps("borderColor", { type: String }),
   /** 外边距 */
   margin: defaultProps("margin", { type: [Number, String] }),
+  /** 线条长度，水平时为宽度，垂直时为高度 */
+  length: defaultProps("length", { type: [Number, String] }),
+  /** 线条粗细，优先级高于 hairline */
+  thickness: defaultProps("thickness", { type: [Number, String] }),
   /** 是否为虚线（快捷属性，优先级高于 type） */
   dashed: defaultProps("dashed", { type: Boolean }),
   /** 是否使用细线（0.5px） */

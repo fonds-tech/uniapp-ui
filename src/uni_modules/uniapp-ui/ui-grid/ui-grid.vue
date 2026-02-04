@@ -20,18 +20,27 @@ const { linkChildren } = useChildren(gridKey)
 // 根节点样式
 const rootStyle = computed(() => {
   const style: CSSProperties = {}
-  // 设置间距
+  const columnNum = props.columnNum || 4
+
+  // 使用 CSS Grid 布局
+  style.display = "grid"
+  style.gridTemplateColumns = `repeat(${columnNum}, 1fr)`
+
+  // 有间距时设置 gap
   if (props.gutter) {
     const gutterValue = useUnit(props.gutter)
-    style.paddingLeft = gutterValue
+    style.gap = gutterValue
   }
+
   return useStyle({ ...style, ...useStyle(props.customStyle) })
 })
 
 // 根节点类名
 const rootClass = computed(() => {
   const list: string[] = []
-  if (props.border && !props.gutter) list.push("ui-grid--border")
+  if (props.border && !props.gutter) {
+    list.push("ui-grid--border")
+  }
   return list
 })
 
@@ -50,24 +59,34 @@ export default {
 
 <style lang="scss" scoped>
 .ui-grid {
-  display: flex;
-  flex-wrap: wrap;
+  overflow: hidden;
+  position: relative;
   box-sizing: border-box;
 
   &--border {
+    &::before {
+      top: 0;
+      left: 0;
+      width: 1px;
+      height: 100%;
+      content: "";
+      z-index: 1;
+      position: absolute;
+      transform: scaleX(0.5);
+      background-color: var(--ui-color-border);
+    }
+
     &::after {
       top: 0;
       left: 0;
-      right: 0;
-      border: var(--ui-border-width) solid var(--ui-color-border);
-      bottom: 0;
+      width: 100%;
+      height: 1px;
       content: "";
+      z-index: 1;
       position: absolute;
-      box-sizing: border-box;
-      border-radius: inherit;
-      pointer-events: none;
+      transform: scaleY(0.5);
+      background-color: var(--ui-color-border);
     }
-    position: relative;
   }
 }
 </style>

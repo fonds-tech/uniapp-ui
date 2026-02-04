@@ -35,8 +35,11 @@ const hasContent = computed(() => !!slots.default)
 // 实际使用的线条类型（dashed 快捷属性优先）
 const lineType = computed(() => (props.dashed ? "dashed" : props.type))
 
-// 线条粗细
-const lineWidth = computed(() => (props.hairline ? "0.5px" : "1px"))
+// 线条粗细（thickness 优先级高于 hairline）
+const lineWidth = computed(() => {
+  if (props.thickness) return useUnit(props.thickness)
+  return props.hairline ? "0.5px" : "1px"
+})
 
 // 类名数组
 const classes = computed(() => {
@@ -46,7 +49,8 @@ const classes = computed(() => {
     list.push(`ui-divider--with-content`)
     list.push(`ui-divider--content-${props.contentPosition}`)
   }
-  if (props.hairline) list.push("ui-divider--hairline")
+  // 仅在未设置 thickness 时应用 hairline 缩放
+  if (props.hairline && !props.thickness) list.push("ui-divider--hairline")
   return list
 })
 
@@ -55,6 +59,14 @@ const style = computed(() => {
   const style: any = {}
   if (props.margin) {
     style.margin = useUnit(props.margin)
+  }
+  // 自定义长度
+  if (props.length) {
+    if (props.direction === "vertical") {
+      style.height = useUnit(props.length)
+    } else {
+      style.width = useUnit(props.length)
+    }
   }
   return useStyle({ ...style, ...useStyle(props.customStyle) })
 })

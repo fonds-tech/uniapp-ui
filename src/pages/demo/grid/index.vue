@@ -9,22 +9,20 @@
 
     <!-- 自定义列数 -->
     <demo-section title="自定义列数">
-      <demo-block direction="column" :gap="24">
-        <view class="column-label">3 列</view>
-        <ui-grid :column-num="3">
-          <ui-grid-item v-for="i in 6" :key="i" icon="image" text="文字" />
-        </ui-grid>
+      <view class="column-label">3 列</view>
+      <ui-grid :column-num="3">
+        <ui-grid-item v-for="i in 6" :key="i" icon="image" text="文字" />
+      </ui-grid>
 
-        <view class="column-label">4 列（默认）</view>
-        <ui-grid :column-num="4">
-          <ui-grid-item v-for="i in 8" :key="i" icon="image" text="文字" />
-        </ui-grid>
+      <view class="column-label">4 列（默认）</view>
+      <ui-grid :column-num="4">
+        <ui-grid-item v-for="i in 8" :key="i" icon="image" text="文字" />
+      </ui-grid>
 
-        <view class="column-label">5 列</view>
-        <ui-grid :column-num="5">
-          <ui-grid-item v-for="i in 10" :key="i" icon="image" text="文字" />
-        </ui-grid>
-      </demo-block>
+      <view class="column-label">5 列</view>
+      <ui-grid :column-num="5">
+        <ui-grid-item v-for="i in 10" :key="i" icon="image" text="文字" />
+      </ui-grid>
     </demo-section>
 
     <!-- 自定义间距 -->
@@ -43,32 +41,28 @@
 
     <!-- 内容排列方向 -->
     <demo-section title="内容排列方向">
-      <demo-block direction="column" :gap="24">
-        <view class="column-label">垂直排列（默认）</view>
-        <ui-grid direction="vertical">
-          <ui-grid-item v-for="i in 4" :key="i" icon="image" text="文字" />
-        </ui-grid>
+      <view class="column-label">垂直排列（默认）</view>
+      <ui-grid direction="vertical">
+        <ui-grid-item v-for="i in 4" :key="i" icon="image" text="文字" />
+      </ui-grid>
 
-        <view class="column-label">水平排列</view>
-        <ui-grid direction="horizontal">
-          <ui-grid-item v-for="i in 4" :key="i" icon="image" text="文字" />
-        </ui-grid>
-      </demo-block>
+      <view class="column-label">水平排列</view>
+      <ui-grid direction="horizontal">
+        <ui-grid-item v-for="i in 4" :key="i" icon="image" text="文字" />
+      </ui-grid>
     </demo-section>
 
     <!-- 显示边框 -->
     <demo-section title="显示边框">
-      <demo-block direction="column" :gap="24">
-        <view class="column-label">显示边框（默认）</view>
-        <ui-grid border>
-          <ui-grid-item v-for="i in 4" :key="i" icon="image" text="文字" />
-        </ui-grid>
+      <view class="column-label">显示边框（默认）</view>
+      <ui-grid border>
+        <ui-grid-item v-for="i in 4" :key="i" icon="image" text="文字" />
+      </ui-grid>
 
-        <view class="column-label">无边框</view>
-        <ui-grid :border="false">
-          <ui-grid-item v-for="i in 4" :key="i" icon="image" text="文字" />
-        </ui-grid>
-      </demo-block>
+      <view class="column-label">无边框</view>
+      <ui-grid :border="false">
+        <ui-grid-item v-for="i in 4" :key="i" icon="image" text="文字" />
+      </ui-grid>
     </demo-section>
 
     <!-- 图标颜色和大小 -->
@@ -98,13 +92,7 @@
     <!-- 可点击 -->
     <demo-section title="可点击">
       <ui-grid clickable>
-        <ui-grid-item
-          v-for="item in clickableItems"
-          :key="item.text"
-          :icon="item.icon"
-          :text="item.text"
-          @click="onGridItemClick(item.text)"
-        />
+        <ui-grid-item v-for="item in clickableItems" :key="item.text" :icon="item.icon" :text="item.text" @click="onGridItemClick(item.text)" />
       </ui-grid>
     </demo-section>
 
@@ -152,17 +140,15 @@
 
     <!-- 内容居中 -->
     <demo-section title="内容居中">
-      <demo-block direction="column" :gap="24">
-        <view class="column-label">居中（默认）</view>
-        <ui-grid center>
-          <ui-grid-item v-for="i in 4" :key="i" icon="image" text="文字" />
-        </ui-grid>
+      <view class="column-label">居中（默认）</view>
+      <ui-grid center>
+        <ui-grid-item v-for="i in 4" :key="i" icon="image" text="文字" />
+      </ui-grid>
 
-        <view class="column-label">不居中</view>
-        <ui-grid :center="false">
-          <ui-grid-item v-for="i in 4" :key="i" icon="image" text="文字" />
-        </ui-grid>
-      </demo-block>
+      <view class="column-label">不居中</view>
+      <ui-grid :center="false">
+        <ui-grid-item v-for="i in 4" :key="i" icon="image" text="文字" />
+      </ui-grid>
     </demo-section>
   </demo-page>
 </template>

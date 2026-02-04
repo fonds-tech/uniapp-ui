@@ -35,7 +35,6 @@ declare module "vue" {
     UiIndexBar: (typeof import("./ui-index-bar/ui-index-bar.vue"))["default"]
     UiInput: (typeof import("./ui-input/ui-input.vue"))["default"]
     UiKeyboard: (typeof import("./ui-keyboard/ui-keyboard.vue"))["default"]
-    UiLine: (typeof import("./ui-line/ui-line.vue"))["default"]
     UiLoading: (typeof import("./ui-loading/ui-loading.vue"))["default"]
     UiNavbar: (typeof import("./ui-navbar/ui-navbar.vue"))["default"]
     UiNoticeBar: (typeof import("./ui-notice-bar/ui-notice-bar.vue"))["default"]

@@ -154,7 +154,6 @@ const componentCategories = [
       { name: "Badge", path: "badge", icon: "i-lucide-dot", desc: "徽标" },
       { name: "Tag", path: "tag", icon: "i-lucide-tag", desc: "标签" },
       { name: "Loading", path: "loading", icon: "i-lucide-loader", desc: "加载" },
-      { name: "Line", path: "line", icon: "i-lucide-minus", desc: "分割线" },
       { name: "Divider", path: "divider", icon: "i-lucide-separator-horizontal", desc: "分割线" },
     ],
   },

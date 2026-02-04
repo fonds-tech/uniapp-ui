@@ -87,6 +87,29 @@
       </demo-block>
     </demo-section>
 
+    <demo-section title="自定义粗细">
+      <demo-block direction="column">
+        <ui-divider thickness="4rpx" />
+        <ui-divider thickness="8rpx" margin="20rpx 0" />
+        <ui-divider thickness="12rpx" />
+      </demo-block>
+    </demo-section>
+
+    <demo-section title="自定义长度">
+      <demo-block direction="column">
+        <ui-divider length="50%" />
+        <ui-divider length="200rpx" margin="20rpx 0" />
+        <ui-divider length="100rpx" />
+      </demo-block>
+      <demo-block align="center" class="mt-16">
+        <text class="demo-text">文本</text>
+        <ui-divider direction="vertical" length="40rpx" margin="0 20rpx" />
+        <text class="demo-text">自定义高度</text>
+        <ui-divider direction="vertical" length="60rpx" margin="0 20rpx" />
+        <text class="demo-text">文本</text>
+      </demo-block>
+    </demo-section>
+
     <demo-section title="自定义间距">
       <demo-block direction="column">
         <text class="demo-text">上方内容</text>

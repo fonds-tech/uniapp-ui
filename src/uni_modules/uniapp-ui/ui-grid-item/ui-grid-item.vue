@@ -1,5 +1,5 @@
 <template>
-  <view class="ui-grid-item" :class="[rootClass, props.customClass]" :style="[rootStyle]" @click="onClick">
+  <view class="ui-grid-item" :class="[itemClass, props.customClass]" :style="[itemStyle]" @click="onClick">
     <view class="ui-grid-item__content" :class="[contentClass]" :style="[contentStyle]">
       <!-- 图标插槽 -->
       <view v-if="hasIcon" class="ui-grid-item__icon">
@@ -35,7 +35,7 @@ const emits = defineEmits(gridItemEmits)
 const slots = useSlots()
 
 // 获取父组件
-const { index, parent } = useParent(gridKey)
+const { parent } = useParent(gridKey)
 
 // 默认图标大小
 const DEFAULT_ICON_SIZE = "56rpx"
@@ -56,50 +56,41 @@ const hasText = computed(() => {
   return props.text || slots.text
 })
 
-// 计算列宽百分比
-const columnWidth = computed(() => {
-  const columnNum = parent?.props.columnNum || 4
-  return `${100 / columnNum}%`
-})
-
-// 根节点样式
-const rootStyle = computed(() => {
+// grid-item 样式
+const itemStyle = computed(() => {
   const style: CSSProperties = {}
-  style.flexBasis = columnWidth.value
+  const isSquare = parent?.props.square
 
-  // 处理间距
-  if (parent?.props.gutter) {
-    const gutterValue = useUnit(parent.props.gutter)
-    style.paddingRight = gutterValue
-    style.paddingTop = index.value >= (parent.props.columnNum || 4) ? gutterValue : undefined
+  // 正方形模式：使用 padding-top 撑开高度
+  if (isSquare) {
+    style.paddingTop = "100%"
   }
 
   return useStyle({ ...style, ...useStyle(props.customStyle) })
 })
 
-// 根节点类名
-const rootClass = computed(() => {
+// grid-item 类名
+const itemClass = computed(() => {
   const list: string[] = []
-  // 正方形需要相对定位
+
   if (parent?.props.square) {
     list.push("ui-grid-item--square")
   }
+
+  if (parent?.props.border && !parent?.props.gutter) {
+    list.push("ui-grid-item--border")
+  }
+
   return list
 })
 
-// 内容区域样式
+// content 样式
 const contentStyle = computed(() => {
   const style: CSSProperties = {}
-
-  // 正方形格子
-  if (parent?.props.square) {
-    style.paddingTop = "100%"
-  }
-
   return useStyle(style)
 })
 
-// 内容区域类名
+// content 类名
 const contentClass = computed(() => {
   const list: string[] = []
 
@@ -123,9 +114,9 @@ const contentClass = computed(() => {
     list.push("ui-grid-item__content--clickable")
   }
 
-  // 边框
-  if (parent?.props.border && !parent?.props.gutter) {
-    list.push("ui-grid-item__content--border")
+  // 有间距时显示圆角边框
+  if (parent?.props.gutter) {
+    list.push("ui-grid-item__content--gutter")
   }
 
   return list
@@ -138,7 +129,7 @@ function onClick(event: any) {
   }
 }
 
-defineExpose({ name: "ui-grid-item", index })
+defineExpose({ name: "ui-grid-item" })
 </script>
 
 <script lang="ts">
@@ -150,13 +141,40 @@ export default {
 
 <style lang="scss" scoped>
 .ui-grid-item {
+  position: relative;
   box-sizing: border-box;
 
   &--square {
-    position: relative;
+    height: 0;
+  }
+
+  &--border {
+    &::before {
+      left: 0;
+      width: 100%;
+      bottom: 0;
+      height: 1px;
+      content: "";
+      z-index: 1;
+      position: absolute;
+      transform: scaleY(0.5);
+      background-color: var(--ui-color-border);
+    }
+
+    &::after {
+      top: 0;
+      right: 0;
+      width: 1px;
+      height: 100%;
+      content: "";
+      position: absolute;
+      transform: scaleX(0.5);
+      background-color: var(--ui-color-border);
+    }
   }
 
   &__content {
+    height: 100%;
     display: flex;
     padding: 32rpx 16rpx;
     box-sizing: border-box;
@@ -177,6 +195,8 @@ export default {
       left: 0;
       right: 0;
       bottom: 0;
+      height: auto;
+      padding: 0;
       position: absolute;
     }
 
@@ -189,21 +209,23 @@ export default {
       }
     }
 
-    &--border {
+    &--gutter {
       position: relative;
+      border-radius: var(--ui-radius-sm);
 
       &::after {
         top: 0;
         left: 0;
-        right: 0;
-        border: 0 solid var(--ui-color-border);
-        bottom: 0;
+        width: 200%;
+        border: 1px solid var(--ui-color-border);
+        height: 200%;
         content: "";
         position: absolute;
+        transform: scale(0.5);
         box-sizing: border-box;
+        border-radius: calc(var(--ui-radius-sm) * 2);
         pointer-events: none;
-        border-right-width: var(--ui-border-width);
-        border-bottom-width: var(--ui-border-width);
+        transform-origin: top left;
       }
     }
   }

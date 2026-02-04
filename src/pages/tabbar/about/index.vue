@@ -9,28 +9,34 @@
     <view :style="{ height: `${safeAreaInsets?.top + 44}px` }" />
 
     <view class="px-[32rpx] py-[32rpx] pb-[180rpx]">
-      <view class="flex flex-col items-center py-[60rpx] bg-white rounded-[32rpx] mb-[32rpx]">
+      <view class="flex flex-col items-center py-[80rpx] bg-white rounded-[40rpx] mb-[32rpx] shadow-sm">
         <view
-          class="flex h-[160rpx] w-[160rpx] items-center justify-center rounded-[40rpx] bg-gradient-to-br from-indigo-500 to-violet-600 shadow-lg shadow-indigo-500/30 mb-[32rpx]"
+          class="flex h-[180rpx] w-[180rpx] items-center justify-center rounded-[48rpx] bg-gradient-to-br from-indigo-500 to-purple-600 shadow-xl shadow-indigo-500/20 mb-[32rpx]"
         >
-          <view class="i-lucide-layers text-[80rpx] text-white" />
+          <view class="i-lucide-layers text-[90rpx] text-white" />
         </view>
-        <text class="text-[40rpx] font-bold text-slate-800 mb-[12rpx]">UNIAPP UI</text>
-        <text class="text-[28rpx] text-gray-400">v{{ version }}</text>
-        <view class="flex items-center mt-[24rpx] space-x-[16rpx]">
-          <view class="px-[20rpx] py-[8rpx] rounded-full bg-emerald-50 text-[24rpx] text-emerald-600"> Vue 3 </view>
-          <view class="px-[20rpx] py-[8rpx] rounded-full bg-blue-50 text-[24rpx] text-blue-600"> TypeScript </view>
-          <view class="px-[20rpx] py-[8rpx] rounded-full bg-violet-50 text-[24rpx] text-violet-600"> UniApp </view>
+        <text class="text-[44rpx] font-black text-slate-900 mb-[8rpx] tracking-tight">UNIAPP UI</text>
+        <text class="text-[26rpx] font-medium text-slate-400 bg-slate-100 px-[20rpx] py-[6rpx] rounded-full">v{{ version }}</text>
+
+        <view class="flex items-center mt-[40rpx] space-x-[20rpx]">
+          <view class="flex items-center px-[24rpx] py-[12rpx] rounded-[20rpx] bg-[#F8FAFC] border border-slate-100">
+            <view class="i-lucide-file-code text-[28rpx] text-[#42b883] mr-[12rpx]" />
+            <text class="text-[24rpx] font-bold text-slate-600">Vue 3</text>
+          </view>
+          <view class="flex items-center px-[24rpx] py-[12rpx] rounded-[20rpx] bg-[#F8FAFC] border border-slate-100">
+            <view class="i-lucide-code-2 text-[28rpx] text-[#3178c6] mr-[12rpx]" />
+            <text class="text-[24rpx] font-bold text-slate-600">TypeScript</text>
+          </view>
         </view>
       </view>
 
-      <view class="bg-white rounded-[28rpx] p-[32rpx] mb-[24rpx]">
-        <view class="flex items-center mb-[20rpx]">
-          <view class="i-lucide-info text-[36rpx] text-indigo-500 mr-[16rpx]" />
-          <text class="text-[30rpx] font-bold text-slate-800">项目介绍</text>
+      <view class="bg-white rounded-[32rpx] p-[40rpx] mb-[24rpx] shadow-sm">
+        <view class="flex items-center mb-[24rpx]">
+          <view class="h-[8rpx] w-[8rpx] rounded-full bg-indigo-500 mr-[16rpx]" />
+          <text class="text-[32rpx] font-bold text-slate-900">About</text>
         </view>
-        <text class="text-[28rpx] text-gray-600 leading-relaxed">
-          UNIAPP UI 是一套基于 Vue 3 + TypeScript 的跨端 UI 组件库，专为 UniApp 生态打造。 提供 80+ 高质量组件，覆盖移动端开发常见场景，助力开发者快速构建优雅的应用界面。
+        <text class="text-[30rpx] text-slate-600 leading-relaxed text-justify">
+          UNIAPP UI 是一套基于 Vue 3 + TypeScript 的现代化跨端 UI 组件库。专为 UniApp 生态打造，内置 100+ 高质量组件与丰富业务模板，致力于提供极致的开发体验与视觉享受。
         </text>
       </view>
 
@@ -45,29 +51,6 @@
             <view class="flex-1">
               <text class="text-[28rpx] font-medium text-slate-700">{{ feature.title }}</text>
               <text class="text-[24rpx] text-gray-400 ml-[12rpx]">{{ feature.desc }}</text>
-            </view>
-          </view>
-        </view>
-      </view>
-
-      <view class="bg-white rounded-[28rpx] p-[32rpx] mb-[24rpx]">
-        <view class="flex items-center justify-between mb-[24rpx]">
-          <view class="flex items-center">
-            <view class="i-lucide-git-commit text-[36rpx] text-emerald-500 mr-[16rpx]" />
-            <text class="text-[30rpx] font-bold text-slate-800">更新日志</text>
-          </view>
-          <text class="text-[26rpx] text-indigo-500" @click="viewAllChangelog">查看全部</text>
-        </view>
-        <view class="flex flex-col space-y-[24rpx]">
-          <view v-for="log in changelog" :key="log.version" class="relative pl-[32rpx]">
-            <view class="absolute left-0 top-[8rpx] h-[16rpx] w-[16rpx] rounded-full bg-indigo-500" />
-            <view v-if="changelog.indexOf(log) !== changelog.length - 1" class="absolute left-[6rpx] top-[28rpx] bottom-[-24rpx] w-[4rpx] bg-gray-200" />
-            <view class="flex items-center mb-[8rpx]">
-              <text class="text-[28rpx] font-bold text-slate-800">v{{ log.version }}</text>
-              <text class="text-[24rpx] text-gray-400 ml-[16rpx]">{{ log.date }}</text>
-            </view>
-            <view class="flex flex-col space-y-[8rpx]">
-              <text v-for="(item, index) in log.items" :key="index" class="text-[26rpx] text-gray-600"> • {{ item }} </text>
             </view>
           </view>
         </view>
@@ -116,7 +99,7 @@ const features = [
   {
     icon: "i-lucide-box",
     textClass: "text-blue-500",
-    title: "80+ 组件",
+    title: "100+ 组件",
     desc: "覆盖常见业务场景",
   },
   {
@@ -145,24 +128,6 @@ const features = [
   },
 ]
 
-const changelog = [
-  {
-    version: "1.0.0",
-    date: "2024-01-15",
-    items: ["正式发布 1.0 版本", "新增 80+ 基础组件", "完善文档和示例"],
-  },
-  {
-    version: "0.9.0",
-    date: "2024-01-01",
-    items: ["新增表单验证组件", "优化组件性能", "修复已知问题"],
-  },
-  {
-    version: "0.8.0",
-    date: "2023-12-15",
-    items: ["新增反馈类组件", "支持暗黑模式"],
-  },
-]
-
 const contacts = [
   {
     icon: "i-lucide-github",
@@ -177,10 +142,6 @@ const contacts = [
     action: "issues",
   },
 ]
-
-function viewAllChangelog() {
-  uni.showToast({ title: "更多日志开发中", icon: "none" })
-}
 
 function handleContact(contact: (typeof contacts)[0]) {
   uni.showToast({ title: `打开 ${contact.label}`, icon: "none" })

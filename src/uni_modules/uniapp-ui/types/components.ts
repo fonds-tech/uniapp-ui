@@ -6,7 +6,6 @@ import type { TagProps } from "../ui-tag"
 import type { CellProps } from "../ui-cell"
 import type { FormProps } from "../ui-form"
 import type { IconProps } from "../ui-icon"
-import type { LineProps } from "../ui-line"
 import type { RateProps } from "../ui-rate"
 import type { StepProps } from "../ui-step"
 import type { TabsProps } from "../ui-tabs"
@@ -118,7 +117,6 @@ export interface Components {
   "index-bar": Partial<IndexBarProps>
   input: Partial<InputProps>
   keyboard: Partial<KeyboardProps>
-  line: Partial<LineProps>
   loading: Partial<LoadingProps>
   navbar: Partial<NavbarProps>
   "notice-bar": Partial<NoticeBarProps>
