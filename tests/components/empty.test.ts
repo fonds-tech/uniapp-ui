@@ -165,6 +165,18 @@ describe("ui-empty 空状态组件", () => {
     })
   })
 
+  describe("样式计算", () => {
+    it("margin/padding 应应用到样式中", () => {
+      const wrapper = mount(UiEmpty, {
+        props: { margin: "12rpx", padding: "16rpx" },
+      })
+
+      const style = wrapper.find(".ui-empty").attributes("style") || ""
+      expect(style).toContain("margin")
+      expect(style).toContain("padding")
+    })
+  })
+
   describe("自定义样式", () => {
     it("应支持自定义类名", () => {
       const wrapper = mount(UiEmpty, {

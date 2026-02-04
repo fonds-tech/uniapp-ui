@@ -27,6 +27,19 @@ describe("ui-safe-area-bottom 底部安全区域组件", () => {
 
       expect(wrapper.find(".ui-safe-area-bottom").exists()).toBe(true)
     })
+
+    it("初始化应触发 height 事件并应用高度", async () => {
+      const wrapper = mount(UiSafeAreaBottom)
+
+      await waitForTransition()
+
+      const emitted = wrapper.emitted("height")
+      expect(emitted).toBeTruthy()
+      expect(emitted?.[0]?.[0]).toBe(3)
+
+      const style = wrapper.find(".ui-safe-area-bottom").attributes("style") || ""
+      expect(style).toContain("height: 3px")
+    })
   })
 
   describe("样式配置", () => {

@@ -28,12 +28,12 @@
           <view class="relative h-full w-full bg-gradient-to-br from-white/10 to-transparent p-[48rpx]">
             <view class="flex justify-between text-white relative z-10">
               <view class="flex flex-col items-center">
-                <text class="text-[52rpx] font-bold leading-none tracking-tight">80+</text>
+                <text class="text-[52rpx] font-bold leading-none tracking-tight">100+</text>
                 <text class="mt-[12rpx] text-[24rpx] font-medium text-indigo-100 opacity-90">组件总数</text>
               </view>
               <view class="h-[80rpx] w-[1rpx] bg-gradient-to-b from-white/0 via-white/30 to-white/0" />
               <view class="flex flex-col items-center">
-                <text class="text-[52rpx] font-bold leading-none tracking-tight">20+</text>
+                <text class="text-[52rpx] font-bold leading-none tracking-tight">30+</text>
                 <text class="mt-[12rpx] text-[24rpx] font-medium text-indigo-100 opacity-90">工具函数</text>
               </view>
               <view class="h-[80rpx] w-[1rpx] bg-gradient-to-b from-white/0 via-white/30 to-white/0" />
@@ -150,7 +150,7 @@ const categories = [
   {
     key: "basic",
     name: "基础组件",
-    desc: "Button, Icon, Layout...",
+    desc: "Button, Icon, Cell...",
     icon: "i-lucide-box",
     count: 12,
     bgClass: "bg-blue-50",
@@ -159,27 +159,27 @@ const categories = [
   {
     key: "form",
     name: "表单组件",
-    desc: "Input, Select, Switch...",
+    desc: "Input, Select, Picker...",
     icon: "i-lucide-check-square",
-    count: 15,
+    count: 24,
     bgClass: "bg-indigo-50",
     textClass: "text-indigo-500",
   },
   {
     key: "feedback",
     name: "反馈组件",
-    desc: "Toast, Modal, Popup...",
+    desc: "Toast, Dialog, Popup...",
     icon: "i-lucide-message-circle",
-    count: 10,
+    count: 13,
     bgClass: "bg-amber-50",
     textClass: "text-amber-500",
   },
   {
     key: "display",
     name: "展示组件",
-    desc: "Avatar, Tag, Badge...",
+    desc: "Avatar, Tag, Skeleton...",
     icon: "i-lucide-image",
-    count: 18,
+    count: 28,
     bgClass: "bg-rose-50",
     textClass: "text-rose-500",
   },
@@ -188,16 +188,16 @@ const categories = [
     name: "导航组件",
     desc: "Tabs, Navbar, Tabbar...",
     icon: "i-lucide-compass",
-    count: 8,
+    count: 12,
     bgClass: "bg-emerald-50",
     textClass: "text-emerald-500",
   },
   {
     key: "layout",
     name: "布局组件",
-    desc: "Grid, Section, Divider...",
+    desc: "Grid, Divider, Sticky...",
     icon: "i-lucide-layout-grid",
-    count: 6,
+    count: 10,
     bgClass: "bg-cyan-50",
     textClass: "text-cyan-500",
   },

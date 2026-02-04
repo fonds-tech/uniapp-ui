@@ -122,6 +122,27 @@ describe("uiSwiper 组件", () => {
       })
       expect(wrapper.props("list")).toEqual(list)
     })
+
+    it("应支持自定义 fieldKeys 映射", async () => {
+      const list = [{ src: "https://example.com/1.jpg", kind: "image" }]
+      const wrapper = mount(UiSwiper, {
+        props: {
+          list,
+          fieldKeys: { url: "src", type: "kind" },
+        },
+        global: {
+          stubs: {
+            "ui-image": true,
+            swiper: true,
+            "swiper-item": true,
+          },
+        },
+      })
+      await waitForTransition()
+
+      expect(wrapper.props("fieldKeys")).toEqual({ url: "src", type: "kind" })
+      expect(wrapper.findAll(".ui-swiper__item").length).toBe(1)
+    })
   })
 
   describe("尺寸属性测试", () => {
@@ -220,6 +241,31 @@ describe("uiSwiper 组件", () => {
         },
       })
       expect(wrapper.props("current")).toBe(1)
+    })
+
+    it("current 变化应触发 update:current", async () => {
+      const wrapper = mount(UiSwiper, {
+        props: {
+          list: [
+            { url: "https://example.com/1.jpg" },
+            { url: "https://example.com/2.jpg" },
+          ],
+          current: 0,
+        },
+        global: {
+          stubs: {
+            "ui-image": true,
+            swiper: true,
+            "swiper-item": true,
+          },
+        },
+      })
+      await waitForTransition()
+
+      await wrapper.setProps({ current: 1 })
+      await waitForTransition()
+
+      expect(wrapper.emitted("update:current")).toBeTruthy()
     })
   })
 

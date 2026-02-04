@@ -1,5 +1,6 @@
 import UiSelect from "@/uni_modules/uniapp-ui/ui-select/ui-select.vue"
 import { mount } from "@vue/test-utils"
+import { nextTick } from "vue"
 import { waitForTransition } from "../setup"
 import { it, vi, expect, describe, afterEach, beforeEach } from "vitest"
 
@@ -18,6 +19,30 @@ describe("uiSelect 组件", () => {
     { text: "选项三", value: "3" },
   ]
 
+  const pickerStub = {
+    name: "ui-picker",
+    template: "<div class=\"ui-picker-stub\"></div>",
+    props: ["show", "modelValue"],
+    emits: ["update:show", "update:modelValue", "change", "cancel", "confirm", "open", "opened", "close", "closed"],
+    methods: {
+      confirm() {
+        this.$emit("confirm", { values: ["1"], indexs: [0], columns: [] })
+      },
+      cancel() {
+        this.$emit("cancel", { values: [], indexs: [] })
+      },
+      getSelectedValues() {
+        return ["1"]
+      },
+      getSelectedIndexs() {
+        return [0]
+      },
+      getSelectedColumns() {
+        return [{ text: "选项一", value: "1" }]
+      },
+    },
+  }
+
   describe("基础渲染", () => {
     it("应该正确渲染默认状态", async () => {
       const wrapper = mount(UiSelect, {
@@ -25,7 +50,7 @@ describe("uiSelect 组件", () => {
         global: {
           stubs: {
             "ui-icon": true,
-            "ui-picker": true,
+            "ui-picker": pickerStub,
           },
         },
       })
@@ -41,7 +66,7 @@ describe("uiSelect 组件", () => {
         global: {
           stubs: {
             "ui-icon": true,
-            "ui-picker": true,
+            "ui-picker": pickerStub,
           },
         },
       })
@@ -54,7 +79,7 @@ describe("uiSelect 组件", () => {
         global: {
           stubs: {
             "ui-icon": true,
-            "ui-picker": true,
+            "ui-picker": pickerStub,
           },
         },
       })
@@ -67,7 +92,7 @@ describe("uiSelect 组件", () => {
         global: {
           stubs: {
             "ui-icon": true,
-            "ui-picker": true,
+            "ui-picker": pickerStub,
           },
         },
       })
@@ -80,7 +105,7 @@ describe("uiSelect 组件", () => {
         global: {
           stubs: {
             "ui-icon": true,
-            "ui-picker": true,
+            "ui-picker": pickerStub,
           },
         },
       })
@@ -95,7 +120,7 @@ describe("uiSelect 组件", () => {
         global: {
           stubs: {
             "ui-icon": true,
-            "ui-picker": true,
+            "ui-picker": pickerStub,
           },
         },
       })
@@ -108,7 +133,7 @@ describe("uiSelect 组件", () => {
         global: {
           stubs: {
             "ui-icon": true,
-            "ui-picker": true,
+            "ui-picker": pickerStub,
           },
         },
       })
@@ -122,7 +147,7 @@ describe("uiSelect 组件", () => {
         global: {
           stubs: {
             "ui-icon": true,
-            "ui-picker": true,
+            "ui-picker": pickerStub,
           },
         },
       })
@@ -135,7 +160,7 @@ describe("uiSelect 组件", () => {
         global: {
           stubs: {
             "ui-icon": true,
-            "ui-picker": true,
+            "ui-picker": pickerStub,
           },
         },
       })
@@ -150,7 +175,7 @@ describe("uiSelect 组件", () => {
         global: {
           stubs: {
             "ui-icon": true,
-            "ui-picker": true,
+            "ui-picker": pickerStub,
           },
         },
       })
@@ -564,6 +589,104 @@ describe("uiSelect 组件", () => {
       })
       await waitForTransition()
       expect(wrapper.find(".ui-select").exists()).toBe(true)
+    })
+  })
+
+  describe("交互与事件", () => {
+    it("点击触发区应打开并触发 click 事件", async () => {
+      const wrapper = mount(UiSelect, {
+        props: { columns: mockColumns },
+        global: {
+          stubs: {
+            "ui-icon": true,
+            "ui-picker": pickerStub,
+          },
+        },
+      })
+      await waitForTransition()
+
+      await wrapper.find(".ui-select__trigger").trigger("click")
+      await nextTick()
+
+      expect(wrapper.emitted("click")).toBeTruthy()
+      expect(wrapper.findComponent({ name: "ui-picker" }).props("show")).toBe(true)
+    })
+
+    it("picker update:model-value 应同步 update:modelValue", async () => {
+      const wrapper = mount(UiSelect, {
+        props: { columns: mockColumns },
+        global: {
+          stubs: {
+            "ui-icon": true,
+            "ui-picker": pickerStub,
+          },
+        },
+      })
+      await waitForTransition()
+
+      wrapper.findComponent({ name: "ui-picker" }).vm.$emit("update:model-value", ["1"])
+      await nextTick()
+
+      expect(wrapper.emitted("update:modelValue")?.at(-1)).toEqual(["1"])
+    })
+
+    it("confirm/cancel 事件应透传", async () => {
+      const wrapper = mount(UiSelect, {
+        props: { columns: mockColumns },
+        global: {
+          stubs: {
+            "ui-icon": true,
+            "ui-picker": pickerStub,
+          },
+        },
+      })
+      await waitForTransition()
+
+      const picker = wrapper.findComponent({ name: "ui-picker" })
+      picker.vm.$emit("confirm", { values: ["1"], indexs: [0], columns: [] })
+      picker.vm.$emit("cancel", { values: [], indexs: [] })
+      await nextTick()
+
+      expect(wrapper.emitted("confirm")).toBeTruthy()
+      expect(wrapper.emitted("cancel")).toBeTruthy()
+    })
+
+    it("open/close 方法应控制显示状态", async () => {
+      const wrapper = mount(UiSelect, {
+        props: { columns: mockColumns },
+        global: {
+          stubs: {
+            "ui-icon": true,
+            "ui-picker": pickerStub,
+          },
+        },
+      })
+      await waitForTransition()
+
+      wrapper.vm.open()
+      await nextTick()
+      expect(wrapper.findComponent({ name: "ui-picker" }).props("show")).toBe(true)
+
+      wrapper.vm.close()
+      await nextTick()
+      expect(wrapper.findComponent({ name: "ui-picker" }).props("show")).toBe(false)
+    })
+
+    it("getSelectedValues/Indexs/Columns 应返回 picker 结果", async () => {
+      const wrapper = mount(UiSelect, {
+        props: { columns: mockColumns },
+        global: {
+          stubs: {
+            "ui-icon": true,
+            "ui-picker": pickerStub,
+          },
+        },
+      })
+      await waitForTransition()
+
+      expect(wrapper.vm.getSelectedValues()).toEqual(["1"])
+      expect(wrapper.vm.getSelectedIndexs()).toEqual([0])
+      expect(wrapper.vm.getSelectedColumns()).toEqual([{ text: "选项一", value: "1" }])
     })
   })
 })

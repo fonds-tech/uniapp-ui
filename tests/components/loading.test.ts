@@ -92,6 +92,19 @@ describe("ui-loading 加载组件", () => {
     })
   })
 
+  describe("图标插槽", () => {
+    it("应支持 icon 插槽覆盖默认图标", () => {
+      const wrapper = mount(UiLoading, {
+        slots: {
+          icon: "<span class='custom-icon'>icon</span>",
+        },
+      })
+
+      expect(wrapper.find(".custom-icon").exists()).toBe(true)
+      expect(wrapper.find(".ui-loading__rotate").exists()).toBe(false)
+    })
+  })
+
   describe("布局模式", () => {
     it("默认应为水平布局", () => {
       const wrapper = mount(UiLoading, {

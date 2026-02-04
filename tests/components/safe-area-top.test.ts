@@ -27,6 +27,15 @@ describe("ui-safe-area-top 顶部安全区域组件", () => {
 
       expect(wrapper.find(".ui-safe-area-top").exists()).toBe(true)
     })
+
+    it("应应用系统状态栏高度", async () => {
+      const wrapper = mount(UiSafeAreaTop)
+
+      await waitForTransition()
+
+      const style = wrapper.find(".ui-safe-area-top").attributes("style") || ""
+      expect(style).toContain("height: 20px")
+    })
   })
 
   describe("样式配置", () => {

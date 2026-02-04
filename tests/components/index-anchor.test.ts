@@ -311,4 +311,21 @@ describe("ui-index-anchor 索引锚点组件", () => {
       expect(wrapper.find(".ui-index-anchor").exists()).toBe(true)
     })
   })
+
+  describe("吸顶样式", () => {
+    it("父组件 sticky 为 true 时应使用 sticky 定位", async () => {
+      const wrapper = mount(UiIndexAnchor, {
+        global: {
+          provide: {
+            [indexBarKey as symbol]: createMockParentProvide("A"),
+          },
+        },
+      })
+      await waitForTransition()
+
+      const style = wrapper.find(".ui-index-anchor").attributes("style") || ""
+      expect(style).toContain("position: sticky")
+      expect(style).toContain("top: 0")
+    })
+  })
 })

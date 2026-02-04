@@ -449,4 +449,56 @@ describe("uiPagination 组件", () => {
       expect(wrapper.find(".ui-pagination__empty").exists()).toBe(false)
     })
   })
+
+  describe("触底与下拉刷新事件", () => {
+    it("触底时应触发 load 事件", async () => {
+      const reachCallbacks: Array<() => void> = []
+      const originReach = (globalThis as any).onReachBottom
+      ;(globalThis as any).onReachBottom = vi.fn((cb: () => void) => {
+        reachCallbacks.push(cb)
+      })
+
+      const wrapper = mount(UiPagination, {
+        props: { list: [1, 2, 3], total: 10, page: 1, pageSize: 3 },
+        global: {
+          stubs: {
+            "ui-empty": true,
+            "ui-loading": true,
+          },
+        },
+      })
+      await waitForTransition()
+
+      reachCallbacks.forEach((cb) => cb())
+
+      expect(wrapper.emitted("load")).toBeTruthy()
+
+      ;(globalThis as any).onReachBottom = originReach
+    })
+
+    it("下拉刷新时应触发 refresh 事件", async () => {
+      const refreshCallbacks: Array<() => void> = []
+      const originRefresh = (globalThis as any).onPullDownRefresh
+      ;(globalThis as any).onPullDownRefresh = vi.fn((cb: () => void) => {
+        refreshCallbacks.push(cb)
+      })
+
+      const wrapper = mount(UiPagination, {
+        props: { list: [1], total: 10, page: 2, pageSize: 5 },
+        global: {
+          stubs: {
+            "ui-empty": true,
+            "ui-loading": true,
+          },
+        },
+      })
+      await waitForTransition()
+
+      refreshCallbacks.forEach((cb) => cb())
+
+      expect(wrapper.emitted("refresh")).toBeTruthy()
+
+      ;(globalThis as any).onPullDownRefresh = originRefresh
+    })
+  })
 })

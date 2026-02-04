@@ -150,9 +150,9 @@ function reset(value: any) {
 
 // 更新值
 async function updateValue(value: string) {
+  emits("update:modelValue", value)
   emits("input", value)
   emits("change", value)
-  emits("update:modelValue", value)
 }
 
 // 失焦事件

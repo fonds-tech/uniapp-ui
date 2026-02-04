@@ -174,6 +174,14 @@ describe("ui-line 分割线组件", () => {
 
       expect(wrapper.props("customStyle")).toEqual({ opacity: 0.5 })
     })
+
+    it("应支持字符串类型的 customStyle", () => {
+      const wrapper = mount(UiLine, {
+        props: { customStyle: "opacity: 0.4" },
+      })
+
+      expect(wrapper.props("customStyle")).toBe("opacity: 0.4")
+    })
   })
 
   describe("暴露的属性", () => {

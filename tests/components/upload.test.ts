@@ -665,6 +665,52 @@ describe("uiUpload 组件", () => {
     })
   })
 
+  describe("上传行为", () => {
+    it("点击触发上传后应走 afterRead 并更新 modelValue", async () => {
+      const afterRead = vi.fn((files, next) => {
+        const updated = files.map((file) => ({ ...file, status: "success" }))
+        next(updated)
+      })
+      const wrapper = mount(UiUpload, {
+        props: { accept: "image", afterRead },
+        global: {
+          stubs: {
+            "ui-icon": true,
+            "ui-image": true,
+            "ui-loading": true,
+          },
+        },
+      })
+      await waitForTransition()
+
+      await wrapper.find(".ui-upload__trigger").trigger("click")
+      await waitForTransition()
+
+      expect(afterRead).toHaveBeenCalled()
+      expect(wrapper.emitted("update:modelValue")?.at(-1)).toEqual(["https://example.com/image.jpg"])
+    })
+
+    it("超出大小限制应触发 oversize", async () => {
+      const wrapper = mount(UiUpload, {
+        props: { accept: "image", maxSize: 1 },
+        global: {
+          stubs: {
+            "ui-icon": true,
+            "ui-image": true,
+            "ui-loading": true,
+          },
+        },
+      })
+      await waitForTransition()
+
+      await wrapper.find(".ui-upload__trigger").trigger("click")
+      await waitForTransition()
+
+      expect(wrapper.emitted("oversize")).toBeTruthy()
+      expect(wrapper.emitted("update:modelValue")).toBeFalsy()
+    })
+  })
+
   describe("background 属性测试", () => {
     it("默认 background 应该是空字符串", () => {
       const wrapper = mount(UiUpload, {
@@ -739,6 +785,54 @@ describe("uiUpload 组件", () => {
       })
       await waitForTransition()
       expect(wrapper.find(".custom-icon").exists()).toBe(true)
+    })
+  })
+
+  describe("删除行为", () => {
+    it("点击删除应更新 modelValue", async () => {
+      const urls = ["https://example.com/1.jpg", "https://example.com/2.jpg"]
+      const wrapper = mount(UiUpload, {
+        props: { modelValue: urls, deletable: true },
+        global: {
+          stubs: {
+            "ui-icon": true,
+            "ui-image": true,
+            "ui-loading": true,
+          },
+        },
+      })
+      await waitForTransition()
+
+      await wrapper.findAll(".ui-upload__delete")[0].trigger("click")
+      await waitForTransition()
+
+      const emitted = wrapper.emitted("update:modelValue")
+      expect(emitted).toBeTruthy()
+      expect(emitted?.at(-1)).toEqual([[urls[1]]])
+    })
+  })
+
+  describe("预览行为", () => {
+    it("点击图片预览应调用 uni.previewImage", async () => {
+      const previewSpy = vi.spyOn(uni, "previewImage")
+      const wrapper = mount(UiUpload, {
+        props: {
+          modelValue: ["https://example.com/1.jpg"],
+          preview: true,
+        },
+        global: {
+          stubs: {
+            "ui-icon": true,
+            "ui-image": true,
+            "ui-loading": true,
+          },
+        },
+      })
+      await waitForTransition()
+
+      await wrapper.find(".ui-upload__preview").trigger("click")
+
+      expect(previewSpy).toHaveBeenCalled()
     })
   })
 

@@ -212,6 +212,23 @@ describe("ui-skeleton-paragraph 骨架屏段落组件", () => {
 
       expect(wrapper.find(".ui-skeleton-paragraph").exists()).toBe(true)
     })
+
+    it("应支持字符串类型 customStyle", async () => {
+      const wrapper = mount(UiSkeletonParagraph, {
+        props: {
+          customStyle: "margin: 12px",
+        },
+        global: {
+          provide: {
+            [skeletonKey]: mockSkeletonProvide,
+          },
+        },
+      })
+
+      await waitForTransition()
+
+      expect(wrapper.props("customStyle")).toBe("margin: 12px")
+    })
   })
 
   describe("边界情况", () => {

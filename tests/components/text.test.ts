@@ -164,6 +164,7 @@ describe("ui-text 文本组件", () => {
       })
 
       expect(wrapper.attributes("selectable")).toBe("true")
+      expect(wrapper.attributes("user-select")).toBe("true")
     })
 
     it("selectable 为 false 时不应设置 selectable 属性", () => {
@@ -172,6 +173,7 @@ describe("ui-text 文本组件", () => {
       })
 
       expect(wrapper.attributes("selectable")).toBe("false")
+      expect(wrapper.attributes("user-select")).toBe("false")
     })
   })
 

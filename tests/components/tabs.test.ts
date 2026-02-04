@@ -5,8 +5,8 @@
 
 import UiTab from "@/uni_modules/uniapp-ui/ui-tab/ui-tab.vue"
 import UiTabs from "@/uni_modules/uniapp-ui/ui-tabs/ui-tabs.vue"
-import { ref } from "vue"
 import { mount } from "@vue/test-utils"
+import { h, ref } from "vue"
 import { tabsKey } from "@/uni_modules/uniapp-ui/ui-tabs"
 import { waitForTransition } from "../setup"
 import { it, vi, expect, describe, afterEach, beforeEach } from "vitest"
@@ -114,6 +114,32 @@ describe("uiTabs 组件", () => {
       })
       await waitForTransition()
       expect(wrapper.find(".custom-tab").exists()).toBe(true)
+    })
+  })
+
+  describe("事件测试", () => {
+    it("点击 tab 应触发 tabClick 与 change", async () => {
+      const wrapper = mount(UiTabs, {
+        props: { modelValue: 0 },
+        slots: {
+          default: () => [h(UiTab, { title: "标签一", name: 0 }), h(UiTab, { title: "标签二", name: 1 })],
+        },
+        global: {
+          stubs: {
+            "scroll-view": {
+              template: "<div class=\"scroll-view\"><slot /></div>",
+            },
+          },
+        },
+      })
+      await waitForTransition()
+
+      await wrapper.findAllComponents(UiTab)[1].trigger("click")
+      await waitForTransition()
+
+      expect(wrapper.emitted("tabClick")).toBeTruthy()
+      expect(wrapper.emitted("update:modelValue")?.at(-1)).toEqual([1])
+      expect(wrapper.emitted("change")?.at(-1)).toEqual([1])
     })
   })
 

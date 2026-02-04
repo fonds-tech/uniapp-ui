@@ -86,6 +86,16 @@ describe("ui-cell-group 单元格组组件", () => {
       expect(style).toContain("background: #000000")
       expect(style).not.toContain("#ffffff")
     })
+
+    it("应支持字符串类型的 customStyle", () => {
+      const wrapper = mount(UiCellGroup, {
+        props: {
+          customStyle: "margin-top: 12px",
+        },
+      })
+
+      expect(wrapper.props("customStyle")).toBe("margin-top: 12px")
+    })
   })
 
   describe("插槽", () => {

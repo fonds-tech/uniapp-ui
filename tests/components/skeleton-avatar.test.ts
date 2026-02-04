@@ -183,6 +183,23 @@ describe("ui-skeleton-avatar 骨架屏头像组件", () => {
 
       expect(wrapper.find(".ui-skeleton-avatar").exists()).toBe(true)
     })
+
+    it("应支持字符串类型 customStyle", async () => {
+      const wrapper = mount(UiSkeletonAvatar, {
+        props: {
+          customStyle: "margin: 12px",
+        },
+        global: {
+          provide: {
+            [skeletonKey]: mockSkeletonProvide,
+          },
+        },
+      })
+
+      await waitForTransition()
+
+      expect(wrapper.props("customStyle")).toBe("margin: 12px")
+    })
   })
 
   describe("边界情况", () => {

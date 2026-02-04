@@ -33,8 +33,8 @@ function createMockTabsProvide() {
     },
     currentName: ref(0),
     tabRects,
-    clickTab: () => {},
-    setCurrentName: () => {},
+    clickTab: vi.fn(),
+    setCurrentName: vi.fn(),
     updateTabRect: (index: number, rect: any) => {
       tabRects.value.set(index, rect)
     },
@@ -211,6 +211,25 @@ describe("ui-tab 标签页项组件", () => {
       await wrapper.find(".ui-tab").trigger("click")
       expect(wrapper.emitted("click")).toBeTruthy()
       expect(wrapper.emitted("click")![0]).toEqual(["tab1"])
+    })
+
+    it("点击应通知父组件更新当前项", async () => {
+      const parent = createMockTabsProvide()
+      const wrapper = mount(UiTab, {
+        props: { name: "tab1" },
+        global: {
+          provide: {
+            [tabsKey]: parent,
+          },
+        },
+      })
+      await waitForTransition()
+
+      await wrapper.find(".ui-tab").trigger("click")
+      await waitForTransition()
+
+      expect(parent.clickTab).toHaveBeenCalledWith("tab1")
+      expect(parent.setCurrentName).toHaveBeenCalledWith("tab1")
     })
 
     it("禁用时点击仍应触发 click 事件", async () => {

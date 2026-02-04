@@ -4,6 +4,8 @@
  */
 
 import UiSidebar from "@/uni_modules/uniapp-ui/ui-sidebar/ui-sidebar.vue"
+import UiSidebarItem from "@/uni_modules/uniapp-ui/ui-sidebar-item/ui-sidebar-item.vue"
+import { h } from "vue"
 import { mount } from "@vue/test-utils"
 import { it, vi, expect, describe, afterEach, beforeEach } from "vitest"
 
@@ -195,6 +197,37 @@ describe("ui-sidebar 侧边栏组件", () => {
       )
 
       expect(wrapper.find(".custom-line").exists()).toBe(true)
+    })
+  })
+
+  describe("事件", () => {
+    it("点击侧边栏项应触发 change 与 update:modelValue", async () => {
+      const wrapper = mount(UiSidebar, {
+        props: { modelValue: 0 },
+        slots: {
+          default: () => [h(UiSidebarItem, { name: 0, title: "项1" }), h(UiSidebarItem, { name: 1, title: "项2" })],
+        },
+        global: {
+          stubs: {
+            "ui-resize": {
+              name: "ui-resize",
+              template: "<div class=\"ui-resize-stub\"><slot /></div>",
+              props: ["width", "height"],
+              emits: ["resize"],
+            },
+            "scroll-view": {
+              name: "scroll-view",
+              template: "<div class=\"scroll-view-stub\"><slot /></div>",
+              props: ["scroll-y", "scroll-top", "scroll-with-animation", "enable-flex"],
+            },
+          },
+        },
+      })
+
+      await wrapper.findAllComponents(UiSidebarItem)[1].trigger("click")
+
+      expect(wrapper.emitted("update:modelValue")?.at(-1)).toEqual([1])
+      expect(wrapper.emitted("change")?.at(-1)).toEqual([1])
     })
   })
 

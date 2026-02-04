@@ -15,6 +15,18 @@ describe("ui-skeleton 骨架屏组件", () => {
       expect(wrapper.find(".ui-skeleton").exists()).toBe(true)
     })
 
+    it("loading 为 false 时应渲染 content 插槽", () => {
+      const wrapper = mount(UiSkeleton, {
+        props: { loading: false },
+        slots: {
+          content: "<div class='skeleton-content'>真实内容</div>",
+        },
+      })
+
+      expect(wrapper.find(".ui-skeleton").exists()).toBe(false)
+      expect(wrapper.find(".skeleton-content").exists()).toBe(true)
+    })
+
     it("应正确渲染包含内容的骨架屏", () => {
       const wrapper = mount(UiSkeleton, {
         slots: {
@@ -84,6 +96,17 @@ describe("ui-skeleton 骨架屏组件", () => {
       })
 
       expect(wrapper.props("customStyle")).toBe("padding: 20px")
+    })
+  })
+
+  describe("间距配置", () => {
+    it("应支持设置 gap", () => {
+      const wrapper = mount(UiSkeleton, {
+        props: { gap: "16rpx" },
+      })
+
+      expect(wrapper.props("gap")).toBe("16rpx")
+      expect(wrapper.attributes("style")).toContain("gap")
     })
   })
 

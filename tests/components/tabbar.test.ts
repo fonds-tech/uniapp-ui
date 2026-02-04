@@ -5,6 +5,7 @@
 
 import UiTabbar from "@/uni_modules/uniapp-ui/ui-tabbar/ui-tabbar.vue"
 import UiTabbarItem from "@/uni_modules/uniapp-ui/ui-tabbar-item/ui-tabbar-item.vue"
+import { h } from "vue"
 import { mount } from "@vue/test-utils"
 import { waitForTransition } from "../setup"
 import { it, vi, expect, describe, afterEach, beforeEach } from "vitest"
@@ -32,6 +33,8 @@ function mountTabbar(props = {}, slots = {}) {
             emit("height", 0)
           },
         },
+        "ui-badge": true,
+        "ui-icon": true,
       },
     },
   })
@@ -168,6 +171,51 @@ describe("uiTabbar 组件", () => {
       // modelValue 变化时触发 change
       expect(wrapper.emitted("change")).toBeTruthy()
     })
+
+    it("beforeChange 返回 false 时点击不应更新 modelValue", async () => {
+      const beforeChange = vi.fn().mockResolvedValue(false)
+      const wrapper = mount(UiTabbar, {
+        props: { modelValue: 0, beforeChange },
+        slots: {
+          default: () => [h(UiTabbarItem, { name: 0, text: "首页", icon: "home" }), h(UiTabbarItem, { name: 1, text: "分类", icon: "list" })],
+        },
+        global: {
+          stubs: {
+            "ui-badge": true,
+            "ui-icon": true,
+          },
+        },
+      })
+      await waitForTransition()
+
+      await wrapper.findAllComponents(UiTabbarItem)[1].trigger("click")
+      await waitForTransition()
+
+      expect(beforeChange).toHaveBeenCalledWith(1)
+      expect(wrapper.emitted("update:modelValue")).toBeFalsy()
+    })
+
+    it("beforeChange 抛错时点击不应更新 modelValue", async () => {
+      const beforeChange = vi.fn().mockRejectedValue(new Error("error"))
+      const wrapper = mount(UiTabbar, {
+        props: { modelValue: 0, beforeChange },
+        slots: {
+          default: () => [h(UiTabbarItem, { name: 0, text: "首页", icon: "home" }), h(UiTabbarItem, { name: 1, text: "分类", icon: "list" })],
+        },
+        global: {
+          stubs: {
+            "ui-badge": true,
+            "ui-icon": true,
+          },
+        },
+      })
+      await waitForTransition()
+
+      await wrapper.findAllComponents(UiTabbarItem)[1].trigger("click")
+      await waitForTransition()
+
+      expect(wrapper.emitted("update:modelValue")).toBeFalsy()
+    })
   })
 
   describe("插槽测试", () => {
@@ -190,6 +238,17 @@ describe("uiTabbar 组件", () => {
       const wrapper = mountTabbar()
       await waitForTransition()
       expect(typeof wrapper.vm.resize).toBe("function")
+    })
+
+    it("resize 应触发 rect 与 height 事件", async () => {
+      const wrapper = mountTabbar()
+      await waitForTransition()
+
+      await wrapper.vm.resize()
+      await waitForTransition()
+
+      expect(wrapper.emitted("rect")).toBeTruthy()
+      expect(wrapper.emitted("height")).toBeTruthy()
     })
   })
 })
