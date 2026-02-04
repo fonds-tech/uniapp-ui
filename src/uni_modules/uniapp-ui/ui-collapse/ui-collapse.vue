@@ -98,17 +98,5 @@ export default {
 .ui-collapse {
   position: relative;
   background-color: var(--ui-color-background);
-
-  &--border {
-    &::after {
-      top: 0;
-      left: 0;
-      right: 0;
-      content: "";
-      position: absolute;
-      border-top: var(--ui-border-width) solid var(--ui-color-border-light);
-      pointer-events: none;
-    }
-  }
 }
 </style>

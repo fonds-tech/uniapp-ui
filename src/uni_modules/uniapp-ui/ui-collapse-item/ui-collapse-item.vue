@@ -1,13 +1,7 @@
 <template>
   <view class="ui-collapse-item" :class="[rootClass, props.customClass]" :style="[rootStyle]">
     <!-- 头部区域 -->
-    <view
-      class="ui-collapse-item__header"
-      :class="[headerClass]"
-      :hover-class="hoverClass"
-      :hover-stay-time="50"
-      @click="onClickHeader"
-    >
+    <view class="ui-collapse-item__header" :class="[headerClass]" :style="[headerStyle]" :hover-class="hoverClass" :hover-stay-time="0" @click="onClickHeader">
       <slot name="title" :expanded="expanded" :disabled="props.disabled">
         <text class="ui-collapse-item__title">{{ props.title }}</text>
       </slot>
@@ -15,12 +9,16 @@
       <view v-if="props.isLink" class="ui-collapse-item__arrow" :class="[arrowClass]">
         <ui-icon name="down" />
       </view>
+      <!-- 分割线 -->
+      <view class="ui-collapse-item__divider" :style="[dividerStyle]" />
     </view>
 
     <!-- 内容区域（带展开/收起动画） -->
     <view class="ui-collapse-item__wrapper" :style="[wrapperStyle]" @transitionend="onTransitionEnd">
-      <view :id="contentId" class="ui-collapse-item__body">
+      <view :id="contentId" class="ui-collapse-item__body" :style="[bodyStyle]">
         <slot />
+        <!-- 展开时的分割线 -->
+        <view v-if="expanded" class="ui-collapse-item__divider" :style="[dividerStyle]" />
       </view>
     </view>
   </view>
@@ -63,10 +61,44 @@ const isSelected = computed(() => {
   return parent.activeNames.value.includes(props.name)
 })
 
+// 计算 padding 值
+const paddingValue = computed(() => {
+  if (!props.padding) return ""
+  return typeof props.padding === "number" ? `${props.padding}rpx` : props.padding
+})
+
 // 根节点样式
 const rootStyle = computed(() => {
   const style: CSSProperties = {}
   return useStyle({ ...style, ...useStyle(props.customStyle) })
+})
+
+// 头部样式
+const headerStyle = computed(() => {
+  const style: CSSProperties = {}
+  if (paddingValue.value) {
+    style.padding = paddingValue.value
+  }
+  return style
+})
+
+// 内容区域样式
+const bodyStyle = computed(() => {
+  const style: CSSProperties = {}
+  if (paddingValue.value) {
+    style.padding = paddingValue.value
+  }
+  return style
+})
+
+// 分割线样式
+const dividerStyle = computed(() => {
+  const style: CSSProperties = {}
+  if (paddingValue.value) {
+    style.left = paddingValue.value
+    style.right = paddingValue.value
+  }
+  return style
 })
 
 // 根节点类名
@@ -220,54 +252,48 @@ export default {
   &__header {
     cursor: pointer;
     display: flex;
-    padding: var(--ui-spacing-md) var(--ui-spacing-lg);
+    padding: var(--ui-spacing-md);
     overflow: hidden;
     position: relative;
     align-items: center;
     user-select: none;
     justify-content: space-between;
 
-    // 底部分割线（只在收起状态且不是最后一个 item 时显示）
-    &::after {
-      left: 0;
-      right: 0;
-      bottom: 0;
-      content: "";
-      position: absolute;
-      border-bottom: var(--ui-border-width) solid var(--ui-color-border-light);
-      pointer-events: none;
-    }
-
     &--active {
       background-color: var(--ui-color-active);
     }
   }
 
-  // 展开状态：内容区域也显示底部边框
-  &--expanded &__body::after {
-    left: 0;
-    right: 0;
+  // 分割线
+  &__divider {
+    left: var(--ui-spacing-md);
+    right: var(--ui-spacing-md);
     bottom: 0;
-    content: "";
+    height: 0;
     position: absolute;
     border-bottom: var(--ui-border-width) solid var(--ui-color-border-light);
     pointer-events: none;
   }
 
-  // 最后一个 item 收起时不显示底部边框
-  &:last-child:not(&--expanded) &__header::after {
+  // 展开状态：隐藏 header 的分割线
+  &--expanded &__header > &__divider {
     display: none;
   }
 
-  // 最后一个 item 展开时不显示内容底部边框
-  &:last-child &__body::after {
+  // 最后一个 item 收起时不显示分割线
+  &:last-child:not(&--expanded) &__header > &__divider {
+    display: none;
+  }
+
+  // 最后一个 item 展开时不显示内容底部分割线
+  &:last-child &__body > &__divider {
     display: none;
   }
 
   &__title {
     flex: 1;
     color: var(--ui-color-text-primary);
-    font-size: var(--ui-font-size-md);
+    font-size: var(--ui-font-size-sm);
     font-weight: 500;
   }
 
@@ -292,7 +318,7 @@ export default {
 
   &__body {
     color: var(--ui-color-text-secondary);
-    padding: var(--ui-spacing-md) var(--ui-spacing-lg);
+    padding: var(--ui-spacing-md);
     position: relative;
     font-size: var(--ui-font-size-sm);
     line-height: 1.5;

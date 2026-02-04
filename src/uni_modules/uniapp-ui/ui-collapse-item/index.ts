@@ -13,6 +13,7 @@ const defaultProps = buildDefaultProps("collapse-item", {
   isLink: true,
   border: true,
   duration: 300,
+  padding: "",
   customClass: "",
   customStyle: "",
 })
@@ -38,6 +39,8 @@ export const collapseItemProps = {
   border: defaultProps("border", { type: Boolean }),
   /** 动画时长（毫秒） */
   duration: defaultProps("duration", { type: Number }),
+  /** 内边距 */
+  padding: defaultProps("padding", { type: [String, Number] }),
   /** 自定义类名 */
   customClass: defaultProps("customClass", { type: String }),
   /** 自定义样式 */

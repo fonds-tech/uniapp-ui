@@ -1,68 +1,77 @@
 <template>
   <view class="h-screen flex flex-col bg-[#F7F8FA]">
-    <view class="bg-white z-50 flex-none" :style="{ paddingTop: `${safeAreaInsets?.top}px` }">
-      <view class="px-[24rpx] py-[16rpx] flex items-center">
-        <view class="flex-1 h-[72rpx] bg-[#F5F7FA] rounded-full flex items-center px-[24rpx] active:bg-[#EFF1F4] transition-colors" @click="showSearch = true">
-          <view class="i-lucide-search text-[32rpx] text-[#86909C] mr-[12rpx]" />
-          <text class="text-[28rpx] text-[#86909C]">搜索组件...</text>
+    <view class="bg-white/80 backdrop-blur-md z-50 flex-none sticky top-0" :style="{ paddingTop: `${safeAreaInsets?.top}px` }">
+      <view class="px-[32rpx] py-[20rpx] flex items-center">
+        <view
+          class="flex-1 h-[80rpx] bg-slate-100/80 rounded-[24rpx] flex items-center px-[28rpx] active:bg-slate-200/80 transition-all duration-200 border border-transparent focus-within:border-indigo-500/20 focus-within:bg-white focus-within:shadow-sm"
+          @click="showSearch = true"
+        >
+          <view class="i-lucide-search text-[36rpx] text-slate-400 mr-[16rpx]" />
+          <text class="text-[28rpx] text-slate-400">搜索组件...</text>
         </view>
-
-        <!-- <view class="ml-[24rpx] w-[72rpx] h-[72rpx] flex items-center justify-center rounded-full active:bg-[#F5F7FA]">
-          <view class="i-lucide-settings-2 text-[40rpx] text-[#1D1D1F]" />
-        </view> -->
       </view>
-      <view class="h-[1rpx] w-full bg-[#F0F0F2]" />
+      <view class="h-[1rpx] w-full bg-slate-100" />
     </view>
 
     <view class="flex-1 flex overflow-hidden">
-      <scroll-view scroll-y class="w-[180rpx] h-full bg-[#F7F8FA]" :show-scrollbar="false">
-        <view class="pb-[180rpx]">
+      <!-- Sidebar -->
+      <scroll-view scroll-y class="w-[190rpx] h-full bg-[#F7F8FA]" :show-scrollbar="false">
+        <view class="pb-[180rpx] pt-[20rpx]">
           <view
             v-for="(category, index) in componentCategories"
             :key="category.name"
-            class="relative h-[100rpx] flex items-center justify-center px-[10rpx] transition-all duration-300"
-            :class="activeCategoryIndex === index ? 'bg-white' : 'bg-transparent'"
+            class="relative h-[108rpx] flex items-center justify-center px-[20rpx] mb-[8rpx] transition-all duration-300 group"
             @click="activeCategoryIndex = index"
           >
-            <view v-if="activeCategoryIndex === index" class="absolute left-0 top-[50%] translate-y-[-50%] w-[6rpx] h-[32rpx] rounded-r-full bg-[#2979FF]" />
+            <view
+              class="absolute inset-0 transition-all duration-300 rounded-l-[32rpx] ml-[24rpx]"
+              :class="activeCategoryIndex === index ? 'bg-white shadow-[-4rpx_4rpx_12rpx_rgba(0,0,0,0.02)]' : 'bg-transparent'"
+            />
 
-            <text
-              class="text-[26rpx] font-medium transition-colors duration-300 text-center"
-              :class="activeCategoryIndex === index ? 'text-[#2979FF] font-bold scale-105' : 'text-[#86909C]'"
-            >
-              {{ category.name }}
-            </text>
+            <view class="relative z-10 flex flex-col items-center">
+              <text
+                class="text-[28rpx] transition-all duration-300"
+                :class="activeCategoryIndex === index ? 'text-indigo-600 font-bold scale-105' : 'text-slate-500 font-medium group-active:scale-95'"
+              >
+                {{ category.name }}
+              </text>
+              <view
+                class="mt-[6rpx] h-[4rpx] w-[24rpx] rounded-full transition-all duration-300"
+                :class="activeCategoryIndex === index ? 'bg-indigo-500' : 'bg-transparent'"
+              />
+            </view>
           </view>
         </view>
       </scroll-view>
 
-      <scroll-view scroll-y class="flex-1 h-full bg-white" :show-scrollbar="false">
-        <view class="px-[24rpx] pt-[24rpx] pb-[180rpx]">
-          <view class="flex items-center justify-between mb-[32rpx] pl-[8rpx]">
+      <!-- Content -->
+      <scroll-view scroll-y class="flex-1 h-full bg-white rounded-tl-[40rpx] overflow-hidden shadow-[-4rpx_0_16rpx_rgba(0,0,0,0.01)]" :show-scrollbar="false">
+        <view class="px-[32rpx] pt-[40rpx] pb-[180rpx] min-h-full">
+          <view class="flex items-end justify-between mb-[48rpx]">
             <view>
-              <text class="text-[36rpx] font-900 text-[#1D1D1F] block">{{ currentCategory.name }}</text>
-              <text class="text-[24rpx] text-[#86909C] mt-[4rpx] block">{{ currentCategory.desc }}</text>
+              <text class="text-[44rpx] font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-slate-900 to-slate-700 block leading-tight">
+                {{ currentCategory.name }}
+              </text>
+              <text class="text-[24rpx] font-medium text-slate-400 mt-[8rpx] block uppercase tracking-wider">{{ currentCategory.desc }}</text>
             </view>
-            <view class="i-lucide-layers text-[48rpx] text-[#F0F0F2]" />
+            <view class="flex h-[80rpx] w-[80rpx] items-center justify-center rounded-[24rpx] bg-slate-50">
+              <view class="i-lucide-layers text-[40rpx] text-slate-300" />
+            </view>
           </view>
 
-          <view class="grid grid-cols-1 gap-[24rpx]">
+          <view class="grid grid-cols-2 gap-[20rpx]">
             <view
               v-for="comp in currentCategory.components"
               :key="comp.name"
-              class="flex items-center p-[24rpx] bg-[#F9FAFB] rounded-[20rpx] active:scale-[0.99] active:bg-[#F2F3F5] transition-all border border-transparent active:border-[#E5E7EB]"
+              class="group flex flex-col p-[24rpx] bg-white rounded-[28rpx] border border-slate-100 shadow-[0_2rpx_12rpx_rgba(0,0,0,0.02)] active:scale-[0.98] active:border-indigo-100 active:shadow-none transition-all duration-200"
               @click="navigateToDemo(comp.path)"
             >
-              <view class="w-[80rpx] h-[80rpx] bg-white rounded-[16rpx] flex items-center justify-center shadow-sm mr-[24rpx]">
-                <view class="text-[40rpx] text-[#1D1D1F]" :class="[comp.icon]" />
+              <view class="mb-[20rpx] flex h-[80rpx] w-[80rpx] items-center justify-center rounded-[20rpx] bg-slate-50 group-active:bg-indigo-50 transition-colors duration-200">
+                <view class="text-[40rpx] text-slate-600 group-active:text-indigo-600 transition-colors duration-200" :class="[comp.icon]" />
               </view>
 
-              <view class="flex-1">
-                <text class="text-[30rpx] font-bold text-[#1D1D1F] block">{{ comp.name }}</text>
-                <text class="text-[22rpx] text-[#86909C] block mt-[4rpx]">{{ comp.desc }}</text>
-              </view>
-
-              <view class="i-lucide-chevron-right text-[32rpx] text-[#C0C4CC]" />
+              <text class="text-[30rpx] font-bold text-slate-800 group-active:text-indigo-700 transition-colors">{{ comp.name }}</text>
+              <text class="mt-[6rpx] text-[22rpx] text-slate-400 line-clamp-1">{{ comp.desc }}</text>
             </view>
           </view>
         </view>
