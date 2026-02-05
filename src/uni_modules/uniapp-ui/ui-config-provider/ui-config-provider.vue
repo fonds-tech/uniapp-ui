@@ -23,6 +23,8 @@ const { linkChildren } = useChildren(configProviderKey)
 const route = ref("")
 // 系统主题
 const systemTheme = ref<"light" | "dark">("light")
+// 主题变化监听函数引用
+const themeChangeHandler = ref<((result: { theme: "light" | "dark" }) => void) | null>(null)
 // 事件总线
 const mitt = useMitt()
 
@@ -56,7 +58,10 @@ const style = computed(() => {
 onMounted(init)
 // 组件卸载时清理
 onUnmounted(() => {
-  uni.offThemeChange?.(() => {})
+  if (themeChangeHandler.value) {
+    uni.offThemeChange?.(themeChangeHandler.value)
+    themeChangeHandler.value = null
+  }
 })
 
 // 初始化
@@ -77,9 +82,11 @@ function initSystemTheme() {
     systemTheme.value = "light"
   }
 
-  uni.onThemeChange?.((result) => {
+  const handler = (result: { theme: "light" | "dark" }) => {
     systemTheme.value = result.theme === "dark" ? "dark" : "light"
-  })
+  }
+  themeChangeHandler.value = handler
+  uni.onThemeChange?.(handler)
 }
 
 // 生成颜色 CSS 变量

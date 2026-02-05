@@ -67,6 +67,8 @@ const instance = getCurrentInstance()!
 
 // 内容区域 ID
 const contentId = ref(`collapse-body-${uuid()}`)
+// 唯一标识（name 为空时回退为 uuid）
+const resolvedName = ref(props.name || uuid())
 
 // 内容区域高度
 const height = ref<number | string>("")
@@ -80,7 +82,7 @@ const expanded = ref(false)
 // 是否被选中（来自父组件）
 const isSelected = computed(() => {
   if (!parent) return false
-  return parent.activeNames.value.includes(props.name)
+  return parent.activeNames.value.includes(resolvedName.value)
 })
 
 // 计算 padding 值
@@ -305,7 +307,7 @@ function toggle(expand?: boolean) {
   if (!parent) return
 
   const targetExpanded = expand !== undefined ? expand : !expanded.value
-  parent.toggle(props.name, targetExpanded)
+  parent.toggle(resolvedName.value, targetExpanded)
 }
 
 // 点击头部
@@ -320,7 +322,7 @@ onMounted(() => {
 })
 
 defineExpose({
-  name: props.name,
+  name: resolvedName.value,
   expanded,
   toggle,
 })
@@ -437,11 +439,6 @@ export default {
     position: absolute;
     border-bottom: var(--ui-border-width) solid var(--ui-color-border-light);
     pointer-events: none;
-  }
-
-  // 展开状态：隐藏 header 的分割线
-  &--expanded &__header > &__divider {
-    display: none;
   }
 
   // 最后一个 item 收起时不显示分割线

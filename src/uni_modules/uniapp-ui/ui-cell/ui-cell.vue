@@ -29,6 +29,7 @@
 <script setup lang="ts">
 import type { CSSProperties } from "vue"
 import { computed } from "vue"
+import { isNoEmpty } from "../utils/check"
 import { cellGroupKey } from "../ui-cell-group"
 import { cellEmits, cellProps } from "./index"
 import { useUnit, useColor, useStyle, useParent } from "../hooks"
@@ -128,7 +129,7 @@ const isShowTitle = computed(() => props.title)
 // 是否显示标签
 const isShowLabel = computed(() => props.label)
 // 是否显示值
-const isShowValue = computed(() => props.value)
+const isShowValue = computed(() => isNoEmpty(props.value))
 // 是否显示右侧图标
 const isShowRightIcon = computed(() => props.isLink)
 

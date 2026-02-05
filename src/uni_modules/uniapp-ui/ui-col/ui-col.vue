@@ -24,6 +24,10 @@ const style = computed(() => {
 
   // 计算列宽（基于24栅格系统）
   const spanValue = Math.min(24, Math.max(0, +props.span))
+  if (spanValue <= 0) {
+    style.display = "none"
+    return useStyle({ ...style, ...useStyle(props.customStyle) })
+  }
   const widthPercent = (100 / 24) * spanValue
   style.width = `${widthPercent}%`
 

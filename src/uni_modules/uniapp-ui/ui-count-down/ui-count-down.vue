@@ -125,7 +125,7 @@ function reset() {
   if (target > 0) {
     const now = Date.now()
     if (isCountUp.value) {
-      totalTime.value = target - now
+      totalTime.value = Math.max(target - now, 0)
       remainTime.value = 0
     } else {
       totalTime.value = Math.max(target - now, 0)
