@@ -122,7 +122,7 @@ const labelClass = computed(() => {
   return list
 })
 // 名称
-const name = computed(() => props.name || index.value)
+const name = computed(() => (isDef(props.name) ? props.name : index.value))
 // 是否选中
 const checked = computed(() => {
   if (props.bindGroup && parent) {
@@ -161,7 +161,7 @@ function toggle(check?: boolean) {
 
   if (parent && props.bindGroup) {
     if (!checked.value) {
-      parent.updateValue(props.name)
+      parent.updateValue(name.value)
     }
   } else {
     const newValue = check ?? !props.modelValue

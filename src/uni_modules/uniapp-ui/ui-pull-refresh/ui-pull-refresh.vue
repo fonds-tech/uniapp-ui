@@ -4,7 +4,7 @@
     :class="[props.customClass]"
     :style="[useStyle(props.customStyle)]"
     @touchstart="onTouchStart"
-    @touchmove.passive="onTouchMove"
+    @touchmove="onTouchMove"
     @touchend="onTouchEnd"
     @touchcancel="onTouchEnd"
   >

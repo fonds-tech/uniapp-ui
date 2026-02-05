@@ -1,12 +1,18 @@
 <template>
-  <view class="ui-resize" :style="[style]">
-    <view :id="id" class="ui-resize__content" :style="[contentStyle]" :class="[customClass]">
+  <view class="ui-resize" :style="rootStyle">
+    <view :id="resizeId" class="ui-resize__content" :style="contentStyle" :class="customClass">
       <slot />
-      <scroll-view class="ui-resize__trigger" scroll-y scroll-x :scroll-top="expandScrollTop" :scroll-left="expandScrollLeft" @scroll="onExpandScroll">
-        <view class="ui-resize__placeholder" style="height: 100000px; width: 100000px" />
-      </scroll-view>
-      <scroll-view class="ui-resize__trigger" scroll-y scroll-x :scroll-top="shrinkScrollTop" :scroll-left="shrinkScrollLeft" @scroll="onShrinkScroll">
-        <view class="ui-resize__placeholder" style="height: 250%; width: 250%" />
+      <scroll-view
+        v-for="type in ['expand', 'shrink']"
+        :key="type"
+        class="ui-resize__trigger"
+        scroll-y
+        scroll-x
+        :scroll-top="scrollPos[type].top"
+        :scroll-left="scrollPos[type].left"
+        @scroll="handleScroll"
+      >
+        <view :style="type === 'expand' ? 'height:100000px;width:100000px' : 'height:250%;width:250%'" />
       </scroll-view>
     </view>
   </view>
@@ -17,137 +23,111 @@ import type { CSSProperties } from "vue"
 import { pick, uuid } from "../utils/utils"
 import { resizeEmits, resizeProps } from "./index"
 import { useRect, useUnit, useStyle } from "../hooks"
-import { ref, computed, onMounted, onUnmounted, getCurrentInstance } from "vue"
+import { computed, reactive, onMounted, onUnmounted, getCurrentInstance } from "vue"
 
 defineOptions({ name: "ui-resize" })
 
 const props = defineProps(resizeProps)
-const emits = defineEmits(resizeEmits)
-const width = ref(0)
-const height = ref(0)
-const expandScrollTop = ref(0)
-const shrinkScrollTop = ref(0)
-const expandScrollLeft = ref(0)
-const shrinkScrollLeft = ref(0)
+const emit = defineEmits(resizeEmits)
 
-const id = ref<string>(`resize-${uuid()}`)
+const resizeId = `resize-${uuid()}`
 const instance = getCurrentInstance()
 
-// 组件状态
-let isUnmounted = false
-let debounceTimer: ReturnType<typeof setTimeout> | null = null
+const size = reactive({ width: 0, height: 0 })
+const lastSize = reactive({ width: 0, height: 0 })
+const scrollPos = reactive({
+  expand: { top: 0, left: 0 },
+  shrink: { top: 0, left: 0 },
+})
 
-// 根容器样式：设置动态宽高
-const style = computed(() => {
-  const style: CSSProperties = {}
-  style.width = props.width ? useUnit(props.width) : `${width.value}px`
-  style.height = props.height ? useUnit(props.height) : `${height.value}px`
+let scrollCount = 0
+let unmounted = false
+
+const rootStyle = computed(() => {
+  const style: CSSProperties = {
+    width: props.width ? useUnit(props.width) : `${size.width}px`,
+    height: props.height ? useUnit(props.height) : `${size.height}px`,
+  }
   return useStyle({ ...style, ...useStyle(props.customStyle) })
 })
 
-// 内容容器样式：仅在有初始值时设置
-const contentStyle = computed(() => {
-  const style: CSSProperties = {}
-  style.width = props.width ? useUnit(props.width) : undefined
-  style.height = props.height ? useUnit(props.height) : undefined
-  return useStyle(style)
-})
+const contentStyle = computed(() =>
+  useStyle({
+    width: props.width ? useUnit(props.width) : undefined,
+    height: props.height ? useUnit(props.height) : undefined,
+  }),
+)
 
-// 滚动处理函数（闭包方式，在 onMounted 中初始化）
-let onScrollHandler = () => {}
-
-// 滚动到底部，确保能检测到尺寸变化
-function scrollToBottom(w: number, h: number) {
-  expandScrollTop.value = 100000 + h
-  shrinkScrollTop.value = 2.5 * h + h
-  expandScrollLeft.value = 100000 + w
-  shrinkScrollLeft.value = 2.5 * w + w
+function resetScrollPos(w: number, h: number) {
+  scrollPos.expand.top = 100000 + h
+  scrollPos.expand.left = 100000 + w
+  scrollPos.shrink.top = 4 * h
+  scrollPos.shrink.left = 4 * w
 }
 
 function emitResize(rect: UniApp.NodeInfo) {
-  emits("resize", pick(rect, ["top", "left", "right", "bottom", "width", "height"]))
+  emit("resize", pick(rect, ["top", "left", "right", "bottom", "width", "height"]))
+}
+
+async function handleScroll() {
+  if (props.disabled || unmounted) return
+
+  const rect = await useRect(`#${resizeId}`, instance)
+  if (unmounted) return
+
+  scrollCount++
+
+  // 首次触发时通知初始尺寸
+  if (scrollCount === 1) {
+    emitResize(rect)
+  }
+
+  // 跳过初始化阶段的事件
+  if (scrollCount < 3) return
+
+  const { width: newW, height: newH } = rect
+
+  size.width = newW
+  size.height = newH
+
+  if (newW !== lastSize.width || newH !== lastSize.height) {
+    lastSize.width = newW
+    lastSize.height = newH
+    emitResize(rect)
+  }
+
+  resetScrollPos(newW, newH)
+}
+
+async function refresh() {
+  if (unmounted || props.disabled) return
+  const rect = await useRect(`#${resizeId}`, instance)
+  if (unmounted) return
+
+  size.width = rect.width
+  size.height = rect.height
+  lastSize.width = rect.width
+  lastSize.height = rect.height
+  emitResize(rect)
+  resetScrollPos(rect.width, rect.height)
 }
 
 onMounted(async () => {
-  // 获取初始尺寸
-  const rect = await useRect(`#${id.value}`, instance)
+  const rect = await useRect(`#${resizeId}`, instance)
 
-  // 闭包保存上次尺寸，避免额外的 ref 开销
-  let lastWidth = rect.width
-  let lastHeight = rect.height
-  // 初始化阶段标记：跳过前两次初始化触发的滚动事件
-  let initPhase = 2
-  // 是否已触发首次 resize 事件
-  let hasEmittedInitial = false
+  size.width = rect.width
+  size.height = rect.height
+  lastSize.width = rect.width
+  lastSize.height = rect.height
 
-  // 立即填充容器宽高
-  width.value = lastWidth
-  height.value = lastHeight
-
-  // 定义滚动处理函数（闭包方式 + 防抖）
-  onScrollHandler = () => {
-    // 禁用或已卸载时不处理
-    if (props.disabled || isUnmounted) return
-
-    // 防抖：合并短时间内的多次触发
-    if (debounceTimer) clearTimeout(debounceTimer)
-    debounceTimer = setTimeout(async () => {
-      if (isUnmounted) return
-
-      const rect = await useRect(`#${id.value}`, instance)
-      if (isUnmounted) return
-
-      // 初始化阶段跳过处理
-      if (initPhase > 0) {
-        initPhase--
-        // 首次滚动时触发初始尺寸通知
-        if (!hasEmittedInitial) {
-          hasEmittedInitial = true
-          emitResize(rect)
-        }
-        return
-      }
-
-      // 获取新尺寸
-      const newWidth = rect.width
-      const newHeight = rect.height
-
-      // 更新容器宽高
-      width.value = newWidth
-      height.value = newHeight
-
-      // 检测宽高是否变化，合并触发（宽高同时变化只触发一次）
-      const hasChange = newWidth !== lastWidth || newHeight !== lastHeight
-
-      if (hasChange) {
-        lastWidth = newWidth
-        lastHeight = newHeight
-        emitResize(rect)
-      }
-
-      // 滚动到底部，准备下次检测
-      scrollToBottom(lastWidth, lastHeight)
-    }, 16)
-  }
-
-  scrollToBottom(lastWidth, lastHeight)
+  resetScrollPos(rect.width, rect.height)
 })
 
 onUnmounted(() => {
-  isUnmounted = true
-  if (debounceTimer) {
-    clearTimeout(debounceTimer)
-    debounceTimer = null
-  }
+  unmounted = true
 })
 
-function onExpandScroll() {
-  onScrollHandler()
-}
-
-function onShrinkScroll() {
-  onScrollHandler()
-}
+defineExpose({ refresh })
 </script>
 
 <script lang="ts">
@@ -175,10 +155,6 @@ export default {
     position: absolute;
     visibility: hidden;
     pointer-events: none;
-  }
-  &__placeholder {
-    animation: none;
-    transition: 0s;
   }
 }
 </style>
