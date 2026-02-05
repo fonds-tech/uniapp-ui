@@ -12,6 +12,7 @@
 
 <script setup lang="ts">
 import type { CSSProperties } from "vue"
+import { isDef } from "../utils/check"
 import { computed } from "vue"
 import { useUnit, useColor, useStyle, useChildren } from "../hooks"
 import { avatarGroupKey, avatarGroupEmits, avatarGroupProps } from "./index"
@@ -35,7 +36,7 @@ const sizeMap: Record<string, string> = {
 // 超出的数量
 const excessCount = computed(() => {
   const total = childrens.length
-  const max = Number(props.max) || 5
+  const max = isDef(props.max) ? Number(props.max) : 5
   return total > max ? total - max : 0
 })
 // 是否显示超出数量
@@ -98,7 +99,7 @@ const excessStyle = computed(() => {
   }
 
   // 计算 z-index：超出数量应该在最上层
-  const max = Number(props.max) || 5
+  const max = isDef(props.max) ? Number(props.max) : 5
   if (props.direction === "right") {
     style.zIndex = max + 1
   } else {
@@ -115,7 +116,7 @@ function getIndex() {
 
 // 获取最大数量
 function getMax() {
-  return Number(props.max) || 5
+  return isDef(props.max) ? Number(props.max) : 5
 }
 
 // 获取总数

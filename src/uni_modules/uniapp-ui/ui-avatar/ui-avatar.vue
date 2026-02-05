@@ -34,6 +34,7 @@
 
 <script setup lang="ts">
 import type { CSSProperties } from "vue"
+import { isDef } from "../utils/check"
 import { avatarGroupKey } from "../ui-avatar-group"
 import { ref, watch, computed } from "vue"
 import { avatarEmits, avatarProps } from "./index"
@@ -59,7 +60,7 @@ const groupConfig = computed(() => {
 // 是否可见（如果在组内，需要检查是否超出 max 限制）
 const isVisible = computed(() => {
   if (!inGroup.value || !avatarGroup) return true
-  const max = Number(groupConfig.value?.max) || 5
+  const max = isDef(groupConfig.value?.max) ? Number(groupConfig.value?.max) : 5
   return avatarIndex.value < max
 })
 
