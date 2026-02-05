@@ -1,0 +1,78 @@
+# 同时部署文档站点和 H5 预览到 GitHub Pages
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# 设置 GITHUB_TOKEN 权限
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# 只允许一个并发部署
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install
+
+      # 构建文档站点
+      - name: Build docs
+        run: pnpm docs:build
+        env:
+          DOCS_BASE: /uniapp-ui/
+
+      # 构建 H5 预览（生产模式）
+      - name: Build H5
+        run: pnpm build:h5:prod
+        env:
+          # 设置 H5 的 base 路径
+          VITE_APP_BASE: /uniapp-ui/h5/
+
+      # 合并构建产物
+      - name: Merge build outputs
+        run: |
+          mkdir -p dist-pages/h5
+          # 复制文档站点
+          cp -r docs/.vitepress/dist/* dist-pages/
+          # 复制 H5 预览
+          cp -r dist/build/h5/* dist-pages/h5/
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist-pages
+
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

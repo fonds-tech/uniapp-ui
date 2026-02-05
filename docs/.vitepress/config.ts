@@ -6,6 +6,8 @@ export default defineConfig({
   title: "UniApp UI",
   description: "跨端 UI 组件库 - 基于 Vue 3 + UniApp",
   lang: "zh-CN",
+  // GitHub Pages 部署时的 base 路径
+  base: process.env.DOCS_BASE || "/",
   vite: {
     server: {
       port: 5180, // 固定端口，避免与其他项目冲突
@@ -20,7 +22,8 @@ export default defineConfig({
       { text: "组件", link: "/components/" },
       {
         text: "在线演示",
-        link: "/demo/",
+        link: "./h5/",
+        target: "_blank",
       },
     ],
 
