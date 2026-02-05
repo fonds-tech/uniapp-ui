@@ -3,10 +3,9 @@
     class="ui-button"
     :style="[buttonStyle]"
     :class="[classNames, props.customClass]"
-    :disabled="isDisabled"
     :lang="props.lang"
     :form-type="props.formType"
-    :open-type="props.openType"
+    :open-type="openTypeValue"
     :session-from="props.sessionFrom"
     :app-parameter="props.appParameter"
     :hover-class="hoverClass"
@@ -90,6 +89,8 @@ const hasSlotContent = computed(() => !!slots.default)
 const isLoading = computed(() => props.loading || internalLoading.value)
 // 合并后的禁用状态
 const isDisabled = computed(() => props.disabled || isLoading.value || internalDisabled.value)
+// 合并后的 open-type 值，禁用时为 undefined
+const openTypeValue = computed(() => (isDisabled.value ? undefined : props.openType))
 // 解析后的加载文本
 const resolvedLoadingText = computed(() => props.loadingText || internalLoadingText.value)
 // 点击态的 CSS 类名
@@ -350,8 +351,19 @@ export default {
   }
 
   &--disabled {
-    opacity: var(--ui-opacity-disabled);
+    color: var(--ui-color-text-disabled);
+    background: var(--ui-color-background-disabled);
+    border-color: var(--ui-color-border);
     pointer-events: none;
+
+    &.ui-button--text {
+      background: transparent;
+      border-color: transparent;
+    }
+
+    &.ui-button--plain {
+      background: transparent;
+    }
   }
 
   &--active {
