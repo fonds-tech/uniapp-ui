@@ -27,7 +27,7 @@
     :contact-type="props.contactType"
     :contact-id="props.contactId"
     @error="handleError"
-    @click="handleClick"
+    @click.stop="handleClick"
     @launchapp="handleLaunchApp"
     @getuserinfo="handleGetUserInfo"
     @opensetting="handleOpenSetting"

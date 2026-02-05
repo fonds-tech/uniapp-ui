@@ -235,7 +235,7 @@ function getFieldsByProps(fieldProps?: string[]) {
  * 获取所有字段的验证状态
  */
 function getValidateStatus() {
-  childrens.reduce<Record<string, FormValidationStatus>>((form, field) => {
+  return childrens.reduce<Record<string, FormValidationStatus>>((form, field) => {
     form[field.exposed.prop] = field.exposed.getValidationStatus()
     return form
   }, {})

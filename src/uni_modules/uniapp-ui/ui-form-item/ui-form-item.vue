@@ -414,6 +414,7 @@ defineExpose({
   validate,
   resetField,
   resetValidate,
+  getValidationStatus: () => state.status,
   labelPosition: prop("labelPosition"),
 })
 </script>

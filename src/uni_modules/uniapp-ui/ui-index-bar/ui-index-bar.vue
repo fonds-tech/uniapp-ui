@@ -73,14 +73,17 @@ const indexList = computed(() => {
 // 监听子组件数量变化
 watch(() => childrens.length, resize)
 
+// 防抖后的布局计算
+const debouncedResize = debounce(async () => {
+  rect.value = await useRect(".ui-index-bar", instance)
+  itemsRect.value = await useRects(".ui-index-bar__index", instance)
+  childrens?.forEach((child) => child.exposed.resize())
+  init.value = true
+}, 100)
+
 // 重新计算布局
-async function resize() {
-  debounce(async () => {
-    rect.value = await useRect(".ui-index-bar", instance)
-    itemsRect.value = await useRects(".ui-index-bar__index", instance)
-    childrens?.forEach((child) => child.exposed.resize())
-    init.value = true
-  }, 100)
+function resize() {
+  debouncedResize()
 }
 
 // 点击索引
