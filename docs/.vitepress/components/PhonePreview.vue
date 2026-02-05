@@ -168,8 +168,19 @@ const showPreview = computed(() => componentName.value && componentName.value !=
 const demoUrl = computed(() => {
   if (!componentName.value) return ""
   const theme = isDark.value ? "dark" : "light"
-  // 生产环境使用 /uniapp-ui/h5/，本地开发使用 localhost:9200
-  const baseUrl = typeof window !== "undefined" && window.location.hostname !== "localhost" ? `${window.location.origin}/uniapp-ui/h5/#/` : "http://localhost:9200/#/"
+  // 根据环境确定 H5 预览地址
+  let baseUrl = "http://localhost:9200/#/"
+  if (typeof window !== "undefined") {
+    const isProduction = process.env.NODE_ENV === "production" || window.location.hostname !== "localhost"
+    if (isProduction) {
+      // 生产环境：从当前 URL 推断 base 路径
+      // 例如 https://xxx.github.io/uniapp-ui/components/button.html -> /uniapp-ui/
+      const pathname = window.location.pathname
+      const match = pathname.match(/^(\/[^/]+\/)/)
+      const basePath = match ? match[1] : "/"
+      baseUrl = `${window.location.origin}${basePath}h5/#/`
+    }
+  }
   return `${baseUrl}pages/demo/${componentName.value}/index?theme=${theme}`
 })
 
