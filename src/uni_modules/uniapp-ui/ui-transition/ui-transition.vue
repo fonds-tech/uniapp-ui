@@ -1,5 +1,5 @@
 <template>
-  <view v-if="inited" class="ui-transition" :class="[transition.classs.value, customClass]" :style="[style]" @transitionend="onTransitionEnd" @click="onClick">
+  <view v-if="inited" class="ui-transition" :class="[transition.classs.value, props.customClass]" :style="[style]" @transitionend="onTransitionEnd" @click="onClick">
     <slot />
   </view>
 </template>

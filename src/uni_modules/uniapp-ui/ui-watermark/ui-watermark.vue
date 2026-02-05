@@ -9,7 +9,7 @@
     <!-- 离屏 Canvas（仅小程序平台需要） -->
     <!-- #ifndef H5 -->
     <canvas
-      v-if="showCanvas"
+      v-show="showCanvas"
       :id="canvasId"
       :canvas-id="canvasId"
       class="ui-watermark__canvas"
@@ -127,6 +127,7 @@ async function generateWatermark() {
     return
   }
 
+  showCanvas.value = true
   isGenerating.value = true
   await nextTick()
 

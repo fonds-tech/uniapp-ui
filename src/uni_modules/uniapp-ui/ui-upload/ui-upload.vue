@@ -1,5 +1,5 @@
 <template>
-  <view class="ui-upload" :class="[classs, props.customClass]" :style="[style]">
+  <view v-show="props.show" class="ui-upload" :class="[classs, props.customClass]" :style="[style]">
     <view v-for="(item, index) in renderList" :key="index" class="ui-upload__preview" :style="[previewStyle(index)]" @click="previewImage(item)">
       <view v-if="isShowStatus(item)" class="ui-upload__status">
         <ui-icon v-if="item.status === 'fail'" name="cross" color="text-inverse" size="40rpx" />
@@ -276,8 +276,18 @@ function chooseFile(): Promise<UploadFile[]> {
 
 // 删除文件
 function deleteFile(index: number) {
-  list.splice(index, 1)
-  updateModelValue()
+  const file = list[index]
+  const next = () => {
+    const removed = list.splice(index, 1)[0]
+    updateModelValue()
+    emits("delete", { index, file: removed || file })
+  }
+
+  if (isFunction(props.beforeRemove)) {
+    callInterceptor(props.beforeRemove, { args: [file, index], done: next })
+  } else {
+    next()
+  }
 }
 
 // 选择图片文件
@@ -389,6 +399,7 @@ function chooseVideoFile(): Promise<UploadFile[]> {
 
 // 预览图片
 function previewImage(item: UploadFile) {
+  if (!props.preview) return
   if (isImageLink(item.name || item.url)) {
     uni.previewImage({ urls: [item.url] })
   }

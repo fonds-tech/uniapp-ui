@@ -34,6 +34,7 @@
 <script setup lang="ts">
 import type { CSSProperties } from "vue"
 import type { TooltipPlacement } from "./index"
+import { isNumber } from "../utils/check"
 import { tooltipEmits, tooltipProps } from "./index"
 import { ref, watch, computed, onMounted, getCurrentInstance } from "vue"
 import { useRect, useUnit, useColor, useStyle, useGlobalZIndex } from "../hooks"
@@ -112,9 +113,21 @@ const arrowClass = computed(() => {
 // 箭头样式
 const arrowStyle = computed<CSSProperties>(() => {
   const style: CSSProperties = {}
-  if (props.bgColor) {
-    style.borderTopColor = useColor(props.bgColor)
+  if (!props.bgColor) return style
+
+  const placement = props.placement as TooltipPlacement
+  const color = useColor(props.bgColor)
+
+  if (placement.startsWith("top")) {
+    style.borderTopColor = color
+  } else if (placement.startsWith("bottom")) {
+    style.borderBottomColor = color
+  } else if (placement.startsWith("left")) {
+    style.borderRightColor = color
+  } else if (placement.startsWith("right")) {
+    style.borderLeftColor = color
   }
+
   return style
 })
 
@@ -223,7 +236,7 @@ async function open() {
 
   await initRect()
   calculatePosition()
-  zIndex.value = useGlobalZIndex()
+  zIndex.value = isNumber(props.zIndex) ? +props.zIndex : useGlobalZIndex()
   showTooltip.value = true
   emits("update:visible", true)
   emits("open")
