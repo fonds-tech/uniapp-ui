@@ -75,8 +75,8 @@
 import type { CascaderTab, CascaderOption } from "./index"
 import { clone, merge } from "../utils/utils"
 import { callInterceptor } from "../utils/interceptor"
-import { useRects, useStyle } from "../hooks"
 import { cascaderEmits, cascaderProps } from "./index"
+import { useUnit, useColor, useRects, useStyle } from "../hooks"
 import { isDef, isEmpty, isNoEmpty, isFunction } from "../utils/check"
 import { ref, toRaw, watch, computed, nextTick, getCurrentInstance } from "vue"
 
@@ -112,21 +112,21 @@ const style = computed(() => {
 // 标题样式
 const titleStyle = computed(() => {
   const style: any = {}
-  if (props.titleSize) style.fontSize = props.titleSize
-  if (props.titleColor) style.color = props.titleColor
+  if (props.titleSize) style.fontSize = useUnit(props.titleSize)
+  if (props.titleColor) style.color = useColor(props.titleColor)
   if (props.titleWeight) style.fontWeight = props.titleWeight
   return useStyle(style)
 })
 // 选项样式
 const optionStyle = computed(() => {
   const style: any = {}
-  if (props.color) style.color = props.color
+  if (props.color) style.color = useColor(props.color)
   return useStyle(style)
 })
 // 选中选项样式
 const activeOptionStyle = computed(() => {
   const style: any = {}
-  if (props.activeColor) style.color = props.activeColor
+  if (props.activeColor) style.color = useColor(props.activeColor)
   return useStyle(style)
 })
 // 标签页下划线样式

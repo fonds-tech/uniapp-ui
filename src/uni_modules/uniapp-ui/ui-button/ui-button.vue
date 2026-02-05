@@ -3,6 +3,7 @@
     class="ui-button"
     :style="[buttonStyle]"
     :class="[classNames, props.customClass]"
+    :disabled="isDisabled"
     :lang="props.lang"
     :form-type="props.formType"
     :open-type="props.openType"
@@ -88,7 +89,7 @@ const hasSlotContent = computed(() => !!slots.default)
 // 合并后的加载状态
 const isLoading = computed(() => props.loading || internalLoading.value)
 // 合并后的禁用状态
-const isDisabled = computed(() => props.disabled || internalDisabled.value)
+const isDisabled = computed(() => props.disabled || isLoading.value || internalDisabled.value)
 // 解析后的加载文本
 const resolvedLoadingText = computed(() => props.loadingText || internalLoadingText.value)
 // 点击态的 CSS 类名
