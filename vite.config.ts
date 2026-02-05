@@ -9,7 +9,8 @@ export default defineConfig(({ command, mode }) => {
 
   return defineConfig({
     envDir: "./env",
-    base: env.VITE_APP_BASE,
+    // 优先使用环境变量（CI 中设置），否则使用 .env 文件中的配置
+    base: process.env.VITE_APP_BASE || env.VITE_APP_BASE,
     plugins: useVitePlugins(mode, env),
     resolve: {
       alias: {
