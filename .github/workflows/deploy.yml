@@ -3,7 +3,8 @@ name: Deploy to GitHub Pages
 
 on:
   push:
-    branches: [main]
+    tags:
+      - 'v*'
   workflow_dispatch:
 
 # 设置 GITHUB_TOKEN 权限
@@ -36,27 +37,11 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
-      # 构建文档站点
-      - name: Build docs
+      # 构建文档和 H5（docs:build 会自动构建 H5 并复制到文档目录）
+      - name: Build docs and H5
         run: pnpm docs:build
         env:
           DOCS_BASE: /uniapp-ui/
-
-      # 构建 H5 预览（生产模式）
-      - name: Build H5
-        run: pnpm build:h5:prod
-        env:
-          # 设置 H5 的 base 路径
-          VITE_APP_BASE: /uniapp-ui/h5/
-
-      # 合并构建产物
-      - name: Merge build outputs
-        run: |
-          mkdir -p dist-pages/h5
-          # 复制文档站点
-          cp -r docs/.vitepress/dist/* dist-pages/
-          # 复制 H5 预览
-          cp -r dist/build/h5/* dist-pages/h5/
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
@@ -64,7 +49,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: dist-pages
+          path: docs/.vitepress/dist
 
   deploy:
     environment:
