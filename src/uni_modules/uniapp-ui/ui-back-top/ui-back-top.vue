@@ -121,6 +121,10 @@ function clearAutoListener() {
 
 // 点击事件处理
 function onClick() {
+  if (useExternalScrollTop.value) {
+    emits("click")
+    return
+  }
   uni.pageScrollTo({ scrollTop: 0, duration: +props.duration })
   emits("click")
 }

@@ -120,19 +120,9 @@
 
     <demo-section title="头像组">
       <demo-block :gap="16">
-        <view class="avatar-group">
-          <ui-avatar
-            v-for="i in 5"
-            :key="i"
-            :src="`https://picsum.photos/${120 + i}`"
-            size="80rpx"
-            border-color="#fff"
-            border-width="4rpx"
-            class="avatar-group-item"
-            :custom-style="{ zIndex: i }"
-          />
-          <view class="avatar-more">+3</view>
-        </view>
+        <ui-avatar-group size="80rpx" gap="-20rpx" border-color="#fff" border-width="4rpx" :max="5">
+          <ui-avatar v-for="i in 8" :key="i" :src="`https://picsum.photos/${120 + i}`" />
+        </ui-avatar-group>
       </demo-block>
     </demo-section>
   </demo-page>
@@ -205,34 +195,5 @@ function handleClick() {
 .user-desc {
   color: var(--ui-color-text-secondary);
   font-size: 24rpx;
-}
-
-.avatar-group {
-  display: flex;
-  align-items: center;
-}
-
-.avatar-group-item {
-  margin-left: -20rpx;
-
-  &:first-child {
-    margin-left: 0;
-  }
-}
-
-.avatar-more {
-  color: var(--ui-color-text-secondary);
-  width: 80rpx;
-  border: 4rpx solid #fff;
-  height: 80rpx;
-  display: flex;
-  z-index: 6;
-  position: relative;
-  font-size: 24rpx;
-  background: var(--ui-color-background-light);
-  align-items: center;
-  margin-left: -20rpx;
-  border-radius: 50%;
-  justify-content: center;
 }
 </style>

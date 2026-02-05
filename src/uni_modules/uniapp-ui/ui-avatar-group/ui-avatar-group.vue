@@ -78,10 +78,15 @@ const excessStyle = computed(() => {
   const style: CSSProperties = {
     width: sizeValue.value,
     height: sizeValue.value,
-    marginLeft: gapValue.value,
     borderWidth: useUnit(props.borderWidth) || "4rpx",
     borderStyle: "solid",
     borderColor: useColor(props.borderColor) || "var(--ui-color-text-inverse)",
+    background: "var(--ui-color-background-page)",
+  }
+  if (props.direction === "left") {
+    style.marginRight = gapValue.value
+  } else {
+    style.marginLeft = gapValue.value
   }
 
   if (props.excessColor) {

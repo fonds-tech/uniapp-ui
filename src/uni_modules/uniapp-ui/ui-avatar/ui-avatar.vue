@@ -193,15 +193,17 @@ const rootStyle = computed(() => {
       style.zIndex = max - avatarIndex.value
     }
 
-    // 设置左边距（第一个头像不需要）
+    // 设置间距（第一个头像不需要）
     if (avatarIndex.value > 0) {
-      style.marginLeft = useUnit(gap)
+      if (direction === "left") {
+        style.marginRight = useUnit(gap)
+      } else {
+        style.marginLeft = useUnit(gap)
+      }
     }
   }
 
-  const customStyle = useStyle(props.customStyle)
-  const mergedStyle = useStyle({ ...style, ...(customStyle && typeof customStyle === "object" ? customStyle : {}) })
-  return useStyle(mergedStyle, "string")
+  return useStyle({ ...style, ...useStyle(props.customStyle) }, "string")
 })
 // 文字样式
 const textStyle = computed(() => {
