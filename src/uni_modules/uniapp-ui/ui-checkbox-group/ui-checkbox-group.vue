@@ -46,6 +46,7 @@ watch(
 function toggleAll(checked?: boolean) {
   const checkeds = childrens.filter((children) => {
     if (isEmpty(children.exposed?.props?.bindGroup)) return false
+    if (children.exposed?.props?.disabled) return false
     return checked ?? !toRef(children.exposed?.checked).value
   })
 

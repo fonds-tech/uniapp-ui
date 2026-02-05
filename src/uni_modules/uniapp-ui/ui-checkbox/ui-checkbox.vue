@@ -187,8 +187,8 @@ function toggle(check?: boolean) {
 
     const add = () => {
       const isMax = parent.props.max && value.length >= +parent.props.max
-      if (!isMax && !value.includes(props.name)) {
-        value.push(props.name)
+      if (!isMax && !value.includes(name.value)) {
+        value.push(name.value)
         parent.updateValue(value)
       }
     }
