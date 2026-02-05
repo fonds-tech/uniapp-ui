@@ -24,6 +24,8 @@ export default function createVitePlugins(mode: string, env: Record<string, stri
     useUniPagesPlugin(),
     useBundleOptimizerPlugin(),
     useUniRootPlugin(),
+    // Components 必须在 uni 之前，否则组件无法正确解析
+    useComponentsPlugin(),
     useUniPlugin(),
     useFixVitePluginVue(),
     useUnoCssPlugin(),
@@ -33,7 +35,6 @@ export default function createVitePlugins(mode: string, env: Record<string, stri
     UNI_PLATFORM === "h5" && mode === "production" ? useVisualizerPlugin() : null,
     // 图片压缩：仅在生产环境启用
     mode === "production" ? useImageminPlugin() : null,
-    useComponentsPlugin(),
   ]
 
   return plugins.filter(Boolean)
