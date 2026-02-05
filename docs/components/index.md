@@ -15,7 +15,6 @@ UniApp UI 提供了 80+ 高质量组件，按功能分为以下几类：
 | [Badge 徽标](/components/badge)     | 在右上角展示徽标 |
 | [Tag 标签](/components/tag)         | 用于标记和分类   |
 | [Loading 加载](/components/loading) | 加载中状态       |
-| [Line 分割线](/components/line)     | 分隔内容区域     |
 
 ## 表单组件
 
@@ -35,7 +34,6 @@ UniApp UI 提供了 80+ 高质量组件，按功能分为以下几类：
 | [Cascader 级联选择](/components/cascader)      | 多级联动选择 |
 | [Upload 上传](/components/upload)              | 文件上传     |
 | [Form 表单](/components/form)                  | 表单容器     |
-| [Field 表单项](/components/field)              | 表单项组件   |
 | [Search 搜索](/components/search)              | 搜索框       |
 | [Select 下拉选择](/components/select)          | 下拉选择器   |
 
@@ -92,7 +90,7 @@ UniApp UI 提供了 80+ 高质量组件，按功能分为以下几类：
 
 | 组件                                                      | 说明           |
 | --------------------------------------------------------- | -------------- |
-| [Row/Col 栅格](/components/row-col)                       | 栅格布局       |
+| [Layout 布局](/components/layout)                         | 栅格布局       |
 | [Header 页头](/components/header)                         | 页面头部       |
 | [Footer 页脚](/components/footer)                         | 页面底部       |
 | [Sticky 粘性布局](/components/sticky)                     | 粘性定位       |

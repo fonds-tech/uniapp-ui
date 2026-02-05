@@ -8,6 +8,8 @@ export default defineConfig({
   lang: "zh-CN",
   // GitHub Pages 部署时的 base 路径
   base: process.env.DOCS_BASE || "/",
+  // 忽略指向 H5 预览的外部链接
+  ignoreDeadLinks: [/h5/],
   vite: {
     server: {
       port: 5180, // 固定端口，避免与其他项目冲突
