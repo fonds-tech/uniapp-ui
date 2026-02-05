@@ -59,7 +59,10 @@ const loading = computed(() => (isPagination.value ? props.pagination.loading.va
 // 每页条数
 const pageSize = computed(() => (isPagination.value ? props.pagination.pageSize.value : props.pageSize))
 // 是否是最后一页
-const isLastPage = computed(() => (isPagination.value ? list.value.length >= total.value : true))
+const isLastPage = computed(() => {
+  if (isPagination.value) return list.value.length >= total.value
+  return isArray(list.value) && list.value.length >= +total.value
+})
 // 是否显示空状态
 const isShowEmpty = computed(() => init.value && isEmpty(loading.value) && isEmpty(list.value))
 // 是否使用分页对象

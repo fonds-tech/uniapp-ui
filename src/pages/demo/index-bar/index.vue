@@ -1,18 +1,22 @@
 <template>
-  <demo-page custom-class="index-page">
+  <demo-page :height="`${systeminfo.screenHeight - systeminfo.windowTop}px`" padding="0">
     <ui-index-bar :indexs="indexList" @select="onSelect">
-      <template v-for="letter in indexList" :key="letter">
-        <ui-index-anchor :index="letter" />
+      <view v-for="letter in indexList" :key="letter">
+        <ui-index-anchor :name="letter" :text="letter" />
         <ui-cell v-for="item in getItemsByLetter(letter)" :key="item" :title="item" />
-      </template>
+      </view>
     </ui-index-bar>
   </demo-page>
 </template>
 
 <script setup lang="ts">
+import { useSystemInfo } from "@/uni_modules/uniapp-ui"
+
 definePage({
   style: { navigationBarTitleText: "IndexBar 索引栏" },
 })
+
+const systeminfo = useSystemInfo()
 
 const indexList = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"]
 
@@ -55,7 +59,7 @@ function onSelect(index: string | number) {
 </script>
 
 <style lang="scss" scoped>
-:deep(.index-page) {
+.index-bar-page {
   height: 100vh;
 }
 </style>

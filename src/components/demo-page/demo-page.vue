@@ -17,6 +17,7 @@ import { ref, computed, onMounted } from "vue"
 
 const props = withDefaults(
   defineProps<{
+    height?: string | number
     padding?: string | number
     paddingX?: string | number
     paddingY?: string | number
@@ -27,14 +28,16 @@ const props = withDefaults(
 )
 
 const style = computed(() => {
+  const height = props.height !== undefined ? useUnit(props.height) : ""
   const padding = useUnit(props.padding)
   const paddingX = props.paddingX !== undefined ? useUnit(props.paddingX) : padding
   const paddingY = props.paddingY !== undefined ? useUnit(props.paddingY) : padding
   const s: CSSProperties = {
+    height,
     paddingLeft: paddingX,
     paddingRight: paddingX,
     paddingTop: paddingY,
-    paddingBottom: `calc(${paddingY} + env(safe-area-inset-bottom))`,
+    paddingBottom: paddingY,
   }
   return useStyle({ ...s, ...useStyle(props.customStyle) })
 })
@@ -59,6 +62,5 @@ export default {
 .demo-page {
   background: var(--ui-color-background-light);
   box-sizing: border-box;
-  min-height: 100vh;
 }
 </style>

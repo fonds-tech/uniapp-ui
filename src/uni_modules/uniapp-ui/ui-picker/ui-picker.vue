@@ -1,7 +1,7 @@
 <template>
   <view class="ui-picker">
     <ui-popup
-      :show="show"
+      :show="props.show"
       :mode="props.mode"
       :border-radius="props.borderRadius"
       :close-on-click-overlay="props.closeOnClickOverlay"

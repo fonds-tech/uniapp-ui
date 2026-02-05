@@ -2,7 +2,7 @@
   <view class="ui-index-bar" :class="[customClass]" :style="[style]">
     <view class="ui-index-bar__list">
       <view
-        v-for="(item, index) in indexList"
+        v-for="(item, index) in indexs"
         :key="index"
         class="ui-index-bar__index"
         :class="[itemClass(item)]"
@@ -22,7 +22,6 @@
 import { debounce } from "../utils/utils"
 import { useRect, useRects, useStyle, useChildren } from "../hooks"
 import { indexBarKey, indexBarEmits, indexBarProps } from "../ui-index-bar"
-import { ref, toRef, watch, computed, getCurrentInstance } from "vue"
 
 // 定义组件名称
 defineOptions({ name: "ui-index-bar" })
@@ -62,14 +61,6 @@ const style = computed(() => {
 // 索引项类名
 const itemClass = computed(() => (item: string | number) => (currentName.value === item ? "is-active" : ""))
 
-// 索引列表
-const indexList = computed(() => {
-  if (props.indexs && props.indexs.length) {
-    return props.indexs
-  }
-  return childrens.map((child) => toRef(child.exposed?.name).value)
-})
-
 // 监听子组件数量变化
 watch(() => childrens.length, resize)
 
@@ -105,7 +96,7 @@ function onTouchMove(event: any) {
   itemsRect.value?.forEach((item, index) => {
     const { top, bottom } = item
     if (y >= top && y <= bottom) {
-      onClick(indexList.value[index])
+      onClick(props.indexs[index])
     }
   })
 }

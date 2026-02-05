@@ -1,9 +1,7 @@
 <template>
   <view class="ui-index-anchor" :class="[classs, customClass]" :style="[style]">
     <slot>
-      <view class="ui-index-anchor__index" :style="[indexStyle]">
-        {{ text }}
-      </view>
+      <view class="ui-index-anchor__index" :style="[indexStyle]">{{ text }}</view>
     </slot>
   </view>
 </template>
@@ -12,7 +10,6 @@
 import { isDef } from "../utils/check"
 import { indexBarKey } from "../ui-index-bar"
 import { indexAnchorProps } from "./index"
-import { ref, computed, getCurrentInstance } from "vue"
 import { useRect, useUnit, useColor, useStyle, useParent } from "../hooks"
 
 // 定义组件名称
@@ -42,9 +39,11 @@ const style = computed(() => {
   style.height = useUnit(props.height)
   style.background = useColor(props.background)
   if (isActive.value) style.background = useColor(props.stickyBackground)
-  if (parent.props.sticky) {
+  if (parent?.props?.sticky) {
     style.top = 0
     style.position = "sticky"
+    // 动态 z-index: 后面的锚点覆盖前面的锚点
+    style.zIndex = index.value + 1
   }
   return useStyle({ ...style, ...useStyle(props.customStyle) })
 })
@@ -66,7 +65,7 @@ const indexStyle = computed(() => {
 // 锚点名称
 const name = computed(() => (isDef(props.name) ? props.name : index.value))
 // 是否激活
-const isActive = computed(() => parent.currentName.value === name.value)
+const isActive = computed(() => parent?.currentName?.value === name.value)
 
 // 重新计算位置
 async function resize() {
@@ -87,7 +86,6 @@ export default {
 .ui-index-anchor {
   height: 60rpx;
   display: flex;
-  z-index: 2;
   align-items: center;
 
   &.is-active {

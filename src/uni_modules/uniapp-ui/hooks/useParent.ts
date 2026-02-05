@@ -1,5 +1,5 @@
 import type { ComputedRef, InjectionKey, ComponentInternalInstance } from "vue"
-import { inject, computed, onUnmounted, getCurrentInstance } from "vue"
+import { ref, inject, computed, onUnmounted, getCurrentInstance } from "vue"
 
 /** 父组件 provide 的基础类型（由 useChildren 自动添加） */
 export type ParentProvide<T> = T & {
@@ -37,7 +37,7 @@ export function useParent<T>(key: InjectionKey<T>): UseParentReturn<T> {
     if (!instance) {
       console.warn("[useParent] 必须在 setup() 函数内部调用")
       return {
-        index: computed(() => -1),
+        index: ref(-1) as unknown as ComputedRef<number>,
         parent: null,
       }
     }
@@ -52,9 +52,8 @@ export function useParent<T>(key: InjectionKey<T>): UseParentReturn<T> {
     return { index, parent }
   }
 
-  // 统一返回 computed 类型，保持类型一致性
   return {
-    index: computed(() => -1),
+    index: ref(-1) as unknown as ComputedRef<number>,
     parent: null,
   }
 }
