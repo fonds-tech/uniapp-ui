@@ -351,9 +351,7 @@ export default {
   }
 
   &--disabled {
-    color: var(--ui-color-text-disabled);
-    background: var(--ui-color-background-disabled);
-    border-color: var(--ui-color-border);
+    opacity: var(--ui-opacity-disabled);
     pointer-events: none;
 
     &.ui-button--text {
