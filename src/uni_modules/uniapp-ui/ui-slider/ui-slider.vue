@@ -215,13 +215,18 @@ const inactiveTrackStyle = computed(() => {
   return useStyle(style)
 })
 
+function getRatio(value: number): number {
+  const range = props.max - props.min
+  if (!Number.isFinite(range) || range === 0) return 0
+  return ((value - props.min) / range) * 100
+}
+
 const activeTrackStyle = computed(() => {
   const style: CSSProperties = {}
-  const range = props.max - props.min
 
   if (props.range) {
-    const leftRatio = ((rangeValue.value[0] - props.min) / range) * 100
-    const rightRatio = ((rangeValue.value[1] - props.min) / range) * 100
+    const leftRatio = getRatio(rangeValue.value[0])
+    const rightRatio = getRatio(rangeValue.value[1])
 
     if (props.vertical) {
       style.bottom = `${leftRatio}%`
@@ -231,7 +236,7 @@ const activeTrackStyle = computed(() => {
       style.width = `${rightRatio - leftRatio}%`
     }
   } else {
-    const ratio = ((currentValue.value - props.min) / range) * 100
+    const ratio = getRatio(currentValue.value)
 
     if (props.vertical) {
       style.bottom = "0"
@@ -286,7 +291,6 @@ function getHandleClass(index: number): string[] {
 
 function getHandleStyle(index: number): CSSProperties {
   const style: CSSProperties = {}
-  const range = props.max - props.min
   const { handleSize } = sizeConfig.value
   let value: number
 
@@ -296,7 +300,7 @@ function getHandleStyle(index: number): CSSProperties {
     value = currentValue.value
   }
 
-  const ratio = ((value - props.min) / range) * 100
+  const ratio = getRatio(value)
 
   // 设置把手尺寸
   style.width = `${handleSize}px`
@@ -319,8 +323,7 @@ function getHandleStyle(index: number): CSSProperties {
 // 0% 时刻度点左边缘对齐轨道左边缘，100% 时刻度点右边缘对齐轨道右边缘
 function getTickStyle(value: number): CSSProperties {
   const style: CSSProperties = {}
-  const range = props.max - props.min
-  const ratio = ((value - props.min) / range) * 100
+  const ratio = getRatio(value)
   const tickSize = 4 // 刻度点尺寸 4px
 
   if (props.vertical) {
@@ -336,8 +339,7 @@ function getTickStyle(value: number): CSSProperties {
 
 function getLabelStyle(mark: { value: number; labelStyle?: CSSProperties }): CSSProperties {
   const style: CSSProperties = {}
-  const range = props.max - props.min
-  const ratio = ((mark.value - props.min) / range) * 100
+  const ratio = getRatio(mark.value)
 
   if (props.vertical) {
     style.bottom = `${ratio}%`
