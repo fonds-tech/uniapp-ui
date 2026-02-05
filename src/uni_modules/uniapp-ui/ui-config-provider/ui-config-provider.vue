@@ -54,16 +54,6 @@ const style = computed(() => {
   return useStyle({ ...style, ...useStyle(props.customStyle) })
 })
 
-// 组件挂载时初始化
-onMounted(init)
-// 组件卸载时清理
-onUnmounted(() => {
-  if (themeChangeHandler.value) {
-    uni.offThemeChange?.(themeChangeHandler.value)
-    themeChangeHandler.value = null
-  }
-})
-
 // 初始化
 function init() {
   const pages = getCurrentPages()
@@ -146,6 +136,16 @@ function onTouchmove(e: any) {
 
 // 建立父子组件关联
 linkChildren({ props, mitt })
+
+// 组件挂载时初始化
+onMounted(init)
+// 组件卸载时清理
+onUnmounted(() => {
+  if (themeChangeHandler.value) {
+    uni.offThemeChange?.(themeChangeHandler.value)
+    themeChangeHandler.value = null
+  }
+})
 
 defineExpose({ mitt, currentTheme })
 </script>

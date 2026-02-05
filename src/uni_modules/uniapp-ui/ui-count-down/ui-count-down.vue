@@ -65,11 +65,6 @@ watch(
   },
 )
 
-// 组件销毁前暂停
-onBeforeUnmount(() => {
-  pause()
-})
-
 // 计时
 function tick() {
   if (!runing.value) return
@@ -220,6 +215,11 @@ function useRequestAnimationFrame(callback: () => void) {
 function useCancelRequestAnimationFrame(id: ReturnType<typeof setTimeout> | null) {
   if (id !== null) clearTimeout(id)
 }
+
+// 组件销毁前暂停
+onBeforeUnmount(() => {
+  pause()
+})
 
 defineExpose({ start, reset, pause })
 </script>

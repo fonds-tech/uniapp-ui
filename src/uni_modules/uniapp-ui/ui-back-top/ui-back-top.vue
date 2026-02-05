@@ -80,16 +80,6 @@ watch(useExternalScrollTop, (useExternal) => {
   }
 })
 
-// 组件挂载时初始化监听
-onMounted(() => {
-  nextTick(initAutoListener)
-})
-
-// 组件卸载时清除监听
-onUnmounted(() => {
-  clearAutoListener()
-})
-
 // 处理滚动事件
 function handleScroll(options: { scrollTop: number }) {
   innerScrollTop.value = options.scrollTop
@@ -128,6 +118,16 @@ function onClick() {
   uni.pageScrollTo({ scrollTop: 0, duration: +props.duration })
   emits("click")
 }
+
+// 组件挂载时初始化监听
+onMounted(() => {
+  nextTick(initAutoListener)
+})
+
+// 组件卸载时清除监听
+onUnmounted(() => {
+  clearAutoListener()
+})
 </script>
 
 <script lang="ts">
