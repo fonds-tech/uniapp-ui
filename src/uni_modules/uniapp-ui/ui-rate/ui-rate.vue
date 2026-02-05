@@ -4,7 +4,7 @@
       <view class="ui-rate__item__icon">
         <ui-icon :name="icon(item)" :size="size" :weight="iconWeight" :color="iconColor(item)" />
       </view>
-      <view v-if="isShowHalf(item)" class="ui-rate__item__icon ui-rate__item__icon--half" :style="[iconHalfStyle(item, index)]">
+      <view v-if="isShowHalf(item)" class="ui-rate__item__icon ui-rate__item__icon--half" :style="[iconHalfStyle(item)]">
         <ui-icon :name="props.icon" :size="size" :weight="iconWeight" :color="color" />
       </view>
     </view>
@@ -14,23 +14,24 @@
 <script setup lang="ts">
 import { rateEmits, rateProps } from "./index"
 import { useRect, useRects, useStyle, useUnitToPx } from "../hooks"
-import { ref, computed, nextTick, onMounted, getCurrentInstance } from "vue"
+import { ref, watch, computed, nextTick, onMounted, getCurrentInstance } from "vue"
 
 defineOptions({ name: "ui-rate" })
 
 const props = defineProps(rateProps)
 const emits = defineEmits(rateEmits)
 
+// 组件实例
+const instance = getCurrentInstance()
+
 // 当前分数
-const score = ref(null)
+const score = ref<number | null>(props.modelValue)
 // 评分区域范围
 const ranges = ref([])
 // 组件容器位置信息
 const rect = ref<UniApp.NodeInfo>({})
 // 各评分项位置信息
 const rects = ref<UniApp.NodeInfo[]>([])
-// 组件实例
-const instance = getCurrentInstance()
 
 // 评分列表
 const list = computed(() =>
@@ -62,7 +63,7 @@ const itemStyle = computed(() => {
 })
 // 半星样式
 const iconHalfStyle = computed(() => {
-  return (item: any, index: number) => {
+  return (item: any) => {
     const style: any = {}
     if (item.status === "full") style.width = "100%"
     if (item.status === "half") style.width = `${item.value * 100}%`
@@ -88,18 +89,12 @@ const isShowHalf = computed(() => {
   }
 })
 
-// 组件挂载时计算尺寸
-onMounted(() => resize())
-
-// 重新计算尺寸
-async function resize() {
-  await nextTick()
-  rect.value = await useRect(".ui-rate", instance)
-  rects.value = await useRects(".ui-rate__item", instance)
-  await nextTick()
-
-  updateRanges()
-}
+watch(
+  () => props.modelValue,
+  (value) => {
+    score.value = value
+  },
+)
 
 // 获取评分状态
 function getRateStatus(value: number, index: number) {
@@ -115,6 +110,16 @@ function getRateStatus(value: number, index: number) {
   return { status: "void", value: 0 }
 }
 
+// 重新计算尺寸
+async function resize() {
+  await nextTick()
+  rect.value = await useRect(".ui-rate", instance)
+  rects.value = await useRects(".ui-rate__item", instance)
+  await nextTick()
+
+  updateRanges()
+}
+
 // 更新评分区域范围
 async function updateRanges() {
   const gutter = useUnitToPx(props.gutter)
@@ -124,7 +129,7 @@ async function updateRanges() {
   rects.value?.forEach((rect, index) => {
     if (props.allowHalf) {
       const left = index === 0 ? rect.left : rect.left - gutter / 2
-      const right = index === 0 ? rect.width / 2 : rect.right - rect.width / 2
+      const right = index === 0 ? rect.left + rect.width / 2 : rect.right - rect.width / 2
       ranges.value.push({ score: index + 0.5, left, right }, { score: index + 1, left: rect.left + rect.width / 2, right: rect.right + gutter / 2 })
     } else {
       const left = index === 0 ? rect.left : rect.left - gutter / 2
@@ -148,6 +153,18 @@ function getScoreByPosition(x: number) {
   return props.modelValue
 }
 
+// 更新值
+async function updateValue(value: number) {
+  if (props.disabled) return
+  if (props.readonly) return
+  if (value === props.modelValue) return
+  if (value === score.value) return
+  emits("change", value)
+  await nextTick()
+  emits("update:modelValue", value)
+  score.value = value
+}
+
 // 点击事件
 async function onClick(event: any) {
   await updateRanges()
@@ -156,8 +173,8 @@ async function onClick(event: any) {
 }
 
 // 触摸开始
-function onTouchstart() {
-  updateRanges()
+async function onTouchstart() {
+  await updateRanges()
 }
 
 // 触摸移动
@@ -167,16 +184,7 @@ function onTouchmove(event: any) {
   updateValue(value)
 }
 
-// 更新值
-async function updateValue(value: number) {
-  if (props.disabled) return
-  if (props.readonly) return
-  if (value === score.value) return
-  emits("change", value)
-  await nextTick()
-  emits("update:modelValue", value)
-  score.value = value
-}
+onMounted(() => resize())
 
 defineExpose({ name: "ui-rate" })
 </script>

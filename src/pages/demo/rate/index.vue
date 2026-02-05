@@ -9,11 +9,11 @@
     <demo-section title="自定义图标">
       <demo-block :cols="2" :gap="32">
         <view class="rate-item">
-          <ui-rate v-model="value2" icon="heart-fill" void-icon="heart" color="#ee0a24" />
+          <ui-rate v-model="value2" icon="like" void-icon="like-o" color="#ee0a24" />
           <text class="rate-label">爱心</text>
         </view>
         <view class="rate-item">
-          <ui-rate v-model="value2b" icon="star-fill" void-icon="star" color="#ffca28" />
+          <ui-rate v-model="value2b" icon="star" void-icon="star-o" color="#ffca28" />
           <text class="rate-label">星星</text>
         </view>
       </demo-block>
@@ -39,7 +39,7 @@
     </demo-section>
 
     <demo-section title="自定义颜色">
-      <demo-block :cols="3" :gap="24">
+      <demo-block :cols="2" :gap="24">
         <view class="rate-item">
           <ui-rate v-model="value5a" color="primary" />
           <text class="rate-label">主题色</text>
@@ -69,7 +69,7 @@
     </demo-section>
 
     <demo-section title="自定义大小">
-      <demo-block :cols="3" :gap="24">
+      <demo-block :cols="2" :gap="24">
         <view class="rate-item">
           <ui-rate v-model="value6" size="32rpx" />
           <text class="rate-label">32rpx</text>
@@ -86,7 +86,7 @@
     </demo-section>
 
     <demo-section title="图标间距">
-      <demo-block :cols="3" :gap="24">
+      <demo-block :cols="2" :gap="24">
         <view class="rate-item">
           <ui-rate v-model="valueGutter1" gutter="4rpx" />
           <text class="rate-label">4rpx</text>
@@ -155,19 +155,6 @@
       </demo-block>
     </demo-section>
 
-    <demo-section title="自定义样式">
-      <demo-block :cols="2" :gap="32">
-        <view class="rate-item">
-          <ui-rate v-model="valueCustom1" custom-class="my-rate" />
-          <text class="rate-label">自定义类名</text>
-        </view>
-        <view class="rate-item">
-          <ui-rate v-model="valueCustom2" :custom-style="{ padding: '16rpx', background: '#fff7e6', borderRadius: '8rpx' }" color="#ff9500" />
-          <text class="rate-label">自定义样式</text>
-        </view>
-      </demo-block>
-    </demo-section>
-
     <demo-section title="综合示例">
       <demo-block direction="column" align="start" :gap="24">
         <view class="rate-demo">
@@ -177,8 +164,13 @@
         </view>
         <view class="rate-demo">
           <text class="rate-demo__label">服务态度:</text>
-          <ui-rate v-model="valueDemo2" icon="heart-fill" void-icon="heart" color="#ee0a24" />
+          <ui-rate v-model="valueDemo2" icon="like" void-icon="like-o" color="#ee0a24" />
           <text class="rate-demo__value">{{ valueDemo2 }} 分</text>
+        </view>
+        <view class="rate-demo">
+          <text class="rate-demo__label">物流速度:</text>
+          <ui-rate v-model="valueDemo3" allow-half icon="star-circle" void-icon="star-circle-o" color="#ffca28" />
+          <text class="rate-demo__value">{{ valueDemo3 }} 分</text>
         </view>
       </demo-block>
     </demo-section>
@@ -220,10 +212,9 @@ const valueWeight2 = ref(3)
 const valueDisabledColor1 = ref(3)
 const valueDisabledColor2 = ref(4)
 const valueEvent = ref(3)
-const valueCustom1 = ref(3)
-const valueCustom2 = ref(4)
 const valueDemo = ref(4.5)
 const valueDemo2 = ref(4)
+const valueDemo3 = ref(3.5)
 
 // 事件日志
 const eventLog = ref("点击评分触发 change 事件")
@@ -275,9 +266,4 @@ function onDemoChange(value: number) {
   }
 }
 
-:deep(.my-rate) {
-  padding: 12rpx 16rpx;
-  background: linear-gradient(135deg, #fff5eb 0%, #fff0f0 100%);
-  border-radius: 8rpx;
-}
 </style>
