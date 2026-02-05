@@ -17,7 +17,7 @@ hero:
       link: /components/
     - theme: alt
       text: 在线演示
-      link: /demo/
+      link: ./h5/
 
 features:
   - icon: 🚀

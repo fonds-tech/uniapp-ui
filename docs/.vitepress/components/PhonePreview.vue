@@ -168,7 +168,8 @@ const showPreview = computed(() => componentName.value && componentName.value !=
 const demoUrl = computed(() => {
   if (!componentName.value) return ""
   const theme = isDark.value ? "dark" : "light"
-  const baseUrl = typeof window !== "undefined" && window.location.hostname !== "localhost" ? `${window.location.origin}/demo/#/` : "http://localhost:9200/#/"
+  // 生产环境使用 /uniapp-ui/h5/，本地开发使用 localhost:9200
+  const baseUrl = typeof window !== "undefined" && window.location.hostname !== "localhost" ? `${window.location.origin}/uniapp-ui/h5/#/` : "http://localhost:9200/#/"
   return `${baseUrl}pages/demo/${componentName.value}/index?theme=${theme}`
 })
 
