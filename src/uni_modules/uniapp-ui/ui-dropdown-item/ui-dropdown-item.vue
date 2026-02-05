@@ -57,7 +57,7 @@ const style = computed(() => {
   if (prop("direction") === "up") style.bottom = `${windowHeight.value - top}px`
   if (prop("direction") === "down") style.top = `${bottom}px`
   if (isEmpty(transition.visible.value)) style.display = "none"
-  return useStyle({ ...style, ...useStyle(props.customClass) })
+  return useStyle({ ...style, ...useStyle(props.customStyle) })
 })
 
 const classs = computed(() => {

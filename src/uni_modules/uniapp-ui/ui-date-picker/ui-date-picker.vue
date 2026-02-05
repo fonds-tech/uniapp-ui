@@ -1,7 +1,7 @@
 <template>
   <view class="ui-date-picker">
     <ui-popup
-      :show="show"
+      :show="props.show"
       :mode="props.mode"
       :border-radius="props.borderRadius"
       :close-on-click-overlay="props.closeOnClickOverlay"
@@ -64,6 +64,7 @@
 <script setup lang="ts">
 import type { DatePickerOption, DatePickerColumnType } from "./index"
 import UiPopup from "../ui-popup/ui-popup.vue"
+import { isDef } from "../utils/check"
 import { padZero } from "../utils/utils"
 import { datePickerEmits, datePickerProps } from "./index"
 import { ref, toRaw, watch, computed, nextTick } from "vue"
@@ -272,7 +273,7 @@ function formatDate(y: number, m: number, d: number, h: number, mi: number, s: n
  */
 function parseDate(value: string | number | Date | null | undefined): { y: number; m: number; d: number; h: number; mi: number; s: number } {
   const now = new Date()
-  if (!value) {
+  if (!isDef(value)) {
     return { y: now.getFullYear(), m: now.getMonth() + 1, d: now.getDate(), h: now.getHours(), mi: now.getMinutes(), s: now.getSeconds() }
   }
 

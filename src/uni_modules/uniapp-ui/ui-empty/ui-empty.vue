@@ -47,8 +47,9 @@ const iconStyle = computed(() => {
 // 文字样式，设置颜色和字重
 const textStyle = computed(() => {
   const style: any = {}
-  style.color = useColor(props.iconColor)
-  style.fontWeight = props.iconWeight
+  style.color = useColor(props.textColor)
+  style.fontSize = useUnit(props.textSize)
+  style.fontWeight = props.textWeight
   return useStyle(style)
 })
 </script>

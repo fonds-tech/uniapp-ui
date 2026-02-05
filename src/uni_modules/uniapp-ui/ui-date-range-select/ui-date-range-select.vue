@@ -97,6 +97,7 @@
 <script setup lang="ts">
 import type { DatePickerOption, DatePickerColumnType } from "../ui-date-picker"
 import type { DateRangeSelectValue, DateRangeSelectActiveType, DateRangeSelectCancelData, DateRangeSelectChangeData, DateRangeSelectConfirmData } from "./index"
+import { isDef } from "../utils/check"
 import { padZero } from "../utils/utils"
 import { formItemKey } from "../ui-form-item"
 import { dateRangeSelectEmits, dateRangeSelectProps } from "./index"
@@ -477,7 +478,7 @@ function formatDate(y: number, m: number, d: number, h: number, mi: number, s: n
  */
 function parseDate(value: string | number | Date | null | undefined): { y: number; m: number; d: number; h: number; mi: number; s: number } {
   const now = new Date()
-  if (!value) {
+  if (!isDef(value)) {
     return { y: now.getFullYear(), m: now.getMonth() + 1, d: now.getDate(), h: now.getHours(), mi: now.getMinutes(), s: now.getSeconds() }
   }
 

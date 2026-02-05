@@ -1,11 +1,12 @@
 <template>
   <view class="ui-footer">
-    <view class="ui-footer__inner" :style="[style]" :class="{ 'safe-area-inset-bottom': safeAreaInsetBottom }">
+    <view class="ui-footer__inner" :style="[style]">
       <ui-resize width="100%" @resize="resize">
         <slot />
       </ui-resize>
     </view>
     <view class="ui-footer__placeholder" :style="[placeholderStyle]" />
+    <ui-safe-area-bottom v-if="safeAreaInsetBottom" />
   </view>
 </template>
 
