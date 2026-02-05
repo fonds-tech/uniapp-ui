@@ -62,8 +62,8 @@ const contentStyle = computed(() => {
   if (!expanded.value) {
     style.display = "-webkit-box"
     style.overflow = "hidden"
-    style.webkitLineClamp = String(props.rows)
-    style.webkitBoxOrient = "vertical"
+    style["-webkit-line-clamp"] = String(props.rows)
+    style["-webkit-box-orient"] = "vertical"
   }
   return useStyle(style)
 })

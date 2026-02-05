@@ -95,7 +95,7 @@ function normalizeRoute(route: string) {
 }
 
 // 点击事件处理
-function onClick() {
+async function onClick() {
   if (props.disabled) return
   emits("click", name.value)
   if (!parent) return
@@ -104,6 +104,14 @@ function onClick() {
     if (!props.route) {
       console.error("ui-tabbar-item: route is required")
       return
+    }
+    if (parent.props.beforeChange) {
+      try {
+        const result = await parent.props.beforeChange(name.value)
+        if (result === false) return
+      } catch {
+        return
+      }
     }
     const pages = getCurrentPages()
     const page = pages[pages.length - 1]

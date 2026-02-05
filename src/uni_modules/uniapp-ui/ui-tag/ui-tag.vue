@@ -8,7 +8,7 @@
     <view class="ui-tag__text" :style="[textStyle]">
       <slot>{{ props.text }}</slot>
     </view>
-    <view v-if="props.closeable || slots.close" class="ui-tag__close" @click="onClose">
+    <view v-if="props.closeable || slots.close" class="ui-tag__close" @click.stop="onClose">
       <slot name="close">
         <ui-icon name="cross" :color="props.iconColor" :size="props.iconSize" :weight="props.iconWeight" />
       </slot>

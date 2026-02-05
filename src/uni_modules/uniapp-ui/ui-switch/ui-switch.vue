@@ -14,7 +14,7 @@
 </template>
 
 <script setup lang="ts">
-import { isFunction } from "../utils/check"
+import { isDef, isFunction } from "../utils/check"
 import { switchEmits, switchProps } from "./index"
 import { useRect, useUnit, useColor, useStyle, useUnitToPx } from "../hooks"
 import { ref, watch, computed, nextTick, onMounted, getCurrentInstance } from "vue"
@@ -57,7 +57,7 @@ const classs = computed(() => {
 const nodeStyle = computed(() => {
   const style: any = {}
   const size = useUnitToPx(props.size || "40rpx")
-  const gutter = props.gutter ? useUnitToPx(props.gutter) : useUnitToPx("4rpx")
+  const gutter = isDef(props.gutter) ? useUnitToPx(props.gutter) : useUnitToPx("4rpx")
   const switchWidth = switchRect.value?.width || size * 2
   const nodeWidth = nodeRect.value?.width || size - gutter * 2
   style.top = `${gutter}px`
