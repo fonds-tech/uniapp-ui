@@ -6,7 +6,7 @@
 
 <script setup lang="ts">
 import type { CSSProperties } from "vue"
-import { isEmpty } from "../utils/check"
+import { isDef, isEmpty } from "../utils/check"
 import { toRaw, toRef, watch, computed } from "vue"
 import { useUnit, useStyle, useChildren } from "../hooks"
 import { checkboxGroupKey, checkboxGroupEmits, checkboxGroupProps } from "./index"
@@ -52,7 +52,7 @@ function toggleAll(checked?: boolean) {
 
   let value = checkeds.map((children) => toRef(children.exposed?.name).value)
 
-  if (checked === true && props.max && props.max !== Infinity) {
+  if (checked === true && isDef(props.max) && props.max !== Infinity) {
     value = value.slice(0, +props.max)
   }
 

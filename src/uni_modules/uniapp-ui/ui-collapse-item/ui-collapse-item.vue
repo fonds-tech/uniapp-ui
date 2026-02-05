@@ -49,6 +49,7 @@
 <script setup lang="ts">
 import type { CSSProperties } from "vue"
 import { uuid } from "../utils/utils"
+import { isDef } from "../utils/check"
 import { collapseKey } from "../ui-collapse"
 import { collapseItemEmits, collapseItemProps } from "./index"
 import { useRect, useUnit, useColor, useStyle, useParent } from "../hooks"
@@ -68,7 +69,7 @@ const instance = getCurrentInstance()!
 // 内容区域 ID
 const contentId = ref(`collapse-body-${uuid()}`)
 // 唯一标识（name 为空时回退为 uuid）
-const resolvedName = ref(props.name || uuid())
+const resolvedName = ref(isDef(props.name) ? props.name : uuid())
 
 // 内容区域高度
 const height = ref<number | string>("")

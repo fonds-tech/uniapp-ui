@@ -149,7 +149,7 @@ const labelClass = computed(() => {
   return list
 })
 // 名称
-const name = computed(() => props.name || index.value)
+const name = computed(() => (isDef(props.name) ? props.name : index.value))
 // 是否选中
 const checked = computed(() => (props.bindGroup && parent ? parent.props.modelValue.includes(name.value) : !!props.modelValue))
 // 是否禁用
@@ -186,7 +186,8 @@ function toggle(check?: boolean) {
     const min = parent.props.min ?? 0
 
     const add = () => {
-      const isMax = parent.props.max && value.length >= +parent.props.max
+      const max = parent.props.max
+      const isMax = isDef(max) && max !== Infinity && value.length >= +max
       if (!isMax && !value.includes(name.value)) {
         value.push(name.value)
         parent.updateValue(value)
