@@ -72,7 +72,9 @@
     </view>
 
     <!-- 底部操作栏 -->
-    <view class="fixed bottom-0 left-0 w-full bg-white px-[32rpx] py-[20rpx] flex items-center justify-end space-x-[24rpx] pb-[calc(20rpx+env(safe-area-inset-bottom))] border-t border-slate-100">
+    <view
+      class="fixed bottom-0 left-0 w-full bg-white px-[32rpx] py-[20rpx] flex items-center justify-end space-x-[24rpx] pb-[calc(20rpx+env(safe-area-inset-bottom))] border-t border-slate-100"
+    >
       <button class="m-0 h-[72rpx] px-[40rpx] rounded-[36rpx] border border-slate-200 bg-white text-[28rpx] text-slate-600 flex items-center">查看物流</button>
       <button class="m-0 h-[72rpx] px-[40rpx] rounded-[36rpx] bg-indigo-600 text-[28rpx] text-white flex items-center font-bold shadow-lg shadow-indigo-200">确认收货</button>
     </view>

@@ -5,15 +5,7 @@ import { buildDefaultProps } from "../utils/props"
 /**
  * 气泡弹出位置类型
  */
-export type PopoverPlacement =
-  | "top"
-  | "top-start"
-  | "top-end"
-  | "bottom"
-  | "bottom-start"
-  | "bottom-end"
-  | "left"
-  | "right"
+export type PopoverPlacement = "top" | "top-start" | "top-end" | "bottom" | "bottom-start" | "bottom-end" | "left" | "right"
 
 /**
  * 气泡主题类型

@@ -17,18 +17,12 @@
       </view>
 
       <view class="mt-[48rpx] text-[32rpx] leading-relaxed text-slate-700 space-y-[32rpx]">
-        <text class="block">
-          在移动应用开发领域，跨平台技术一直是一个热门话题。开发者希望能够通过一套代码，同时构建 iOS、Android、Web 以及各种小程序平台的应用。
-        </text>
+        <text class="block"> 在移动应用开发领域，跨平台技术一直是一个热门话题。开发者希望能够通过一套代码，同时构建 iOS、Android、Web 以及各种小程序平台的应用。 </text>
         <view class="h-[400rpx] w-full bg-slate-100 rounded-[16rpx] flex items-center justify-center text-slate-300">
           <view class="i-lucide-image text-[64rpx]" />
         </view>
-        <text class="block">
-          Uniapp 正是解决这一痛点的佼佼者。它基于 Vue.js 框架，继承了 Vue 优秀的开发体验，同时通过强大的编译器将代码转换为各平台的原生代码。
-        </text>
-        <text class="block font-bold text-slate-900">
-          核心优势：
-        </text>
+        <text class="block"> Uniapp 正是解决这一痛点的佼佼者。它基于 Vue.js 框架，继承了 Vue 优秀的开发体验，同时通过强大的编译器将代码转换为各平台的原生代码。 </text>
+        <text class="block font-bold text-slate-900"> 核心优势： </text>
         <text class="block">
           1. 学习成本低：只要会 Vue 就能上手。<br />
           2. 生态丰富：拥有庞大的插件市场。<br />

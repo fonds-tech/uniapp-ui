@@ -1,13 +1,5 @@
 <template>
-  <scroll-view
-    class="ui-list"
-    :class="[props.customClass]"
-    :style="[rootStyle]"
-    scroll-y
-    :scroll-top="scrollTop"
-    @scroll="onScroll"
-    @scrolltolower="onScrollToLower"
-  >
+  <scroll-view class="ui-list" :class="[props.customClass]" :style="[rootStyle]" scroll-y :scroll-top="scrollTop" @scroll="onScroll" @scrolltolower="onScrollToLower">
     <!-- 虚拟滚动容器 -->
     <view class="ui-list__phantom" :style="[phantomStyle]">
       <!-- 可视区域内容 -->

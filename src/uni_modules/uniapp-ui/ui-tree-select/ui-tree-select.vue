@@ -2,14 +2,7 @@
   <view class="ui-tree-select" :class="[customClass]" :style="[style]">
     <!-- 左侧分类导航 -->
     <scroll-view class="ui-tree-select__nav" scroll-y :scroll-into-view="scrollIntoView">
-      <view
-        v-for="(item, index) in items"
-        :id="`nav-item-${index}`"
-        :key="index"
-        class="ui-tree-select__nav-item"
-        :class="[navItemClass(index)]"
-        @click="onClickNav(index)"
-      >
+      <view v-for="(item, index) in items" :id="`nav-item-${index}`" :key="index" class="ui-tree-select__nav-item" :class="[navItemClass(index)]" @click="onClickNav(index)">
         <slot name="nav-text" :item="item" :index="index" :active="isNavActive(index)">
           <text class="ui-tree-select__nav-item-text">{{ item.text }}</text>
         </slot>
@@ -19,21 +12,10 @@
     <!-- 右侧内容区域 -->
     <scroll-view class="ui-tree-select__content" scroll-y>
       <slot name="content">
-        <view
-          v-for="child in currentChildren"
-          :key="child.id"
-          class="ui-tree-select__item"
-          :class="[itemClass(child)]"
-          @click="onClickItem(child)"
-        >
+        <view v-for="child in currentChildren" :key="child.id" class="ui-tree-select__item" :class="[itemClass(child)]" @click="onClickItem(child)">
           <slot name="item" :item="child" :active="isItemActive(child)">
             <text class="ui-tree-select__item-text">{{ child.text }}</text>
-            <ui-icon
-              v-if="isItemActive(child)"
-              class="ui-tree-select__item-icon"
-              :name="selectedIcon"
-              size="32rpx"
-            />
+            <ui-icon v-if="isItemActive(child)" class="ui-tree-select__item-icon" :name="selectedIcon" size="32rpx" />
           </slot>
         </view>
       </slot>

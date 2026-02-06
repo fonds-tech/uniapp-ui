@@ -8,13 +8,7 @@
 
     <!-- 离屏 Canvas（仅小程序平台需要） -->
     <!-- #ifndef H5 -->
-    <canvas
-      v-show="showCanvas"
-      :id="canvasId"
-      :canvas-id="canvasId"
-      class="ui-watermark__canvas"
-      :style="{ width: `${canvasWidth}px`, height: `${canvasHeight}px` }"
-    />
+    <canvas v-show="showCanvas" :id="canvasId" :canvas-id="canvasId" class="ui-watermark__canvas" :style="{ width: `${canvasWidth}px`, height: `${canvasHeight}px` }" />
     <!-- #endif -->
   </view>
 </template>
@@ -319,19 +313,7 @@ function drawTextWatermarkMP(ctx: UniApp.CanvasContext) {
 
 // 监听属性变化，重新生成水印
 watch(
-  () => [
-    props.content,
-    props.image,
-    props.width,
-    props.height,
-    props.rotate,
-    props.gapX,
-    props.gapY,
-    props.fontSize,
-    props.fontColor,
-    props.fontFamily,
-    props.fontWeight,
-  ],
+  () => [props.content, props.image, props.width, props.height, props.rotate, props.gapX, props.gapY, props.fontSize, props.fontColor, props.fontFamily, props.fontWeight],
   () => {
     generateWatermark()
   },

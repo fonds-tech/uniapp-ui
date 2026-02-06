@@ -50,10 +50,7 @@
           v-for="(template, index) in displayTemplates"
           :key="template.name"
           class="group relative overflow-hidden rounded-[32rpx] transition-all duration-300 active:scale-[0.98]"
-          :class="[
-            index % 5 === 0 ? 'col-span-2 h-[320rpx]' : 'col-span-1 h-[320rpx]',
-            template.bgClass,
-          ]"
+          :class="[index % 5 === 0 ? 'col-span-2 h-[320rpx]' : 'col-span-1 h-[320rpx]', template.bgClass]"
           @click="previewTemplate(template)"
         >
           <!-- 内容布局 -->

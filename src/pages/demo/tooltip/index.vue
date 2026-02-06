@@ -80,7 +80,7 @@
           <ui-button size="small" @click="controlledVisible = !controlledVisible">切换</ui-button>
         </view>
         <ui-tooltip v-model:visible="controlledVisible" content="受控模式的提示">
-          <ui-button type="primary">受控模式 ({{ controlledVisible ? '显示中' : '已隐藏' }})</ui-button>
+          <ui-button type="primary">受控模式 ({{ controlledVisible ? "显示中" : "已隐藏" }})</ui-button>
         </ui-tooltip>
       </demo-block>
     </demo-section>

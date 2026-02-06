@@ -6,7 +6,7 @@
         <!-- 左侧图片 -->
         <slot name="thumb">
           <view v-if="isShowThumb" class="ui-card__thumb" @click.stop="onClickThumb">
-            <image class="ui-card__thumb-image" :src="props.thumb" :mode="(props.thumbMode as any)" :style="[thumbStyle]" />
+            <image class="ui-card__thumb-image" :src="props.thumb" :mode="props.thumbMode as any" :style="[thumbStyle]" />
           </view>
         </slot>
         <!-- 标题区域 -->

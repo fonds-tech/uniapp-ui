@@ -129,19 +129,8 @@
 
     <demo-section title="自定义样式">
       <demo-block direction="column">
-        <ui-divider
-          dashed
-          border-color="primary"
-          :custom-style="{ opacity: 0.6 }"
-        >
-          组合样式
-        </ui-divider>
-        <ui-divider
-          custom-class="custom-divider"
-          border-color="#ff6b6b"
-        >
-          自定义类名
-        </ui-divider>
+        <ui-divider dashed border-color="primary" :custom-style="{ opacity: 0.6 }"> 组合样式 </ui-divider>
+        <ui-divider custom-class="custom-divider" border-color="#ff6b6b"> 自定义类名 </ui-divider>
       </demo-block>
     </demo-section>
   </demo-page>

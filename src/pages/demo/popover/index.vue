@@ -85,20 +85,10 @@
     <!-- 关闭行为 -->
     <demo-section title="关闭行为">
       <demo-block :cols="2" :gap="24">
-        <ui-popover
-          v-model:show="showNoCloseOnAction"
-          :actions="baseActions"
-          :close-on-click-action="false"
-          @select="onSelectNoClose"
-        >
+        <ui-popover v-model:show="showNoCloseOnAction" :actions="baseActions" :close-on-click-action="false" @select="onSelectNoClose">
           <ui-button>点击选项不关闭</ui-button>
         </ui-popover>
-        <ui-popover
-          v-model:show="showNoCloseOutside"
-          :actions="baseActions"
-          :close-on-click-outside="false"
-          :overlay="true"
-        >
+        <ui-popover v-model:show="showNoCloseOutside" :actions="baseActions" :close-on-click-outside="false" :overlay="true">
           <ui-button>点击外部不关闭</ui-button>
         </ui-popover>
       </demo-block>
@@ -112,9 +102,7 @@
           <template #content>
             <view class="custom-content">
               <view class="custom-content__header">自定义标题</view>
-              <view class="custom-content__body">
-                这是自定义的弹出内容，可以放置任意元素。
-              </view>
+              <view class="custom-content__body"> 这是自定义的弹出内容，可以放置任意元素。 </view>
               <view class="custom-content__footer">
                 <ui-button size="small" type="primary" @click="showCustom = false">确定</ui-button>
               </view>
@@ -127,15 +115,7 @@
     <!-- 事件处理 -->
     <demo-section title="事件处理">
       <demo-block>
-        <ui-popover
-          v-model:show="showEvent"
-          :actions="baseActions"
-          @select="onEventSelect"
-          @open="onOpen"
-          @close="onClose"
-          @opened="onOpened"
-          @closed="onClosed"
-        >
+        <ui-popover v-model:show="showEvent" :actions="baseActions" @select="onEventSelect" @open="onOpen" @close="onClose" @opened="onOpened" @closed="onClosed">
           <ui-button type="primary">监听事件</ui-button>
         </ui-popover>
       </demo-block>
@@ -190,11 +170,7 @@ const showCustom = ref(false)
 const showEvent = ref(false)
 
 // 基础操作项
-const baseActions: PopoverAction[] = [
-  { text: "选项一" },
-  { text: "选项二" },
-  { text: "选项三" },
-]
+const baseActions: PopoverAction[] = [{ text: "选项一" }, { text: "选项二" }, { text: "选项三" }]
 
 // 带图标的操作项
 const iconActions: PopoverAction[] = [
@@ -205,11 +181,7 @@ const iconActions: PopoverAction[] = [
 ]
 
 // 禁用选项
-const disabledActions: PopoverAction[] = [
-  { text: "选项一" },
-  { text: "选项二", disabled: true },
-  { text: "选项三" },
-]
+const disabledActions: PopoverAction[] = [{ text: "选项一" }, { text: "选项二", disabled: true }, { text: "选项三" }]
 
 // 选择回调
 function onSelect(action: PopoverAction, index: number) {

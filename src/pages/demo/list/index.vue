@@ -4,13 +4,7 @@
     <demo-section title="基础用法">
       <demo-block>
         <text class="demo-tip">滚动到底部自动加载更多数据</text>
-        <ui-list
-          v-model:loading="loading1"
-          :finished="finished1"
-          finished-text="没有更多了"
-          custom-style="height: 600rpx"
-          @load="onLoad1"
-        >
+        <ui-list v-model:loading="loading1" :finished="finished1" finished-text="没有更多了" custom-style="height: 600rpx" @load="onLoad1">
           <view v-for="item in list1" :key="item" class="demo-list-item">
             <text>{{ item }}</text>
           </view>
@@ -22,14 +16,7 @@
     <demo-section title="错误提示">
       <demo-block>
         <text class="demo-tip">加载失败时显示错误提示，点击可重试</text>
-        <ui-list
-          v-model:loading="loading2"
-          v-model:error="error2"
-          :finished="finished2"
-          error-text="加载失败，点击重试"
-          custom-style="height: 600rpx"
-          @load="onLoad2"
-        >
+        <ui-list v-model:loading="loading2" v-model:error="error2" :finished="finished2" error-text="加载失败，点击重试" custom-style="height: 600rpx" @load="onLoad2">
           <view v-for="item in list2" :key="item" class="demo-list-item">
             <text>{{ item }}</text>
           </view>
@@ -45,13 +32,7 @@
     <demo-section title="加载完成">
       <demo-block>
         <text class="demo-tip">所有数据加载完成后显示提示文案</text>
-        <ui-list
-          v-model:loading="loading3"
-          :finished="finished3"
-          finished-text="- 我是有底线的 -"
-          custom-style="height: 600rpx"
-          @load="onLoad3"
-        >
+        <ui-list v-model:loading="loading3" :finished="finished3" finished-text="- 我是有底线的 -" custom-style="height: 600rpx" @load="onLoad3">
           <view v-for="item in list3" :key="item" class="demo-list-item">
             <text>{{ item }}</text>
           </view>
@@ -66,13 +47,7 @@
     <demo-section title="自定义提示">
       <demo-block>
         <text class="demo-tip">通过插槽自定义加载、完成、错误状态的提示内容</text>
-        <ui-list
-          v-model:loading="loading4"
-          v-model:error="error4"
-          :finished="finished4"
-          custom-style="height: 600rpx"
-          @load="onLoad4"
-        >
+        <ui-list v-model:loading="loading4" v-model:error="error4" :finished="finished4" custom-style="height: 600rpx" @load="onLoad4">
           <view v-for="item in list4" :key="item" class="demo-list-item">
             <text>{{ item }}</text>
           </view>
@@ -113,13 +88,7 @@
       <demo-block>
         <text class="demo-tip">结合 ui-pull-refresh 组件实现下拉刷新功能</text>
         <ui-pull-refresh v-model="refreshing" success-text="刷新成功" @refresh="onRefresh">
-          <ui-list
-            v-model:loading="loading5"
-            :finished="finished5"
-            finished-text="没有更多了"
-            custom-style="height: 600rpx"
-            @load="onLoad5"
-          >
+          <ui-list v-model:loading="loading5" :finished="finished5" finished-text="没有更多了" custom-style="height: 600rpx" @load="onLoad5">
             <view v-for="item in list5" :key="item" class="demo-list-item">
               <text>{{ item }}</text>
             </view>

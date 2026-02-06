@@ -27,12 +27,7 @@
     <!-- 图片水印 -->
     <demo-section title="图片水印">
       <demo-block title="使用 image 属性">
-        <ui-watermark
-          image="https://fastly.jsdelivr.net/npm/@AuroraUI/assets@1.0.0/logo/logo.png"
-          :width="60"
-          :height="60"
-          :full-page="false"
-        >
+        <ui-watermark image="https://fastly.jsdelivr.net/npm/@AuroraUI/assets@1.0.0/logo/logo.png" :width="60" :height="60" :full-page="false">
           <view class="watermark-content">
             <text class="watermark-content__text">使用图片作为水印</text>
             <text class="watermark-content__text">image 优先级高于 content</text>
@@ -135,13 +130,7 @@
         </ui-watermark>
       </demo-block>
       <demo-block title="组合样式">
-        <ui-watermark
-          content="组合样式"
-          :font-size="18"
-          font-color="rgba(0, 128, 0, 0.2)"
-          font-weight="bold"
-          :full-page="false"
-        >
+        <ui-watermark content="组合样式" :font-size="18" font-color="rgba(0, 128, 0, 0.2)" font-weight="bold" :full-page="false">
           <view class="watermark-content">
             <text class="watermark-content__text">大字体 + 绿色 + 粗体</text>
           </view>
@@ -168,7 +157,7 @@
     <demo-section title="全屏水印">
       <demo-block title="fullPage: true（默认）">
         <ui-button type="primary" @click="showFullPage = !showFullPage">
-          {{ showFullPage ? '关闭全屏水印' : '开启全屏水印' }}
+          {{ showFullPage ? "关闭全屏水印" : "开启全屏水印" }}
         </ui-button>
         <ui-watermark v-if="showFullPage" content="全屏水印" :full-page="true" />
       </demo-block>

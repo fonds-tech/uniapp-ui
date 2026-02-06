@@ -7,36 +7,16 @@
       </slot>
     </view>
     <!-- 遮罩层 -->
-    <ui-overlay
-      v-if="props.overlay"
-      :show="visible"
-      :duration="props.duration"
-      :z-index="currentZIndex"
-      :custom-style="props.overlayStyle"
-      @click="onClickOverlay"
-    />
+    <ui-overlay v-if="props.overlay" :show="visible" :duration="props.duration" :z-index="currentZIndex" :custom-style="props.overlayStyle" @click="onClickOverlay" />
     <!-- 气泡内容 -->
-    <view
-      v-if="inited"
-      class="ui-popover"
-      :class="[popoverClass, props.customClass]"
-      :style="[popoverStyle]"
-      @transitionend="transition.end"
-      @touchmove.stop="() => {}"
-    >
+    <view v-if="inited" class="ui-popover" :class="[popoverClass, props.customClass]" :style="[popoverStyle]" @transitionend="transition.end" @touchmove.stop="() => {}">
       <!-- 箭头 -->
       <view v-if="props.showArrow" class="ui-popover__arrow" :class="[arrowClass]" />
       <!-- 内容区域 -->
       <view class="ui-popover__content">
         <slot name="content">
           <!-- 默认操作列表 -->
-          <view
-            v-for="(action, index) in safeActions"
-            :key="action.id ?? index"
-            class="ui-popover__action"
-            :class="[actionClass(action)]"
-            @click="onClickAction(action, index)"
-          >
+          <view v-for="(action, index) in safeActions" :key="action.id ?? index" class="ui-popover__action" :class="[actionClass(action)]" @click="onClickAction(action, index)">
             <ui-icon v-if="action.icon" :name="action.icon" class="ui-popover__action__icon" />
             <text class="ui-popover__action__text">{{ action.text }}</text>
           </view>
@@ -96,11 +76,7 @@ const popoverStyle = computed(() => {
 
 // 气泡类名
 const popoverClass = computed(() => {
-  const list: string[] = [
-    `ui-popover--${props.theme}`,
-    `ui-popover--${props.placement}`,
-    transition.classs.value,
-  ]
+  const list: string[] = [`ui-popover--${props.theme}`, `ui-popover--${props.placement}`, transition.classs.value]
   return list
 })
 

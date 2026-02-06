@@ -1,14 +1,7 @@
 <template>
   <view class="ui-index-bar" :class="[customClass]" :style="[style]">
     <view class="ui-index-bar__list">
-      <view
-        v-for="(item, index) in indexs"
-        :key="index"
-        class="ui-index-bar__index"
-        :class="[itemClass(item)]"
-        @click.stop="onClick(item)"
-        @touchmove.stop.prevent="onTouchMove"
-      >
+      <view v-for="(item, index) in indexs" :key="index" class="ui-index-bar__index" :class="[itemClass(item)]" @click.stop="onClick(item)" @touchmove.stop.prevent="onTouchMove">
         {{ item }}
       </view>
     </view>

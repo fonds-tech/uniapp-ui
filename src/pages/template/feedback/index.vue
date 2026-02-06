@@ -13,7 +13,12 @@
     <view class="mb-[32rpx]">
       <text class="text-[32rpx] font-bold text-slate-800 mb-[24rpx] block">问题描述</text>
       <view class="bg-white rounded-[24rpx] p-[24rpx] shadow-sm">
-        <textarea class="w-full h-[240rpx] text-[30rpx] text-slate-800 leading-relaxed" placeholder="请详细描述您遇到的问题或建议，以便我们更好地为您解决..." placeholder-style="color: #cbd5e1" maxlength="500" />
+        <textarea
+          class="w-full h-[240rpx] text-[30rpx] text-slate-800 leading-relaxed"
+          placeholder="请详细描述您遇到的问题或建议，以便我们更好地为您解决..."
+          placeholder-style="color: #cbd5e1"
+          maxlength="500"
+        />
         <view class="text-right text-[24rpx] text-slate-400 mt-[16rpx]">0/500</view>
       </view>
     </view>
@@ -36,7 +41,11 @@
     </view>
 
     <view class="mt-[64rpx]">
-      <button class="h-[96rpx] w-full rounded-[48rpx] bg-indigo-600 text-[32rpx] font-bold text-white flex items-center justify-center active:opacity-90 shadow-lg shadow-indigo-200">提交反馈</button>
+      <button
+        class="h-[96rpx] w-full rounded-[48rpx] bg-indigo-600 text-[32rpx] font-bold text-white flex items-center justify-center active:opacity-90 shadow-lg shadow-indigo-200"
+      >
+        提交反馈
+      </button>
     </view>
   </view>
 </template>
