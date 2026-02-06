@@ -1,7 +1,8 @@
 <template>
   <image
     v-if="isImage(name)"
-    :class="[prefix, `${prefix}-${props.name}`, props.customClass, hoverClass]"
+    class="ui-icon"
+    :class="[`${prefix}-${props.name}`, props.customClass, hoverClass]"
     :style="[imageStyle]"
     :src="props.name"
     :mode="imageMode"
@@ -15,7 +16,8 @@
   />
   <text
     v-else
-    :class="[prefix, `${prefix}-${props.name}`, props.customClass, hoverClass]"
+    class="ui-icon"
+    :class="[`${prefix}-${props.name}`, props.customClass, hoverClass]"
     :style="[iconStyle]"
     @click="onClick"
     @touchstart="onHoverStart"
@@ -41,7 +43,7 @@ const emits = defineEmits(iconEmits)
 // 是否 hover 状态
 const isHover = ref(false)
 
-// 前缀类名
+// 图标类名前缀
 const prefix = computed(() => {
   return props.customPrefix || "ui-icon"
 })
@@ -60,6 +62,10 @@ const iconStyle = computed(() => {
   style.lineHeight = props.lineHeight
   style.borderRadius = useUnit(props.radius)
   style.background = useColor(props.background)
+  // 自定义字体族
+  if (props.fontFamily) {
+    style.fontFamily = props.fontFamily
+  }
   return useStyle({ ...style, ...useStyle(props.customStyle) })
 })
 // 图片样式

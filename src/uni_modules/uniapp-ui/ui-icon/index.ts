@@ -13,7 +13,8 @@ const defaultProps = buildDefaultProps("icon", {
   lineHeight: "",
   imageMode: "scaleToFill",
   background: "",
-  customPrefix: "ui-icon",
+  customPrefix: "",
+  fontFamily: "",
   customClass: "",
   hoverClass: "",
   customStyle: "",
@@ -45,6 +46,8 @@ export const iconProps = {
   background: defaultProps("background", { type: String }),
   /** 自定义图标名称前缀 */
   customPrefix: defaultProps("customPrefix", { type: String }),
+  /** 自定义字体族名称（配合 customPrefix 使用） */
+  fontFamily: defaultProps("fontFamily", { type: String }),
   /** 自定义类名 */
   customClass: defaultProps("customClass", { type: String }),
   /** 悬停时附加的类名 */
