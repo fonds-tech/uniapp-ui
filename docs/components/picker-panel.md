@@ -178,3 +178,29 @@ const columns = [
 | 弹出层   | 无                   | 有                |
 | 工具栏   | 无                   | 有(确认/取消按钮) |
 | 使用场景 | 嵌入页面、自定义弹窗 | 独立弹出选择      |
+
+
+<!-- AUTO-PROPS-SUPPLEMENT: ui-picker-panel -->
+## PickerPanel Props 补充（源码新增）
+
+以下参数已在最新源码中支持，本文档补充如下：
+
+| 参数 |
+| --- |
+| `indicator-class` |
+| `mask-style` |
+| `mask-top-style` |
+| `mask-bottom-style` |
+| `mask-class` |
+| `immediate-change` |
+
+<!-- AUTO-EVENTS-SUPPLEMENT: ui-picker-panel -->
+## PickerPanel Events 补充（源码新增）
+
+以下能力已在最新源码中提供，补充如下：
+
+| 事件名 |
+| --- |
+| `pickstart` |
+| `pickend` |
+

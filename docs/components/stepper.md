@@ -136,3 +136,35 @@ const value = ref(1)
 | overlimit | 点击不可用按钮时触发 | `type: string`                                    |
 | focus     | 输入框聚焦时触发     | -                                                 |
 | blur      | 输入框失焦时触发     | `event`                                           |
+
+
+<!-- AUTO-PROPS-SUPPLEMENT: ui-stepper -->
+## Stepper Props 补充（源码新增）
+
+以下参数已在最新源码中支持，本文档补充如下：
+
+| 参数 |
+| --- |
+| `size` |
+| `minus-width` |
+| `minus-color` |
+| `minus-text-size` |
+| `minus-text-color` |
+| `minus-border-color` |
+| `plus-width` |
+| `plus-color` |
+| `plus-text-size` |
+| `plus-text-color` |
+| `plus-border-color` |
+| `border-color` |
+| `border-width` |
+
+<!-- AUTO-EVENTS-SUPPLEMENT: ui-stepper -->
+## Stepper Events 补充（源码新增）
+
+以下能力已在最新源码中提供，补充如下：
+
+| 事件名 |
+| --- |
+| `click` |
+

@@ -114,3 +114,40 @@ const actions = [
 | default     | 自定义面板内容 |
 | description | 自定义描述     |
 | cancel      | 自定义取消按钮 |
+
+
+<!-- AUTO-PROPS-SUPPLEMENT: ui-action-sheet -->
+## ActionSheet Props 补充（源码新增）
+
+以下参数已在最新源码中支持，本文档补充如下：
+
+| 参数 |
+| --- |
+| `show` |
+| `height` |
+| `max-height` |
+| `title-size` |
+| `title-color` |
+| `title-weight` |
+| `description-size` |
+| `description-color` |
+| `description-weight` |
+| `show-cancel` |
+| `cancel-text-size` |
+| `cancel-text-color` |
+| `cancel-text-weight` |
+| `cancel-background` |
+| `action-title-style` |
+| `action-description-style` |
+| `overlay-style` |
+| `lazy-render` |
+
+<!-- AUTO-SLOTS-SUPPLEMENT: ui-action-sheet -->
+## ActionSheet Slots 补充（源码新增）
+
+以下能力已在最新源码中提供，补充如下：
+
+| 插槽名 |
+| --- |
+| `header` |
+

@@ -379,3 +379,13 @@ const navItems = [
 | 名称    | 说明     |
 | ------- | -------- |
 | default | 页脚内容 |
+
+<!-- AUTO-METHODS-SUPPLEMENT: ui-footer -->
+## Footer Methods/Expose 补充（源码新增）
+
+以下能力已在最新源码中提供，补充如下：
+
+| 方法/字段 |
+| --- |
+| `resize` |
+

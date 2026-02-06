@@ -16,7 +16,7 @@ import { ref } from "vue"
 const notifyRef = ref()
 
 function showBasic() {
-  notifyRef.value?.show({ message: "这是一条通知消息" })
+  notifyRef.value?.show({ content: "这是一条通知消息" })
 }
 </script>
 ```
@@ -28,19 +28,19 @@ function showBasic() {
 ```vue
 <script setup>
 function showPrimary() {
-  notifyRef.value?.show({ message: "主要通知", type: "primary" })
+  notifyRef.value?.show({ content: "主要通知", type: "primary" })
 }
 
 function showSuccess() {
-  notifyRef.value?.show({ message: "成功通知", type: "success" })
+  notifyRef.value?.show({ content: "成功通知", type: "success" })
 }
 
 function showWarning() {
-  notifyRef.value?.show({ message: "警告通知", type: "warning" })
+  notifyRef.value?.show({ content: "警告通知", type: "warning" })
 }
 
 function showDanger() {
-  notifyRef.value?.show({ message: "危险通知", type: "danger" })
+  notifyRef.value?.show({ content: "危险通知", type: "danger" })
 }
 </script>
 ```
@@ -53,7 +53,7 @@ function showDanger() {
 <script setup>
 function showCustom() {
   notifyRef.value?.show({
-    message: "自定义颜色",
+    content: "自定义颜色",
     background: "#7232dd",
     color: "#ffffff",
   })
@@ -68,7 +68,7 @@ function showCustom() {
 ```vue
 <script setup>
 function showDuration() {
-  notifyRef.value?.show({ message: "5秒后关闭", duration: 5000 })
+  notifyRef.value?.show({ content: "5秒后关闭", duration: 5000 })
 }
 </script>
 ```
@@ -83,7 +83,7 @@ function showDuration() {
 | duration     | 展示时长(ms) | `string \| number`                        | `3000`    |
 | color        | 字体颜色     | `string`                                  | -         |
 | font-size    | 字体大小     | `string \| number`                        | -         |
-| font-weight  | 字体粗细     | `string`                                  | -         |
+| font-weight  | 字体粗细     | `string \| number`                        | -         |
 | background   | 背景颜色     | `string`                                  | -         |
 | z-index      | 层级         | `string \| number`                        | `2000`    |
 | offset-top   | 距离顶部偏移 | `string \| number`                        | -         |
@@ -95,24 +95,38 @@ function showDuration() {
 | 方法名 | 说明     | 参数                     |
 | ------ | -------- | ------------------------ |
 | show   | 显示通知 | `options: NotifyOptions` |
-| hide   | 关闭通知 | -                        |
+| close  | 关闭通知 | -                        |
 
 ## NotifyOptions
 
-| 参数       | 说明         | 类型                                      |
-| ---------- | ------------ | ----------------------------------------- |
-| message    | 通知内容     | `string`                                  |
-| type       | 通知类型     | `primary \| success \| warning \| danger` |
-| duration   | 展示时长(ms) | `number`                                  |
-| color      | 字体颜色     | `string`                                  |
-| background | 背景颜色     | `string`                                  |
+| 参数         | 说明         | 类型                                      |
+| ------------ | ------------ | ----------------------------------------- |
+| show         | 是否显示     | `boolean`                                  |
+| type         | 通知类型     | `primary \| success \| warning \| danger` |
+| content      | 通知内容     | `string`                                  |
+| duration     | 展示时长(ms) | `number \| string`                        |
+| color        | 字体颜色     | `string`                                  |
+| fontSize     | 字体大小     | `string \| number`                        |
+| fontWeight   | 字体粗细     | `string \| number`                        |
+| background   | 背景颜色     | `string`                                  |
+| zIndex       | 层级         | `string \| number`                        |
+| offsetTop    | 顶部偏移     | `string \| number`                        |
+| customClass  | 自定义类名   | `string`                                  |
+| customStyle  | 自定义样式   | `string \| object`                        |
 
 ## Events
 
-| 事件名 | 说明               | 回调参数 |
-| ------ | ------------------ | -------- |
-| click  | 点击通知时触发     | -        |
-| open   | 打开时触发         | -        |
-| opened | 打开动画结束时触发 | -        |
-| close  | 关闭时触发         | -        |
-| closed | 关闭动画结束时触发 | -        |
+| 事件名        | 说明               | 回调参数 |
+| ------------- | ------------------ | -------- |
+| click         | 点击通知时触发     | -        |
+| open          | 打开时触发         | -        |
+| opened        | 打开动画结束时触发 | -        |
+| close         | 关闭时触发         | -        |
+| closed        | 关闭动画结束时触发 | -        |
+| update:show   | 更新显示状态       | `show: boolean` |
+
+## Slots
+
+| 名称    | 说明       |
+| ------- | ---------- |
+| default | 自定义内容 |

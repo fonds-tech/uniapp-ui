@@ -43,3 +43,26 @@
 | 名称    | 说明           |
 | ------- | -------------- |
 | default | 自定义按钮内容 |
+
+
+<!-- AUTO-PROPS-SUPPLEMENT: ui-back-top -->
+## BackTop Props 补充（源码新增）
+
+以下参数已在最新源码中支持，本文档补充如下：
+
+| 参数 |
+| --- |
+| `scroll-top` |
+| `icon` |
+| `icon-color` |
+| `icon-size` |
+| `icon-weight` |
+| `text` |
+| `text-color` |
+| `text-size` |
+| `text-weight` |
+| `size` |
+| `width` |
+| `height` |
+| `transition` |
+

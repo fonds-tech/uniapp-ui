@@ -128,3 +128,46 @@ const options = [
 | 名称  | 说明       |
 | ----- | ---------- |
 | title | 自定义标题 |
+
+
+<!-- AUTO-PROPS-SUPPLEMENT: ui-cascader -->
+## Cascader Props 补充（源码新增）
+
+以下参数已在最新源码中支持，本文档补充如下：
+
+| 参数 |
+| --- |
+| `show` |
+| `mode` |
+| `border-radius` |
+| `close-on-click-overlay` |
+| `overlay` |
+| `duration` |
+| `z-index` |
+| `background` |
+| `safe-area-inset-bottom` |
+| `lazy-render` |
+| `title-size` |
+| `title-color` |
+| `title-weight` |
+| `close-icon-weight` |
+
+<!-- AUTO-METHODS-SUPPLEMENT: ui-cascader -->
+## Cascader Methods/Expose 补充（源码新增）
+
+以下能力已在最新源码中提供，补充如下：
+
+| 方法/字段 |
+| --- |
+| `reset` |
+| `update-tabs` |
+
+<!-- AUTO-SLOTS-SUPPLEMENT: ui-cascader -->
+## Cascader Slots 补充（源码新增）
+
+以下能力已在最新源码中提供，补充如下：
+
+| 插槽名 |
+| --- |
+| `empty` |
+

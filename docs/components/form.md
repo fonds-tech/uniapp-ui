@@ -137,7 +137,7 @@ function onReset() {
 | colon                | 是否在标签文字后面添加冒号 | `boolean`                           | `false` |
 | border               | 是否显示边框               | `boolean`                           | -       |
 | border-color         | 边框颜色                   | `string`                            | -       |
-| required             | 是否为必填项               | `boolean`                           | `false` |
+| required             | 是否显示必填星号（支持 `true/false/auto`） | `boolean \| "auto"`          | 继承 Form |
 | padding              | 内边距                     | `string \| number`                  | -       |
 | label-gap            | 标签文字和内容的间隔       | `string \| number`                  | -       |
 | label-size           | 标签文字大小               | `string \| number`                  | -       |
@@ -164,6 +164,7 @@ function onReset() {
 | ------ | ------------------ | --------------------------------- |
 | submit | 表单提交时触发     | `values: Record<string, unknown>` |
 | failed | 表单验证失败时触发 | `{ values, errors }`              |
+| update:model | 更新表单数据时触发 | `values: Record<string, unknown>` |
 
 ## Form Methods
 
@@ -171,8 +172,10 @@ function onReset() {
 | ------------------- | ------------ | --------------------------- |
 | validate            | 验证表单     | `name?: string \| string[]` |
 | validateField       | 验证单个字段 | `name?: string`             |
+| validateFields      | 验证多个字段 | `names: string[]`           |
 | resetValidation     | 重置表单验证 | `name?: string \| string[]` |
 | getValidationStatus | 获取验证状态 | -                           |
+| getValues           | 获取当前表单值 | -                         |
 
 ## FormRule 验证规则
 
@@ -198,3 +201,29 @@ function onReset() {
 | ------- | -------------- |
 | default | 表单项内容     |
 | label   | 自定义标签内容 |
+| error   | 自定义错误信息（作用域：message） |
+
+## FormItem Events
+
+`FormItem` 继承 `Form` 的提交流程，不单独对外抛出事件。
+
+## FormItem Methods
+
+通过 `ref` 可访问以下公开方法：
+
+| 方法名              | 说明         | 参数 |
+| ------------------- | ------------ | ---- |
+| validate            | 校验当前项   | `rules?` |
+| resetField          | 重置当前字段值与校验状态 | - |
+| resetValidate       | 重置当前字段校验状态 | - |
+| getValidationStatus | 获取当前字段校验状态 | - |
+
+<!-- AUTO-METHODS-SUPPLEMENT: ui-form-item -->
+## FormItem Methods/Expose 补充（源码新增）
+
+以下能力已在最新源码中提供，补充如下：
+
+| 方法/字段 |
+| --- |
+| `model-value` |
+

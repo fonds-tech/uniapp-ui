@@ -441,3 +441,16 @@ type StepDirection = "horizontal" | "vertical"
 | --ui-color-text-secondary   | 次要文本颜色 | `#969799` |
 | --ui-color-text-placeholder | 占位符颜色   | `#c8c9cc` |
 | --ui-color-background       | 背景颜色     | `#ffffff` |
+
+
+<!-- AUTO-PROPS-SUPPLEMENT: ui-steps -->
+## Steps Props 补充（源码新增）
+
+以下参数已在最新源码中支持，本文档补充如下：
+
+| 参数 |
+| --- |
+| `simple` |
+| `dot` |
+| `center` |
+

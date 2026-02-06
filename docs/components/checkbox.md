@@ -101,35 +101,103 @@ const result = ref(["a"])
 
 ### Checkbox Props
 
-| 属性名         | 说明             | 类型               | 默认值   |
-| -------------- | ---------------- | ------------------ | -------- |
-| v-model        | 是否选中         | `boolean`          | `false`  |
-| name           | 标识符           | `string`           | -        |
-| label          | 文本内容         | `string`           | -        |
-| shape          | 形状             | `square \| round`  | `square` |
-| disabled       | 是否禁用         | `boolean`          | `false`  |
-| checked-color  | 选中时颜色       | `string`           | -        |
-| icon-size      | 图标大小         | `string \| number` | -        |
-| label-disabled | 是否禁用文本点击 | `boolean`          | `false`  |
+| 属性名               | 说明                     | 类型                                   | 默认值   |
+| -------------------- | ------------------------ | -------------------------------------- | -------- |
+| v-model              | 是否选中                 | `boolean`                              | `false`  |
+| name                 | 标识符                   | `string \| number`                     | `""`   |
+| label                | 文本内容                 | `string \| number`                     | `""`   |
+| bind-group           | 是否与 CheckboxGroup 绑定 | `boolean`                              | `true`   |
+| disabled             | 是否禁用                 | `boolean`                              | `false`  |
+| readonly             | 是否只读                 | `boolean`                              | `false`  |
+| size                 | 图标大小                 | `string \| number`                     | `36rpx`  |
+| shape                | 形状                     | `dot \| icon \| ""`                   | `""`   |
+| round                | 是否圆形                 | `boolean`                              | `true`   |
+| indeterminate        | 不确定状态               | `boolean`                              | `false`  |
+| color                | 主色（选中颜色）         | `string`                               | `""`   |
+| checked-color        | 选中颜色（已弃用）       | `string`                               | `""`   |
+| checked-icon-color   | 选中图标颜色（已弃用）   | `string`                               | `""`   |
+| icon                 | 图标名称                 | `string`                               | `check`  |
+| icon-size            | 图标大小                 | `string \| number`                     | `""`   |
+| icon-color           | 图标颜色                 | `string`                               | `""`   |
+| icon-weight          | 图标粗细                 | `string \| number`                     | `""`   |
+| icon-radius          | 图标圆角                 | `string \| number`                     | `""`   |
+| label-position       | 标签位置                 | `left \| right`                         | `right`  |
+| label-size           | 标签大小                 | `string \| number`                     | `""`   |
+| label-color          | 标签颜色                 | `string`                               | `""`   |
+| label-weight         | 标签粗细                 | `string \| number`                     | `""`   |
+| label-gap            | 标签与图标间距           | `string \| number`                     | `""`   |
+| label-disabled       | 是否禁用文本点击         | `boolean`                              | `false`  |
+| checked-label-color  | 选中时文本颜色           | `string`                               | `""`   |
+| custom-class         | 自定义类名               | `string`                               | `""`   |
+| custom-style         | 自定义样式               | `string \| object`                     | `""`   |
 
 ### Checkbox Events
 
-| 事件名 | 说明           | 回调参数           |
-| ------ | -------------- | ------------------ |
-| change | 状态变化时触发 | `checked: boolean` |
+| 事件名            | 说明           | 回调参数 |
+| ----------------- | -------------- | -------- |
+| click             | 点击时触发     | `event`  |
+| change            | 状态变化时触发 | `value`  |
+| update:modelValue | 更新绑定值     | `value`  |
+
+### Checkbox Slots
+
+| 名称    | 说明                       |
+| ------- | -------------------------- |
+| default | 文本内容                   |
+| icon    | 图标插槽（作用域：checked, disabled, indeterminate） |
+
+### Checkbox Methods/Expose
+
+| 方法名 | 说明             | 参数 |
+| ------ | ---------------- | ---- |
+| toggle | 切换选中状态     | `check?: boolean` |
 
 ### CheckboxGroup Props
 
-| 属性名   | 说明                               | 类型               | 默认值  |
-| -------- | ---------------------------------- | ------------------ | ------- |
-| v-model  | 选中的标识符数组                   | `string[]`         | `[]`    |
-| disabled | 是否禁用所有复选框                 | `boolean`          | `false` |
-| max      | 最大可选数                         | `number`           | -       |
-| gap      | 选项间距                           | `string \| number` | `0`     |
-| columns  | 网格布局列数，设置后启用 grid 布局 | `number`           | -       |
+| 属性名               | 说明                               | 类型               | 默认值   |
+| -------------------- | ---------------------------------- | ------------------ | -------- |
+| v-model              | 选中的标识符数组                   | `unknown[]`        | `[]`     |
+| max                  | 最大可选数                         | `string \| number` | `Infinity` |
+| min                  | 最小可选数                         | `string \| number` | `0`      |
+| gap                  | 选项间距                           | `string \| number` | `0`      |
+| columns              | 网格布局列数                       | `string \| number` | `""`   |
+| disabled             | 是否禁用                           | `boolean`          | `false`  |
+| size                 | 图标大小                           | `string \| number` | `36rpx`  |
+| shape                | 形状                               | `dot \| icon`      | `dot`    |
+| round                | 是否圆形                           | `boolean`          | `false`  |
+| color                | 主色                               | `string`           | `""`   |
+| checked-color        | 选中颜色（已弃用）                 | `string`           | `""`   |
+| checked-icon-color   | 选中图标颜色（已弃用）             | `string`           | `""`   |
+| icon                 | 图标名称                           | `string`           | `""`   |
+| icon-size            | 图标大小                           | `string \| number` | `""`   |
+| icon-color           | 图标颜色                           | `string`           | `""`   |
+| icon-weight          | 图标粗细                           | `string \| number` | `""`   |
+| icon-radius          | 图标圆角                           | `string \| number` | `""`   |
+| icon-prefix          | 图标前缀                           | `string`           | `ui-icon` |
+| label-position       | 标签位置                           | `left \| right`     | `right`  |
+| label-left           | 标签是否在左侧（已弃用）           | `boolean`          | `false`  |
+| label-size           | 标签大小                           | `string \| number` | `""`   |
+| label-color          | 标签颜色                           | `string`           | `""`   |
+| label-weight         | 标签粗细                           | `string \| number` | `""`   |
+| label-gap            | 标签与图标间距                     | `string \| number` | `""`   |
+| label-disabled       | 是否禁用标签点击                   | `boolean`          | `false`  |
+| checked-label-color  | 选中时文本颜色                     | `string`           | `""`   |
+| custom-class         | 自定义类名                         | `string`           | `""`   |
+| custom-style         | 自定义样式                         | `string \| object` | `""`   |
 
 ### CheckboxGroup Events
 
-| 事件名 | 说明           | 回调参数          |
-| ------ | -------------- | ----------------- |
-| change | 状态变化时触发 | `names: string[]` |
+| 事件名            | 说明           | 回调参数 |
+| ----------------- | -------------- | -------- |
+| click             | 点击时触发     | `event`  |
+| change            | 状态变化时触发 | `value`  |
+| update:modelValue | 更新绑定值     | `value`  |
+
+### CheckboxGroup Methods/Expose
+
+| 方法名           | 说明               | 参数 |
+| ---------------- | ------------------ | ---- |
+| toggleAll        | 全选/全不选        | `checked?: boolean` |
+| getCheckedCount  | 获取选中数量       | -    |
+| isAtMinimum      | 是否达到最小选择数 | -    |
+| isAtMaximum      | 是否达到最大选择数 | -    |

@@ -113,6 +113,8 @@
 | width  | 宽度 | `string \| number` | -      |
 | height | 高度 | `string \| number` | -      |
 | radius | 圆角 | `string \| number` | -      |
+| custom-class | 自定义类名 | `string` | - |
+| custom-style | 自定义样式 | `string \| object` | - |
 
 ## SkeletonParagraph Props
 
@@ -122,6 +124,8 @@
 | row-width  | 每行宽度 | `string \| number \| array` | `100%` |
 | row-height | 行高     | `string \| number`          | -      |
 | row-gap    | 行间距   | `string \| number`          | -      |
+| custom-class | 自定义类名 | `string` | - |
+| custom-style | 自定义样式 | `string \| object` | - |
 
 ## SkeletonAvatar Props
 
@@ -129,6 +133,8 @@
 | ----- | -------- | ------------------ | ------- |
 | size  | 头像大小 | `string \| number` | -       |
 | shape | 头像形状 | `round \| square`  | `round` |
+| custom-class | 自定义类名 | `string` | - |
+| custom-style | 自定义样式 | `string \| object` | - |
 
 ## SkeletonImage Props
 
@@ -138,4 +144,18 @@
 | width  | 图片宽度 | `string \| number` | -      |
 | height | 图片高度 | `string \| number` | -      |
 | radius | 圆角     | `string \| number` | -      |
-| square | 是否正方 | `boolean`          | -      |
+| square | 是否正方 | `boolean`          | `false` |
+| custom-class | 自定义类名 | `string` | - |
+| custom-style | 自定义样式 | `string \| object` | - |
+
+## SkeletonTitle / SkeletonParagraph / SkeletonAvatar / SkeletonImage Events
+
+上述子组件当前版本均无事件。
+
+## SkeletonTitle / SkeletonParagraph / SkeletonAvatar / SkeletonImage Slots
+
+上述子组件当前版本均无插槽。
+
+## SkeletonTitle / SkeletonParagraph / SkeletonAvatar / SkeletonImage Methods
+
+上述子组件当前版本均无额外公开方法。

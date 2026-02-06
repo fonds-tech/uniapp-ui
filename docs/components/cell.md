@@ -82,5 +82,56 @@
 | ------------- | -------------------------- | ------------------ | ------ |
 | radius        | 圆角大小                   | `string \| number` | -      |
 | background    | 背景颜色                   | `string`           | -      |
-| content-size  | 内容字体大小（子组件继承） | `string \| number` | -      |
-| content-color | 内容字体颜色（子组件继承） | `string`           | -      |
+| custom-class  | 自定义类名                 | `string`           | -      |
+| custom-style  | 自定义样式                 | `string \| object` | -      |
+
+### CellGroup Events
+
+`CellGroup` 当前版本无事件。
+
+### CellGroup Slots
+
+| 名称    | 说明 |
+| ------- | ---- |
+| default | 分组内容 |
+
+### CellGroup Methods
+
+`CellGroup` 当前版本无额外公开方法。
+
+
+<!-- AUTO-PROPS-SUPPLEMENT: ui-cell -->
+## Cell Props 补充（源码新增）
+
+以下参数已在最新源码中支持，本文档补充如下：
+
+| 参数 |
+| --- |
+| `title-width` |
+| `height` |
+| `padding` |
+| `icon-gap` |
+| `icon-size` |
+| `icon-color` |
+| `icon-weight` |
+| `title-size` |
+| `title-color` |
+| `title-weight` |
+| `label-gap` |
+| `label-size` |
+| `label-color` |
+| `label-weight` |
+| `value-size` |
+| `value-color` |
+| `value-weight` |
+| `right-icon` |
+| `right-icon-gap` |
+| `right-icon-size` |
+| `right-icon-color` |
+| `right-icon-weight` |
+| `link-type` |
+| `border-color` |
+| `border-left` |
+| `border-right` |
+| `border-width` |
+

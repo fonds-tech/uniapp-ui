@@ -143,3 +143,48 @@ const areaColumns = [
 | ------- | ------------ |
 | toolbar | 自定义工具栏 |
 | title   | 自定义标题   |
+
+
+<!-- AUTO-PROPS-SUPPLEMENT: ui-picker -->
+## Picker Props 补充（源码新增）
+
+以下参数已在最新源码中支持，本文档补充如下：
+
+| 参数 |
+| --- |
+| `show` |
+| `background` |
+| `column-size` |
+| `column-color` |
+| `column-weight` |
+| `active-column-size` |
+| `active-column-color` |
+| `active-column-weight` |
+| `indicator-class` |
+| `mask-style` |
+| `mask-top-style` |
+| `mask-bottom-style` |
+| `mask-class` |
+| `immediate-change` |
+
+<!-- AUTO-EVENTS-SUPPLEMENT: ui-picker -->
+## Picker Events 补充（源码新增）
+
+以下能力已在最新源码中提供，补充如下：
+
+| 事件名 |
+| --- |
+| `pickstart` |
+| `pickend` |
+
+<!-- AUTO-METHODS-SUPPLEMENT: ui-picker -->
+## Picker Methods/Expose 补充（源码新增）
+
+以下能力已在最新源码中提供，补充如下：
+
+| 方法/字段 |
+| --- |
+| `get-selected-values` |
+| `get-selected-indexs` |
+| `get-selected-columns` |
+

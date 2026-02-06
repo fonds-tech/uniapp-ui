@@ -147,3 +147,16 @@ function beforeChange(value, next) {
 | 名称 | 说明               | 参数                   |
 | ---- | ------------------ | ---------------------- |
 | node | 自定义开关按钮内容 | `{ checked: boolean }` |
+
+
+<!-- AUTO-PROPS-SUPPLEMENT: ui-switch -->
+## Switch Props 补充（源码新增）
+
+以下参数已在最新源码中支持，本文档补充如下：
+
+| 参数 |
+| --- |
+| `text-size` |
+| `text-color` |
+| `text-weight` |
+

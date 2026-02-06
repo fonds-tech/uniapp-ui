@@ -88,3 +88,29 @@ const show = ref(true)
 | ------ | ------------------ | -------- |
 | click  | 点击标签时触发     | -        |
 | close  | 点击关闭按钮时触发 | -        |
+
+
+<!-- AUTO-PROPS-SUPPLEMENT: ui-tag -->
+## Tag Props 补充（源码新增）
+
+以下参数已在最新源码中支持，本文档补充如下：
+
+| 参数 |
+| --- |
+| `text-weight` |
+| `icon-weight` |
+| `height` |
+| `padding` |
+| `border-width` |
+| `custom-class` |
+| `custom-style` |
+
+<!-- AUTO-SLOTS-SUPPLEMENT: ui-tag -->
+## Tag Slots 补充（源码新增）
+
+以下能力已在最新源码中提供，补充如下：
+
+| 插槽名 |
+| --- |
+| `default` |
+

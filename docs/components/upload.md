@@ -128,3 +128,24 @@ function onOversize() {
 | 名称    | 说明               |
 | ------- | ------------------ |
 | default | 自定义上传区域内容 |
+
+
+<!-- AUTO-PROPS-SUPPLEMENT: ui-upload -->
+## Upload Props 补充（源码新增）
+
+以下参数已在最新源码中支持，本文档补充如下：
+
+| 参数 |
+| --- |
+| `preview-icon-weight` |
+| `icon-weight` |
+
+<!-- AUTO-SLOTS-SUPPLEMENT: ui-upload -->
+## Upload Slots 补充（源码新增）
+
+以下能力已在最新源码中提供，补充如下：
+
+| 插槽名 |
+| --- |
+| `trigger` |
+

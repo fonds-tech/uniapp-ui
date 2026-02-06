@@ -90,3 +90,15 @@ const show = ref(false)
 | 名称    | 说明     |
 | ------- | -------- |
 | default | 弹窗内容 |
+
+<!-- AUTO-SLOTS-SUPPLEMENT: ui-popup -->
+## Popup Slots 补充（源码新增）
+
+以下能力已在最新源码中提供，补充如下：
+
+| 插槽名 |
+| --- |
+| `header` |
+| `footer` |
+| `outside` |
+

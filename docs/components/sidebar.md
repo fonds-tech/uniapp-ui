@@ -114,3 +114,21 @@ function onChange(index) {
 | active-background   | 激活背景颜色           | `string`           | -        |
 | custom-class        | 自定义类名             | `string`           | -        |
 | custom-style        | 自定义样式             | `string \| object` | -        |
+
+## SidebarItem Events
+
+`SidebarItem` 当前版本无独立事件（点击与切换由 `Sidebar` 统一抛出）。
+
+## SidebarItem Slots
+
+| 名称    | 说明                                       | 参数 |
+| ------- | ------------------------------------------ | ---- |
+| default | 自定义选项内容                             | `{ active, disabled }` |
+
+## SidebarItem Methods
+
+通过 `ref` 可访问以下暴露字段/方法。
+
+| 字段/方法 | 说明 |
+| --------- | ---- |
+| resize    | 重新计算选项尺寸 |

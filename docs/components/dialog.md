@@ -87,3 +87,60 @@ resolve(action === 'confirm') }, 1000) }) } })
 | ---------- | ---------- | --------- |
 | showDialog | 显示对话框 | `options` |
 | hideDialog | 关闭对话框 | -         |
+
+
+<!-- AUTO-PROPS-SUPPLEMENT: ui-dialog -->
+## Dialog Props 补充（源码新增）
+
+以下参数已在最新源码中支持，本文档补充如下：
+
+| 参数 |
+| --- |
+| `show` |
+| `height` |
+| `content` |
+| `content-align` |
+| `button-reverse` |
+| `overlay-style` |
+| `lazy-render` |
+| `padding` |
+| `offset-top` |
+| `async-close` |
+| `z-index` |
+| `duration` |
+| `background` |
+| `border-radius` |
+| `enter-timing-function` |
+| `leave-timing-function` |
+| `custom-class` |
+| `custom-style` |
+
+<!-- AUTO-EVENTS-SUPPLEMENT: ui-dialog -->
+## Dialog Events 补充（源码新增）
+
+以下能力已在最新源码中提供，补充如下：
+
+| 事件名 |
+| --- |
+| `opened` |
+| `closed` |
+
+<!-- AUTO-METHODS-SUPPLEMENT: ui-dialog -->
+## Dialog Methods/Expose 补充（源码新增）
+
+以下能力已在最新源码中提供，补充如下：
+
+| 方法/字段 |
+| --- |
+| `alert` |
+
+<!-- AUTO-SLOTS-SUPPLEMENT: ui-dialog -->
+## Dialog Slots 补充（源码新增）
+
+以下能力已在最新源码中提供，补充如下：
+
+| 插槽名 |
+| --- |
+| `footer` |
+| `outside` |
+

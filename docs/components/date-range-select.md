@@ -298,3 +298,25 @@ interface DateRangeSelectCancelData {
 2. **Tab 切换**：弹窗打开后可通过头部 Tab 切换开始/结束日期的选择
 3. **双向绑定**：使用 `v-model` 绑定时，值为 `[startDate, endDate]` 格式的数组
 4. **表单验证**：配合表单使用时需自定义验证器检查数组长度
+
+
+<!-- AUTO-PROPS-SUPPLEMENT: ui-date-range-select -->
+## DateRangeSelect Props 补充（源码新增）
+
+以下参数已在最新源码中支持，本文档补充如下：
+
+| 参数 |
+| --- |
+| `auto-switch-to-end` |
+| `column-filter` |
+| `column-formatter` |
+
+<!-- AUTO-METHODS-SUPPLEMENT: ui-date-range-select -->
+## DateRangeSelect Methods/Expose 补充（源码新增）
+
+以下能力已在最新源码中提供，补充如下：
+
+| 方法/字段 |
+| --- |
+| `get-selected-range` |
+

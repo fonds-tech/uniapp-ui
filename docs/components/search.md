@@ -133,3 +133,17 @@ function onSearch(value) {
 | ----- | -------------- |
 | left  | 自定义左侧内容 |
 | right | 自定义右侧内容 |
+
+
+<!-- AUTO-PROPS-SUPPLEMENT: ui-search -->
+## Search Props 补充（源码新增）
+
+以下参数已在最新源码中支持，本文档补充如下：
+
+| 参数 |
+| --- |
+| `clearable` |
+| `clear-size` |
+| `clear-color` |
+| `clear-weight` |
+

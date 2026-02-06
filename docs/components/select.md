@@ -172,3 +172,15 @@ const areaColumns = [
 | 名称    | 说明               |
 | ------- | ------------------ |
 | default | 自定义触发区域内容 |
+
+<!-- AUTO-METHODS-SUPPLEMENT: ui-select -->
+## Select Methods/Expose 补充（源码新增）
+
+以下能力已在最新源码中提供，补充如下：
+
+| 方法/字段 |
+| --- |
+| `get-selected-values` |
+| `get-selected-indexs` |
+| `get-selected-columns` |
+

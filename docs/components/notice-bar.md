@@ -1,4 +1,4 @@
-# NoticeBar 通知栏
+# NoticeBar 通知栏（ui-notice-bar）
 
 通知栏组件，用于循环播放通知公告。
 
@@ -75,13 +75,17 @@ const notices = ["通知内容一", "通知内容二", "通知内容三"]
 | interval     | 垂直滚动时切换间隔(ms) | `number`                 | `3000`       |
 | duration     | 垂直滚动时动画时长(ms) | `number`                 | `500`        |
 | scrollable   | 是否开启滚动           | `boolean`                | `true`       |
-| min-height   | 最小高度               | `string \| number`       | `80rpx`      |
+| min-height   | 最小高度               | `string \| number`       | `72rpx`      |
 | font-size    | 文本大小               | `string \| number`       | -            |
 | font-weight  | 文本粗细               | `string \| number`       | -            |
 | icon         | 左侧图标               | `string`                 | `volume-o`   |
 | icon-size    | 左侧图标大小           | `string \| number`       | -            |
-| icon-color   | 左侧图标颜色           | `string`                 | `primary`    |
+| icon-color   | 左侧图标颜色           | `string`                 | `warning`    |
+| icon-weight  | 左侧图标粗细           | `string \| number`       | -            |
 | right-icon   | 右侧图标               | `string`                 | -            |
+| right-icon-size   | 右侧图标大小           | `string \| number`       | -            |
+| right-icon-color  | 右侧图标颜色           | `string`                 | `warning`    |
+| right-icon-weight | 右侧图标粗细           | `string \| number`       | -            |
 | background   | 背景颜色               | `string`                 | -            |
 | custom-class | 自定义类名             | `string`                 | -            |
 | custom-style | 自定义样式             | `string \| object`       | -            |
@@ -98,3 +102,7 @@ const notices = ["通知内容一", "通知内容二", "通知内容三"]
 | ----- | -------------- |
 | left  | 自定义左侧图标 |
 | right | 自定义右侧图标 |
+
+## Methods
+
+`NoticeBar` 当前版本无额外公开方法。

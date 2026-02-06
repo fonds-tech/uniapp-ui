@@ -214,3 +214,15 @@ const formRules = {
 | getSelectedValue   | 获取格式化后的选中值 | -    | `string`   |
 | getSelectedValues  | 获取选中值数组       | -    | `string[]` |
 | getSelectedIndexes | 获取选中索引数组     | -    | `number[]` |
+
+
+<!-- AUTO-PROPS-SUPPLEMENT: ui-date-select -->
+## DateSelect Props 补充（源码新增）
+
+以下参数已在最新源码中支持，本文档补充如下：
+
+| 参数 |
+| --- |
+| `column-filter` |
+| `column-formatter` |
+

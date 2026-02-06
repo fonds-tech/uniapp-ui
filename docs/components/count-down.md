@@ -1,4 +1,4 @@
-# CountDown 倒计时
+# CountDown 倒计时（ui-count-down）
 
 倒计时组件，支持多种格式和手动控制。
 
@@ -47,12 +47,12 @@ const time = ref(30 * 60 * 60 * 1000)
 ```vue
 <template>
   <ui-count-down :time="time">
-    <template #default="{ current }">
-      <text class="countdown-block">{{ current.hours }}</text>
+    <template #default="{ time }">
+      <text class="countdown-block">{{ time.hours }}</text>
       <text class="countdown-colon">:</text>
-      <text class="countdown-block">{{ current.minutes }}</text>
+      <text class="countdown-block">{{ time.minutes }}</text>
       <text class="countdown-colon">:</text>
-      <text class="countdown-block">{{ current.seconds }}</text>
+      <text class="countdown-block">{{ time.seconds }}</text>
     </template>
   </ui-count-down>
 </template>
@@ -99,6 +99,8 @@ function onFinish() {
 | format       | 时间格式           | `string`           | `HH:mm:ss` |
 | auto-start   | 是否自动开始倒计时 | `boolean`          | `true`     |
 | millisecond  | 是否开启毫秒级渲染 | `boolean`          | `false`    |
+| mode         | 计时模式           | `countdown \| countup` | `countdown` |
+| target-time  | 目标时间戳(ms)，设置后优先于 time | `string \| number` | `0` |
 | custom-class | 自定义类名         | `string`           | -          |
 | custom-style | 自定义样式         | `string \| object` | -          |
 
@@ -129,9 +131,9 @@ function onFinish() {
 
 ## Slots
 
-| 名称    | 说明       | 参数                    |
-| ------- | ---------- | ----------------------- |
-| default | 自定义内容 | `{ current: timeData }` |
+| 名称    | 说明       | 参数              |
+| ------- | ---------- | ----------------- |
+| default | 自定义内容 | `{ time: timeData }` |
 
 ## timeData 结构
 
@@ -142,3 +144,5 @@ function onFinish() {
 | minutes      | 剩余分钟 | `number` |
 | seconds      | 剩余秒数 | `number` |
 | milliseconds | 剩余毫秒 | `number` |
+| total        | 初始总时间(ms) | `number` |
+| current      | 当前剩余/已过时间(ms) | `number` |

@@ -110,3 +110,15 @@ function decrease() {
 | 事件名 | 说明               | 回调参数 |
 | ------ | ------------------ | -------- |
 | finish | 进度达到100%时触发 | -        |
+
+
+<!-- AUTO-PROPS-SUPPLEMENT: ui-progress -->
+## Progress Props 补充（源码新增）
+
+以下参数已在最新源码中支持，本文档补充如下：
+
+| 参数 |
+| --- |
+| `track-color` |
+| `text-position` |
+

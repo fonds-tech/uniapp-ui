@@ -66,3 +66,48 @@ showToast({ message: '3秒后关闭', duration: 3000 })
 | duration    | 展示时长(ms)     | `number`                             | `2000`   |
 | overlay     | 是否显示遮罩层   | `boolean`                            | `false`  |
 | forbidClick | 是否禁止点击背景 | `boolean`                            | `false`  |
+
+
+<!-- AUTO-PROPS-SUPPLEMENT: ui-toast -->
+## Toast Props 补充（源码新增）
+
+以下参数已在最新源码中支持，本文档补充如下：
+
+| 参数 |
+| --- |
+| `show` |
+| `type` |
+| `icon` |
+| `mask` |
+| `content` |
+| `width` |
+| `offset` |
+| `icon-size` |
+| `icon-prefix` |
+| `duration` |
+| `position` |
+| `background` |
+| `custom-class` |
+| `custom-style` |
+
+<!-- AUTO-EVENTS-SUPPLEMENT: ui-toast -->
+## Toast Events 补充（源码新增）
+
+以下能力已在最新源码中提供，补充如下：
+
+| 事件名 |
+| --- |
+| `open` |
+| `close` |
+| `opened` |
+| `closed` |
+
+<!-- AUTO-SLOTS-SUPPLEMENT: ui-toast -->
+## Toast Slots 补充（源码新增）
+
+以下能力已在最新源码中提供，补充如下：
+
+| 插槽名 |
+| --- |
+| `default` |
+
