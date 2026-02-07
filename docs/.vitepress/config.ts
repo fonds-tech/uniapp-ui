@@ -1,3 +1,4 @@
+import process from "node:process"
 import { defineConfig } from "vitepress"
 
 // VitePress 配置
@@ -98,6 +99,7 @@ export default defineConfig({
             { text: "Upload 上传", link: "/components/upload" },
             { text: "Form 表单", link: "/components/form" },
             { text: "Keyboard 键盘", link: "/components/keyboard" },
+            { text: "CodeInput 验证码输入", link: "/components/code-input" },
           ],
         },
         {

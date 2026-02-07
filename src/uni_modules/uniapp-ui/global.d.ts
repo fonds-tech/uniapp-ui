@@ -14,6 +14,8 @@ declare module "vue" {
     UiCellGroup: (typeof import("./ui-cell-group/ui-cell-group.vue"))["default"]
     UiCheckbox: (typeof import("./ui-checkbox/ui-checkbox.vue"))["default"]
     UiCheckboxGroup: (typeof import("./ui-checkbox-group/ui-checkbox-group.vue"))["default"]
+    UiCircle: (typeof import("./ui-circle/ui-circle.vue"))["default"]
+    UiCodeInput: (typeof import("./ui-code-input/ui-code-input.vue"))["default"]
     UiCol: (typeof import("./ui-col/ui-col.vue"))["default"]
     UiConfigProvider: (typeof import("./ui-config-provider/ui-config-provider.vue"))["default"]
     UiCountDown: (typeof import("./ui-count-down/ui-count-down.vue"))["default"]
