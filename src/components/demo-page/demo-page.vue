@@ -60,7 +60,7 @@ export default {
 
 <style lang="scss">
 .demo-page {
-  background: var(--ui-color-background-light);
+  background: var(--ui-color-background-page);
   box-sizing: border-box;
 }
 </style>

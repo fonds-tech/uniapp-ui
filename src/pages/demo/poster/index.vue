@@ -88,7 +88,7 @@ function savePoster() {
 <style lang="scss" scoped>
 .preview-area {
   display: flex;
-  background: var(--ui-color-background-light);
+  background: var(--ui-color-background-page);
   min-height: 500rpx;
   align-items: center;
   border-radius: 12rpx;

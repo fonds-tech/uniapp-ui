@@ -595,7 +595,7 @@ function onKeyboardChange(value: string) {
 .event-list {
   width: 100%;
   padding: 16rpx;
-  background: var(--ui-color-background-light);
+  background: var(--ui-color-background-page);
   max-height: 250rpx;
   overflow-y: auto;
   border-radius: 8rpx;
@@ -681,7 +681,7 @@ function onKeyboardChange(value: string) {
   justify-content: center;
 
   &--province {
-    background: var(--ui-color-background-light);
+    background: var(--ui-color-background-page);
   }
 }
 

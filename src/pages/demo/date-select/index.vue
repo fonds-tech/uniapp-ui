@@ -293,7 +293,7 @@ const bookingTime = ref("")
 .event-list {
   width: 100%;
   padding: 16rpx;
-  background: var(--ui-color-background-light);
+  background: var(--ui-color-background-page);
   max-height: 250rpx;
   overflow-y: auto;
   border-radius: 8rpx;

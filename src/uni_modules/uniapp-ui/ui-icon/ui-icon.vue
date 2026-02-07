@@ -129,7 +129,7 @@ export default {
   font-style: normal;
   text-align: center;
   align-items: center;
-  font-family: "ui-icon" !important;
+  font-family: "ui-icon";
   line-height: 1;
   font-variant: normal;
   text-rendering: auto;

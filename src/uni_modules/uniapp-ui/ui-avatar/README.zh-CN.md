@@ -96,15 +96,7 @@
 ```vue
 <template>
   <view class="avatar-group">
-    <ui-avatar
-      v-for="i in 5"
-      :key="i"
-      :src="`https://example.com/avatar${i}.jpg`"
-      size="80rpx"
-      border-color="#fff"
-      border-width="4rpx"
-      style="margin-left: -20rpx"
-    />
+    <ui-avatar v-for="i in 5" :key="i" :src="`https://example.com/avatar${i}.jpg`" size="80rpx" border-color="#fff" border-width="4rpx" style="margin-left: -20rpx" />
   </view>
 </template>
 
@@ -160,7 +152,7 @@
 
 | 变量名                      | 说明         | 默认值 |
 | --------------------------- | ------------ | ------ |
-| --ui-color-background-light | 默认背景色   | -      |
+| --ui-color-background-page  | 默认背景色   | -      |
 | --ui-color-text-secondary   | 文字颜色     | -      |
 | --ui-color-text-placeholder | 占位图标颜色 | -      |
 | --ui-radius-md              | 方形头像圆角 | -      |

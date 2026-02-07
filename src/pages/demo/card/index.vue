@@ -158,7 +158,7 @@ function onThumbClick() {
   color: var(--ui-color-text-secondary);
   padding: 24rpx;
   font-size: 28rpx;
-  background: var(--ui-color-background-light);
+  background: var(--ui-color-background-page);
 }
 
 .custom-header {
@@ -190,7 +190,7 @@ function onThumbClick() {
   align-items: center;
   border-radius: var(--ui-radius-sm);
   justify-content: center;
-  background-color: var(--ui-color-background-light);
+  background-color: var(--ui-color-background-page);
 }
 
 .event-log {

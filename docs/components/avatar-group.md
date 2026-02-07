@@ -189,11 +189,11 @@
 
 <script setup>
 function onClickGroup(event) {
-  console.log('点击头像组')
+  console.log("点击头像组")
 }
 
 function onClickExcess(event) {
-  console.log('点击超出数量，可跳转查看更多')
+  console.log("点击超出数量，可跳转查看更多")
 }
 </script>
 ```
@@ -231,11 +231,11 @@ function onClickExcess(event) {
 
 组件使用以下 CSS 变量，可通过修改这些变量自定义样式：
 
-| 变量名                      | 说明               | 默认值 |
-| --------------------------- | ------------------ | ------ |
-| --ui-color-background-light | 超出数量默认背景色 | -      |
-| --ui-color-text-secondary   | 超出数量文字颜色   | -      |
-| --ui-radius-md              | 方形头像圆角       | -      |
+| 变量名                     | 说明               | 默认值 |
+| -------------------------- | ------------------ | ------ |
+| --ui-color-background-page | 超出数量默认背景色 | -      |
+| --ui-color-text-secondary  | 超出数量文字颜色   | -      |
+| --ui-radius-md             | 方形头像圆角       | -      |
 
 ## 注意事项
 

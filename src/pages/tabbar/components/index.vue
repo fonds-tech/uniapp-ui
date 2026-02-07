@@ -1,21 +1,21 @@
 <template>
-  <view class="h-screen flex flex-col bg-[#F7F8FA]">
-    <view class="bg-white/80 backdrop-blur-md z-50 flex-none sticky top-0" :style="{ paddingTop: `${safeAreaInsets?.top}px` }">
+  <view class="h-screen flex flex-col bg-[var(--ui-color-background-page)]">
+    <view class="bg-[var(--ui-color-background)] backdrop-blur-md z-50 flex-none sticky top-0" :style="{ paddingTop: `${safeAreaInsets?.top}px` }">
       <view class="px-[32rpx] py-[20rpx] flex items-center">
         <view
-          class="flex-1 h-[80rpx] bg-slate-100/80 rounded-[24rpx] flex items-center px-[28rpx] active:bg-slate-200/80 transition-all duration-200 border border-transparent focus-within:border-indigo-500/20 focus-within:bg-white focus-within:shadow-sm"
+          class="flex-1 h-[80rpx] bg-[var(--ui-color-background-section)] rounded-[24rpx] flex items-center px-[28rpx] active:bg-[var(--ui-color-background-hover)] transition-all duration-200 border border-transparent focus-within:border-indigo-500/20 focus-within:bg-[var(--ui-color-background)] focus-within:shadow-sm"
           @click="showSearch = true"
         >
-          <view class="i-lucide-search text-[36rpx] text-slate-400 mr-[16rpx]" />
-          <text class="text-[28rpx] text-slate-400">搜索组件...</text>
+          <view class="i-lucide-search text-[36rpx] text-[var(--ui-color-text-tertiary)] mr-[16rpx]" />
+          <text class="text-[28rpx] text-[var(--ui-color-text-tertiary)]">搜索组件...</text>
         </view>
       </view>
-      <view class="h-[1rpx] w-full bg-slate-100" />
+      <view class="h-[1rpx] w-full bg-[var(--ui-color-border-light)]" />
     </view>
 
     <view class="flex-1 flex overflow-hidden">
       <!-- Sidebar -->
-      <scroll-view scroll-y class="w-[190rpx] h-full bg-[#F7F8FA]" :show-scrollbar="false">
+      <scroll-view scroll-y class="w-[190rpx] h-full bg-[var(--ui-color-background-page)]" :show-scrollbar="false">
         <view class="pb-[180rpx] pt-[20rpx]">
           <view
             v-for="(category, index) in componentCategories"
@@ -26,7 +26,7 @@
             <!-- 选中背景 -->
             <view
               class="absolute inset-0 transition-all duration-300 rounded-l-[32rpx] ml-[24rpx]"
-              :class="activeCategoryIndex === index ? 'bg-white shadow-[-4rpx_4rpx_12rpx_rgba(0,0,0,0.02)]' : 'bg-transparent'"
+              :class="activeCategoryIndex === index ? 'bg-[var(--ui-color-background)] shadow-[-4rpx_4rpx_12rpx_rgba(0,0,0,0.02)]' : 'bg-transparent'"
             />
 
             <!-- 选中指示条 -->
@@ -48,19 +48,19 @@
       </scroll-view>
 
       <!-- Content -->
-      <scroll-view scroll-y class="flex-1 h-full bg-white rounded-tl-[40rpx] overflow-hidden shadow-[-4rpx_0_16rpx_rgba(0,0,0,0.01)]" :show-scrollbar="false">
+      <scroll-view scroll-y class="flex-1 h-full bg-[var(--ui-color-background)] rounded-tl-[40rpx] overflow-hidden shadow-[-4rpx_0_16rpx_rgba(0,0,0,0.01)]" :show-scrollbar="false">
         <view class="px-[32rpx] pt-[40rpx] pb-[180rpx] min-h-full relative overflow-hidden">
           <!-- 背景装饰大图标 -->
-          <view class="absolute right-[-80rpx] top-[-40rpx] opacity-[0.05] pointer-events-none text-slate-900 z-0">
+          <view class="absolute right-[-80rpx] top-[-40rpx] opacity-[0.05] pointer-events-none text-[var(--ui-color-text)] z-0">
             <view class="text-[420rpx] rotate-[15deg]" :class="currentCategory.icon" />
           </view>
 
           <view class="flex items-end justify-between mb-[48rpx] relative z-10">
             <view>
-              <text class="text-[44rpx] font-extrabold text-slate-900 block leading-tight">
+              <text class="text-[44rpx] font-extrabold text-[var(--ui-color-text)] block leading-tight">
                 {{ currentCategory.name }}
               </text>
-              <text class="text-[24rpx] font-medium text-slate-400 mt-[8rpx] block uppercase tracking-wider">{{ currentCategory.desc }}</text>
+              <text class="text-[24rpx] font-medium text-[var(--ui-color-text-tertiary)] mt-[8rpx] block uppercase tracking-wider">{{ currentCategory.desc }}</text>
             </view>
           </view>
 
@@ -68,15 +68,15 @@
             <view
               v-for="comp in currentCategory.components"
               :key="comp.name"
-              class="group flex flex-col p-[24rpx] rounded-[28rpx] border border-slate-100 shadow-[0_2rpx_12rpx_rgba(0,0,0,0.02)] active:scale-[0.98] active:border-indigo-100 active:shadow-none transition-all duration-200"
+              class="group flex flex-col p-[24rpx] rounded-[28rpx] border border-[var(--ui-color-border-light)] shadow-[0_2rpx_12rpx_rgba(0,0,0,0.02)] active:scale-[0.98] active:border-indigo-100 active:shadow-none transition-all duration-200"
               @click="navigateToDemo(comp.path)"
             >
               <view class="mb-[20rpx] flex h-[80rpx] w-[80rpx] items-center justify-center rounded-[20rpx] bg-indigo-50 group-active:bg-indigo-100 transition-colors duration-200">
                 <view class="text-[40rpx] text-indigo-500 group-active:text-indigo-600 transition-colors duration-200" :class="[comp.icon]" />
               </view>
 
-              <text class="text-[30rpx] font-bold text-slate-800 group-active:text-indigo-600 transition-colors">{{ comp.name }}</text>
-              <text class="mt-[6rpx] text-[22rpx] text-slate-400 line-clamp-1">{{ comp.desc }}</text>
+              <text class="text-[30rpx] font-bold text-[var(--ui-color-text)] group-active:text-indigo-600 transition-colors">{{ comp.name }}</text>
+              <text class="mt-[6rpx] text-[22rpx] text-[var(--ui-color-text-tertiary)] line-clamp-1">{{ comp.desc }}</text>
             </view>
           </view>
         </view>
@@ -84,14 +84,14 @@
     </view>
 
     <ui-popup v-model:show="showSearch" position="bottom" round custom-style="height: 90vh;">
-      <view class="flex flex-col h-full bg-[#F7F8FA] rounded-t-[32rpx] overflow-hidden">
-        <view class="px-[32rpx] py-[24rpx] bg-white border-b border-[#F0F0F2] flex items-center sticky top-0 z-10">
-          <view class="flex-1 bg-[#F5F7FA] h-[80rpx] rounded-full flex items-center px-[28rpx]">
-            <view class="i-lucide-search text-[36rpx] text-[#86909C] mr-[16rpx]" />
-            <input v-model="searchText" class="flex-1 text-[30rpx] text-[#1D1D1F] h-full" placeholder="搜索组件..." :focus="showSearch" placeholder-style="color: #86909C" />
-            <view v-if="searchText" class="i-lucide-x-circle-fill text-[36rpx] text-[#C0C4CC] p-[8rpx]" @click="searchText = ''" />
+      <view class="flex flex-col h-full bg-[var(--ui-color-background-page)] rounded-t-[32rpx] overflow-hidden">
+        <view class="px-[32rpx] py-[24rpx] bg-[var(--ui-color-background)] border-b border-[var(--ui-color-border-light)] flex items-center sticky top-0 z-10">
+          <view class="flex-1 bg-[var(--ui-color-background-section)] h-[80rpx] rounded-full flex items-center px-[28rpx]">
+            <view class="i-lucide-search text-[36rpx] text-[var(--ui-color-text-tertiary)] mr-[16rpx]" />
+            <input v-model="searchText" class="flex-1 text-[30rpx] text-[var(--ui-color-text)] h-full" placeholder="搜索组件..." :focus="showSearch" placeholder-style="color: var(--ui-color-text-tertiary);" />
+            <view v-if="searchText" class="i-lucide-x-circle-fill text-[36rpx] text-[var(--ui-color-text-placeholder)] p-[8rpx]" @click="searchText = ''" />
           </view>
-          <text class="text-[30rpx] text-[#2979FF] font-bold ml-[24rpx]" @click="showSearch = false"> 取消 </text>
+          <text class="text-[30rpx] text-[var(--ui-color-primary)] font-bold ml-[24rpx]" @click="showSearch = false"> 取消 </text>
         </view>
 
         <scroll-view scroll-y class="flex-1 px-[24rpx] pt-[24rpx]">
@@ -99,25 +99,25 @@
             <view
               v-for="comp in searchResults"
               :key="comp.path"
-              class="flex items-center p-[24rpx] bg-white rounded-[20rpx] mb-[20rpx] shadow-sm active:scale-[0.99] transition-transform"
+              class="flex items-center p-[24rpx] bg-[var(--ui-color-background)] rounded-[20rpx] mb-[20rpx] shadow-sm active:scale-[0.99] transition-transform"
               @click="navigateToDemo(comp.path)"
             >
-              <view class="w-[80rpx] h-[80rpx] bg-[#F5F7FA] rounded-[16rpx] flex items-center justify-center mr-[24rpx]">
-                <view class="text-[40rpx] text-[#1D1D1F]" :class="[comp.icon]" />
+              <view class="w-[80rpx] h-[80rpx] bg-[var(--ui-color-background-section)] rounded-[16rpx] flex items-center justify-center mr-[24rpx]">
+                <view class="text-[40rpx] text-[var(--ui-color-text)]" :class="[comp.icon]" />
               </view>
               <view class="flex-1">
-                <text class="text-[30rpx] font-bold text-[#1D1D1F] block">{{ comp.name }}</text>
-                <text class="text-[22rpx] text-[#86909C] block mt-[4rpx]">{{ comp.desc }}</text>
+                <text class="text-[30rpx] font-bold text-[var(--ui-color-text)] block">{{ comp.name }}</text>
+                <text class="text-[22rpx] text-[var(--ui-color-text-tertiary)] block mt-[4rpx]">{{ comp.desc }}</text>
               </view>
-              <view class="i-lucide-arrow-up-right text-[32rpx] text-[#C0C4CC]" />
+              <view class="i-lucide-arrow-up-right text-[32rpx] text-[var(--ui-color-text-placeholder)]" />
             </view>
           </view>
 
           <view v-else-if="searchText" class="flex flex-col items-center justify-center pt-[200rpx]">
-            <view class="w-[120rpx] h-[120rpx] bg-[#F0F2F5] rounded-full flex items-center justify-center mb-[24rpx]">
-              <view class="i-lucide-search text-[60rpx] text-[#C0C4CC]" />
+            <view class="w-[120rpx] h-[120rpx] bg-[var(--ui-color-background-section)] rounded-full flex items-center justify-center mb-[24rpx]">
+              <view class="i-lucide-search text-[60rpx] text-[var(--ui-color-text-placeholder)]" />
             </view>
-            <text class="text-[28rpx] text-[#86909C]">未找到相关组件</text>
+            <text class="text-[28rpx] text-[var(--ui-color-text-tertiary)]">未找到相关组件</text>
           </view>
         </scroll-view>
       </view>

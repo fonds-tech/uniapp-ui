@@ -4,7 +4,7 @@
 
 .demo-page {
   padding: 24rpx 24rpx;
-  background: var(--ui-color-background-light);
+  background: var(--ui-color-background-page);
   min-height: 100vh;
 }
 
@@ -52,7 +52,7 @@
   border-bottom: 1rpx solid var(--ui-color-border-light);
 
   &.api-header {
-    background: var(--ui-color-background-light);
+    background: var(--ui-color-background-page);
     font-weight: 600;
   }
 }
