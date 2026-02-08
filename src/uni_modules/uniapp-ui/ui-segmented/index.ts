@@ -24,6 +24,7 @@ const defaultProps = buildDefaultProps("segmented", {
   scrollable: false,
   height: "56rpx",
   fontSize: "28rpx",
+  itemPadding: "24rpx",
   indicatorGap: "4rpx",
   activeColor: "",
   activeTextColor: "",
@@ -59,6 +60,8 @@ export const segmentedProps = {
   height: defaultProps("height", { type: [String, Number] }),
   /** 字体大小 */
   fontSize: defaultProps("fontSize", { type: [String, Number] }),
+  /** 选项左右内边距 */
+  itemPadding: defaultProps("itemPadding", { type: [String, Number] }),
   /** 滑块与容器边缘的间距 */
   indicatorGap: defaultProps("indicatorGap", { type: [String, Number] }),
 

@@ -179,6 +179,7 @@ const itemBaseStyle = computed<CSSProperties>(() => {
     height: useUnit(props.height),
     lineHeight: useUnit(props.height),
     fontSize: useUnit(props.fontSize),
+    padding: `0 ${useUnit(props.itemPadding)}`,
   }
 })
 

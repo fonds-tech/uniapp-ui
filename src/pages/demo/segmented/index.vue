@@ -26,7 +26,7 @@
       <view class="demo-col">
         <view class="demo-item">
           <text class="demo-label">小尺寸 height="48rpx"</text>
-          <ui-segmented v-model="size1" :options="sizeOptions" height="48rpx" font-size="24rpx" block />
+          <ui-segmented v-model="size1" :options="sizeOptions" height="48rpx" font-size="24rpx" item-padding="16rpx" block />
         </view>
         <view class="demo-item">
           <text class="demo-label">默认尺寸</text>
@@ -34,7 +34,7 @@
         </view>
         <view class="demo-item">
           <text class="demo-label">大尺寸 height="72rpx"</text>
-          <ui-segmented v-model="size3" :options="sizeOptions" height="72rpx" font-size="32rpx" block />
+          <ui-segmented v-model="size3" :options="sizeOptions" height="72rpx" font-size="32rpx" item-padding="32rpx" block />
         </view>
       </view>
     </demo-section>
@@ -45,6 +45,23 @@
 
     <demo-section title="自定义颜色">
       <ui-segmented v-model="custom" :options="typeOptions" active-color="#6366F1" active-text-color="#fff" block />
+    </demo-section>
+
+    <demo-section title="圆角设置">
+      <view class="demo-col">
+        <view class="demo-item">
+          <text class="demo-label">胶囊圆角 (默认)</text>
+          <ui-segmented v-model="radius1" :options="basicOptions" block />
+        </view>
+        <view class="demo-item">
+          <text class="demo-label">直角 (round=false)</text>
+          <ui-segmented v-model="radius2" :options="basicOptions" :round="false" block />
+        </view>
+        <view class="demo-item">
+          <text class="demo-label">自定义圆角 (radius="12rpx")</text>
+          <ui-segmented v-model="radius3" :options="basicOptions" radius="12rpx" block />
+        </view>
+      </view>
     </demo-section>
 
     <demo-section title="滚动模式">
@@ -79,6 +96,10 @@ const iconValue = ref("list")
 const custom = ref("a")
 const disabled1 = ref("daily")
 const disabled2 = ref("weekly")
+
+const radius1 = ref("daily")
+const radius2 = ref("daily")
+const radius3 = ref("daily")
 
 const basicOptions: SegmentedOption[] = [
   { label: "日", value: "daily" },
