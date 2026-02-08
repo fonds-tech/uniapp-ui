@@ -190,6 +190,7 @@ const componentCategories = [
       { name: "Search", path: "search", icon: "i-lucide-search", desc: "搜索" },
       { name: "Select", path: "select", icon: "i-lucide-chevron-down", desc: "下拉" },
       { name: "Keyboard", path: "keyboard", icon: "i-lucide-keyboard", desc: "键盘" },
+      { name: "ColorPanel", path: "color-picker", icon: "i-lucide-palette", desc: "颜色面板" },
     ],
   },
   {
