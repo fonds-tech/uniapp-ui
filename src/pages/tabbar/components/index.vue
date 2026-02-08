@@ -88,7 +88,7 @@
     </view>
 
     <ui-popup v-model:show="showSearch" position="bottom" round custom-style="height: 90vh;">
-      <view class="flex flex-col h-full bg-[var(--ui-color-background-page)] rounded-t-[32rpx] overflow-hidden">
+      <template #header>
         <view class="px-[32rpx] py-[24rpx] bg-[var(--ui-color-background)] border-b border-[var(--ui-color-border-light)] flex items-center sticky top-0 z-10">
           <view class="flex-1 bg-[var(--ui-color-background-section)] h-[80rpx] rounded-full flex items-center px-[28rpx]">
             <view class="i-lucide-search text-[36rpx] text-[var(--ui-color-text-tertiary)] mr-[16rpx]" />
@@ -103,8 +103,10 @@
           </view>
           <text class="text-[30rpx] text-[var(--ui-color-primary)] font-bold ml-[24rpx]" @click="showSearch = false"> 取消 </text>
         </view>
+      </template>
 
-        <scroll-view scroll-y class="flex-1 px-[24rpx] pt-[24rpx]">
+      <view class="h-full bg-[var(--ui-color-background-page)]">
+        <view class="px-[24rpx] pt-[24rpx]">
           <view v-if="searchResults.length > 0" class="pb-[40rpx]">
             <view
               v-for="comp in searchResults"
@@ -129,7 +131,7 @@
             </view>
             <text class="text-[28rpx] text-[var(--ui-color-text-tertiary)]">未找到相关组件</text>
           </view>
-        </scroll-view>
+        </view>
       </view>
     </ui-popup>
   </view>
@@ -295,6 +297,14 @@ function navigateToDemo(compPath: string) {
   })
 }
 </script>
+
+<style lang="scss" scoped>
+:deep(.ui-popup__scroll) {
+  flex: 1;
+  height: 0;
+  max-height: none !important;
+}
+</style>
 
 <style>
 /* 隐藏滚动条 */
