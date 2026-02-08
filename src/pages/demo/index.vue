@@ -77,7 +77,8 @@ const componentCategories = [
       { name: "Field", path: "field", icon: "📑", desc: "表单项组件" },
       { name: "Search", path: "search", icon: "🔍", desc: "搜索组件" },
       { name: "Select", path: "select", icon: "📌", desc: "下拉选择组件" },
-      { name: "ColorPanel", path: "color-picker", icon: "🎨", desc: "颜色面板" },
+      { name: "ColorPanel", path: "color-panel", icon: "🎨", desc: "颜色面板" },
+      { name: "ColorPicker", path: "color-picker", icon: "🖌️", desc: "颜色选择器" },
     ],
   },
   {

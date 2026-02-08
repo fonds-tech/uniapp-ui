@@ -162,7 +162,7 @@ export default {
   --ui-cell-border-right: var(--ui-spacing-lg);
   --ui-cell-border-width: var(--ui-border-width);
   display: flex;
-  padding: var(--ui-spacing-md) var(--ui-spacing-lg);
+  padding: var(--ui-spacing-md);
   position: relative;
   background: transparent;
   align-items: center;
