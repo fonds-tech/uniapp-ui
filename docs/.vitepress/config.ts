@@ -149,6 +149,7 @@ export default defineConfig({
             { text: "BackTop 返回顶部", link: "/components/back-top" },
             { text: "FloatButton 浮动按钮", link: "/components/float-button" },
             { text: "Pagination 分页", link: "/components/pagination" },
+            { text: "Segmented 分段控制器", link: "/components/segmented" },
             { text: "Sidebar 侧边导航", link: "/components/sidebar" },
             { text: "IndexBar 索引栏", link: "/components/index-bar" },
           ],

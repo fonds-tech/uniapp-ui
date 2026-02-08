@@ -48,7 +48,11 @@
       </scroll-view>
 
       <!-- Content -->
-      <scroll-view scroll-y class="flex-1 h-full bg-[var(--ui-color-background)] rounded-tl-[40rpx] overflow-hidden shadow-[-4rpx_0_16rpx_rgba(0,0,0,0.01)]" :show-scrollbar="false">
+      <scroll-view
+        scroll-y
+        class="flex-1 h-full bg-[var(--ui-color-background)] rounded-tl-[40rpx] overflow-hidden shadow-[-4rpx_0_16rpx_rgba(0,0,0,0.01)]"
+        :show-scrollbar="false"
+      >
         <view class="px-[32rpx] pt-[40rpx] pb-[180rpx] min-h-full relative overflow-hidden">
           <!-- 背景装饰大图标 -->
           <view class="absolute right-[-80rpx] top-[-40rpx] opacity-[0.05] pointer-events-none text-[var(--ui-color-text)] z-0">
@@ -88,7 +92,13 @@
         <view class="px-[32rpx] py-[24rpx] bg-[var(--ui-color-background)] border-b border-[var(--ui-color-border-light)] flex items-center sticky top-0 z-10">
           <view class="flex-1 bg-[var(--ui-color-background-section)] h-[80rpx] rounded-full flex items-center px-[28rpx]">
             <view class="i-lucide-search text-[36rpx] text-[var(--ui-color-text-tertiary)] mr-[16rpx]" />
-            <input v-model="searchText" class="flex-1 text-[30rpx] text-[var(--ui-color-text)] h-full" placeholder="搜索组件..." :focus="showSearch" placeholder-style="color: var(--ui-color-text-tertiary);" />
+            <input
+              v-model="searchText"
+              class="flex-1 text-[30rpx] text-[var(--ui-color-text)] h-full"
+              placeholder="搜索组件..."
+              :focus="showSearch"
+              placeholder-style="color: var(--ui-color-text-tertiary);"
+            />
             <view v-if="searchText" class="i-lucide-x-circle-fill text-[36rpx] text-[var(--ui-color-text-placeholder)] p-[8rpx]" @click="searchText = ''" />
           </view>
           <text class="text-[30rpx] text-[var(--ui-color-primary)] font-bold ml-[24rpx]" @click="showSearch = false"> 取消 </text>
@@ -235,6 +245,7 @@ const componentCategories = [
       { name: "Sidebar", path: "sidebar", icon: "i-lucide-panel-left", desc: "侧边栏" },
       { name: "IndexBar", path: "index-bar", icon: "i-lucide-sort-asc", desc: "索引栏" },
       { name: "Pagination", path: "pagination", icon: "i-lucide-arrow-right-circle", desc: "分页" },
+      { name: "Segmented", path: "segmented", icon: "i-lucide-toggle-left", desc: "分段控制" },
       { name: "BackTop", path: "back-top", icon: "i-lucide-arrow-up", desc: "回到顶部" },
       { name: "DropdownMenu", path: "dropdown-menu", icon: "i-lucide-list-filter", desc: "下拉菜单" },
       { name: "FloatButton", path: "float-button", icon: "i-lucide-plus", desc: "浮动按钮" },

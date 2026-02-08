@@ -59,6 +59,7 @@ declare module "vue" {
     UiSafeAreaBottom: (typeof import("./ui-safe-area-bottom/ui-safe-area-bottom.vue"))["default"]
     UiSafeAreaTop: (typeof import("./ui-safe-area-top/ui-safe-area-top.vue"))["default"]
     UiSearch: (typeof import("./ui-search/ui-search.vue"))["default"]
+    UiSegmented: (typeof import("./ui-segmented/ui-segmented.vue"))["default"]
     UiSelect: (typeof import("./ui-select/ui-select.vue"))["default"]
     UiSidebar: (typeof import("./ui-sidebar/ui-sidebar.vue"))["default"]
     UiSidebarItem: (typeof import("./ui-sidebar-item/ui-sidebar-item.vue"))["default"]
