@@ -263,6 +263,7 @@ const componentCategories = [
     icon: "i-lucide-layout-grid",
     components: [
       { name: "Layout", path: "layout", icon: "i-lucide-layout-grid", desc: "布局" },
+      { name: "Space", path: "space", icon: "i-lucide-space", desc: "间距" },
       { name: "Grid", path: "grid", icon: "i-lucide-grid-3x3", desc: "宫格" },
       { name: "Header", path: "header", icon: "i-lucide-arrow-up-to-line", desc: "页头" },
       { name: "Footer", path: "footer", icon: "i-lucide-arrow-down-to-line", desc: "页脚" },

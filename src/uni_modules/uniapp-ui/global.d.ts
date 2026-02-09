@@ -61,6 +61,7 @@ declare module "vue" {
     UiSearch: (typeof import("./ui-search/ui-search.vue"))["default"]
     UiSegmented: (typeof import("./ui-segmented/ui-segmented.vue"))["default"]
     UiSelect: (typeof import("./ui-select/ui-select.vue"))["default"]
+    UiSpace: (typeof import("./ui-space/ui-space.vue"))["default"]
     UiSidebar: (typeof import("./ui-sidebar/ui-sidebar.vue"))["default"]
     UiSidebarItem: (typeof import("./ui-sidebar-item/ui-sidebar-item.vue"))["default"]
     UiSkeleton: (typeof import("./ui-skeleton/ui-skeleton.vue"))["default"]
