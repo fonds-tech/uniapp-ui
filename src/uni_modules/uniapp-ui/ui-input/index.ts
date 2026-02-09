@@ -44,11 +44,10 @@ const defaultProps = buildDefaultProps("input", {
   suffixIconSize: undefined,
   suffixIconColor: undefined,
   suffixIconWeight: undefined,
-  clearIcon: "cross",
+  clearIcon: "close",
   clearIconSize: "20rpx",
   clearIconColor: "#fff",
   clearIconWeight: undefined,
-  clearIconBackground: undefined,
   customClass: "",
   customStyle: "",
 })
@@ -142,8 +141,6 @@ export const inputProps = {
   clearIconColor: defaultProps("clearIconColor", { type: String }),
   /** 输入框清除图标粗细 */
   clearIconWeight: defaultProps("clearIconWeight", { type: [Number, String] }),
-  /** 输入框清除图标背景色 */
-  clearIconBackground: defaultProps("clearIconBackground", { type: String }),
   /** 自定义类名 */
   customClass: defaultProps("customClass", { type: String }),
   /** 自定义样式 */

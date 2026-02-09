@@ -44,6 +44,8 @@ UniApp UI 提供了 80+ 高质量组件，按功能分为以下几类：
 | [DateSelect 日期选择](/components/date-select) | 日期选择 |
 | [DateRangeSelect 日期范围](/components/date-range-select) | 日期范围选择 |
 | [Calendar 日历](/components/calendar) | 日历选择 |
+| [ColorPanel 颜色面板](/components/color-panel) | 颜色面板选择 |
+| [ColorPicker 颜色选择器](/components/color-picker) | 弹窗颜色选择 |
 | [Cascader 级联选择](/components/cascader) | 多级联动选择 |
 | [TreeSelect 树形选择](/components/tree-select) | 树形选择器 |
 | [Upload 上传](/components/upload) | 文件上传 |
@@ -115,6 +117,7 @@ UniApp UI 提供了 80+ 高质量组件，按功能分为以下几类：
 | --- | --- |
 | [Row/Col 栅格布局](/components/row) | 栅格布局 |
 | [Grid 宫格](/components/grid) | 宫格布局 |
+| [Space 间距](/components/space) | 间距布局容器 |
 | [Sticky 粘性布局](/components/sticky) | 粘性定位 |
 | [Divider 分割线](/components/divider) | 分割线 |
 | [Header 页头](/components/header) | 页面头部 |

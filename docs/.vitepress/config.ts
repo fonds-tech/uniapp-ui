@@ -66,6 +66,7 @@ export default defineConfig({
           items: [
             { text: "Row/Col 栅格布局", link: "/components/row" },
             { text: "Grid 宫格", link: "/components/grid" },
+            { text: "Space 间距", link: "/components/space" },
             { text: "Sticky 粘性布局", link: "/components/sticky" },
             { text: "Divider 分割线", link: "/components/divider" },
             { text: "SafeAreaTop 顶部安全区", link: "/components/safe-area-top" },
@@ -94,6 +95,8 @@ export default defineConfig({
             { text: "DateSelect 日期选择", link: "/components/date-select" },
             { text: "DateRangeSelect 日期范围选择", link: "/components/date-range-select" },
             { text: "Calendar 日历", link: "/components/calendar" },
+            { text: "ColorPanel 颜色面板", link: "/components/color-panel" },
+            { text: "ColorPicker 颜色选择器", link: "/components/color-picker" },
             { text: "Cascader 级联选择", link: "/components/cascader" },
             { text: "TreeSelect 树形选择", link: "/components/tree-select" },
             { text: "Upload 上传", link: "/components/upload" },

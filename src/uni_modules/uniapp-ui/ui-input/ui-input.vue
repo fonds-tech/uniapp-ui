@@ -104,7 +104,6 @@ const clearStyle = computed(() => {
   const style: any = {}
   style.width = useUnit(props.clearIconSize)
   style.height = useUnit(props.clearIconSize)
-  style.backgroundColor = useColor(props.clearIconBackground)
   return useStyle(style)
 })
 // 占位符样式
@@ -256,13 +255,10 @@ export default {
   &__clear {
     cursor: pointer;
     display: flex;
-    padding: var(--ui-spacing-xxs);
     box-sizing: content-box;
     align-items: center;
     margin-left: var(--ui-spacing-sm);
-    border-radius: var(--ui-radius-round);
     justify-content: center;
-    background-color: var(--ui-color-text-placeholder);
   }
 }
 </style>

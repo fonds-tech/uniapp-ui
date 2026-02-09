@@ -21,12 +21,13 @@ const defaultProps = buildDefaultProps("search", {
   background: "",
   border: "",
   icon: "search",
-  iconSize: "40rpx",
+  iconSize: "40",
   iconColor: "",
   iconWeight: "",
-  clearSize: "32",
-  clearColor: "",
-  clearWeight: "",
+  clearIcon: "close",
+  clearIconSize: "32",
+  clearIconColor: "",
+  clearIconWeight: "",
   action: true,
   actionText: "搜索",
   actionSize: "",
@@ -80,12 +81,14 @@ export const searchProps = {
   iconColor: defaultProps("iconColor", { type: String }),
   /** 搜索图标粗细 */
   iconWeight: defaultProps("iconWeight", { type: String }),
+  /** 清除图标名称 */
+  clearIcon: defaultProps("clearIcon", { type: String }),
   /** 清除图标大小 */
-  clearSize: defaultProps("clearSize", { type: [Number, String] }),
+  clearIconSize: defaultProps("clearIconSize", { type: [Number, String] }),
   /** 清除图标颜色 */
-  clearColor: defaultProps("clearColor", { type: String }),
+  clearIconColor: defaultProps("clearIconColor", { type: String }),
   /** 清除图标粗细 */
-  clearWeight: defaultProps("clearWeight", { type: String }),
+  clearIconWeight: defaultProps("clearIconWeight", { type: String }),
   /** 是否显示右侧操作按钮 */
   action: defaultProps("action", { type: Boolean }),
   /** 右侧操作按钮文字 */
