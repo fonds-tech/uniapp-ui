@@ -43,7 +43,7 @@ const scrollIntoView = ref("")
 // 当前选中的主索引
 const currentMainIndex = computed(() => {
   const index = Number(props.mainActiveIndex)
-  return isNaN(index) ? 0 : index
+  return Number.isNaN(index) ? 0 : index
 })
 
 // 当前分类下的子项列表
@@ -66,7 +66,7 @@ const isMultiple = computed(() => Array.isArray(props.activeId))
 // 最大选择数量
 const maxCount = computed(() => {
   const max = Number(props.max)
-  return isNaN(max) || max <= 0 ? Infinity : max
+  return Number.isNaN(max) || max <= 0 ? Infinity : max
 })
 
 // 根节点样式
