@@ -2,7 +2,7 @@
   <view class="ui-checkbox" :class="[rootClass, props.customClass]" :style="[rootStyle]" @click.stop="onClick">
     <view class="ui-checkbox__icon" :class="[iconClass]" :style="[iconContainerStyle]" @click.stop="onClickIcon">
       <slot name="icon" :checked="checked" :disabled="disabled" :indeterminate="isIndeterminate">
-        <view v-if="checked && !isIndeterminate && actualShape === 'dot'" class="ui-checkbox__dot" :style="[dotStyle]" />
+        <view v-if="!isIndeterminate && actualShape === 'dot'" class="ui-checkbox__dot" :style="[dotStyle]" />
       </slot>
     </view>
     <view v-if="hasLabel" class="ui-checkbox__content" :class="[contentClass]">
@@ -88,7 +88,16 @@ const iconContainerStyle = computed(() => {
   style.borderColor = useColor(prop("iconColor")) || undefined
   style.borderRadius = useUnit(prop("iconRadius")) || undefined
 
-  if (checked.value || isIndeterminate.value) {
+  if (actualShape.value === "dot" && !isIndeterminate.value) {
+    // dot 模式：两个状态都使用粗边框（占尺寸1/3），激活时边框变为主色
+    const size = actualIconSize.value || "36rpx"
+    style.borderWidth = `calc(${size} / 3)`
+    style.backgroundColor = "transparent"
+    if (checked.value) {
+      const color = primaryColor.value || "var(--ui-color-primary)"
+      style.borderColor = color
+    }
+  } else if (checked.value || isIndeterminate.value) {
     const color = primaryColor.value || "var(--ui-color-primary)"
     style.borderColor = color
     style.backgroundColor = color
@@ -302,8 +311,8 @@ $indeterminate-icon: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/sv
   }
 
   &__dot {
-    width: 40%;
-    height: 40%;
+    width: 50%;
+    height: 50%;
     border-radius: 2rpx;
     background-color: var(--ui-color-text-inverse);
   }
