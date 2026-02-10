@@ -208,13 +208,21 @@ export default {
   }
 }
 
-@mixin button-size($height, $font-size) {
+@mixin button-size($height, $font-size, $padding-x) {
   height: $height;
+  padding: 0 $padding-x;
   font-size: $font-size;
 }
 
 .ui-button {
-  height: var(--ui-size-normal);
+  // 按钮尺寸变量
+  --ui-button-height-mini: 48rpx;
+  --ui-button-height-large: 88rpx;
+  --ui-button-height-small: 56rpx;
+  --ui-button-height-medium: 64rpx;
+  --ui-button-height-normal: 76rpx;
+
+  height: var(--ui-button-height-normal);
   margin: 0;
   display: flex;
   overflow: visible;
@@ -286,16 +294,19 @@ export default {
   }
 
   &--mini {
-    @include button-size(var(--ui-size-mini), var(--ui-font-size-xs));
+    @include button-size(var(--ui-button-height-mini), var(--ui-font-size-xs), var(--ui-spacing-xs));
   }
   &--small {
-    @include button-size(var(--ui-size-small), var(--ui-font-size-sm));
+    @include button-size(var(--ui-button-height-small), var(--ui-font-size-xs), var(--ui-spacing-sm));
+  }
+  &--medium {
+    @include button-size(var(--ui-button-height-medium), var(--ui-font-size-sm), var(--ui-spacing-sm));
   }
   &--normal {
-    @include button-size(var(--ui-size-normal), var(--ui-font-size-md));
+    @include button-size(var(--ui-button-height-normal), var(--ui-font-size-md), var(--ui-spacing-md));
   }
   &--large {
-    @include button-size(var(--ui-size-large), var(--ui-font-size-md));
+    @include button-size(var(--ui-button-height-large), var(--ui-font-size-md), var(--ui-spacing-md));
   }
 
   &--primary {

@@ -6,7 +6,7 @@ import { buildDefaultProps } from "../utils/props"
 export type ButtonType = "primary" | "success" | "warning" | "danger" | "info" | "default" | "error"
 
 /** 按钮尺寸 */
-export type ButtonSize = "mini" | "small" | "normal" | "large"
+export type ButtonSize = "mini" | "small" | "normal" | "medium" | "large"
 
 /** 按钮表单类型 */
 export type ButtonFormType = "submit" | "reset"
