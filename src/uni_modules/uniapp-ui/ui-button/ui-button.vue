@@ -110,6 +110,10 @@ const buttonStyle = computed(() => {
   styles.borderRadius = useUnit(props.borderRadius)
   styles.marginLeft = useUnit(props.marginLeft)
   styles.marginRight = useUnit(props.marginRight)
+
+  if (props.padding) {
+    styles.padding = `0 ${useUnit(props.padding)}`
+  }
   return useStyle({ ...styles, ...useStyle(props.customStyle) })
 })
 // 按钮类名数组

@@ -58,6 +58,7 @@ const defaultProps = buildDefaultProps("button", {
   color: undefined,
   width: undefined,
   height: undefined,
+  padding: undefined,
   disabled: false,
   loading: false,
   shadow: undefined,
@@ -122,6 +123,8 @@ export const buttonProps = {
   width: defaultProps("width", { type: [Number, String] }),
   /** 按钮高度 */
   height: defaultProps("height", { type: [Number, String] }),
+  /** 按钮左右内边距 */
+  padding: defaultProps("padding", { type: [Number, String] }),
   /** 是否禁用 */
   disabled: defaultProps("disabled", { type: Boolean }),
   /** 是否加载中 */
