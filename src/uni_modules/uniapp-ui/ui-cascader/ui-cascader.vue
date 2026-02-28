@@ -10,6 +10,8 @@
     :background="props.background"
     :safe-area-inset-bottom="props.safeAreaInsetBottom"
     :lazy-render="props.lazyRender"
+    :height="props.height"
+    :max-height="props.maxHeight"
     @update:show="handleUpdateShow"
   >
     <view class="ui-cascader" :class="[customClass]" :style="[style]">
@@ -58,7 +60,7 @@
                 <view class="option-text">
                   {{ option[textKey] }}
                 </view>
-                <ui-icon v-if="item.selected && option[valueKey] === item.selected[valueKey]" name="checked" />
+                <ui-icon v-if="item.selected && option[valueKey] === item.selected[valueKey]" name="check" />
               </view>
             </view>
           </scroll-view>
@@ -383,7 +385,7 @@ export default {
     &__line {
       left: 0;
       bottom: 0;
-      height: 6rpx;
+      height: 4rpx;
       position: absolute;
       transition: all var(--ui-transition-duration);
       border-radius: var(--ui-radius-sm);
@@ -392,6 +394,7 @@ export default {
   }
 
   &__swiper {
+    flex: 1;
     padding-top: var(--ui-spacing-md);
 
     &__item {
@@ -423,6 +426,8 @@ export default {
     gap: var(--ui-spacing-md);
     display: grid;
     grid-template-columns: repeat(1, 1fr);
+    padding-bottom: var(--ui-spacing-md);
+
     &__option {
       display: flex;
       padding: 0 var(--ui-spacing-md);

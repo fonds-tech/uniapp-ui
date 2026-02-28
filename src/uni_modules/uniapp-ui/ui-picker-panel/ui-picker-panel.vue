@@ -92,7 +92,7 @@ const indicatorStyle = computed(() => {
   return useStyle(
     {
       // 指示器高度与单列高度保持一致
-      height: useUnit(props.columnHeight),
+      height: `${useUnitToPx(props.columnHeight)}px`,
     },
     "string",
   )

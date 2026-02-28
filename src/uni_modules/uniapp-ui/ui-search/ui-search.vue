@@ -1,6 +1,9 @@
 <template>
   <view class="ui-search" :class="[props.customClass]" :style="[rootStyle]" role="search" @click="onClick">
     <view class="ui-search__content" :class="[contentClass]" :style="[contentStyle]">
+      <view class="ui-search__left" v-if="$slots.left">
+        <slot name="left" />
+      </view>
       <view class="ui-search__icon">
         <slot name="icon">
           <ui-icon :name="props.icon" :size="props.iconSize" :color="props.iconColor" :weight="props.iconWeight" />

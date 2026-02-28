@@ -482,8 +482,9 @@ export default {
       &::after {
         color: var(--ui-color-danger);
         content: "*";
-        margin-top: var(--ui-spacing-xs);
+        line-height: 1;
         margin-left: var(--ui-spacing-xs);
+        padding-top: var(--ui-spacing-xs);
       }
     }
   }

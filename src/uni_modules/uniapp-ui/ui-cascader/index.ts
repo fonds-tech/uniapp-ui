@@ -35,6 +35,8 @@ const defaultProps = buildDefaultProps("cascader", {
   closeIconWeight: undefined,
   beforeChange: undefined,
   fieldKeys: () => ({}),
+  height: undefined,
+  maxHeight: undefined,
   customClass: undefined,
   customStyle: undefined,
 })
@@ -96,6 +98,10 @@ export const cascaderProps = {
   beforeChange: defaultProps("beforeChange", { type: Function as PropType<Interceptor> }),
   /** 数据字段 */
   fieldKeys: defaultProps("fieldKeys", { type: Object as PropType<CascaderFieldKeys> }),
+  /** 高度 */
+  height: defaultProps("height", { type: [Number, String] }),
+  /** 最大高度 */
+  maxHeight: defaultProps("maxHeight", { type: [Number, String] }),
   /** 自定义类名 */
   customClass: defaultProps("customClass", { type: String }),
   /** 自定义样式 */

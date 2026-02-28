@@ -349,6 +349,9 @@ export default {
     color: var(--ui-color-text-inverse);
     text-align: center;
     white-space: pre-wrap;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    max-width: 100%;
   }
 }
 </style>

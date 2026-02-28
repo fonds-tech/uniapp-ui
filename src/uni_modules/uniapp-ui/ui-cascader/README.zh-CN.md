@@ -44,6 +44,8 @@ UiCascader 组件，属性与事件以源码注释为准。
 | closeIconWeight     | 关闭图标粗细                                                    | [Number, String]                                      | -               | -      |
 | beforeChange        | 输入值变化前的回调函数，返回 false 可阻止输入，支持返回 Promise | Function as PropType<Interceptor>                     | -               | -      |
 | fieldKeys           | 数据字段                                                        | Object as PropType<CascaderFieldKeys>                 | () => ({})      | -      |
+| height              | 高度                                                            | [Number, String]                                      | -               | -      |
+| maxHeight           | 最大高度                                                        | [Number, String]                                      | -               | -      |
 | customClass         | 自定义类名                                                      | string                                                | -               | -      |
 | customStyle         | 自定义样式                                                      | [String, Object] as PropType<string \| CSSProperties> | -               | -      |
 
