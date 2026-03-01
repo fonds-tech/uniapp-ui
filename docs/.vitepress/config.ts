@@ -94,6 +94,7 @@ export default defineConfig({
             { text: "DatePicker 日期选择", link: "/components/date-picker" },
             { text: "DatePanel 日期面板", link: "/components/date-panel" },
             { text: "DateSelect 日期选择", link: "/components/date-select" },
+            { text: "DateRangePicker 日期范围选择器", link: "/components/date-range-picker" },
             { text: "DateRangeSelect 日期范围选择", link: "/components/date-range-select" },
             { text: "Calendar 日历", link: "/components/calendar" },
             { text: "ColorPanel 颜色面板", link: "/components/color-panel" },

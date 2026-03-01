@@ -42,6 +42,7 @@ UniApp UI 提供了 80+ 高质量组件，按功能分为以下几类：
 | [PickerPanel 选择器面板](/components/picker-panel) | 面板选择器 |
 | [DatePicker 日期选择](/components/date-picker) | 日期时间选择 |
 | [DateSelect 日期选择](/components/date-select) | 日期选择 |
+| [DateRangePicker 日期范围选择器](/components/date-range-picker) | 纯弹窗日期范围选择 |
 | [DateRangeSelect 日期范围](/components/date-range-select) | 日期范围选择 |
 | [Calendar 日历](/components/calendar) | 日历选择 |
 | [ColorPanel 颜色面板](/components/color-panel) | 颜色面板选择 |

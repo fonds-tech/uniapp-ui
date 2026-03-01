@@ -434,7 +434,7 @@ describe("uiDateRangeSelect 组件", () => {
   })
 
   describe("rightIcon 属性测试", () => {
-    it("默认 rightIcon 应该是 right", () => {
+    it("默认 rightIcon 应该是 arrow", () => {
       const wrapper = mount(UiDateRangeSelect, {
         global: {
           stubs: {
@@ -443,7 +443,7 @@ describe("uiDateRangeSelect 组件", () => {
           },
         },
       })
-      expect(wrapper.props("rightIcon")).toBe("right")
+      expect(wrapper.props("rightIcon")).toBe("arrow")
     })
 
     it("应该支持自定义右侧图标", () => {

@@ -20,6 +20,7 @@ declare module "vue" {
     UiConfigProvider: (typeof import("./ui-config-provider/ui-config-provider.vue"))["default"]
     UiCountDown: (typeof import("./ui-count-down/ui-count-down.vue"))["default"]
     UiDatePicker: (typeof import("./ui-date-picker/ui-date-picker.vue"))["default"]
+    UiDateRangePicker: (typeof import("./ui-date-range-picker/ui-date-range-picker.vue"))["default"]
     UiDateSelect: (typeof import("./ui-date-select/ui-date-select.vue"))["default"]
     UiDateRangeSelect: (typeof import("./ui-date-range-select/ui-date-range-select.vue"))["default"]
     UiDialog: (typeof import("./ui-dialog/ui-dialog.vue"))["default"]

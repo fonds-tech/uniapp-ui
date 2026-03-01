@@ -186,6 +186,7 @@ const componentCategories = [
       { name: "DatePicker", path: "date-picker", icon: "i-lucide-calendar", desc: "日期" },
       { name: "DatePanel", path: "date-panel", icon: "i-lucide-calendar-days", desc: "日期面板" },
       { name: "DateSelect", path: "date-select", icon: "i-lucide-calendar-check", desc: "日期选择" },
+      { name: "DateRangePicker", path: "date-range-picker", icon: "i-lucide-calendar-range", desc: "日期范围选择器" },
       { name: "DateRangeSelect", path: "date-range-select", icon: "i-lucide-calendar-range", desc: "日期范围" },
       { name: "Calendar", path: "calendar", icon: "i-lucide-calendar-days", desc: "日历" },
       { name: "Cascader", path: "cascader", icon: "i-lucide-git-merge", desc: "级联" },

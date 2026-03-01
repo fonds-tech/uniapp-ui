@@ -71,6 +71,7 @@ const componentCategories = [
       { name: "Picker", path: "picker", icon: "📅", desc: "选择器组件" },
       { name: "DatePicker", path: "date-picker", icon: "📆", desc: "日期选择器" },
       { name: "DatePanel", path: "date-panel", icon: "🗓️", desc: "日期面板组件" },
+      { name: "DateRangePicker", path: "date-range-picker", icon: "📅", desc: "日期范围选择器" },
       { name: "Calendar", path: "calendar", icon: "📅", desc: "日历组件" },
       { name: "Cascader", path: "cascader", icon: "🔗", desc: "级联选择器" },
       { name: "Upload", path: "upload", icon: "📤", desc: "文件上传组件" },

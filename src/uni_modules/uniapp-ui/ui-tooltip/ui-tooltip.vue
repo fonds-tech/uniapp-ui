@@ -76,6 +76,8 @@ const rootStyle = computed(() => {
 const popupStyle = computed(() => {
   const style: CSSProperties = {
     zIndex: zIndex.value,
+    position: "absolute",
+    minWidth: "10px",
   }
   if (props.bgColor) {
     style.backgroundColor = useColor(props.bgColor)
@@ -315,12 +317,6 @@ export default {
     position: absolute;
     visibility: hidden;
     pointer-events: none;
-  }
-
-  // 弹出框定位容器
-  :deep(.ui-tooltip__pos) {
-    position: absolute;
-    min-width: 10px;
   }
 
   // 弹出框

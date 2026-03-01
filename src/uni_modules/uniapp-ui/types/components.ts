@@ -79,6 +79,7 @@ import type { TextHighlightProps } from "../ui-text-highlight"
 import type { ConfigProviderProps } from "../ui-config-provider"
 import type { SafeAreaBottomProps } from "../ui-safe-area-bottom"
 import type { SkeletonAvatarProps } from "../ui-skeleton-avatar"
+import type { DateRangePickerProps } from "../ui-date-range-picker"
 import type { DateRangeSelectProps } from "../ui-date-range-select"
 import type { SkeletonParagraphProps } from "../ui-skeleton-paragraph"
 
@@ -100,6 +101,7 @@ export interface Components {
   "config-provider": Partial<ConfigProviderProps>
   "count-down": Partial<CountDownProps>
   "date-picker": Partial<DatePickerProps>
+  "date-range-picker": Partial<DateRangePickerProps>
   "date-range-select": Partial<DateRangeSelectProps>
   "date-select": Partial<DateSelectProps>
   dialog: Partial<DialogProps>
