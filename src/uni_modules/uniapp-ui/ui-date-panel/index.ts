@@ -1,5 +1,5 @@
 import type DatePanel from "./ui-date-panel.vue"
-import type { CSSProperties, ExtractPropTypes, PropType } from "vue"
+import type { PropType, CSSProperties, ExtractPropTypes } from "vue"
 import { buildDefaultProps } from "../utils/props"
 
 /** DatePanel 列类型 */
@@ -16,6 +16,9 @@ export type DatePanelColumnFilter = (type: string, options: DatePanelOption[], v
 
 /** 列格式化函数 */
 export type DatePanelColumnFormatter = (type: string, option: DatePanelOption) => DatePanelOption
+
+/** 步进配置 */
+export type DatePanelSteps = Partial<Record<DatePanelColumnType, number>>
 
 /** 选中值拆解结构 */
 export interface DatePanelSelectedDateParts {
@@ -41,6 +44,7 @@ const defaultProps = buildDefaultProps("date-panel", {
   minDate: undefined,
   maxDate: undefined,
   format: "YYYY-MM-DD HH:mm:ss",
+  steps: undefined,
   columnFilter: undefined,
   columnFormatter: (type: string, option: DatePanelOption) => option,
   columnHeight: "88rpx",
@@ -72,6 +76,13 @@ export const datePanelProps = {
   maxDate: defaultProps("maxDate", { type: [String, Date, Number] }),
   /** 时间格式 */
   format: defaultProps("format", { type: String }),
+  /**
+   * 列步进配置
+   * @example { minute: 15 } // 15分钟间隔
+   * @example { hour: 2, minute: 30 } // 2小时间隔 + 30分钟间隔
+   * @example { month: 3 } // 季度选择
+   */
+  steps: defaultProps("steps", { type: Object as PropType<DatePanelSteps> }),
   /** 选项过滤函数 */
   columnFilter: defaultProps("columnFilter", { type: Function as PropType<DatePanelColumnFilter> }),
   /** 选项格式化函数 */
