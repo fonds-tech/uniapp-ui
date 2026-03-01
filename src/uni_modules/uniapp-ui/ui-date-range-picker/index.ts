@@ -140,7 +140,7 @@ export const dateRangePickerProps = {
 
 export const dateRangePickerEmits = {
   /** 更新显示状态事件 */
-  "update:show": (show: boolean) => show,
+  "update:show": (show: boolean) => typeof show === "boolean",
   /** 更新绑定值事件 */
   "update:modelValue": (value: DateRangePickerValue) => value,
   /** 打开事件 */
