@@ -90,7 +90,7 @@ describe("uiDateRangeSelect 组件", () => {
       await waitForTransition()
 
       expect(wrapper.emitted("click")?.[0]).toEqual(["start"])
-      expect(wrapper.find(".ui-popup-stub").attributes("data-show")).toBe("true")
+      expect(wrapper.findComponent({ name: "ui-date-range-picker" }).props("show")).toBe(true)
     })
 
     it("disabled 时点击不应触发 click", async () => {
@@ -111,7 +111,7 @@ describe("uiDateRangeSelect 组件", () => {
       await waitForTransition()
 
       expect(wrapper.emitted("click")).toBeFalsy()
-      expect(wrapper.find(".ui-popup-stub").attributes("data-show")).toBe("false")
+      expect(wrapper.findComponent({ name: "ui-date-range-picker" }).props("show")).toBe(false)
     })
 
     it("displayFormatter 应生效", async () => {

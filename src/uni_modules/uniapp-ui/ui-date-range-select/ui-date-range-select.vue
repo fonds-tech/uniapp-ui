@@ -1,7 +1,7 @@
 <template>
   <view class="ui-date-range-select" :class="[classs, props.customClass]" :style="[style]">
     <view class="ui-date-range-select__trigger" :hover-class="hoverClass" :hover-stay-time="50">
-      <view class="ui-date-range-select__item ui-date-range-select__start" :class="{ 'is-active': activeType === 'start' && visible }" @click="handleClick('start')">
+      <view class="ui-date-range-select__item ui-date-range-select__start" @click="handleClick('start')">
         <slot name="start" :text="startDisplayText" :value="startValue" :placeholder="props.startPlaceholder">
           <text v-if="startDisplayText" class="ui-date-range-select__text" :style="[textStyle]">{{ startDisplayText }}</text>
           <text v-else class="ui-date-range-select__placeholder" :style="[placeholderStyle]">{{ props.startPlaceholder }}</text>
@@ -14,7 +14,7 @@
         </slot>
       </view>
 
-      <view class="ui-date-range-select__item ui-date-range-select__end" :class="{ 'is-active': activeType === 'end' && visible }" @click="handleClick('end')">
+      <view class="ui-date-range-select__item ui-date-range-select__end" @click="handleClick('end')">
         <slot name="end" :text="endDisplayText" :value="endValue" :placeholder="props.endPlaceholder">
           <text v-if="endDisplayText" class="ui-date-range-select__text" :style="[textStyle]">{{ endDisplayText }}</text>
           <text v-else class="ui-date-range-select__placeholder" :style="[placeholderStyle]">{{ props.endPlaceholder }}</text>
@@ -28,8 +28,18 @@
       </view>
     </view>
 
-    <ui-popup
-      :show="visible"
+    <ui-date-range-picker
+      ref="rangePickerRef"
+      v-model:show="visible"
+      :model-value="props.modelValue"
+      :active-type="pickerActiveType"
+      :auto-switch-to-end="props.autoSwitchToEnd"
+      :columns="props.columns"
+      :min-date="props.minDate"
+      :max-date="props.maxDate"
+      :format="props.format"
+      :column-filter="props.columnFilter"
+      :column-formatter="props.columnFormatter"
       :mode="props.mode"
       :border-radius="props.borderRadius"
       :close-on-click-overlay="props.closeOnClickOverlay"
@@ -38,310 +48,79 @@
       :z-index="props.zIndex"
       :background="props.background"
       :safe-area-inset-bottom="props.safeAreaInsetBottom"
-      @update:show="handleUpdateShow"
+      :show-header="props.showHeader"
+      :title="props.title"
+      :start-placeholder="props.startPlaceholder"
+      :end-placeholder="props.endPlaceholder"
+      :cancel-text="props.cancelText"
+      :confirm-text="props.confirmText"
+      :column-height="props.columnHeight"
+      :visible-column-num="props.visibleColumnNum"
+      :column-size="props.columnSize"
+      :column-color="props.columnColor"
+      :column-weight="props.columnWeight"
+      :active-column-size="props.activeColumnSize"
+      :active-column-color="props.activeColumnColor"
+      :active-column-weight="props.activeColumnWeight"
+      @update:model-value="handleUpdateModelValue"
       @open="emits('open')"
       @opened="emits('opened')"
-      @close="emits('close', $event)"
-      @closed="emits('closed', $event)"
+      @close="handleClose"
+      @closed="handleClosed"
+      @change="emits('change', $event)"
+      @cancel="handleCancel"
+      @confirm="handleConfirm"
     >
-      <template #header>
-        <slot name="header">
-          <view v-if="props.showHeader" class="ui-date-range-select__header">
-            <view class="ui-date-range-select__header__cancel" @click="handleCancel">
-              <slot name="cancel">
-                <ui-button text text-color="#969799">{{ props.cancelText }}</ui-button>
-              </slot>
-            </view>
-
-            <view class="ui-date-range-select__tabs">
-              <view class="ui-date-range-select__tab" :class="{ 'is-active': activeType === 'start' }" @click="switchTab('start')">
-                <text class="ui-date-range-select__tab-text">{{ startTabText }}</text>
-              </view>
-              <view class="ui-date-range-select__tab" :class="{ 'is-active': activeType === 'end' }" @click="switchTab('end')">
-                <text class="ui-date-range-select__tab-text">{{ endTabText }}</text>
-              </view>
-            </view>
-
-            <view class="ui-date-range-select__header__confirm" @click="handleConfirm">
-              <slot name="confirm">
-                <ui-button text>{{ props.confirmText }}</ui-button>
-              </slot>
-            </view>
-          </view>
-        </slot>
+      <template v-if="$slots.header" #header>
+        <slot name="header" />
       </template>
-
-      <view class="ui-date-range-select__picker">
-        <picker-view :style="[viewStyle]" :value="pickerIndexes" :indicator-style="optionStyle" @change="onPickerChange">
-          <picker-view-column v-for="(column, colIdx) in pickerColumns" :key="colIdx">
-            <view
-              v-for="(item, itemIdx) in column"
-              :key="itemIdx"
-              class="ui-date-range-select__picker__option"
-              :class="{ 'is-active': isActiveColumn(colIdx, itemIdx) }"
-              :style="[columnStyle(colIdx, itemIdx)]"
-            >
-              {{ item?.text ?? "" }}
-            </view>
-          </picker-view-column>
-        </picker-view>
-      </view>
-
-      <template #footer>
-        <slot name="footer" :confirm="handleConfirm" :cancel="handleCancel" />
+      <template v-if="$slots.cancel" #cancel>
+        <slot name="cancel" />
       </template>
-    </ui-popup>
+      <template v-if="$slots.confirm" #confirm>
+        <slot name="confirm" />
+      </template>
+      <template v-if="$slots.footer" #footer="slotProps">
+        <slot name="footer" :confirm="slotProps.confirm" :cancel="slotProps.cancel" />
+      </template>
+    </ui-date-range-picker>
   </view>
 </template>
 
 <script setup lang="ts">
-import type { DatePickerOption, DatePickerColumnType } from "../ui-date-picker"
-import type { DateRangeSelectValue, DateRangeSelectActiveType, DateRangeSelectCancelData, DateRangeSelectChangeData, DateRangeSelectConfirmData } from "./index"
-import { isDef } from "../utils/check"
-import { padZero } from "../utils/utils"
+import type {
+  DateRangePickerValue,
+  DateRangePickerInstance,
+  DateRangePickerCancelData,
+  DateRangePickerConfirmData,
+} from "../ui-date-range-picker"
+import type {
+  DateRangeSelectValue,
+  DateRangeSelectActiveType,
+  DateRangeSelectCancelData,
+  DateRangeSelectConfirmData,
+} from "./index"
+import UiDateRangePicker from "../ui-date-range-picker/ui-date-range-picker.vue"
 import { formItemKey } from "../ui-form-item"
+import { ref, watch, computed, useSlots } from "vue"
+import { useUnit, useColor, useStyle, useParent } from "../hooks"
 import { dateRangeSelectEmits, dateRangeSelectProps } from "./index"
-import { ref, toRaw, watch, computed, nextTick, useSlots } from "vue"
-import { useUnit, useColor, useStyle, useParent, useUnitToPx } from "../hooks"
 
 defineOptions({ name: "ui-date-range-select" })
 
 const props = defineProps(dateRangeSelectProps)
 const emits = defineEmits(dateRangeSelectEmits)
 const slots = useSlots()
-
 const { parent } = useParent(formItemKey)
 
-// ==================== 响应式状态 ====================
-
-// 开始日期的实际值（已确认的值）
-const startValue = ref<string>("")
-// 结束日期的实际值（已确认的值）
-const endValue = ref<string>("")
-// 当前激活的日期类型：'start' 开始日期 | 'end' 结束日期
-const activeType = ref<DateRangeSelectActiveType>("start")
-// 弹窗显示状态
+const rangePickerRef = ref<DateRangePickerInstance>()
 const visible = ref(false)
-// 开始日期的临时值（弹窗内编辑时使用，未确认）
-const tempStartValue = ref<string>("")
-// 结束日期的临时值（弹窗内编辑时使用，未确认）
-const tempEndValue = ref<string>("")
+const pickerActiveType = ref<DateRangeSelectActiveType>("start")
+const startValue = ref("")
+const endValue = ref("")
 
-// 当前 picker 中选中的年
-const currentYear = ref(new Date().getFullYear())
-// 当前 picker 中选中的月
-const currentMonth = ref(new Date().getMonth() + 1)
-// 当前 picker 中选中的日
-const currentDay = ref(new Date().getDate())
-// 当前 picker 中选中的时
-const currentHour = ref(new Date().getHours())
-// 当前 picker 中选中的分
-const currentMinute = ref(new Date().getMinutes())
-// 当前 picker 中选中的秒
-const currentSecond = ref(new Date().getSeconds())
-
-// ==================== 边界计算 ====================
-
-/**
- * 计算当前选择的最小边界
- * 选择结束日期时，不能早于开始日期
- * 选择开始日期时，使用 props.minDate 或默认的过去10年
- */
-const minBound = computed(() => {
-  // 选择结束日期时，最小日期不能早于开始日期
-  if (activeType.value === "end" && tempStartValue.value) {
-    const startParsed = parseDate(tempStartValue.value)
-    if (props.minDate) {
-      const minParsed = parseDate(props.minDate)
-      // 取较大者：确保不小于开始日期，也不小于 minDate
-      if (
-        startParsed.y > minParsed.y ||
-        (startParsed.y === minParsed.y && startParsed.m > minParsed.m) ||
-        (startParsed.y === minParsed.y && startParsed.m === minParsed.m && startParsed.d > minParsed.d)
-      ) {
-        return startParsed
-      }
-      return minParsed
-    }
-    return startParsed
-  }
-
-  if (props.minDate) {
-    return parseDate(props.minDate)
-  }
-  const y = new Date().getFullYear() - 10
-  return { y, m: 1, d: 1, h: 0, mi: 0, s: 0 }
-})
-
-/**
- * 计算当前选择的最大边界
- * 选择开始日期时，不能晚于结束日期
- * 选择结束日期时，使用 props.maxDate 或默认的未来10年
- */
-const maxBound = computed(() => {
-  // 选择开始日期时，最大日期不能晚于结束日期
-  if (activeType.value === "start" && tempEndValue.value) {
-    const endParsed = parseDate(tempEndValue.value)
-    if (props.maxDate) {
-      const maxParsed = parseDate(props.maxDate)
-      // 取较小者：确保不大于结束日期，也不大于 maxDate
-      if (
-        endParsed.y < maxParsed.y ||
-        (endParsed.y === maxParsed.y && endParsed.m < maxParsed.m) ||
-        (endParsed.y === maxParsed.y && endParsed.m === maxParsed.m && endParsed.d < maxParsed.d)
-      ) {
-        return endParsed
-      }
-      return maxParsed
-    }
-    return endParsed
-  }
-
-  if (props.maxDate) {
-    return parseDate(props.maxDate)
-  }
-  const y = new Date().getFullYear() + 10
-  return { y, m: 12, d: 31, h: 23, mi: 59, s: 59 }
-})
-
-// ==================== Picker 列数据生成 ====================
-
-// 年份列数据
-const yearColumn = computed(() => genOptions(minBound.value.y, maxBound.value.y, "year"))
-
-// 月份列数据（根据当前选中年份动态计算范围）
-const monthColumn = computed(() => {
-  const isMinYear = currentYear.value === minBound.value.y
-  const isMaxYear = currentYear.value === maxBound.value.y
-  const minM = isMinYear ? minBound.value.m : 1
-  const maxM = isMaxYear ? maxBound.value.m : 12
-  return genOptions(minM, maxM, "month")
-})
-
-// 日期列数据（根据当前选中年月动态计算范围，考虑闰年和各月天数）
-const dayColumn = computed(() => {
-  const isMinYear = currentYear.value === minBound.value.y
-  const isMaxYear = currentYear.value === maxBound.value.y
-  const isMinMonth = currentMonth.value === minBound.value.m
-  const isMaxMonth = currentMonth.value === maxBound.value.m
-  const minD = isMinYear && isMinMonth ? minBound.value.d : 1
-  const maxDays = getDaysInMonth(currentYear.value, currentMonth.value)
-  const maxD = isMaxYear && isMaxMonth ? Math.min(maxBound.value.d, maxDays) : maxDays
-  return genOptions(minD, maxD, "day")
-})
-
-// 小时列数据（根据当前选中年月日动态计算范围）
-const hourColumn = computed(() => {
-  const isMinYear = currentYear.value === minBound.value.y
-  const isMaxYear = currentYear.value === maxBound.value.y
-  const isMinMonth = currentMonth.value === minBound.value.m
-  const isMaxMonth = currentMonth.value === maxBound.value.m
-  const isMinDay = currentDay.value === minBound.value.d
-  const isMaxDay = currentDay.value === maxBound.value.d
-  const minH = isMinYear && isMinMonth && isMinDay ? minBound.value.h : 0
-  const maxH = isMaxYear && isMaxMonth && isMaxDay ? maxBound.value.h : 23
-  return genOptions(minH, maxH, "hour")
-})
-
-// 分钟列数据（根据当前选中年月日小时动态计算范围）
-const minuteColumn = computed(() => {
-  const isMinYear = currentYear.value === minBound.value.y
-  const isMaxYear = currentYear.value === maxBound.value.y
-  const isMinMonth = currentMonth.value === minBound.value.m
-  const isMaxMonth = currentMonth.value === maxBound.value.m
-  const isMinDay = currentDay.value === minBound.value.d
-  const isMaxDay = currentDay.value === maxBound.value.d
-  const isMinHour = currentHour.value === minBound.value.h
-  const isMaxHour = currentHour.value === maxBound.value.h
-  const minMi = isMinYear && isMinMonth && isMinDay && isMinHour ? minBound.value.mi : 0
-  const maxMi = isMaxYear && isMaxMonth && isMaxDay && isMaxHour ? maxBound.value.mi : 59
-  return genOptions(minMi, maxMi, "minute")
-})
-
-// 秒列数据（根据当前选中年月日小时分钟动态计算范围）
-const secondColumn = computed(() => {
-  const isMinYear = currentYear.value === minBound.value.y
-  const isMaxYear = currentYear.value === maxBound.value.y
-  const isMinMonth = currentMonth.value === minBound.value.m
-  const isMaxMonth = currentMonth.value === maxBound.value.m
-  const isMinDay = currentDay.value === minBound.value.d
-  const isMaxDay = currentDay.value === maxBound.value.d
-  const isMinHour = currentHour.value === minBound.value.h
-  const isMaxHour = currentHour.value === maxBound.value.h
-  const isMinMinute = currentMinute.value === minBound.value.mi
-  const isMaxMinute = currentMinute.value === maxBound.value.mi
-  const minS = isMinYear && isMinMonth && isMinDay && isMinHour && isMinMinute ? minBound.value.s : 0
-  const maxS = isMaxYear && isMaxMonth && isMaxDay && isMaxHour && isMaxMinute ? maxBound.value.s : 59
-  return genOptions(minS, maxS, "second")
-})
-
-// 列类型到列数据的映射表
-const columnMap: Record<DatePickerColumnType, typeof yearColumn> = {
-  year: yearColumn,
-  month: monthColumn,
-  day: dayColumn,
-  hour: hourColumn,
-  minute: minuteColumn,
-  second: secondColumn,
-}
-
-// ==================== Picker 相关计算属性 ====================
-
-// Picker 的所有列数据
-const pickerColumns = computed(() => {
-  return props.columns.map((type) => {
-    const col = columnMap[type]
-    return col ? col.value : []
-  })
-})
-
-// Picker 的选中索引数组
-const pickerIndexes = computed(() => {
-  return props.columns.map((type, colIdx) => {
-    const column = pickerColumns.value[colIdx]
-    if (!column || column.length === 0) return 0
-    const currentVal = pad(getCurrentValue(type))
-    const idx = column.findIndex((item) => item?.value === currentVal)
-    return idx >= 0 ? idx : 0
-  })
-})
-
-// Picker 视图容器的样式
-const viewStyle = computed(() => {
-  const height = useUnitToPx(props.columnHeight) * +props.visibleColumnNum
-  return useStyle({ height: `${height}px` })
-})
-
-// Picker 选项的样式
-const optionStyle = computed(() => {
-  return useStyle({ height: useUnit(props.columnHeight) }, "string")
-})
-
-// 判断指定列的指定项是否为当前选中项
-const isActiveColumn = computed(() => {
-  return (columnIndex: number, index: number) => {
-    return pickerIndexes.value[columnIndex] === index
-  }
-})
-
-// 获取指定列指定项的样式
-const columnStyle = computed(() => {
-  return (columnIndex: number, index: number) => {
-    const isActive = isActiveColumn.value(columnIndex, index)
-    return useStyle({
-      fontSize: useUnit(isActive ? props.activeColumnSize : props.columnSize),
-      color: isActive ? useColor(props.activeColumnColor) : useColor(props.columnColor),
-      fontWeight: isActive ? props.activeColumnWeight : props.columnWeight,
-    })
-  }
-})
-
-// ==================== 样式相关计算属性 ====================
-
-// 组件是否可交互（非禁用且非只读）
 const isInteractive = computed(() => !props.disabled && !props.readonly)
 
-// 组件类名数组
 const classs = computed(() => {
   const list: string[] = []
   if (props.disabled) list.push("ui-date-range-select--disabled")
@@ -349,17 +128,14 @@ const classs = computed(() => {
   return list
 })
 
-// 悬停效果类名
 const hoverClass = computed(() => {
   return isInteractive.value ? "ui-date-range-select--active" : ""
 })
 
-// 组件根元素样式
 const style = computed(() => {
   return useStyle(props.customStyle)
 })
 
-// 选中日期的文本样式
 const textStyle = computed(() => {
   const style: Record<string, string | number> = {}
   style.color = useColor(props.textColor)
@@ -368,7 +144,6 @@ const textStyle = computed(() => {
   return useStyle(style)
 })
 
-// 占位符文本样式
 const placeholderStyle = computed(() => {
   const style: Record<string, string | number> = {}
   style.color = useColor(props.placeholderColor)
@@ -377,7 +152,6 @@ const placeholderStyle = computed(() => {
   return useStyle(style)
 })
 
-// 分隔符文本样式
 const separatorStyle = computed(() => {
   const style: Record<string, string | number> = {}
   if (props.separatorColor) {
@@ -386,14 +160,10 @@ const separatorStyle = computed(() => {
   return useStyle(style)
 })
 
-// 是否显示右侧图标
 const showRightIcon = computed(() => {
   return Boolean(slots["right-icon"] || props.rightIcon)
 })
 
-// ==================== 显示文本计算 ====================
-
-// 开始日期的显示文本
 const startDisplayText = computed(() => {
   if (!startValue.value) return ""
   if (props.displayFormatter) {
@@ -402,7 +172,6 @@ const startDisplayText = computed(() => {
   return formatDisplayText(startValue.value)
 })
 
-// 结束日期的显示文本
 const endDisplayText = computed(() => {
   if (!endValue.value) return ""
   if (props.displayFormatter) {
@@ -411,326 +180,36 @@ const endDisplayText = computed(() => {
   return formatDisplayText(endValue.value)
 })
 
-// 开始 Tab 的显示文本（有值显示值，无值显示占位符）
-const startTabText = computed(() => {
-  return tempStartValue.value || props.startPlaceholder
-})
-
-// 结束 Tab 的显示文本（有值显示值，无值显示占位符）
-const endTabText = computed(() => {
-  return tempEndValue.value || props.endPlaceholder
-})
-
-// ==================== 监听 ====================
-
-// 监听 modelValue 变化，同步更新开始和结束值
 watch(
   () => props.modelValue,
-  (val) => {
-    const { start, end } = parseRangeValue(val)
+  (value) => {
+    const { start, end } = parseRangeValue(value)
     startValue.value = start
     endValue.value = end
   },
   { immediate: true, deep: true },
 )
 
-// ==================== 工具函数 ====================
-
-/**
- * 将数字补零为两位字符串
- * @param n 要补零的数字
- * @returns 补零后的字符串，如 5 -> "05"
- */
-function pad(n: number): string {
-  return padZero(n)
-}
-
-/**
- * 获取指定月份的天数
- * @param year 年份
- * @param month 月份（1-12）
- * @returns 该月的天数
- */
-function getDaysInMonth(year: number, month: number): number {
-  return new Date(year, month, 0).getDate()
-}
-
-/**
- * 将年月日时分秒格式化为指定格式的日期字符串
- * @param y 年份
- * @param m 月份
- * @param d 日期
- * @param h 小时
- * @param mi 分钟
- * @param s 秒
- * @param format 格式模板，如 "YYYY-MM-DD HH:mm:ss"
- * @returns 格式化后的日期字符串
- */
-function formatDate(y: number, m: number, d: number, h: number, mi: number, s: number, format: string): string {
-  return format.replace(/YYYY/g, String(y)).replace(/MM/g, pad(m)).replace(/DD/g, pad(d)).replace(/HH/g, pad(h)).replace(/mm/g, pad(mi)).replace(/ss/g, pad(s))
-}
-
-/**
- * 解析各种格式的日期值为标准对象
- * 支持 Date 对象、时间戳、ISO 字符串等多种格式
- * @param value 要解析的日期值
- * @returns 包含年月日时分秒的对象
- */
-function parseDate(value: string | number | Date | null | undefined): { y: number; m: number; d: number; h: number; mi: number; s: number } {
-  const now = new Date()
-  if (!isDef(value)) {
-    return { y: now.getFullYear(), m: now.getMonth() + 1, d: now.getDate(), h: now.getHours(), mi: now.getMinutes(), s: now.getSeconds() }
+function parseRangeValue(value: DateRangeSelectValue | undefined) {
+  if (!value || !Array.isArray(value) || value.length < 2) {
+    return { start: "", end: "" }
   }
-
-  let date: Date
-  if (value instanceof Date) {
-    date = value
-  } else if (typeof value === "number") {
-    date = new Date(value)
-  } else {
-    // 标准化日期字符串，处理 T、Z 等 ISO 格式字符
-    const normalized = value.replace("T", " ").replace("Z", "")
-    const parts = normalized.split(/[\s/:-]/)
-    if (parts.length >= 3) {
-      const y = Number.parseInt(parts[0]) || now.getFullYear()
-      const m = Number.parseInt(parts[1]) || 1
-      const d = Number.parseInt(parts[2]) || 1
-      const h = Number.parseInt(parts[3]) || 0
-      const mi = Number.parseInt(parts[4]) || 0
-      const s = Number.parseInt(parts[5]) || 0
-      return { y, m, d, h, mi, s }
-    }
-    date = new Date(value)
-    if (Number.isNaN(date.getTime())) date = now
-  }
-
-  return { y: date.getFullYear(), m: date.getMonth() + 1, d: date.getDate(), h: date.getHours(), mi: date.getMinutes(), s: date.getSeconds() }
-}
-
-/**
- * 将数值限制在指定范围内
- * @param val 要限制的数值
- * @param min 最小值
- * @param max 最大值
- * @returns 限制后的数值
- */
-function clamp(val: number, min: number, max: number): number {
-  return Math.max(min, Math.min(max, val))
-}
-
-/**
- * 生成 picker 列的选项数据
- * @param start 起始值
- * @param end 结束值
- * @param type 列类型（year/month/day/hour/minute/second）
- * @returns 选项数组
- */
-function genOptions(start: number, end: number, type: DatePickerColumnType): DatePickerOption[] {
-  const safeStart = Math.min(start, end)
-  const safeEnd = Math.max(start, end)
-  const options: DatePickerOption[] = []
-
-  const defaultFormatter = (_type: string, option: DatePickerOption) => option
-  const formatter = props.columnFormatter ?? defaultFormatter
-
-  for (let i = safeStart; i <= safeEnd; i++) {
-    const text = pad(i)
-    const option: DatePickerOption = { text, value: text }
-    const formatted = formatter(type, option)
-    options.push(formatted ?? option)
-  }
-
-  const filter = props.columnFilter
-  if (typeof filter === "function") {
-    return filter(type, options, [])
-  }
-  return options
-}
-
-/**
- * 获取当前选中的某类型值
- * @param type 列类型
- * @returns 当前值
- */
-function getCurrentValue(type: DatePickerColumnType): number {
-  switch (type) {
-    case "year":
-      return currentYear.value
-    case "month":
-      return currentMonth.value
-    case "day":
-      return currentDay.value
-    case "hour":
-      return currentHour.value
-    case "minute":
-      return currentMinute.value
-    case "second":
-      return currentSecond.value
+  return {
+    start: value[0] || "",
+    end: value[1] || "",
   }
 }
 
-/**
- * 设置当前选中的某类型值
- * @param type 列类型
- * @param val 要设置的值
- */
-function setCurrentValue(type: DatePickerColumnType, val: number) {
-  switch (type) {
-    case "year":
-      currentYear.value = val
-      break
-    case "month":
-      currentMonth.value = val
-      break
-    case "day":
-      currentDay.value = val
-      break
-    case "hour":
-      currentHour.value = val
-      break
-    case "minute":
-      currentMinute.value = val
-      break
-    case "second":
-      currentSecond.value = val
-      break
-  }
+function buildRange(start: string, end: string): DateRangeSelectValue {
+  if (!start || !end) return []
+  return [start, end]
 }
 
-// ==================== 值初始化与边界调整 ====================
-
-/**
- * 从日期字符串初始化 picker 的当前值
- * 将日期解析并限制在有效范围内
- * @param value 日期字符串
- */
-function initFromValue(value: string) {
-  const parsed = parseDate(value)
-  currentYear.value = clamp(parsed.y, minBound.value.y, maxBound.value.y)
-  currentMonth.value = clamp(parsed.m, 1, 12)
-  currentDay.value = clamp(parsed.d, 1, getDaysInMonth(currentYear.value, currentMonth.value))
-  currentHour.value = clamp(parsed.h, 0, 23)
-  currentMinute.value = clamp(parsed.mi, 0, 59)
-  currentSecond.value = clamp(parsed.s, 0, 59)
-  adjustToBounds()
+function getSelectedRange(): DateRangeSelectValue {
+  const { start, end } = parseRangeValue(props.modelValue)
+  return buildRange(start, end)
 }
 
-/**
- * 将当前 picker 值调整到边界范围内
- * 逐级检查并调整：年 -> 月 -> 日 -> 时 -> 分 -> 秒
- * 确保选择的日期时间在有效范围内
- */
-function adjustToBounds() {
-  currentYear.value = clamp(currentYear.value, minBound.value.y, maxBound.value.y)
-
-  const isMinYear = currentYear.value === minBound.value.y
-  const isMaxYear = currentYear.value === maxBound.value.y
-  const minM = isMinYear ? minBound.value.m : 1
-  const maxM = isMaxYear ? maxBound.value.m : 12
-  currentMonth.value = clamp(currentMonth.value, minM, maxM)
-
-  const isMinMonth = currentMonth.value === minBound.value.m
-  const isMaxMonth = currentMonth.value === maxBound.value.m
-  const minD = isMinYear && isMinMonth ? minBound.value.d : 1
-  const maxDays = getDaysInMonth(currentYear.value, currentMonth.value)
-  const maxD = isMaxYear && isMaxMonth ? Math.min(maxBound.value.d, maxDays) : maxDays
-  currentDay.value = clamp(currentDay.value, minD, maxD)
-
-  const isMinDay = currentDay.value === minBound.value.d
-  const isMaxDay = currentDay.value === maxBound.value.d
-  const minH = isMinYear && isMinMonth && isMinDay ? minBound.value.h : 0
-  const maxH = isMaxYear && isMaxMonth && isMaxDay ? maxBound.value.h : 23
-  currentHour.value = clamp(currentHour.value, minH, maxH)
-
-  const isMinHour = currentHour.value === minBound.value.h
-  const isMaxHour = currentHour.value === maxBound.value.h
-  const minMi = isMinYear && isMinMonth && isMinDay && isMinHour ? minBound.value.mi : 0
-  const maxMi = isMaxYear && isMaxMonth && isMaxDay && isMaxHour ? maxBound.value.mi : 59
-  currentMinute.value = clamp(currentMinute.value, minMi, maxMi)
-
-  const isMinMinute = currentMinute.value === minBound.value.mi
-  const isMaxMinute = currentMinute.value === maxBound.value.mi
-  const minS = isMinYear && isMinMonth && isMinDay && isMinHour && isMinMinute ? minBound.value.s : 0
-  const maxS = isMaxYear && isMaxMonth && isMaxDay && isMaxHour && isMaxMinute ? maxBound.value.s : 59
-  currentSecond.value = clamp(currentSecond.value, minS, maxS)
-}
-
-/**
- * 获取当前 picker 值的格式化字符串
- * @returns 格式化后的日期字符串
- */
-function getFormattedValue(): string {
-  return formatDate(currentYear.value, currentMonth.value, currentDay.value, currentHour.value, currentMinute.value, currentSecond.value, props.format)
-}
-
-/**
- * 获取当前选中的所有列值
- * @returns 选中值的字符串数组
- */
-function getSelectedValues(): string[] {
-  return props.columns.map((type) => pad(getCurrentValue(type)))
-}
-
-// Picker 变化事件类型定义
-interface PickerViewChangeEvent {
-  detail: { value: number[] }
-}
-
-/**
- * 处理 Picker 变化事件
- * 更新当前选中的年月日时分秒值
- * @param e Picker 变化事件
- */
-function onPickerChange(e: PickerViewChangeEvent) {
-  const indexes = e.detail.value
-
-  props.columns.forEach((type, colIdx) => {
-    const column = pickerColumns.value[colIdx]
-    const selectedIdx = indexes[colIdx] ?? 0
-    const selectedOption = column[selectedIdx]
-    if (selectedOption) {
-      setCurrentValue(type, Number.parseInt(selectedOption.value))
-    }
-  })
-
-  nextTick(() => {
-    adjustToBounds()
-    emitPickerChange()
-  })
-}
-
-/**
- * 触发 change 事件
- * 更新临时值并通知外部
- */
-function emitPickerChange() {
-  const value = getFormattedValue()
-
-  // 更新临时值
-  if (activeType.value === "start") {
-    tempStartValue.value = value
-  } else {
-    tempEndValue.value = value
-  }
-
-  const range: DateRangeSelectValue = tempStartValue.value && tempEndValue.value ? [tempStartValue.value, tempEndValue.value] : []
-
-  const changeData: DateRangeSelectChangeData = {
-    type: activeType.value,
-    value,
-    range,
-    selectedValues: getSelectedValues(),
-    selectedIndexes: toRaw(pickerIndexes.value),
-  }
-  emits("change", changeData)
-}
-
-/**
- * 格式化日期显示文本
- * 根据配置的列类型决定显示的日期格式
- * @param value 日期字符串
- * @returns 格式化后的显示文本
- */
 function formatDisplayText(value: string): string {
   if (!value) return ""
 
@@ -757,7 +236,6 @@ function formatDisplayText(value: string): string {
   const hasMinute = columns.includes("minute")
   const hasSecond = columns.includes("second")
 
-  // 组合日期部分
   if (hasYear || hasMonth || hasDay) {
     const dateParts: string[] = []
     if (hasYear) dateParts.push(year)
@@ -766,7 +244,6 @@ function formatDisplayText(value: string): string {
     textParts.push(dateParts.join("-"))
   }
 
-  // 组合时间部分
   if (hasHour || hasMinute || hasSecond) {
     const timeParts: string[] = []
     if (hasHour) timeParts.push(hour)
@@ -778,171 +255,61 @@ function formatDisplayText(value: string): string {
   return textParts.join(" ")
 }
 
-/**
- * 解析日期范围值
- * @param value 日期范围值 [start, end]
- * @returns 包含 start 和 end 的对象
- */
-function parseRangeValue(value: DateRangeSelectValue | undefined) {
-  if (!value || !Array.isArray(value) || value.length < 2) {
-    return { start: "", end: "" }
-  }
-  return {
-    start: value[0] || "",
-    end: value[1] || "",
-  }
-}
-
-// ==================== 事件处理 ====================
-
-/**
- * 处理点击事件
- * 打开弹窗并初始化 picker 值
- * @param type 点击的日期类型：'start' | 'end'
- */
 function handleClick(type: DateRangeSelectActiveType) {
   if (!isInteractive.value) return
   emits("click", type)
-  activeType.value = type
-  tempStartValue.value = startValue.value
-  tempEndValue.value = endValue.value
-  const currentValue = type === "start" ? tempStartValue.value : tempEndValue.value
-  initFromValue(currentValue)
-  // 自动回填：用 picker 当前显示值更新临时值（即使用户不滑动也能确认）
-  if (type === "start") {
-    tempStartValue.value = getFormattedValue()
-  } else {
-    tempEndValue.value = getFormattedValue()
-  }
-  visible.value = true
+  open(type)
 }
 
-/**
- * 切换 Tab
- * 在开始和结束日期之间切换
- * @param type 目标日期类型：'start' | 'end'
- */
-function switchTab(type: DateRangeSelectActiveType) {
-  activeType.value = type
-  // 切换 Tab 时重新初始化 picker
-  const currentValue = type === "start" ? tempStartValue.value : tempEndValue.value
-  initFromValue(currentValue)
-  // 自动回填：用 picker 当前显示值更新临时值
-  if (type === "start") {
-    tempStartValue.value = getFormattedValue()
-  } else {
-    tempEndValue.value = getFormattedValue()
-  }
+function handleUpdateModelValue(value: DateRangePickerValue) {
+  emits("update:modelValue", value)
 }
 
-/**
- * 处理弹窗显示状态更新
- * @param show 是否显示
- */
-function handleUpdateShow(show: boolean) {
-  visible.value = show
-  if (!show) {
-    const range: DateRangeSelectValue = startValue.value && endValue.value ? [startValue.value, endValue.value] : []
-    parent?.onBlur(range)
-  }
+function handleClose(action: string) {
+  emits("close", action)
 }
 
-/**
- * 处理取消操作
- * 关闭弹窗并触发 cancel 事件
- */
-function handleCancel() {
-  const range: DateRangeSelectValue = startValue.value && endValue.value ? [startValue.value, endValue.value] : []
-  const cancelData: DateRangeSelectCancelData = { range }
+function handleClosed(action: string) {
+  emits("closed", action)
+  parent?.onBlur(getSelectedRange())
+}
+
+function handleCancel(data: DateRangePickerCancelData) {
+  const cancelData: DateRangeSelectCancelData = {
+    range: data.range,
+  }
   emits("cancel", cancelData)
-  visible.value = false
-  parent?.onBlur(range)
+  parent?.onBlur(getSelectedRange())
 }
 
-/**
- * 处理确认操作
- * 保存临时值到实际值，触发 confirm 和 update:modelValue 事件
- */
-function handleConfirm() {
-  // 自动切换：当前是开始日期且开启了自动切换，则切换到结束日期而非关闭
-  if (props.autoSwitchToEnd && activeType.value === "start") {
-    switchTab("end")
-    return
-  }
-
-  startValue.value = tempStartValue.value
-  endValue.value = tempEndValue.value
-
-  const range: DateRangeSelectValue = startValue.value && endValue.value ? [startValue.value, endValue.value] : []
-
+function handleConfirm(data: DateRangePickerConfirmData) {
   const confirmData: DateRangeSelectConfirmData = {
-    range,
-    startValue: startValue.value,
-    endValue: endValue.value,
+    range: data.range,
+    startValue: data.startValue,
+    endValue: data.endValue,
   }
-
   emits("confirm", confirmData)
-  emits("update:modelValue", range)
-  visible.value = false
-
-  parent?.onChange(range)
+  parent?.onChange(confirmData.range)
 }
 
-// ==================== 暴露的方法 ====================
-
-/**
- * 打开日期选择弹窗
- * @param type 默认选中的日期类型：'start' | 'end'，默认为 'start'
- */
 function open(type: DateRangeSelectActiveType = "start") {
   if (!isInteractive.value) return
-  activeType.value = type
-  tempStartValue.value = startValue.value
-  tempEndValue.value = endValue.value
-  const currentValue = type === "start" ? tempStartValue.value : tempEndValue.value
-  initFromValue(currentValue)
-  // 自动回填：用 picker 当前显示值更新临时值
-  if (type === "start") {
-    tempStartValue.value = getFormattedValue()
-  } else {
-    tempEndValue.value = getFormattedValue()
-  }
-  visible.value = true
+  pickerActiveType.value = type
+  rangePickerRef.value?.open(type)
 }
 
-/**
- * 关闭日期选择弹窗
- */
 function close() {
-  visible.value = false
+  rangePickerRef.value?.close()
 }
 
-/**
- * 确认选择（外部调用）
- */
 function confirm() {
-  handleConfirm()
+  rangePickerRef.value?.confirm()
 }
 
-/**
- * 取消选择（外部调用）
- */
 function cancel() {
-  handleCancel()
+  rangePickerRef.value?.cancel()
 }
 
-/**
- * 获取当前选中的日期范围
- * @returns 日期范围数组 [start, end]，未选择时返回空数组
- */
-function getSelectedRange(): DateRangeSelectValue {
-  if (startValue.value && endValue.value) {
-    return [startValue.value, endValue.value]
-  }
-  return []
-}
-
-// 暴露组件方法供外部调用
 defineExpose({
   name: "ui-date-range-select",
   open,
@@ -989,10 +356,6 @@ export default {
     align-items: center;
     border-radius: 8rpx;
     justify-content: center;
-
-    &.is-active {
-      background-color: var(--ui-color-primary-light, rgba(25, 137, 250, 0.1));
-    }
   }
 
   &__separator {
@@ -1025,63 +388,6 @@ export default {
     align-items: center;
     flex-shrink: 0;
     margin-left: var(--ui-spacing-md);
-  }
-
-  &__header {
-    height: 96rpx;
-    display: flex;
-    padding: 0 24rpx;
-    align-items: center;
-    border-bottom: 1px solid #ebedf0;
-    justify-content: space-between;
-
-    &__cancel,
-    &__confirm {
-      flex-shrink: 0;
-    }
-  }
-
-  &__tabs {
-    gap: 32rpx;
-    flex: 1;
-    display: flex;
-    justify-content: center;
-  }
-
-  &__tab {
-    padding: 8rpx 24rpx;
-    position: relative;
-    min-width: 160rpx;
-    text-align: center;
-    transition: all 0.2s;
-    border-radius: 8rpx;
-
-    &.is-active {
-      background-color: var(--ui-color-primary-light, rgba(25, 137, 250, 0.1));
-
-      .ui-date-range-select__tab-text {
-        color: var(--ui-color-primary);
-        font-weight: 600;
-      }
-    }
-
-    &-text {
-      color: var(--ui-color-text);
-      font-size: 28rpx;
-      transition: color 0.2s;
-    }
-  }
-
-  &__picker {
-    z-index: 1;
-    position: relative;
-
-    &__option {
-      display: flex;
-      font-size: 28rpx;
-      align-items: center;
-      justify-content: center;
-    }
   }
 }
 </style>

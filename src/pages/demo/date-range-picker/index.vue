@@ -1,34 +1,22 @@
 <template>
   <demo-page>
     <demo-section title="基础用法">
-      <ui-cell title="选择日期范围" padding="0" :value="formatRange(value1)" is-link @click="show1 = true" />
+      <ui-cell title="选择日期范围" padding="0" :value="formatRange(value1)" @click="show1 = true" />
       <ui-date-range-picker v-model:show="show1" v-model="value1" title="选择日期范围" />
     </demo-section>
 
     <demo-section title="激活侧与自动切换">
-      <ui-cell title="先选结束日期，不自动切换" padding="0" :value="formatRange(value2)" is-link @click="show2 = true" />
-      <ui-date-range-picker
-        v-model:show="show2"
-        v-model="value2"
-        active-type="end"
-        :auto-switch-to-end="false"
-        title="结束日期优先"
-      />
+      <ui-cell title="先选结束日期，不自动切换" padding="0" :value="formatRange(value2)" @click="show2 = true" />
+      <ui-date-range-picker v-model:show="show2" v-model="value2" active-type="end" :auto-switch-to-end="false" title="结束日期优先" />
     </demo-section>
 
     <demo-section title="选择日期时间">
-      <ui-cell title="选择时间范围" padding="0" :value="formatRange(value3)" is-link @click="show3 = true" />
-      <ui-date-range-picker
-        v-model:show="show3"
-        v-model="value3"
-        :columns="['year', 'month', 'day', 'hour', 'minute']"
-        format="YYYY-MM-DD HH:mm"
-        title="选择日期时间范围"
-      />
+      <ui-cell title="选择时间范围" padding="0" :value="formatRange(value3)" @click="show3 = true" />
+      <ui-date-range-picker v-model:show="show3" v-model="value3" :columns="['year', 'month', 'day', 'hour', 'minute']" format="YYYY-MM-DD HH:mm" title="选择日期时间范围" />
     </demo-section>
 
     <demo-section title="范围限制与选项处理">
-      <ui-cell title="偶数年份 + 季度月份" padding="0" :value="formatRange(value4)" is-link @click="show4 = true" />
+      <ui-cell title="偶数年份 + 季度月份" padding="0" :value="formatRange(value4)" @click="show4 = true" />
       <ui-date-range-picker
         v-model:show="show4"
         v-model="value4"
@@ -43,7 +31,7 @@
     </demo-section>
 
     <demo-section title="头部与文案">
-      <ui-cell title="占位/按钮文案" padding="0" :value="formatRange(value6)" is-link @click="show6 = true" />
+      <ui-cell title="占位/按钮文案" padding="0" :value="formatRange(value6)" @click="show6 = true" />
       <ui-date-range-picker
         v-model:show="show6"
         v-model="value6"
@@ -56,7 +44,7 @@
     </demo-section>
 
     <demo-section title="列样式">
-      <ui-cell title="列高/可见项/字号颜色" padding="0" :value="formatRange(value7)" is-link @click="show7 = true" />
+      <ui-cell title="列高/可见项/字号颜色" padding="0" :value="formatRange(value7)" @click="show7 = true" />
       <ui-date-range-picker
         v-model:show="show7"
         v-model="value7"
@@ -73,9 +61,9 @@
     </demo-section>
 
     <demo-section title="事件回调">
-      <ui-cell title="查看事件输出" padding="0" :value="formatRange(value9)" is-link @click="show9 = true" />
+      <ui-cell title="查看事件输出" padding="0" :value="formatRange(value9)" @click="show9 = true" />
       <ui-date-range-picker v-model:show="show9" v-model="value9" title="事件示例" @change="onChange" @confirm="onConfirm" @cancel="onCancel" />
-      <view class="event-list">
+      <view v-if="eventLogs.length > 0" class="event-list">
         <view v-for="(log, index) in eventLogs" :key="index" class="event-item">
           <text class="event-text">{{ log }}</text>
         </view>
