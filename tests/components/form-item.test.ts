@@ -20,7 +20,7 @@ function createMockFormProvide() {
       labelGap: "16rpx",
       border: false,
       borderColor: "#eee",
-      errorMessageColor: "error",
+      errorMessageColor: "danger",
       validateTrigger: "blur",
     },
     model: ref({}),

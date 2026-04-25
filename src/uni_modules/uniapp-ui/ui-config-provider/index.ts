@@ -8,7 +8,7 @@ export type ThemeVarName =
   | "primary"
   | "success"
   | "warning"
-  | "error"
+  | "danger"
   | "info"
   | "text-main"
   | "text-secondary"

@@ -64,6 +64,10 @@ describe("uiCascader 组件", () => {
     stubs: {
       "ui-icon": true,
       "ui-loading": true,
+      "ui-popup": {
+        name: "ui-popup-stub",
+        template: "<div class=\"ui-popup-stub\"><slot /></div>",
+      },
       "scroll-view": {
         name: "scroll-view-stub",
         template: "<div class=\"scroll-view\"><slot /></div>",

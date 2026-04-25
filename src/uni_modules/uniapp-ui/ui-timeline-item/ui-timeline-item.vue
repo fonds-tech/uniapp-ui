@@ -125,7 +125,7 @@ const typeColorMap: Record<string, string> = {
   primary: "var(--ui-color-primary)",
   success: "var(--ui-color-success)",
   warning: "var(--ui-color-warning)",
-  error: "var(--ui-color-error)",
+  danger: "var(--ui-color-danger)",
   info: "var(--ui-color-info)",
 }
 
@@ -393,9 +393,9 @@ export default {
     background-color: var(--ui-color-warning);
   }
 
-  &--error .ui-timeline-item__dot {
-    border-color: var(--ui-color-error);
-    background-color: var(--ui-color-error);
+  &--danger .ui-timeline-item__dot {
+    border-color: var(--ui-color-danger);
+    background-color: var(--ui-color-danger);
   }
 
   &--info .ui-timeline-item__dot {
@@ -406,7 +406,7 @@ export default {
   // 空心 + 状态类型组合
   &--hollow.ui-timeline-item--success .ui-timeline-item__dot,
   &--hollow.ui-timeline-item--warning .ui-timeline-item__dot,
-  &--hollow.ui-timeline-item--error .ui-timeline-item__dot,
+  &--hollow.ui-timeline-item--danger .ui-timeline-item__dot,
   &--hollow.ui-timeline-item--info .ui-timeline-item__dot,
   &--hollow.ui-timeline-item--primary .ui-timeline-item__dot {
     background-color: transparent;

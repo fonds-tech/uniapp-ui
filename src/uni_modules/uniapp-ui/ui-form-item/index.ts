@@ -22,7 +22,7 @@ const defaultProps = buildDefaultProps("form-item", {
   contentAlign: undefined,
   errorMessage: undefined,
   errorMessageSize: undefined,
-  errorMessageColor: "error",
+  errorMessageColor: "danger",
   errorMessageWeight: undefined,
   errorMessageAlign: "",
   showErrorMessage: true,

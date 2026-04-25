@@ -3,7 +3,7 @@ import type { PropType, CSSProperties, ExtractPropTypes } from "vue"
 import { buildDefaultProps } from "../utils/props"
 
 /** 按钮类型 */
-export type ButtonType = "primary" | "success" | "warning" | "danger" | "info" | "default" | "error"
+export type ButtonType = "primary" | "success" | "warning" | "danger" | "info" | "default"
 
 /** 按钮尺寸 */
 export type ButtonSize = "mini" | "small" | "normal" | "medium" | "large"

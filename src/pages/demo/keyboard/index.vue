@@ -255,7 +255,7 @@ const currentShowCancel = ref(true)
 const currentShowConfirm = ref(true)
 const currentCancelText = ref("取消")
 const currentCancelTextSize = ref("")
-const currentCancelTextColor = ref("error")
+const currentCancelTextColor = ref("danger")
 const currentConfirmText = ref("确定")
 const currentConfirmTextSize = ref("")
 const currentConfirmTextColor = ref("")
@@ -294,7 +294,7 @@ function resetConfig() {
   currentShowConfirm.value = true
   currentCancelText.value = "取消"
   currentCancelTextSize.value = ""
-  currentCancelTextColor.value = "error"
+  currentCancelTextColor.value = "danger"
   currentConfirmText.value = "确定"
   currentConfirmTextSize.value = ""
   currentConfirmTextColor.value = ""

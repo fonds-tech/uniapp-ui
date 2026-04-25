@@ -34,7 +34,7 @@ UiFormItem 组件，属性与事件以源码注释为准。
 | contentAlign       | 输入内容对齐方式，可选值为 left center right                             | String as PropType<FormItemContentAlign>                                  | -         | -      |
 | errorMessage       | 校验错误信息文字                                                         | string                                                                    | -         | -      |
 | errorMessageSize   | 校验错误信息文字大小                                                     | [Number, String]                                                          | -         | -      |
-| errorMessageColor  | 校验错误信息文字颜色                                                     | makeStringProp("error")                                                   | -         | -      |
+| errorMessageColor  | 校验错误信息文字颜色                                                     | makeStringProp("danger")                                                  | -         | -      |
 | errorMessageWeight | 校验错误信息文字字重                                                     | [Number, String]                                                          | -         | -      |
 | errorMessageAlign  | 校验错误信息文字对齐方式，可选值为 left center right                     | String as PropType<FormErrorMessageAlign>                                 | ""        | -      |
 | showErrorMessage   | 是否在校验不通过时在输入框下方展示错误提示                               | truthProp                                                                 | -         | -      |

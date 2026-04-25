@@ -28,7 +28,7 @@ UiKeyboard 组件，属性与事件以源码注释为准。
 | showCancel          | 是否显示取消按钮                  | boolean          | true      | -                 |
 | cancelText          | 关闭按钮文字                      | string           | "取消"    | -                 |
 | cancelTextSize      | 关闭按钮文字大小                  | string \| number | ""        | -                 |
-| cancelTextColor     | 关闭按钮文字颜色                  | string           | "error"   | -                 |
+| cancelTextColor     | 关闭按钮文字颜色                  | string           | "danger"  | -                 |
 | cancelTextWeight    | 关闭按钮文字粗细                  | string \| number | ""        | -                 |
 | showConfirm         | 是否显示确认按钮                  | boolean          | true      | -                 |
 | confirmText         | 确认按钮文字                      | string           | "确定"    | -                 |

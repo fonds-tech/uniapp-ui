@@ -10,11 +10,7 @@ import "virtual:uno.css"
 export function createApp() {
   const app = createSSRApp(App)
 
-  app.use(ui, {
-    components: {
-      button: { type: "danger" },
-    },
-  })
+  app.use(ui)
   app.use(store)
   app.use(router)
 

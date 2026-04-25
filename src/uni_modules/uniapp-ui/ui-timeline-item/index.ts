@@ -3,7 +3,7 @@ import type { PropType, CSSProperties, ExtractPropTypes } from "vue"
 import { buildDefaultProps } from "../utils/props"
 
 /** 时间轴节点状态类型 */
-export type TimelineItemType = "primary" | "success" | "warning" | "error" | "info"
+export type TimelineItemType = "primary" | "success" | "warning" | "danger" | "info"
 
 const defaultProps = buildDefaultProps("timelineItem", {
   time: undefined,

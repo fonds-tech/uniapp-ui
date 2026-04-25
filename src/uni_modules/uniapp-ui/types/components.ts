@@ -42,11 +42,14 @@ import type { OverlayProps } from "../ui-overlay"
 import type { SidebarProps } from "../ui-sidebar"
 import type { StepperProps } from "../ui-stepper"
 import type { CalendarProps } from "../ui-calendar"
+import type { CalendarPanelProps } from "../ui-calendar-panel"
 import type { CascaderProps } from "../ui-cascader"
+import type { CascaderPanelProps } from "../ui-cascader-panel"
 import type { CheckboxProps } from "../ui-checkbox"
 import type { FormItemProps } from "../ui-form-item"
 import type { IndexBarProps } from "../ui-index-bar"
 import type { KeyboardProps } from "../ui-keyboard"
+import type { KeyboardPanelProps } from "../ui-keyboard-panel"
 import type { ProgressProps } from "../ui-progress"
 import type { SkeletonProps } from "../ui-skeleton"
 import type { TextareaProps } from "../ui-textarea"
@@ -92,7 +95,9 @@ export interface Components {
   badge: Partial<BadgeProps>
   button: Partial<ButtonProps>
   calendar: Partial<CalendarProps>
+  "calendar-panel": Partial<CalendarPanelProps>
   cascader: Partial<CascaderProps>
+  "cascader-panel": Partial<CascaderPanelProps>
   cell: Partial<CellProps>
   "cell-group": Partial<CellGroupProps>
   checkbox: Partial<CheckboxProps>
@@ -119,6 +124,7 @@ export interface Components {
   "index-bar": Partial<IndexBarProps>
   input: Partial<InputProps>
   keyboard: Partial<KeyboardProps>
+  "keyboard-panel": Partial<KeyboardPanelProps>
   loading: Partial<LoadingProps>
   navbar: Partial<NavbarProps>
   "notice-bar": Partial<NoticeBarProps>

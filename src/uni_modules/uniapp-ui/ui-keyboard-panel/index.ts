@@ -1,20 +1,17 @@
-import type Keyboard from "./ui-keyboard.vue"
+import type KeyboardPanel from "./ui-keyboard-panel.vue"
 import type { PropType, CSSProperties, ExtractPropTypes } from "vue"
 import { buildDefaultProps } from "../utils/props"
 
-export interface KeyboardKeyItem {
+export interface KeyboardPanelKeyItem {
   value: string
   type: "key" | "delete" | "close" | "switch"
 }
 
-const defaultProps = buildDefaultProps("keyboard", {
-  show: false,
+const defaultProps = buildDefaultProps("keyboard-panel", {
   title: "",
   mode: "number",
   maxlength: Infinity,
-  zIndex: "",
   random: false,
-  overlay: true,
   showDot: false,
   vibrate: false,
   modelValue: "",
@@ -31,27 +28,19 @@ const defaultProps = buildDefaultProps("keyboard", {
   confirmTextColor: "",
   confirmTextWeight: "",
   background: "#f2f3f5",
-  safeAreaInsetBottom: true,
-  closeOnClickOverlay: true,
   customClass: "",
   customStyle: "",
 })
 
-export const keyboardProps = {
-  /** 是否显示 */
-  show: defaultProps("show", { type: Boolean }),
+export const keyboardPanelProps = {
   /** 标题 */
   title: defaultProps("title", { type: String }),
-  /** 键盘类型，可选值car、card、number */
+  /** 键盘类型，可选值 car / card / number */
   mode: defaultProps("mode", { type: String, validator: (v: string) => ["car", "card", "number"].includes(v) }),
   /** 最大输入长度 */
   maxlength: defaultProps("maxlength", { type: [Number, String] }),
-  /** 元素层级 */
-  zIndex: defaultProps("zIndex", { type: [Number, String] }),
   /** 是否打乱键盘按键的顺序 */
   random: defaultProps("random", { type: Boolean }),
-  /** 是否显示遮罩 */
-  overlay: defaultProps("overlay", { type: Boolean }),
   /** 是否显示小数点按钮 */
   showDot: defaultProps("showDot", { type: Boolean }),
   /** 是否开启按键震动反馈 */
@@ -64,13 +53,13 @@ export const keyboardProps = {
   showHeader: defaultProps("showHeader", { type: Boolean }),
   /** 是否显示取消按钮 */
   showCancel: defaultProps("showCancel", { type: Boolean }),
-  /** 关闭按钮文字 */
+  /** 取消按钮文字 */
   cancelText: defaultProps("cancelText", { type: String }),
-  /** 关闭按钮文字大小 */
+  /** 取消按钮文字大小 */
   cancelTextSize: defaultProps("cancelTextSize", { type: [Number, String] }),
-  /** 关闭按钮文字颜色 */
+  /** 取消按钮文字颜色 */
   cancelTextColor: defaultProps("cancelTextColor", { type: String }),
-  /** 关闭按钮文字粗细 */
+  /** 取消按钮文字粗细 */
   cancelTextWeight: defaultProps("cancelTextWeight", { type: [Number, String] }),
   /** 是否显示确认按钮 */
   showConfirm: defaultProps("showConfirm", { type: Boolean }),
@@ -84,25 +73,13 @@ export const keyboardProps = {
   confirmTextWeight: defaultProps("confirmTextWeight", { type: [Number, String] }),
   /** 背景颜色 */
   background: defaultProps("background", { type: String }),
-  /** 是否开启底部安全区适配 */
-  safeAreaInsetBottom: defaultProps("safeAreaInsetBottom", { type: Boolean }),
-  /** 是否允许点击遮罩收起键盘 */
-  closeOnClickOverlay: defaultProps("closeOnClickOverlay", { type: Boolean }),
   /** 自定义类名 */
   customClass: defaultProps("customClass", { type: String }),
   /** 自定义样式 */
   customStyle: defaultProps("customStyle", { type: [String, Object] as PropType<string | CSSProperties> }),
 }
 
-export const keyboardEmits = {
-  /** 打开弹出层事件 */
-  open: () => true,
-  /** 打开动画结束事件 */
-  opened: () => true,
-  /** 关闭弹出层事件 */
-  close: () => true,
-  /** 关闭动画结束事件 */
-  closed: () => true,
+export const keyboardPanelEmits = {
   /** 取消事件 */
   cancel: () => true,
   /** 确认事件 */
@@ -113,12 +90,12 @@ export const keyboardEmits = {
   delete: () => true,
   /** 值变化事件 */
   change: (value: string) => typeof value === "string",
-  /** 更新显示状态事件 */
-  "update:show": (show: boolean) => typeof show === "boolean",
+  /** 收起键盘事件（点击 close 类型按键时触发） */
+  close: () => true,
   /** 更新绑定值事件 */
   "update:modelValue": (value: string) => typeof value === "string",
 }
 
-export type KeyboardEmits = typeof keyboardEmits
-export type KeyboardProps = ExtractPropTypes<typeof keyboardProps>
-export type KeyboardInstance = InstanceType<typeof Keyboard>
+export type KeyboardPanelEmits = typeof keyboardPanelEmits
+export type KeyboardPanelProps = ExtractPropTypes<typeof keyboardPanelProps>
+export type KeyboardPanelInstance = InstanceType<typeof KeyboardPanel>
