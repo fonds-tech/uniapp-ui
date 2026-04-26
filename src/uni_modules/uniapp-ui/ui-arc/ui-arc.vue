@@ -1,6 +1,6 @@
 <template>
-  <view class="ui-arc" :class="[customClass, directionClass]" :style="[style]" @click="onClick">
-    <view class="ui-arc__inner" :style="[innerStyle]" />
+  <view class="ui-arc" :class="[classNames, props.customClass]" :style="[containerStyle]" @click="emits('click')">
+    <view class="ui-arc__inner" />
     <view v-if="$slots.default" class="ui-arc__content">
       <slot />
     </view>
@@ -8,59 +8,46 @@
 </template>
 
 <script setup lang="ts">
-import type { CSSProperties } from "vue"
 import { computed } from "vue"
 import { arcEmits, arcProps } from "./index"
 import { useUnit, useColor, useStyle } from "../hooks"
 
 defineOptions({ name: "ui-arc" })
 
-// 定义 props 和 emits
 const props = defineProps(arcProps)
 const emits = defineEmits(arcEmits)
 
-// 曲率校验，限制在 50-500 范围内
+// 曲率单位为内层宽度百分比：100 = 与父等宽（无弧），>100 越大弧越平，<100 不再产生弧（offset 取 0）
+const CURVATURE_MIN = 50
+const CURVATURE_MAX = 500
+const CURVATURE_DEFAULT = 120 // 默认略带弧度
+
 const validCurvature = computed(() => {
-  const value = Number(props.curvature)
-  if (Number.isNaN(value)) return 120
-  return Math.max(50, Math.min(500, value))
+  const raw = Number(props.curvature)
+  if (Number.isNaN(raw)) return CURVATURE_DEFAULT
+  return Math.max(CURVATURE_MIN, Math.min(CURVATURE_MAX, raw))
 })
 
-// 宽度偏移量
-const widthOffset = computed(() => (validCurvature.value - 100) / 2)
-// 方向类名
-const directionClass = computed(() => `ui-arc--${props.direction}`)
+const offsetPercent = computed(() => Math.max(0, (validCurvature.value - 100) / 2))
 
-// 容器样式
-const style = computed(() => {
-  const result: CSSProperties = {
+const classNames = computed(() => [
+  `ui-arc--${props.direction}`,
+  {
+    "ui-arc--fixed": props.fixed,
+  },
+])
+
+const containerStyle = computed(() => {
+  const styles: Record<string, string | number | undefined> = {
+    "--ui-arc-offset": `${offsetPercent.value}%`,
     top: useUnit(props.top),
     left: useUnit(props.left),
-    height: useUnit(props.height),
     zIndex: props.zIndex,
   }
-  if (props.fixed) result.position = "fixed"
-  return useStyle({ ...result, ...useStyle(props.customStyle) })
+  if (props.height !== undefined) styles["--ui-arc-height"] = useUnit(props.height) as string
+  if (props.background) styles["--ui-arc-background"] = useColor(props.background)
+  return useStyle({ ...styles, ...useStyle(props.customStyle) })
 })
-
-// 内部弧形样式
-const innerStyle = computed(() => {
-  const offset = `${Math.max(0, widthOffset.value)}%`
-  const result: CSSProperties = {
-    height: useUnit(props.height),
-    left: `-${offset}`,
-    right: `-${offset}`,
-    paddingLeft: offset,
-    paddingRight: offset,
-    background: useColor(props.background),
-  }
-  return useStyle(result)
-})
-
-// 点击事件处理
-function onClick() {
-  emits("click")
-}
 </script>
 
 <script lang="ts">
@@ -72,29 +59,42 @@ export default {
 
 <style lang="scss" scoped>
 .ui-arc {
+  --ui-arc-height: 130rpx;
+  --ui-arc-offset: 10%;
+  --ui-arc-background: var(--ui-color-primary);
+
   width: 100%;
+  height: var(--ui-arc-height);
   overflow: hidden;
   position: relative;
   flex-shrink: 0;
 
+  // inner 用负偏移撑宽 + 100% border-radius 切椭圆弧；padding 抵消偏移使可视区回到父宽
   &__inner {
+    left: calc(var(--ui-arc-offset) * -1);
+    right: calc(var(--ui-arc-offset) * -1);
+    height: 100%;
     overflow: hidden;
     position: absolute;
-    background-color: var(--ui-color-primary);
+    background: var(--ui-arc-background);
+    padding-left: var(--ui-arc-offset);
+    padding-right: var(--ui-arc-offset);
   }
 
   &__content {
-    z-index: 1;
+    z-index: var(--ui-z-index-base);
     position: relative;
   }
 
-  // 底部弧形（默认）
+  &--fixed {
+    position: fixed;
+  }
+
   &--bottom &__inner {
     top: 0;
     border-radius: 0 0 100% 100%;
   }
 
-  // 顶部弧形
   &--top &__inner {
     bottom: 0;
     border-radius: 100% 100% 0 0;

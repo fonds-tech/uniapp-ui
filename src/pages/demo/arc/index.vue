@@ -2,13 +2,13 @@
   <demo-page>
     <demo-section title="基础用法">
       <demo-block class="arc-demo">
-        <ui-arc background="#1989fa" />
+        <ui-arc background="primary" />
       </demo-block>
     </demo-section>
 
     <demo-section title="自定义高度">
       <demo-block class="arc-demo">
-        <ui-arc height="200rpx" background="#07c160" />
+        <ui-arc height="200rpx" background="success" />
       </demo-block>
     </demo-section>
 
@@ -17,19 +17,19 @@
         <view class="arc-item">
           <text class="arc-label">陡峭 (curvature: 80)</text>
           <view class="arc-demo arc-demo--small">
-            <ui-arc height="100rpx" :curvature="80" background="#1989fa" />
+            <ui-arc height="100rpx" :curvature="80" background="primary" />
           </view>
         </view>
         <view class="arc-item">
           <text class="arc-label">标准 (curvature: 120)</text>
           <view class="arc-demo arc-demo--small">
-            <ui-arc height="100rpx" :curvature="120" background="#07c160" />
+            <ui-arc height="100rpx" :curvature="120" background="success" />
           </view>
         </view>
         <view class="arc-item">
           <text class="arc-label">平缓 (curvature: 200)</text>
           <view class="arc-demo arc-demo--small">
-            <ui-arc height="100rpx" :curvature="200" background="#ff976a" />
+            <ui-arc height="100rpx" :curvature="200" background="warning" />
           </view>
         </view>
       </demo-block>
@@ -40,13 +40,13 @@
         <view class="arc-item">
           <text class="arc-label">底部弧形 (direction: bottom)</text>
           <view class="arc-demo arc-demo--small">
-            <ui-arc height="100rpx" direction="bottom" background="#1989fa" />
+            <ui-arc height="100rpx" direction="bottom" background="primary" />
           </view>
         </view>
         <view class="arc-item">
           <text class="arc-label">顶部弧形 (direction: top)</text>
           <view class="arc-demo arc-demo--small arc-demo--top">
-            <ui-arc height="100rpx" direction="top" background="#ee0a24" />
+            <ui-arc height="100rpx" direction="top" background="danger" />
           </view>
         </view>
       </demo-block>
@@ -93,10 +93,11 @@ definePage({
 
 <style lang="scss" scoped>
 .arc-demo {
+  width: 100%;
   height: 200rpx;
   overflow: hidden;
   position: relative;
-  border-radius: 12rpx;
+  border-radius: var(--ui-radius-sm);
 
   &--small {
     height: 120rpx;
@@ -109,75 +110,78 @@ definePage({
 }
 
 .arc-item {
-  gap: 12rpx;
+  gap: var(--ui-spacing-sm);
+  width: 100%;
   display: flex;
   flex-direction: column;
 }
 
 .arc-label {
   color: var(--ui-color-text-secondary);
-  font-size: 26rpx;
+  font-size: var(--ui-font-size-sm);
 }
 
 .arc-combined,
 .arc-header-demo {
   overflow: hidden;
-  border-radius: 12rpx;
+  border-radius: var(--ui-radius-sm);
 }
 
 .arc-content {
   display: flex;
   text-align: center;
-  padding-top: 50rpx;
+  padding-top: var(--ui-spacing-xl);
   flex-direction: column;
 }
 
 .arc-title {
-  color: #fff;
-  font-size: 36rpx;
-  font-weight: 600;
+  color: var(--ui-color-text-inverse);
+  font-size: var(--ui-font-size-lg);
+  font-weight: var(--ui-font-weight-medium);
 }
 
 .arc-desc {
-  color: rgba(255, 255, 255, 0.8);
-  font-size: 26rpx;
-  margin-top: 12rpx;
+  color: var(--ui-color-text-inverse);
+  opacity: var(--ui-opacity-heavy);
+  font-size: var(--ui-font-size-sm);
+  margin-top: var(--ui-spacing-xs);
 }
 
 .header-content {
-  gap: 24rpx;
+  gap: var(--ui-spacing-md);
   display: flex;
-  padding: 40rpx 32rpx;
+  padding: var(--ui-spacing-lg) var(--ui-spacing-md);
   align-items: center;
 }
 
 .header-avatar {
-  color: #fff;
-  width: 100rpx;
-  height: 100rpx;
+  color: var(--ui-color-text-inverse);
+  width: var(--ui-size-lg);
+  height: var(--ui-size-lg);
   display: flex;
-  font-size: 36rpx;
+  font-size: var(--ui-font-size-lg);
   background: rgba(255, 255, 255, 0.2);
   align-items: center;
-  font-weight: 600;
-  border-radius: 50%;
+  font-weight: var(--ui-font-weight-medium);
+  border-radius: var(--ui-radius-round);
   justify-content: center;
 }
 
 .header-info {
-  gap: 8rpx;
+  gap: var(--ui-spacing-xxs);
   display: flex;
   flex-direction: column;
 }
 
 .header-name {
-  color: #fff;
-  font-size: 34rpx;
-  font-weight: 600;
+  color: var(--ui-color-text-inverse);
+  font-size: var(--ui-font-size-md);
+  font-weight: var(--ui-font-weight-medium);
 }
 
 .header-bio {
-  color: rgba(255, 255, 255, 0.8);
-  font-size: 26rpx;
+  color: var(--ui-color-text-inverse);
+  opacity: var(--ui-opacity-heavy);
+  font-size: var(--ui-font-size-sm);
 }
 </style>

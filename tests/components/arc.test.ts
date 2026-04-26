@@ -77,8 +77,9 @@ describe("ui-arc 弧形组件", () => {
 
       await waitForTransition()
 
-      const innerStyle = wrapper.find(".ui-arc__inner").attributes("style") || ""
-      expect(innerStyle).toContain("left: -200%")
+      // curvature 限幅到 500 → offset = (500 - 100) / 2 = 200%
+      const containerStyle = wrapper.find(".ui-arc").attributes("style") || ""
+      expect(containerStyle).toContain("--ui-arc-offset: 200%")
     })
   })
 
@@ -115,15 +116,14 @@ describe("ui-arc 弧形组件", () => {
       expect(wrapper.props("fixed")).toBe(true)
     })
 
-    it("fixed 为 true 时应设置 fixed 定位", async () => {
+    it("fixed 为 true 时应添加 fixed 修饰类", async () => {
       const wrapper = mount(UiArc, {
         props: { fixed: true },
       })
 
       await waitForTransition()
 
-      const style = wrapper.find(".ui-arc").attributes("style") || ""
-      expect(style).toContain("position: fixed")
+      expect(wrapper.find(".ui-arc").classes()).toContain("ui-arc--fixed")
     })
   })
 

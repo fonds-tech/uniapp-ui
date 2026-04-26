@@ -6,7 +6,7 @@ import { buildDefaultProps } from "../utils/props"
 export type ArcDirection = "top" | "bottom"
 
 const defaultProps = buildDefaultProps("arc", {
-  height: "130rpx",
+  height: undefined,
   curvature: 120,
   direction: "bottom",
   background: undefined,
