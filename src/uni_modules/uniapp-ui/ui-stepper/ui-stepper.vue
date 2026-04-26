@@ -367,12 +367,12 @@ export default {
 <style lang="scss">
 .ui-stepper {
   width: max-content;
+  height: var(--stepper-height);
   display: inline-flex;
   align-items: center;
   flex-shrink: 0;
   user-select: none;
   justify-content: center;
-  height: var(--stepper-height);
 
   // 尺寸
   &--small {
@@ -430,7 +430,7 @@ export default {
     }
 
     &--loading {
-      opacity: 0.5;
+      opacity: var(--ui-opacity-disabled);
     }
 
     &[disabled] {
@@ -459,7 +459,7 @@ export default {
     }
 
     &--loading {
-      opacity: 0.5;
+      opacity: var(--ui-opacity-disabled);
     }
 
     &--button {
@@ -512,7 +512,7 @@ export default {
     }
 
     &--loading {
-      opacity: 0.5;
+      opacity: var(--ui-opacity-disabled);
     }
 
     &--button {

@@ -104,7 +104,7 @@ export default {
   // 水平分割线
   &--horizontal {
     width: 100%;
-    margin: 24rpx 0;
+    margin: var(--ui-spacing-md) 0;
     align-items: center;
     flex-direction: row;
   }
@@ -112,7 +112,7 @@ export default {
   // 垂直分割线
   &--vertical {
     height: 1em;
-    margin: 0 16rpx;
+    margin: 0 var(--ui-spacing-sm);
     display: inline-flex;
     align-items: center;
     flex-direction: column;
@@ -122,7 +122,7 @@ export default {
   // 线条
   &__line {
     flex-shrink: 0;
-    border-color: var(--ui-color-border, #ebedf0);
+    border-color: var(--ui-color-border, var(--ui-color-border));
     border-style: solid;
     border-width: 0;
   }
@@ -146,8 +146,8 @@ export default {
 
   // 内容容器
   &__content {
-    color: var(--ui-color-text-secondary, #969799);
-    padding: 0 16rpx;
+    color: var(--ui-color-text-secondary, var(--ui-color-text-tertiary));
+    padding: 0 var(--ui-spacing-sm);
     font-size: var(--ui-font-size-md, 28rpx);
     white-space: nowrap;
   }

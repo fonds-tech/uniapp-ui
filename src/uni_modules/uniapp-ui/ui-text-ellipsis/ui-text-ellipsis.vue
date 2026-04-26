@@ -147,7 +147,7 @@ export default {
     position: absolute;
     font-size: var(--ui-font-size-md);
     word-break: break-all;
-    line-height: 1.5;
+    line-height: var(--ui-line-height-normal);
     pointer-events: none;
   }
 
@@ -155,7 +155,7 @@ export default {
     color: var(--ui-color-text);
     font-size: var(--ui-font-size-md);
     word-break: break-all;
-    line-height: 1.5;
+    line-height: var(--ui-line-height-normal);
   }
 
   // 底部操作区：渐变遮罩 + 按钮

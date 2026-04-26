@@ -367,17 +367,17 @@ export default {
 
 <style lang="scss" scoped>
 .ui-color-panel {
-  padding: 24rpx;
+  padding: var(--ui-spacing-md);
   border-radius: var(--ui-radius-lg);
   background-color: var(--ui-color-background);
 
   // 尺寸预设
   &--small {
-    padding: 16rpx;
+    padding: var(--ui-spacing-sm);
   }
 
   &--large {
-    padding: 32rpx;
+    padding: var(--ui-spacing-lg);
   }
 
   &--disabled {
@@ -426,7 +426,7 @@ export default {
 
   // ===== 滑块区域 =====
   &__sliders {
-    gap: 16rpx;
+    gap: var(--ui-spacing-sm);
     display: flex;
     margin-top: 20rpx;
     flex-direction: column;
@@ -443,12 +443,12 @@ export default {
   &__slider-cursor {
     top: 50%;
     width: 20rpx;
-    border: 2rpx solid rgba(0, 0, 0, 0.1);
+    border: var(--ui-border-width) solid rgba(0, 0, 0, 0.1);
     height: 28rpx;
     position: absolute;
     transform: translate(-50%, -50%);
     box-shadow: 0 1rpx 4rpx rgba(0, 0, 0, 0.2);
-    border-radius: 4rpx;
+    border-radius: var(--ui-radius-xs);
     pointer-events: none;
     background-color: #fff;
   }
@@ -493,7 +493,7 @@ export default {
   &__input {
     border: var(--ui-border-width) solid var(--ui-color-border);
     height: 64rpx;
-    font-size: 24rpx;
+    font-size: var(--ui-font-size-xs);
     text-align: center;
     border-radius: var(--ui-radius-sm);
     background-color: var(--ui-color-background-section);
@@ -507,7 +507,7 @@ export default {
 
   // ===== 预设色板 =====
   &__presets {
-    gap: 8rpx;
+    gap: var(--ui-spacing-xs);
     display: grid;
     margin-top: 20rpx;
   }
@@ -518,7 +518,7 @@ export default {
     box-shadow: inset 0 0 0 2rpx rgba(0, 0, 0, 0.06);
     transition: transform 0.15s ease;
     aspect-ratio: 1;
-    border-radius: 8rpx;
+    border-radius: var(--ui-radius-sm);
 
     &:active {
       transform: scale(0.9);

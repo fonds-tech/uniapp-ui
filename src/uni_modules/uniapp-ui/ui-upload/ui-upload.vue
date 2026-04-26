@@ -425,7 +425,7 @@ export default {
     align-items: center;
     flex-shrink: 0;
     justify-content: center;
-    background-color: #f7f8fa;
+    background-color: var(--ui-color-background-page);
   }
 
   &__status {
@@ -458,9 +458,9 @@ export default {
       height: 28rpx;
       display: flex;
       align-items: center;
-      padding-left: 4rpx;
+      padding-left: var(--ui-spacing-xxs);
       border-radius: 0 0 0 24rpx;
-      padding-bottom: 4rpx;
+      padding-bottom: var(--ui-spacing-xxs);
       justify-content: center;
       background-color: rgb(0 0 0 / 70%);
     }
@@ -472,7 +472,7 @@ export default {
     align-items: center;
     flex-shrink: 0;
     justify-content: center;
-    background-color: #f7f8fa;
+    background-color: var(--ui-color-background-page);
 
     &::before {
       top: 50%;
@@ -490,7 +490,7 @@ export default {
     }
 
     &--active::before {
-      opacity: 0.1;
+      opacity: var(--ui-opacity-light);
     }
   }
 }

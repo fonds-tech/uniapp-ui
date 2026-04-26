@@ -135,7 +135,7 @@ export default {
   }
   &__loading {
     width: 100%;
-    margin: 24rpx 0;
+    margin: var(--ui-spacing-md) 0;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -144,7 +144,7 @@ export default {
       margin-right: 12rpx;
     }
     .loading-text {
-      color: #999;
+      color: var(--ui-color-text-tertiary);
     }
   }
 }

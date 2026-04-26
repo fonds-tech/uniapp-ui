@@ -268,7 +268,7 @@ export default {
     border-width: 0;
     border-radius: 0;
     background-color: transparent;
-    border-bottom-width: 4rpx;
+    border-bottom-width: var(--ui-border-width-thick);
   }
 
   // Filled 样式

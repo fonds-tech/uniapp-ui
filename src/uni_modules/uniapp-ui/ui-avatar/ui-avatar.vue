@@ -290,7 +290,7 @@ export default {
     color: var(--ui-color-text-secondary);
     display: flex;
     align-items: center;
-    font-weight: 500;
+    font-weight: var(--ui-font-weight-medium);
     white-space: nowrap;
     text-transform: uppercase;
     justify-content: center;

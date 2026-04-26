@@ -403,7 +403,7 @@ export default {
   &__title {
     color: var(--ui-color-text);
     font-size: var(--ui-font-size-sm);
-    font-weight: 500;
+    font-weight: var(--ui-font-weight-medium);
   }
 
   &__label {
@@ -421,8 +421,8 @@ export default {
   &__arrow {
     color: var(--ui-color-text-tertiary);
     display: flex;
-    font-size: 24rpx;
-    transition: transform 0.3s;
+    font-size: var(--ui-font-size-xs);
+    transition: transform var(--ui-transition-duration);
     align-items: center;
     flex-shrink: 0;
 
@@ -463,7 +463,7 @@ export default {
     padding: var(--ui-spacing-md);
     position: relative;
     font-size: var(--ui-font-size-sm);
-    line-height: 1.5;
+    line-height: var(--ui-line-height-normal);
   }
 }
 </style>

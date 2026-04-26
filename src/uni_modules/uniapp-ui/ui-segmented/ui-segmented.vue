@@ -238,7 +238,7 @@ export default {
   position: relative;
   box-sizing: border-box;
   align-items: stretch;
-  border-radius: 8rpx;
+  border-radius: var(--ui-radius-sm);
   background-color: var(--ui-color-background-section);
 
   // 滚动模式
@@ -318,11 +318,11 @@ export default {
     transition:
       left var(--ui-transition-duration) var(--ui-transition-timing),
       width var(--ui-transition-duration) var(--ui-transition-timing);
-    border-radius: 8rpx;
+    border-radius: var(--ui-radius-sm);
   }
 
   &__item {
-    gap: 8rpx;
+    gap: var(--ui-spacing-xs);
     flex: 1;
     color: var(--ui-color-text-secondary);
     cursor: pointer;
@@ -335,9 +335,9 @@ export default {
       color var(--ui-transition-fast) var(--ui-transition-timing),
       font-weight var(--ui-transition-fast) var(--ui-transition-timing);
     align-items: center;
-    font-weight: 400;
+    font-weight: var(--ui-font-weight-normal);
     white-space: nowrap;
-    border-radius: 8rpx;
+    border-radius: var(--ui-radius-sm);
     justify-content: center;
 
     &--active {

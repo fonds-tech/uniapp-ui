@@ -105,20 +105,20 @@ export default {
 .ui-tag {
   width: fit-content;
   display: inline-flex;
-  padding: 4rpx 8rpx;
+  padding: var(--ui-spacing-xxs) var(--ui-spacing-xs);
   overflow: hidden;
   position: relative;
   box-sizing: border-box;
   align-items: center;
   flex-shrink: 0;
-  border-radius: 4rpx;
+  border-radius: var(--ui-radius-xs);
   justify-content: center;
   background-color: var(--ui-color-primary);
 
   &__icon {
     display: flex;
     align-items: center;
-    margin-right: 4rpx;
+    margin-right: var(--ui-spacing-xxs);
   }
 
   &__text {
@@ -129,7 +129,7 @@ export default {
   &__close {
     display: flex;
     align-items: center;
-    margin-left: 4rpx;
+    margin-left: var(--ui-spacing-xxs);
   }
 
   &--round {
@@ -138,7 +138,7 @@ export default {
 
   &--plain {
     border-style: solid;
-    border-width: 1rpx;
+    border-width: var(--ui-border-width-thin);
     background-color: var(--ui-color-background);
   }
 

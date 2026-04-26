@@ -347,11 +347,11 @@ export default {
 
   &__text {
     color: var(--ui-color-text-inverse);
+    max-width: 100%;
+    word-wrap: break-word;
     text-align: center;
     white-space: pre-wrap;
-    word-wrap: break-word;
     overflow-wrap: break-word;
-    max-width: 100%;
   }
 }
 </style>

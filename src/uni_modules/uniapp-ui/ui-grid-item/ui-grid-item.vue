@@ -176,7 +176,7 @@ export default {
   &__content {
     height: 100%;
     display: flex;
-    padding: 32rpx 16rpx;
+    padding: var(--ui-spacing-lg) var(--ui-spacing-sm);
     box-sizing: border-box;
     flex-direction: column;
     background-color: var(--ui-color-background);
@@ -239,13 +239,13 @@ export default {
   &__text {
     color: var(--ui-color-text);
     font-size: var(--ui-font-size-sm);
-    margin-top: 16rpx;
+    margin-top: var(--ui-spacing-sm);
     word-break: break-all;
     line-height: 1.4;
 
     .ui-grid-item__content--horizontal & {
       margin-top: 0;
-      margin-left: 16rpx;
+      margin-left: var(--ui-spacing-sm);
     }
   }
 }

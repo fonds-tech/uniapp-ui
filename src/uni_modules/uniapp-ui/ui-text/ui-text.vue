@@ -81,7 +81,7 @@ export default {
 
   &--clickable {
     &:active {
-      opacity: 0.6;
+      opacity: var(--ui-opacity-active);
     }
   }
 }

@@ -360,7 +360,7 @@ $ui-float-button-warning-color: var(--ui-color-warning, #ff976a);
   &--hidden {
     opacity: 0;
     transform: scale(0);
-    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
+    transition: all var(--ui-transition-duration) cubic-bezier(0.25, 0.8, 0.5, 1);
     pointer-events: none;
   }
 
@@ -374,7 +374,7 @@ $ui-float-button-warning-color: var(--ui-color-warning, #ff976a);
   position: relative;
   box-shadow: 0 4rpx 16rpx 0 rgba(0, 0, 0, 0.2);
   box-sizing: border-box;
-  transition: 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
+  transition: var(--ui-transition-duration) cubic-bezier(0.25, 0.8, 0.5, 1);
   align-items: center;
   border-radius: 50%;
   justify-content: center;
@@ -386,7 +386,7 @@ $ui-float-button-warning-color: var(--ui-color-warning, #ff976a);
 
   &--disabled {
     cursor: not-allowed;
-    opacity: 0.5;
+    opacity: var(--ui-opacity-disabled);
   }
 
   &--primary {
@@ -410,7 +410,7 @@ $ui-float-button-warning-color: var(--ui-color-warning, #ff976a);
   }
 
   &--default {
-    color: #333;
+    color: var(--ui-color-text);
     background: $ui-float-button-default-color;
   }
 
@@ -428,9 +428,9 @@ $ui-float-button-warning-color: var(--ui-color-warning, #ff976a);
   }
 
   &__text {
-    font-size: 28rpx;
-    font-weight: 500;
-    margin-left: 8rpx;
+    font-size: var(--ui-font-size-sm);
+    font-weight: var(--ui-font-weight-medium);
+    margin-left: var(--ui-spacing-xs);
   }
 }
 </style>

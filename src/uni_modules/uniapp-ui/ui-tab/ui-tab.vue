@@ -126,12 +126,12 @@ export default {
 
   &--active {
     color: var(--ui-color-text);
-    font-weight: bold;
+    font-weight: var(--ui-font-weight-bold);
   }
 
   &--disabled {
     cursor: not-allowed;
-    opacity: 0.5;
+    opacity: var(--ui-opacity-disabled);
     pointer-events: none;
   }
 

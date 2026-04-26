@@ -158,7 +158,7 @@ export default {
 
   &__text {
     color: var(--ui-color-text-inverse);
-    padding: 0 8rpx;
+    padding: 0 var(--ui-spacing-xs);
     z-index: 1;
     font-size: 20rpx;
     align-self: center;
@@ -167,13 +167,13 @@ export default {
     white-space: nowrap;
 
     &--left {
-      margin-left: 8rpx;
+      margin-left: var(--ui-spacing-xs);
       margin-right: auto;
     }
 
     &--right {
       margin-left: auto;
-      margin-right: 8rpx;
+      margin-right: var(--ui-spacing-xs);
     }
   }
 

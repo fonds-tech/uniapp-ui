@@ -57,7 +57,14 @@ const options = [
 ]
 
 const customOptions = [
-  { label: "技术", id: "tech", children: [{ label: "前端", id: "fe" }, { label: "后端", id: "be" }] },
+  {
+    label: "技术",
+    id: "tech",
+    children: [
+      { label: "前端", id: "fe" },
+      { label: "后端", id: "be" },
+    ],
+  },
   { label: "设计", id: "design", children: [{ label: "UI", id: "ui" }] },
 ]
 

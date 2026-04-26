@@ -159,7 +159,7 @@ export default {
 
   &--disabled {
     cursor: not-allowed;
-    opacity: 0.5;
+    opacity: var(--ui-opacity-disabled);
     pointer-events: none;
   }
 

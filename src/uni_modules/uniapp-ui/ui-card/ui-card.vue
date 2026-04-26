@@ -191,7 +191,7 @@ export default {
     color: var(--ui-color-text);
     overflow: hidden;
     font-size: var(--ui-font-size-md);
-    font-weight: 500;
+    font-weight: var(--ui-font-weight-medium);
     white-space: nowrap;
     text-overflow: ellipsis;
   }
@@ -218,17 +218,17 @@ export default {
 
   // 小阴影
   &--shadow-small {
-    box-shadow: 0 2rpx 8rpx 0 rgba(0, 0, 0, 0.04);
+    box-shadow: var(--ui-shadow-xs);
   }
 
   // 中等阴影
   &--shadow-medium {
-    box-shadow: 0 4rpx 16rpx 0 rgba(0, 0, 0, 0.08);
+    box-shadow: var(--ui-shadow-sm);
   }
 
   // 大阴影
   &--shadow-large {
-    box-shadow: 0 8rpx 24rpx 0 rgba(0, 0, 0, 0.12);
+    box-shadow: var(--ui-shadow-md);
   }
 }
 </style>

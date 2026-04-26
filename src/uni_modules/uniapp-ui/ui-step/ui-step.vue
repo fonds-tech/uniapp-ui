@@ -343,13 +343,13 @@ $step-dot-size: 16rpx;
 $step-icon-size: 48rpx;
 $step-content-gap: 16rpx;
 $step-line-height: 2rpx;
-$step-transition-duration: 0.3s;
+$step-transition-duration: var(--ui-transition-duration);
 
 .ui-step {
   flex: 1;
   color: var(--ui-color-text-secondary);
   display: flex;
-  font-size: 28rpx;
+  font-size: var(--ui-font-size-sm);
   flex-direction: column;
 
   // 头部区域：前线条 + 图标 + 后线条
@@ -368,7 +368,7 @@ $step-transition-duration: 0.3s;
   // 图标容器
   &__icon-wrapper {
     display: flex;
-    padding: 0 8rpx;
+    padding: 0 var(--ui-spacing-xs);
     align-items: center;
     flex-shrink: 0;
     justify-content: center;
@@ -377,10 +377,10 @@ $step-transition-duration: 0.3s;
   // 默认圆圈
   &__circle {
     width: $step-icon-size;
-    border: 2rpx solid var(--ui-color-primary);
+    border: var(--ui-border-width) solid var(--ui-color-primary);
     height: $step-icon-size;
     display: flex;
-    font-size: 24rpx;
+    font-size: var(--ui-font-size-xs);
     transition:
       background-color $step-transition-duration ease,
       border-color $step-transition-duration ease,
@@ -388,16 +388,16 @@ $step-transition-duration: 0.3s;
       transform $step-transition-duration ease;
     align-items: center;
     flex-shrink: 0;
-    font-weight: 500;
+    font-weight: var(--ui-font-weight-medium);
     border-radius: 50%;
     justify-content: center;
   }
 
   // 步骤序号
   &__index {
-    font-size: 24rpx;
+    font-size: var(--ui-font-size-xs);
     transition: color $step-transition-duration ease;
-    font-weight: 500;
+    font-weight: var(--ui-font-weight-medium);
     line-height: 1;
   }
 
@@ -410,18 +410,18 @@ $step-transition-duration: 0.3s;
 
   &__title {
     color: var(--ui-color-text);
-    font-size: 28rpx;
+    font-size: var(--ui-font-size-sm);
     transition: color $step-transition-duration ease;
     word-break: break-word;
-    font-weight: 500;
+    font-weight: var(--ui-font-weight-medium);
     line-height: 1.4;
   }
 
   // 描述
   &__description {
     color: var(--ui-color-text-secondary);
-    font-size: 24rpx;
-    margin-top: 8rpx;
+    font-size: var(--ui-font-size-xs);
+    margin-top: var(--ui-spacing-xs);
     transition: color $step-transition-duration ease;
     word-break: break-word;
     line-height: 1.4;
@@ -435,7 +435,7 @@ $step-transition-duration: 0.3s;
     .ui-step__head {
       width: $step-icon-size;
       flex-shrink: 0;
-      margin-right: 24rpx;
+      margin-right: var(--ui-spacing-md);
       flex-direction: column;
     }
 
@@ -447,7 +447,7 @@ $step-transition-duration: 0.3s;
     }
 
     .ui-step__icon-wrapper {
-      padding: 8rpx 0;
+      padding: var(--ui-spacing-xs) 0;
     }
 
     .ui-step__content {

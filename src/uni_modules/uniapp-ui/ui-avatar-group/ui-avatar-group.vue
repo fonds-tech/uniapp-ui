@@ -181,8 +181,8 @@ export default {
 
   &__excess-text {
     color: var(--ui-color-text-secondary);
-    font-size: 24rpx;
-    font-weight: 500;
+    font-size: var(--ui-font-size-xs);
+    font-weight: var(--ui-font-weight-medium);
   }
 }
 </style>

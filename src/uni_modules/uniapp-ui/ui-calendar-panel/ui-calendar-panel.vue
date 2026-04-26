@@ -411,7 +411,7 @@ export default {
 
   &__header {
     display: flex;
-    padding: 24rpx 32rpx;
+    padding: var(--ui-spacing-md) var(--ui-spacing-lg);
     position: relative;
     align-items: center;
     justify-content: center;
@@ -419,7 +419,7 @@ export default {
 
   &__close {
     left: 32rpx;
-    padding: 8rpx;
+    padding: var(--ui-spacing-xs);
     position: absolute;
 
     &--placeholder {
@@ -428,31 +428,31 @@ export default {
   }
 
   &__title {
-    font-size: 32rpx;
+    font-size: var(--ui-font-size-md);
     text-align: center;
     font-weight: 600;
   }
 
   &__subtitle {
-    gap: 16rpx;
+    gap: var(--ui-spacing-sm);
     display: flex;
-    padding: 16rpx 32rpx;
+    padding: var(--ui-spacing-sm) var(--ui-spacing-lg);
     align-items: center;
     justify-content: center;
   }
 
   &__subtitle-text {
-    font-size: 28rpx;
+    font-size: var(--ui-font-size-sm);
     min-width: 160rpx;
     text-align: center;
-    font-weight: 500;
+    font-weight: var(--ui-font-weight-medium);
   }
 
   &__nav {
     width: 56rpx;
     height: 56rpx;
     display: flex;
-    transition: background-color 0.2s;
+    transition: background-color var(--ui-transition-fast);
     align-items: center;
     border-radius: 50%;
     justify-content: center;
@@ -464,19 +464,19 @@ export default {
 
   &__weekdays {
     display: flex;
-    padding: 16rpx 16rpx 8rpx;
+    padding: var(--ui-spacing-sm) var(--ui-spacing-sm) var(--ui-spacing-xs);
   }
 
   &__weekday {
     flex: 1;
     color: var(--ui-color-text-secondary);
-    font-size: 24rpx;
+    font-size: var(--ui-font-size-xs);
     text-align: center;
   }
 
   &__days {
     display: flex;
-    padding: 8rpx 16rpx 16rpx;
+    padding: var(--ui-spacing-xs) var(--ui-spacing-sm) var(--ui-spacing-sm);
     position: relative;
     flex-wrap: wrap;
   }
@@ -487,18 +487,18 @@ export default {
     height: var(--ui-calendar-day-size);
     display: flex;
     position: relative;
-    transition: all 0.2s;
+    transition: all var(--ui-transition-fast);
     align-items: center;
     flex-direction: column;
     justify-content: center;
 
     &--other-month {
-      opacity: 0.3;
+      opacity: var(--ui-opacity-medium);
     }
 
     &--disabled {
       cursor: not-allowed;
-      opacity: 0.3;
+      opacity: var(--ui-opacity-medium);
     }
 
     &--today {
@@ -522,8 +522,8 @@ export default {
     }
 
     &--start {
-      border-top-left-radius: 8rpx;
-      border-bottom-left-radius: 8rpx;
+      border-top-left-radius: var(--ui-radius-sm);
+      border-bottom-left-radius: var(--ui-radius-sm);
 
       .ui-calendar__day-text {
         color: var(--ui-color-text-inverse);
@@ -538,8 +538,8 @@ export default {
     }
 
     &--end {
-      border-top-right-radius: 8rpx;
-      border-bottom-right-radius: 8rpx;
+      border-top-right-radius: var(--ui-radius-sm);
+      border-bottom-right-radius: var(--ui-radius-sm);
 
       .ui-calendar__day-text {
         color: var(--ui-color-text-inverse);
@@ -558,7 +558,7 @@ export default {
     }
 
     &:active:not(&--disabled) {
-      opacity: 0.7;
+      opacity: var(--ui-opacity-heavy);
     }
   }
 
@@ -597,12 +597,12 @@ export default {
     z-index: 0;
     position: absolute;
     font-size: 320rpx;
-    font-weight: bold;
+    font-weight: var(--ui-font-weight-bold);
     pointer-events: none;
   }
 
   &__footer {
-    padding: 16rpx 32rpx 24rpx;
+    padding: var(--ui-spacing-sm) var(--ui-spacing-lg) var(--ui-spacing-md);
   }
 }
 </style>

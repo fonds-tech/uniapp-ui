@@ -88,18 +88,8 @@
 </template>
 
 <script setup lang="ts">
-import type {
-  DateRangePickerValue,
-  DateRangePickerInstance,
-  DateRangePickerCancelData,
-  DateRangePickerConfirmData,
-} from "../ui-date-range-picker"
-import type {
-  DateRangeSelectValue,
-  DateRangeSelectActiveType,
-  DateRangeSelectCancelData,
-  DateRangeSelectConfirmData,
-} from "./index"
+import type { DateRangePickerValue, DateRangePickerInstance, DateRangePickerCancelData, DateRangePickerConfirmData } from "../ui-date-range-picker"
+import type { DateRangeSelectValue, DateRangeSelectActiveType, DateRangeSelectCancelData, DateRangeSelectConfirmData } from "./index"
 import UiDateRangePicker from "../ui-date-range-picker/ui-date-range-picker.vue"
 import { formItemKey } from "../ui-form-item"
 import { ref, watch, computed, useSlots } from "vue"
@@ -350,17 +340,17 @@ export default {
   &__item {
     flex: 1;
     display: flex;
-    padding: 8rpx 0;
+    padding: var(--ui-spacing-xs) 0;
     overflow: hidden;
-    transition: background-color 0.2s;
+    transition: background-color var(--ui-transition-fast);
     align-items: center;
-    border-radius: 8rpx;
+    border-radius: var(--ui-radius-sm);
     justify-content: center;
   }
 
   &__separator {
     display: flex;
-    padding: 0 16rpx;
+    padding: 0 var(--ui-spacing-sm);
     align-items: center;
     flex-shrink: 0;
 

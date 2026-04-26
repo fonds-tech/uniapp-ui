@@ -183,7 +183,7 @@ export default {
   padding: var(--ui-spacing-md);
   position: fixed;
   transform: translateY(-100%);
-  transition: transform 0.3s ease-out;
+  transition: transform var(--ui-transition-duration) var(--ui-transition-timing-ease-out);
 
   &--visible {
     transform: translateY(0);

@@ -5,14 +5,7 @@
         <text class="ui-cascader__header__title" :style="[titleStyle]">{{ props.title }}</text>
       </slot>
       <slot name="close">
-        <ui-icon
-          v-if="props.closeable"
-          :name="props.closeIcon"
-          :size="props.closeIconSize"
-          :color="props.closeIconColor"
-          :weight="props.closeIconWeight"
-          @click="onClickClose"
-        />
+        <ui-icon v-if="props.closeable" :name="props.closeIcon" :size="props.closeIconSize" :color="props.closeIconColor" :weight="props.closeIconWeight" @click="onClickClose" />
       </slot>
     </view>
     <scroll-view scroll-x :show-scrollbar="false">
@@ -381,7 +374,7 @@ export default {
       }
 
       &--disabled {
-        opacity: 0.5;
+        opacity: var(--ui-opacity-disabled);
         pointer-events: none;
       }
     }

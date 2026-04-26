@@ -48,8 +48,8 @@ export default {
   width: 100%;
   height: 35rpx;
   position: relative;
-  border-radius: 8rpx;
-  background-color: #f2f3f5;
+  border-radius: var(--ui-radius-sm);
+  background-color: var(--ui-color-background-section);
 
   &--animate {
     animation: ui-skeleton-blink 1.5s ease-in-out infinite;

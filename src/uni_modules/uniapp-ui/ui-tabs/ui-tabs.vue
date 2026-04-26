@@ -223,7 +223,7 @@ export default {
     position: absolute;
     background: var(--ui-color-primary);
     will-change: transform;
-    border-radius: 9999rpx;
+    border-radius: var(--ui-radius-round);
   }
 }
 </style>

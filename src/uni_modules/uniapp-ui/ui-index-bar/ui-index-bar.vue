@@ -147,7 +147,7 @@ export default {
 
   &__index {
     display: flex;
-    padding: 4rpx 8rpx;
+    padding: var(--ui-spacing-xxs) var(--ui-spacing-xs);
     align-items: center;
     justify-content: center;
 

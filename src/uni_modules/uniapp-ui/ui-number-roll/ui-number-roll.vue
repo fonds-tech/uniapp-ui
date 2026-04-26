@@ -166,7 +166,7 @@ export default {
     color: inherit;
     display: flex;
     font-size: inherit;
-    transition: all 0.3s ease-out;
+    transition: all var(--ui-transition-duration) var(--ui-transition-timing-ease-out);
     font-weight: inherit;
     justify-content: center;
   }

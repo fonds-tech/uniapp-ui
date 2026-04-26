@@ -52,14 +52,14 @@ export default {
   height: 100rpx;
   position: relative;
   flex-shrink: 0;
-  background-color: #f2f3f5;
+  background-color: var(--ui-color-background-section);
 
   &--round {
     border-radius: 9999px;
   }
 
   &--square {
-    border-radius: 16rpx;
+    border-radius: var(--ui-radius-md);
   }
 
   &--animate {

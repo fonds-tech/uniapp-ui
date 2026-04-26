@@ -269,8 +269,8 @@ export default {
 
   &__loading-text {
     color: var(--ui-color-text-secondary, #999);
-    font-size: 28rpx;
-    margin-left: 16rpx;
+    font-size: var(--ui-font-size-sm);
+    margin-left: var(--ui-spacing-sm);
   }
 
   &__finished {
@@ -281,8 +281,8 @@ export default {
   }
 
   &__finished-text {
-    color: var(--ui-color-text-tertiary, #c8c9cc);
-    font-size: 28rpx;
+    color: var(--ui-color-text-tertiary, var(--ui-color-text-placeholder));
+    font-size: var(--ui-font-size-sm);
   }
 
   &__error {
@@ -294,7 +294,7 @@ export default {
 
   &__error-text {
     color: var(--ui-color-danger, #ee0a24);
-    font-size: 28rpx;
+    font-size: var(--ui-font-size-sm);
   }
 }
 </style>

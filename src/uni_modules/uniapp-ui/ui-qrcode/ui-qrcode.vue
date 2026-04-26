@@ -206,7 +206,7 @@ export default {
     object-fit: contain;
   }
   .code-text {
-    font-size: 36rpx;
+    font-size: var(--ui-font-size-lg);
     box-sizing: border-box;
     padding-top: 10rpx;
     letter-spacing: 8rpx;

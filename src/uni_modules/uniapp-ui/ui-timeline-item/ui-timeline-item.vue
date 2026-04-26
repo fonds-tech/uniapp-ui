@@ -319,7 +319,7 @@ export default {
 
   &__dot {
     width: var(--ui-timeline-dot-size);
-    border: 2rpx solid var(--ui-color-primary);
+    border: var(--ui-border-width) solid var(--ui-color-primary);
     height: var(--ui-timeline-dot-size);
     display: flex;
     align-items: center;
@@ -351,21 +351,21 @@ export default {
     color: var(--ui-color-text-secondary);
     font-size: var(--ui-timeline-time-font-size);
     line-height: 1.4;
-    margin-bottom: 8rpx;
+    margin-bottom: var(--ui-spacing-xs);
   }
 
   &__title {
     color: var(--ui-color-text);
     font-size: var(--ui-timeline-title-font-size);
-    font-weight: 500;
+    font-weight: var(--ui-font-weight-medium);
     line-height: 1.4;
   }
 
   &__description {
     color: var(--ui-color-text-secondary);
     font-size: var(--ui-timeline-desc-font-size);
-    margin-top: 8rpx;
-    line-height: 1.5;
+    margin-top: var(--ui-spacing-xs);
+    line-height: var(--ui-line-height-normal);
   }
 
   &--last {

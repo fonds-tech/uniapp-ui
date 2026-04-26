@@ -392,9 +392,9 @@ export default {
   &__header {
     height: 96rpx;
     display: flex;
-    padding: 0 24rpx;
+    padding: 0 var(--ui-spacing-md);
     align-items: center;
-    border-bottom: 1px solid #ebedf0;
+    border-bottom: 1px solid var(--ui-color-border);
     justify-content: space-between;
 
     &__cancel,
@@ -404,19 +404,19 @@ export default {
   }
 
   &__tabs {
-    gap: 32rpx;
+    gap: var(--ui-spacing-lg);
     flex: 1;
     display: flex;
     justify-content: center;
   }
 
   &__tab {
-    padding: 8rpx 24rpx;
+    padding: var(--ui-spacing-xs) var(--ui-spacing-md);
     position: relative;
     min-width: 160rpx;
     text-align: center;
-    transition: all 0.2s;
-    border-radius: 8rpx;
+    transition: all var(--ui-transition-fast);
+    border-radius: var(--ui-radius-sm);
 
     &.is-active {
       background-color: var(--ui-color-primary-light, rgba(25, 137, 250, 0.1));
@@ -429,8 +429,8 @@ export default {
     &-text {
       color: var(--ui-color-text);
       overflow: hidden;
-      font-size: 28rpx;
-      transition: color 0.2s;
+      font-size: var(--ui-font-size-sm);
+      transition: color var(--ui-transition-fast);
       white-space: nowrap;
       text-overflow: ellipsis;
     }

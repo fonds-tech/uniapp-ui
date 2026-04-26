@@ -326,7 +326,7 @@ export default {
     position: relative;
     font-size: var(--ui-font-size-sm);
     box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15);
-    line-height: 1.5;
+    line-height: var(--ui-line-height-normal);
     white-space: nowrap;
     border-radius: 4px;
     backdrop-filter: blur(10px);
@@ -397,7 +397,7 @@ export default {
     position: absolute;
 
     &:active {
-      opacity: 0.7;
+      opacity: var(--ui-opacity-heavy);
     }
   }
 

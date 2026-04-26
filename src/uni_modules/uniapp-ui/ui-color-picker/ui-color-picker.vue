@@ -96,7 +96,7 @@ export default {
   &__header {
     height: 88rpx;
     display: flex;
-    padding: 0 32rpx;
+    padding: 0 var(--ui-spacing-lg);
     align-items: center;
     border-bottom: var(--ui-border-width) solid var(--ui-color-border);
     justify-content: space-between;
@@ -104,14 +104,14 @@ export default {
 
   &__title {
     color: var(--ui-color-text);
-    font-size: 32rpx;
+    font-size: var(--ui-font-size-md);
     font-weight: 600;
   }
 
   &__cancel,
   &__confirm {
-    padding: 16rpx;
-    font-size: 28rpx;
+    padding: var(--ui-spacing-sm);
+    font-size: var(--ui-font-size-sm);
   }
 
   &__cancel {
@@ -124,7 +124,7 @@ export default {
 
   // 面板区域
   &__body {
-    padding: 24rpx;
+    padding: var(--ui-spacing-md);
   }
 }
 </style>

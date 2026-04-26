@@ -308,7 +308,7 @@ export default {
     display: flex;
     overflow: hidden;
     position: absolute;
-    font-size: 28rpx;
+    font-size: var(--ui-font-size-sm);
     transform: translateY(-100%);
     align-items: center;
     justify-content: center;
@@ -322,10 +322,10 @@ export default {
   &__text {
     color: inherit;
     font-size: inherit;
-    line-height: 1.5;
+    line-height: var(--ui-line-height-normal);
 
     &--loading {
-      margin-left: 16rpx;
+      margin-left: var(--ui-spacing-sm);
     }
   }
 

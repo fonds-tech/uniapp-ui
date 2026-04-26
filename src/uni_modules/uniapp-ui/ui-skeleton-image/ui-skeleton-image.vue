@@ -56,7 +56,7 @@ export default {
   height: 100rpx;
   position: relative;
   flex-shrink: 0;
-  border-radius: 16rpx;
+  border-radius: var(--ui-radius-md);
   background-color: var(--ui-color-background-section);
 
   &--square {

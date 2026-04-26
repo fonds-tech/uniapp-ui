@@ -242,7 +242,7 @@ export default {
   }
 
   &__item {
-    transition: all 0.3s ease;
+    transition: all var(--ui-transition-duration) var(--ui-transition-timing);
   }
 
   &__video {
@@ -255,7 +255,7 @@ export default {
     position: absolute;
 
     &--dot {
-      gap: 8rpx;
+      gap: var(--ui-spacing-xs);
       display: flex;
       align-items: center;
     }
@@ -270,7 +270,7 @@ export default {
       font-size: 22rpx;
       background: rgba(0, 0, 0, 0.4);
       white-space: nowrap;
-      border-radius: 16rpx;
+      border-radius: var(--ui-radius-md);
     }
 
     &--left {
@@ -336,8 +336,8 @@ export default {
     &__dot {
       width: 12rpx;
       height: 12rpx;
-      opacity: 0.3;
-      transition: all 0.3s ease;
+      opacity: var(--ui-opacity-medium);
+      transition: all var(--ui-transition-duration) var(--ui-transition-timing);
       border-radius: 50%;
       background-color: var(--ui-color-text-inverse);
 

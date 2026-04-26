@@ -209,7 +209,7 @@ export default {
     // 禁用状态
     &--disabled {
       cursor: not-allowed;
-      opacity: 0.5;
+      opacity: var(--ui-opacity-disabled);
       pointer-events: none;
     }
   }
@@ -244,7 +244,7 @@ export default {
     // 禁用状态
     &--disabled {
       cursor: not-allowed;
-      opacity: 0.5;
+      opacity: var(--ui-opacity-disabled);
       pointer-events: none;
     }
   }

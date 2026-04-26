@@ -787,7 +787,7 @@ export default {
       opacity: 0;
       position: absolute;
       transform: translate(-50%, -50%);
-      transition: opacity 0.2s ease;
+      transition: opacity var(--ui-transition-fast) var(--ui-transition-timing);
       border-radius: 50%;
       pointer-events: none;
       background-color: var(--slider-active-color);
@@ -812,7 +812,7 @@ export default {
     min-width: 32px;
     transform: translateX(-50%);
     text-align: center;
-    font-weight: 500;
+    font-weight: var(--ui-font-weight-medium);
     line-height: 1.4;
     white-space: nowrap;
     border-radius: 6px;

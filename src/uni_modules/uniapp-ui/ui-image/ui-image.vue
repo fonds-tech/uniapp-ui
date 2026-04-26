@@ -113,7 +113,7 @@ export default {
     height: 100%;
 
     &--fade {
-      animation: ui-image-fade-in 0.3s ease-out;
+      animation: ui-image-fade-in var(--ui-transition-duration) ease-out;
     }
   }
 

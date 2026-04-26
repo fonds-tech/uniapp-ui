@@ -281,7 +281,7 @@ $check-icon: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewB
   &__label {
     flex: 1;
     color: var(--ui-color-text);
-    font-size: 28rpx;
+    font-size: var(--ui-font-size-sm);
     word-break: break-word;
     line-height: 1.4;
 

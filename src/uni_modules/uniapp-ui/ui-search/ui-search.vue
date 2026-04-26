@@ -1,7 +1,7 @@
 <template>
   <view class="ui-search" :class="[props.customClass]" :style="[rootStyle]" role="search" @click="onClick">
     <view class="ui-search__content" :class="[contentClass]" :style="[contentStyle]">
-      <view class="ui-search__left" v-if="$slots.left">
+      <view v-if="$slots.left" class="ui-search__left">
         <slot name="left" />
       </view>
       <view class="ui-search__icon">
@@ -184,8 +184,8 @@ export default {
     display: flex;
     padding: 0 var(--ui-spacing-md);
     transition:
-      border-color 0.2s ease,
-      box-shadow 0.2s ease;
+      border-color var(--ui-transition-fast) var(--ui-transition-timing),
+      box-shadow var(--ui-transition-fast) var(--ui-transition-timing);
     align-items: center;
     border-radius: var(--ui-radius-sm);
     background-color: var(--ui-color-background-page);
@@ -209,14 +209,14 @@ export default {
     font-size: var(--ui-font-size-sm);
 
     &--disabled {
-      opacity: 0.6;
+      opacity: var(--ui-opacity-active);
       pointer-events: none;
     }
   }
 
   &__clear {
     display: flex;
-    transition: opacity 0.2s ease;
+    transition: opacity var(--ui-transition-fast) var(--ui-transition-timing);
     align-items: center;
     margin-left: var(--ui-spacing-xs);
     justify-content: center;

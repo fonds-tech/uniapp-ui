@@ -637,7 +637,7 @@ export default {
   &__option {
     display: flex;
     overflow: hidden;
-    font-size: 28rpx;
+    font-size: var(--ui-font-size-sm);
     box-sizing: border-box;
     transition:
       font-size 0.15s ease,

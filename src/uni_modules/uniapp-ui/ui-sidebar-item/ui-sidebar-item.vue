@@ -126,7 +126,7 @@ export default {
 
   &--disabled {
     cursor: not-allowed;
-    opacity: 0.5;
+    opacity: var(--ui-opacity-disabled);
   }
 
   &__title {
@@ -155,14 +155,14 @@ export default {
     right: var(--ui-spacing-md);
     height: 32rpx;
     display: flex;
-    padding: 0 8rpx;
+    padding: 0 var(--ui-spacing-xs);
     position: absolute;
     font-size: 20rpx;
     min-width: 32rpx;
     transform: translateY(-50%);
     background: var(--ui-color-danger);
     align-items: center;
-    border-radius: 32rpx;
+    border-radius: var(--ui-radius-xl);
     justify-content: center;
   }
 }
