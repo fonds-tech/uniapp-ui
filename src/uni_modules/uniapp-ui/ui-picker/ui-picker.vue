@@ -21,7 +21,7 @@
           <view v-if="props.showHeader" class="ui-picker__header">
             <view class="ui-picker__header__cancel" @click="onCancel">
               <slot name="cancel">
-                <ui-button text text-color="#969799">
+                <ui-button text text-color="text-tertiary">
                   {{ props.cancelText }}
                 </ui-button>
               </slot>

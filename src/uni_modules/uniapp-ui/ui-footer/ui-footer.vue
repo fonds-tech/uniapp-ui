@@ -83,7 +83,7 @@ export default {
 
 <style lang="scss" scoped>
 .ui-footer {
-  z-index: 100;
+  z-index: var(--ui-z-index-content);
   position: relative;
   margin-top: auto;
 

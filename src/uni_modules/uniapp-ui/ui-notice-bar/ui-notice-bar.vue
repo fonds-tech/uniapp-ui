@@ -209,7 +209,7 @@ export default {
 
   &__vertical {
     flex: 1;
-    height: var(--ui-notice-bar-height, var(--ui-size-small));
+    height: var(--ui-notice-bar-height, var(--ui-size-sm));
     display: flex;
 
     &__text {

@@ -354,7 +354,7 @@ export default {
 
   &__cancel {
     color: var(--ui-color-text);
-    height: var(--ui-size-large);
+    height: var(--ui-size-lg);
     margin: 0;
     display: flex;
     position: relative;

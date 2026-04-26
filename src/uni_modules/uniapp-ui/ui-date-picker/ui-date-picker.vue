@@ -21,7 +21,7 @@
           <view v-if="props.showHeader" class="ui-date-picker__header">
             <view class="ui-date-picker__header__cancel" @click="onCancel">
               <slot name="cancel">
-                <ui-button text text-color="#969799">
+                <ui-button text text-color="text-tertiary">
                   {{ props.cancelText }}
                 </ui-button>
               </slot>
@@ -193,15 +193,15 @@ export default {
 .ui-date-picker {
   &__header {
     display: flex;
-    padding: 24rpx;
+    padding: var(--ui-spacing-md);
     align-items: center;
-    border-bottom: 1px solid #ebedf0;
+    border-bottom: var(--ui-border-width-thin) solid var(--ui-color-border);
     justify-content: space-between;
 
     &__title {
-      color: #323233;
-      font-size: 32rpx;
-      font-weight: bold;
+      color: var(--ui-color-text);
+      font-size: var(--ui-font-size-md);
+      font-weight: var(--ui-font-weight-bold);
     }
   }
 

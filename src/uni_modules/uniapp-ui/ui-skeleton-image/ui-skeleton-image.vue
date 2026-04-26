@@ -57,7 +57,7 @@ export default {
   position: relative;
   flex-shrink: 0;
   border-radius: 16rpx;
-  background-color: #f2f3f5;
+  background-color: var(--ui-color-background-section);
 
   &--square {
     height: auto;

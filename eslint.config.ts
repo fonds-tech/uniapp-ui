@@ -24,6 +24,12 @@ export default eslint(
     },
   },
   {
+    files: ["**/styles/variables.scss", "**/styles/variables.css"],
+    rules: {
+      "fonds/style-sort": "off",
+    },
+  },
+  {
     ignores: ["dist", "node_modules", "*.d.ts"],
   },
 )
