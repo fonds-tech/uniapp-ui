@@ -1,6 +1,6 @@
 <template>
   <ui-overlay
-    v-if="props.overlay"
+    v-if="props.overlay && inited"
     :show="visible"
     :duration="props.duration"
     :z-index="currentZIndex"
@@ -27,13 +27,15 @@
             :key="item.id ?? index"
             class="ui-action-sheet__item"
             :class="{ 'ui-action-sheet__item--disabled': item.disabled, 'ui-action-sheet__item--loading': item.loading }"
+            hover-class="ui-action-sheet__item--active"
+            :hover-stay-time="0"
             @click="handleItemClick(item, index)"
           >
-            <ui-loading v-if="item.loading" size="36rpx" />
+            <ui-loading v-if="item.loading" :size="loadingIconSize" />
             <template v-else>
               <view class="ui-action-sheet__item__main">
                 <ui-icon v-if="item.icon" :name="item.icon" class="ui-action-sheet__item__icon" />
-                <text class="ui-action-sheet__item__title" :style="[actionTitleStyle, item.titleStyle, item.color && { color: item.color }]">{{ item.title }}</text>
+                <text class="ui-action-sheet__item__title" :style="[actionTitleStyle, item.titleStyle, item.color ? { color: useColor(item.color) } : null]">{{ item.title }}</text>
               </view>
               <text v-if="item.description" class="ui-action-sheet__item__description" :style="[actionDescStyle, item.descriptionStyle]">{{ item.description }}</text>
             </template>
@@ -74,6 +76,8 @@ const currentZIndex = ref<number>()
 // 面板是否可见（控制遮罩层显示）
 const visible = ref(false)
 
+// 操作项 loading 图标尺寸（使用 token 而非硬编码）
+const loadingIconSize = "var(--ui-icon-size-sm)"
 // 是否已初始化（懒渲染场景：首次打开后才渲染内容）
 const inited = computed(() => !props.lazyRender || transition.inited.value)
 // 安全的 actions 数组（防御性处理，确保始终为数组）
@@ -84,8 +88,12 @@ const safeActions = computed(() => {
 const panelStyle = computed(() => {
   const styles: CSSProperties = {}
   styles.zIndex = currentZIndex.value
-  styles.borderTopLeftRadius = useUnit(props.borderRadius)
-  styles.borderTopRightRadius = useUnit(props.borderRadius)
+  // 仅当 prop 显式传值时覆盖局部 var，未传时保留 SCSS 默认 --ui-action-sheet-radius
+  if (props.borderRadius !== undefined) {
+    const radius = useUnit(props.borderRadius)
+    styles.borderTopLeftRadius = radius
+    styles.borderTopRightRadius = radius
+  }
   return useStyle({ ...styles, ...useStyle(props.customStyle), ...transition.styles.value })
 })
 // 样式类名（过渡动画相关类名）
@@ -219,18 +227,22 @@ export default {
 @use "../styles/animation.scss";
 
 .ui-action-sheet {
+  // 局部变量（便于覆盖）
+  --ui-action-sheet-radius: var(--ui-radius-lg);
+  --ui-action-sheet-max-height: 80%;
+
   left: 0;
   right: 0;
   bottom: 0;
   display: flex;
   overflow: hidden;
   position: fixed;
-  max-height: 80%;
+  max-height: var(--ui-action-sheet-max-height);
   flex-direction: column;
   background-color: var(--ui-color-background);
   transition-duration: var(--ui-transition-duration);
-  border-top-left-radius: var(--ui-radius-lg);
-  border-top-right-radius: var(--ui-radius-lg);
+  border-top-left-radius: var(--ui-action-sheet-radius);
+  border-top-right-radius: var(--ui-action-sheet-radius);
 
   &__header {
     display: grid;
@@ -283,7 +295,8 @@ export default {
     flex-direction: column;
     grid-template-columns: repeat(1, minmax(0, 1fr));
 
-    &:active {
+    // 通过 hover-class 控制按下态（小程序 :active 不可靠）
+    &--active:not(.ui-action-sheet__item--disabled):not(.ui-action-sheet__item--loading) {
       background-color: var(--ui-color-background-hover);
     }
 
@@ -304,11 +317,7 @@ export default {
     }
 
     &--disabled {
-      cursor: not-allowed;
-
-      &:active {
-        background-color: transparent;
-      }
+      opacity: var(--ui-opacity-disabled);
 
       .ui-action-sheet__item__title {
         color: var(--ui-color-text-tertiary);
@@ -316,11 +325,7 @@ export default {
     }
 
     &--loading {
-      cursor: not-allowed;
-
-      &:active {
-        background-color: transparent;
-      }
+      opacity: var(--ui-opacity-active);
     }
 
     &__title {
