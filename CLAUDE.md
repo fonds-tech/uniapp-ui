@@ -146,6 +146,7 @@ export const buttonProps = {
 - prop 通过 inline CSS var 注入（`--ui-{component}-xxx`），SCSS 默认值集中在选择器顶部，**禁双路径**（不允许 inline 写具体值同时 SCSS 也写具体值）。
 - 渐变/图片用 `background:` 简写；`background-color` 只接颜色不接 gradient。
 - ui-icon / 子组件颜色字号优先由父组件 SCSS 接管（继承 `color` / `font-size`），prop 不传时由 SCSS 默认接管。
+- **禁用样式穿透**（`:deep()` / `>>>` / `/deep/`）：跨端兼容性差，小程序与 H5 行为不一致。子组件定制走其暴露的 `customClass` / `customStyle` / CSS var props，不要从父组件穿透选择器。
 
 ### 组件设计原则
 

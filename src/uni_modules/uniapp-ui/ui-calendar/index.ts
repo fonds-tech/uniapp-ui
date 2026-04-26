@@ -45,7 +45,7 @@ const defaultProps = buildDefaultProps("calendar", {
   confirmDisabledText: "请选择日期",
   showTitle: true,
   showSubtitle: true,
-  firstDayOfWeek: 0,
+  firstDayOfWeek: 1,
   readonly: false,
   poppable: true,
   maxRange: undefined,

@@ -1,23 +1,6 @@
-// ============================================================
-// uniapp-ui 设计 Token
-// ------------------------------------------------------------
-// 架构分层：
-//   L0 PRIMITIVE  - 原子值（gray palette）
-//   L1 主题色      - 品牌色 + 状态衍生
-//   L2 SEMANTIC   - 文本/边框/背景（引用 L0）
-//   L3 ROLE ALIAS - 角色别名（surface 系列，可选）
-// 命名规则：
-//   --ui-{category}-{property}-{variant}-{state}
-// ============================================================
-
 :root,
 page {
-  // ========================================================
   // L0 PRIMITIVE - 灰阶调色板
-  // ----------------------------------------------------
-  // 用于 L2 内部引用。组件不直接用，要用 semantic。
-  // 暗色模式翻转整套，semantic 自动跟随。
-  // ========================================================
   --ui-gray-1: #f7f8fa; // 极浅 - 页面底色
   --ui-gray-2: #f2f3f5; // 浅 - 区块底 / hover / 浅边框
   --ui-gray-3: #ebedf0; // 默认边框 / 禁用底
@@ -28,12 +11,7 @@ page {
   --ui-gray-8: #323233; // 默认文本（标题/正文）
   --ui-gray-9: #1f1f1f; // 强调文本（极少用）
 
-  // ========================================================
   // L1 主题色
-  // ----------------------------------------------------
-  // 5 种语义色：primary/success/warning/danger/info。
-  // 每色配 RGB 变量，供透明度合成。
-  // ========================================================
   --ui-color-primary: #1989fa; // 品牌主色（按钮/链接/激活态）
   --ui-color-success: #07c160; // 成功（确认/通过）
   --ui-color-warning: #ff976a; // 警告（提示/注意）
@@ -46,15 +24,7 @@ page {
   --ui-color-danger-rgb: 238, 10, 36;
   --ui-color-info-rgb: 144, 147, 153;
 
-  // ========================================================
   // L1 主题色 - 状态衍生
-  // ----------------------------------------------------
-  // 命名约定（透明度合成，暗色自动跟随）：
-  //   -active   按下态     85% alpha
-  //   -disabled 禁用       40% alpha
-  //   -light    浅底       10% alpha（选中区间/高亮）
-  //   -bg       极浅底     6% alpha（alert/tag 浅底）
-  // ========================================================
   --ui-color-primary-active: rgba(var(--ui-color-primary-rgb), 0.85); // 主按钮按下
   --ui-color-primary-disabled: rgba(var(--ui-color-primary-rgb), 0.4); // 主按钮禁用
   --ui-color-primary-light: rgba(var(--ui-color-primary-rgb), 0.1); // 选中底/区间高亮
@@ -69,9 +39,7 @@ page {
   --ui-color-info-light: rgba(var(--ui-color-info-rgb), 0.1);
   --ui-color-info-bg: rgba(var(--ui-color-info-rgb), 0.06);
 
-  // ========================================================
-  // L2 文本色（5 档梯度 + 反色 + 链接）
-  // ========================================================
+  // L2 文本色
   --ui-color-text: var(--ui-gray-8); // 默认文本（标题/正文）
   --ui-color-text-secondary: var(--ui-gray-7); // 次要文本（副标题/描述）
   --ui-color-text-tertiary: var(--ui-gray-6); // 辅助文本（时间戳/注释）
@@ -80,16 +48,12 @@ page {
   --ui-color-text-inverse: #ffffff; // 深色背景上的反色文本（如主按钮文字）
   --ui-color-text-link: var(--ui-color-primary); // 链接文字
 
-  // ========================================================
   // L2 边框色
-  // ========================================================
   --ui-color-border: var(--ui-gray-3); // 默认边框（输入框/卡片）
   --ui-color-border-light: var(--ui-gray-2); // 浅边框（卡片内分割）
   --ui-color-border-dark: var(--ui-gray-4); // 强边框（hover/聚焦）
 
-  // ========================================================
   // L2 背景色
-  // ========================================================
   --ui-color-background: #ffffff; // 默认表面（卡片/弹窗）
   --ui-color-background-page: var(--ui-gray-1); // 页面整体底
   --ui-color-background-section: var(--ui-gray-2); // 区块底（卡片间空隙）
@@ -97,33 +61,18 @@ page {
   --ui-color-background-hover: var(--ui-gray-2); // 列表项 hover
   --ui-color-background-disabled: var(--ui-gray-3); // 禁用按钮底
 
-  // ========================================================
   // L3 角色别名（Surface 系统 - MD3 风格，可选）
-  // ----------------------------------------------------
-  // 与上面 L2 等价，仅命名风格不同。
-  // 新组件可优先用 surface 系列，描述"用途"而非"位置"。
-  // ========================================================
   --ui-color-surface: var(--ui-color-background); // 卡片/弹窗的"表面"
   --ui-color-surface-variant: var(--ui-color-background-section); // 次级表面
   --ui-color-on-surface: var(--ui-color-text); // 表面上的前景（文字/图标）
   --ui-color-outline: var(--ui-color-border); // 表面轮廓（分割线）
 
-  // ========================================================
   // 遮罩
-  // ========================================================
   --ui-color-mask: rgba(0, 0, 0, 0.5); // 默认遮罩（弹窗背景）
   --ui-color-mask-light: rgba(0, 0, 0, 0.3); // 浅遮罩
   --ui-color-mask-heavy: rgba(0, 0, 0, 0.7); // 深遮罩（图片预览）
 
-  // ========================================================
   // 字体
-  // ----------------------------------------------------
-  // 字号 + 行高配套规则：
-  //   xs/sm 辅助文字 → tight (1.25)
-  //   sm/md 正文     → normal (1.5)
-  //   lg/xl 标题     → tight (1.25)
-  //   长段落       → loose (1.75)
-  // ========================================================
   --ui-font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Helvetica Neue", "Microsoft YaHei", sans-serif;
   --ui-font-family-mono: "SF Mono", Menlo, Consolas, "Courier New", monospace; // 等宽（代码）
 
@@ -146,26 +95,20 @@ page {
   --ui-letter-spacing-normal: 0; // 默认
   --ui-letter-spacing-wide: 0.05em; // 宽（强调/全大写）
 
-  // ========================================================
   // 组件高度（统一 t-shirt 命名）
-  // ========================================================
   --ui-size-xs: 48rpx; // 极小（mini 按钮/紧凑输入）
   --ui-size-sm: 64rpx; // 小（小按钮/通知栏）
   --ui-size-md: 80rpx; // 中（默认按钮/输入框）
   --ui-size-lg: 96rpx; // 大（主操作按钮）
 
-  // ========================================================
   // 图标尺寸
-  // ========================================================
   --ui-icon-size-xs: 24rpx; // 极小图标（tag 内/角标）
   --ui-icon-size-sm: 32rpx; // 小图标（输入框前缀）
   --ui-icon-size-md: 48rpx; // 中图标（导航/卡片）
   --ui-icon-size-lg: 64rpx; // 大图标（功能入口）
   --ui-icon-size-xl: 80rpx; // 超大图标（空状态）
 
-  // ========================================================
   // 间距（最常用：sm/md）
-  // ========================================================
   --ui-spacing-xxs: 4rpx; // 紧贴（图标 + 文字）
   --ui-spacing-xs: 8rpx; // 内联小间隔
   --ui-spacing-sm: 16rpx; // 卡片内/列表项间隔
@@ -174,9 +117,7 @@ page {
   --ui-spacing-xl: 48rpx; // section 间距
   --ui-spacing-xxl: 64rpx; // 页面级大留白
 
-  // ========================================================
   // 圆角（最常用：sm/md）
-  // ========================================================
   --ui-radius-xs: 4rpx; // 极小（标签/徽章）
   --ui-radius-sm: 8rpx; // 小（输入框/小按钮）
   --ui-radius-md: 16rpx; // 中（卡片/按钮）
@@ -184,25 +125,19 @@ page {
   --ui-radius-xl: 32rpx; // 超大（装饰）
   --ui-radius-round: 9999rpx; // 全圆（头像/胶囊按钮）
 
-  // ========================================================
   // 边框宽度
-  // ========================================================
   --ui-border-width-thin: 1rpx; // 细（分割线）
   --ui-border-width: 2rpx; // 默认（输入框/卡片）
   --ui-border-width-thick: 4rpx; // 粗（强调边）
 
-  // ========================================================
   // 阴影（elevation 海拔）
-  // ========================================================
   --ui-shadow-xs: 0 2rpx 4rpx rgba(0, 0, 0, 0.05); // 极轻（hover）
   --ui-shadow-sm: 0 2rpx 4rpx rgba(0, 0, 0, 0.12), 0 2rpx 6rpx rgba(0, 0, 0, 0.08); // 卡片
   --ui-shadow-md: 0 2rpx 4rpx rgba(0, 0, 0, 0.12), 0 4rpx 12rpx rgba(0, 0, 0, 0.1); // 浮动按钮/tooltip（最常用）
   --ui-shadow-lg: 0 2rpx 6rpx rgba(0, 0, 0, 0.15), 0 8rpx 16rpx rgba(0, 0, 0, 0.12); // popup 弹层
   --ui-shadow-xl: 0 2rpx 8rpx rgba(0, 0, 0, 0.18), 0 12rpx 24rpx rgba(0, 0, 0, 0.15); // modal 居中浮窗
 
-  // ========================================================
   // 动画
-  // ========================================================
   --ui-transition-fast: 0.2s; // 微交互（hover/active）
   --ui-transition-duration: 0.3s; // 默认（弹层/折叠）
   --ui-transition-slow: 0.5s; // 慢速（页面级转场）
@@ -212,9 +147,7 @@ page {
   --ui-transition-timing-ease-out: ease-out;
   --ui-transition-timing-linear: linear;
 
-  // ========================================================
   // 层级（间隔 10，扩展友好；不要硬编码数字）
-  // ========================================================
   --ui-z-index-base: 1; // 基础
   --ui-z-index-content: 10; // 内容层（footer 等）
   --ui-z-index-dropdown: 1000; // 下拉
@@ -226,9 +159,7 @@ page {
   --ui-z-index-toast: 1080; // 提示
   --ui-z-index-loading: 1090; // 加载（最高优先）
 
-  // ========================================================
   // 透明度
-  // ========================================================
   --ui-opacity-disabled: 0.5; // 禁用态
   --ui-opacity-active: 0.6; // 激活态
   --ui-opacity-light: 0.1; // 浅
@@ -236,17 +167,7 @@ page {
   --ui-opacity-heavy: 0.7; // 深
 }
 
-// ============================================================
-// 暗色模式
-// ------------------------------------------------------------
-// 仅覆盖差异：
-//   - gray palette 翻转 → text/border/background 自动跟随
-//   - 主题色暗色版（亮度调高，避免刺眼）
-//   - 阴影 alpha 加重（暗色背景下黑阴影几乎不可见）
-//   - 部分背景独立定义（不跟 gray 走的）
-// ============================================================
 [data-theme="dark"] {
-  // 灰阶翻转（语义自动跟随）
   --ui-gray-1: #0f0f0f;
   --ui-gray-2: #1a1a1a;
   --ui-gray-3: #252525;
@@ -257,7 +178,6 @@ page {
   --ui-gray-8: #e8e8e8;
   --ui-gray-9: #f5f5f5;
 
-  // 主题色暗色版
   --ui-color-primary: #4da3ff;
   --ui-color-success: #34d399;
   --ui-color-warning: #ffb088;
@@ -270,21 +190,17 @@ page {
   --ui-color-danger-rgb: 255, 107, 107;
   --ui-color-info-rgb: 166, 169, 173;
 
-  // 反色文本（深色背景上的反色 = 浅色背景）
   --ui-color-text-inverse: #1a1a1a;
 
-  // 不跟 gray 的背景
   --ui-color-background: #1a1a1a;
   --ui-color-background-input: #2a2a2a;
   --ui-color-background-hover: #333333;
   --ui-color-background-disabled: #1f1f1f;
 
-  // 遮罩加深
   --ui-color-mask: rgba(0, 0, 0, 0.7);
   --ui-color-mask-light: rgba(0, 0, 0, 0.5);
   --ui-color-mask-heavy: rgba(0, 0, 0, 0.85);
 
-  // 阴影加重 alpha
   --ui-shadow-xs: 0 2rpx 4rpx rgba(0, 0, 0, 0.4);
   --ui-shadow-sm: 0 2rpx 4rpx rgba(0, 0, 0, 0.5), 0 2rpx 6rpx rgba(0, 0, 0, 0.35);
   --ui-shadow-md: 0 2rpx 4rpx rgba(0, 0, 0, 0.5), 0 4rpx 12rpx rgba(0, 0, 0, 0.4);

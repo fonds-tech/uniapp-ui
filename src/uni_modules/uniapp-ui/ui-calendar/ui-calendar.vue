@@ -1,41 +1,39 @@
 <template>
-  <view>
-    <ui-popup
-      v-if="props.poppable"
-      :show="props.show"
-      mode="bottom"
-      :border-radius="props.borderRadius"
-      :close-on-click-overlay="props.closeOnClickOverlay"
-      :z-index="props.zIndex"
-      :safe-area-inset-bottom="props.safeAreaInsetBottom"
-      @update:show="onUpdateShow"
-      @open="emits('open')"
-      @opened="emits('opened')"
-      @close="emits('close')"
-      @closed="emits('closed')"
-      @click-overlay="emits('clickOverlay')"
-    >
-      <ui-calendar-panel
-        ref="panelRef"
-        v-bind="panelProps"
-        @select="emits('select', $event)"
-        @confirm="onConfirm"
-        @month-change="emits('monthChange', $event)"
-        @over-range="emits('overRange')"
-        @close="onClose"
-      />
-    </ui-popup>
-
+  <ui-popup
+    v-if="props.poppable"
+    :show="props.show"
+    mode="bottom"
+    :border-radius="props.borderRadius"
+    :close-on-click-overlay="props.closeOnClickOverlay"
+    :z-index="props.zIndex"
+    :safe-area-inset-bottom="props.safeAreaInsetBottom"
+    @update:show="onUpdateShow"
+    @open="emits('open')"
+    @opened="emits('opened')"
+    @close="emits('close')"
+    @closed="emits('closed')"
+    @click-overlay="emits('clickOverlay')"
+  >
     <ui-calendar-panel
-      v-else
       ref="panelRef"
       v-bind="panelProps"
       @select="emits('select', $event)"
-      @confirm="emits('confirm', $event)"
+      @confirm="onConfirm"
       @month-change="emits('monthChange', $event)"
       @over-range="emits('overRange')"
+      @close="onClose"
     />
-  </view>
+  </ui-popup>
+
+  <ui-calendar-panel
+    v-else
+    ref="panelRef"
+    v-bind="panelProps"
+    @select="emits('select', $event)"
+    @confirm="emits('confirm', $event)"
+    @month-change="emits('monthChange', $event)"
+    @over-range="emits('overRange')"
+  />
 </template>
 
 <script setup lang="ts">

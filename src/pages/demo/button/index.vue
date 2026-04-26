@@ -168,8 +168,8 @@
       <ui-space wrap>
         <ui-button type="default" border-radius="8rpx">小号圆角</ui-button>
         <ui-button type="default" border-radius="32rpx">大号圆角</ui-button>
-        <ui-button type="default" plain border-width="4rpx" border-color="#1989fa">粗体边框</ui-button>
-        <ui-button type="default" plain border-color="#ee0a24">红色边框</ui-button>
+        <ui-button type="default" plain border-width="4rpx" border-color="primary">粗体边框</ui-button>
+        <ui-button type="default" plain border-color="danger">红色边框</ui-button>
       </ui-space>
     </demo-section>
 
@@ -205,8 +205,11 @@
       <ui-space wrap>
         <ui-button
           type="default"
-          custom-class="my-button"
-          :custom-style="{ background: 'linear-gradient(45deg, #fff 0%, #f0f0f0 100%)', boxShadow: '0 2rpx 8rpx rgba(0,0,0,0.1)' }"
+          :custom-style="{
+            background: 'linear-gradient(45deg, #fff 0%, #f0f0f0 100%)',
+            boxShadow: '0 2rpx 8rpx rgba(0, 0, 0, 0.1)',
+            border: '2rpx dashed #1989fa',
+          }"
         >
           自定义样式
         </ui-button>
@@ -246,10 +249,6 @@ function onButtonClick(event: any) {
 <style lang="scss" scoped>
 .demo-text {
   color: var(--ui-color-text-secondary);
-  font-size: 24rpx;
-}
-
-:deep(.my-button) {
-  border: 2rpx dashed #1989fa;
+  font-size: var(--ui-font-size-xs);
 }
 </style>

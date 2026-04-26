@@ -1,5 +1,5 @@
-import type { Ref, ComputedRef } from "vue"
-import { ref, isRef, unref, computed } from "vue"
+import type { Ref, ComputedRef, MaybeRefOrGetter } from "vue"
+import { ref, isRef, unref, toValue, computed } from "vue"
 import { addDays, addMonths, parseDate, formatDate, isDateInRange, getDaysInMonth, formatYearMonth, getLastDayOfMonth, getFirstDayOfMonth } from "../utils/date"
 
 /**
@@ -36,11 +36,11 @@ export interface CalendarDay {
 }
 
 /**
- * useCalendar 选项
+ * useCalendar 选项；关键约束类支持 ref/getter，调用方 props 变化即生效
  */
 export interface UseCalendarOptions {
   /** 选择模式,默认 "single" */
-  mode?: CalendarMode
+  mode?: MaybeRefOrGetter<CalendarMode>
   /** 初始选中日期,默认为当前日期 (single 模式) */
   defaultDate?: string | Date
   /** 初始选中的多个日期 (multiple 模式) */
@@ -50,18 +50,18 @@ export interface UseCalendarOptions {
   /** 需要标记的日期数组,支持响应式 */
   markedDates?: Ref<string[]> | string[]
   /** 日期范围限制 - 最小日期 */
-  minDate?: Date
+  minDate?: MaybeRefOrGetter<Date | undefined>
   /** 日期范围限制 - 最大日期 */
-  maxDate?: Date
+  maxDate?: MaybeRefOrGetter<Date | undefined>
   /** 自定义禁用日期的函数 */
-  disabledDate?: (date: Date) => boolean
+  disabledDate?: MaybeRefOrGetter<((date: Date) => boolean) | undefined>
   /** 一周的第一天,0-6 (0=周日, 1=周一, ..., 6=周六),默认 0 */
-  firstDayOfWeek?: number
+  firstDayOfWeek?: MaybeRefOrGetter<number>
 }
 
 export interface UseCalendarReturn {
-  /** 周标题数组 */
-  weeks: Ref<string[]>
+  /** 周标题数组（响应式，跟随 firstDayOfWeek） */
+  weeks: ComputedRef<string[]>
   /** 当前月的日期数组(含上下月补充) */
   days: ComputedRef<CalendarDay[]>
   /** 当前显示的年月 */
@@ -110,14 +110,10 @@ export interface UseCalendarReturn {
   updateMarkedDates: (dates: string[]) => void
 }
 
-/** 周标题数组 */
-const WEEKS = ["日", "一", "二", "三", "四", "五", "六"]
+const WEEK_LABELS = ["日", "一", "二", "三", "四", "五", "六"]
 
-/**
- * 根据 firstDayOfWeek 调整周标题数组
- */
 function getAdjustedWeeks(firstDayOfWeek: number): string[] {
-  const weeks = [...WEEKS]
+  const weeks = [...WEEK_LABELS]
   if (firstDayOfWeek > 0 && firstDayOfWeek < 7) {
     const before = weeks.splice(0, firstDayOfWeek)
     return [...weeks, ...before]
@@ -129,13 +125,20 @@ function getAdjustedWeeks(firstDayOfWeek: number): string[] {
  * 日历组合式函数
  */
 export function useCalendar(options: UseCalendarOptions = {}): UseCalendarReturn {
-  const { mode = "single", defaultDate, defaultSelectedDates = [], defaultRange, markedDates = [], minDate, maxDate, disabledDate, firstDayOfWeek = 0 } = options
+  const { mode, defaultDate, defaultSelectedDates = [], defaultRange, markedDates = [], minDate, maxDate, disabledDate, firstDayOfWeek } = options
 
-  const weeks = ref<string[]>(getAdjustedWeeks(firstDayOfWeek))
+  // 响应式读取的 getter（用 toValue 实时拿当前值）
+  const getMode = () => toValue(mode) ?? "single"
+  const getMinDate = () => toValue(minDate)
+  const getMaxDate = () => toValue(maxDate)
+  const getDisabledDate = () => toValue(disabledDate)
+  const getFirstDayOfWeek = () => toValue(firstDayOfWeek) ?? 0
+
+  const weeks = computed<string[]>(() => getAdjustedWeeks(getFirstDayOfWeek()))
   const currentDate = ref<Date>(parseDate(defaultDate))
 
-  // 单选模式
-  const selectedDate = ref<string>(formatDate(parseDate(defaultDate)))
+  // 单选模式（未显式传 defaultDate 时不预选）
+  const selectedDate = ref<string>(defaultDate ? formatDate(parseDate(defaultDate)) : "")
 
   // 多选模式
   const selectedDates = ref<string[]>(defaultSelectedDates)
@@ -155,117 +158,68 @@ export function useCalendar(options: UseCalendarOptions = {}): UseCalendarReturn
   const currentYear = computed(() => currentDate.value.getFullYear())
   const currentMonth = computed(() => currentDate.value.getMonth() + 1)
 
-  /**
-   * 检查日期是否被禁用
-   */
+  // 检查日期是否被禁用
   function checkDisabled(dateObj: Date): boolean {
-    // 首先检查范围限制
-    if (!isDateInRange(dateObj, minDate, maxDate)) {
-      return true
-    }
-    // 然后检查自定义禁用函数
-    if (disabledDate && disabledDate(dateObj)) {
-      return true
-    }
+    if (!isDateInRange(dateObj, getMinDate(), getMaxDate())) return true
+    const fn = getDisabledDate()
+    if (fn && fn(dateObj)) return true
     return false
   }
 
-  /**
-   * 检查日期是否在范围选择的区间内
-   */
+  // 检查日期是否在范围选择的区间内
   function checkInRange(dateStr: string): boolean {
-    if (mode !== "range" || !selectedRange.value.start || !selectedRange.value.end) {
-      return false
-    }
+    if (getMode() !== "range" || !selectedRange.value.start || !selectedRange.value.end) return false
     const { start, end } = selectedRange.value
     return dateStr > start && dateStr < end
   }
 
-  /**
-   * 生成日历日期数组
-   */
+  // 生成单个 day cell（统一构造，避免上/本/下月三处重复）
+  function buildDay(dateObj: Date, isCurrentMonth: boolean, displayDate: number): CalendarDay {
+    const fullDate = formatDate(dateObj)
+    const m = getMode()
+    return {
+      date: displayDate,
+      fullDate,
+      isCurrentMonth,
+      selected: m === "single" ? fullDate === selectedDate.value : selectedDates.value.includes(fullDate),
+      hasDot: markedDatesValue.value.includes(fullDate),
+      isToday: fullDate === today.value,
+      disabled: checkDisabled(dateObj),
+      weekday: dateObj.getDay(),
+      isRangeStart: m === "range" && fullDate === selectedRange.value.start,
+      isRangeEnd: m === "range" && fullDate === selectedRange.value.end,
+      inRange: checkInRange(fullDate),
+    }
+  }
+
+  // 生成日历日期数组（响应 currentDate / firstDayOfWeek / min-max / mode 等所有 reactive 源）
   const days = computed<CalendarDay[]>(() => {
     const year = currentDate.value.getFullYear()
     const month = currentDate.value.getMonth()
     const firstDay = getFirstDayOfMonth(currentDate.value)
     const lastDay = getLastDayOfMonth(currentDate.value)
     const daysInMonth = getDaysInMonth(currentDate.value)
-
-    // 计算该月第一天是星期几,并根据 firstDayOfWeek 调整
-    const startWeekday = (firstDay.getDay() - firstDayOfWeek + 7) % 7
+    const startWeekday = (firstDay.getDay() - getFirstDayOfWeek() + 7) % 7
 
     const result: CalendarDay[] = []
 
-    // 上个月的日期
-    const prevMonthLastDay = addDays(firstDay, -1)
-    const prevMonthDays = prevMonthLastDay.getDate()
-
+    // 上个月补足前部
+    const prevMonthDays = addDays(firstDay, -1).getDate()
     for (let i = startWeekday - 1; i >= 0; i--) {
-      const date = prevMonthDays - i
       const dateObj = addDays(firstDay, -(i + 1))
-      const fullDate = formatDate(dateObj)
-
-      result.push({
-        date,
-        fullDate,
-        isCurrentMonth: false,
-        selected: mode === "single" ? fullDate === selectedDate.value : selectedDates.value.includes(fullDate),
-        hasDot: markedDatesValue.value.includes(fullDate),
-        isToday: fullDate === today.value,
-        disabled: checkDisabled(dateObj),
-        weekday: dateObj.getDay(),
-        isRangeStart: mode === "range" && fullDate === selectedRange.value.start,
-        isRangeEnd: mode === "range" && fullDate === selectedRange.value.end,
-        inRange: checkInRange(fullDate),
-      })
+      result.push(buildDay(dateObj, false, prevMonthDays - i))
     }
 
-    // 本月的日期
+    // 本月
     for (let i = 1; i <= daysInMonth; i++) {
-      const dateObj = new Date(year, month, i)
-      const fullDate = formatDate(dateObj)
-
-      result.push({
-        date: i,
-        fullDate,
-        isCurrentMonth: true,
-        selected: mode === "single" ? fullDate === selectedDate.value : selectedDates.value.includes(fullDate),
-        hasDot: markedDatesValue.value.includes(fullDate),
-        isToday: fullDate === today.value,
-        disabled: checkDisabled(dateObj),
-        weekday: dateObj.getDay(),
-        isRangeStart: mode === "range" && fullDate === selectedRange.value.start,
-        isRangeEnd: mode === "range" && fullDate === selectedRange.value.end,
-        inRange: checkInRange(fullDate),
-      })
+      result.push(buildDay(new Date(year, month, i), true, i))
     }
 
-    // 下个月的日期 - 动态计算需要补充多少天
-    // 确保总天数是7的倍数,且至少为35天(5行),最多42天(6行)
-    const currentTotal = result.length
-    let targetDays = Math.ceil(currentTotal / 7) * 7 // 补充到完整的行
-    if (targetDays < 35) {
-      targetDays = 35 // 至少5行
-    }
-    const remainingDays = targetDays - currentTotal
-
+    // 下个月补足后部（保证总天数为 7 倍数，至少 35 天）
+    const targetDays = Math.max(35, Math.ceil(result.length / 7) * 7)
+    const remainingDays = targetDays - result.length
     for (let i = 1; i <= remainingDays; i++) {
-      const dateObj = addDays(lastDay, i)
-      const fullDate = formatDate(dateObj)
-
-      result.push({
-        date: i,
-        fullDate,
-        isCurrentMonth: false,
-        selected: mode === "single" ? fullDate === selectedDate.value : selectedDates.value.includes(fullDate),
-        hasDot: markedDatesValue.value.includes(fullDate),
-        isToday: fullDate === today.value,
-        disabled: checkDisabled(dateObj),
-        weekday: dateObj.getDay(),
-        isRangeStart: mode === "range" && fullDate === selectedRange.value.start,
-        isRangeEnd: mode === "range" && fullDate === selectedRange.value.end,
-        inRange: checkInRange(fullDate),
-      })
+      result.push(buildDay(addDays(lastDay, i), false, i))
     }
 
     return result
@@ -289,7 +243,7 @@ export function useCalendar(options: UseCalendarOptions = {}): UseCalendarReturn
 
   function goToToday() {
     currentDate.value = new Date()
-    if (mode === "single") {
+    if (getMode() === "single") {
       selectedDate.value = today.value
     }
   }
@@ -303,66 +257,47 @@ export function useCalendar(options: UseCalendarOptions = {}): UseCalendarReturn
   }
 
   function selectDate(date: string) {
-    const dateObj = parseDate(date)
+    if (checkDisabled(parseDate(date))) return
 
-    // 验证日期是否可选
-    if (checkDisabled(dateObj)) {
-      return
-    }
-
-    if (mode === "single") {
+    const m = getMode()
+    if (m === "single") {
       selectedDate.value = date
-    } else if (mode === "multiple") {
+    } else if (m === "multiple") {
       const index = selectedDates.value.indexOf(date)
-      if (index > -1) {
-        selectedDates.value.splice(index, 1)
-      } else {
-        selectedDates.value.push(date)
-      }
-    } else if (mode === "range") {
-      if (!selectedRange.value.start || (selectedRange.value.start && selectedRange.value.end)) {
-        // 如果没有起始日期,或者已经完成一次选择,则重新开始
+      if (index > -1) selectedDates.value.splice(index, 1)
+      else selectedDates.value.push(date)
+    } else if (m === "range") {
+      const range = selectedRange.value
+      // 无起始 / 已完整：重新开始
+      if (!range.start || (range.start && range.end)) {
         selectedRange.value = { start: date, end: "" }
+      } else if (date < range.start) {
+        // 选择的日期早于起始日期 → 交换
+        selectedRange.value = { start: date, end: range.start }
       } else {
-        // 如果已有起始日期,设置结束日期
-        if (date < selectedRange.value.start) {
-          // 如果选择的日期早于起始日期,交换位置
-          selectedRange.value = { start: date, end: selectedRange.value.start }
-        } else {
-          selectedRange.value.end = date
-        }
+        range.end = date
       }
     }
   }
 
   function clearSelection() {
-    if (mode === "single") {
-      selectedDate.value = ""
-    } else if (mode === "multiple") {
-      selectedDates.value = []
-    } else if (mode === "range") {
-      selectedRange.value = { start: "", end: "" }
-    }
+    const m = getMode()
+    if (m === "single") selectedDate.value = ""
+    else if (m === "multiple") selectedDates.value = []
+    else if (m === "range") selectedRange.value = { start: "", end: "" }
   }
 
   function getSelectedRange(): { start: string; end: string } | null {
-    if (mode !== "range") {
-      return null
-    }
-    if (selectedRange.value.start && selectedRange.value.end) {
-      return { ...selectedRange.value }
-    }
+    if (getMode() !== "range") return null
+    if (selectedRange.value.start && selectedRange.value.end) return { ...selectedRange.value }
     return null
   }
 
   function isSelected(date: string): boolean {
-    if (mode === "single") {
-      return selectedDate.value === date
-    } else if (mode === "multiple") {
-      return selectedDates.value.includes(date)
-    } else if (mode === "range") {
-      return date === selectedRange.value.start || date === selectedRange.value.end
-    }
+    const m = getMode()
+    if (m === "single") return selectedDate.value === date
+    if (m === "multiple") return selectedDates.value.includes(date)
+    if (m === "range") return date === selectedRange.value.start || date === selectedRange.value.end
     return false
   }
 
@@ -378,10 +313,6 @@ export function useCalendar(options: UseCalendarOptions = {}): UseCalendarReturn
     return checkDisabled(parseDate(date))
   }
 
-  /**
-   * 更新标记日期
-   * @param dates - 新的标记日期数组
-   */
   function updateMarkedDates(dates: string[]) {
     markedDatesValue.value = dates
   }

@@ -38,7 +38,7 @@
     <demo-section title="自定义主题色">
       <demo-block>
         <ui-cell title="自定义颜色" :value="date6 || '请选择'" is-link @click="show6 = true" />
-        <ui-calendar v-model:show="show6" title="自定义颜色" color="#07c160" @confirm="onConfirm6" />
+        <ui-calendar v-model:show="show6" title="自定义颜色" color="success" @confirm="onConfirm6" />
       </demo-block>
     </demo-section>
 
@@ -122,25 +122,15 @@ const show5 = ref(false)
 const date5 = ref("")
 
 function formatter(day: CalendarDay): CalendarDay {
-  const month = day.date.getMonth() + 1
   const date = day.date.getDate()
+  const weekday = day.date.getDay()
 
   // 标记每月的1号
-  if (date === 1) {
-    day.topInfo = "月初"
-  }
-
+  if (date === 1) day.topInfo = "月初"
   // 标记周末
-  const weekday = day.date.getDay()
-  if (weekday === 0 || weekday === 6) {
-    day.bottomInfo = "休"
-  }
-
+  if (weekday === 0 || weekday === 6) day.bottomInfo = "休"
   // 标记特定日期
-  if (month === new Date().getMonth() + 1 && date === 15) {
-    day.topInfo = "重要"
-    day.className = "important-day"
-  }
+  if (date === 15) day.topInfo = "重要"
 
   return day
 }
@@ -202,20 +192,14 @@ function onConfirm10(data: CalendarConfirmData) {
 
 <style lang="scss" scoped>
 .selected-info {
-  padding: 24rpx 32rpx;
-  margin-top: 16rpx;
-  border-radius: 8rpx;
-  background-color: var(--ui-color-background-secondary);
+  padding: var(--ui-spacing-md) var(--ui-spacing-lg);
+  margin-top: var(--ui-spacing-sm);
+  border-radius: var(--ui-radius-sm);
+  background-color: var(--ui-color-background-section);
 
   text {
     color: var(--ui-color-text-secondary);
-    font-size: 28rpx;
-  }
-}
-
-:deep(.important-day) {
-  .ui-calendar__day-top {
-    color: #ee0a24 !important;
+    font-size: var(--ui-font-size-sm);
   }
 }
 </style>
