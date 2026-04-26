@@ -85,8 +85,9 @@ const rootStyle = computed(() => {
   const borderColor = props.borderColor || groupConfig.value?.borderColor
   const borderWidth = props.borderWidth || groupConfig.value?.borderWidth
   if (borderColor) {
-    styles["--ui-avatar-border-color"] = useColor(borderColor)
-    styles["--ui-avatar-border-width"] = useUnit(borderWidth) || "2rpx"
+    styles.borderColor = useColor(borderColor)
+    styles.borderWidth = useUnit(borderWidth) || "2rpx"
+    styles.borderStyle = "solid"
   }
 
   if (actualShape.value === "square" && props.radius) {
@@ -136,8 +137,6 @@ function onImageError(event: any) {
   --ui-avatar-background: var(--ui-color-background-page);
   --ui-avatar-icon-color: var(--ui-color-text-placeholder);
   --ui-avatar-text-color: var(--ui-color-text-secondary);
-  --ui-avatar-border-color: transparent;
-  --ui-avatar-border-width: 0;
 
   width: var(--ui-avatar-size);
   height: var(--ui-avatar-size);
@@ -148,9 +147,6 @@ function onImageError(event: any) {
   box-sizing: border-box;
   align-items: center;
   flex-shrink: 0;
-  border-color: var(--ui-avatar-border-color);
-  border-style: solid;
-  border-width: var(--ui-avatar-border-width);
   vertical-align: middle;
   justify-content: center;
 

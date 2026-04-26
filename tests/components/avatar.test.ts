@@ -240,7 +240,7 @@ describe("ui-avatar 头像组件", () => {
       })
 
       const style = wrapper.find(".ui-avatar").attributes("style") || ""
-      expect(style).toContain("border-width")
+      expect(style).toContain("border-color")
     })
   })
 
