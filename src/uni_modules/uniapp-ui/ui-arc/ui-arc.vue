@@ -17,26 +17,20 @@ defineOptions({ name: "ui-arc" })
 const props = defineProps(arcProps)
 const emits = defineEmits(arcEmits)
 
-// 曲率单位为内层宽度百分比：100 = 与父等宽（无弧），>100 越大弧越平，<100 不再产生弧（offset 取 0）
-const CURVATURE_MIN = 50
-const CURVATURE_MAX = 500
-const CURVATURE_DEFAULT = 120 // 默认略带弧度
-
-const validCurvature = computed(() => {
-  const raw = Number(props.curvature)
-  if (Number.isNaN(raw)) return CURVATURE_DEFAULT
-  return Math.max(CURVATURE_MIN, Math.min(CURVATURE_MAX, raw))
-})
-
+// 内层左右偏移百分比：(curvature - 100) / 2，<100 取 0
 const offsetPercent = computed(() => Math.max(0, (validCurvature.value - 100) / 2))
 
-const classNames = computed(() => [
-  `ui-arc--${props.direction}`,
-  {
-    "ui-arc--fixed": props.fixed,
-  },
-])
+// 类名集合
+const classNames = computed(() => [`ui-arc--${props.direction}`, { "ui-arc--fixed": props.fixed }])
 
+// 曲率限幅 [50, 500]，NaN 回退 120。曲率 = 内层宽度百分比，100 = 与父等宽（无弧），>100 越大弧越平
+const validCurvature = computed(() => {
+  const raw = Number(props.curvature)
+  if (Number.isNaN(raw)) return 120
+  return Math.max(50, Math.min(500, raw))
+})
+
+// 容器样式：所有可配置量通过 CSS var 注入，避免 inline 与 SCSS 双路径
 const containerStyle = computed(() => {
   const styles: Record<string, string | number | undefined> = {
     "--ui-arc-offset": `${offsetPercent.value}%`,

@@ -1,31 +1,29 @@
 <template>
-  <view v-if="isVisible" class="ui-avatar" :class="[classNames, props.customClass]" :style="rootStyle" @click="onClick">
+  <view v-if="isVisible" class="ui-avatar" :class="[classNames, props.customClass]" :style="[rootStyle]" @click="emits('click', $event)">
     <image v-if="props.src && !hasError" class="ui-avatar__image" :src="props.src" :mode="imageMode" :lazy-load="props.lazyLoad" @load="onImageLoad" @error="onImageError" />
 
     <template v-else-if="hasError">
       <slot name="error">
         <view class="ui-avatar__fallback">
-          <ui-icon name="photo-fail" :color="fallbackIconColor" :size="iconSizeValue" />
+          <ui-icon name="photo-fail" />
         </view>
       </slot>
     </template>
 
     <template v-else-if="props.icon">
       <view class="ui-avatar__icon">
-        <ui-icon :name="props.icon" :color="iconColorValue" :size="iconSizeValue" />
+        <ui-icon :name="props.icon" />
       </view>
     </template>
 
     <template v-else-if="props.text">
-      <view class="ui-avatar__text" :style="textStyle">
-        {{ displayText }}
-      </view>
+      <view class="ui-avatar__text">{{ displayText }}</view>
     </template>
 
     <template v-else>
       <slot>
         <view class="ui-avatar__fallback">
-          <ui-icon name="user-o" :color="fallbackIconColor" :size="iconSizeValue" />
+          <ui-icon name="user-o" />
         </view>
       </slot>
     </template>
@@ -33,203 +31,82 @@
 </template>
 
 <script setup lang="ts">
-import type { CSSProperties } from "vue"
 import { isDef } from "../utils/check"
 import { avatarGroupKey } from "../ui-avatar-group"
 import { ref, watch, computed } from "vue"
-import { avatarEmits, avatarProps } from "./index"
 import { useUnit, useColor, useStyle, useParent } from "../hooks"
+import { avatarEmits, avatarProps, AVATAR_IMAGE_MODE_MAP } from "./index"
 
 defineOptions({ name: "ui-avatar" })
 
 const props = defineProps(avatarProps)
 const emits = defineEmits(avatarEmits)
 
-// 获取父级头像组组件
+// 父级头像组（决定 size/shape/border 等回退值与堆叠顺序）
 const { parent: avatarGroup, index: avatarIndex } = useParent(avatarGroupKey)
-// 是否加载失败
+
+// 图片是否加载失败
 const hasError = ref(false)
 
 // 是否在头像组内
 const inGroup = computed(() => !!avatarGroup)
-// 头像组配置
-const groupConfig = computed(() => {
-  if (!avatarGroup) return null
-  return avatarGroup.props
-})
-// 是否可见（如果在组内，需要检查是否超出 max 限制）
+// uniapp <image> mode（默认 aspectFill）
+const imageMode = computed(() => AVATAR_IMAGE_MODE_MAP[props.fit] ?? "aspectFill")
+// 实际尺寸（组配置覆盖独立 prop）
+const actualSize = computed(() => groupConfig.value?.size ?? props.size)
+// 类名集合
+const classNames = computed(() => [`ui-avatar--${actualShape.value}`, { "ui-avatar--in-group": inGroup.value }])
+// 文字头像内容（截前两个字）
+const displayText = computed(() => props.text?.slice(0, 2) ?? "")
+// 实际形状
+const actualShape = computed(() => groupConfig.value?.shape ?? props.shape)
+// 头像组配置（无父组时为 null）
+const groupConfig = computed(() => avatarGroup?.props ?? null)
+
+// 头像组超过 max 时不渲染（剩余数量由 group 渲染 +N 标签，默认 5）
 const isVisible = computed(() => {
-  if (!inGroup.value || !avatarGroup) return true
+  if (!inGroup.value) return true
   const max = isDef(groupConfig.value?.max) ? Number(groupConfig.value?.max) : 5
   return avatarIndex.value < max
 })
 
-// 图片模式映射（UniApp image mode）
-const imageModeMap: Record<string, UniHelper.ImageProps["mode"]> = {
-  contain: "aspectFit",
-  cover: "aspectFill",
-  fill: "scaleToFill",
-  none: "center",
-  "scale-down": "aspectFit",
-}
-// 计算图片模式
-const imageMode = computed(() => {
-  return imageModeMap[props.fit] || "aspectFill"
-})
-
-// 预设尺寸映射
-const sizeMap: Record<string, string> = {
-  mini: "48rpx",
-  small: "64rpx",
-  medium: "80rpx",
-  large: "120rpx",
-}
-// 计算实际尺寸（优先使用组的配置）
-const actualSize = computed(() => {
-  if (inGroup.value && groupConfig.value?.size) {
-    return groupConfig.value.size
-  }
-  return props.size
-})
-// 计算实际形状（优先使用组的配置）
-const actualShape = computed(() => {
-  if (inGroup.value && groupConfig.value?.shape) {
-    return groupConfig.value.shape
-  }
-  return props.shape
-})
-// 计算尺寸值
-const sizeValue = computed(() => {
-  const size = actualSize.value
-  if (typeof size === "string") {
-    if (size in sizeMap) return useUnit(sizeMap[size], "px")
-    const normalized = size.trim()
-    if (normalized.endsWith("px") || normalized.endsWith("rpx")) return useUnit(normalized, "px")
-  }
-  return useUnit(size, "px")
-})
-// 计算图标大小（默认为头像尺寸的 50%）
-const iconSizeValue = computed(() => {
-  if (props.iconSize) {
-    return useUnit(props.iconSize, "px")
-  }
-  const size = actualSize.value
-  if (typeof size === "string" && size in sizeMap) {
-    const iconSizeMap: Record<string, string> = {
-      mini: "24rpx",
-      small: "32rpx",
-      medium: "40rpx",
-      large: "60rpx",
-    }
-    return useUnit(iconSizeMap[size], "px")
-  }
-  return `calc(${sizeValue.value} * 0.5)`
-})
-// 计算文字大小（默认为头像尺寸的 40%）
-const textSizeValue = computed(() => {
-  if (props.textSize) {
-    return useUnit(props.textSize, "px")
-  }
-  const size = actualSize.value
-  if (typeof size === "string" && size in sizeMap) {
-    const textSizeMap: Record<string, string> = {
-      mini: "20rpx",
-      small: "24rpx",
-      medium: "28rpx",
-      large: "40rpx",
-    }
-    return useUnit(textSizeMap[size], "px")
-  }
-  return `calc(${sizeValue.value} * 0.4)`
-})
-// 显示的文字（截取前两个字符）
-const displayText = computed(() => {
-  const text = props.text
-  if (!text) return ""
-  return text.slice(0, 2)
-})
-// 图标颜色
-const iconColorValue = computed(() => {
-  return props.iconColor || "var(--ui-color-text-placeholder)"
-})
-// 回退图标颜色
-const fallbackIconColor = computed(() => {
-  return "var(--ui-color-text-placeholder)"
-})
-// 根节点样式
+// 根节点样式：所有可配置项通过 CSS var 注入；group 堆叠 z-index/margin 因依赖动态 index 只能 inline
 const rootStyle = computed(() => {
-  const style: CSSProperties = {}
-  style.width = sizeValue.value
-  style.height = sizeValue.value
-
-  if (props.background) {
-    style.background = useColor(props.background)
+  const styles: Record<string, string | number | undefined> = {
+    "--ui-avatar-size": useUnit(actualSize.value),
   }
+  if (props.iconSize) styles["--ui-avatar-icon-size"] = useUnit(props.iconSize)
+  if (props.textSize) styles["--ui-avatar-text-size"] = useUnit(props.textSize)
+  if (props.iconColor) styles["--ui-avatar-icon-color"] = useColor(props.iconColor)
+  if (props.textColor) styles["--ui-avatar-text-color"] = useColor(props.textColor)
+  if (props.background) styles["--ui-avatar-background"] = useColor(props.background)
 
-  // 处理边框：优先使用组件自身的配置，如果在组内且未自定义则使用组的配置
-  const borderColor = props.borderColor || (inGroup.value ? groupConfig.value?.borderColor : "")
-  const borderWidth = props.borderWidth || (inGroup.value ? groupConfig.value?.borderWidth : "")
-
+  // 边框：独立 prop 优先，组配置后备；borderColor 传值时 borderWidth 默认 2rpx
+  const borderColor = props.borderColor || groupConfig.value?.borderColor
+  const borderWidth = props.borderWidth || groupConfig.value?.borderWidth
   if (borderColor) {
-    style.borderColor = useColor(borderColor)
-    style.borderWidth = useUnit(borderWidth, "px") || "2px"
-    style.borderStyle = "solid"
+    styles["--ui-avatar-border-color"] = useColor(borderColor)
+    styles["--ui-avatar-border-width"] = useUnit(borderWidth) || "2rpx"
   }
 
-  // 自定义圆角（仅 square 形状时生效）
   if (actualShape.value === "square" && props.radius) {
-    style.borderRadius = useUnit(props.radius)
+    styles["--ui-avatar-radius"] = useUnit(props.radius)
   }
 
-  // 如果在头像组内，添加堆叠相关的样式
+  // 头像组堆叠
   if (inGroup.value && groupConfig.value) {
-    const gap = groupConfig.value.gap
-    const direction = groupConfig.value.direction
+    const { gap, direction } = groupConfig.value
     const max = Number(groupConfig.value.max) || 5
-
-    // 设置 z-index 实现堆叠效果
-    if (direction === "right") {
-      style.zIndex = avatarIndex.value + 1
-    } else {
-      style.zIndex = max - avatarIndex.value
-    }
-
-    // 设置间距（第一个头像不需要）
+    styles.zIndex = direction === "right" ? avatarIndex.value + 1 : max - avatarIndex.value
     if (avatarIndex.value > 0) {
-      if (direction === "left") {
-        style.marginRight = useUnit(gap)
-      } else {
-        style.marginLeft = useUnit(gap)
-      }
+      const marginKey = direction === "left" ? "marginRight" : "marginLeft"
+      styles[marginKey] = useUnit(gap)
     }
   }
 
-  return useStyle({ ...style, ...useStyle(props.customStyle) }, "string")
-})
-// 文字样式
-const textStyle = computed(() => {
-  const style: CSSProperties = {}
-  style.fontSize = textSizeValue.value
-  if (props.textColor) {
-    style.color = useColor(props.textColor)
-  }
-  return useStyle(style, "string")
-})
-// 类名数组
-const classNames = computed(() => {
-  const classList: string[] = []
-  classList.push(`ui-avatar--${actualShape.value}`)
-  const size = actualSize.value
-  if (typeof size === "string" && size in sizeMap) {
-    classList.push(`ui-avatar--${size}`)
-  }
-  if (inGroup.value) {
-    classList.push("ui-avatar--in-group")
-  }
-  return classList
+  return useStyle({ ...styles, ...useStyle(props.customStyle) }, "string")
 })
 
-// 监听图片地址变化，重置错误状态
 watch(
   () => props.src,
   () => {
@@ -248,31 +125,34 @@ function onImageError(event: any) {
   hasError.value = true
   emits("error", event)
 }
-
-// 点击事件处理
-function onClick(event: any) {
-  emits("click", event)
-}
-</script>
-
-<script lang="ts">
-export default {
-  name: "ui-avatar",
-  options: { virtualHost: true, multipleSlots: true, styleIsolation: "shared" },
-}
 </script>
 
 <style lang="scss">
 .ui-avatar {
+  --ui-avatar-size: 80rpx;
+  --ui-avatar-radius: var(--ui-radius-md);
+  --ui-avatar-icon-size: calc(var(--ui-avatar-size) * 0.5);
+  --ui-avatar-text-size: calc(var(--ui-avatar-size) * 0.4);
+  --ui-avatar-background: var(--ui-color-background-page);
+  --ui-avatar-icon-color: var(--ui-color-text-placeholder);
+  --ui-avatar-text-color: var(--ui-color-text-secondary);
+  --ui-avatar-border-color: transparent;
+  --ui-avatar-border-width: 0;
+
+  width: var(--ui-avatar-size);
+  height: var(--ui-avatar-size);
   display: inline-flex;
   overflow: hidden;
   position: relative;
+  background: var(--ui-avatar-background);
   box-sizing: border-box;
   align-items: center;
   flex-shrink: 0;
+  border-color: var(--ui-avatar-border-color);
+  border-style: solid;
+  border-width: var(--ui-avatar-border-width);
   vertical-align: middle;
   justify-content: center;
-  background-color: var(--ui-color-background-page);
 
   &__image {
     width: 100%;
@@ -280,15 +160,19 @@ export default {
     display: block;
   }
 
-  &__icon {
+  &__icon,
+  &__fallback {
+    color: var(--ui-avatar-icon-color);
     display: flex;
+    font-size: var(--ui-avatar-icon-size);
     align-items: center;
     justify-content: center;
   }
 
   &__text {
-    color: var(--ui-color-text-secondary);
+    color: var(--ui-avatar-text-color);
     display: flex;
+    font-size: var(--ui-avatar-text-size);
     align-items: center;
     font-weight: var(--ui-font-weight-medium);
     white-space: nowrap;
@@ -296,40 +180,12 @@ export default {
     justify-content: center;
   }
 
-  &__fallback {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  // 形状
   &--circle {
     border-radius: 50%;
   }
 
   &--square {
-    border-radius: var(--ui-radius-md);
-  }
-
-  // 预设尺寸
-  &--mini {
-    width: 48rpx;
-    height: 48rpx;
-  }
-
-  &--small {
-    width: 64rpx;
-    height: 64rpx;
-  }
-
-  &--medium {
-    width: 80rpx;
-    height: 80rpx;
-  }
-
-  &--large {
-    width: 120rpx;
-    height: 120rpx;
+    border-radius: var(--ui-avatar-radius);
   }
 }
 </style>

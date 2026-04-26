@@ -5,15 +5,24 @@ import { buildDefaultProps } from "../utils/props"
 /** 头像形状类型 */
 export type AvatarShape = "circle" | "square"
 
-/** 头像尺寸类型 */
-export type AvatarSize = "mini" | "small" | "medium" | "large" | string | number
+/** 头像尺寸类型（数值或带单位字符串） */
+export type AvatarSize = string | number
 
 /** 图片填充模式 */
 export type AvatarFit = "contain" | "cover" | "fill" | "none" | "scale-down"
 
+/** fit 到 uniapp <image> mode 的映射 */
+export const AVATAR_IMAGE_MODE_MAP: Record<AvatarFit, UniHelper.ImageProps["mode"]> = {
+  contain: "aspectFit",
+  cover: "aspectFill",
+  fill: "scaleToFill",
+  none: "center",
+  "scale-down": "aspectFit",
+}
+
 const defaultProps = buildDefaultProps("avatar", {
   src: "",
-  size: "medium",
+  size: "80rpx",
   shape: "circle",
   icon: "",
   iconColor: "",
@@ -35,7 +44,7 @@ const defaultProps = buildDefaultProps("avatar", {
 export const avatarProps = {
   /** 头像图片地址 */
   src: defaultProps("src", { type: String }),
-  /** 头像尺寸，可选值为 mini/small/medium/large 或具体数值 */
+  /** 头像尺寸（数值默认 rpx，支持 px/rpx 字符串） */
   size: defaultProps("size", { type: [Number, String] }),
   /** 头像形状，可选值为 circle/square */
   shape: defaultProps("shape", { type: String as PropType<AvatarShape> }),

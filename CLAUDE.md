@@ -103,11 +103,66 @@ export const buttonProps = {
 
 ## 代码风格要点
 
+### 命名/类型/路径
+
 - 命名：组件 `ui-` 前缀 + kebab-case；类型 `PascalCase`；常量 `SCREAMING_SNAKE_CASE`；变量 `camelCase`。
 - TS 类型优先 `type` 而非 `interface`（除非要 declaration merge）。
-- 导入顺序：Vue API → 第三方 → `type` 导入 → 内部相对路径 → `@/utils` 别名。
-- ESLint 基于 `@fonds/eslint-config`，`vue + ts + jsx + formatters` 全开；已禁用若干样式细则（见 `eslint.config.ts`），不要添加冲突规则。
+- ESLint 基于 `@fonds/eslint-config`；不要添加与之冲突的规则。
 - 路径别名：`@/*` → `src/*`；`@img/*` → `src/static/*`。
+
+### `<script setup>` 块顺序（严格）
+
+```
+1. imports — type 最前 / utils → 兄弟组件 inject key → ./index → hooks → vue api 最后
+2. defineOptions / defineProps / defineEmits          ← 三件套永远紧跟 imports，不被任何代码打断
+3. use* 钩子（useParent / useChildren / useSlots ...）
+4. instance 引用（getCurrentInstance）
+5. ref / reactive 响应式状态（同样按变量名长度短→长排序）
+6. computed
+   - 单行 computed 一组，紧排无空行，按变量名长度短→长
+   - 多行 computed 接在单行组下面，同样短→长
+7. watch
+8. 普通函数（业务方法）
+9. 生命周期（onMounted 等）
+10. linkChildren（在它依赖的 toggle 等函数定义后）
+11. defineExpose（最末尾）
+```
+
+### 注释
+
+- 每个 ref / computed / function 上方一行简短注释**说作用**（写"是干嘛"，不写"这是 computed/ref"等废话）。
+- 命名能自解释的省略；SCSS 几何 trick / 公式 / 跨端坑 / 隐藏约束 必须注释。
+- **禁引用其他 UI 框架名**（Element / Vant / Ant / wot-design 等）。
+
+### 命名约定（组件内 computed）
+
+- 根节点样式 → `rootStyle`；类名 → `classNames`
+- 子部位样式 → `xxxStyle`（如 `headerStyle` / `titleStyle`）
+- 类名集合 → `xxxClassList` 或 `classNames`
+
+### SCSS / 样式
+
+- 不硬编码数值（颜色 / 间距 / 字号 / 圆角 / 阴影 / 动画）— 全走 `--ui-*` token。
+- prop 通过 inline CSS var 注入（`--ui-{component}-xxx`），SCSS 默认值集中在选择器顶部，**禁双路径**（不允许 inline 写具体值同时 SCSS 也写具体值）。
+- 渐变/图片用 `background:` 简写；`background-color` 只接颜色不接 gradient。
+- ui-icon / 子组件颜色字号优先由父组件 SCSS 接管（继承 `color` / `font-size`），prop 不传时由 SCSS 默认接管。
+
+### 组件设计原则
+
+- **不做尺寸/字号预设档**（mini/small/medium/large 这类关键字）。`size` / `iconSize` / `padding` 等连续值类型为 `string | number`，用户直传具体数值。
+- 语义档保留（`type: primary/danger`、`shape: circle/square`）—— 离散语义不是连续数值。
+- 暴露**大量灵活 prop**（颜色/尺寸/间距/圆角/字号/边框/阴影 各自独立可控），不要为"简洁"牺牲可定制性。
+- **非必要不提取常量**：单次使用的字面量直接 inline（视需要加注释说明含义/单位）。仅当**多次复用**、或**大型数据表/映射**时才抽常量。
+- 真正必要的模块级常量（数据表/正则）和工具类型从 `<script setup>` 里提到 `./index.ts` export，避免破坏 setup 块顺序与被 `vue/define-macros-order` 报错。
+- props 默认值统一走 `buildDefaultProps("xxx", {...})`，让用户能全局覆盖。
+
+## 协作流程
+
+- 单组件审查节奏: **列改动清单 → 等用户拍板 → 执行 → 等用户验证 → 提交**。
+- 列改动用紧凑表格: `优先级 | 行号 | 现状 → 动作`，少废话。
+- 改完跑 `pnpm test tests/components/xxx.test.ts` + `eslint`，全绿后再汇报。
+- 重构若改了实现细节断言（inline 样式名等），同步更新测试断言对齐新行为。
+- 只有用户明确说"提交"才 commit。
 
 ## Husky / 提交
 

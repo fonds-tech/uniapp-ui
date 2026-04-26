@@ -32,10 +32,11 @@ describe("ui-avatar 头像组件", () => {
       expect(wrapper.classes()).toContain("ui-avatar--circle")
     })
 
-    it("默认应渲染 medium 尺寸", () => {
+    it("默认应注入 80rpx 尺寸 CSS var", () => {
       const wrapper = mount(UiAvatar)
 
-      expect(wrapper.classes()).toContain("ui-avatar--medium")
+      const style = wrapper.find(".ui-avatar").attributes("style") || ""
+      expect(style).toContain("--ui-avatar-size: 80rpx")
     })
 
     it("无图片、图标、文字时应渲染默认 user 图标", () => {
@@ -105,26 +106,13 @@ describe("ui-avatar 头像组件", () => {
   })
 
   describe("头像尺寸", () => {
-    const sizes = ["mini", "small", "medium", "large"] as const
-
-    sizes.forEach((size) => {
-      it(`应支持 ${size} 尺寸`, () => {
-        const wrapper = mount(UiAvatar, {
-          props: { size },
-        })
-
-        expect(wrapper.classes()).toContain(`ui-avatar--${size}`)
-      })
-    })
-
     it("应支持自定义数字尺寸", () => {
       const wrapper = mount(UiAvatar, {
         props: { size: 100 },
       })
 
       const style = wrapper.find(".ui-avatar").attributes("style") || ""
-      expect(style).toContain("width")
-      expect(style).toContain("height")
+      expect(style).toContain("--ui-avatar-size")
     })
 
     it("应支持自定义字符串尺寸", () => {
@@ -133,7 +121,7 @@ describe("ui-avatar 头像组件", () => {
       })
 
       const style = wrapper.find(".ui-avatar").attributes("style") || ""
-      expect(style).toContain("50px")
+      expect(style).toContain("--ui-avatar-size")
     })
   })
 
@@ -160,7 +148,7 @@ describe("ui-avatar 头像组件", () => {
       })
 
       const style = wrapper.find(".ui-avatar").attributes("style") || ""
-      expect(style).toContain("border-radius")
+      expect(style).toContain("--ui-avatar-radius")
     })
   })
 
@@ -213,8 +201,8 @@ describe("ui-avatar 头像组件", () => {
         props: { text: "张三", textColor: "#ff0000" },
       })
 
-      const style = wrapper.find(".ui-avatar__text").attributes("style") || ""
-      expect(style).toContain("color")
+      const style = wrapper.find(".ui-avatar").attributes("style") || ""
+      expect(style).toContain("--ui-avatar-text-color")
     })
 
     it("应支持自定义文字大小", () => {
@@ -222,8 +210,8 @@ describe("ui-avatar 头像组件", () => {
         props: { text: "张三", textSize: 16 },
       })
 
-      const style = wrapper.find(".ui-avatar__text").attributes("style") || ""
-      expect(style).toContain("font-size")
+      const style = wrapper.find(".ui-avatar").attributes("style") || ""
+      expect(style).toContain("--ui-avatar-text-size")
     })
   })
 
@@ -462,7 +450,7 @@ describe("ui-avatar-group 头像组组件", () => {
   describe("尺寸和形状", () => {
     it("应支持设置统一尺寸", () => {
       const wrapper = mount(UiAvatarGroup, {
-        props: { size: "large" },
+        props: { size: "120rpx" },
       })
 
       expect(wrapper.find(".ui-avatar-group").exists()).toBe(true)
@@ -491,11 +479,12 @@ describe("ui-avatar-group 头像组组件", () => {
     })
 
     it("头像组 size 应覆盖子头像 size", async () => {
-      const wrapper = createAvatarGroup(2, { size: "large" })
+      const wrapper = createAvatarGroup(2, { size: "120rpx" })
       await nextTick()
 
       const firstAvatar = wrapper.findAllComponents(UiAvatar)[0]
-      expect(firstAvatar.classes()).toContain("ui-avatar--large")
+      const style = firstAvatar.find(".ui-avatar").attributes("style") || ""
+      expect(style).toContain("--ui-avatar-size: 120rpx")
     })
 
     it("头像组 shape 应覆盖子头像 shape", async () => {
