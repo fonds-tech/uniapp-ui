@@ -1,17 +1,16 @@
 <template>
-  <view class="ui-avatar-group" :class="[customClass]" :style="[rootStyle]" @click="onClick">
-    <view class="ui-avatar-group__container" :style="containerStyle">
+  <view class="ui-avatar-group" :class="[customClass]" :style="[rootStyle]" @click="emits('click', $event)">
+    <view class="ui-avatar-group__container" :class="[containerClass]">
       <slot />
     </view>
 
-    <view v-if="shouldShowExcess" class="ui-avatar-group__excess" :class="[excessShapeClass]" :style="excessStyle" @click.stop="onClickExcess">
+    <view v-if="shouldShowExcess" class="ui-avatar-group__excess" :class="[excessShapeClass]" :style="[excessStyle]" @click.stop="emits('clickExcess', $event)">
       <text class="ui-avatar-group__excess-text">+{{ excessCount }}</text>
     </view>
   </view>
 </template>
 
 <script setup lang="ts">
-import type { CSSProperties } from "vue"
 import { isDef } from "../utils/check"
 import { computed } from "vue"
 import { useUnit, useColor, useStyle, useChildren } from "../hooks"
@@ -22,125 +21,45 @@ defineOptions({ name: "ui-avatar-group" })
 const props = defineProps(avatarGroupProps)
 const emits = defineEmits(avatarGroupEmits)
 
-// 使用 useChildren 收集子头像组件
 const { childrens, linkChildren } = useChildren(avatarGroupKey)
 
-// 预设尺寸映射
-const sizeMap: Record<string, string> = {
-  mini: "48rpx",
-  small: "64rpx",
-  medium: "80rpx",
-  large: "120rpx",
-}
-
-// 超出的数量
-const excessCount = computed(() => {
-  const total = childrens.length
-  const max = isDef(props.max) ? Number(props.max) : 5
-  return total > max ? total - max : 0
-})
-// 是否显示超出数量
+// 容器布局 modifier（堆叠方向）
+const containerClass = computed(() => ({ "ui-avatar-group__container--reverse": props.direction === "left" }))
+// 超出形状 modifier
+const excessShapeClass = computed(() => `ui-avatar-group__excess--${props.shape}`)
+// 超出数量
+const excessCount = computed(() => Math.max(0, childrens.length - (isDef(props.max) ? Number(props.max) : 5)))
+// 是否显示超出
 const shouldShowExcess = computed(() => excessCount.value > 0)
-// 计算尺寸值
-const sizeValue = computed(() => {
-  const size = props.size
-  if (typeof size === "string" && size in sizeMap) {
-    return sizeMap[size]
-  }
-  return useUnit(size)
-})
-// 计算间距值
-const gapValue = computed(() => {
-  return useUnit(props.gap)
-})
-// 根节点样式
+
+// 根节点样式：所有可配置项通过 CSS var 注入（子节点继承）
 const rootStyle = computed(() => {
-  const style: CSSProperties = {}
-  return useStyle({ ...style, ...useStyle(props.customStyle) })
-})
-// 容器样式
-const containerStyle = computed(() => {
-  const style: CSSProperties = {
-    display: "flex",
-    alignItems: "center",
+  const styles: Record<string, string | number | undefined> = {
+    "--ui-avatar-group-size": useUnit(props.size),
+    "--ui-avatar-group-border-color": useColor(props.borderColor),
+    "--ui-avatar-group-border-width": useUnit(props.borderWidth),
   }
-  // 如果是从右向左堆叠，需要反转方向
-  if (props.direction === "left") {
-    style.flexDirection = "row-reverse"
-  }
-  return style
+  if (props.excessColor) styles["--ui-avatar-group-excess-color"] = useColor(props.excessColor)
+  if (props.excessBackground) styles["--ui-avatar-group-excess-background"] = useColor(props.excessBackground)
+  return useStyle({ ...styles, ...useStyle(props.customStyle) })
 })
-// 超出数量形状类名
-const excessShapeClass = computed(() => {
-  return `ui-avatar-group__excess--${props.shape}`
-})
-// 超出数量样式
+
+// 超出节点动态样式：z-index 与 margin 依赖 direction/max 动态，无法走 CSS var
 const excessStyle = computed(() => {
-  const style: CSSProperties = {
-    width: sizeValue.value,
-    height: sizeValue.value,
-    borderWidth: useUnit(props.borderWidth) || "4rpx",
-    borderStyle: "solid",
-    borderColor: useColor(props.borderColor) || "var(--ui-color-text-inverse)",
-    background: "var(--ui-color-background-page)",
-  }
+  const styles: Record<string, string | number | undefined> = {}
+  const gap = useUnit(props.gap)
   if (props.direction === "left") {
-    style.marginRight = gapValue.value
+    styles.marginRight = gap
+    styles.zIndex = 0
   } else {
-    style.marginLeft = gapValue.value
+    styles.marginLeft = gap
+    const max = isDef(props.max) ? Number(props.max) : 5
+    styles.zIndex = max + 1
   }
-
-  if (props.excessColor) {
-    style.color = useColor(props.excessColor)
-  }
-
-  if (props.excessBackground) {
-    style.background = useColor(props.excessBackground)
-  }
-
-  // 计算 z-index：超出数量应该在最上层
-  const max = isDef(props.max) ? Number(props.max) : 5
-  if (props.direction === "right") {
-    style.zIndex = max + 1
-  } else {
-    style.zIndex = 0
-  }
-
-  return style
+  return useStyle(styles)
 })
 
-// 获取索引的方法（由子组件调用）
-function getIndex() {
-  return childrens.length
-}
-
-// 获取最大数量
-function getMax() {
-  return isDef(props.max) ? Number(props.max) : 5
-}
-
-// 获取总数
-function getTotal() {
-  return childrens.length
-}
-
-// 点击事件处理
-function onClick(event: any) {
-  emits("click", event)
-}
-
-// 点击超出数量
-function onClickExcess(event: any) {
-  emits("clickExcess", event)
-}
-
-// 建立父子组件关联
-linkChildren({
-  props,
-  getIndex,
-  getMax,
-  getTotal,
-})
+linkChildren({ props })
 </script>
 
 <script lang="ts">
@@ -152,23 +71,39 @@ export default {
 
 <style lang="scss">
 .ui-avatar-group {
+  --ui-avatar-group-size: 80rpx;
+  --ui-avatar-group-border-color: var(--ui-color-text-inverse);
+  --ui-avatar-group-border-width: 4rpx;
+  --ui-avatar-group-excess-color: var(--ui-color-text-secondary);
+  --ui-avatar-group-excess-background: var(--ui-color-background-page);
+
   display: inline-flex;
   align-items: center;
 
   &__container {
     display: flex;
     align-items: center;
+
+    &--reverse {
+      flex-direction: row-reverse;
+    }
   }
 
   &__excess {
+    color: var(--ui-avatar-group-excess-color);
+    width: var(--ui-avatar-group-size);
+    height: var(--ui-avatar-group-size);
     display: inline-flex;
     overflow: hidden;
     position: relative;
+    background: var(--ui-avatar-group-excess-background);
     box-sizing: border-box;
     align-items: center;
     flex-shrink: 0;
+    border-color: var(--ui-avatar-group-border-color);
+    border-style: solid;
+    border-width: var(--ui-avatar-group-border-width);
     justify-content: center;
-    background-color: var(--ui-color-background-page);
 
     &--circle {
       border-radius: 50%;
@@ -180,7 +115,7 @@ export default {
   }
 
   &__excess-text {
-    color: var(--ui-color-text-secondary);
+    color: inherit;
     font-size: var(--ui-font-size-xs);
     font-weight: var(--ui-font-weight-medium);
   }

@@ -515,8 +515,7 @@ describe("ui-avatar-group 头像组组件", () => {
         props: { direction: "left" },
       })
 
-      const containerStyle = wrapper.find(".ui-avatar-group__container").attributes("style") || ""
-      expect(containerStyle).toContain("flex-direction: row-reverse")
+      expect(wrapper.find(".ui-avatar-group__container").classes()).toContain("ui-avatar-group__container--reverse")
     })
   })
 
@@ -559,16 +558,16 @@ describe("ui-avatar-group 头像组组件", () => {
       const wrapper = createAvatarGroup(7, { excessColor: "#ff0000" })
       await nextTick()
 
-      const excessStyle = wrapper.find(".ui-avatar-group__excess").attributes("style") || ""
-      expect(excessStyle).toContain("color")
+      const rootStyle = wrapper.find(".ui-avatar-group").attributes("style") || ""
+      expect(rootStyle).toContain("--ui-avatar-group-excess-color")
     })
 
     it("应支持超出背景颜色", async () => {
       const wrapper = createAvatarGroup(7, { excessBackground: "#f0f0f0" })
       await nextTick()
 
-      const excessStyle = wrapper.find(".ui-avatar-group__excess").attributes("style") || ""
-      expect(excessStyle).toContain("background")
+      const rootStyle = wrapper.find(".ui-avatar-group").attributes("style") || ""
+      expect(rootStyle).toContain("--ui-avatar-group-excess-background")
     })
 
     it("direction 为 right 时超出层级应在最上层", async () => {

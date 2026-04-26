@@ -8,11 +8,11 @@ export type AvatarGroupDirection = "left" | "right"
 
 const defaultProps = buildDefaultProps("avatar-group", {
   max: 5,
-  size: "medium",
+  size: "80rpx",
   shape: "circle",
   gap: -16,
   direction: "right",
-  borderColor: "#fff",
+  borderColor: "text-inverse",
   borderWidth: "4rpx",
   excessColor: "",
   excessBackground: "",
@@ -23,7 +23,7 @@ const defaultProps = buildDefaultProps("avatar-group", {
 export const avatarGroupProps = {
   /** 最多显示的头像数量 */
   max: defaultProps("max", { type: Number }),
-  /** 头像尺寸，可选值为 mini/small/medium/large 或具体数值 */
+  /** 头像尺寸（数值默认 rpx，支持 px/rpx 字符串） */
   size: defaultProps("size", { type: [Number, String] }),
   /** 头像形状，可选值为 circle/square */
   shape: defaultProps("shape", { type: String as PropType<AvatarShape> }),
@@ -56,12 +56,6 @@ export const avatarGroupEmits = {
 export interface AvatarGroupProvide {
   /** 组件原始 props */
   props: AvatarGroupProps
-  /** 获取子头像在组内的索引 */
-  getIndex: () => number
-  /** 获取最大显示数量 */
-  getMax: () => number
-  /** 获取当前子头像总数 */
-  getTotal: () => number
 }
 
 /** 头像组 InjectionKey，用于父子组件通信 */
