@@ -91,7 +91,6 @@ UniApp UI 提供了 80+ 高质量组件，按功能分为以下几类：
 | [Skeleton 骨架屏](/components/skeleton) | 加载占位 |
 | [QRCode 二维码](/components/qrcode) | 二维码生成 |
 | [Poster 海报](/components/poster) | 海报生成 |
-| [Card 卡片](/components/card) | 卡片容器 |
 | [Timeline 时间轴](/components/timeline) | 时间轴展示 |
 | [List 列表](/components/list) | 虚拟滚动列表 |
 

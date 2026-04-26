@@ -8,7 +8,6 @@ declare module "vue" {
     UiBadge: (typeof import("./ui-badge/ui-badge.vue"))["default"]
     UiButton: (typeof import("./ui-button/ui-button.vue"))["default"]
     UiCalendar: (typeof import("./ui-calendar/ui-calendar.vue"))["default"]
-    UiCard: (typeof import("./ui-card/ui-card.vue"))["default"]
     UiCascader: (typeof import("./ui-cascader/ui-cascader.vue"))["default"]
     UiCell: (typeof import("./ui-cell/ui-cell.vue"))["default"]
     UiCellGroup: (typeof import("./ui-cell-group/ui-cell-group.vue"))["default"]

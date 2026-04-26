@@ -1,6 +1,6 @@
 <template>
   <ui-popup
-    :show="visible"
+    :show="props.show"
     :mode="props.mode"
     :border-radius="props.borderRadius"
     :close-on-click-overlay="props.closeOnClickOverlay"
@@ -12,7 +12,7 @@
     :lazy-render="props.lazyRender"
     :height="props.height"
     :max-height="props.maxHeight"
-    @update:show="handleUpdateShow"
+    @update:show="onUpdateShow"
   >
     <ui-cascader-panel
       ref="panelRef"
@@ -56,10 +56,10 @@
 </template>
 
 <script setup lang="ts">
-import type { CascaderPanelChangeData } from "../ui-cascader-panel"
+import type { CascaderChangeData } from "./index"
 import UiPopup from "../ui-popup/ui-popup.vue"
 import UiCascaderPanel from "../ui-cascader-panel/ui-cascader-panel.vue"
-import { ref, watch } from "vue"
+import { ref } from "vue"
 import { cascaderEmits, cascaderProps } from "./index"
 
 defineOptions({ name: "ui-cascader" })
@@ -67,36 +67,24 @@ defineOptions({ name: "ui-cascader" })
 const props = defineProps(cascaderProps)
 const emits = defineEmits(cascaderEmits)
 
-const visible = ref(false)
 const panelRef = ref<InstanceType<typeof UiCascaderPanel>>()
 
-watch(
-  () => props.show,
-  (value) => {
-    visible.value = value
-  },
-  { immediate: true },
-)
-
-watch(
-  () => visible.value,
-  (value) => {
-    emits("update:show", value)
-    if (!value) emits("close")
-  },
-)
-
-function handleUpdateShow(value: boolean) {
-  visible.value = value
+// popup 显示状态变化（含遮罩点击 / 程序关闭）
+function onUpdateShow(value: boolean) {
+  emits("update:show", value)
+  if (!value) emits("close")
 }
 
+// panel 内关闭按钮（与 popup overlay 关闭走同一出口）
 function onPanelClose() {
-  visible.value = false
+  emits("update:show", false)
+  emits("close")
 }
 
-function onFinish(data: CascaderPanelChangeData) {
+// 选完叶子自动关闭
+function onFinish(data: CascaderChangeData) {
   emits("finish", data)
-  visible.value = false
+  emits("update:show", false)
 }
 
 function reset() {

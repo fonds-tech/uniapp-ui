@@ -39,7 +39,7 @@ const defaultProps = buildDefaultProps("cascader-panel", {
   title: undefined,
   options: () => [],
   placeholder: "请选择",
-  color: "#323233",
+  color: undefined,
   activeColor: undefined,
   swipeable: true,
   closeable: false,
@@ -48,11 +48,12 @@ const defaultProps = buildDefaultProps("cascader-panel", {
   titleColor: undefined,
   titleWeight: undefined,
   closeIcon: "cross",
-  closeIconSize: "32rpx",
-  closeIconColor: "#333333",
+  closeIconSize: undefined,
+  closeIconColor: undefined,
   closeIconWeight: undefined,
   beforeChange: undefined,
   fieldKeys: () => ({}),
+  height: undefined,
   customClass: undefined,
   customStyle: undefined,
 })
@@ -94,6 +95,8 @@ export const cascaderPanelProps = {
   beforeChange: defaultProps("beforeChange", { type: Function as PropType<Interceptor> }),
   /** 数据字段 */
   fieldKeys: defaultProps("fieldKeys", { type: Object as PropType<CascaderPanelFieldKeys> }),
+  /** 面板高度（独立使用时建议传入；未传则按 100% 撑满父容器） */
+  height: defaultProps("height", { type: [Number, String] }),
   /** 自定义类名 */
   customClass: defaultProps("customClass", { type: String }),
   /** 自定义样式 */

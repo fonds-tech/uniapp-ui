@@ -1,71 +1,77 @@
 <template>
-  <view class="ui-cascader" :class="[props.customClass]" :style="[rootStyle]">
-    <view v-if="props.showHeader" class="ui-cascader__header">
+  <view class="ui-cascader-panel" :class="[props.customClass]" :style="[rootStyle, props.customStyle]">
+    <view v-if="props.showHeader" class="ui-cascader-panel__header">
       <slot name="title">
-        <text class="ui-cascader__header__title" :style="[titleStyle]">{{ props.title }}</text>
+        <text class="ui-cascader-panel__header__title">{{ props.title }}</text>
       </slot>
       <slot name="close">
-        <ui-icon v-if="props.closeable" :name="props.closeIcon" :size="props.closeIconSize" :color="props.closeIconColor" :weight="props.closeIconWeight" @click="onClickClose" />
+        <ui-icon
+          v-if="props.closeable"
+          class="ui-cascader-panel__header__close"
+          :name="props.closeIcon"
+          :size="props.closeIconSize"
+          :color="props.closeIconColor"
+          :weight="props.closeIconWeight"
+          @click.stop="onClickClose"
+        />
       </slot>
     </view>
     <scroll-view scroll-x :show-scrollbar="false">
-      <view class="ui-cascader__tabs">
+      <view class="ui-cascader-panel__tabs">
         <view
           v-for="(item, index) in tabs"
           :key="index"
-          class="ui-cascader__tabs__tab"
-          :class="{ 'ui-cascader__tabs__tab--unselected': !item.selected }"
+          class="ui-cascader-panel__tabs__tab"
+          :class="{ 'ui-cascader-panel__tabs__tab--unselected': !item.selected }"
           @click="onClickTab(item, index)"
         >
-          {{ item.selected ? item.selected[textKey] : props.placeholder }}
+          {{ item.selected ? item.selected[fieldKeys.text] : props.placeholder }}
         </view>
-        <view class="ui-cascader__tabs__line" :style="[tabsLineStyle]" />
+        <view class="ui-cascader-panel__tabs__line" :style="[tabsLineStyle]" />
       </view>
     </scroll-view>
-    <swiper class="ui-cascader__swiper" :current="activeTab" :disable-touch="!props.swipeable" @change="onSwiperChange">
-      <swiper-item v-for="(item, index) in tabs" :key="index" class="ui-cascader__swiper__item">
-        <scroll-view scroll-y :show-scrollbar="false" class="ui-cascader__scroll">
-          <view v-if="!item.options || item.options.length === 0" class="ui-cascader__empty">
+    <swiper class="ui-cascader-panel__swiper" :current="activeTab" :disable-touch="!props.swipeable" @change="onSwiperChange">
+      <swiper-item v-for="(item, index) in tabs" :key="index" class="ui-cascader-panel__swiper__item">
+        <scroll-view scroll-y :show-scrollbar="false" class="ui-cascader-panel__scroll">
+          <view v-if="!item.options || item.options.length === 0" class="ui-cascader-panel__empty">
             <slot name="empty">
-              <text class="ui-cascader__empty__text">暂无数据</text>
+              <text class="ui-cascader-panel__empty__text">暂无数据</text>
             </slot>
           </view>
-          <view v-else class="ui-cascader__options">
+          <view v-else class="ui-cascader-panel__options">
             <view
               v-for="(option, optionIndex) in item.options"
               :key="optionIndex"
-              class="ui-cascader__options__option"
+              class="ui-cascader-panel__options__option"
               :class="{
-                'ui-cascader__options__option--selected': item.selected && option[valueKey] === item.selected[valueKey],
-                'ui-cascader__options__option--disabled': option[disabledKey],
+                'ui-cascader-panel__options__option--selected': item.selected && option[fieldKeys.value] === item.selected[fieldKeys.value],
+                'ui-cascader-panel__options__option--disabled': option[fieldKeys.disabled],
               }"
-              :style="[item.selected && option[valueKey] === item.selected[valueKey] ? activeOptionStyle : optionStyle]"
               @click="onClickOption(option, index, optionIndex)"
             >
-              <view class="option-text">
-                {{ option[textKey] }}
-              </view>
-              <ui-icon v-if="item.selected && option[valueKey] === item.selected[valueKey]" name="check" />
+              <text class="ui-cascader-panel__options__option__text">{{ option[fieldKeys.text] }}</text>
+              <ui-icon v-if="item.selected && option[fieldKeys.value] === item.selected[fieldKeys.value]" name="check" />
             </view>
           </view>
         </scroll-view>
       </swiper-item>
     </swiper>
-    <view v-if="loading" class="ui-cascader__loading">
+    <view v-if="loading" class="ui-cascader-panel__loading">
       <ui-loading color="primary" size="50rpx" />
     </view>
   </view>
 </template>
 
 <script setup lang="ts">
+import type { CSSProperties } from "vue"
 import type { CascaderPanelTab, CascaderPanelOption } from "./index"
 import UiIcon from "../ui-icon/ui-icon.vue"
 import UiLoading from "../ui-loading/ui-loading.vue"
 import { clone, merge } from "../utils/utils"
 import { callInterceptor } from "../utils/interceptor"
-import { useUnit, useColor, useRects, useStyle } from "../hooks"
 import { isDef, isEmpty, isNoEmpty, isFunction } from "../utils/check"
 import { cascaderPanelEmits, cascaderPanelProps } from "./index"
+import { useRect, useUnit, useColor, useRects, useStyle } from "../hooks"
 import { ref, toRaw, watch, computed, nextTick, getCurrentInstance } from "vue"
 
 defineOptions({ name: "ui-cascader-panel" })
@@ -74,43 +80,33 @@ const props = defineProps(cascaderPanelProps)
 const emits = defineEmits(cascaderPanelEmits)
 
 const instance = getCurrentInstance()
+
 const tabs = ref<CascaderPanelTab[]>([])
 const tabsRect = ref<UniApp.NodeInfo[]>([])
 const loading = ref(false)
 const activeTab = ref(0)
 const currentValue = ref<string | number>("")
 
-const defaultFieldKeys = { text: "text", value: "value", children: "children", disabled: "disabled" }
-const { text: textKey, value: valueKey, children: childrenKey, disabled: disabledKey } = merge(defaultFieldKeys, props.fieldKeys)
+// 字段映射：响应 props.fieldKeys 变化
+const fieldKeys = computed(() => merge({ text: "text", value: "value", children: "children", disabled: "disabled" }, props.fieldKeys))
 
+// 根节点 CSS var 注入
 const rootStyle = computed(() => {
-  const style: any = {}
-  return useStyle({ ...style, ...useStyle(props.customStyle) })
-})
-const titleStyle = computed(() => {
-  const style: any = {}
-  if (props.titleSize) style.fontSize = useUnit(props.titleSize)
-  if (props.titleColor) style.color = useColor(props.titleColor)
-  if (props.titleWeight) style.fontWeight = props.titleWeight
+  const style: CSSProperties = {}
+  if (props.height !== undefined) style["--ui-cascader-panel-height" as any] = useUnit(props.height)
+  if (props.color) style["--ui-cascader-panel-option-color" as any] = useColor(props.color)
+  if (props.activeColor) style["--ui-cascader-panel-option-active-color" as any] = useColor(props.activeColor)
+  if (props.titleSize) style["--ui-cascader-panel-title-font-size" as any] = useUnit(props.titleSize)
+  if (props.titleColor) style["--ui-cascader-panel-title-color" as any] = useColor(props.titleColor)
+  if (props.titleWeight) style["--ui-cascader-panel-title-font-weight" as any] = String(props.titleWeight)
   return useStyle(style)
 })
-const optionStyle = computed(() => {
-  const style: any = {}
-  if (props.color) style.color = useColor(props.color)
-  return useStyle(style)
-})
-const activeOptionStyle = computed(() => {
-  const style: any = {}
-  if (props.activeColor) style.color = useColor(props.activeColor)
-  return useStyle(style)
-})
-const tabsLineStyle = computed(() => {
-  const style: any = {}
-  if (tabsRect.value.length > 0 && tabsRect.value[activeTab.value]) {
-    style.left = `${tabsRect.value[activeTab.value].left}px`
-    style.width = `${tabsRect.value[activeTab.value].width}px`
-  }
-  return style
+
+// 当前激活 tab 下划线位置
+const tabsLineStyle = computed<CSSProperties>(() => {
+  const rect = tabsRect.value[activeTab.value]
+  if (!rect) return {}
+  return { left: `${rect.left}px`, width: `${rect.width}px` }
 })
 
 watch(
@@ -124,8 +120,10 @@ watch(
 watch(() => props.options, updateTabs, { deep: true })
 watch(() => activeTab.value, updateRect, { immediate: true })
 
+// 根据当前选中值还原 tab 链路
 function updateTabs() {
   const options = props.options
+  const keys = fieldKeys.value
 
   if (isDef(currentValue.value)) {
     const selectedOptions = getSelectedOptionsByValue(clone(options), currentValue.value)
@@ -136,9 +134,9 @@ function updateTabs() {
       tabs.value = selectedOptions.map((option) => {
         const tab = { options: optionsCursor, selected: option }
 
-        const next = optionsCursor!.find((item: any) => item[valueKey] === option[valueKey])
+        const next = optionsCursor!.find((item: any) => item[keys.value] === option[keys.value])
         if (next) {
-          optionsCursor = next[childrenKey] as CascaderPanelOption[] | undefined
+          optionsCursor = next[keys.children] as CascaderPanelOption[] | undefined
         } else {
           optionsCursor = undefined
         }
@@ -162,11 +160,13 @@ function updateTabs() {
   nextTick(updateRect)
 }
 
+// 递归查找 value 对应的选中链路
 function getSelectedOptionsByValue(options: CascaderPanelOption[], value: string | number): CascaderPanelOption[] | undefined {
+  const keys = fieldKeys.value
   for (const option of options) {
-    if (option[valueKey] === value) return [option]
+    if (option[keys.value] === value) return [option]
 
-    const children = option[childrenKey] as CascaderPanelOption[] | undefined
+    const children = option[keys.children] as CascaderPanelOption[] | undefined
     if (children && children.length > 0) {
       const selectedOptions = getSelectedOptionsByValue(children, value)
       if (selectedOptions) return [option, ...selectedOptions]
@@ -175,9 +175,13 @@ function getSelectedOptionsByValue(options: CascaderPanelOption[], value: string
   return undefined
 }
 
+// 测量 tab 节点位置（驱动下划线）；rect.left 为视口坐标，需减去容器自身偏移得到相对位置
 async function updateRect() {
   await nextTick()
-  tabsRect.value = await useRects(".ui-cascader__tabs__tab", instance)
+  const tabRects = await useRects(".ui-cascader-panel__tabs__tab", instance)
+  const containerRect = await useRect(".ui-cascader-panel__tabs", instance)
+  const offset = containerRect?.left ?? 0
+  tabsRect.value = tabRects.map((r) => ({ ...r, left: (r.left ?? 0) - offset }))
 }
 
 function onClickTab(_item: CascaderPanelTab, index: number) {
@@ -186,7 +190,8 @@ function onClickTab(_item: CascaderPanelTab, index: number) {
 }
 
 function onClickOption(option: CascaderPanelOption, index: number, optionIndex: number) {
-  if (option[disabledKey]) return
+  const keys = fieldKeys.value
+  if (option[keys.disabled]) return
 
   const next = () => {
     tabs.value[index].selected = option
@@ -195,7 +200,7 @@ function onClickOption(option: CascaderPanelOption, index: number, optionIndex: 
       tabs.value = tabs.value.slice(0, index + 1)
     }
 
-    const children = option[childrenKey] as CascaderPanelOption[] | undefined
+    const children = option[keys.children] as CascaderPanelOption[] | undefined
     if (isNoEmpty(children)) {
       const nextTab = { options: children!, selected: null }
 
@@ -213,8 +218,8 @@ function onClickOption(option: CascaderPanelOption, index: number, optionIndex: 
     nextTick(updateRect)
 
     const selectedOptions = tabs.value.map((tab) => toRaw(tab.selected)).filter((item): item is CascaderPanelOption => Boolean(item))
-    const selectedValue = option[valueKey] as string | number
-    const selectedText = String(option[textKey] ?? "")
+    const selectedValue = option[keys.value] as string | number
+    const selectedText = String(option[keys.text] ?? "")
 
     const params = { value: selectedValue, text: selectedText, index, selectedOptions }
     currentValue.value = selectedValue
@@ -227,7 +232,7 @@ function onClickOption(option: CascaderPanelOption, index: number, optionIndex: 
   }
 
   if (isFunction(props.beforeChange)) {
-    const indexs = [...tabs.value.filter((tab) => tab.selected).map((tab) => tab.options.findIndex((item: any) => item[valueKey] === tab.selected?.[valueKey]))]
+    const indexs = [...tabs.value.filter((tab) => tab.selected).map((tab) => tab.options.findIndex((item: any) => item[keys.value] === tab.selected?.[keys.value]))]
     indexs[index] = optionIndex
     loading.value = true
     callInterceptor(props.beforeChange, {
@@ -276,8 +281,17 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.ui-cascader {
-  height: 100%;
+.ui-cascader-panel {
+  --ui-cascader-panel-height: 100%;
+  --ui-cascader-panel-tab-height: 60rpx;
+  --ui-cascader-panel-line-height: 4rpx;
+  --ui-cascader-panel-title-color: var(--ui-color-text);
+  --ui-cascader-panel-option-color: var(--ui-color-text);
+  --ui-cascader-panel-title-font-size: var(--ui-font-size-sm);
+  --ui-cascader-panel-title-font-weight: var(--ui-font-weight-bold);
+  --ui-cascader-panel-option-active-color: var(--ui-color-primary);
+
+  height: var(--ui-cascader-panel-height);
   display: flex;
   position: relative;
   flex-direction: column;
@@ -289,13 +303,14 @@ export default {
     justify-content: space-between;
 
     &__title {
-      font-size: var(--ui-font-size-sm);
-      font-weight: var(--ui-font-weight-bold);
+      color: var(--ui-cascader-panel-title-color);
+      font-size: var(--ui-cascader-panel-title-font-size);
+      font-weight: var(--ui-cascader-panel-title-font-weight);
     }
   }
 
   &__tabs {
-    height: 60rpx;
+    height: var(--ui-cascader-panel-tab-height);
     display: flex;
     padding: 0 var(--ui-spacing-md);
     position: relative;
@@ -319,11 +334,11 @@ export default {
     &__line {
       left: 0;
       bottom: 0;
-      height: 4rpx;
+      height: var(--ui-cascader-panel-line-height);
       position: absolute;
+      background: var(--ui-color-primary);
       transition: all var(--ui-transition-duration);
       border-radius: var(--ui-radius-sm);
-      background-color: var(--ui-color-primary);
     }
   }
 
@@ -332,11 +347,8 @@ export default {
     padding-top: var(--ui-spacing-md);
 
     &__item {
-      flex: 1;
-      display: flex;
       overflow: hidden;
       position: relative;
-      flex-direction: row;
     }
   }
 
@@ -363,6 +375,7 @@ export default {
     grid-template-columns: repeat(1, 1fr);
 
     &__option {
+      color: var(--ui-cascader-panel-option-color);
       display: flex;
       padding: 0 var(--ui-spacing-md);
       font-size: var(--ui-font-size-sm);
@@ -370,15 +383,20 @@ export default {
       justify-content: space-between;
 
       &--selected {
-        color: var(--ui-color-primary);
+        color: var(--ui-cascader-panel-option-active-color);
       }
 
       &--disabled {
         opacity: var(--ui-opacity-disabled);
         pointer-events: none;
       }
+
+      &__text {
+        flex: 1;
+      }
     }
   }
+
   &__loading {
     top: 0;
     left: 0;
@@ -386,9 +404,9 @@ export default {
     bottom: 0;
     display: flex;
     position: absolute;
+    background: var(--ui-color-mask-light);
     align-items: center;
     justify-content: center;
-    background-color: var(--ui-color-mask-light);
   }
 }
 </style>

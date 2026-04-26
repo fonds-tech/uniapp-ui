@@ -1,14 +1,22 @@
 import type Cascader from "./ui-cascader.vue"
+import type { PopupMode } from "../ui-popup"
 import type { Interceptor } from "../utils/interceptor"
 import type { PropType, CSSProperties, ExtractPropTypes } from "vue"
+import type { CascaderPanelTab, CascaderPanelOption, CascaderPanelFieldKeys, CascaderPanelChangeData } from "../ui-cascader-panel"
 import { buildDefaultProps } from "../utils/props"
 
-/** Popup 模式类型 */
-export type PopupMode = "top" | "bottom" | "left" | "right" | "center"
+/** 选项链路（沿用 panel 定义） */
+export type CascaderTab = CascaderPanelTab
+/** 单个选项（沿用 panel 定义） */
+export type CascaderOption = CascaderPanelOption
+/** 自定义字段映射（沿用 panel 定义） */
+export type CascaderFieldKeys = CascaderPanelFieldKeys
+/** 选项变更数据（沿用 panel 定义） */
+export type CascaderChangeData = CascaderPanelChangeData
 
 const defaultProps = buildDefaultProps("cascader", {
   show: false,
-  mode: "bottom",
+  mode: "bottom" as PopupMode,
   borderRadius: undefined,
   closeOnClickOverlay: true,
   overlay: true,
@@ -21,7 +29,7 @@ const defaultProps = buildDefaultProps("cascader", {
   title: undefined,
   options: () => [],
   placeholder: "请选择",
-  color: "#323233",
+  color: undefined,
   activeColor: undefined,
   swipeable: true,
   closeable: true,
@@ -30,12 +38,12 @@ const defaultProps = buildDefaultProps("cascader", {
   titleColor: undefined,
   titleWeight: undefined,
   closeIcon: "cross",
-  closeIconSize: "32rpx",
-  closeIconColor: "#333333",
+  closeIconSize: undefined,
+  closeIconColor: undefined,
   closeIconWeight: undefined,
   beforeChange: undefined,
   fieldKeys: () => ({}),
-  height: undefined,
+  height: "60vh",
   maxHeight: undefined,
   customClass: undefined,
   customStyle: undefined,
@@ -112,42 +120,17 @@ export const cascaderEmits = {
   /** 关闭事件 */
   close: () => true,
   /** 选项变化事件 */
-  change: (data: { value: string | number; text: string; selectedOptions: CascaderOption[]; index: number }) => true,
+  change: (data: CascaderChangeData) => data,
   /** 选择完成事件 */
-  finish: (data: { value: string | number; text: string; selectedOptions: CascaderOption[]; index: number }) => true,
+  finish: (data: CascaderChangeData) => data,
   /** 点击标签页事件 */
-  clickTab: (data: { index: number }) => true,
+  clickTab: (data: { index: number }) => data,
   /** 更新绑定值事件 */
   "update:modelValue": (value: string | number) => true,
   /** 更新显示状态事件 */
   "update:show": (show: boolean) => typeof show === "boolean",
 }
 
-export interface CascaderTab {
-  options: CascaderOption[]
-  selected: CascaderOption | null
-}
-
-export interface CascaderOption {
-  /** 支持自定义字段名 */
-  [key: string]: unknown
-  text?: string
-  value?: string | number
-  color?: string
-  children?: CascaderOption[]
-  disabled?: boolean
-  customClass?: string
-  customStyle?: string | Record<string, string>
-}
-
-export interface CascaderFieldKeys {
-  text?: string
-  value?: string
-  children?: string
-  disabled?: string
-}
-
-export type CascaderNameType = string | number
 export type CascaderEmits = typeof cascaderEmits
 export type CascaderProps = ExtractPropTypes<typeof cascaderProps>
 export type CascaderInstance = InstanceType<typeof Cascader>

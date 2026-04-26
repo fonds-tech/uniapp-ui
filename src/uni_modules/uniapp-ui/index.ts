@@ -54,7 +54,6 @@ const ui = {
 
 export * from "./hooks"
 export type * from "./types"
-export type { CardEmits, CardInstance, CardProps, CardShadow } from "./ui-card"
 export type { CircleColor, CircleEmits, CircleExpose, CircleGradientColor, CircleInstance, CircleProps, CircleStartPosition, CircleStrokeLinecap } from "./ui-circle"
 export type { CodeInputEmits, CodeInputInstance, CodeInputMode, CodeInputProps, CodeInputType } from "./ui-code-input"
 export type { CollapseInstance, CollapseModelValue, CollapseProps } from "./ui-collapse"

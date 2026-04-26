@@ -140,7 +140,6 @@ export default defineConfig({
             { text: "Skeleton 骨架屏", link: "/components/skeleton" },
             { text: "QRCode 二维码", link: "/components/qrcode" },
             { text: "Poster 海报", link: "/components/poster" },
-            { text: "Card 卡片", link: "/components/card" },
             { text: "Timeline 时间轴", link: "/components/timeline" },
             { text: "List 列表", link: "/components/list" },
           ],
