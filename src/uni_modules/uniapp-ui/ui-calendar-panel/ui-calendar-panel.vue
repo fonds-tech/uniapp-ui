@@ -31,10 +31,17 @@
     <view class="ui-calendar__days">
       <text v-if="props.showMark" class="ui-calendar__mark">{{ currentDate.getMonth() + 1 }}</text>
       <view v-for="(day, index) in formattedDays" :key="index" class="ui-calendar__day" :class="[getDayClass(day)]" @click="onClickDay(day)">
-        <text class="ui-calendar__day-top">{{ day.topInfo || "" }}</text>
-        <text class="ui-calendar__day-text">{{ day.text }}</text>
-        <text class="ui-calendar__day-bottom">{{ day.hasDot ? "" : day.bottomInfo || "" }}</text>
-        <view v-if="day.hasDot" class="ui-calendar__day-dot" />
+        <view v-if="day.type === 'selected'" class="ui-calendar__selected-day">
+          <text v-if="day.topInfo" class="ui-calendar__day-top">{{ day.topInfo }}</text>
+          <text>{{ day.text }}</text>
+          <text v-if="day.bottomInfo" class="ui-calendar__day-bottom">{{ day.bottomInfo }}</text>
+        </view>
+        <template v-else>
+          <text v-if="day.topInfo" class="ui-calendar__day-top">{{ day.topInfo }}</text>
+          <text>{{ day.text }}</text>
+          <text v-if="day.bottomInfo" class="ui-calendar__day-bottom">{{ day.bottomInfo }}</text>
+          <view v-if="day.hasDot && !day.bottomInfo" class="ui-calendar__day-dot" />
+        </template>
       </view>
     </view>
 
@@ -53,8 +60,8 @@ import UiIcon from "../ui-icon/ui-icon.vue"
 import UiButton from "../ui-button/ui-button.vue"
 import { watch, computed } from "vue"
 import { useColor, useStyle, useCalendar } from "../hooks"
-import { parseDate, formatDate, getDaysDiff } from "../utils/date"
 import { calendarPanelEmits, calendarPanelProps } from "./index"
+import { addDays, parseDate, formatDate, getDaysDiff } from "../utils/date"
 
 defineOptions({ name: "ui-calendar-panel" })
 
@@ -170,6 +177,18 @@ function getDayType(day: UseCalendarDay): CalendarPanelDay["type"] {
   if (day.isRangeStart) return "start"
   if (day.isRangeEnd) return "end"
   if (day.inRange) return "middle"
+
+  // 多选模式：根据相邻日期判断 multiple-middle / start / end / multiple-selected
+  if (props.type === "multiple" && day.selected) {
+    const dateObj = parseDate(day.fullDate)
+    const prevSelected = selectedDates.value.includes(formatDate(addDays(dateObj, -1)))
+    const nextSelected = selectedDates.value.includes(formatDate(addDays(dateObj, 1)))
+    if (prevSelected && nextSelected) return "multiple-middle"
+    if (prevSelected) return "end"
+    if (nextSelected) return "start"
+    return "multiple-selected"
+  }
+
   if (day.selected) return "selected"
   if (day.isToday) return "today"
   return "normal"
@@ -204,6 +223,14 @@ function getDayClass(day: CalendarPanelDay): string[] {
 
   if (day.inRange || day.type === "middle") {
     classes.push("ui-calendar__day--middle")
+  }
+
+  if (day.type === "multiple-middle") {
+    classes.push("ui-calendar__day--multiple-middle")
+  }
+
+  if (day.type === "multiple-selected") {
+    classes.push("ui-calendar__day--multiple-selected")
   }
 
   if (day.className) {
@@ -356,15 +383,15 @@ export default {
 <style lang="scss" scoped>
 .ui-calendar {
   --ui-calendar-color: var(--ui-color-primary);
-  --ui-calendar-day-cell: 56rpx;
-  --ui-calendar-day-size: 100rpx;
+  --ui-calendar-day-size: 88rpx;
   --ui-calendar-nav-size: 56rpx;
   --ui-calendar-mark-size: 320rpx;
   --ui-calendar-close-size: 36rpx;
+  --ui-calendar-day-margin: 8rpx;
   --ui-calendar-mark-color: rgba(0, 0, 0, 0.03);
   --ui-calendar-color-light: var(--ui-color-primary-light);
   --ui-calendar-day-font-size: var(--ui-font-size-sm);
-  --ui-calendar-info-font-size: 20rpx;
+  --ui-calendar-info-font-size: 14rpx;
 
   width: 100%;
   display: flex;
@@ -393,6 +420,7 @@ export default {
   }
 
   &__title {
+    color: var(--ui-color-text);
     font-size: var(--ui-font-size-md);
     text-align: center;
     font-weight: var(--ui-font-weight-medium);
@@ -407,14 +435,15 @@ export default {
   }
 
   &__subtitle-text {
-    font-size: var(--ui-font-size-sm);
-    min-width: 160rpx;
+    color: var(--ui-color-text);
+    font-size: var(--ui-font-size-md);
+    min-width: 200rpx;
     text-align: center;
     font-weight: var(--ui-font-weight-medium);
   }
 
   &__nav {
-    color: var(--ui-calendar-color);
+    color: var(--ui-color-text-secondary);
     width: var(--ui-calendar-nav-size);
     height: var(--ui-calendar-nav-size);
     display: flex;
@@ -431,123 +460,136 @@ export default {
 
   &__weekdays {
     display: flex;
-    padding: var(--ui-spacing-sm) var(--ui-spacing-sm) var(--ui-spacing-xs);
+    padding: var(--ui-spacing-xs) var(--ui-spacing-sm);
   }
 
   &__weekday {
     flex: 1;
-    color: var(--ui-color-text-secondary);
+    color: var(--ui-color-text-tertiary);
     font-size: var(--ui-font-size-xs);
     text-align: center;
   }
 
   &__days {
-    display: flex;
+    display: grid;
     padding: var(--ui-spacing-xs) var(--ui-spacing-sm) var(--ui-spacing-sm);
     position: relative;
-    flex-wrap: wrap;
+    grid-row-gap: var(--ui-calendar-day-margin);
+    grid-template-columns: repeat(7, 1fr);
   }
 
   &__day {
-    gap: 2rpx;
-    width: calc(100% / 7);
+    color: var(--ui-color-text);
     height: var(--ui-calendar-day-size);
     display: flex;
     position: relative;
-    transition: background-color var(--ui-transition-fast);
+    font-size: var(--ui-calendar-day-font-size);
     align-items: center;
-    flex-direction: column;
     justify-content: center;
 
     &--other-month {
-      opacity: var(--ui-opacity-medium);
+      color: var(--ui-color-text-tertiary);
     }
 
     &--disabled {
-      opacity: var(--ui-opacity-medium);
+      color: var(--ui-color-text-disabled);
     }
 
-    &--today {
-      .ui-calendar__day-text {
-        color: var(--ui-calendar-color);
-        font-weight: var(--ui-font-weight-medium);
+    // today（未选中）：文字主题色 + medium
+    &--today:not(&--selected):not(&--start):not(&--end):not(&--middle) {
+      color: var(--ui-calendar-color);
+      font-weight: var(--ui-font-weight-medium);
+    }
+
+    // range middle：cell 用 ::after 浅底（currentColor + opacity 0.1，主题色继承）
+    &--middle {
+      color: var(--ui-calendar-color);
+
+      &::after {
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        content: "";
+        opacity: 0.1;
+        z-index: 0;
+        position: absolute;
+        background-color: currentColor;
       }
     }
 
-    // 选中态 / 范围两端 共享圆形背景（圆形覆盖在 cell 之上）
-    &--selected,
+    // range 端点 / 多选连接 / 多选独立：cell 整片主题色 + 反色文字
+    // 对应 vant: end / start / start-end / multiple-middle / multiple-selected
     &--start,
-    &--end {
-      .ui-calendar__day-text {
-        color: var(--ui-color-text-inverse);
-        width: var(--ui-calendar-day-cell);
-        height: var(--ui-calendar-day-cell);
-        display: flex;
-        align-items: center;
-        border-radius: 50%;
-        justify-content: center;
-        background-color: var(--ui-calendar-color);
-      }
-      // bottom-info 在主题色圆形上需反色（避免蓝字蓝底不可见）
-      .ui-calendar__day-bottom {
-        color: var(--ui-color-text-inverse);
-      }
+    &--end,
+    &--multiple-middle,
+    &--multiple-selected {
+      color: var(--ui-color-text-inverse);
+      background: var(--ui-calendar-color);
+      font-weight: var(--ui-font-weight-medium);
     }
-
-    // range 端点：整 cell 浅底 + 中心圆形深主题色（与 middle 拼成连续 L 型 light 区）
-    &--start,
-    &--end {
-      background-color: var(--ui-calendar-color-light);
-    }
-    // start 外侧（左）圆角：柔化 L 型起点
     &--start {
       border-top-left-radius: var(--ui-radius-md);
       border-bottom-left-radius: var(--ui-radius-md);
     }
-    // end 外侧（右）圆角：柔化 L 型终点
     &--end {
       border-top-right-radius: var(--ui-radius-md);
       border-bottom-right-radius: var(--ui-radius-md);
     }
-
-    // 单天范围（start 与 end 同一天）：仅圆形，不填 cell 浅底
-    &--start#{&}--end {
-      background-color: transparent;
+    // 单天 range（start === end）/ 多选独立：四角全圆角
+    &--start#{&}--end,
+    &--multiple-selected {
+      border-radius: var(--ui-radius-md);
     }
+  }
 
-    &--middle {
-      background-color: var(--ui-calendar-color-light);
-    }
+  // 单选选中：cell 内圆角矩形子元素，覆盖整 cell（vant __selected-day）
+  &__selected-day {
+    color: var(--ui-color-text-inverse);
+    width: 100%;
+    height: 100%;
+    display: flex;
+    z-index: 1;
+    position: relative;
+    align-items: center;
+    font-weight: var(--ui-font-weight-medium);
+    border-radius: var(--ui-radius-md);
+    justify-content: center;
+    background-color: var(--ui-calendar-color);
   }
 
   &__day-text {
-    color: var(--ui-color-text);
-    font-size: var(--ui-calendar-day-font-size);
+    z-index: 1;
+    position: relative;
     line-height: 1;
   }
 
-  // 顶部信息（节日/农历）：永远占位，避免 day-text 圆形位置抖动
-  &__day-top {
-    color: var(--ui-color-text-secondary);
-    height: var(--ui-calendar-info-font-size);
-    font-size: var(--ui-calendar-info-font-size);
-    line-height: 1;
-  }
-
-  // 底部信息（开始/结束/自定义）：永远占位
+  // top / bottom info 横跨整 cell（vant 做法）：左右铺满 + 居中文字 + 反色继承 cell color
+  &__day-top,
   &__day-bottom {
-    color: var(--ui-calendar-color);
-    height: var(--ui-calendar-info-font-size);
+    left: 0;
+    right: 0;
+    z-index: 2;
+    position: absolute;
     font-size: var(--ui-calendar-info-font-size);
-    line-height: 1;
+    text-align: center;
+    line-height: 1.2;
   }
 
-  // 标记点（数字下方居中，与 bottom-info 占位区重合）
+  &__day-top {
+    top: 6rpx;
+  }
+
+  &__day-bottom {
+    bottom: 6rpx;
+  }
+
   &__day-dot {
     left: 50%;
     width: 8rpx;
     bottom: 6rpx;
     height: 8rpx;
+    z-index: 2;
     position: absolute;
     transform: translateX(-50%);
     border-radius: 50%;

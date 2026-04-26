@@ -6,7 +6,7 @@ import { buildDefaultProps } from "../utils/props"
 export type CalendarPanelType = "single" | "multiple" | "range"
 
 /** 日历日期项类型 */
-export type CalendarPanelDayType = "normal" | "start" | "middle" | "end" | "selected" | "disabled" | "today"
+export type CalendarPanelDayType = "normal" | "start" | "middle" | "end" | "selected" | "disabled" | "today" | "multiple-middle" | "multiple-selected"
 
 /** 日历日期项 */
 export interface CalendarPanelDay {
