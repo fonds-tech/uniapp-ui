@@ -1,10 +1,10 @@
 <template>
   <ui-transition :show="visible" :name="props.transition" :custom-style="transitionStyle">
-    <view class="ui-back-top" hover-class="ui-back-top--hover" :hover-stay-time="100" :class="[customClass]" :style="[style]" @click="onClick">
+    <view class="ui-back-top" hover-class="ui-back-top--hover" :hover-stay-time="100" :class="[customClass]" :style="[rootStyle]" @click="onClick">
       <slot>
-        <view class="ui-back-top__content" :style="contentStyle">
-          <ui-icon :name="props.icon" :size="props.iconSize" :color="props.iconColor" :weight="props.iconWeight" />
-          <text v-if="props.text" class="ui-back-top__text" :style="textStyle">{{ props.text }}</text>
+        <view class="ui-back-top__content">
+          <ui-icon :name="props.icon" />
+          <text v-if="props.text" class="ui-back-top__text">{{ props.text }}</text>
         </view>
       </slot>
     </view>
@@ -12,7 +12,6 @@
 </template>
 
 <script setup lang="ts">
-import type { CSSProperties } from "vue"
 import { isDef } from "../utils/check"
 import { backTopEmits, backTopProps } from "./index"
 import { useMitt, useUnit, useColor, useStyle, useUnitToPx } from "../hooks"
@@ -23,55 +22,45 @@ defineOptions({ name: "ui-back-top" })
 const props = defineProps(backTopProps)
 const emits = defineEmits(backTopEmits)
 
-// 事件总线
 const mitt = useMitt()
-// 内部滚动位置
+
 const innerScrollTop = ref(0)
-// 绑定的路由
+// 当前页面路由（用于 mitt 事件 key），非响应式
 let bindRoute = ""
 
-// 是否使用外部滚动位置
 const useExternalScrollTop = computed(() => isDef(props.scrollTop))
-// 当前滚动位置
 const currentScrollTop = computed(() => (useExternalScrollTop.value ? Number(props.scrollTop) : innerScrollTop.value))
-// 是否显示
-const visible = computed(() => {
-  const offset = useUnitToPx(props.offset)
-  return currentScrollTop.value >= offset
-})
-// 传递给 ui-transition 的样式（fixed 定位相关）
+const visible = computed(() => currentScrollTop.value >= useUnitToPx(props.offset))
+
+// 过渡容器样式：透传给 ui-transition 内部根节点，承载 fixed 定位
 const transitionStyle = computed(() => {
-  const style: CSSProperties = {}
-  style.position = "fixed"
-  style.zIndex = props.zIndex
-  style.right = useUnit(props.right)
-  style.bottom = useUnit(props.bottom)
-  return useStyle(style)
-})
-// 根节点样式
-const style = computed(() => {
-  const style: CSSProperties = {}
-  style.background = useColor(props.background)
-  style.borderRadius = useUnit(props.borderRadius)
-  return useStyle({ ...style, ...useStyle(props.customStyle) })
-})
-// 内容区域样式
-const contentStyle = computed(() => {
-  const style: CSSProperties = {}
-  style.width = useUnit(props.width) || useUnit(props.size)
-  style.height = useUnit(props.height) || useUnit(props.size)
-  return useStyle(style)
-})
-// 文字样式
-const textStyle = computed(() => {
-  const style: CSSProperties = {}
-  style.color = useColor(props.textColor)
-  style.fontSize = useUnit(props.textSize)
-  if (props.textWeight) style.fontWeight = props.textWeight
-  return useStyle(style)
+  const styles: Record<string, string | number | undefined> = {
+    position: "fixed",
+    right: useUnit(props.right),
+    bottom: useUnit(props.bottom),
+    zIndex: props.zIndex,
+  }
+  return useStyle(styles)
 })
 
-// 监听是否使用外部滚动位置
+// 根节点样式：所有可配置项通过 CSS var 注入
+const rootStyle = computed(() => {
+  const styles: Record<string, string | number | undefined> = {
+    "--ui-back-top-size": useUnit(props.size),
+  }
+  if (props.width !== undefined) styles["--ui-back-top-width"] = useUnit(props.width)
+  if (props.height !== undefined) styles["--ui-back-top-height"] = useUnit(props.height)
+  if (props.background) styles["--ui-back-top-background"] = useColor(props.background)
+  if (props.borderRadius !== undefined) styles["--ui-back-top-radius"] = useUnit(props.borderRadius)
+  if (props.iconColor) styles["--ui-back-top-icon-color"] = useColor(props.iconColor)
+  if (props.iconSize) styles["--ui-back-top-icon-size"] = useUnit(props.iconSize)
+  if (props.iconWeight) styles["--ui-back-top-icon-weight"] = String(props.iconWeight)
+  if (props.textColor) styles["--ui-back-top-text-color"] = useColor(props.textColor)
+  if (props.textSize) styles["--ui-back-top-text-size"] = useUnit(props.textSize)
+  if (props.textWeight) styles["--ui-back-top-text-weight"] = String(props.textWeight)
+  return useStyle({ ...styles, ...useStyle(props.customStyle) })
+})
+
 watch(useExternalScrollTop, (useExternal) => {
   if (useExternal) {
     clearAutoListener()
@@ -91,7 +80,7 @@ function getCurrentRoute() {
   return pages[pages.length - 1]?.route || ""
 }
 
-// 初始化自动监听
+// 初始化页面滚动监听
 function initAutoListener() {
   if (useExternalScrollTop.value || bindRoute) return
 
@@ -101,7 +90,7 @@ function initAutoListener() {
   }
 }
 
-// 清除自动监听
+// 清除滚动监听
 function clearAutoListener() {
   if (bindRoute) {
     mitt.off(`scroll:${bindRoute}`, handleScroll)
@@ -109,22 +98,18 @@ function clearAutoListener() {
   }
 }
 
-// 点击事件处理
+// 点击返回顶部
 function onClick() {
-  if (useExternalScrollTop.value) {
-    emits("click")
-    return
+  if (!useExternalScrollTop.value) {
+    uni.pageScrollTo({ scrollTop: 0, duration: +props.duration })
   }
-  uni.pageScrollTo({ scrollTop: 0, duration: +props.duration })
   emits("click")
 }
 
-// 组件挂载时初始化监听
 onMounted(() => {
   nextTick(initAutoListener)
 })
 
-// 组件卸载时清除监听
 onUnmounted(() => {
   clearAutoListener()
 })
@@ -139,24 +124,44 @@ export default {
 
 <style lang="scss">
 .ui-back-top {
+  --ui-back-top-size: 80rpx;
+  --ui-back-top-width: var(--ui-back-top-size);
+  --ui-back-top-height: var(--ui-back-top-size);
+  --ui-back-top-radius: var(--ui-radius-round);
+  --ui-back-top-icon-size: 40rpx;
+  --ui-back-top-text-size: 20rpx;
+  --ui-back-top-background: var(--ui-color-primary);
+  --ui-back-top-icon-color: var(--ui-color-text-inverse);
+  --ui-back-top-text-color: var(--ui-color-text-inverse);
+  --ui-back-top-icon-weight: normal;
+  --ui-back-top-text-weight: normal;
+
   display: flex;
-  border-radius: var(--ui-radius-round);
-  background-color: var(--ui-color-primary);
+  background: var(--ui-back-top-background);
+  border-radius: var(--ui-back-top-radius);
 
   &--hover {
     opacity: var(--ui-opacity-active);
   }
 
   &__content {
+    color: var(--ui-back-top-icon-color);
+    width: var(--ui-back-top-width);
+    height: var(--ui-back-top-height);
     display: flex;
+    font-size: var(--ui-back-top-icon-size);
     box-shadow: var(--ui-shadow-md);
     align-items: center;
-    border-radius: var(--ui-radius-round);
+    font-weight: var(--ui-back-top-icon-weight);
+    border-radius: inherit;
     flex-direction: column;
     justify-content: center;
   }
 
   &__text {
+    color: var(--ui-back-top-text-color);
+    font-size: var(--ui-back-top-text-size);
+    font-weight: var(--ui-back-top-text-weight);
     line-height: 1.2;
   }
 }

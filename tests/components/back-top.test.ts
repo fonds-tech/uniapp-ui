@@ -251,9 +251,10 @@ describe("uiBackTop 组件", () => {
 
       await waitForTransition()
 
-      const style = wrapper.find(".ui-back-top__content").attributes("style") || ""
-      expect(style).toContain("width")
-      expect(style).toContain("height")
+      // width/height 通过 CSS var 注入到根节点
+      const rootStyle = wrapper.find(".ui-back-top").attributes("style") || ""
+      expect(rootStyle).toContain("--ui-back-top-width")
+      expect(rootStyle).toContain("--ui-back-top-height")
     })
   })
 
