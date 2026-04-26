@@ -1,17 +1,16 @@
 <template>
-  <view class="ui-badge" :style="[style]">
+  <view class="ui-badge" :style="[rootStyle]">
     <slot />
-    <view v-if="isShow" class="ui-badge__inner" :class="[classs, props.customClass]" :style="[innerStyle]" @click="onClick">
+    <view v-if="isShow" class="ui-badge__inner" :class="[classNames, props.customClass]" :style="[innerStyle]" @click="emits('click')">
       <slot name="content">
         <ui-icon v-if="isShowIcon" :name="props.icon" />
-        <text v-else class="ui-badge__value" :style="[valueStyle]">{{ formatValue }}</text>
+        <text v-else class="ui-badge__value">{{ formatValue }}</text>
       </slot>
     </view>
   </view>
 </template>
 
 <script setup lang="ts">
-import type { CSSProperties } from "vue"
 import { isArray, isNumber } from "../utils/check"
 import { computed, useSlots } from "vue"
 import { badgeEmits, badgeProps } from "./index"
@@ -23,96 +22,62 @@ const props = defineProps(badgeProps)
 const emits = defineEmits(badgeEmits)
 const slots = useSlots()
 
-// 根节点样式
-const style = computed(() => {
-  const style: CSSProperties = {}
-  style.zIndex = props.zIndex
-  return useStyle(style)
-})
-// 内部容器样式
-const innerStyle = computed(() => {
-  const style: CSSProperties = {}
-  style.background = useColor(props.color)
-  if (props.dot) {
-    style.width = useUnit(props.dotSize)
-    style.height = useUnit(props.dotSize)
-  } else {
-    style.height = useUnit(props.height)
-    style.minWidth = useUnit(props.height)
-    style.borderRadius = useUnit(props.radius)
-  }
-  // 处理偏移
-  if (props.offset) {
-    if (isArray(props.offset)) {
-      const top: any = props.offset[0] || 0
-      const right: any = props.offset[1] || 0
-      style.top = useUnit(top)
-      style.right = useUnit(right)
-    } else {
-      style.top = useUnit(props.offset)
-      style.right = useUnit(props.offset)
-    }
-  }
-  // 如果显示图标，添加内边距
-  if (isShowIcon.value) {
-    style.padding = "4rpx"
-  }
-  // 单个字符显示为圆形，多个字符显示为药丸形
-  if (!props.dot && !isShowIcon.value && String(formatValue.value).length > 1) {
-    style.padding = "0 8rpx"
-  }
-  return useStyle({ ...style, ...useStyle(props.customStyle) })
-})
-// 类名数组
-const classs = computed(() => {
-  const list = []
-  list.push(`ui-badge__inner--${props.position}`)
-  if (props.dot) list.push("ui-badge__inner--dot")
-  if (slots.default) list.push("ui-badge__inner--absolute")
-  return list
-})
-// 数值样式
-const valueStyle = computed(() => {
-  const style: CSSProperties = {}
-  style.color = useColor(props.valueColor)
-  style.fontSize = useUnit(props.valueSize)
-  style.fontWeight = props.valueWeight
-  return useStyle(style)
-})
-// 格式化显示的值
+const isShowIcon = computed(() => !!props.icon && !props.dot)
+// 格式化值：超过 max 显示 "max+"
 const formatValue = computed(() => {
-  // 检查 value 和 max 是否都为数字
   if (isNumber(props.value) && isNumber(props.max)) {
-    // 如果 value 大于 max，显示 "max+"
     return Number(props.value) > Number(props.max) ? `${props.max}+` : props.value
   }
-  // 如果 value 或 max 不是数字，直接返回 value
   return props.value
 })
+// 是否多字符（用于切换正圆 / 药丸）
+const isMulti = computed(() => !props.dot && !isShowIcon.value && String(formatValue.value).length > 1)
 // 是否显示
 const isShow = computed(() => {
-  if (props.dot) return true
-  if (props.icon) return true
-  // 有 value 值时的判断
-  if (props.value !== undefined && props.value !== null && props.value !== "") {
-    // 数值类型
-    if (isNumber(props.value)) {
-      if (+props.value > 0) return true
-      if (+props.value === 0 && props.showZero) return true
-      return false
-    }
-    // 字符串类型直接显示
-    return true
-  }
-  return false
+  if (props.dot || props.icon) return true
+  if (props.value === undefined || props.value === null || props.value === "") return false
+  if (isNumber(props.value)) return +props.value > 0 || (+props.value === 0 && props.showZero)
+  return true
 })
-// 是否显示图标
-const isShowIcon = computed(() => props.icon && !props.dot)
 
-// 点击事件处理
-function onClick() {
-  emits("click")
-}
+const classNames = computed(() => [
+  `ui-badge__inner--${props.position}`,
+  {
+    "ui-badge__inner--dot": props.dot,
+    "ui-badge__inner--icon": isShowIcon.value,
+    "ui-badge__inner--multi": isMulti.value,
+    "ui-badge__inner--absolute": !!slots.default,
+  },
+])
+
+const rootStyle = computed(() => {
+  const styles: Record<string, string | number | undefined> = {
+    zIndex: props.zIndex,
+  }
+  if (props.color) styles["--ui-badge-background"] = useColor(props.color)
+  if (props.dotSize !== undefined) styles["--ui-badge-dot-size"] = useUnit(props.dotSize)
+  if (props.height !== undefined) styles["--ui-badge-height"] = useUnit(props.height)
+  if (props.radius !== undefined) styles["--ui-badge-radius"] = useUnit(props.radius)
+  if (props.valueColor) styles["--ui-badge-value-color"] = useColor(props.valueColor)
+  if (props.valueSize) styles["--ui-badge-value-size"] = useUnit(props.valueSize)
+  if (props.valueWeight) styles["--ui-badge-value-weight"] = String(props.valueWeight)
+  return useStyle(styles)
+})
+
+// inner 样式：仅放偏移（动态 top/right，依赖数组解构）
+const innerStyle = computed(() => {
+  const styles: Record<string, string | number | undefined> = {}
+  if (props.offset !== undefined && props.offset !== "") {
+    if (isArray(props.offset)) {
+      styles.top = useUnit(props.offset[0] || 0)
+      styles.right = useUnit(props.offset[1] || 0)
+    } else {
+      styles.top = useUnit(props.offset)
+      styles.right = useUnit(props.offset)
+    }
+  }
+  return useStyle({ ...styles, ...useStyle(props.customStyle) })
+})
 </script>
 
 <script lang="ts">
@@ -124,27 +89,56 @@ export default {
 
 <style lang="scss" scoped>
 .ui-badge {
+  --ui-badge-height: 40rpx;
+  --ui-badge-radius: var(--ui-radius-round);
+  --ui-badge-dot-size: 16rpx;
+  --ui-badge-padding-x: var(--ui-spacing-xs);
+  --ui-badge-background: var(--ui-color-danger);
+  --ui-badge-value-size: var(--ui-font-size-xs);
+  --ui-badge-value-color: var(--ui-color-text-inverse);
+  --ui-badge-icon-padding: var(--ui-spacing-xxs);
+  --ui-badge-value-weight: normal;
+
   width: max-content;
   height: max-content;
   display: flex;
   position: relative;
 
+  // 默认正圆（单字符 / 单图标）：宽 = 高，避免字体宽度差异导致椭圆
   &__inner {
-    color: var(--ui-color-text-inverse);
-    height: 40rpx;
+    color: var(--ui-badge-value-color);
+    width: var(--ui-badge-height);
+    height: var(--ui-badge-height);
     display: flex;
     padding: 0;
-    font-size: var(--ui-font-size-xs);
-    min-width: 40rpx;
+    background: var(--ui-badge-background);
     box-sizing: border-box;
     align-items: center;
     line-height: 1;
-    border-radius: var(--ui-radius-round);
+    border-radius: var(--ui-badge-radius);
     justify-content: center;
-    background-color: var(--ui-color-danger);
 
     &--absolute {
       position: absolute;
+    }
+
+    // 多字符药丸：宽度自适应，左右 padding 撑开
+    &--multi {
+      width: auto;
+      padding: 0 var(--ui-badge-padding-x);
+    }
+
+    // 图标内边距（小图标视觉留白）
+    &--icon {
+      padding: var(--ui-badge-icon-padding);
+    }
+
+    // 圆点
+    &--dot {
+      width: var(--ui-badge-dot-size);
+      height: var(--ui-badge-dot-size);
+      padding: 0;
+      border-radius: 50%;
     }
 
     &--top-right {
@@ -186,22 +180,17 @@ export default {
         transform-origin: 0;
       }
     }
-
-    &--dot {
-      width: 16rpx;
-      height: 16rpx;
-      padding: 0;
-      min-width: 0;
-      border-radius: 50%;
-    }
   }
 
   &__value {
+    color: inherit;
+    font-size: var(--ui-badge-value-size);
     font-family:
       -apple-system-font,
       helvetica neue,
       arial,
       sans-serif;
+    font-weight: var(--ui-badge-value-weight);
     line-height: 1;
     white-space: nowrap;
     font-variant-numeric: tabular-nums;

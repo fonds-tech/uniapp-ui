@@ -42,7 +42,7 @@ export const badgeProps = {
   /** 圆角值 */
   radius: defaultProps("radius", { type: [Number, String] }),
   /** 位置偏移值 */
-  offset: defaultProps("offset", { type: [String, Number, Array] }),
+  offset: defaultProps("offset", { type: [String, Number, Array] as PropType<string | number | [string | number, string | number]> }),
   /** 元素层级 */
   zIndex: defaultProps("zIndex", { type: [Number, String] }),
   /** 定位类型 */

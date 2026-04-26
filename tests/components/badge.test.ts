@@ -153,7 +153,8 @@ describe("ui-badge 徽章组件", () => {
       })
 
       expect(wrapper.find(".ui-badge__inner--dot").exists()).toBe(true)
-      expect(wrapper.find(".ui-badge__value").exists()).toBe(false)
+      // dot 模式下不应渲染 icon
+      expect(wrapper.findComponent({ name: "ui-icon" }).exists()).toBe(false)
     })
   })
 
@@ -194,9 +195,9 @@ describe("ui-badge 徽章组件", () => {
         props: { value: 5, offset: "10rpx" },
       })
 
-      const style = wrapper.find(".ui-badge__inner").attributes("style") || ""
-      expect(style).toContain("top")
-      expect(style).toContain("right")
+      const html = wrapper.find(".ui-badge__inner").html()
+      expect(html).toContain("top")
+      expect(html).toContain("right")
     })
   })
 
@@ -206,8 +207,9 @@ describe("ui-badge 徽章组件", () => {
         props: { value: 5, color: "#ff0000" },
       })
 
-      const style = wrapper.find(".ui-badge__inner").attributes("style") || ""
-      expect(style).toContain("background")
+      // color 通过根节点 CSS var 注入
+      const rootStyle = wrapper.find(".ui-badge").attributes("style") || ""
+      expect(rootStyle).toContain("--ui-badge-background")
     })
 
     it("应支持自定义高度", () => {

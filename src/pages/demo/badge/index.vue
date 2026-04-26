@@ -136,12 +136,29 @@
       </demo-block>
     </demo-section>
 
-    <demo-section title="自定义样式">
+    <demo-section title="形状切换" desc="单字符正圆 / 多字符药丸 / 圆点">
       <demo-block :cols="4" :gap="32">
-        <ui-badge :value="6" height="40rpx" radius="8rpx">
+        <ui-badge :value="3">
           <view class="badge-box" />
         </ui-badge>
-        <ui-badge :value="88" height="44rpx" radius="0">
+        <ui-badge :value="88">
+          <view class="badge-box" />
+        </ui-badge>
+        <ui-badge value="NEW">
+          <view class="badge-box" />
+        </ui-badge>
+        <ui-badge dot>
+          <view class="badge-box" />
+        </ui-badge>
+      </demo-block>
+    </demo-section>
+
+    <demo-section title="自定义样式">
+      <demo-block :cols="4" :gap="32">
+        <ui-badge :value="6" height="56rpx" radius="8rpx">
+          <view class="badge-box" />
+        </ui-badge>
+        <ui-badge :value="88" height="48rpx" radius="0">
           <view class="badge-box" />
         </ui-badge>
         <ui-badge :value="VIP" value-size="20rpx" value-color="#FFD700" color="#1a1a1a">
@@ -188,7 +205,7 @@ const Pro = "Pro"
 .badge-box {
   width: 80rpx;
   height: 80rpx;
-  background: var(--ui-color-background-dark);
+  background: var(--ui-color-background-section);
   border-radius: var(--ui-radius-md);
 }
 </style>
