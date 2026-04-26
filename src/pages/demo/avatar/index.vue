@@ -12,24 +12,24 @@
     <demo-section title="头像尺寸">
       <demo-block :gap="24" align="end">
         <view class="avatar-item">
-          <ui-avatar src="https://picsum.photos/104" size="mini" />
-          <text class="avatar-label">mini</text>
+          <ui-avatar src="https://picsum.photos/104" size="48rpx" />
+          <text class="avatar-label">48rpx</text>
         </view>
         <view class="avatar-item">
-          <ui-avatar src="https://picsum.photos/105" size="small" />
-          <text class="avatar-label">small</text>
+          <ui-avatar src="https://picsum.photos/105" size="64rpx" />
+          <text class="avatar-label">64rpx</text>
         </view>
         <view class="avatar-item">
-          <ui-avatar src="https://picsum.photos/106" size="medium" />
-          <text class="avatar-label">medium</text>
+          <ui-avatar src="https://picsum.photos/106" size="80rpx" />
+          <text class="avatar-label">80rpx</text>
         </view>
         <view class="avatar-item">
-          <ui-avatar src="https://picsum.photos/107" size="large" />
-          <text class="avatar-label">large</text>
+          <ui-avatar src="https://picsum.photos/107" size="120rpx" />
+          <text class="avatar-label">120rpx</text>
         </view>
         <view class="avatar-item">
           <ui-avatar src="https://picsum.photos/108" size="160rpx" />
-          <text class="avatar-label">自定义</text>
+          <text class="avatar-label">160rpx</text>
         </view>
       </demo-block>
     </demo-section>
@@ -57,28 +57,28 @@
 
     <demo-section title="图标头像">
       <demo-block :cols="4" :gap="24">
-        <ui-avatar icon="user" />
-        <ui-avatar icon="user" background="#1890ff" icon-color="#fff" />
-        <ui-avatar icon="user" background="#52c41a" icon-color="#fff" />
-        <ui-avatar icon="user" background="#faad14" icon-color="#fff" />
+        <ui-avatar icon="user-o" />
+        <ui-avatar icon="user-o" background="primary" icon-color="text-inverse" />
+        <ui-avatar icon="user-o" background="success" icon-color="text-inverse" />
+        <ui-avatar icon="user-o" background="warning" icon-color="text-inverse" />
       </demo-block>
     </demo-section>
 
     <demo-section title="文字头像">
       <demo-block :cols="4" :gap="24">
-        <ui-avatar text="张三" background="#1890ff" text-color="#fff" />
-        <ui-avatar text="李四" background="#52c41a" text-color="#fff" />
-        <ui-avatar text="王五" background="#faad14" text-color="#fff" />
-        <ui-avatar text="U" background="#ff4d4f" text-color="#fff" />
+        <ui-avatar text="张三" background="primary" text-color="text-inverse" />
+        <ui-avatar text="李四" background="success" text-color="text-inverse" />
+        <ui-avatar text="王五" background="warning" text-color="text-inverse" />
+        <ui-avatar text="U" background="danger" text-color="text-inverse" />
       </demo-block>
     </demo-section>
 
     <demo-section title="带边框">
       <demo-block :cols="4" :gap="24">
-        <ui-avatar src="https://picsum.photos/113" border-color="#1890ff" border-width="4rpx" />
-        <ui-avatar src="https://picsum.photos/114" border-color="#52c41a" border-width="4rpx" />
-        <ui-avatar src="https://picsum.photos/115" border-color="#faad14" border-width="4rpx" />
-        <ui-avatar src="https://picsum.photos/116" border-color="#ff4d4f" border-width="4rpx" />
+        <ui-avatar src="https://picsum.photos/113" border-color="primary" border-width="4rpx" />
+        <ui-avatar src="https://picsum.photos/114" border-color="success" border-width="4rpx" />
+        <ui-avatar src="https://picsum.photos/115" border-color="warning" border-width="4rpx" />
+        <ui-avatar src="https://picsum.photos/116" border-color="danger" border-width="4rpx" />
       </demo-block>
     </demo-section>
 
@@ -109,7 +109,7 @@
     <demo-section title="组合使用">
       <demo-block :gap="16">
         <view class="user-card">
-          <ui-avatar src="https://picsum.photos/118" size="100rpx" border-color="#1890ff" border-width="4rpx" />
+          <ui-avatar src="https://picsum.photos/118" size="100rpx" border-color="primary" border-width="4rpx" />
           <view class="user-info">
             <text class="user-name">用户名称</text>
             <text class="user-desc">这是一段用户描述信息</text>
@@ -120,7 +120,7 @@
 
     <demo-section title="头像组">
       <demo-block :gap="16">
-        <ui-avatar-group size="80rpx" gap="-20rpx" border-color="#fff" border-width="4rpx" :max="5">
+        <ui-avatar-group size="80rpx" gap="-20rpx" border-color="text-inverse" border-width="4rpx" :max="5">
           <ui-avatar v-for="i in 8" :key="i" :src="`https://picsum.photos/${120 + i}`" />
         </ui-avatar-group>
       </demo-block>
@@ -148,7 +148,7 @@ function handleClick() {
 
 <style lang="scss" scoped>
 .avatar-item {
-  gap: 8rpx;
+  gap: var(--ui-spacing-xs);
   display: flex;
   align-items: center;
   flex-direction: column;
@@ -156,44 +156,44 @@ function handleClick() {
 
 .avatar-label {
   color: var(--ui-color-text-secondary);
-  font-size: 24rpx;
+  font-size: var(--ui-font-size-xs);
 }
 
 .avatar-error-text {
   color: var(--ui-color-danger);
-  font-size: 32rpx;
-  font-weight: bold;
+  font-size: var(--ui-font-size-md);
+  font-weight: var(--ui-font-weight-bold);
 }
 
 .demo-text {
   color: var(--ui-color-text);
-  font-size: 28rpx;
+  font-size: var(--ui-font-size-sm);
 }
 
 .user-card {
-  gap: 24rpx;
+  gap: var(--ui-spacing-md);
   display: flex;
-  padding: 24rpx;
+  padding: var(--ui-spacing-md);
   background: var(--ui-color-background);
-  box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.08);
+  box-shadow: var(--ui-shadow-sm);
   align-items: center;
   border-radius: var(--ui-radius-lg);
 }
 
 .user-info {
-  gap: 8rpx;
+  gap: var(--ui-spacing-xs);
   display: flex;
   flex-direction: column;
 }
 
 .user-name {
   color: var(--ui-color-text);
-  font-size: 32rpx;
-  font-weight: 500;
+  font-size: var(--ui-font-size-md);
+  font-weight: var(--ui-font-weight-medium);
 }
 
 .user-desc {
   color: var(--ui-color-text-secondary);
-  font-size: 24rpx;
+  font-size: var(--ui-font-size-xs);
 }
 </style>
