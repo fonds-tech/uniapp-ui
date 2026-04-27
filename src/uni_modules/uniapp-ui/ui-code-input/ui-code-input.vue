@@ -1,5 +1,5 @@
 <template>
-  <view class="ui-code-input" :class="[rootClasses, props.customClass]" :style="[rootStyle]" @click="handleClick">
+  <view class="ui-code-input" :class="[classNames, props.customClass]" :style="[rootStyle]" @click="handleClick">
     <input
       ref="inputRef"
       class="ui-code-input__hidden"
@@ -14,7 +14,7 @@
       @focus="handleFocus"
       @blur="handleBlur"
     />
-    <view v-for="(_, index) in props.length" :key="index" class="ui-code-input__code" :class="codeClasses(index)">
+    <view v-for="(_, index) in props.length" :key="index" class="ui-code-input__code" :class="codeClassList(index)">
       <slot :value="currentValue[index]" :index="index" :focused="isFocused && index === currentValue.length">
         <template v-if="currentValue[index]">
           <view v-if="props.mask" class="ui-code-input__dot" />
@@ -37,12 +37,12 @@ defineOptions({ name: "ui-code-input" })
 const props = defineProps(codeInputProps)
 const emits = defineEmits(codeInputEmits)
 
-// 当前输入值
-const currentValue = ref("")
-// 是否聚焦
-const isFocused = ref(false)
 // 输入框引用
 const inputRef = ref()
+// 是否聚焦
+const isFocused = ref(false)
+// 当前输入值
+const currentValue = ref("")
 
 // 推断 H5 软键盘 inputmode
 const actualInputmode = computed(() => props.inputmode ?? (props.inputType === "number" ? "numeric" : "text"))
@@ -72,7 +72,7 @@ const rootStyle = computed<CSSProperties>(() => {
 })
 
 // 根节点类名
-const rootClasses = computed(() => [
+const classNames = computed(() => [
   `ui-code-input--${props.type}`,
   {
     "ui-code-input--error": props.error,
@@ -81,16 +81,6 @@ const rootClasses = computed(() => [
     "ui-code-input--focused": isFocused.value,
   },
 ])
-
-// 单格类名
-function codeClasses(index: number) {
-  const isActive = isFocused.value && index === currentValue.value.length
-  const isFilled = index < currentValue.value.length
-  return {
-    "ui-code-input__code--active": isActive,
-    "ui-code-input__code--filled": isFilled,
-  }
-}
 
 // 监听 modelValue 变化
 watch(
@@ -109,6 +99,16 @@ watch(
   },
   { immediate: true },
 )
+
+// 单格类名
+function codeClassList(index: number) {
+  const isActive = isFocused.value && index === currentValue.value.length
+  const isFilled = index < currentValue.value.length
+  return {
+    "ui-code-input__code--active": isActive,
+    "ui-code-input__code--filled": isFilled,
+  }
+}
 
 // 点击根节点：聚焦 + emit click
 function handleClick() {

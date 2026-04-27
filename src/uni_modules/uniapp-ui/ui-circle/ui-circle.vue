@@ -64,27 +64,14 @@ const tokenFallbacks: Record<string, string> = {
   "background-section": "#f2f3f5",
 }
 
-// 当前动画进度值（独立于 props.modelValue）
-const currentRate = ref(0)
 // 设备 dpr
 const pixelRatio = ref(1)
+// 当前动画进度值（独立于 props.modelValue）
+const currentRate = ref(0)
 
-// 圆环像素直径
+// 单行 computed
 const sizePx = computed(() => safePx(props.size, 100))
-// 进度条线宽：用户指定 → 直传；否则按 size/20 自适应
-const strokeWidthPx = computed(() => {
-  if (props.strokeWidth !== undefined) return safePx(props.strokeWidth, 4)
-  return Math.max(2, sizePx.value / 20)
-})
-// 起始角度
 const startAngle = computed(() => startAngleMap[props.startPosition] ?? BEGIN_ANGLE)
-// 是否显示文字
-const displayText = computed(() => {
-  if (props.text === false) return ""
-  if (typeof props.text === "string") return props.text
-  return `${Math.round(currentRate.value)}%`
-})
-// a11y 进度值
 const ariaValueNow = computed(() => Math.round(currentRate.value))
 
 // 根容器尺寸样式（同时把 size 推为 CSS var 供 SCSS 计算文字字号）
@@ -99,11 +86,22 @@ const rootStyle = computed<CSSProperties>(() => {
   if (props.textSize !== undefined) result["--ui-circle-text-size"] = useUnit(props.textSize)
   return useStyle({ ...result, ...(useStyle(props.customStyle) || {}) }) as CSSProperties
 })
+// 是否显示文字
+const displayText = computed(() => {
+  if (props.text === false) return ""
+  if (typeof props.text === "string") return props.text
+  return `${Math.round(currentRate.value)}%`
+})
 // canvas 视觉尺寸（与容器一致，CSS 单位）
 const canvasStyle = computed(() => ({
   width: useUnit(props.size),
   height: useUnit(props.size),
 }))
+// 进度条线宽：用户指定 → 直传；否则按 size/20 自适应
+const strokeWidthPx = computed(() => {
+  if (props.strokeWidth !== undefined) return safePx(props.strokeWidth, 4)
+  return Math.max(2, sizePx.value / 20)
+})
 // 非 MP-WEIXIN 路径：canvas 内部分辨率作为 HTML attr 注入；MP-ALIPAY 需 dpr 倍以保证清晰
 const canvasAttrSize = computed(() => {
   // #ifdef MP-ALIPAY
@@ -113,6 +111,28 @@ const canvasAttrSize = computed(() => {
   return sizePx.value
   // #endif
 })
+
+// 监听 modelValue：动画过渡到目标值
+watch(
+  () => props.modelValue,
+  (val) => animateTo(val),
+)
+
+// 监听尺寸 / 线宽：重置 ctx 后重绘
+watch(
+  () => [props.size, props.strokeWidth],
+  () => {
+    resetContext()
+    nextTick(() => draw(currentRate.value))
+  },
+)
+
+// 监听其他视觉属性：直接重绘
+watch(
+  () => [props.color, props.layerColor, props.fill, props.strokeLinecap, props.clockwise, props.startPosition],
+  () => draw(currentRate.value),
+  { deep: true },
+)
 
 // 转 px 数值，无效兜底
 function safePx(value: number | string, fallback: number) {
@@ -283,28 +303,6 @@ function cancelAnimation() {
     animationTimer = null
   }
 }
-
-// 监听 modelValue：动画过渡到目标值
-watch(
-  () => props.modelValue,
-  (val) => animateTo(val),
-)
-
-// 监听尺寸 / 线宽：重置 ctx 后重绘
-watch(
-  () => [props.size, props.strokeWidth],
-  () => {
-    resetContext()
-    nextTick(() => draw(currentRate.value))
-  },
-)
-
-// 监听其他视觉属性：直接重绘
-watch(
-  () => [props.color, props.layerColor, props.fill, props.strokeLinecap, props.clockwise, props.startPosition],
-  () => draw(currentRate.value),
-  { deep: true },
-)
 
 onBeforeMount(() => {
   try {

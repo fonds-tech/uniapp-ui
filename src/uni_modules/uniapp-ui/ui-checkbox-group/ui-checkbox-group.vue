@@ -1,5 +1,5 @@
 <template>
-  <view class="ui-checkbox-group" :class="[rootClass, props.customClass]" :style="[rootStyle]">
+  <view class="ui-checkbox-group" :class="[classNames, props.customClass]" :style="[rootStyle]">
     <slot />
   </view>
 </template>
@@ -30,7 +30,7 @@ const rootStyle = computed(() => {
   return useStyle({ ...style, ...(useStyle(props.customStyle) || {}) })
 })
 // 根节点类名
-const rootClass = computed(() => {
+const classNames = computed(() => {
   const list: string[] = []
   if (props.vertical) list.push("ui-checkbox-group--vertical")
   return list

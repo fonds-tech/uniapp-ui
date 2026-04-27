@@ -1,5 +1,5 @@
 <template>
-  <view class="ui-cell" :class="[classes, props.customClass]" :style="[style]" :hover-class="hoverClass" :hover-stay-time="+props.hoverStayTime" @click="onClick">
+  <view class="ui-cell" :class="[classNames, props.customClass]" :style="[rootStyle]" :hover-class="hoverClass" :hover-stay-time="+props.hoverStayTime" @click="onClick">
     <slot name="icon">
       <view v-if="props.icon" class="ui-cell__icon">
         <ui-icon :name="props.icon" />
@@ -41,15 +41,20 @@ const emits = defineEmits(cellEmits)
 // 父级 cell-group（用于判定是否末尾以隐藏分隔线）
 const { index, parent: cellGroup } = useParent(cellGroupKey)
 
-// 行数转 line-clamp 值：0 表示不省略，用大数模拟「无限制」
-function clampLines(v: number | string | undefined) {
-  if (v === undefined) return undefined
-  const n = +v
-  return n === 0 ? 9999 : n
-}
+// 是否末尾 cell（用于隐藏分隔线）
+const isLastCell = computed(() => {
+  if (!cellGroup?.childrens) return true
+  return index.value === cellGroup.childrens.length - 1
+})
+// 右侧图标显示：showRightIcon 显式控制优先，否则跟随 isLink
+const showRightIcon = computed(() => props.showRightIcon ?? props.isLink)
+// 是否启用点击反馈（clickable / isLink / 有 url 任一即触发）
+const isInteractive = computed(() => !props.disabled && (props.clickable || props.isLink || !!props.url))
+// 点击态类名
+const hoverClass = computed(() => (isInteractive.value ? "ui-cell--active" : ""))
 
 // 根节点样式：所有 prop 通过 CSS var 注入；SCSS 选择器顶部声明默认值
-const style = computed(() => {
+const rootStyle = computed(() => {
   const s: Record<string, string | number | undefined> = {}
   // 尺寸 / 容器
   if (props.height !== undefined) s.height = useUnit(props.height)
@@ -98,17 +103,8 @@ const style = computed(() => {
   if (props.rightIconWeight !== undefined) s["--ui-cell-right-icon-weight"] = String(props.rightIconWeight)
   return useStyle({ ...s, ...(useStyle(props.customStyle) || {}) })
 })
-// 是否末尾 cell（用于隐藏分隔线）
-const isLastCell = computed(() => {
-  if (!cellGroup?.childrens) return true
-  return index.value === cellGroup.childrens.length - 1
-})
-// 右侧图标显示：showRightIcon 显式控制优先，否则跟随 isLink
-const showRightIcon = computed(() => props.showRightIcon ?? props.isLink)
-// 是否启用点击反馈（clickable / isLink / 有 url 任一即触发）
-const isInteractive = computed(() => !props.disabled && (props.clickable || props.isLink || !!props.url))
 // 类名数组
-const classes = computed(() => {
+const classNames = computed(() => {
   const list: string[] = []
   if (props.border && !isLastCell.value) list.push("ui-cell--border")
   if (isInteractive.value) list.push("ui-cell--clickable")
@@ -116,8 +112,13 @@ const classes = computed(() => {
   if (props.align === "top") list.push("ui-cell--align-top")
   return list
 })
-// 点击态类名
-const hoverClass = computed(() => (isInteractive.value ? "ui-cell--active" : ""))
+
+// 行数转 line-clamp 值：0 表示不省略，用大数模拟「无限制」
+function clampLines(v: number | string | undefined) {
+  if (v === undefined) return undefined
+  const n = +v
+  return n === 0 ? 9999 : n
+}
 
 // 点击事件：永远 emit click（不被 url 吞）；有 url 时再走路由跳转，失败抛 linkFail
 function onClick(event: Event) {

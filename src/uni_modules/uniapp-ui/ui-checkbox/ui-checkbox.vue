@@ -1,6 +1,6 @@
 <template>
-  <view class="ui-checkbox" :class="[rootClass, props.customClass]" :style="[rootStyle]" @click.stop="onClick">
-    <view class="ui-checkbox__icon" :class="[iconClass]" @click.stop="onClickIcon">
+  <view class="ui-checkbox" :class="[classNames, props.customClass]" :style="[rootStyle]" @click.stop="onClick">
+    <view class="ui-checkbox__icon" :class="[iconClassList]" @click.stop="onClickIcon">
       <slot name="icon" :checked="isChecked" :disabled="isDisabled" :indeterminate="isIndeterminate">
         <ui-icon v-if="isIndeterminate" name="minus" class="ui-checkbox__symbol" color="text-inverse" :size="symbolSize" />
         <ui-icon v-else-if="isChecked && actualShape === 'icon'" name="check" class="ui-checkbox__symbol" color="text-inverse" :size="symbolSize" />
@@ -8,7 +8,7 @@
       </slot>
     </view>
     <view v-if="hasLabel" class="ui-checkbox__content">
-      <view class="ui-checkbox__label" :class="labelClass" @click.stop="onClickLabel">
+      <view class="ui-checkbox__label" :class="labelClassList" @click.stop="onClickLabel">
         <slot>{{ props.label }}</slot>
       </view>
     </view>
@@ -32,35 +32,19 @@ const slots = useSlots()
 // 父级 checkbox-group
 const { index, parent } = useParent(checkboxGroupKey)
 
-// 取值优先级：自身 prop → 父 group 同名 prop（仅当 bindGroup 且存在父级）
-function prop<K extends keyof CheckboxProps>(key: K): CheckboxProps[K] | undefined {
-  if (props.bindGroup && parent) {
-    if (isDef(props[key])) return props[key]
-    const parentProps = parent.props as any
-    if (isDef(parentProps[key])) return parentProps[key]
-  }
-  return props[key]
-}
-// 标识符：用户传 name 优先，否则用 group 内 index
-const name = computed(() => (isDef(props.name) ? props.name : index.value))
-// 是否选中
-const isChecked = computed(() => (props.bindGroup && parent ? parent.props.modelValue.includes(name.value) : !!props.modelValue))
-// 是否禁用
-const isDisabled = computed(() => !!prop("disabled"))
-// 是否只读
-const isReadonly = computed(() => !!prop("readonly"))
-// 是否半选
-const isIndeterminate = computed(() => !!prop("indeterminate"))
-// 实际形状
-const actualShape = computed(() => prop("shape") || "dot")
-// 是否圆形
-const isRound = computed(() => !!prop("round"))
-// 标签是否在左侧
-const isLabelLeft = computed(() => prop("labelPosition") === "left")
-// 是否有标签内容
-const hasLabel = computed(() => !!slots.default || isDef(props.label))
 // 内部图标字号：默认占容器 70%（基于 --ui-checkbox-icon-size 计算）
 const symbolSize = "calc(var(--ui-checkbox-icon-size) * 0.7)"
+
+// 单行 computed：派生状态（短→长排序）
+const name = computed(() => (isDef(props.name) ? props.name : index.value))
+const isRound = computed(() => !!prop("round"))
+const hasLabel = computed(() => !!slots.default || isDef(props.label))
+const isChecked = computed(() => (props.bindGroup && parent ? parent.props.modelValue.includes(name.value) : !!props.modelValue))
+const isDisabled = computed(() => !!prop("disabled"))
+const isReadonly = computed(() => !!prop("readonly"))
+const actualShape = computed(() => prop("shape") || "dot")
+const isLabelLeft = computed(() => prop("labelPosition") === "left")
+const isIndeterminate = computed(() => !!prop("indeterminate"))
 
 // 根节点样式：所有 prop 通过 CSS var 注入；SCSS 选择器顶部声明默认值
 const rootStyle = computed(() => {
@@ -88,7 +72,7 @@ const rootStyle = computed(() => {
   return useStyle({ ...s, ...(useStyle(props.customStyle) || {}) })
 })
 // 根节点类名
-const rootClass = computed(() => {
+const classNames = computed(() => {
   const list: string[] = []
   if (isChecked.value) list.push("ui-checkbox--checked")
   if (isIndeterminate.value) list.push("ui-checkbox--indeterminate")
@@ -98,7 +82,7 @@ const rootClass = computed(() => {
   return list
 })
 // 图标节点类名：filled = 实心填充（icon 选中 / indeterminate），dot-checked = dot 模式选中态粗环
-const iconClass = computed(() => {
+const iconClassList = computed(() => {
   const list: string[] = []
   if (isRound.value) list.push("ui-checkbox__icon--round")
   if (isIndeterminate.value) {
@@ -113,7 +97,7 @@ const iconClass = computed(() => {
   return list
 })
 // 标签类名
-const labelClass = computed(() => {
+const labelClassList = computed(() => {
   const list: string[] = []
   if (isChecked.value) list.push("ui-checkbox__label--checked")
   if (isDisabled.value) list.push("ui-checkbox__label--disabled")
@@ -126,6 +110,16 @@ watch(
   () => props.modelValue,
   (value) => emits("change", value),
 )
+
+// 取值优先级：自身 prop → 父 group 同名 prop（仅当 bindGroup 且存在父级）
+function prop<K extends keyof CheckboxProps>(key: K): CheckboxProps[K] | undefined {
+  if (props.bindGroup && parent) {
+    if (isDef(props[key])) return props[key]
+    const parentProps = parent.props as any
+    if (isDef(parentProps[key])) return parentProps[key]
+  }
+  return props[key]
+}
 
 // 切换选中状态：在 group 内通过父更新数组；独立使用直接 emit 布尔
 function toggle(check?: boolean) {
@@ -176,7 +170,7 @@ function onClickLabel(event: Event) {
   emits("click", event)
 }
 
-defineExpose({ props, checked: isChecked, toggle, name })
+defineExpose({ name, toggle, props, checked: isChecked })
 </script>
 
 <script lang="ts">

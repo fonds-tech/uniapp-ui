@@ -1,5 +1,5 @@
 <template>
-  <view class="ui-cell-group" :class="[{ 'ui-cell-group--inset': props.inset }, customClass]" :style="[style]">
+  <view class="ui-cell-group" :class="[classNames, customClass]" :style="[rootStyle]">
     <slot />
   </view>
 </template>
@@ -17,8 +17,11 @@ const emits = defineEmits(cellGroupEmits)
 // 收集子组件（ui-cell），建立父子通信关系
 const { childrens, linkChildren } = useChildren(cellGroupKey)
 
+// 根节点类名
+const classNames = computed(() => ({ "ui-cell-group--inset": props.inset }))
+
 // 根节点样式：背景 / 圆角 / 内外边距通过 CSS var 注入；SCSS 顶部声明默认值
-const style = computed(() => {
+const rootStyle = computed(() => {
   const s: Record<string, string | number | undefined> = {}
   if (props.background) s["--ui-cell-group-background"] = useColor(props.background)
   if (props.radius !== undefined) s["--ui-cell-group-radius"] = useUnit(props.radius)
