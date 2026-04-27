@@ -1,11 +1,11 @@
 <template>
   <view class="ui-code-input" :class="[rootClasses, props.customClass]" :style="[rootStyle]" @click="handleClick">
-    <!-- 隐藏的原生输入框 -->
     <input
       ref="inputRef"
       class="ui-code-input__hidden"
       :value="currentValue"
       :type="props.inputType === 'number' ? 'number' : 'text'"
+      :inputmode="actualInputmode"
       :maxlength="props.length"
       :focus="isFocused"
       :disabled="props.disabled"
@@ -14,19 +14,13 @@
       @focus="handleFocus"
       @blur="handleBlur"
     />
-    <!-- 验证码格子 -->
-    <view v-for="(_, index) in props.length" :key="index" class="ui-code-input__code" :class="[codeClasses(index)]" :style="[codeStyle(index)]">
-      <!-- 自定义内容 -->
+    <view v-for="(_, index) in props.length" :key="index" class="ui-code-input__code" :class="codeClasses(index)">
       <slot :value="currentValue[index]" :index="index" :focused="isFocused && index === currentValue.length">
-        <!-- 显示内容 -->
         <template v-if="currentValue[index]">
-          <!-- 密码模式显示圆点 -->
-          <view v-if="props.mask" class="ui-code-input__dot" :style="[dotStyle]" />
-          <!-- 正常模式显示字符 -->
-          <text v-else class="ui-code-input__text" :style="[textStyle]">{{ currentValue[index] }}</text>
+          <view v-if="props.mask" class="ui-code-input__dot" />
+          <text v-else class="ui-code-input__text">{{ currentValue[index] }}</text>
         </template>
-        <!-- 光标 -->
-        <view v-else-if="props.showCursor && isFocused && index === currentValue.length" class="ui-code-input__cursor" :style="[cursorStyle]" />
+        <view v-else-if="props.showCursor && isFocused && index === currentValue.length" class="ui-code-input__cursor" />
       </slot>
     </view>
   </view>
@@ -34,9 +28,9 @@
 
 <script setup lang="ts">
 import type { CSSProperties } from "vue"
-import { ref, watch, computed } from "vue"
 import { useUnit, useColor, useStyle } from "../hooks"
 import { codeInputEmits, codeInputProps } from "./index"
+import { ref, watch, computed, nextTick } from "vue"
 
 defineOptions({ name: "ui-code-input" })
 
@@ -50,11 +44,31 @@ const isFocused = ref(false)
 // 输入框引用
 const inputRef = ref()
 
-// 根节点样式
-const rootStyle = computed(() => {
-  const style: CSSProperties = {}
-  style.gap = useUnit(props.gap)
-  return useStyle({ ...style, ...useStyle(props.customStyle) })
+// 推断 H5 软键盘 inputmode
+const actualInputmode = computed(() => props.inputmode ?? (props.inputType === "number" ? "numeric" : "text"))
+
+// 根节点样式：所有 prop 通过 CSS var 注入；SCSS 选择器顶部声明默认值
+const rootStyle = computed<CSSProperties>(() => {
+  const s: Record<string, string | number | undefined> = {}
+  if (props.gap !== undefined) s["--ui-code-input-gap"] = useUnit(props.gap)
+  if (props.codeWidth !== undefined) s["--ui-code-input-code-width"] = useUnit(props.codeWidth)
+  if (props.codeHeight !== undefined) s["--ui-code-input-code-height"] = useUnit(props.codeHeight)
+  if (props.codeRadius !== undefined) s["--ui-code-input-code-radius"] = useUnit(props.codeRadius)
+  if (props.codeBorderWidth !== undefined) s["--ui-code-input-code-border-width"] = useUnit(props.codeBorderWidth)
+  if (props.codeColor) s["--ui-code-input-code-color"] = useColor(props.codeColor)
+  if (props.codeActiveColor) s["--ui-code-input-code-active-color"] = useColor(props.codeActiveColor)
+  if (props.codeBackground) s["--ui-code-input-code-background"] = useColor(props.codeBackground)
+  if (props.codeActiveBackground) s["--ui-code-input-code-active-background"] = useColor(props.codeActiveBackground)
+  if (props.errorColor) s["--ui-code-input-error-color"] = useColor(props.errorColor)
+  if (props.textSize !== undefined) s["--ui-code-input-text-size"] = useUnit(props.textSize)
+  if (props.textColor) s["--ui-code-input-text-color"] = useColor(props.textColor)
+  if (props.textWeight !== undefined) s["--ui-code-input-text-weight"] = String(props.textWeight)
+  if (props.cursorWidth !== undefined) s["--ui-code-input-cursor-width"] = useUnit(props.cursorWidth)
+  if (props.cursorHeight !== undefined) s["--ui-code-input-cursor-height"] = useUnit(props.cursorHeight)
+  if (props.cursorColor) s["--ui-code-input-cursor-color"] = useColor(props.cursorColor)
+  if (props.dotSize !== undefined) s["--ui-code-input-dot-size"] = useUnit(props.dotSize)
+  if (props.dotColor) s["--ui-code-input-dot-color"] = useColor(props.dotColor)
+  return useStyle({ ...s, ...(useStyle(props.customStyle) || {}) }) as CSSProperties
 })
 
 // 根节点类名
@@ -68,7 +82,7 @@ const rootClasses = computed(() => [
   },
 ])
 
-// 格子类名
+// 单格类名
 function codeClasses(index: number) {
   const isActive = isFocused.value && index === currentValue.value.length
   const isFilled = index < currentValue.value.length
@@ -77,50 +91,6 @@ function codeClasses(index: number) {
     "ui-code-input__code--filled": isFilled,
   }
 }
-
-// 格子样式
-function codeStyle(index: number): CSSProperties {
-  const isActive = isFocused.value && index === currentValue.value.length
-  const style: CSSProperties = {}
-  style.width = useUnit(props.codeWidth)
-  style.height = useUnit(props.codeHeight)
-  // 只在用户显式传入时才覆盖 CSS 类的默认值
-  if (props.codeRadius) style.borderRadius = useUnit(props.codeRadius)
-  if (props.codeBorderWidth) style.borderWidth = useUnit(props.codeBorderWidth)
-  // 根据激活状态设置颜色
-  if (props.error) {
-    // 错误状态
-    style.borderColor = useColor(props.errorColor) || "var(--ui-color-danger)"
-  } else if (isActive) {
-    if (props.codeActiveColor) style.borderColor = useColor(props.codeActiveColor)
-    if (props.codeActiveBackground) style.backgroundColor = useColor(props.codeActiveBackground)
-  } else {
-    if (props.codeColor) style.borderColor = useColor(props.codeColor)
-    if (props.codeBackground) style.backgroundColor = useColor(props.codeBackground)
-  }
-  return style
-}
-
-// 文本样式
-const textStyle = computed<CSSProperties>(() => ({
-  fontSize: useUnit(props.textSize),
-  color: useColor(props.textColor),
-  fontWeight: props.textWeight as CSSProperties["fontWeight"],
-}))
-
-// 光标样式
-const cursorStyle = computed<CSSProperties>(() => ({
-  width: useUnit(props.cursorWidth),
-  height: useUnit(props.cursorHeight),
-  backgroundColor: useColor(props.cursorColor) || "var(--ui-color-primary)",
-}))
-
-// 圆点样式
-const dotStyle = computed<CSSProperties>(() => ({
-  width: useUnit(props.dotSize),
-  height: useUnit(props.dotSize),
-  backgroundColor: useColor(props.dotColor) || "var(--ui-color-text)",
-}))
 
 // 监听 modelValue 变化
 watch(
@@ -140,55 +110,54 @@ watch(
   { immediate: true },
 )
 
-// 处理点击事件
+// 点击根节点：聚焦 + emit click
 function handleClick() {
   if (props.disabled || props.readonly) return
-  isFocused.value = true
+  // 切换 false → true 触发 :focus 重新生效（已是 true 时也能拉起键盘）
+  if (isFocused.value) {
+    isFocused.value = false
+    nextTick(() => (isFocused.value = true))
+  } else {
+    isFocused.value = true
+  }
   emits("click")
 }
 
-// 处理输入事件
+// 输入处理：过滤 + 截断 + emit
 function handleInput(event: any) {
   if (props.disabled || props.readonly) return
   let value = String(event?.detail?.value || "")
-  // 数字模式下只允许数字
-  if (props.inputType === "number") {
-    value = value.replace(/\D/g, "")
-  }
-  // 限制长度
+  if (props.inputType === "number") value = value.replace(/\D/g, "")
   value = value.slice(0, props.length)
   currentValue.value = value
   emits("update:modelValue", value)
   emits("change", value)
-  // 输入完成回调
-  if (value.length === props.length) {
-    emits("complete", value)
-  }
+  if (value.length === props.length) emits("complete", value)
 }
 
-// 处理聚焦事件
+// 聚焦
 function handleFocus() {
   isFocused.value = true
   emits("focus")
 }
 
-// 处理失焦事件
+// 失焦
 function handleBlur() {
   isFocused.value = false
   emits("blur")
 }
 
-// 暴露方法
 defineExpose({
-  /** 聚焦 */
+  /** 编程式聚焦：先 false → nextTick → true，确保已 focused 时也能重新拉起键盘 */
   focus: () => {
-    isFocused.value = true
+    isFocused.value = false
+    nextTick(() => (isFocused.value = true))
   },
-  /** 失焦 */
+  /** 编程式失焦 */
   blur: () => {
     isFocused.value = false
   },
-  /** 清空 */
+  /** 清空输入值 */
   clear: () => {
     currentValue.value = ""
     emits("update:modelValue", "")
@@ -206,6 +175,26 @@ export default {
 
 <style lang="scss" scoped>
 .ui-code-input {
+  --ui-code-input-gap: var(--ui-spacing-md);
+  --ui-code-input-dot-size: calc(var(--ui-code-input-code-width) * 0.25);
+  --ui-code-input-dot-color: var(--ui-color-text);
+  --ui-code-input-text-size: var(--ui-font-size-lg);
+  --ui-code-input-code-color: var(--ui-color-border);
+  --ui-code-input-code-width: 80rpx;
+  --ui-code-input-text-color: var(--ui-color-text);
+  --ui-code-input-code-height: 80rpx;
+  --ui-code-input-code-radius: var(--ui-radius-sm);
+  --ui-code-input-error-color: var(--ui-color-danger);
+  --ui-code-input-text-weight: normal;
+  --ui-code-input-cursor-color: var(--ui-color-primary);
+  --ui-code-input-cursor-width: 2rpx;
+  --ui-code-input-cursor-height: var(--ui-code-input-text-size);
+  --ui-code-input-code-background: var(--ui-color-background);
+  --ui-code-input-code-active-color: var(--ui-color-primary);
+  --ui-code-input-code-border-width: var(--ui-border-width);
+  --ui-code-input-code-active-background: var(--ui-color-primary-light);
+  gap: var(--ui-code-input-gap);
+
   display: flex;
   position: relative;
   align-items: center;
@@ -223,47 +212,52 @@ export default {
   }
 
   &__code {
+    width: var(--ui-code-input-code-width);
+    border: var(--ui-code-input-code-border-width) solid var(--ui-code-input-code-color);
+    height: var(--ui-code-input-code-height);
     display: flex;
     box-sizing: border-box;
     transition:
       border-color var(--ui-transition-fast) var(--ui-transition-timing),
-      background-color var(--ui-transition-fast) var(--ui-transition-timing);
+      background-color var(--ui-transition-fast) var(--ui-transition-timing),
+      box-shadow var(--ui-transition-fast) var(--ui-transition-timing);
     align-items: center;
     flex-shrink: 0;
-    border-color: var(--ui-color-border);
-    border-style: solid;
+    border-radius: var(--ui-code-input-code-radius);
     justify-content: center;
-    background-color: var(--ui-color-background);
+    background-color: var(--ui-code-input-code-background);
 
     &--active {
-      border-color: var(--ui-color-primary);
+      border-color: var(--ui-code-input-code-active-color);
+      // 焦点环：强化激活感（无 :deep / 跨端兼容 box-shadow）
+      box-shadow: 0 0 0 4rpx rgba(var(--ui-color-primary-rgb), 0.12);
     }
   }
 
   &__text {
-    color: var(--ui-color-text);
-    font-size: var(--ui-font-size-lg);
+    color: var(--ui-code-input-text-color);
+    font-size: var(--ui-code-input-text-size);
+    font-weight: var(--ui-code-input-text-weight);
     line-height: 1;
   }
 
   &__cursor {
+    width: var(--ui-code-input-cursor-width);
+    height: var(--ui-code-input-cursor-height);
     animation: ui-code-input-cursor 1s infinite;
     border-radius: var(--ui-radius-xs);
+    background-color: var(--ui-code-input-cursor-color);
   }
 
   &__dot {
+    width: var(--ui-code-input-dot-size);
+    height: var(--ui-code-input-dot-size);
     border-radius: var(--ui-radius-round);
-    background-color: var(--ui-color-text);
+    background-color: var(--ui-code-input-dot-color);
   }
 
   // ===== 样式变体 =====
-  // Box 样式（默认）
-  &--box &__code {
-    border-width: var(--ui-border-width);
-    border-radius: var(--ui-radius-sm);
-  }
-
-  // Underline 样式
+  // underline：仅底部线，去除四周边框与背景
   &--underline &__code {
     border-width: 0;
     border-radius: 0;
@@ -271,15 +265,39 @@ export default {
     border-bottom-width: var(--ui-border-width-thick);
   }
 
-  // Filled 样式
+  &--underline &__code--active {
+    box-shadow: none;
+  }
+
+  // filled：实心底色，无边框
   &--filled &__code {
     border-width: 0;
-    border-radius: var(--ui-radius-sm);
     background-color: var(--ui-color-background-section);
   }
 
   &--filled &__code--active {
-    background-color: var(--ui-color-primary-light);
+    box-shadow: none;
+    background-color: var(--ui-code-input-code-active-background);
+  }
+
+  // ===== 错误状态 =====
+  &--error &__code {
+    border-color: var(--ui-code-input-error-color);
+  }
+
+  &--error &__code--active {
+    box-shadow: 0 0 0 4rpx rgba(var(--ui-color-danger-rgb), 0.12);
+  }
+
+  // filled+error：边框看不见，靠背景色 tint 表达错误
+  &--filled.ui-code-input--error &__code {
+    background-color: rgba(var(--ui-color-danger-rgb), 0.08);
+  }
+
+  // underline+error：仅底部线变红
+  &--underline.ui-code-input--error &__code {
+    box-shadow: none;
+    border-color: var(--ui-code-input-error-color);
   }
 
   // ===== 状态 =====
