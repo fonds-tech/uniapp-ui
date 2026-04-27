@@ -192,6 +192,86 @@ describe("ui-cell 单元格组件", () => {
 
       expect(wrapper.attributes("hover-class")).toBe("ui-cell--active")
     })
+
+    it("isLink 为 true 时也应添加可点击类名", () => {
+      const wrapper = mount(UiCell, {
+        props: { title: "标题", isLink: true },
+      })
+
+      expect(wrapper.classes()).toContain("ui-cell--clickable")
+    })
+
+    it("有 url 时也应添加可点击类名", () => {
+      const wrapper = mount(UiCell, {
+        props: { title: "标题", url: "/pages/foo" },
+      })
+
+      expect(wrapper.classes()).toContain("ui-cell--clickable")
+    })
+
+    it("disabled 时即使 isLink 也不应可点击", () => {
+      const wrapper = mount(UiCell, {
+        props: { title: "标题", isLink: true, disabled: true },
+      })
+
+      expect(wrapper.classes()).not.toContain("ui-cell--clickable")
+      expect(wrapper.attributes("hover-class")).toBe("")
+    })
+  })
+
+  describe("行数与省略", () => {
+    it("titleLines 应注入 line-clamp 变量", () => {
+      const wrapper = mount(UiCell, {
+        props: { title: "标题", titleLines: 2 },
+      })
+
+      const style = wrapper.find(".ui-cell").attributes("style") || ""
+      expect(style).toContain("--ui-cell-title-lines: 2")
+    })
+
+    it("titleLines=0 应转换为大数模拟「无限制」", () => {
+      const wrapper = mount(UiCell, {
+        props: { title: "标题", titleLines: 0 },
+      })
+
+      const style = wrapper.find(".ui-cell").attributes("style") || ""
+      expect(style).toContain("--ui-cell-title-lines: 9999")
+    })
+  })
+
+  describe("对齐方式", () => {
+    it("默认不应添加顶对齐类名", () => {
+      const wrapper = mount(UiCell, { props: { title: "标题" } })
+
+      expect(wrapper.classes()).not.toContain("ui-cell--align-top")
+    })
+
+    it("align=top 时应添加顶对齐类名", () => {
+      const wrapper = mount(UiCell, {
+        props: { title: "标题", align: "top" },
+      })
+
+      expect(wrapper.classes()).toContain("ui-cell--align-top")
+    })
+  })
+
+  describe("value 边界值", () => {
+    it("value=0 应正常渲染（不被空值检查吞掉）", () => {
+      const wrapper = mount(UiCell, {
+        props: { title: "标题", value: 0 },
+      })
+
+      expect(wrapper.find(".ui-cell__value").exists()).toBe(true)
+      expect(wrapper.text()).toContain("0")
+    })
+
+    it("value 为空字符串时不应渲染", () => {
+      const wrapper = mount(UiCell, {
+        props: { title: "标题", value: "" },
+      })
+
+      expect(wrapper.find(".ui-cell__value").exists()).toBe(false)
+    })
   })
 
   describe("标题样式", () => {

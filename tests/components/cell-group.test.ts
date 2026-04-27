@@ -34,7 +34,7 @@ describe("ui-cell-group 单元格组组件", () => {
       })
 
       const style = wrapper.find(".ui-cell-group").attributes("style") || ""
-      expect(style).toContain("border-radius")
+      expect(style).toContain("--ui-cell-group-radius")
     })
 
     it("应支持自定义背景颜色", () => {
@@ -43,7 +43,7 @@ describe("ui-cell-group 单元格组组件", () => {
       })
 
       const style = wrapper.find(".ui-cell-group").attributes("style") || ""
-      expect(style).toContain("background")
+      expect(style).toContain("--ui-cell-group-background")
     })
 
     it("应支持字符串类型的圆角", () => {
@@ -83,8 +83,9 @@ describe("ui-cell-group 单元格组组件", () => {
       })
 
       const style = wrapper.find(".ui-cell-group").attributes("style") || ""
-      expect(style).toContain("background: #000000")
-      expect(style).not.toContain("#ffffff")
+      // var 仍持原值，但 customStyle 注入 inline `background` 覆盖（jsdom 规范化为 rgb）
+      expect(style).toContain("--ui-cell-group-background: #ffffff")
+      expect(style).toMatch(/background:\s*rgb\(0,\s*0,\s*0\)/)
     })
 
     it("应支持字符串类型的 customStyle", () => {
@@ -144,8 +145,22 @@ describe("ui-cell-group 单元格组组件", () => {
 
       expect(wrapper.classes()).toContain("my-group")
       const style = wrapper.find(".ui-cell-group").attributes("style") || ""
-      expect(style).toContain("border-radius")
-      expect(style).toContain("background")
+      expect(style).toContain("--ui-cell-group-radius")
+      expect(style).toContain("--ui-cell-group-background")
+    })
+  })
+
+  describe("内嵌模式", () => {
+    it("inset 默认 false 不应添加 inset 类名", () => {
+      const wrapper = mount(UiCellGroup)
+
+      expect(wrapper.classes()).not.toContain("ui-cell-group--inset")
+    })
+
+    it("inset=true 应添加 inset 类名", () => {
+      const wrapper = mount(UiCellGroup, { props: { inset: true } })
+
+      expect(wrapper.classes()).toContain("ui-cell-group--inset")
     })
   })
 })
