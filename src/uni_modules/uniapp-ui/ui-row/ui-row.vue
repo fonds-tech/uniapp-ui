@@ -1,5 +1,5 @@
 <template>
-  <view class="ui-row" :class="[props.customClass, { 'ui-row--wrap': props.wrap }]" :style="[style]">
+  <view class="ui-row" :class="[classNames, props.customClass]" :style="[rootStyle]">
     <slot />
   </view>
 </template>
@@ -7,67 +7,53 @@
 <script setup lang="ts">
 import type { CSSProperties } from "vue"
 import { rowProps } from "./index"
+import { computed } from "vue"
 import { useUnit, useStyle } from "../hooks"
-import { provide, computed } from "vue"
 
 defineOptions({ name: "ui-row" })
 
-// 组件 props
 const props = defineProps(rowProps)
 
-// 计算间距值（用于 provide 给 Col）
-const gapInfo = computed(() => {
-  const rowGapVal = props.gap || props.rowGap
-  const colGapVal = props.gap || props.colGap
-  return {
-    rowGap: rowGapVal ? useUnit(rowGapVal) : "0px",
-    colGap: colGapVal ? useUnit(colGapVal) : "0px",
+// 根节点类名
+const classNames = computed(() => ({ "ui-row--wrap": props.wrap }))
+
+// 根节点样式：注入 CSS var 给后代 col 自动继承做半 padding；自身用负 margin 抵消视觉边距
+const rootStyle = computed<CSSProperties>(() => {
+  const s: Record<string, string | undefined> = {}
+  const rowGap = props.gap ?? props.rowGap
+  const colGap = props.gap ?? props.colGap
+  if (rowGap !== undefined) s["--ui-row-row-gap-half"] = `calc(${useUnit(rowGap)} / 2)`
+  if (colGap !== undefined) s["--ui-row-col-gap-half"] = `calc(${useUnit(colGap)} / 2)`
+  // 负 margin 抵消子元素半 padding，让 row 内容贴齐外部容器
+  if (rowGap !== undefined || colGap !== undefined) {
+    const r = rowGap !== undefined ? `calc(${useUnit(rowGap)} / -2)` : "0px"
+    const c = colGap !== undefined ? `calc(${useUnit(colGap)} / -2)` : "0px"
+    s.margin = `${r} ${c}`
   }
-})
-
-// 根节点样式，设置负 margin 和对齐方式
-const style = computed(() => {
-  const style: CSSProperties = {}
-  const { rowGap, colGap } = gapInfo.value
-
-  // 使用负 margin 抵消子元素的 padding
-  if (rowGap !== "0px" || colGap !== "0px") {
-    const rowGapHalf = `calc(${rowGap} / -2)`
-    const colGapHalf = `calc(${colGap} / -2)`
-    style.margin = `${rowGapHalf} ${colGapHalf}`
-  }
-
-  // 水平对齐方式
+  // 水平对齐
   switch (props.justify) {
     case "start":
     case "end":
-      style.justifyContent = `flex-${props.justify}`
+      s.justifyContent = `flex-${props.justify}`
       break
     case "around":
     case "between":
-      style.justifyContent = `space-${props.justify}`
+      s.justifyContent = `space-${props.justify}`
       break
     default:
-      style.justifyContent = props.justify
-      break
+      s.justifyContent = props.justify
   }
-
-  // 垂直对齐方式
+  // 垂直对齐
   switch (props.align) {
     case "start":
     case "end":
-      style.alignItems = `flex-${props.align}`
+      s.alignItems = `flex-${props.align}`
       break
     default:
-      style.alignItems = props.align
-      break
+      s.alignItems = props.align
   }
-
-  return useStyle({ ...style, ...useStyle(props.customStyle) })
+  return useStyle({ ...s, ...(useStyle(props.customStyle) || {}) }) as CSSProperties
 })
-
-// 向子组件提供间距信息
-provide("ui-row", gapInfo)
 
 defineExpose({ name: "ui-row" })
 </script>
@@ -79,7 +65,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .ui-row {
   width: 100%;
   display: flex;

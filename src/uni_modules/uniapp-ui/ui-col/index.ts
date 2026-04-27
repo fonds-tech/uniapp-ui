@@ -5,15 +5,15 @@ import { buildDefaultProps } from "../utils/props"
 const defaultProps = buildDefaultProps("col", {
   span: 24,
   offset: 0,
-  customClass: "",
-  customStyle: "",
+  customClass: undefined,
+  customStyle: undefined,
 })
 
 export const colProps = {
-  /** 栅格占据的列数（总共24列） */
-  span: defaultProps("span", { type: Number }),
-  /** 栅格左侧的偏移格数 */
-  offset: defaultProps("offset", { type: Number }),
+  /** 栅格占据的列数（总 24 列） */
+  span: defaultProps("span", { type: [Number, String] }),
+  /** 栅格左侧偏移格数 */
+  offset: defaultProps("offset", { type: [Number, String] }),
   /** 自定义类名 */
   customClass: defaultProps("customClass", { type: String }),
   /** 自定义样式 */

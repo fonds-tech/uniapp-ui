@@ -5,7 +5,6 @@
 
 import UiCol from "@/uni_modules/uniapp-ui/ui-col/ui-col.vue"
 import { mount } from "@vue/test-utils"
-import { computed } from "vue"
 import { waitForTransition } from "../setup"
 import { it, vi, expect, describe, afterEach, beforeEach } from "vitest"
 
@@ -111,21 +110,13 @@ describe("ui-col 列布局组件", () => {
   })
 
   describe("行列间距", () => {
-    it("应从 Row 注入间距并应用 padding", async () => {
-      const wrapper = mount(UiCol, {
-        global: {
-          provide: {
-            "ui-row": computed(() => ({
-              rowGap: "8px",
-              colGap: "12px",
-            })),
-          },
-        },
-      })
+    it("col 自身不再处理间距，padding 由父 row 注入的 CSS var 继承生效（验证 col 不写 padding inline）", async () => {
+      const wrapper = mount(UiCol)
       await waitForTransition()
 
       const style = wrapper.find(".ui-col").attributes("style") || ""
-      expect(style).toContain("padding: calc(8px / 2) calc(12px / 2)")
+      // col 不应再注入 padding 内联样式，间距由 SCSS var() 默认机制接管
+      expect(style).not.toContain("padding")
     })
   })
 

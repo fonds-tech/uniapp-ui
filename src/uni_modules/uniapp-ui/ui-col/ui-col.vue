@@ -1,53 +1,29 @@
 <template>
-  <view class="ui-col" :class="[props.customClass]" :style="[style]">
+  <view class="ui-col" :class="[props.customClass]" :style="[rootStyle]">
     <slot />
   </view>
 </template>
 
 <script setup lang="ts">
-import type { ComputedRef, CSSProperties } from "vue"
+import type { CSSProperties } from "vue"
 import { useStyle } from "../hooks"
 import { colProps } from "./index"
-import { inject, computed } from "vue"
+import { computed } from "vue"
 
 defineOptions({ name: "ui-col" })
 
-// 组件 props
 const props = defineProps(colProps)
 
-// 从 Row 注入间距信息
-const rowGapInfo = inject<ComputedRef<{ rowGap: string; colGap: string }> | null>("ui-row", null)
-
-// 根节点样式
-const style = computed(() => {
-  const style: CSSProperties = {}
-
-  // 计算列宽（基于24栅格系统）
-  const spanValue = Math.min(24, Math.max(0, +props.span))
-  if (spanValue <= 0) {
-    style.display = "none"
-    return useStyle({ ...style, ...useStyle(props.customStyle) })
-  }
-  const widthPercent = (100 / 24) * spanValue
-  style.width = `${widthPercent}%`
-
-  // 计算偏移
-  if (props.offset > 0) {
-    const offsetValue = Math.min(24 - spanValue, Math.max(0, +props.offset))
-    style.marginLeft = `${(100 / 24) * offsetValue}%`
-  }
-
-  // 从 Row 获取间距，设置 padding（配合 Row 的负 margin）
-  if (rowGapInfo?.value) {
-    const { rowGap, colGap } = rowGapInfo.value
-    if (rowGap !== "0px" || colGap !== "0px") {
-      const rowGapHalf = `calc(${rowGap} / 2)`
-      const colGapHalf = `calc(${colGap} / 2)`
-      style.padding = `${rowGapHalf} ${colGapHalf}`
-    }
-  }
-
-  return useStyle({ ...style, ...useStyle(props.customStyle) })
+// 根节点样式：宽度 + 可选偏移；间距由 row 注入的 CSS var 自动继承（见 SCSS）
+const rootStyle = computed<CSSProperties>(() => {
+  const s: CSSProperties = {}
+  // 24 栅格转百分比；span ≤ 0 → 0%（不渲染但保持布局占位语义）
+  const span = Math.min(24, Math.max(0, +props.span || 0))
+  s.width = `${(100 / 24) * span}%`
+  // 偏移 clamp 到 [0, 24-span]
+  const offset = Math.min(24 - span, Math.max(0, +props.offset || 0))
+  if (offset > 0) s.marginLeft = `${(100 / 24) * offset}%`
+  return useStyle({ ...s, ...(useStyle(props.customStyle) || {}) }) as CSSProperties
 })
 
 defineExpose({ name: "ui-col" })
@@ -60,8 +36,10 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .ui-col {
   box-sizing: border-box;
+  // 间距通过祖先 row 注入的 CSS var 继承；独立使用时 fallback 为 0
+  padding: var(--ui-row-row-gap-half, 0px) var(--ui-row-col-gap-half, 0px);
 }
 </style>

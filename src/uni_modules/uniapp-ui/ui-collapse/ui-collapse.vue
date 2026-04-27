@@ -1,5 +1,5 @@
 <template>
-  <view class="ui-collapse" :class="[rootClass, customClass]" :style="[rootStyle]">
+  <view class="ui-collapse" :class="[classNames, props.customClass]" :style="[rootStyle]">
     <slot />
   </view>
 </template>
@@ -23,19 +23,18 @@ const { childrens, linkChildren } = useChildren(collapseKey)
 const activeNames = ref<(string | number)[]>([])
 
 // 根节点样式
-const rootStyle = computed(() => {
-  const style: CSSProperties = {}
-  return useStyle({ ...style, ...useStyle(props.customStyle) })
-})
-
+const rootStyle = computed<CSSProperties>(() => useStyle({ ...(useStyle(props.customStyle) || {}) }) as CSSProperties)
 // 根节点类名
-const rootClass = computed(() => {
-  const list: string[] = []
-  if (props.border) list.push("ui-collapse--border")
-  return list
-})
+const classNames = computed(() => ({ "ui-collapse--border": props.border }))
 
-// 初始化 activeNames
+// 监听 modelValue 变化
+watch(
+  () => props.modelValue,
+  (value) => initActiveNames(value),
+  { immediate: true },
+)
+
+// 初始化 activeNames（统一为数组形态）
 function initActiveNames(value: CollapseModelValue | undefined) {
   if (value === undefined || value === null) {
     activeNames.value = []
@@ -46,33 +45,18 @@ function initActiveNames(value: CollapseModelValue | undefined) {
   }
 }
 
-// 监听 modelValue 变化
-watch(
-  () => props.modelValue,
-  (value) => initActiveNames(value),
-  { immediate: true },
-)
-
-// 切换展开状态
+// 切换某项展开状态
 function toggle(name: string | number, expanded: boolean) {
   if (props.accordion) {
-    // 手风琴模式：只允许展开一个
-    if (expanded) {
-      activeNames.value = [name]
-    } else {
-      activeNames.value = []
-    }
+    activeNames.value = expanded ? [name] : []
   } else {
-    // 普通模式：可以展开多个
-    const index = activeNames.value.indexOf(name)
-    if (expanded && index === -1) {
-      activeNames.value.push(name)
-    } else if (!expanded && index !== -1) {
-      activeNames.value.splice(index, 1)
+    const idx = activeNames.value.indexOf(name)
+    if (expanded && idx === -1) {
+      activeNames.value = [...activeNames.value, name]
+    } else if (!expanded && idx !== -1) {
+      activeNames.value = activeNames.value.filter((v) => v !== name)
     }
   }
-
-  // 发射事件
   const value = props.accordion ? (activeNames.value[0] ?? "") : [...activeNames.value]
   emits("update:modelValue", value)
   emits("change", value)
@@ -81,10 +65,7 @@ function toggle(name: string | number, expanded: boolean) {
 // 建立父子组件关联
 linkChildren({ props, activeNames, toggle })
 
-defineExpose({
-  activeNames,
-  toggle,
-})
+defineExpose({ activeNames, toggle })
 </script>
 
 <script lang="ts">

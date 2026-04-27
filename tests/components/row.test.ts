@@ -92,6 +92,17 @@ describe("ui-row 行布局组件", () => {
       expect(wrapper.find(".ui-row").exists()).toBe(true)
     })
 
+    it("设置 gap 时应注入 CSS var 给后代 col 继承", async () => {
+      const wrapper = mount(UiRow, {
+        props: { gap: "20rpx" },
+      })
+      await waitForTransition()
+
+      const style = wrapper.find(".ui-row").attributes("style") || ""
+      expect(style).toContain("--ui-row-row-gap-half")
+      expect(style).toContain("--ui-row-col-gap-half")
+    })
+
     it("应支持 px 单位的间隔", async () => {
       const wrapper = mount(UiRow, {
         props: { gap: "10px" },

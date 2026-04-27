@@ -1,46 +1,35 @@
 <template>
-  <view class="ui-collapse-item" :class="[rootClass, props.customClass]" :style="[rootStyle]">
-    <!-- 头部区域 -->
+  <view class="ui-collapse-item" :class="[classNames, props.customClass]" :style="[rootStyle]">
     <view
       class="ui-collapse-item__header"
       :class="[headerClassList, props.headerClass]"
-      :style="[headerStyleComputed]"
+      :style="[props.headerStyle]"
       :hover-class="hoverClass"
       :hover-stay-time="0"
+      role="button"
+      :aria-expanded="expanded"
       @click="onClickHeader"
     >
-      <!-- 左侧图标 -->
-      <view v-if="props.icon" class="ui-collapse-item__icon" :style="[iconStyle]">
-        <ui-icon :name="props.icon" :size="props.iconSize" :color="iconColorValue" :weight="props.iconWeight" />
+      <view v-if="props.icon" class="ui-collapse-item__icon">
+        <ui-icon :name="props.icon" />
       </view>
-
-      <!-- 标题区域 -->
       <view class="ui-collapse-item__title-wrapper">
         <slot name="title" :expanded="expanded" :disabled="props.disabled">
-          <text class="ui-collapse-item__title" :style="[titleStyle]">{{ props.title }}</text>
+          <text class="ui-collapse-item__title">{{ props.title }}</text>
         </slot>
-        <!-- 描述标签 -->
-        <text v-if="props.label" class="ui-collapse-item__label" :style="[labelStyle]">{{ props.label }}</text>
+        <text v-if="props.label" class="ui-collapse-item__label">{{ props.label }}</text>
       </view>
-
-      <!-- 右侧值 -->
-      <text v-if="props.value" class="ui-collapse-item__value" :style="[valueStyle]">{{ props.value }}</text>
-
-      <!-- 右侧箭头 -->
-      <view v-if="props.isLink" class="ui-collapse-item__arrow" :class="[arrowClassList]" :style="[arrowStyle]">
-        <ui-icon name="arrow-down" :size="props.arrowSize" :color="arrowColorValue" />
+      <text v-if="props.value" class="ui-collapse-item__value">{{ props.value }}</text>
+      <view v-if="props.isLink" class="ui-collapse-item__arrow" :class="[arrowClassList]">
+        <ui-icon name="arrow-down" />
       </view>
-
-      <!-- 分割线 -->
-      <view v-if="props.border" class="ui-collapse-item__divider" :style="[dividerStyle]" />
+      <view v-if="props.border" class="ui-collapse-item__divider" />
     </view>
 
-    <!-- 内容区域（带展开/收起动画） -->
     <view class="ui-collapse-item__wrapper" :style="[wrapperStyle]" @transitionend="onTransitionEnd">
-      <view :id="contentId" class="ui-collapse-item__body" :class="[props.bodyClass]" :style="[bodyStyleComputed]">
+      <view :id="contentId" class="ui-collapse-item__body" :class="[props.bodyClass]" :style="[props.bodyStyle]">
         <slot />
-        <!-- 展开时的分割线 -->
-        <view v-if="expanded && props.border" class="ui-collapse-item__divider" :style="[dividerStyle]" />
+        <view v-if="expanded && props.border" class="ui-collapse-item__divider" />
       </view>
     </view>
   </view>
@@ -60,264 +49,107 @@ defineOptions({ name: "ui-collapse-item" })
 const props = defineProps(collapseItemProps)
 const emits = defineEmits(collapseItemEmits)
 
-// 获取父组件
+// 父级 collapse
 const { parent } = useParent(collapseKey)
 
 // 组件实例
 const instance = getCurrentInstance()!
 
-// 内容区域 ID
+// 内容区 DOM id
 const contentId = ref(`collapse-body-${uuid()}`)
-// 唯一标识（name 为空时回退为 uuid）
-const resolvedName = ref(isDef(props.name) ? props.name : uuid())
-
-// 内容区域高度
+// 唯一标识：name 优先，未传则 fallback uuid
+const resolvedName = ref<string | number>(isDef(props.name) ? props.name : uuid())
+// 是否已初始化（首次挂载不播动画）
+const inited = ref(false)
+// 内部展开状态（用于驱动 wrapper height 动画）
+const expanded = ref(false)
+// 内容区高度（px）；为 "" 时表示自适应
 const height = ref<number | string>("")
 
-// 是否已初始化（用于首次加载不播放动画）
-const inited = ref(false)
+// 单行 computed
+const isSelected = computed(() => (parent ? parent.activeNames.value.includes(resolvedName.value) : false))
+const hoverClass = computed(() => (props.disabled || props.readonly ? "" : "ui-collapse-item__header--active"))
 
-// 内部展开状态（用于控制动画）
-const expanded = ref(false)
-
-// 是否被选中（来自父组件）
-const isSelected = computed(() => {
-  if (!parent) return false
-  return parent.activeNames.value.includes(resolvedName.value)
+// 多行 computed
+const rootStyle = computed<CSSProperties>(() => {
+  const s: Record<string, any> = {}
+  if (props.padding !== undefined) s["--ui-collapse-item-padding"] = useUnit(props.padding)
+  if (props.background) s["--ui-collapse-item-background"] = useColor(props.background)
+  if (props.titleSize !== undefined) s["--ui-collapse-item-title-size"] = useUnit(props.titleSize)
+  if (props.titleColor) s["--ui-collapse-item-title-color"] = useColor(props.titleColor)
+  if (props.titleWeight !== undefined) s["--ui-collapse-item-title-weight"] = String(props.titleWeight)
+  if (props.labelSize !== undefined) s["--ui-collapse-item-label-size"] = useUnit(props.labelSize)
+  if (props.labelColor) s["--ui-collapse-item-label-color"] = useColor(props.labelColor)
+  if (props.labelWeight !== undefined) s["--ui-collapse-item-label-weight"] = String(props.labelWeight)
+  if (props.labelGap !== undefined) s["--ui-collapse-item-label-gap"] = useUnit(props.labelGap)
+  if (props.valueSize !== undefined) s["--ui-collapse-item-value-size"] = useUnit(props.valueSize)
+  if (props.valueColor) s["--ui-collapse-item-value-color"] = useColor(props.valueColor)
+  if (props.valueWeight !== undefined) s["--ui-collapse-item-value-weight"] = String(props.valueWeight)
+  if (props.iconSize !== undefined) s["--ui-collapse-item-icon-size"] = useUnit(props.iconSize)
+  if (props.iconColor) s["--ui-collapse-item-icon-color"] = useColor(props.iconColor)
+  if (props.iconWeight !== undefined) s["--ui-collapse-item-icon-weight"] = String(props.iconWeight)
+  if (props.iconGap !== undefined) s["--ui-collapse-item-icon-gap"] = useUnit(props.iconGap)
+  if (props.arrowSize !== undefined) s["--ui-collapse-item-arrow-size"] = useUnit(props.arrowSize)
+  if (props.arrowColor) s["--ui-collapse-item-arrow-color"] = useColor(props.arrowColor)
+  if (props.borderColor) s["--ui-collapse-item-border-color"] = useColor(props.borderColor)
+  if (props.borderWidth !== undefined) s["--ui-collapse-item-border-width"] = useUnit(props.borderWidth)
+  return useStyle({ ...s, ...(useStyle(props.customStyle) || {}) }) as CSSProperties
 })
-
-// 计算 padding 值
-const paddingValue = computed(() => {
-  if (!props.padding) return ""
-  return useUnit(props.padding)
-})
-
-// 图标颜色值
-const iconColorValue = computed(() => {
-  if (!props.iconColor) return ""
-  return useColor(props.iconColor)
-})
-
-// 箭头颜色值
-const arrowColorValue = computed(() => {
-  if (!props.arrowColor) return ""
-  return useColor(props.arrowColor)
-})
-
-// 根节点样式
-const rootStyle = computed(() => {
-  const style: CSSProperties = {}
-  if (props.background) {
-    style.backgroundColor = useColor(props.background)
-  }
-  return useStyle({ ...style, ...useStyle(props.customStyle) })
-})
-
-// 根节点类名
-const rootClass = computed(() => {
+const classNames = computed(() => {
   const list: string[] = []
   if (props.disabled) list.push("ui-collapse-item--disabled")
   if (props.readonly) list.push("ui-collapse-item--readonly")
   if (expanded.value) list.push("ui-collapse-item--expanded")
   return list
 })
-
-// 头部样式
-const headerStyleComputed = computed(() => {
-  const style: CSSProperties = {}
-  if (paddingValue.value) {
-    style.padding = paddingValue.value
-  }
-  return useStyle({ ...style, ...useStyle(props.headerStyle) })
+const arrowClassList = computed(() => ({ "ui-collapse-item__arrow--expanded": expanded.value }))
+const headerClassList = computed(() => ({ "ui-collapse-item__header--expanded": expanded.value }))
+const wrapperStyle = computed<CSSProperties>(() => {
+  const s: CSSProperties = {}
+  const duration = +props.duration || 300
+  // 首次挂载不播动画（避免初始展开闪烁）
+  if (inited.value) s.transition = `height ${duration}ms ease-in-out`
+  if (!expanded.value) s.height = "0px"
+  else if (height.value) s.height = typeof height.value === "number" ? `${height.value}px` : height.value
+  // expanded && height === "" → 不设 height，让内容自适应
+  return useStyle(s) as CSSProperties
 })
 
-// 头部类名
-const headerClassList = computed(() => {
-  const list: string[] = []
-  if (expanded.value) list.push("ui-collapse-item__header--expanded")
-  return list
-})
-
-// 标题样式
-const titleStyle = computed(() => {
-  const style: CSSProperties = {}
-  if (props.titleSize) {
-    style.fontSize = useUnit(props.titleSize)
-  }
-  if (props.titleColor) {
-    style.color = useColor(props.titleColor)
-  }
-  if (props.titleWeight) {
-    style.fontWeight = String(props.titleWeight)
-  }
-  return style
-})
-
-// 描述标签样式
-const labelStyle = computed(() => {
-  const style: CSSProperties = {}
-  if (props.labelSize) {
-    style.fontSize = useUnit(props.labelSize)
-  }
-  if (props.labelColor) {
-    style.color = useColor(props.labelColor)
-  }
-  if (props.labelWeight) {
-    style.fontWeight = String(props.labelWeight)
-  }
-  if (props.labelGap) {
-    style.marginTop = useUnit(props.labelGap)
-  }
-  return style
-})
-
-// 右侧值样式
-const valueStyle = computed(() => {
-  const style: CSSProperties = {}
-  if (props.valueSize) {
-    style.fontSize = useUnit(props.valueSize)
-  }
-  if (props.valueColor) {
-    style.color = useColor(props.valueColor)
-  }
-  if (props.valueWeight) {
-    style.fontWeight = String(props.valueWeight)
-  }
-  return style
-})
-
-// 图标样式
-const iconStyle = computed(() => {
-  const style: CSSProperties = {}
-  if (props.iconGap) {
-    style.marginRight = useUnit(props.iconGap)
-  }
-  return style
-})
-
-// 箭头样式
-const arrowStyle = computed(() => {
-  const style: CSSProperties = {}
-  return style
-})
-
-// 箭头类名
-const arrowClassList = computed(() => {
-  const list: string[] = []
-  if (expanded.value) list.push("ui-collapse-item__arrow--expanded")
-  return list
-})
-
-// 内容区域样式
-const bodyStyleComputed = computed(() => {
-  const style: CSSProperties = {}
-  if (paddingValue.value) {
-    style.padding = paddingValue.value
-  }
-  return useStyle({ ...style, ...useStyle(props.bodyStyle) })
-})
-
-// 分割线样式
-const dividerStyle = computed(() => {
-  const style: CSSProperties = {}
-  if (paddingValue.value) {
-    style.left = paddingValue.value
-    style.right = paddingValue.value
-  }
-  if (props.borderColor) {
-    style.borderBottomColor = useColor(props.borderColor)
-  }
-  if (props.borderWidth) {
-    style.borderBottomWidth = useUnit(props.borderWidth)
-  }
-  return style
-})
-
-// 点击态类名
-const hoverClass = computed(() => {
-  if (props.disabled || props.readonly) return ""
-  return "ui-collapse-item__header--active"
-})
-
-// 包裹器样式（控制展开/收起动画）
-const wrapperStyle = computed(() => {
-  const style: CSSProperties = {}
-  const duration = props.duration || 300
-
-  // 初始化后启用动画
-  if (inited.value) {
-    style.transition = `height ${duration}ms ease-in-out`
-  }
-
-  // 收起状态
-  if (!expanded.value) {
-    style.height = "0px"
-  } else if (height.value) {
-    // 展开状态，有高度值时使用具体高度
-    style.height = typeof height.value === "number" ? `${height.value}px` : height.value
-  }
-  // expanded 为 true 且 height 为空时，不设置 height，让内容自适应
-
-  return useStyle(style)
-})
-
-// 等待一帧
-function pause() {
-  return new Promise<void>((resolve) => {
-    setTimeout(resolve, 20)
-  })
-}
-
-// 获取内容高度并更新展开状态
-async function initRect() {
-  const rect = await useRect(`#${contentId.value}`, instance)
-  if (rect) {
-    height.value = rect.height || 0
-  }
-
-  await pause()
-
-  // 设置展开状态
-  expanded.value = isSelected.value
-
-  // 标记初始化完成
-  if (!inited.value) {
-    inited.value = true
-  }
-}
-
-// 动画结束处理
-function onTransitionEnd() {
-  // 展开完成后，清空高度让内容自适应
-  if (expanded.value) {
-    height.value = ""
-  }
-}
-
-// 监听选中状态变化
+// 监听选中状态变化 → 触发动画
 watch(
   () => isSelected.value,
-  () => {
-    initRect()
-  },
+  () => initRect(),
 )
 
-// 切换展开状态
+// 测内容区真实高度并切换展开状态
+async function initRect() {
+  const rect = await useRect(`#${contentId.value}`, instance)
+  if (rect) height.value = rect.height || 0
+  // 必须让浏览器先把当前高度 paint 一帧，CSS transition 才能从 X 过渡到 0；
+  // 仅 nextTick (microtask) 会和后续高度变化合批，导致收起无动画
+  await new Promise<void>((resolve) => setTimeout(resolve, 20))
+  expanded.value = isSelected.value
+  if (!inited.value) inited.value = true
+}
+
+// 动画结束：清空高度让内容自适应（content 动态变化时也能扩展）
+function onTransitionEnd() {
+  if (expanded.value) height.value = ""
+}
+
+// 切换展开状态（屏蔽禁用/只读）
 function toggle(expand?: boolean) {
   if (props.disabled || props.readonly) return
   if (!parent) return
-
-  const targetExpanded = expand !== undefined ? expand : !expanded.value
-  parent.toggle(resolvedName.value, targetExpanded)
+  parent.toggle(resolvedName.value, expand !== undefined ? expand : !expanded.value)
 }
 
 // 点击头部
-function onClickHeader(event: any) {
+function onClickHeader(event: Event) {
   emits("click", event)
   toggle()
 }
 
-// 组件挂载时初始化
 onMounted(() => {
   initRect()
 })
@@ -338,30 +170,39 @@ export default {
 
 <style lang="scss" scoped>
 .ui-collapse-item {
+  --ui-collapse-item-padding: var(--ui-spacing-md);
+  --ui-collapse-item-icon-gap: var(--ui-spacing-sm);
+  --ui-collapse-item-icon-size: var(--ui-font-size-md);
+  --ui-collapse-item-label-gap: var(--ui-spacing-xs);
+  --ui-collapse-item-arrow-size: var(--ui-font-size-xs);
+  --ui-collapse-item-background: var(--ui-color-background);
+  --ui-collapse-item-icon-color: var(--ui-color-text-secondary);
+  --ui-collapse-item-label-size: var(--ui-font-size-xs);
+  --ui-collapse-item-title-size: var(--ui-font-size-sm);
+  --ui-collapse-item-value-size: var(--ui-font-size-sm);
+  --ui-collapse-item-arrow-color: var(--ui-color-text-tertiary);
+  --ui-collapse-item-icon-weight: normal;
+  --ui-collapse-item-label-color: var(--ui-color-text-tertiary);
+  --ui-collapse-item-title-color: var(--ui-color-text);
+  --ui-collapse-item-value-color: var(--ui-color-text-secondary);
+  --ui-collapse-item-border-color: var(--ui-color-border-light);
+  --ui-collapse-item-border-width: var(--ui-border-width);
+  --ui-collapse-item-label-weight: normal;
+  --ui-collapse-item-title-weight: var(--ui-font-weight-medium);
+  --ui-collapse-item-value-weight: normal;
+
   position: relative;
-  background-color: var(--ui-color-background);
+  background-color: var(--ui-collapse-item-background);
 
   &--disabled {
     .ui-collapse-item__header {
       cursor: not-allowed;
     }
 
-    .ui-collapse-item__title {
-      color: var(--ui-color-text-disabled);
-    }
-
-    .ui-collapse-item__label {
-      color: var(--ui-color-text-disabled);
-    }
-
-    .ui-collapse-item__value {
-      color: var(--ui-color-text-disabled);
-    }
-
-    .ui-collapse-item__arrow {
-      color: var(--ui-color-text-disabled);
-    }
-
+    .ui-collapse-item__title,
+    .ui-collapse-item__label,
+    .ui-collapse-item__value,
+    .ui-collapse-item__arrow,
     .ui-collapse-item__icon {
       color: var(--ui-color-text-disabled);
     }
@@ -375,22 +216,25 @@ export default {
     gap: var(--ui-spacing-sm);
     cursor: pointer;
     display: flex;
-    padding: var(--ui-spacing-md);
+    padding: var(--ui-collapse-item-padding);
     overflow: hidden;
     position: relative;
     align-items: center;
     user-select: none;
 
     &--active {
-      background-color: var(--ui-color-active);
+      background-color: var(--ui-color-background-hover);
     }
   }
 
   &__icon {
+    color: var(--ui-collapse-item-icon-color);
     display: flex;
+    font-size: var(--ui-collapse-item-icon-size);
     align-items: center;
     flex-shrink: 0;
-    margin-right: var(--ui-spacing-sm);
+    font-weight: var(--ui-collapse-item-icon-weight);
+    margin-right: var(--ui-collapse-item-icon-gap);
   }
 
   &__title-wrapper {
@@ -401,27 +245,29 @@ export default {
   }
 
   &__title {
-    color: var(--ui-color-text);
-    font-size: var(--ui-font-size-sm);
-    font-weight: var(--ui-font-weight-medium);
+    color: var(--ui-collapse-item-title-color);
+    font-size: var(--ui-collapse-item-title-size);
+    font-weight: var(--ui-collapse-item-title-weight);
   }
 
   &__label {
-    color: var(--ui-color-text-tertiary);
-    font-size: var(--ui-font-size-xs);
-    margin-top: var(--ui-spacing-xs);
+    color: var(--ui-collapse-item-label-color);
+    font-size: var(--ui-collapse-item-label-size);
+    margin-top: var(--ui-collapse-item-label-gap);
+    font-weight: var(--ui-collapse-item-label-weight);
   }
 
   &__value {
-    color: var(--ui-color-text-secondary);
-    font-size: var(--ui-font-size-sm);
+    color: var(--ui-collapse-item-value-color);
+    font-size: var(--ui-collapse-item-value-size);
     flex-shrink: 0;
+    font-weight: var(--ui-collapse-item-value-weight);
   }
 
   &__arrow {
-    color: var(--ui-color-text-tertiary);
+    color: var(--ui-collapse-item-arrow-color);
     display: flex;
-    font-size: var(--ui-font-size-xs);
+    font-size: var(--ui-collapse-item-arrow-size);
     transition: transform var(--ui-transition-duration);
     align-items: center;
     flex-shrink: 0;
@@ -431,14 +277,13 @@ export default {
     }
   }
 
-  // 分割线
   &__divider {
-    left: var(--ui-spacing-md);
-    right: var(--ui-spacing-md);
+    left: var(--ui-collapse-item-padding);
+    right: var(--ui-collapse-item-padding);
     bottom: 0;
     height: 0;
     position: absolute;
-    border-bottom: var(--ui-border-width) solid var(--ui-color-border-light);
+    border-bottom: var(--ui-collapse-item-border-width) solid var(--ui-collapse-item-border-color);
     pointer-events: none;
   }
 
@@ -460,7 +305,7 @@ export default {
 
   &__body {
     color: var(--ui-color-text-secondary);
-    padding: var(--ui-spacing-md);
+    padding: var(--ui-collapse-item-padding);
     position: relative;
     font-size: var(--ui-font-size-sm);
     line-height: var(--ui-line-height-normal);
