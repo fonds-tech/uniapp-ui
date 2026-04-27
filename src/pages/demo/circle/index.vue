@@ -1,107 +1,120 @@
 <template>
   <demo-page>
-    <!-- 基础用法 -->
-    <demo-section title="基础用法">
+    <demo-section title="基础用法" desc="modelValue 0-100 控制进度">
       <demo-block :gap="32">
-        <ui-circle :rate="70" />
+        <ui-circle :model-value="70" />
       </demo-block>
     </demo-section>
 
-    <!-- 样式定制 -->
-    <demo-section title="样式定制">
+    <demo-section title="颜色与轨道" desc="color 进度色 / layerColor 轨道色 / fill 中心填充">
       <demo-block :gap="32">
-        <ui-circle :rate="70" color="#07c160" />
-        <ui-circle :rate="70" color="#ee0a24" layer-color="#fce8eb" />
-        <ui-circle :rate="70" color="#1989fa" fill="#e8f4ff" />
+        <ui-circle :model-value="70" color="#07c160" />
+        <ui-circle :model-value="70" color="#ee0a24" layer-color="#fce8eb" />
+        <ui-circle :model-value="70" color="#1989fa" fill="#e8f4ff" />
       </demo-block>
     </demo-section>
 
-    <!-- 渐变色 -->
-    <demo-section title="渐变色">
+    <demo-section title="渐变色" desc="color 传渐变映射对象">
       <demo-block :gap="32">
-        <ui-circle :rate="70" :color="gradientColor" />
+        <ui-circle :model-value="70" :color="gradient" />
       </demo-block>
     </demo-section>
 
-    <!-- 进度条宽度 -->
-    <demo-section title="进度条宽度">
-      <demo-block :gap="32">
-        <ui-circle :rate="70" stroke-width="4rpx" text="4rpx" />
-        <ui-circle :rate="70" stroke-width="8rpx" text="8rpx" />
-        <ui-circle :rate="70" stroke-width="16rpx" text="16rpx" />
-      </demo-block>
-    </demo-section>
-
-    <!-- 大小 -->
-    <demo-section title="大小">
+    <demo-section title="尺寸自适应" desc="strokeWidth / textSize 默认按 size 比例缩放">
       <demo-block :gap="32" align="center">
-        <ui-circle :rate="70" size="120rpx" text="小" />
-        <ui-circle :rate="70" size="200rpx" text="中" />
-        <ui-circle :rate="70" size="280rpx" text="大" />
+        <ui-circle :model-value="70" size="120rpx" />
+        <ui-circle :model-value="70" size="200rpx" />
+        <ui-circle :model-value="70" size="280rpx" />
+        <ui-circle :model-value="70" size="360rpx" />
       </demo-block>
     </demo-section>
 
-    <!-- 起始位置 -->
-    <demo-section title="起始位置">
-      <demo-block :gap="24">
-        <view class="position-grid">
-          <view v-for="item in startPositions" :key="item.position" class="position-item">
-            <ui-circle :rate="70" size="140rpx" :start-position="item.position" :text="item.label" />
-          </view>
-        </view>
-      </demo-block>
-    </demo-section>
-
-    <!-- 逆时针 -->
-    <demo-section title="逆时针">
+    <demo-section title="覆盖线宽" desc="strokeWidth 显式覆盖默认比例">
       <demo-block :gap="32">
-        <ui-circle :rate="70" text="顺时针" />
-        <ui-circle :rate="70" :clockwise="false" text="逆时针" />
+        <ui-circle :model-value="70" stroke-width="4rpx" text="细" />
+        <ui-circle :model-value="70" stroke-width="12rpx" text="中" />
+        <ui-circle :model-value="70" stroke-width="20rpx" text="粗" />
       </demo-block>
     </demo-section>
 
-    <!-- 显示文字 -->
-    <demo-section title="显示文字">
+    <demo-section title="文字定制" desc="text / textSize / textColor 控制中心文字">
       <demo-block :gap="32">
-        <ui-circle :rate="70" />
-        <ui-circle :rate="70" text="自定义" />
-        <ui-circle :rate="slotRate">
-          <view class="custom-content">
-            <text class="custom-value">{{ slotRate }}</text>
-            <text class="custom-unit">分</text>
+        <ui-circle :model-value="70" />
+        <ui-circle :model-value="70" text="自定义" />
+        <ui-circle :model-value="70" text-size="44rpx" text-color="#ee0a24" />
+        <ui-circle :model-value="70" :text="false" />
+      </demo-block>
+    </demo-section>
+
+    <demo-section title="自定义内容" desc="默认插槽完全自定义中心">
+      <demo-block :gap="32">
+        <ui-circle :model-value="slotRate">
+          <view class="slot-content">
+            <text class="slot-content__value">{{ slotRate }}</text>
+            <text class="slot-content__unit">分</text>
           </view>
         </ui-circle>
       </demo-block>
     </demo-section>
 
-    <!-- 动态控制 -->
-    <demo-section title="动态控制">
-      <demo-block direction="column" :gap="24">
-        <view class="dynamic-demo">
-          <ui-circle :rate="dynamicRate" :color="dynamicColor" />
-        </view>
+    <demo-section title="起始位置" desc="startPosition 控制 0% 起点方位">
+      <demo-block :cols="2" :gap="24">
+        <ui-circle v-for="item in startPositions" :key="item.position" :model-value="70" size="160rpx" :start-position="item.position" :text="item.label" />
+      </demo-block>
+    </demo-section>
+
+    <demo-section title="顺逆时针">
+      <demo-block :gap="32">
+        <ui-circle :model-value="70" text="顺时针" />
+        <ui-circle :model-value="70" :clockwise="false" text="逆时针" />
+      </demo-block>
+    </demo-section>
+
+    <demo-section title="端点样式" desc="strokeLinecap round / butt / square">
+      <demo-block :gap="32">
+        <ui-circle :model-value="70" stroke-linecap="round" text="round" />
+        <ui-circle :model-value="70" stroke-linecap="butt" text="butt" />
+        <ui-circle :model-value="70" stroke-linecap="square" text="square" />
+      </demo-block>
+    </demo-section>
+
+    <demo-section title="动画时长" desc="duration 控制过渡毫秒；animated=false 即时绘制">
+      <demo-block direction="column" align="start" :gap="16">
+        <demo-block :gap="32">
+          <ui-circle :model-value="durationDemo" :duration="300" text="300ms" />
+          <ui-circle :model-value="durationDemo" :duration="1000" text="1000ms" />
+          <ui-circle :model-value="durationDemo" :duration="2500" text="2500ms" />
+          <ui-circle :model-value="durationDemo" :animated="false" text="无动画" />
+        </demo-block>
         <demo-block :gap="16">
-          <ui-button size="small" @click="decreaseRate">减少</ui-button>
-          <ui-button size="small" type="primary" @click="increaseRate">增加</ui-button>
-          <ui-button size="small" type="success" @click="completeRate">完成</ui-button>
-          <ui-button size="small" type="warning" @click="resetRate">重置</ui-button>
+          <ui-button size="small" @click="durationDemo = 0">0%</ui-button>
+          <ui-button size="small" type="primary" @click="durationDemo = 50">50%</ui-button>
+          <ui-button size="small" type="success" @click="durationDemo = 100">100%</ui-button>
         </demo-block>
       </demo-block>
     </demo-section>
 
-    <!-- 事件处理 -->
-    <demo-section title="事件处理">
-      <demo-block direction="column" :gap="16">
-        <text class="demo-text">当进度动画完成时触发 finish 事件</text>
-        <view class="event-demo">
-          <ui-circle :rate="eventRate" @finish="onFinish" />
-        </view>
+    <demo-section title="动态控制 + 状态色" desc="按 modelValue 切换 color">
+      <demo-block direction="column" align="start" :gap="16">
+        <ui-circle :model-value="dynamicRate" :color="dynamicColor" />
         <demo-block :gap="16">
-          <ui-button size="small" @click="eventDecrease">减少</ui-button>
-          <ui-button size="small" type="primary" @click="eventIncrease">增加</ui-button>
-          <ui-button size="small" type="warning" @click="eventReset">重置</ui-button>
+          <ui-button size="small" @click="step(-10)">-10</ui-button>
+          <ui-button size="small" type="primary" @click="step(10)">+10</ui-button>
+          <ui-button size="small" type="success" @click="dynamicRate = 100">完成</ui-button>
+          <ui-button size="small" type="warning" @click="dynamicRate = 0">重置</ui-button>
         </demo-block>
-        <text class="demo-text">{{ eventLog }}</text>
+      </demo-block>
+    </demo-section>
+
+    <demo-section title="finish 事件">
+      <demo-block direction="column" align="start" :gap="16">
+        <ui-circle :model-value="eventRate" @finish="onFinish" />
+        <demo-block :gap="16">
+          <ui-button size="small" @click="eventRate = Math.max(0, eventRate - 20)">-20</ui-button>
+          <ui-button size="small" type="primary" @click="eventRate = Math.min(100, eventRate + 20)">+20</ui-button>
+          <ui-button size="small" type="warning" @click="eventRate = 0">重置</ui-button>
+        </demo-block>
+        <ui-text size="small" color="secondary">{{ eventLog }}</ui-text>
       </demo-block>
     </demo-section>
   </demo-page>
@@ -117,13 +130,11 @@ definePage({
 
 const toast = useToast()
 
-// 渐变色配置
-const gradientColor = {
+const gradient = {
   "0%": "#3fecff",
   "100%": "#6149f6",
 }
 
-// 起始位置配置
 const startPositions = [
   { position: "top", label: "顶部" },
   { position: "right", label: "右侧" },
@@ -131,97 +142,44 @@ const startPositions = [
   { position: "left", label: "左侧" },
 ] as const
 
-// 插槽示例进度
 const slotRate = ref(85)
 
-// 动态控制
-const dynamicRate = ref(50)
+const durationDemo = ref(75)
 
+const dynamicRate = ref(50)
 const dynamicColor = computed(() => {
   if (dynamicRate.value < 30) return "#ee0a24"
   if (dynamicRate.value < 70) return "#ff976a"
   return "#07c160"
 })
-
-function decreaseRate() {
-  dynamicRate.value = Math.max(0, dynamicRate.value - 10)
+function step(delta: number) {
+  dynamicRate.value = Math.min(100, Math.max(0, dynamicRate.value + delta))
 }
 
-function increaseRate() {
-  dynamicRate.value = Math.min(100, dynamicRate.value + 10)
-}
-
-function completeRate() {
-  dynamicRate.value = 100
-}
-
-function resetRate() {
-  dynamicRate.value = 0
-}
-
-// 事件处理
 const eventRate = ref(40)
-const eventLog = ref("进度动画完成时将触发 finish 事件")
-
-function eventDecrease() {
-  eventRate.value = Math.max(0, eventRate.value - 20)
-}
-
-function eventIncrease() {
-  eventRate.value = Math.min(100, eventRate.value + 20)
-}
-
-function eventReset() {
-  eventRate.value = 40
-  eventLog.value = "进度动画完成时将触发 finish 事件"
-}
-
+const eventLog = ref("点击按钮调整进度，动画完成后会触发 finish 事件")
 function onFinish() {
-  eventLog.value = "触发 finish 事件 - 进度动画已完成!"
-  toast.success("动画完成!")
+  eventLog.value = `finish @ ${new Date().toLocaleTimeString()}`
+  toast.success("动画完成")
 }
 </script>
 
 <style lang="scss" scoped>
-.position-grid {
-  gap: 24rpx;
-  width: 100%;
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-}
-
-.position-item {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.custom-content {
+.slot-content {
   display: flex;
   align-items: baseline;
   justify-content: center;
 }
 
-.custom-value {
+.slot-content__value {
   color: var(--ui-color-primary);
   font-size: 40rpx;
   font-weight: 600;
 }
 
-.custom-unit {
+.slot-content__unit {
   color: var(--ui-color-text-secondary);
   font-size: 24rpx;
   margin-left: 4rpx;
-}
-
-.dynamic-demo,
-.event-demo {
-  display: flex;
-  justify-content: center;
-}
-
-.demo-text {
-  color: var(--ui-color-text-secondary);
-  font-size: 24rpx;
 }
 </style>

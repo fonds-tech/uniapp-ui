@@ -1,15 +1,20 @@
 <template>
-  <view class="ui-circle" :class="[props.customClass]" :style="[rootStyle]">
-    <!-- 微信小程序使用 canvas 2d -->
+  <view
+    class="ui-circle"
+    :class="[props.customClass]"
+    :style="[rootStyle]"
+    role="progressbar"
+    :aria-valuenow="ariaValueNow"
+    aria-valuemin="0"
+    aria-valuemax="100"
+  >
     <!-- #ifdef MP-WEIXIN -->
-    <canvas :id="canvasId" class="ui-circle__canvas" :canvas-id="canvasId" type="2d" :style="canvasStyle" />
+    <canvas :id="canvasId" type="2d" class="ui-circle__canvas" :style="canvasStyle" />
     <!-- #endif -->
-    <!-- 其他平台使用旧版 canvas -->
     <!-- #ifndef MP-WEIXIN -->
-    <canvas :id="canvasId" class="ui-circle__canvas" :canvas-id="canvasId" :width="canvasSize" :height="canvasSize" :style="canvasStyle" />
+    <canvas :id="canvasId" :canvas-id="canvasId" class="ui-circle__canvas" :width="canvasAttrSize" :height="canvasAttrSize" :style="canvasStyle" />
     <!-- #endif -->
 
-    <!-- 中心内容区域 -->
     <view class="ui-circle__content">
       <slot>
         <text v-if="displayText" class="ui-circle__text">{{ displayText }}</text>
@@ -23,43 +28,84 @@ import type { CSSProperties } from "vue"
 import type { CircleGradientColor } from "./index"
 import { uuid } from "../utils/utils"
 import { circleEmits, circleProps } from "./index"
-import { useColor, useStyle, useUnitToPx } from "../hooks"
-import { ref, watch, computed, onMounted, onUnmounted, onBeforeMount, getCurrentInstance } from "vue"
+import { useUnit, useColor, useStyle, useUnitToPx } from "../hooks"
+import { ref, watch, computed, nextTick, onMounted, onUnmounted, onBeforeMount, getCurrentInstance } from "vue"
 
 defineOptions({ name: "ui-circle" })
 
 const props = defineProps(circleProps)
-const emit = defineEmits(circleEmits)
+const emits = defineEmits(circleEmits)
 
 const instance = getCurrentInstance()
 const canvasId = ref(`ui-circle-${uuid()}`)
 
-let ctx: UniApp.CanvasContext | null = null
+// 内部资源
+let ctx: any = null
 let animationTimer: ReturnType<typeof setTimeout> | null = null
 
-const currentRate = ref(props.modelValue)
+// 起始角度查表
+const BEGIN_ANGLE = -Math.PI / 2
+const PERIMETER = 2 * Math.PI
+const startAngleMap: Record<string, number> = {
+  top: -Math.PI / 2,
+  right: 0,
+  bottom: Math.PI / 2,
+  left: Math.PI,
+}
+
+// 主题色 fallback：canvas 不能渲染 var()，token 名映射回硬编码（与 variables.scss 同步）
+const tokenFallbacks: Record<string, string> = {
+  primary: "#1989fa",
+  success: "#07c160",
+  warning: "#ff976a",
+  danger: "#ee0a24",
+  info: "#909399",
+  "border-light": "#ebedf0",
+  "background-section": "#f2f3f5",
+}
+
+// 当前动画进度值（独立于 props.modelValue）
+const currentRate = ref(0)
+// 设备 dpr
 const pixelRatio = ref(1)
 
-// 计算尺寸（转换为 px 数值）
-const sizePx = computed(() => {
-  try {
-    return useUnitToPx(props.size)
-  } catch {
-    return 100
-  }
-})
-
-// 计算线宽（转换为 px 数值）
+// 圆环像素直径
+const sizePx = computed(() => safePx(props.size, 100))
+// 进度条线宽：用户指定 → 直传；否则按 size/20 自适应
 const strokeWidthPx = computed(() => {
-  try {
-    return useUnitToPx(props.strokeWidth)
-  } catch {
-    return 4
-  }
+  if (props.strokeWidth !== undefined) return safePx(props.strokeWidth, 4)
+  return Math.max(2, sizePx.value / 20)
 })
+// 起始角度
+const startAngle = computed(() => startAngleMap[props.startPosition] ?? BEGIN_ANGLE)
+// 是否显示文字
+const displayText = computed(() => {
+  if (props.text === false) return ""
+  if (typeof props.text === "string") return props.text
+  return `${Math.round(currentRate.value)}%`
+})
+// a11y 进度值
+const ariaValueNow = computed(() => Math.round(currentRate.value))
 
-// Canvas 渲染尺寸
-const canvasSize = computed(() => {
+// 根容器尺寸样式（同时把 size 推为 CSS var 供 SCSS 计算文字字号）
+const rootStyle = computed<CSSProperties>(() => {
+  const sizeVal = useUnit(props.size)
+  const result: Record<string, any> = {
+    width: sizeVal,
+    height: sizeVal,
+    "--ui-circle-size": sizeVal,
+  }
+  if (props.textColor) result["--ui-circle-text-color"] = useColor(props.textColor)
+  if (props.textSize !== undefined) result["--ui-circle-text-size"] = useUnit(props.textSize)
+  return useStyle({ ...result, ...(useStyle(props.customStyle) || {}) }) as CSSProperties
+})
+// canvas 视觉尺寸（与容器一致，CSS 单位）
+const canvasStyle = computed(() => ({
+  width: useUnit(props.size),
+  height: useUnit(props.size),
+}))
+// 非 MP-WEIXIN 路径：canvas 内部分辨率作为 HTML attr 注入；MP-ALIPAY 需 dpr 倍以保证清晰
+const canvasAttrSize = computed(() => {
   // #ifdef MP-ALIPAY
   return sizePx.value * pixelRatio.value
   // #endif
@@ -68,330 +114,218 @@ const canvasSize = computed(() => {
   // #endif
 })
 
-// 进度条宽度
-const sWidth = computed(() => {
-  // #ifdef MP-ALIPAY
-  return strokeWidthPx.value * pixelRatio.value
-  // #endif
-  // #ifndef MP-ALIPAY
-  return strokeWidthPx.value
-  // #endif
-})
-
-// 根容器样式
-const rootStyle = computed<CSSProperties>(() => {
-  const result: CSSProperties = {
-    width: `${sizePx.value}px`,
-    height: `${sizePx.value}px`,
+// 转 px 数值，无效兜底
+function safePx(value: number | string, fallback: number) {
+  try {
+    return useUnitToPx(value)
+  } catch {
+    return fallback
   }
-  return useStyle({ ...result, ...useStyle(props.customStyle) }) as CSSProperties
-})
-
-// Canvas 样式
-const canvasStyle = computed(() => {
-  return {
-    width: `${sizePx.value}px`,
-    height: `${sizePx.value}px`,
-  }
-})
-
-// 显示文本
-const displayText = computed(() => {
-  if (props.text) return props.text
-  return `${Math.round(currentRate.value)}%`
-})
-
-// 起始角度
-const BEGIN_ANGLE = -Math.PI / 2
-const PERIMETER = 2 * Math.PI
-
-// 起始角度映射
-const startAngleMap: Record<string, number> = {
-  top: -Math.PI / 2,
-  right: 0,
-  bottom: Math.PI / 2,
-  left: Math.PI,
 }
 
-const startAngle = computed(() => {
-  return startAngleMap[props.startPosition] ?? BEGIN_ANGLE
-})
-
-// 解析颜色值
-function resolveColor(color: string): string {
+// 解析颜色：var()/token 名映射回硬编码
+function resolveColor(color?: string): string {
   if (!color) return ""
-  const resolved = useColor(color)
-  if (resolved.startsWith("var(")) {
-    const colorFallbacks: Record<string, string> = {
-      primary: "#1989fa",
-      success: "#07c160",
-      warning: "#ff976a",
-      danger: "#ee0a24",
-      info: "#909399",
-      "border-light": "#ebedf0",
-    }
-    return colorFallbacks[color] || "#1989fa"
+  if (color in tokenFallbacks) return tokenFallbacks[color]
+  return color
+}
+
+// 微信小程序 type="2d" 新 API → 旧 API 形态适配，让绘制代码全端共用
+function canvas2dAdapter(c: CanvasRenderingContext2D) {
+  return {
+    setStrokeStyle: (v: any) => (c.strokeStyle = v),
+    setLineWidth: (v: number) => (c.lineWidth = v),
+    setLineCap: (v: CanvasLineCap) => (c.lineCap = v),
+    setFillStyle: (v: any) => (c.fillStyle = v),
+    beginPath: () => c.beginPath(),
+    arc: (x: number, y: number, r: number, sa: number, ea: number, ccw?: boolean) => c.arc(x, y, r, sa, ea, ccw),
+    stroke: () => c.stroke(),
+    fill: () => c.fill(),
+    clearRect: (x: number, y: number, w: number, h: number) => c.clearRect(x, y, w, h),
+    createLinearGradient: (x0: number, y0: number, x1: number, y1: number) => c.createLinearGradient(x0, y0, x1, y1),
+    scale: (x: number, y: number) => c.scale(x, y),
+    draw: () => undefined,
   }
-  return resolved
 }
 
-// 获取轨道颜色
-function getLayerColor(): string {
-  if (props.layerColor) {
-    return resolveColor(props.layerColor) || props.layerColor
-  }
-  return resolveColor("border-light") || "#ebedf0"
-}
-
-// 获取填充颜色
-function getFillColor(): string {
-  return props.fill || "transparent"
-}
-
-// 获取 Canvas 上下文
-function getContext(): Promise<UniApp.CanvasContext> {
-  return new Promise((resolve) => {
-    if (ctx) {
-      return resolve(ctx)
-    }
-
-    // #ifndef MP-WEIXIN
-    ctx = uni.createCanvasContext(canvasId.value, instance)
-    resolve(ctx)
-    // #endif
-
-    // #ifdef MP-WEIXIN
+// 拿 canvas 上下文：MP-WEIXIN 用现代 2d API + dpr 适配；其他端用 uni.createCanvasContext 旧 API
+function getContext(): Promise<any> {
+  if (ctx) return Promise.resolve(ctx)
+  // #ifndef MP-WEIXIN
+  ctx = uni.createCanvasContext(canvasId.value, instance as any)
+  return Promise.resolve(ctx)
+  // #endif
+  // #ifdef MP-WEIXIN
+  return new Promise((resolve, reject) => {
     uni
       .createSelectorQuery()
       .in(instance)
       .select(`#${canvasId.value}`)
-      .node((res: any) => {
-        if (res && res.node) {
-          const canvas = res.node
-          const context = canvas.getContext("2d")
-          canvas.width = sizePx.value * pixelRatio.value
-          canvas.height = sizePx.value * pixelRatio.value
-          context.scale(pixelRatio.value, pixelRatio.value)
-          // 适配器：让 2d context 兼容旧版 API
-          ctx = canvas2dAdapter(context)
-          resolve(ctx)
-        }
+      .fields({ node: true, size: true } as any, () => undefined)
+      .exec((res: any) => {
+        const node = res?.[0]?.node
+        if (!node) return reject(new Error("ui-circle: canvas node not found"))
+        const dpr = pixelRatio.value
+        node.width = sizePx.value * dpr
+        node.height = sizePx.value * dpr
+        const c2d = node.getContext("2d") as CanvasRenderingContext2D
+        c2d.scale(dpr, dpr)
+        ctx = canvas2dAdapter(c2d)
+        resolve(ctx)
       })
-      .exec()
-    // #endif
   })
+  // #endif
 }
 
-// Canvas 2D 适配器（让新版 API 兼容旧版调用方式）
-function canvas2dAdapter(ctx: CanvasRenderingContext2D): UniApp.CanvasContext {
-  return {
-    setStrokeStyle(color: string | CanvasGradient) {
-      ctx.strokeStyle = color
-    },
-    setLineWidth(width: number) {
-      ctx.lineWidth = width
-    },
-    setLineCap(cap: CanvasLineCap) {
-      ctx.lineCap = cap
-    },
-    setFillStyle(color: string | CanvasGradient) {
-      ctx.fillStyle = color
-    },
-    beginPath() {
-      ctx.beginPath()
-    },
-    arc(x: number, y: number, r: number, sAngle: number, eAngle: number, counterclockwise?: boolean) {
-      ctx.arc(x, y, r, sAngle, eAngle, counterclockwise)
-    },
-    stroke() {
-      ctx.stroke()
-    },
-    fill() {
-      ctx.fill()
-    },
-    clearRect(x: number, y: number, width: number, height: number) {
-      ctx.clearRect(x, y, width, height)
-    },
-    createLinearGradient(x0: number, y0: number, x1: number, y1: number) {
-      return ctx.createLinearGradient(x0, y0, x1, y1)
-    },
-    draw(reserve?: boolean, callback?: () => void) {
-      // 2d canvas 不需要 draw，直接执行回调
-      callback?.()
-    },
-  } as UniApp.CanvasContext
-}
+// 绘制轨道
+function renderLayer(c: any) {
+  const center = sizePx.value / 2
+  const lw = strokeWidthPx.value
+  const radius = center - lw / 2
 
-// 渲染轨道
-function renderLayerCircle(context: UniApp.CanvasContext) {
-  const position = canvasSize.value / 2
-  const lineWidth = sWidth.value
-  const radius = position - lineWidth / 2
-
-  // 绘制填充
-  const fillColor = getFillColor()
-  if (fillColor && fillColor !== "transparent") {
-    context.beginPath()
-    context.arc(position, position, radius - lineWidth / 2, 0, PERIMETER)
-    context.setFillStyle(fillColor)
-    context.fill()
+  if (props.fill) {
+    c.beginPath()
+    c.arc(center, center, radius - lw / 2, 0, PERIMETER)
+    c.setFillStyle(resolveColor(props.fill))
+    c.fill()
   }
 
-  // 绘制轨道
-  context.beginPath()
-  context.arc(position, position, radius, 0, PERIMETER)
-  context.setStrokeStyle(getLayerColor())
-  context.setLineWidth(lineWidth)
-  context.setLineCap(props.strokeLinecap as CanvasLineCap)
-  context.stroke()
+  c.beginPath()
+  c.arc(center, center, radius, 0, PERIMETER)
+  c.setStrokeStyle(resolveColor(props.layerColor) || tokenFallbacks["border-light"])
+  c.setLineWidth(lw)
+  c.setLineCap(props.strokeLinecap)
+  c.stroke()
 }
 
-// 渲染进度条
-function renderProgressCircle(context: UniApp.CanvasContext, value: number) {
+// 绘制进度
+function renderProgress(c: any, value: number) {
   const progress = Math.min(Math.max(value, 0), 100) / 100
   if (progress <= 0) return
 
-  const position = canvasSize.value / 2
-  const lineWidth = sWidth.value
-  const radius = position - lineWidth / 2
-
-  const progressAngle = PERIMETER * progress
+  const center = sizePx.value / 2
+  const lw = strokeWidthPx.value
+  const radius = center - lw / 2
+  const sweep = PERIMETER * progress
   const start = startAngle.value
-  const end = props.clockwise ? start + progressAngle : start - progressAngle
+  const end = props.clockwise ? start + sweep : start - sweep
 
-  // 获取进度条颜色
-  let strokeColor: string | CanvasGradient
-  if (!props.color) {
-    strokeColor = resolveColor("primary") || "#1989fa"
-  } else if (typeof props.color === "string") {
-    strokeColor = resolveColor(props.color) || props.color
-  } else {
-    // 渐变颜色
-    const gradientColor = props.color as CircleGradientColor
-    const gradient = context.createLinearGradient(canvasSize.value, 0, 0, 0)
-    Object.keys(gradientColor)
+  let stroke: any
+  if (props.color && typeof props.color === "object") {
+    const stops = props.color as CircleGradientColor
+    const gradient = c.createLinearGradient(sizePx.value, 0, 0, 0)
+    Object.keys(stops)
       .sort((a, b) => Number.parseFloat(a) - Number.parseFloat(b))
-      .forEach((key) => {
-        gradient.addColorStop(Number.parseFloat(key) / 100, gradientColor[key])
-      })
-    strokeColor = gradient
+      .forEach((k) => gradient.addColorStop(Number.parseFloat(k) / 100, stops[k]))
+    stroke = gradient
+  } else {
+    stroke = resolveColor(props.color as string | undefined) || tokenFallbacks.primary
   }
 
-  context.beginPath()
-  context.arc(position, position, radius, start, end, !props.clockwise)
-  context.setStrokeStyle(strokeColor as string)
-  context.setLineWidth(lineWidth)
-  context.setLineCap(props.strokeLinecap as CanvasLineCap)
-  context.stroke()
+  c.beginPath()
+  c.arc(center, center, radius, start, end, !props.clockwise)
+  c.setStrokeStyle(stroke)
+  c.setLineWidth(lw)
+  c.setLineCap(props.strokeLinecap)
+  c.stroke()
 }
 
-// 绘制圆环
-function drawCircle(value: number) {
-  getContext().then((context) => {
-    context.clearRect(0, 0, canvasSize.value, canvasSize.value)
-    renderLayerCircle(context)
-    renderProgressCircle(context, value)
-    context.draw()
-  })
+// 完整重绘一帧
+function draw(value: number) {
+  getContext()
+    .then((c) => {
+      c.clearRect(0, 0, sizePx.value, sizePx.value)
+      renderLayer(c)
+      renderProgress(c, value)
+      c.draw()
+    })
+    .catch((err) => console.warn(err))
 }
 
-// 开始动画
-function startAnimation() {
+// 重置 ctx（尺寸变化等场景下旧 ctx 失效）
+function resetContext() {
+  ctx = null
+}
+
+// 时间驱动动画：currentRate → target，duration ms 内完成
+function animateTo(target: number) {
+  cancelAnimation()
+  const clamped = Math.min(Math.max(target, 0), 100)
+  const from = currentRate.value
+  const dur = Math.max(0, +props.duration)
+
+  if (!props.animated || dur === 0 || from === clamped) {
+    currentRate.value = clamped
+    draw(currentRate.value)
+    emits("finish")
+    return
+  }
+
+  const startTime = Date.now()
+  const tick = () => {
+    const elapsed = Date.now() - startTime
+    const t = Math.min(1, elapsed / dur)
+    currentRate.value = from + (clamped - from) * t
+    draw(currentRate.value)
+    if (t < 1) {
+      animationTimer = setTimeout(tick, 1000 / 60)
+    } else {
+      emits("finish")
+    }
+  }
+  tick()
+}
+
+// 取消动画
+function cancelAnimation() {
   if (animationTimer) {
     clearTimeout(animationTimer)
     animationTimer = null
   }
-
-  const targetRate = Math.min(Math.max(props.rate, 0), 100)
-  const speed = props.speed > 0 ? props.speed : 50
-  const step = speed / 60
-
-  function animate() {
-    const diff = targetRate - currentRate.value
-
-    if (Math.abs(diff) < step) {
-      currentRate.value = targetRate
-      emit("update:modelValue", currentRate.value)
-      drawCircle(currentRate.value)
-      emit("finish")
-      return
-    }
-
-    if (diff > 0) {
-      currentRate.value = Math.min(currentRate.value + step, targetRate)
-    } else {
-      currentRate.value = Math.max(currentRate.value - step, targetRate)
-    }
-
-    emit("update:modelValue", currentRate.value)
-    drawCircle(currentRate.value)
-
-    animationTimer = setTimeout(animate, 1000 / 60)
-  }
-
-  animate()
 }
 
-// 监听 rate 变化
-watch(
-  () => props.rate,
-  () => {
-    startAnimation()
-  },
-)
-
-// 监听 modelValue 变化
+// 监听 modelValue：动画过渡到目标值
 watch(
   () => props.modelValue,
-  (newVal) => {
-    if (Math.abs(newVal - currentRate.value) > 0.01) {
-      currentRate.value = newVal
-      drawCircle(currentRate.value)
-    }
-  },
+  (val) => animateTo(val),
 )
 
-// 监听尺寸变化
+// 监听尺寸 / 线宽：重置 ctx 后重绘
 watch(
   () => [props.size, props.strokeWidth],
   () => {
-    ctx = null // 重置上下文
-    setTimeout(() => {
-      drawCircle(currentRate.value)
-    }, 50)
+    resetContext()
+    nextTick(() => draw(currentRate.value))
   },
 )
 
-// 监听样式相关属性变化
+// 监听其他视觉属性：直接重绘
 watch(
   () => [props.color, props.layerColor, props.fill, props.strokeLinecap, props.clockwise, props.startPosition],
-  () => {
-    drawCircle(currentRate.value)
-  },
+  () => draw(currentRate.value),
   { deep: true },
 )
 
 onBeforeMount(() => {
-  const systemInfo = uni.getSystemInfoSync()
-  pixelRatio.value = systemInfo.pixelRatio || 1
+  try {
+    pixelRatio.value = uni.getSystemInfoSync().pixelRatio || 1
+  } catch {
+    pixelRatio.value = 1
+  }
 })
 
 onMounted(() => {
-  // 初始进度为 0，然后动画到目标进度
-  currentRate.value = 0
-  drawCircle(currentRate.value)
-  // 延迟启动动画，确保 canvas 已初始化
-  setTimeout(() => {
-    startAnimation()
-  }, 50)
+  // 初始进度：动画模式从 0 起步过渡到目标，否则直显
+  currentRate.value = props.animated ? 0 : props.modelValue
+  nextTick(() => {
+    draw(currentRate.value)
+    if (props.animated && props.modelValue !== 0) animateTo(props.modelValue)
+  })
 })
 
 onUnmounted(() => {
-  if (animationTimer) {
-    clearTimeout(animationTimer)
-    animationTimer = null
-  }
-  ctx = null
+  cancelAnimation()
+  resetContext()
 })
 
 defineExpose({ name: "ui-circle" })
@@ -406,6 +340,8 @@ export default {
 
 <style lang="scss" scoped>
 .ui-circle {
+  --ui-circle-text-size: calc(var(--ui-circle-size) * 0.2);
+  --ui-circle-text-color: var(--ui-color-text);
   display: inline-flex;
   position: relative;
   align-items: center;
@@ -427,8 +363,8 @@ export default {
   }
 
   &__text {
-    color: var(--ui-color-text);
-    font-size: var(--ui-font-size-md);
+    color: var(--ui-circle-text-color);
+    font-size: var(--ui-circle-text-size);
     font-weight: var(--ui-font-weight-medium);
   }
 }
