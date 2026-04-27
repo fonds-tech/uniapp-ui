@@ -9,31 +9,27 @@ const defaultProps = buildDefaultProps("checkbox-group", {
   modelValue: () => [],
   max: Infinity,
   min: 0,
-  gap: 0,
-  columns: "",
+  gap: undefined,
+  columns: undefined,
+  vertical: false,
   disabled: false,
-  size: "36rpx",
-  shape: "dot",
-  round: false,
-  color: "",
-  checkedColor: "",
-  checkedIconColor: "",
-  icon: "",
-  iconSize: "",
-  iconColor: "",
-  iconWeight: "",
-  iconRadius: "",
-  iconPrefix: "ui-icon",
-  labelPosition: "right",
-  labelLeft: false,
-  labelSize: "",
-  labelColor: "",
-  labelWeight: "",
-  labelGap: "",
+  size: undefined,
+  shape: "dot" as CheckboxShape,
+  round: true,
+  color: undefined,
+  icon: undefined,
+  iconSize: undefined,
+  iconColor: undefined,
+  iconRadius: undefined,
+  labelPosition: "right" as CheckboxLabelPosition,
+  labelSize: undefined,
+  labelColor: undefined,
+  labelWeight: undefined,
+  labelGap: undefined,
   labelDisabled: false,
-  checkedLabelColor: "",
-  customClass: "",
-  customStyle: "",
+  checkedLabelColor: undefined,
+  customClass: undefined,
+  customStyle: undefined,
 })
 
 export const checkboxGroupProps = {
@@ -45,49 +41,41 @@ export const checkboxGroupProps = {
   min: defaultProps("min", { type: [Number, String] }),
   /** 复选框之间的间距 */
   gap: defaultProps("gap", { type: [Number, String] }),
-  /** 网格布局列数，设置后启用 grid 布局 */
+  /** 网格列数，设置后启用 grid 布局 */
   columns: defaultProps("columns", { type: [Number, String] }),
-  /** 是否禁用 */
+  /** 是否垂直排列 */
+  vertical: defaultProps("vertical", { type: Boolean }),
+  /** 是否禁用整组 */
   disabled: defaultProps("disabled", { type: Boolean }),
-  /** 复选框图标大小（继承给子组件） */
+  /** 复选框尺寸（继承给子组件） */
   size: defaultProps("size", { type: [Number, String] }),
-  /** 形状：dot（圆点）或 icon（勾选图标） */
+  /** 形状 */
   shape: defaultProps("shape", { type: String as PropType<CheckboxShape> }),
-  /** 是否圆形图标 */
+  /** 是否圆形 */
   round: defaultProps("round", { type: Boolean }),
-  /** 主色（选中状态的颜色，继承给子组件） */
+  /** 选中态主色（继承给子组件） */
   color: defaultProps("color", { type: String }),
-  /** @deprecated 使用 color 替代，选中的颜色 */
-  checkedColor: defaultProps("checkedColor", { type: String }),
-  /** @deprecated 使用 color 替代，选中的图标颜色 */
-  checkedIconColor: defaultProps("checkedIconColor", { type: String }),
   /** 图标名称 */
   icon: defaultProps("icon", { type: String }),
-  /** 图标大小 */
+  /** 图标尺寸 */
   iconSize: defaultProps("iconSize", { type: [Number, String] }),
-  /** 图标颜色 */
+  /** 未选态边框颜色 */
   iconColor: defaultProps("iconColor", { type: String }),
-  /** 图标粗细 */
-  iconWeight: defaultProps("iconWeight", { type: [Number, String] }),
-  /** 图标圆角值 */
+  /** 图标圆角 */
   iconRadius: defaultProps("iconRadius", { type: [Number, String] }),
-  /** 图标前缀 */
-  iconPrefix: defaultProps("iconPrefix", { type: String }),
   /** 标签位置 */
   labelPosition: defaultProps("labelPosition", { type: String as PropType<CheckboxLabelPosition> }),
-  /** @deprecated 使用 labelPosition="left" 替代 */
-  labelLeft: defaultProps("labelLeft", { type: Boolean }),
-  /** 标签文本大小 */
+  /** 标签字号 */
   labelSize: defaultProps("labelSize", { type: [Number, String] }),
-  /** 标签文本颜色 */
+  /** 标签颜色 */
   labelColor: defaultProps("labelColor", { type: String }),
-  /** 标签文本粗细 */
+  /** 标签字重 */
   labelWeight: defaultProps("labelWeight", { type: [Number, String] }),
   /** 标签与图标的间距 */
   labelGap: defaultProps("labelGap", { type: [Number, String] }),
   /** 是否禁用标签点击 */
   labelDisabled: defaultProps("labelDisabled", { type: Boolean }),
-  /** 选中的标签颜色 */
+  /** 选中态标签颜色 */
   checkedLabelColor: defaultProps("checkedLabelColor", { type: String }),
   /** 自定义类名 */
   customClass: defaultProps("customClass", { type: String }),
@@ -96,18 +84,10 @@ export const checkboxGroupProps = {
 }
 
 export const checkboxGroupEmits = {
-  /** 点击事件 */
-  click: (event: any) => true,
   /** 值变化事件 */
-  change: (value: unknown[]) => true,
+  change: (value: unknown[]) => Array.isArray(value),
   /** 更新绑定值事件 */
-  "update:modelValue": (value: unknown[]) => true,
-}
-
-export interface CheckboxGroupChildrenType {
-  id: string
-  name: number | string
-  index: number
+  "update:modelValue": (value: unknown[]) => Array.isArray(value),
 }
 
 export type CheckboxGroupEmits = typeof checkboxGroupEmits
@@ -124,9 +104,9 @@ export interface CheckboxGroupExpose {
   toggleAll: (checked?: boolean) => void
   /** 获取当前选中数量 */
   getCheckedCount: () => number
-  /** 检查是否达到最小选择数量 */
+  /** 是否达到最小选择数量 */
   isAtMinimum: () => boolean
-  /** 检查是否达到最大选择数量 */
+  /** 是否达到最大选择数量 */
   isAtMaximum: () => boolean
 }
 

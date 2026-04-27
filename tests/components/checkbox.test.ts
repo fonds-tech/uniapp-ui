@@ -273,14 +273,6 @@ describe("ui-checkbox 复选框组件", () => {
 
       expect(wrapper.props("iconRadius")).toBe("8rpx")
     })
-
-    it("应支持自定义选中时的图标颜色", () => {
-      const wrapper = mount(UiCheckbox, {
-        props: { checkedIconColor: "#1989fa", modelValue: true },
-      })
-
-      expect(wrapper.props("checkedIconColor")).toBe("#1989fa")
-    })
   })
 
   describe("标签配置", () => {
@@ -316,24 +308,14 @@ describe("ui-checkbox 复选框组件", () => {
       expect(wrapper.props("labelGap")).toBe("16rpx")
     })
 
-    it("labelGap 应在默认右侧布局应用 margin-left", async () => {
+    it("labelGap 应注入根节点 --ui-checkbox-gap 变量", async () => {
       const wrapper = mount(UiCheckbox, {
         props: { label: "选项", labelGap: "12rpx" },
       })
       await waitForTransition()
 
-      const style = wrapper.find(".ui-checkbox__label").attributes("style") || ""
-      expect(style).toContain("margin-left: 12rpx")
-    })
-
-    it("labelPosition 为 left 时 labelGap 应应用 margin-right", async () => {
-      const wrapper = mount(UiCheckbox, {
-        props: { label: "选项", labelPosition: "left", labelGap: "12rpx" },
-      })
-      await waitForTransition()
-
-      const style = wrapper.find(".ui-checkbox__label").attributes("style") || ""
-      expect(style).toContain("margin-right: 12rpx")
+      const style = wrapper.find(".ui-checkbox").attributes("style") || ""
+      expect(style).toContain("--ui-checkbox-gap: 12rpx")
     })
 
     it("labelPosition 为 left 时标签应在左侧", async () => {
@@ -573,14 +555,13 @@ describe("ui-checkbox 复选框组件", () => {
       expect(wrapper.find(".ui-checkbox__dot").exists()).toBe(true)
     })
 
-    it("indeterminate 状态下背景色应改变", async () => {
+    it("indeterminate 状态应使用实心填充类名（背景色由 CSS var 接管）", async () => {
       const wrapper = mount(UiCheckbox, {
         props: { indeterminate: true },
       })
       await waitForTransition()
 
-      const iconStyle = wrapper.find(".ui-checkbox__icon").attributes("style")
-      expect(iconStyle).toContain("background-color")
+      expect(wrapper.find(".ui-checkbox__icon").classes()).toContain("ui-checkbox__icon--filled")
     })
 
     it("icon 插槽应接收 indeterminate 参数", async () => {

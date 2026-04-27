@@ -1,21 +1,22 @@
 <template>
   <view class="ui-checkbox" :class="[rootClass, props.customClass]" :style="[rootStyle]" @click.stop="onClick">
-    <view class="ui-checkbox__icon" :class="[iconClass]" :style="[iconContainerStyle]" @click.stop="onClickIcon">
-      <slot name="icon" :checked="checked" :disabled="disabled" :indeterminate="isIndeterminate">
-        <view v-if="!isIndeterminate && actualShape === 'dot'" class="ui-checkbox__dot" :style="[dotStyle]" />
+    <view class="ui-checkbox__icon" :class="[iconClass]" @click.stop="onClickIcon">
+      <slot name="icon" :checked="isChecked" :disabled="isDisabled" :indeterminate="isIndeterminate">
+        <ui-icon v-if="isIndeterminate" name="minus" class="ui-checkbox__symbol" color="text-inverse" :size="symbolSize" />
+        <ui-icon v-else-if="isChecked && actualShape === 'icon'" name="check" class="ui-checkbox__symbol" color="text-inverse" :size="symbolSize" />
+        <view v-else-if="isChecked && actualShape === 'dot'" class="ui-checkbox__dot" :class="{ 'ui-checkbox__dot--round': isRound }" />
       </slot>
     </view>
-    <view v-if="hasLabel" class="ui-checkbox__content" :class="[contentClass]">
-      <view class="ui-checkbox__label" :class="[labelClass]" :style="[labelStyle]" @click.stop="onClickLabel">
-        <slot>{{ label }}</slot>
+    <view v-if="hasLabel" class="ui-checkbox__content">
+      <view class="ui-checkbox__label" :class="labelClass" @click.stop="onClickLabel">
+        <slot>{{ props.label }}</slot>
       </view>
     </view>
   </view>
 </template>
 
 <script setup lang="ts">
-import type { CSSProperties } from "vue"
-import type { CheckboxValueType } from "./index"
+import type { CheckboxProps } from "./index"
 import { checkboxGroupKey } from "../ui-checkbox-group"
 import { isDef, isBoolean } from "../utils/check"
 import { checkboxEmits, checkboxProps } from "./index"
@@ -28,223 +29,154 @@ const props = defineProps(checkboxProps)
 const emits = defineEmits(checkboxEmits)
 const slots = useSlots()
 
-// 获取父组件
+// 父级 checkbox-group
 const { index, parent } = useParent(checkboxGroupKey)
 
-// 默认尺寸
-const DEFAULT_ICON_SIZE = "36rpx"
-const DEFAULT_LABEL_SIZE = "28rpx"
-
-// 实际图标尺寸
-const actualIconSize = computed(() => {
-  const iconSize = prop("iconSize")
-  if (iconSize) return useUnit(iconSize)
-  const size = prop("size")
-  if (size) return useUnit(size)
-  return DEFAULT_ICON_SIZE
-})
-// 实际标签尺寸
-const actualLabelSize = computed(() => {
-  const labelSize = prop("labelSize")
-  if (labelSize) return useUnit(labelSize)
-  return DEFAULT_LABEL_SIZE
-})
-// 标签是否在左边
-const isLabelLeft = computed(() => prop("labelPosition") === "left")
-// 主色
-const primaryColor = computed(() => {
-  const color = prop("color")
-  if (color) return useColor(color)
-  const checkedIconColor = prop("checkedIconColor")
-  if (checkedIconColor) return useColor(checkedIconColor)
-  const checkedColor = prop("checkedColor")
-  if (checkedColor) return useColor(checkedColor)
-  return ""
-})
-// 是否半选状态
-const isIndeterminate = computed(() => prop("indeterminate"))
+// 取值优先级：自身 prop → 父 group 同名 prop（仅当 bindGroup 且存在父级）
+function prop<K extends keyof CheckboxProps>(key: K): CheckboxProps[K] | undefined {
+  if (props.bindGroup && parent) {
+    if (isDef(props[key])) return props[key]
+    const parentProps = parent.props as any
+    if (isDef(parentProps[key])) return parentProps[key]
+  }
+  return props[key]
+}
+// 标识符：用户传 name 优先，否则用 group 内 index
+const name = computed(() => (isDef(props.name) ? props.name : index.value))
+// 是否选中
+const isChecked = computed(() => (props.bindGroup && parent ? parent.props.modelValue.includes(name.value) : !!props.modelValue))
+// 是否禁用
+const isDisabled = computed(() => !!prop("disabled"))
+// 是否只读
+const isReadonly = computed(() => !!prop("readonly"))
+// 是否半选
+const isIndeterminate = computed(() => !!prop("indeterminate"))
 // 实际形状
 const actualShape = computed(() => prop("shape") || "dot")
-// 根节点样式
+// 是否圆形
+const isRound = computed(() => !!prop("round"))
+// 标签是否在左侧
+const isLabelLeft = computed(() => prop("labelPosition") === "left")
+// 是否有标签内容
+const hasLabel = computed(() => !!slots.default || isDef(props.label))
+// 内部图标字号：默认占容器 70%（基于 --ui-checkbox-icon-size 计算）
+const symbolSize = "calc(var(--ui-checkbox-icon-size) * 0.7)"
+
+// 根节点样式：所有 prop 通过 CSS var 注入；SCSS 选择器顶部声明默认值
 const rootStyle = computed(() => {
-  const style: CSSProperties = {}
-  return useStyle({ ...style, ...useStyle(props.customStyle) })
+  const s: Record<string, string | number | undefined> = {}
+  // 图标尺寸：iconSize > size
+  const iconSize = prop("iconSize") ?? prop("size")
+  if (iconSize !== undefined) s["--ui-checkbox-icon-size"] = useUnit(iconSize)
+  const iconColor = prop("iconColor")
+  if (iconColor) s["--ui-checkbox-icon-color"] = useColor(iconColor)
+  const iconRadius = prop("iconRadius")
+  if (iconRadius !== undefined) s["--ui-checkbox-icon-radius"] = useUnit(iconRadius)
+  const checkedColor = prop("color")
+  if (checkedColor) s["--ui-checkbox-checked-color"] = useColor(checkedColor)
+  // 标签
+  const labelSize = prop("labelSize")
+  if (labelSize !== undefined) s["--ui-checkbox-label-size"] = useUnit(labelSize)
+  const labelColor = prop("labelColor")
+  if (labelColor) s["--ui-checkbox-label-color"] = useColor(labelColor)
+  const labelWeight = prop("labelWeight")
+  if (labelWeight !== undefined) s["--ui-checkbox-label-weight"] = String(labelWeight)
+  const labelGap = prop("labelGap")
+  if (labelGap !== undefined) s["--ui-checkbox-gap"] = useUnit(labelGap)
+  const checkedLabelColor = prop("checkedLabelColor")
+  if (checkedLabelColor) s["--ui-checkbox-label-checked-color"] = useColor(checkedLabelColor)
+  return useStyle({ ...s, ...(useStyle(props.customStyle) || {}) })
 })
 // 根节点类名
 const rootClass = computed(() => {
   const list: string[] = []
-  if (checked.value) list.push("ui-checkbox--checked")
+  if (isChecked.value) list.push("ui-checkbox--checked")
   if (isIndeterminate.value) list.push("ui-checkbox--indeterminate")
-  if (prop("disabled")) list.push("ui-checkbox--disabled")
-  if (prop("readonly")) list.push("ui-checkbox--readonly")
+  if (isDisabled.value) list.push("ui-checkbox--disabled")
+  if (isReadonly.value) list.push("ui-checkbox--readonly")
   if (isLabelLeft.value) list.push("ui-checkbox--left")
   return list
 })
-// 图标容器样式
-const iconContainerStyle = computed(() => {
-  const style: CSSProperties = {}
-  style.width = actualIconSize.value
-  style.height = actualIconSize.value
-  style.borderColor = useColor(prop("iconColor")) || undefined
-  style.borderRadius = useUnit(prop("iconRadius")) || undefined
-
-  if (actualShape.value === "dot" && !isIndeterminate.value) {
-    // dot 模式：两个状态都使用粗边框（占尺寸1/3），激活时边框变为主色
-    const size = actualIconSize.value || "36rpx"
-    style.borderWidth = `calc(${size} / 3)`
-    style.backgroundColor = "transparent"
-    if (checked.value) {
-      const color = primaryColor.value || "var(--ui-color-primary)"
-      style.borderColor = color
-    }
-  } else if (checked.value || isIndeterminate.value) {
-    const color = primaryColor.value || "var(--ui-color-primary)"
-    style.borderColor = color
-    style.backgroundColor = color
-  }
-
-  return useStyle(style)
-})
-// 图标类名
+// 图标节点类名：filled = 实心填充（icon 选中 / indeterminate），dot-checked = dot 模式选中态粗环
 const iconClass = computed(() => {
   const list: string[] = []
-  if (prop("round")) list.push("ui-checkbox__icon--round")
+  if (isRound.value) list.push("ui-checkbox__icon--round")
   if (isIndeterminate.value) {
-    list.push("ui-checkbox__icon--indeterminate")
-  } else if (checked.value && actualShape.value === "icon") {
-    list.push("ui-checkbox__icon--check")
+    list.push("ui-checkbox__icon--filled", "ui-checkbox__icon--indeterminate")
+  } else if (isChecked.value && actualShape.value === "icon") {
+    list.push("ui-checkbox__icon--filled", "ui-checkbox__icon--check")
+  } else if (isChecked.value && actualShape.value === "dot") {
+    list.push("ui-checkbox__icon--dot-checked")
+  } else if (isDisabled.value) {
+    list.push("ui-checkbox__icon--disabled")
   }
-  if (disabled.value) list.push("ui-checkbox__icon--disabled")
   return list
-})
-// 点样式
-const dotStyle = computed(() => {
-  const style: CSSProperties = {}
-  style.borderRadius = prop("round") ? "9999px" : useUnit(prop("iconRadius")) || "2rpx"
-  return useStyle(style)
-})
-// 是否有标签
-const hasLabel = computed(() => slots.default || props.label)
-// 内容区域类名
-const contentClass = computed(() => {
-  const list: string[] = []
-  if (isLabelLeft.value) list.push("ui-checkbox__content--left")
-  return list
-})
-// 标签样式
-const labelStyle = computed(() => {
-  const style: CSSProperties = {}
-  style.color = useColor(prop("labelColor")) || undefined
-  style.fontSize = actualLabelSize.value
-  style.fontWeight = prop("labelWeight") || undefined
-  if (prop("checkedLabelColor") && checked.value) {
-    style.color = useColor(prop("checkedLabelColor"))
-  }
-  if (prop("labelGap")) {
-    if (isLabelLeft.value) {
-      style.marginRight = useUnit(prop("labelGap"))
-    } else {
-      style.marginLeft = useUnit(prop("labelGap"))
-    }
-  }
-  return useStyle(style)
 })
 // 标签类名
 const labelClass = computed(() => {
   const list: string[] = []
-  if (checked.value) list.push("ui-checkbox__label--checked")
-  if (disabled.value) list.push("ui-checkbox__label--disabled")
+  if (isChecked.value) list.push("ui-checkbox__label--checked")
+  if (isDisabled.value) list.push("ui-checkbox__label--disabled")
   if (isLabelLeft.value) list.push("ui-checkbox__label--left")
   return list
 })
-// 名称
-const name = computed(() => (isDef(props.name) ? props.name : index.value))
-// 是否选中
-const checked = computed(() => (props.bindGroup && parent ? parent.props.modelValue.includes(name.value) : !!props.modelValue))
-// 是否禁用
-const disabled = computed(() => prop("disabled"))
-// 标签文本
-const label = computed(() => props.label)
 
-// 监听值变化
+// 监听值变化向外抛 change
 watch(
   () => props.modelValue,
   (value) => emits("change", value),
 )
 
-// 获取属性值（优先子组件，否则父组件）
-function prop(name: string) {
-  if (props.bindGroup && parent) {
-    if (isDef(props[name])) return props[name]
-    if (isDef(parent.props[name])) return parent.props[name]
-  }
-  return props[name]
-}
-
-// 更新值
-async function updateValue(value: CheckboxValueType) {
-  emits("update:modelValue", toRaw(value))
-}
-
-// 切换选中状态
+// 切换选中状态：在 group 内通过父更新数组；独立使用直接 emit 布尔
 function toggle(check?: boolean) {
-  if (prop("disabled") || prop("readonly")) return
+  if (isDisabled.value || isReadonly.value) return
 
   if (parent && props.bindGroup) {
     const value = parent.props.modelValue
     const min = parent.props.min ?? 0
+    const max = parent.props.max
+    const has = value.includes(name.value)
 
     const add = () => {
-      const max = parent.props.max
       const isMax = isDef(max) && max !== Infinity && value.length >= +max
-      if (!isMax && !value.includes(name.value)) {
-        value.push(name.value)
-        parent.updateValue(value)
-      }
+      if (isMax || has) return
+      parent.updateValue([...value, name.value])
     }
-
     const remove = () => {
-      if (value.length <= +min) return
-      const valueIndex = value.indexOf(name.value)
-      if (valueIndex !== -1) {
-        value.splice(valueIndex, 1)
-        parent.updateValue(value)
-      }
+      if (value.length <= +min || !has) return
+      parent.updateValue(value.filter((v) => v !== name.value))
     }
 
     if (isBoolean(check)) {
       if (check) add()
       else remove()
-    } else if (checked.value) {
+    } else if (isChecked.value) {
       remove()
     } else {
       add()
     }
   } else {
-    updateValue(!props.modelValue)
+    emits("update:modelValue", toRaw(!props.modelValue))
   }
 }
 
-// 点击事件
-function onClick(event: any) {
+// 根节点点击：先 toggle 再 emit click（toggle 内部已自处理 disabled/readonly）
+function onClick(event: Event) {
   toggle()
   emits("click", event)
 }
-
-// 点击图标
-function onClickIcon(event: any) {
+// 图标点击
+function onClickIcon(event: Event) {
   toggle()
   emits("click", event)
 }
-
-// 点击标签
-function onClickLabel(event: any) {
-  if (prop("labelDisabled")) return
-  toggle()
+// 标签点击：labelDisabled 时仅屏蔽切换，仍 emit click 让外部能监听拦截尝试
+function onClickLabel(event: Event) {
+  if (!prop("labelDisabled")) toggle()
   emits("click", event)
 }
 
-defineExpose({ props, checked, toggle, name })
+defineExpose({ props, checked: isChecked, toggle, name })
 </script>
 
 <script lang="ts">
@@ -255,12 +187,19 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-$check-icon: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none'%3E%3Cpolyline points='4,12 9,17 20,6' stroke='white' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E";
-$indeterminate-icon: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none'%3E%3Cline x1='5' y1='12' x2='19' y2='12' stroke='white' stroke-width='2.5' stroke-linecap='round'/%3E%3C/svg%3E";
-
 .ui-checkbox {
-  gap: 12rpx;
+  --ui-checkbox-gap: var(--ui-spacing-sm);
+  --ui-checkbox-icon-size: var(--ui-font-size-lg);
+  --ui-checkbox-icon-color: var(--ui-color-border-dark);
+  --ui-checkbox-label-size: var(--ui-font-size-sm);
+  --ui-checkbox-icon-radius: var(--ui-radius-sm);
+  --ui-checkbox-label-color: var(--ui-color-text);
+  --ui-checkbox-label-weight: normal;
+  --ui-checkbox-checked-color: var(--ui-color-primary);
+  --ui-checkbox-label-disabled-color: var(--ui-color-text-disabled);
+  gap: var(--ui-checkbox-gap);
   cursor: pointer;
+
   display: flex;
   align-items: center;
   user-select: none;
@@ -279,42 +218,57 @@ $indeterminate-icon: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/sv
   }
 
   &__icon {
-    border: var(--ui-border-width-thick) solid var(--ui-color-border-dark);
+    width: var(--ui-checkbox-icon-size);
+    border: var(--ui-border-width-thick) solid var(--ui-checkbox-icon-color);
+    height: var(--ui-checkbox-icon-size);
     display: flex;
+    box-sizing: border-box;
     align-items: center;
     flex-shrink: 0;
-    border-radius: var(--ui-radius-sm);
-    background-size: 65% 65%;
+    border-radius: var(--ui-checkbox-icon-radius);
     justify-content: center;
     background-color: transparent;
-    background-repeat: no-repeat;
-    background-position: center;
     transition-duration: var(--ui-transition-fast);
-    transition-property: border-color, background-color;
+    transition-property: border-color, background-color, border-width;
 
+    // 圆形（独立修饰，不与状态互斥）
     &--round {
       border-radius: var(--ui-radius-round);
     }
 
-    &--check {
-      background-image: url($check-icon);
+    // 实心填充：icon 选中态 / indeterminate 共用
+    &--filled {
+      border-color: var(--ui-checkbox-checked-color);
+      background-color: var(--ui-checkbox-checked-color);
     }
 
-    &--indeterminate {
-      background-image: url($indeterminate-icon);
+    // dot 选中态：粗环（占容器 1/3）+ 主色
+    &--dot-checked {
+      border-color: var(--ui-checkbox-checked-color);
+      border-width: calc(var(--ui-checkbox-icon-size) / 3);
     }
 
+    // 未选 + 禁用：灰底（已选 + 禁用走根节点 opacity 削弱）
     &--disabled {
-      border-color: var(--ui-color-border-dark);
       background-color: var(--ui-color-background-disabled);
     }
   }
 
+  // 内部 iconfont 符号（勾 / 减号）
+  &__symbol {
+    line-height: 1;
+  }
+
+  // dot 中心点：仅在 dot 模式选中时显示
   &__dot {
     width: 50%;
     height: 50%;
-    border-radius: 2rpx;
+    border-radius: var(--ui-radius-xs);
     background-color: var(--ui-color-text-inverse);
+
+    &--round {
+      border-radius: var(--ui-radius-round);
+    }
   }
 
   &__content {
@@ -322,20 +276,22 @@ $indeterminate-icon: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/sv
     display: flex;
     min-width: 0;
     flex-direction: column;
-
-    &--left {
-      align-items: flex-end;
-    }
   }
 
   &__label {
     flex: 1;
-    color: var(--ui-color-text);
+    color: var(--ui-checkbox-label-color);
+    font-size: var(--ui-checkbox-label-size);
     word-break: break-word;
+    font-weight: var(--ui-checkbox-label-weight);
     line-height: 1.4;
 
+    &--checked {
+      color: var(--ui-checkbox-label-checked-color, var(--ui-checkbox-label-color));
+    }
+
     &--disabled {
-      color: var(--ui-color-text-disabled);
+      color: var(--ui-checkbox-label-disabled-color);
     }
   }
 }

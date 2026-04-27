@@ -2,92 +2,83 @@ import type Checkbox from "./ui-checkbox.vue"
 import type { PropType, CSSProperties, ExtractPropTypes } from "vue"
 import { buildDefaultProps } from "../utils/props"
 
-/** 复选框形状类型 */
-export type CheckboxShape = "dot" | "icon" | ""
+/** 复选框形状 */
+export type CheckboxShape = "dot" | "icon"
 
-/** 标签位置类型 */
+/** 标签位置 */
 export type CheckboxLabelPosition = "left" | "right"
 
 const defaultProps = buildDefaultProps("checkbox", {
   modelValue: false,
-  name: "",
-  label: "",
+  name: undefined,
+  label: undefined,
   bindGroup: true,
   disabled: false,
   readonly: false,
-  size: "36rpx",
-  shape: "",
+  size: undefined,
+  shape: "dot" as CheckboxShape,
   round: true,
   indeterminate: false,
-  color: "",
-  checkedColor: "",
-  checkedIconColor: "",
+  color: undefined,
   icon: "check",
-  iconSize: "",
-  iconColor: "",
-  iconWeight: "",
-  iconRadius: "",
-  labelPosition: "right",
-  labelSize: "",
-  labelColor: "",
-  labelWeight: "",
-  labelGap: "",
+  iconSize: undefined,
+  iconColor: undefined,
+  iconRadius: undefined,
+  labelPosition: "right" as CheckboxLabelPosition,
+  labelSize: undefined,
+  labelColor: undefined,
+  labelWeight: undefined,
+  labelGap: undefined,
   labelDisabled: false,
-  checkedLabelColor: "",
-  customClass: "",
-  customStyle: "",
+  checkedLabelColor: undefined,
+  customClass: undefined,
+  customStyle: undefined,
 })
 
 export const checkboxProps = {
   /** 绑定值 */
   modelValue: defaultProps("modelValue", { type: Boolean }),
-  /** 标识符，通常为一个唯一的字符串或数字 */
+  /** 标识符（在 group 中作为选项 key） */
   name: defaultProps("name", { type: [Number, String] }),
-  /** 标签文本内容 */
+  /** 标签文本 */
   label: defaultProps("label", { type: [Number, String] }),
   /** 是否与复选框组绑定 */
   bindGroup: defaultProps("bindGroup", { type: Boolean }),
   /** 是否禁用 */
   disabled: defaultProps("disabled", { type: Boolean }),
-  /** 是否只读（可点击但不改变状态） */
+  /** 是否只读（可见但不可改） */
   readonly: defaultProps("readonly", { type: Boolean }),
-  /** 复选框图标大小 */
+  /** 复选框尺寸（图标尺寸的快捷别名） */
   size: defaultProps("size", { type: [Number, String] }),
-  /** 形状：dot（圆点）或 icon（勾选图标） */
+  /** 形状 */
   shape: defaultProps("shape", { type: String as PropType<CheckboxShape> }),
   /** 是否圆形 */
   round: defaultProps("round", { type: Boolean }),
-  /** 不确定状态（用于父子关系场景） */
+  /** 不确定状态（用于全选父项的中间态） */
   indeterminate: defaultProps("indeterminate", { type: Boolean }),
-  /** 主色（选中状态的颜色） */
+  /** 选中态主色 */
   color: defaultProps("color", { type: String }),
-  /** @deprecated 使用 color 替代，选中的颜色 */
-  checkedColor: defaultProps("checkedColor", { type: String }),
-  /** @deprecated 使用 color 替代，选中时的图标颜色 */
-  checkedIconColor: defaultProps("checkedIconColor", { type: String }),
   /** 图标名称（shape="icon" 时使用） */
   icon: defaultProps("icon", { type: String }),
-  /** 图标大小（覆盖 size 预设） */
+  /** 图标尺寸（覆盖 size） */
   iconSize: defaultProps("iconSize", { type: [Number, String] }),
-  /** 图标颜色（未选中状态） */
+  /** 未选态边框颜色 */
   iconColor: defaultProps("iconColor", { type: String }),
-  /** 图标粗细 */
-  iconWeight: defaultProps("iconWeight", { type: [Number, String] }),
-  /** 图标圆角值 */
+  /** 图标圆角 */
   iconRadius: defaultProps("iconRadius", { type: [Number, String] }),
-  /** 标签位置：left | right */
+  /** 标签位置 */
   labelPosition: defaultProps("labelPosition", { type: String as PropType<CheckboxLabelPosition> }),
-  /** 标签文本大小（覆盖 size 预设） */
+  /** 标签字号 */
   labelSize: defaultProps("labelSize", { type: [Number, String] }),
-  /** 标签文本颜色 */
+  /** 标签颜色 */
   labelColor: defaultProps("labelColor", { type: String }),
-  /** 标签文本粗细 */
+  /** 标签字重 */
   labelWeight: defaultProps("labelWeight", { type: [Number, String] }),
-  /** 标签文本与图标的间距 */
+  /** 标签与图标的间距 */
   labelGap: defaultProps("labelGap", { type: [Number, String] }),
-  /** 是否禁用标签文本点击 */
+  /** 是否禁用标签点击切换 */
   labelDisabled: defaultProps("labelDisabled", { type: Boolean }),
-  /** 选中时的标签文本颜色 */
+  /** 选中态标签颜色 */
   checkedLabelColor: defaultProps("checkedLabelColor", { type: String }),
   /** 自定义类名 */
   customClass: defaultProps("customClass", { type: String }),
@@ -97,11 +88,11 @@ export const checkboxProps = {
 
 export const checkboxEmits = {
   /** 点击事件 */
-  click: (event: any) => true,
+  click: (event: Event) => event ?? true,
   /** 值变化事件 */
-  change: (value: CheckboxValueType) => true,
+  change: (value: CheckboxValueType) => value !== undefined,
   /** 更新绑定值事件 */
-  "update:modelValue": (value: CheckboxValueType) => true,
+  "update:modelValue": (value: CheckboxValueType) => value !== undefined,
 }
 
 export type CheckboxValueType = string | number | boolean

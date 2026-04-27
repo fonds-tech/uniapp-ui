@@ -5,10 +5,31 @@
 
 import UiCheckbox from "@/uni_modules/uniapp-ui/ui-checkbox/ui-checkbox.vue"
 import UiCheckboxGroup from "@/uni_modules/uniapp-ui/ui-checkbox-group/ui-checkbox-group.vue"
-import { h } from "vue"
 import { mount } from "@vue/test-utils"
 import { waitForTransition } from "../setup"
+import { h, ref, defineComponent } from "vue"
 import { it, vi, expect, describe, afterEach, beforeEach } from "vitest"
+
+// 用于联动测试的 v-model 包装器：父级用 ref 维护 modelValue，避免依赖子组件 mutate props 行为
+function createGroupWrapper(initial: string[] = [], names: string[] = ["a", "b", "c"], extraProps: Record<string, unknown> = {}) {
+  const modelValue = ref<string[]>([...initial])
+  const Comp = defineComponent({
+    components: { UiCheckboxGroup, UiCheckbox },
+    setup() {
+      return () =>
+        h(
+          UiCheckboxGroup,
+          {
+            modelValue: modelValue.value,
+            "onUpdate:modelValue": (v: unknown[]) => (modelValue.value = v as string[]),
+            ...extraProps,
+          },
+          () => names.map((n) => h(UiCheckbox, { name: n, label: n })),
+        )
+    },
+  })
+  return { Comp, modelValue }
+}
 
 describe("ui-checkbox-group 复选框组组件", () => {
   // 启用 fake timers
@@ -175,14 +196,6 @@ describe("ui-checkbox-group 复选框组组件", () => {
 
       expect(wrapper.props("iconColor")).toBe("#999")
     })
-
-    it("应支持设置选中图标颜色", () => {
-      const wrapper = mount(UiCheckboxGroup, {
-        props: { checkedIconColor: "#1989fa" },
-      })
-
-      expect(wrapper.props("checkedIconColor")).toBe("#1989fa")
-    })
   })
 
   describe("标签配置", () => {
@@ -218,12 +231,12 @@ describe("ui-checkbox-group 复选框组组件", () => {
       expect(wrapper.props("labelGap")).toBe("16rpx")
     })
 
-    it("应支持标签在左侧", () => {
+    it("应支持标签位置", () => {
       const wrapper = mount(UiCheckboxGroup, {
-        props: { labelLeft: true },
+        props: { labelPosition: "left" },
       })
 
-      expect(wrapper.props("labelLeft")).toBe(true)
+      expect(wrapper.props("labelPosition")).toBe("left")
     })
 
     it("应支持禁用标签点击", () => {
@@ -244,12 +257,21 @@ describe("ui-checkbox-group 复选框组组件", () => {
   })
 
   describe("选中颜色", () => {
-    it("应支持设置选中颜色", () => {
+    it("应支持设置选中主色", () => {
       const wrapper = mount(UiCheckboxGroup, {
-        props: { checkedColor: "#ff6600" },
+        props: { color: "#ff6600" },
       })
 
-      expect(wrapper.props("checkedColor")).toBe("#ff6600")
+      expect(wrapper.props("color")).toBe("#ff6600")
+    })
+  })
+
+  describe("垂直排列", () => {
+    it("vertical=true 应添加垂直布局类名", async () => {
+      const wrapper = mount(UiCheckboxGroup, { props: { vertical: true } })
+      await waitForTransition()
+
+      expect(wrapper.classes()).toContain("ui-checkbox-group--vertical")
     })
   })
 
@@ -320,67 +342,45 @@ describe("ui-checkbox-group 复选框组组件", () => {
 
   describe("子 checkbox 交互", () => {
     it("点击子 checkbox 应触发 group 的 change 事件", async () => {
-      const wrapper = mount(UiCheckboxGroup, {
-        props: { modelValue: [] },
-        slots: {
-          default: () => [h(UiCheckbox, { name: "a", label: "选项A" }), h(UiCheckbox, { name: "b", label: "选项B" })],
-        },
-        global: {
-          components: { UiCheckbox },
-        },
-      })
+      const { Comp, modelValue } = createGroupWrapper([], ["a", "b"])
+      const wrapper = mount(Comp)
       await waitForTransition()
 
       const checkboxes = wrapper.findAllComponents(UiCheckbox)
       await checkboxes[0].trigger("click")
       await waitForTransition()
 
-      expect(wrapper.emitted("change")).toBeTruthy()
+      expect(modelValue.value).toEqual(["a"])
+      expect(wrapper.findComponent(UiCheckboxGroup).emitted("change")).toBeTruthy()
     })
 
     it("勾选所有子 checkbox 后应触发 change 事件", async () => {
-      const modelValue: string[] = []
-      const wrapper = mount(UiCheckboxGroup, {
-        props: { modelValue },
-        slots: {
-          default: () => [h(UiCheckbox, { name: "a", label: "选项A" }), h(UiCheckbox, { name: "b", label: "选项B" })],
-        },
-        global: {
-          components: { UiCheckbox },
-        },
-      })
+      const { Comp } = createGroupWrapper([], ["a", "b"])
+      const wrapper = mount(Comp)
       await waitForTransition()
 
       const checkboxes = wrapper.findAllComponents(UiCheckbox)
-
       await checkboxes[0].trigger("click")
       await waitForTransition()
-
       await checkboxes[1].trigger("click")
       await waitForTransition()
 
-      const changeEvents = wrapper.emitted("change")
+      const changeEvents = wrapper.findComponent(UiCheckboxGroup).emitted("change")
       expect(changeEvents).toBeTruthy()
       expect(changeEvents!.length).toBeGreaterThanOrEqual(2)
     })
 
     it("取消勾选子 checkbox 应触发 change 事件", async () => {
-      const wrapper = mount(UiCheckboxGroup, {
-        props: { modelValue: ["a", "b"] },
-        slots: {
-          default: () => [h(UiCheckbox, { name: "a", label: "选项A" }), h(UiCheckbox, { name: "b", label: "选项B" })],
-        },
-        global: {
-          components: { UiCheckbox },
-        },
-      })
+      const { Comp, modelValue } = createGroupWrapper(["a", "b"], ["a", "b"])
+      const wrapper = mount(Comp)
       await waitForTransition()
 
       const checkboxes = wrapper.findAllComponents(UiCheckbox)
       await checkboxes[0].trigger("click")
       await waitForTransition()
 
-      expect(wrapper.emitted("change")).toBeTruthy()
+      expect(modelValue.value).toEqual(["b"])
+      expect(wrapper.findComponent(UiCheckboxGroup).emitted("change")).toBeTruthy()
     })
   })
 
@@ -631,13 +631,8 @@ describe("ui-checkbox-group 复选框组组件", () => {
     })
 
     it("连续点击多个选项应累加到数组", async () => {
-      const wrapper = mount(UiCheckboxGroup, {
-        props: { modelValue: [] },
-        slots: {
-          default: () => [h(UiCheckbox, { name: "a", label: "选项A" }), h(UiCheckbox, { name: "b", label: "选项B" })],
-        },
-        global: { components: { UiCheckbox } },
-      })
+      const { Comp, modelValue } = createGroupWrapper([], ["a", "b"])
+      const wrapper = mount(Comp)
       await waitForTransition()
 
       const checkboxes = wrapper.findAllComponents(UiCheckbox)
@@ -646,13 +641,9 @@ describe("ui-checkbox-group 复选框组组件", () => {
       await checkboxes[1].trigger("click")
       await waitForTransition()
 
-      const updateEvents = wrapper.emitted("update:modelValue")
-      expect(updateEvents).toBeTruthy()
-      expect(updateEvents!.length).toBe(2)
-      const lastPayload = updateEvents![updateEvents!.length - 1][0] as string[]
-      expect(lastPayload).toContain("a")
-      expect(lastPayload).toContain("b")
-      expect(lastPayload.length).toBe(2)
+      expect(modelValue.value).toContain("a")
+      expect(modelValue.value).toContain("b")
+      expect(modelValue.value.length).toBe(2)
     })
   })
 
