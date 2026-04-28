@@ -1,18 +1,35 @@
 <template>
-  <view class="ui-color-picker">
-    <ui-popup :show="props.show" mode="bottom" border-radius="24" safe-area-inset-bottom @update:show="onUpdateShow" @close="onClose">
+  <view class="ui-color-picker" :class="[props.customClass]" :style="[props.customStyle]">
+    <ui-popup
+      :show="props.show"
+      :mode="props.mode"
+      :border-radius="props.borderRadius"
+      :safe-area-inset-bottom="props.safeAreaInsetBottom"
+      :close-on-click-overlay="props.closeOnClickOverlay"
+      :overlay="props.overlay"
+      :z-index="props.zIndex"
+      :duration="props.duration"
+      @update:show="(v: boolean) => emits('update:show', v)"
+      @close="onClose"
+    >
       <template #header>
-        <view class="ui-color-picker__header">
-          <view class="ui-color-picker__cancel" @click="onCancel">
-            <text>取消</text>
+        <slot name="header">
+          <view v-if="props.showHeader" class="ui-color-picker__header">
+            <view class="ui-color-picker__header__cancel" @click="onCancel">
+              <slot name="cancel">
+                <ui-button text text-color="text-tertiary">{{ props.cancelText }}</ui-button>
+              </slot>
+            </view>
+            <view class="ui-color-picker__header__title">
+              <slot name="title">{{ props.title }}</slot>
+            </view>
+            <view class="ui-color-picker__header__confirm" @click="onConfirm">
+              <slot name="confirm">
+                <ui-button text>{{ props.confirmText }}</ui-button>
+              </slot>
+            </view>
           </view>
-          <view class="ui-color-picker__title">
-            <text>{{ props.title || "选择颜色" }}</text>
-          </view>
-          <view class="ui-color-picker__confirm" @click="onConfirm">
-            <text>确定</text>
-          </view>
-        </view>
+        </slot>
       </template>
 
       <view class="ui-color-picker__body">
@@ -24,6 +41,8 @@
           :show-preview="props.showPreview"
           :columns="props.columns"
           :panel-height="props.panelHeight"
+          :disabled="props.disabled"
+          :readonly="props.readonly"
         />
       </view>
     </ui-popup>
@@ -46,26 +65,28 @@ const tempColor = ref(props.modelValue || "")
 // 预设色：用户传 → 用户值；未传 → panel 默认（避免 picker 默认空数组覆盖 panel 默认）
 const presetColors = computed(() => props.presetColors ?? DEFAULT_PRESET_COLORS)
 
-// 监听弹窗打开：重置 tempColor 为外部 modelValue
+// 重置临时色为外部 modelValue
+function resetTempColor() {
+  tempColor.value = props.modelValue || ""
+}
+
+// 弹窗打开时同步外部值
 watch(
   () => props.show,
   (val) => {
-    if (val) tempColor.value = props.modelValue || ""
+    if (val) resetTempColor()
   },
 )
-// 监听 modelValue 外部变化（弹窗关闭时同步显示）
+// 关闭时外部 modelValue 变更也同步显示
 watch(
   () => props.modelValue,
-  (val) => {
-    if (!props.show) tempColor.value = val || ""
+  () => {
+    if (!props.show) resetTempColor()
   },
 )
 
-function onUpdateShow(show: boolean) {
-  emits("update:show", show)
-}
-
 function onConfirm() {
+  if (props.disabled || props.readonly) return
   emits("update:modelValue", tempColor.value)
   emits("change", tempColor.value)
   emits("confirm", tempColor.value)
@@ -73,13 +94,13 @@ function onConfirm() {
 }
 
 function onCancel() {
-  tempColor.value = props.modelValue || ""
+  resetTempColor()
   emits("cancel")
   emits("update:show", false)
 }
 
 function onClose() {
-  tempColor.value = props.modelValue || ""
+  resetTempColor()
   emits("close")
 }
 </script>
@@ -94,32 +115,17 @@ export default {
 <style lang="scss" scoped>
 .ui-color-picker {
   &__header {
-    height: 88rpx;
     display: flex;
-    padding: 0 var(--ui-spacing-lg);
+    padding: var(--ui-spacing-md);
     align-items: center;
-    border-bottom: var(--ui-border-width) solid var(--ui-color-border);
+    border-bottom: var(--ui-border-width) solid var(--ui-color-border-light);
     justify-content: space-between;
-  }
 
-  &__title {
-    color: var(--ui-color-text);
-    font-size: var(--ui-font-size-md);
-    font-weight: 600;
-  }
-
-  &__cancel,
-  &__confirm {
-    padding: var(--ui-spacing-sm);
-    font-size: var(--ui-font-size-sm);
-  }
-
-  &__cancel {
-    color: var(--ui-color-text-secondary);
-  }
-
-  &__confirm {
-    color: var(--ui-color-primary);
+    &__title {
+      color: var(--ui-color-text);
+      font-size: var(--ui-font-size-md);
+      font-weight: var(--ui-font-weight-bold);
+    }
   }
 
   &__body {

@@ -21,7 +21,7 @@
           <view v-if="props.showHeader" class="ui-date-range-picker__header">
             <view class="ui-date-range-picker__header__cancel" @click="handleCancel">
               <slot name="cancel">
-                <ui-button text size="medium" text-color="#969799">{{ props.cancelText }}</ui-button>
+                <ui-button text text-color="text-tertiary">{{ props.cancelText }}</ui-button>
               </slot>
             </view>
 
@@ -36,7 +36,7 @@
 
             <view class="ui-date-range-picker__header__confirm" @click="handleConfirm">
               <slot name="confirm">
-                <ui-button text size="medium">{{ props.confirmText }}</ui-button>
+                <ui-button text>{{ props.confirmText }}</ui-button>
               </slot>
             </view>
           </view>
@@ -390,11 +390,10 @@ export default {
 <style lang="scss">
 .ui-date-range-picker {
   &__header {
-    height: 96rpx;
     display: flex;
-    padding: 0 var(--ui-spacing-md);
+    padding: var(--ui-spacing-md);
     align-items: center;
-    border-bottom: 1px solid var(--ui-color-border);
+    border-bottom: var(--ui-border-width) solid var(--ui-color-border-light);
     justify-content: space-between;
 
     &__cancel,

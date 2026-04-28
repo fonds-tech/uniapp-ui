@@ -2,11 +2,9 @@
   <view class="ui-keyboard" :class="[props.customClass]" :style="[rootStyle]">
     <slot name="header">
       <view v-if="props.showHeader" class="ui-keyboard__header">
-        <view v-if="props.showCancel" class="ui-keyboard__cancel">
+        <view v-if="props.showCancel" class="ui-keyboard__cancel" @click="onCancel">
           <slot name="cancel">
-            <ui-button text :text-color="props.cancelTextColor" :text-size="props.cancelTextSize" :text-weight="props.cancelTextWeight" @click="onCancel">
-              {{ props.cancelText }}
-            </ui-button>
+            <ui-button text text-color="text-tertiary">{{ props.cancelText }}</ui-button>
           </slot>
         </view>
         <view class="ui-keyboard__title">
@@ -14,11 +12,9 @@
             {{ props.title }}
           </slot>
         </view>
-        <view v-if="props.showConfirm" class="ui-keyboard__confirm">
+        <view v-if="props.showConfirm" class="ui-keyboard__confirm" @click="onConfirm">
           <slot name="confirm">
-            <ui-button text :text-color="props.confirmTextColor" :text-size="props.confirmTextSize" :text-weight="props.confirmTextWeight" @click="onConfirm">
-              {{ props.confirmText }}
-            </ui-button>
+            <ui-button text>{{ props.confirmText }}</ui-button>
           </slot>
         </view>
       </view>
@@ -276,16 +272,17 @@ export default {
     display: flex;
     padding: var(--ui-spacing-md);
     align-items: center;
-    padding-bottom: 0;
+    border-bottom: var(--ui-border-width) solid var(--ui-color-border-light);
     justify-content: space-between;
   }
 
   &__title {
     flex: 1;
-    color: var(--ui-color-text-secondary);
+    color: var(--ui-color-text);
     padding: 0 var(--ui-spacing-md);
-    font-size: var(--ui-font-size-sm);
+    font-size: var(--ui-font-size-md);
     text-align: center;
+    font-weight: var(--ui-font-weight-bold);
   }
 
   &__cancel,

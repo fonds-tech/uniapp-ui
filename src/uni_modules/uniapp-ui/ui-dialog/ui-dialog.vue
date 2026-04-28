@@ -404,7 +404,7 @@ export default {
     display: flex;
     padding: var(--ui-spacing-md);
     overflow: hidden;
-    font-size: var(--ui-font-size-lg);
+    font-size: var(--ui-font-size-md);
     font-weight: var(--ui-font-weight-bold);
     justify-content: center;
   }

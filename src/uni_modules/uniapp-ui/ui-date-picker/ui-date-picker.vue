@@ -195,7 +195,7 @@ export default {
     display: flex;
     padding: var(--ui-spacing-md);
     align-items: center;
-    border-bottom: var(--ui-border-width-thin) solid var(--ui-color-border);
+    border-bottom: var(--ui-border-width) solid var(--ui-color-border-light);
     justify-content: space-between;
 
     &__title {

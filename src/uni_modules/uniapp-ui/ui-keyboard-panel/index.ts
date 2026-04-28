@@ -19,14 +19,8 @@ const defaultProps = buildDefaultProps("keyboard-panel", {
   showHeader: true,
   showCancel: true,
   cancelText: "取消",
-  cancelTextSize: "",
-  cancelTextColor: "danger",
-  cancelTextWeight: "",
   showConfirm: true,
   confirmText: "确定",
-  confirmTextSize: "",
-  confirmTextColor: "",
-  confirmTextWeight: "",
   background: "#f2f3f5",
   customClass: "",
   customStyle: "",
@@ -55,22 +49,10 @@ export const keyboardPanelProps = {
   showCancel: defaultProps("showCancel", { type: Boolean }),
   /** 取消按钮文字 */
   cancelText: defaultProps("cancelText", { type: String }),
-  /** 取消按钮文字大小 */
-  cancelTextSize: defaultProps("cancelTextSize", { type: [Number, String] }),
-  /** 取消按钮文字颜色 */
-  cancelTextColor: defaultProps("cancelTextColor", { type: String }),
-  /** 取消按钮文字粗细 */
-  cancelTextWeight: defaultProps("cancelTextWeight", { type: [Number, String] }),
   /** 是否显示确认按钮 */
   showConfirm: defaultProps("showConfirm", { type: Boolean }),
   /** 确认按钮文字 */
   confirmText: defaultProps("confirmText", { type: String }),
-  /** 确认按钮文字大小 */
-  confirmTextSize: defaultProps("confirmTextSize", { type: [Number, String] }),
-  /** 确认按钮文字颜色 */
-  confirmTextColor: defaultProps("confirmTextColor", { type: String }),
-  /** 确认按钮文字粗细 */
-  confirmTextWeight: defaultProps("confirmTextWeight", { type: [Number, String] }),
   /** 背景颜色 */
   background: defaultProps("background", { type: String }),
   /** 自定义类名 */

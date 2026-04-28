@@ -156,38 +156,22 @@ describe("ui-keyboard 虚拟键盘组件", () => {
       expect(wrapper.props("confirmText")).toBe("完成")
     })
 
-    it("应支持取消按钮样式配置", () => {
+    it("取消按钮使用 ui-button text + text-tertiary 配色（统一头部样式）", () => {
       const wrapper = mount(UiKeyboard, {
-        props: {
-          show: true,
-          showHeader: true,
-          cancelTextColor: "#999",
-          cancelTextSize: "28rpx",
-          cancelTextWeight: 400,
-        },
+        props: { show: true, showHeader: true, cancelText: "取消" },
         global: { stubs },
       })
 
-      expect(wrapper.props("cancelTextColor")).toBe("#999")
-      expect(wrapper.props("cancelTextSize")).toBe("28rpx")
-      expect(wrapper.props("cancelTextWeight")).toBe(400)
+      expect(wrapper.props("cancelText")).toBe("取消")
     })
 
-    it("应支持确认按钮样式配置", () => {
+    it("确认按钮使用 ui-button text 默认配色（统一头部样式）", () => {
       const wrapper = mount(UiKeyboard, {
-        props: {
-          show: true,
-          showHeader: true,
-          confirmTextColor: "#1989fa",
-          confirmTextSize: "28rpx",
-          confirmTextWeight: 500,
-        },
+        props: { show: true, showHeader: true, confirmText: "确定" },
         global: { stubs },
       })
 
-      expect(wrapper.props("confirmTextColor")).toBe("#1989fa")
-      expect(wrapper.props("confirmTextSize")).toBe("28rpx")
-      expect(wrapper.props("confirmTextWeight")).toBe(500)
+      expect(wrapper.props("confirmText")).toBe("确定")
     })
   })
 

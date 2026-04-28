@@ -287,7 +287,7 @@ export default {
   --ui-cascader-panel-line-height: 4rpx;
   --ui-cascader-panel-title-color: var(--ui-color-text);
   --ui-cascader-panel-option-color: var(--ui-color-text);
-  --ui-cascader-panel-title-font-size: var(--ui-font-size-sm);
+  --ui-cascader-panel-title-font-size: var(--ui-font-size-md);
   --ui-cascader-panel-title-font-weight: var(--ui-font-weight-bold);
   --ui-cascader-panel-option-active-color: var(--ui-color-primary);
 
