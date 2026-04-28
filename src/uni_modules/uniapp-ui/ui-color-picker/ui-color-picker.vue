@@ -1,15 +1,15 @@
 <template>
   <view class="ui-color-picker">
-    <ui-popup :show="props.show" mode="bottom" border-radius="24" safe-area-inset-bottom @update:show="handleUpdateShow" @close="handleClose">
+    <ui-popup :show="props.show" mode="bottom" border-radius="24" safe-area-inset-bottom @update:show="onUpdateShow" @close="onClose">
       <template #header>
         <view class="ui-color-picker__header">
-          <view class="ui-color-picker__cancel" @click="handleCancel">
+          <view class="ui-color-picker__cancel" @click="onCancel">
             <text>取消</text>
           </view>
           <view class="ui-color-picker__title">
-            <text>{{ title || "选择颜色" }}</text>
+            <text>{{ props.title || "选择颜色" }}</text>
           </view>
-          <view class="ui-color-picker__confirm" @click="handleConfirm">
+          <view class="ui-color-picker__confirm" @click="onConfirm">
             <text>确定</text>
           </view>
         </view>
@@ -18,13 +18,12 @@
       <view class="ui-color-picker__body">
         <ui-color-panel
           v-model="tempColor"
-          :size="size"
-          :show-alpha="showAlpha"
-          :show-input="showInput"
-          :show-presets="showPresets"
-          :columns="columns"
           :preset-colors="presetColors"
-          :format="format"
+          :show-input="props.showInput"
+          :show-presets="props.showPresets"
+          :show-preview="props.showPreview"
+          :columns="props.columns"
+          :panel-height="props.panelHeight"
         />
       </view>
     </ui-popup>
@@ -32,55 +31,57 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, watch } from "vue"
-
+import { ref, watch, computed } from "vue"
+import { DEFAULT_PRESET_COLORS } from "../ui-color-panel"
 import { colorPickerEmits, colorPickerProps } from "./index"
+
+defineOptions({ name: "ui-color-picker" })
 
 const props = defineProps(colorPickerProps)
 const emits = defineEmits(colorPickerEmits)
 
-// === 状态 ===
+// 临时颜色（确认前的编辑值，取消时还原）
 const tempColor = ref(props.modelValue || "")
 
-// === 方法 ===
-function handleUpdateShow(show: boolean) {
+// 预设色：用户传 → 用户值；未传 → panel 默认（避免 picker 默认空数组覆盖 panel 默认）
+const presetColors = computed(() => props.presetColors ?? DEFAULT_PRESET_COLORS)
+
+// 监听弹窗打开：重置 tempColor 为外部 modelValue
+watch(
+  () => props.show,
+  (val) => {
+    if (val) tempColor.value = props.modelValue || ""
+  },
+)
+// 监听 modelValue 外部变化（弹窗关闭时同步显示）
+watch(
+  () => props.modelValue,
+  (val) => {
+    if (!props.show) tempColor.value = val || ""
+  },
+)
+
+function onUpdateShow(show: boolean) {
   emits("update:show", show)
 }
 
-function handleConfirm() {
+function onConfirm() {
   emits("update:modelValue", tempColor.value)
   emits("change", tempColor.value)
   emits("confirm", tempColor.value)
   emits("update:show", false)
 }
 
-function handleCancel() {
+function onCancel() {
   tempColor.value = props.modelValue || ""
   emits("cancel")
   emits("update:show", false)
 }
 
-function handleClose() {
+function onClose() {
   tempColor.value = props.modelValue || ""
   emits("close")
 }
-
-// === 监听 ===
-watch(
-  () => props.show,
-  (val) => {
-    if (val) {
-      tempColor.value = props.modelValue || ""
-    }
-  },
-)
-
-watch(
-  () => props.modelValue,
-  (val) => {
-    tempColor.value = val || ""
-  },
-)
 </script>
 
 <script lang="ts">
@@ -92,7 +93,6 @@ export default {
 
 <style lang="scss" scoped>
 .ui-color-picker {
-  // 标题栏
   &__header {
     height: 88rpx;
     display: flex;
@@ -122,7 +122,6 @@ export default {
     color: var(--ui-color-primary);
   }
 
-  // 面板区域
   &__body {
     padding: var(--ui-spacing-md);
   }

@@ -1,136 +1,136 @@
 <template>
-  <view class="ui-color-panel" :class="[rootClasses, customClass]" :style="rootStyle">
-    <!-- 饱和度/亮度选择区 -->
-    <view class="ui-color-panel__saturation" :style="saturationStyle" @touchstart="handleSaturationStart" @touchmove.stop.prevent="handleSaturationMove">
+  <view class="ui-color-panel" :class="[classNames, props.customClass]" :style="[rootStyle]">
+    <view class="ui-color-panel__saturation" :style="[saturationStyle]" @touchstart="onSaturationStart" @touchmove.stop.prevent="onSaturationMove">
       <view class="ui-color-panel__saturation-white" />
       <view class="ui-color-panel__saturation-black" />
-      <view class="ui-color-panel__cursor" :style="saturationCursorStyle" />
+      <view class="ui-color-panel__cursor" :style="[saturationCursorStyle]" />
     </view>
 
-    <!-- 滑块区域 -->
     <view class="ui-color-panel__sliders">
-      <!-- 色相滑块 -->
-      <view class="ui-color-panel__slider ui-color-panel__hue" @touchstart="handleHueStart" @touchmove.stop.prevent="handleHueMove">
-        <view class="ui-color-panel__slider-cursor" :style="hueCursorStyle" />
-      </view>
-
-      <!-- 透明度滑块 -->
-      <view v-if="showAlpha" class="ui-color-panel__slider ui-color-panel__alpha" @touchstart="handleAlphaStart" @touchmove.stop.prevent="handleAlphaMove">
-        <view class="ui-color-panel__alpha-bg" :style="alphaBgStyle" />
-        <view class="ui-color-panel__slider-cursor" :style="alphaCursorStyle" />
+      <view class="ui-color-panel__slider ui-color-panel__hue" @touchstart="onHueStart" @touchmove.stop.prevent="onHueMove">
+        <view class="ui-color-panel__slider-cursor" :style="[hueCursorStyle]" />
       </view>
     </view>
 
-    <!-- 输入区域 -->
-    <view v-if="showInput" class="ui-color-panel__inputs">
-      <!-- HEX 输入 -->
-      <view class="ui-color-panel__input-group ui-color-panel__input-hex">
-        <input class="ui-color-panel__input" :value="inputValue" :maxlength="7" @input="handleHexInput" @blur="handleHexBlur" />
-        <text class="ui-color-panel__input-label">HEX</text>
-      </view>
-
-      <!-- RGB 输入 -->
-      <view class="ui-color-panel__input-group">
-        <input class="ui-color-panel__input" type="number" :value="String(rgbValues.r)" @input="(e) => handleRgbInput('r', e)" />
-        <text class="ui-color-panel__input-label">R</text>
-      </view>
-      <view class="ui-color-panel__input-group">
-        <input class="ui-color-panel__input" type="number" :value="String(rgbValues.g)" @input="(e) => handleRgbInput('g', e)" />
-        <text class="ui-color-panel__input-label">G</text>
-      </view>
-      <view class="ui-color-panel__input-group">
-        <input class="ui-color-panel__input" type="number" :value="String(rgbValues.b)" @input="(e) => handleRgbInput('b', e)" />
-        <text class="ui-color-panel__input-label">B</text>
-      </view>
+    <view v-if="props.showInput || props.showPreview" class="ui-color-panel__inputs">
+      <view v-if="props.showPreview" class="ui-color-panel__preview" :style="{ backgroundColor: currentColor }" />
+      <template v-if="props.showInput">
+        <view class="ui-color-panel__input-group ui-color-panel__input-hex">
+          <input class="ui-color-panel__input" :value="inputValue" :maxlength="7" @input="onHexInput" @blur="onHexBlur" />
+          <text class="ui-color-panel__input-label">HEX</text>
+        </view>
+        <view class="ui-color-panel__input-group">
+          <input class="ui-color-panel__input" type="number" :value="String(rgbValues.r)" @input="(e) => onRgbInput('r', e)" />
+          <text class="ui-color-panel__input-label">R</text>
+        </view>
+        <view class="ui-color-panel__input-group">
+          <input class="ui-color-panel__input" type="number" :value="String(rgbValues.g)" @input="(e) => onRgbInput('g', e)" />
+          <text class="ui-color-panel__input-label">G</text>
+        </view>
+        <view class="ui-color-panel__input-group">
+          <input class="ui-color-panel__input" type="number" :value="String(rgbValues.b)" @input="(e) => onRgbInput('b', e)" />
+          <text class="ui-color-panel__input-label">B</text>
+        </view>
+      </template>
     </view>
 
-    <!-- 预设色板 -->
-    <view v-if="showPresets && presetColors.length > 0" class="ui-color-panel__presets" :style="presetsStyle">
-      <view v-for="(color, index) in presetColors" :key="index" class="ui-color-panel__preset" :style="{ backgroundColor: color }" @click="handlePresetClick(color)" />
+    <view v-if="props.showPresets && props.presetColors.length > 0" class="ui-color-panel__presets" :style="[presetsStyle]">
+      <view
+        v-for="(color, index) in props.presetColors"
+        :key="index"
+        class="ui-color-panel__preset"
+        :class="{ 'ui-color-panel__preset--active': isActivePreset(color) }"
+        :style="{ backgroundColor: color }"
+        @click="onPresetClick(color)"
+      />
     </view>
   </view>
 </template>
 
 <script lang="ts" setup>
 import type { CSSProperties } from "vue"
-
-import { useRect, useStyle } from "../hooks"
-
+import { useRect, useUnit, useStyle } from "../hooks"
 import { colorPanelEmits, colorPanelProps } from "./index"
-
 import { ref, watch, computed, getCurrentInstance } from "vue"
+
+defineOptions({ name: "ui-color-panel" })
 
 const props = defineProps(colorPanelProps)
 const emits = defineEmits(colorPanelEmits)
 
-// === 状态 ===
-const inputValue = ref(props.modelValue || "#6366F1")
-const currentColor = ref(props.modelValue || "#6366F1")
+// 组件实例
+const instance = getCurrentInstance()!
 
-// HSV 状态
+// 默认色（modelValue 未传时的兜底）
+const FALLBACK_COLOR = "#6366F1"
+
+// 状态：HSV / RGB / 输入显示值 / 当前色
 const hue = ref(0)
 const saturation = ref(100)
 const brightness = ref(100)
-const alpha = ref(100)
-
-// RGB 值
 const rgbValues = ref({ r: 99, g: 102, b: 241 })
+const inputValue = ref(props.modelValue || FALLBACK_COLOR)
+const currentColor = ref(props.modelValue || FALLBACK_COLOR)
 
-// === 计算属性 ===
-const rootClasses = computed(() => [`ui-color-panel--${props.size}`, { "ui-color-panel--disabled": props.disabled }, { "ui-color-panel--readonly": props.readonly }])
+// 元素位置缓存（拖动时按需测量）
+const saturationRect = ref<UniApp.NodeInfo>({})
+const hueRect = ref<UniApp.NodeInfo>({})
 
-const rootStyle = computed(() => useStyle(props.customStyle))
+// 单行 computed
+const presetsStyle = computed<CSSProperties>(() => ({ gridTemplateColumns: `repeat(${props.columns}, 1fr)` }))
+const hueCursorStyle = computed<CSSProperties>(() => ({ left: `${(hue.value / 360) * 100}%` }))
+const saturationCursorStyle = computed<CSSProperties>(() => ({ left: `${saturation.value}%`, top: `${100 - brightness.value}%` }))
 
+// 多行 computed
+const classNames = computed(() => ({
+  "ui-color-panel--disabled": props.disabled,
+  "ui-color-panel--readonly": props.readonly,
+}))
+const rootStyle = computed<CSSProperties>(() => useStyle(props.customStyle) as CSSProperties)
 const saturationStyle = computed<CSSProperties>(() => {
-  const style: CSSProperties = { backgroundColor: `hsl(${hue.value}, 100%, 50%)` }
-  if (props.panelHeight) {
-    style.height = typeof props.panelHeight === "number" ? `${props.panelHeight}rpx` : props.panelHeight
-  }
-  return style
+  const s: CSSProperties = { backgroundColor: `hsl(${hue.value}, 100%, 50%)` }
+  if (props.panelHeight !== undefined) s.height = useUnit(props.panelHeight)
+  return s
 })
 
-const presetsStyle = computed<CSSProperties>(() => ({
-  gridTemplateColumns: `repeat(${props.columns}, 1fr)`,
-}))
+// 监听外部 modelValue 同步
+watch(
+  () => props.modelValue,
+  (val) => {
+    if (val && isValidHex(val)) {
+      currentColor.value = val.toUpperCase()
+      inputValue.value = val.toUpperCase()
+      syncHsvFromColor(val)
+      const rgb = hexToRgb(val)
+      if (rgb) rgbValues.value = rgb
+    }
+  },
+  { immediate: true },
+)
 
-const saturationCursorStyle = computed<CSSProperties>(() => ({
-  left: `${saturation.value}%`,
-  top: `${100 - brightness.value}%`,
-}))
-
-const hueCursorStyle = computed<CSSProperties>(() => ({
-  left: `${(hue.value / 360) * 100}%`,
-}))
-
-const alphaBgStyle = computed<CSSProperties>(() => ({
-  background: `linear-gradient(to right, transparent, ${currentColor.value})`,
-}))
-
-const alphaCursorStyle = computed<CSSProperties>(() => ({
-  left: `${alpha.value}%`,
-}))
-
-// === 方法 ===
-function isActiveColor(color: string): boolean {
+// 当前预设是否激活
+function isActivePreset(color: string): boolean {
   return color.toUpperCase() === currentColor.value.toUpperCase()
 }
 
+// HEX 校验（6 位）
+function isValidHex(hex: string): boolean {
+  return /^#[\da-f]{6}$/i.test(hex)
+}
+
+// HEX → HSV
 function hexToHsv(hex: string): { h: number; s: number; v: number } {
   const rgb = hexToRgb(hex)
   if (!rgb) return { h: 0, s: 0, v: 0 }
-
   const r = rgb.r / 255
   const g = rgb.g / 255
   const b = rgb.b / 255
-
   const max = Math.max(r, g, b)
   const min = Math.min(r, g, b)
   const d = max - min
-
   let h = 0
   const s = max === 0 ? 0 : d / max
   const v = max
-
   if (max !== min) {
     switch (max) {
       case r:
@@ -145,67 +145,39 @@ function hexToHsv(hex: string): { h: number; s: number; v: number } {
     }
     h /= 6
   }
-
   return { h: h * 360, s: s * 100, v: v * 100 }
 }
 
+// HSV → HEX
 function hsvToHex(h: number, s: number, v: number): string {
   s /= 100
   v /= 100
-
   const c = v * s
   const x = c * (1 - Math.abs(((h / 60) % 2) - 1))
   const m = v - c
-
   let r = 0
   let g = 0
   let b = 0
-
-  if (h >= 0 && h < 60) {
-    r = c
-    g = x
-    b = 0
-  } else if (h >= 60 && h < 120) {
-    r = x
-    g = c
-    b = 0
-  } else if (h >= 120 && h < 180) {
-    r = 0
-    g = c
-    b = x
-  } else if (h >= 180 && h < 240) {
-    r = 0
-    g = x
-    b = c
-  } else if (h >= 240 && h < 300) {
-    r = x
-    g = 0
-    b = c
-  } else {
-    r = c
-    g = 0
-    b = x
-  }
-
+  if (h >= 0 && h < 60) [r, g, b] = [c, x, 0]
+  else if (h < 120) [r, g, b] = [x, c, 0]
+  else if (h < 180) [r, g, b] = [0, c, x]
+  else if (h < 240) [r, g, b] = [0, x, c]
+  else if (h < 300) [r, g, b] = [x, 0, c]
+  else [r, g, b] = [c, 0, x]
   const toHex = (n: number) => {
     const hex = Math.round((n + m) * 255).toString(16)
     return hex.length === 1 ? `0${hex}` : hex
   }
-
   return `#${toHex(r)}${toHex(g)}${toHex(b)}`.toUpperCase()
 }
 
+// HEX → RGB
 function hexToRgb(hex: string): { r: number; g: number; b: number } | null {
-  const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex)
-  return result
-    ? {
-        r: Number.parseInt(result[1], 16),
-        g: Number.parseInt(result[2], 16),
-        b: Number.parseInt(result[3], 16),
-      }
-    : null
+  const m = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex)
+  return m ? { r: Number.parseInt(m[1], 16), g: Number.parseInt(m[2], 16), b: Number.parseInt(m[3], 16) } : null
 }
 
+// RGB → HEX
 function rgbToHex(r: number, g: number, b: number): string {
   const toHex = (n: number) => {
     const hex = Math.max(0, Math.min(255, n)).toString(16)
@@ -214,24 +186,23 @@ function rgbToHex(r: number, g: number, b: number): string {
   return `#${toHex(r)}${toHex(g)}${toHex(b)}`.toUpperCase()
 }
 
-function isValidHex(hex: string): boolean {
-  return /^#[\da-f]{6}$/i.test(hex)
-}
-
+// 更新颜色（统一出口）
 function updateColor(color: string) {
-  currentColor.value = color.toUpperCase()
-  inputValue.value = color.toUpperCase()
-  const rgb = hexToRgb(color)
+  const upper = color.toUpperCase()
+  currentColor.value = upper
+  inputValue.value = upper
+  const rgb = hexToRgb(upper)
   if (rgb) rgbValues.value = rgb
-  emits("update:modelValue", color.toUpperCase())
-  emits("change", color.toUpperCase())
+  emits("update:modelValue", upper)
+  emits("change", upper)
 }
 
+// 由当前 HSV 推 HEX 并 emit
 function updateColorFromHsv() {
-  const hex = hsvToHex(hue.value, saturation.value, brightness.value)
-  updateColor(hex)
+  updateColor(hsvToHex(hue.value, saturation.value, brightness.value))
 }
 
+// 由 HEX 同步 HSV
 function syncHsvFromColor(color: string) {
   const hsv = hexToHsv(color)
   hue.value = hsv.h
@@ -239,13 +210,11 @@ function syncHsvFromColor(color: string) {
   brightness.value = hsv.v
 }
 
-// === 事件处理 ===
-function handleHexInput(e: any) {
-  const value = e.detail?.value || e.target?.value || ""
-  inputValue.value = value.toUpperCase()
+// HEX 输入：仅同步显示，blur 时校验提交
+function onHexInput(e: any) {
+  inputValue.value = (e.detail?.value || e.target?.value || "").toUpperCase()
 }
-
-function handleHexBlur() {
+function onHexBlur() {
   let value = inputValue.value
   if (!value.startsWith("#")) value = `#${value}`
   if (isValidHex(value)) {
@@ -256,106 +225,53 @@ function handleHexBlur() {
   }
 }
 
-function handleRgbInput(channel: "r" | "g" | "b", e: any) {
+// RGB 输入：clamp + 实时同步
+function onRgbInput(channel: "r" | "g" | "b", e: any) {
   const value = Number.parseInt(e.detail?.value || e.target?.value || "0", 10)
-  const clamped = Math.max(0, Math.min(255, value || 0))
-  rgbValues.value[channel] = clamped
+  rgbValues.value[channel] = Math.max(0, Math.min(255, value || 0))
   const hex = rgbToHex(rgbValues.value.r, rgbValues.value.g, rgbValues.value.b)
   syncHsvFromColor(hex)
   updateColor(hex)
 }
 
-function handlePresetClick(color: string) {
-  if (props.disabled) return
+// 预设色点击
+function onPresetClick(color: string) {
+  if (props.disabled || props.readonly) return
   syncHsvFromColor(color)
   updateColor(color)
 }
 
-// 组件实例
-const instance = getCurrentInstance()
-
-// 元素位置缓存
-const saturationRect = ref<UniApp.NodeInfo>({})
-const hueRect = ref<UniApp.NodeInfo>({})
-const alphaRect = ref<UniApp.NodeInfo>({})
-
-// 获取元素位置
-async function updateSaturationRect() {
-  saturationRect.value = await useRect(".ui-color-panel__saturation", instance!)
+// 饱和度/亮度区拖动
+async function onSaturationStart(e: any) {
+  saturationRect.value = await useRect(".ui-color-panel__saturation", instance)
+  onSaturationMove(e)
 }
-
-async function updateHueRect() {
-  hueRect.value = await useRect(".ui-color-panel__hue", instance!)
-}
-
-async function updateAlphaRect() {
-  alphaRect.value = await useRect(".ui-color-panel__alpha", instance!)
-}
-
-async function handleSaturationStart(e: any) {
-  await updateSaturationRect()
-  handleSaturationMove(e)
-}
-
-function handleSaturationMove(e: any) {
-  if (props.disabled) return
+function onSaturationMove(e: any) {
+  if (props.disabled || props.readonly) return
   const touch = e.touches[0]
   const rect = saturationRect.value
   if (!rect.width || !rect.height) return
-
   const x = ((touch.clientX - (rect.left || 0)) / rect.width) * 100
   const y = ((touch.clientY - (rect.top || 0)) / rect.height) * 100
-
   saturation.value = Math.max(0, Math.min(100, x))
   brightness.value = 100 - Math.max(0, Math.min(100, y))
   updateColorFromHsv()
 }
 
-async function handleHueStart(e: any) {
-  await updateHueRect()
-  handleHueMove(e)
+// 色相滑块拖动
+async function onHueStart(e: any) {
+  hueRect.value = await useRect(".ui-color-panel__hue", instance)
+  onHueMove(e)
 }
-
-function handleHueMove(e: any) {
-  if (props.disabled) return
+function onHueMove(e: any) {
+  if (props.disabled || props.readonly) return
   const touch = e.touches[0]
   const rect = hueRect.value
   if (!rect.width) return
-
   const x = ((touch.clientX - (rect.left || 0)) / rect.width) * 360
   hue.value = Math.max(0, Math.min(360, x))
   updateColorFromHsv()
 }
-
-async function handleAlphaStart(e: any) {
-  await updateAlphaRect()
-  handleAlphaMove(e)
-}
-
-function handleAlphaMove(e: any) {
-  if (props.disabled) return
-  const touch = e.touches[0]
-  const rect = alphaRect.value
-  if (!rect.width) return
-
-  const x = ((touch.clientX - (rect.left || 0)) / rect.width) * 100
-  alpha.value = Math.max(0, Math.min(100, x))
-}
-
-// === 监听 ===
-watch(
-  () => props.modelValue,
-  (val) => {
-    if (val && isValidHex(val)) {
-      currentColor.value = val.toUpperCase()
-      inputValue.value = val.toUpperCase()
-      syncHsvFromColor(val)
-      const rgb = hexToRgb(val)
-      if (rgb) rgbValues.value = rgb
-    }
-  },
-  { immediate: true },
-)
 </script>
 
 <script lang="ts">
@@ -371,15 +287,6 @@ export default {
   border-radius: var(--ui-radius-lg);
   background-color: var(--ui-color-background);
 
-  // 尺寸预设
-  &--small {
-    padding: var(--ui-spacing-sm);
-  }
-
-  &--large {
-    padding: var(--ui-spacing-lg);
-  }
-
   &--disabled {
     opacity: var(--ui-opacity-disabled);
     pointer-events: none;
@@ -389,7 +296,6 @@ export default {
     pointer-events: none;
   }
 
-  // ===== 饱和度/亮度选择区 =====
   &__saturation {
     width: 100%;
     cursor: pointer;
@@ -424,7 +330,6 @@ export default {
     pointer-events: none;
   }
 
-  // ===== 滑块区域 =====
   &__sliders {
     gap: var(--ui-spacing-sm);
     display: flex;
@@ -457,26 +362,20 @@ export default {
     background: linear-gradient(to right, #f00 0%, #ff0 17%, #0f0 33%, #0ff 50%, #00f 67%, #f0f 83%, #f00 100%);
   }
 
-  &__alpha {
-    overflow: hidden;
-    background-size: 12rpx 12rpx;
-    background-image: linear-gradient(45deg, #ddd 25%, transparent 25%, transparent 75%, #ddd 75%), linear-gradient(45deg, #ddd 25%, transparent 25%, transparent 75%, #ddd 75%);
-    background-position:
-      0 0,
-      6rpx 6rpx;
-  }
-
-  &__alpha-bg {
-    inset: 0;
-    position: absolute;
-    border-radius: 12rpx;
-  }
-
-  // ===== 输入区域 =====
   &__inputs {
     gap: 12rpx;
     display: flex;
     margin-top: 20rpx;
+    align-items: flex-start;
+  }
+
+  // 当前色预览块（与 HEX 输入并列显示）
+  &__preview {
+    width: 64rpx;
+    border: var(--ui-border-width) solid var(--ui-color-border);
+    height: 64rpx;
+    flex-shrink: 0;
+    border-radius: var(--ui-radius-sm);
   }
 
   &__input-group {
@@ -505,7 +404,6 @@ export default {
     margin-top: 6rpx;
   }
 
-  // ===== 预设色板 =====
   &__presets {
     gap: var(--ui-spacing-xs);
     display: grid;
@@ -516,12 +414,21 @@ export default {
     cursor: pointer;
     position: relative;
     box-shadow: inset 0 0 0 2rpx rgba(0, 0, 0, 0.06);
-    transition: transform 0.15s ease;
+    transition:
+      transform 0.15s ease,
+      box-shadow 0.15s ease;
     aspect-ratio: 1;
     border-radius: var(--ui-radius-sm);
 
     &:active {
       transform: scale(0.9);
+    }
+
+    // 选中态：主色描边环
+    &--active {
+      box-shadow:
+        0 0 0 4rpx var(--ui-color-primary),
+        inset 0 0 0 2rpx #fff;
     }
   }
 }

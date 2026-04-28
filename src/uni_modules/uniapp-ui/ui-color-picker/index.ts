@@ -1,55 +1,40 @@
 import type ColorPicker from "./ui-color-picker.vue"
 import type { PropType, CSSProperties, ExtractPropTypes } from "vue"
-
 import { buildDefaultProps } from "../utils/props"
 
-// 颜色选择器尺寸
-export type ColorPickerSize = "small" | "medium" | "large"
-
-// 颜色格式
-export type ColorFormat = "hex" | "rgb" | "hsl"
-
-const defaultProps = buildDefaultProps("colorPicker", {
-  modelValue: "",
+const defaultProps = buildDefaultProps("color-picker", {
+  modelValue: undefined,
   show: false,
-  title: "",
-  size: "medium",
-  showAlpha: false,
+  title: undefined,
   showInput: true,
   showPresets: true,
+  showPreview: true,
   columns: 10,
-  presetColors: [],
-  format: "hex",
-  customClass: "",
-  customStyle: "",
+  presetColors: undefined,
+  panelHeight: undefined,
+  customClass: undefined,
+  customStyle: undefined,
 })
 
 export const colorPickerProps = {
-  // ===== 基础配置 =====
-  /** 当前颜色值 */
+  /** 当前颜色值（HEX） */
   modelValue: defaultProps("modelValue", { type: String }),
   /** 是否显示弹窗 */
   show: defaultProps("show", { type: Boolean }),
   /** 弹窗标题 */
   title: defaultProps("title", { type: String }),
-  /** 尺寸预设 */
-  size: defaultProps("size", { type: String as PropType<ColorPickerSize> }),
-
-  // ===== 功能配置 =====
-  /** 是否支持透明度 */
-  showAlpha: defaultProps("showAlpha", { type: Boolean }),
-  /** 是否显示输入框 */
+  /** 是否显示输入区 */
   showInput: defaultProps("showInput", { type: Boolean }),
   /** 是否显示预设色板 */
   showPresets: defaultProps("showPresets", { type: Boolean }),
+  /** 是否显示当前色预览块 */
+  showPreview: defaultProps("showPreview", { type: Boolean }),
   /** 预设色板每行列数 */
-  columns: defaultProps("columns", { type: Number }),
+  columns: defaultProps("columns", { type: [Number, String] }),
   /** 预设颜色列表 */
   presetColors: defaultProps("presetColors", { type: Array as PropType<string[]> }),
-  /** 输出颜色格式 */
-  format: defaultProps("format", { type: String as PropType<ColorFormat> }),
-
-  // ===== 通用 =====
+  /** 饱和度面板高度 */
+  panelHeight: defaultProps("panelHeight", { type: [Number, String] }),
   /** 自定义类名 */
   customClass: defaultProps("customClass", { type: String }),
   /** 自定义样式 */
@@ -58,16 +43,16 @@ export const colorPickerProps = {
 
 export const colorPickerEmits = {
   /** 更新绑定值 */
-  "update:modelValue": (_value: string) => true,
+  "update:modelValue": (value: string) => typeof value === "string",
   /** 更新显示状态 */
-  "update:show": (_value: boolean) => true,
-  /** 值变化事件 */
-  change: (_value: string) => true,
-  /** 确认事件 */
-  confirm: (_value: string) => true,
-  /** 取消事件 */
+  "update:show": (value: boolean) => typeof value === "boolean",
+  /** 值变化 */
+  change: (value: string) => typeof value === "string",
+  /** 确认 */
+  confirm: (value: string) => typeof value === "string",
+  /** 取消 */
   cancel: () => true,
-  /** 关闭事件 */
+  /** 关闭 */
   close: () => true,
 }
 

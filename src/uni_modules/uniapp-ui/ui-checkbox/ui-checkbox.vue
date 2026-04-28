@@ -1,6 +1,6 @@
 <template>
   <view class="ui-checkbox" :class="[classNames, props.customClass]" :style="[rootStyle]" @click.stop="onClick">
-    <view class="ui-checkbox__icon" :class="[iconClassList]" @click.stop="onClickIcon">
+    <view class="ui-checkbox__icon" :class="[iconClassList]">
       <slot name="icon" :checked="isChecked" :disabled="isDisabled" :indeterminate="isIndeterminate">
         <ui-icon v-if="isIndeterminate" name="minus" class="ui-checkbox__symbol" color="text-inverse" :size="symbolSize" />
         <ui-icon v-else-if="isChecked && actualShape === 'icon'" name="check" class="ui-checkbox__symbol" color="text-inverse" :size="symbolSize" />
@@ -42,7 +42,7 @@ const hasLabel = computed(() => !!slots.default || isDef(props.label))
 const isChecked = computed(() => (props.bindGroup && parent ? parent.props.modelValue.includes(name.value) : !!props.modelValue))
 const isDisabled = computed(() => !!prop("disabled"))
 const isReadonly = computed(() => !!prop("readonly"))
-const actualShape = computed(() => prop("shape") || "dot")
+const actualShape = computed(() => prop("shape"))
 const isLabelLeft = computed(() => prop("labelPosition") === "left")
 const isIndeterminate = computed(() => !!prop("indeterminate"))
 
@@ -105,11 +105,8 @@ const labelClassList = computed(() => {
   return list
 })
 
-// 监听值变化向外抛 change
-watch(
-  () => props.modelValue,
-  (value) => emits("change", value),
-)
+// 监听选中态向外抛 change（兼容 bindGroup 模式：值由父级数组管理，无法靠 modelValue 触发）
+watch(isChecked, (value) => emits("change", value))
 
 // 取值优先级：自身 prop → 父 group 同名 prop（仅当 bindGroup 且存在父级）
 function prop<K extends keyof CheckboxProps>(key: K): CheckboxProps[K] | undefined {
@@ -156,11 +153,6 @@ function toggle(check?: boolean) {
 
 // 根节点点击：先 toggle 再 emit click（toggle 内部已自处理 disabled/readonly）
 function onClick(event: Event) {
-  toggle()
-  emits("click", event)
-}
-// 图标点击
-function onClickIcon(event: Event) {
   toggle()
   emits("click", event)
 }

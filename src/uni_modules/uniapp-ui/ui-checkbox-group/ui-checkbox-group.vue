@@ -7,7 +7,7 @@
 <script setup lang="ts">
 import type { CSSProperties } from "vue"
 import { isDef } from "../utils/check"
-import { toRaw, toRef, watch, computed } from "vue"
+import { toRaw, watch, computed } from "vue"
 import { useUnit, useStyle, useChildren } from "../hooks"
 import { checkboxGroupKey, checkboxGroupEmits, checkboxGroupProps } from "./index"
 
@@ -53,7 +53,8 @@ function toggleAll(checked?: boolean) {
 
   let value: unknown[]
   if (checked === true) {
-    value = eligibles.map((child) => toRef(child.exposed?.name).value)
+    // childrens 经 reactive 包装，访问 exposed.name 时 ref 已被自动解包
+    value = eligibles.map((child) => child.exposed?.name)
     if (isDef(props.max) && props.max !== Infinity) value = value.slice(0, +props.max)
   } else if (checked === false) {
     if (props.min && +props.min > 0) {
@@ -62,10 +63,8 @@ function toggleAll(checked?: boolean) {
       value = []
     }
   } else {
-    // 无参：取所有未选中
-    value = eligibles
-      .filter((child) => !toRef(child.exposed?.checked).value)
-      .map((child) => toRef(child.exposed?.name).value)
+    // 无参：仅追加未选中（不取消已选中），等价于「全选未选项」
+    value = eligibles.filter((child) => !child.exposed?.checked).map((child) => child.exposed?.name)
   }
 
   updateValue(value)
