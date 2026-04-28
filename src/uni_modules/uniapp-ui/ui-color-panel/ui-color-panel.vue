@@ -1,13 +1,30 @@
 <template>
   <view class="ui-color-panel" :class="[classNames, props.customClass]" :style="[rootStyle]">
-    <view class="ui-color-panel__saturation" :style="[saturationStyle]" @touchstart="onSaturationStart" @touchmove.stop.prevent="onSaturationMove">
+    <view
+      class="ui-color-panel__saturation"
+      role="slider"
+      :aria-valuemin="0"
+      :aria-valuemax="100"
+      :aria-valuenow="Math.round(saturation)"
+      :style="[saturationStyle]"
+      @touchstart="onSaturationStart"
+      @touchmove.stop.prevent="onSaturationMove"
+    >
       <view class="ui-color-panel__saturation-white" />
       <view class="ui-color-panel__saturation-black" />
       <view class="ui-color-panel__cursor" :style="[saturationCursorStyle]" />
     </view>
 
     <view class="ui-color-panel__sliders">
-      <view class="ui-color-panel__slider ui-color-panel__hue" @touchstart="onHueStart" @touchmove.stop.prevent="onHueMove">
+      <view
+        class="ui-color-panel__slider ui-color-panel__hue"
+        role="slider"
+        :aria-valuemin="0"
+        :aria-valuemax="360"
+        :aria-valuenow="Math.round(hue)"
+        @touchstart="onHueStart"
+        @touchmove.stop.prevent="onHueMove"
+      >
         <view class="ui-color-panel__slider-cursor" :style="[hueCursorStyle]" />
       </view>
     </view>
@@ -20,15 +37,15 @@
           <text class="ui-color-panel__input-label">HEX</text>
         </view>
         <view class="ui-color-panel__input-group">
-          <input class="ui-color-panel__input" type="number" :value="String(rgbValues.r)" @input="(e) => onRgbInput('r', e)" />
+          <input class="ui-color-panel__input" type="digit" :value="String(rgbValues.r)" @input="(e) => onRgbInput('r', e)" />
           <text class="ui-color-panel__input-label">R</text>
         </view>
         <view class="ui-color-panel__input-group">
-          <input class="ui-color-panel__input" type="number" :value="String(rgbValues.g)" @input="(e) => onRgbInput('g', e)" />
+          <input class="ui-color-panel__input" type="digit" :value="String(rgbValues.g)" @input="(e) => onRgbInput('g', e)" />
           <text class="ui-color-panel__input-label">G</text>
         </view>
         <view class="ui-color-panel__input-group">
-          <input class="ui-color-panel__input" type="number" :value="String(rgbValues.b)" @input="(e) => onRgbInput('b', e)" />
+          <input class="ui-color-panel__input" type="digit" :value="String(rgbValues.b)" @input="(e) => onRgbInput('b', e)" />
           <text class="ui-color-panel__input-label">B</text>
         </view>
       </template>
@@ -39,6 +56,8 @@
         v-for="(color, index) in props.presetColors"
         :key="index"
         class="ui-color-panel__preset"
+        role="button"
+        :aria-label="color"
         :class="{ 'ui-color-panel__preset--active': isActivePreset(color) }"
         :style="{ backgroundColor: color }"
         @click="onPresetClick(color)"
@@ -51,14 +70,13 @@
 import type { CSSProperties } from "vue"
 import { useRect, useUnit, useStyle } from "../hooks"
 import { colorPanelEmits, colorPanelProps } from "./index"
-import { ref, watch, computed, getCurrentInstance } from "vue"
+import { ref, watch, computed, onMounted, getCurrentInstance } from "vue"
 
 defineOptions({ name: "ui-color-panel" })
 
 const props = defineProps(colorPanelProps)
 const emits = defineEmits(colorPanelEmits)
 
-// 组件实例
 const instance = getCurrentInstance()!
 
 // 默认色（modelValue 未传时的兜底）
@@ -68,9 +86,20 @@ const FALLBACK_COLOR = "#6366F1"
 const hue = ref(0)
 const saturation = ref(100)
 const brightness = ref(100)
-const rgbValues = ref({ r: 99, g: 102, b: 241 })
-const inputValue = ref(props.modelValue || FALLBACK_COLOR)
-const currentColor = ref(props.modelValue || FALLBACK_COLOR)
+const rgbValues = ref({ r: 0, g: 0, b: 0 })
+// inputValue 与 currentColor 大部分时间同值，仅 HEX 输入框输入中途两者会暂时不一致（按键时 inputValue 实时更新，blur 时校验后才同步给 currentColor）
+const initialColor = expandHex(props.modelValue || FALLBACK_COLOR).toUpperCase()
+const inputValue = ref(initialColor)
+const currentColor = ref(initialColor)
+// 初始化 HSV / RGB 与 currentColor 同步（watch 因去重判断会跳过首次，故此处显式 sync）
+{
+  const hsv = hexToHsv(initialColor)
+  hue.value = hsv.h
+  saturation.value = hsv.s
+  brightness.value = hsv.v
+  const rgb = hexToRgb(initialColor)
+  if (rgb) rgbValues.value = rgb
+}
 
 // 元素位置缓存（拖动时按需测量）
 const saturationRect = ref<UniApp.NodeInfo>({})
@@ -86,36 +115,54 @@ const classNames = computed(() => ({
   "ui-color-panel--disabled": props.disabled,
   "ui-color-panel--readonly": props.readonly,
 }))
-const rootStyle = computed<CSSProperties>(() => useStyle(props.customStyle) as CSSProperties)
-const saturationStyle = computed<CSSProperties>(() => {
-  const s: CSSProperties = { backgroundColor: `hsl(${hue.value}, 100%, 50%)` }
-  if (props.panelHeight !== undefined) s.height = useUnit(props.panelHeight)
-  return s
+const rootStyle = computed<CSSProperties>(() => {
+  const s: Record<string, string | number | undefined> = {}
+  if (props.panelHeight !== undefined) s["--ui-color-panel-saturation-height"] = useUnit(props.panelHeight)
+  return useStyle({ ...s, ...(useStyle(props.customStyle) || {}) }) as CSSProperties
 })
+const saturationStyle = computed<CSSProperties>(() => ({ backgroundColor: `hsl(${hue.value}, 100%, 50%)` }))
 
-// 监听外部 modelValue 同步
+// 监听外部 modelValue 同步（去重避免自身 emit 回环：HSV→HEX→HSV 精度损失会导致拖动时其他滑块漂移）
+// 初始化由上方代码块处理，watch 不开 immediate
 watch(
   () => props.modelValue,
   (val) => {
-    if (val && isValidHex(val)) {
-      currentColor.value = val.toUpperCase()
-      inputValue.value = val.toUpperCase()
-      syncHsvFromColor(val)
-      const rgb = hexToRgb(val)
-      if (rgb) rgbValues.value = rgb
-    }
+    if (!val || !isValidHex(val)) return
+    const normalized = expandHex(val).toUpperCase()
+    if (normalized === currentColor.value.toUpperCase()) return
+    currentColor.value = normalized
+    inputValue.value = normalized
+    syncHsvFromColor(normalized)
+    const rgb = hexToRgb(normalized)
+    if (rgb) rgbValues.value = rgb
   },
-  { immediate: true },
 )
+
+// 预热 rect 测量，避免首次拖动延迟一帧
+onMounted(() => {
+  setTimeout(() => {
+    useRect(".ui-color-panel__saturation", instance).then((r) => (saturationRect.value = r))
+    useRect(".ui-color-panel__hue", instance).then((r) => (hueRect.value = r))
+  }, 50)
+})
 
 // 当前预设是否激活
 function isActivePreset(color: string): boolean {
   return color.toUpperCase() === currentColor.value.toUpperCase()
 }
 
-// HEX 校验（6 位）
+// HEX 校验：3 位或 6 位（含/不含 #）
 function isValidHex(hex: string): boolean {
-  return /^#[\da-f]{6}$/i.test(hex)
+  return /^#?(?:[\da-f]{3}|[\da-f]{6})$/i.test(hex)
+}
+
+// 3 位简写展开为 6 位（#fff → #ffffff）
+function expandHex(hex: string): string {
+  const v = hex.startsWith("#") ? hex : `#${hex}`
+  if (/^#[\da-f]{3}$/i.test(v)) {
+    return `#${v[1]}${v[1]}${v[2]}${v[2]}${v[3]}${v[3]}`
+  }
+  return v
 }
 
 // HEX → HSV
@@ -173,7 +220,8 @@ function hsvToHex(h: number, s: number, v: number): string {
 
 // HEX → RGB
 function hexToRgb(hex: string): { r: number; g: number; b: number } | null {
-  const m = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex)
+  const v = expandHex(hex)
+  const m = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(v)
   return m ? { r: Number.parseInt(m[1], 16), g: Number.parseInt(m[2], 16), b: Number.parseInt(m[3], 16) } : null
 }
 
@@ -218,8 +266,9 @@ function onHexBlur() {
   let value = inputValue.value
   if (!value.startsWith("#")) value = `#${value}`
   if (isValidHex(value)) {
-    syncHsvFromColor(value)
-    updateColor(value)
+    const expanded = expandHex(value)
+    syncHsvFromColor(expanded)
+    updateColor(expanded)
   } else {
     inputValue.value = currentColor.value
   }
@@ -237,8 +286,9 @@ function onRgbInput(channel: "r" | "g" | "b", e: any) {
 // 预设色点击
 function onPresetClick(color: string) {
   if (props.disabled || props.readonly) return
-  syncHsvFromColor(color)
-  updateColor(color)
+  const expanded = expandHex(color)
+  syncHsvFromColor(expanded)
+  updateColor(expanded)
 }
 
 // 饱和度/亮度区拖动
@@ -248,7 +298,8 @@ async function onSaturationStart(e: any) {
 }
 function onSaturationMove(e: any) {
   if (props.disabled || props.readonly) return
-  const touch = e.touches[0]
+  const touch = e.touches?.[0]
+  if (!touch) return
   const rect = saturationRect.value
   if (!rect.width || !rect.height) return
   const x = ((touch.clientX - (rect.left || 0)) / rect.width) * 100
@@ -265,7 +316,8 @@ async function onHueStart(e: any) {
 }
 function onHueMove(e: any) {
   if (props.disabled || props.readonly) return
-  const touch = e.touches[0]
+  const touch = e.touches?.[0]
+  if (!touch) return
   const rect = hueRect.value
   if (!rect.width) return
   const x = ((touch.clientX - (rect.left || 0)) / rect.width) * 360
@@ -283,6 +335,14 @@ export default {
 
 <style lang="scss" scoped>
 .ui-color-panel {
+  --ui-color-panel-input-gap: 12rpx;
+  --ui-color-panel-hue-height: 24rpx;
+  --ui-color-panel-cursor-size: 20rpx;
+  --ui-color-panel-section-gap: 20rpx;
+  --ui-color-panel-input-height: 64rpx;
+  --ui-color-panel-preview-size: 64rpx;
+  --ui-color-panel-saturation-height: 320rpx;
+
   padding: var(--ui-spacing-md);
   border-radius: var(--ui-radius-lg);
   background-color: var(--ui-color-background);
@@ -292,14 +352,10 @@ export default {
     pointer-events: none;
   }
 
-  &--readonly {
-    pointer-events: none;
-  }
-
   &__saturation {
     width: 100%;
     cursor: pointer;
-    height: 320rpx;
+    height: var(--ui-color-panel-saturation-height);
     overflow: hidden;
     position: relative;
     border-radius: var(--ui-radius-md);
@@ -318,9 +374,9 @@ export default {
   }
 
   &__cursor {
-    width: 20rpx;
+    width: var(--ui-color-panel-cursor-size);
     border: 3rpx solid #fff;
-    height: 20rpx;
+    height: var(--ui-color-panel-cursor-size);
     position: absolute;
     transform: translate(-50%, -50%);
     box-shadow:
@@ -333,23 +389,23 @@ export default {
   &__sliders {
     gap: var(--ui-spacing-sm);
     display: flex;
-    margin-top: 20rpx;
+    margin-top: var(--ui-color-panel-section-gap);
     flex-direction: column;
   }
 
   &__slider {
     width: 100%;
     cursor: pointer;
-    height: 24rpx;
+    height: var(--ui-color-panel-hue-height);
     position: relative;
-    border-radius: 12rpx;
+    border-radius: calc(var(--ui-color-panel-hue-height) / 2);
   }
 
   &__slider-cursor {
     top: 50%;
-    width: 20rpx;
+    width: var(--ui-color-panel-cursor-size);
     border: var(--ui-border-width) solid rgba(0, 0, 0, 0.1);
-    height: 28rpx;
+    height: calc(var(--ui-color-panel-hue-height) + 4rpx);
     position: absolute;
     transform: translate(-50%, -50%);
     box-shadow: 0 1rpx 4rpx rgba(0, 0, 0, 0.2);
@@ -363,17 +419,17 @@ export default {
   }
 
   &__inputs {
-    gap: 12rpx;
+    gap: var(--ui-color-panel-input-gap);
     display: flex;
-    margin-top: 20rpx;
+    margin-top: var(--ui-color-panel-section-gap);
     align-items: flex-start;
   }
 
   // 当前色预览块（与 HEX 输入并列显示）
   &__preview {
-    width: 64rpx;
+    width: var(--ui-color-panel-preview-size);
     border: var(--ui-border-width) solid var(--ui-color-border);
-    height: 64rpx;
+    height: var(--ui-color-panel-preview-size);
     flex-shrink: 0;
     border-radius: var(--ui-radius-sm);
   }
@@ -391,7 +447,7 @@ export default {
 
   &__input {
     border: var(--ui-border-width) solid var(--ui-color-border);
-    height: 64rpx;
+    height: var(--ui-color-panel-input-height);
     font-size: var(--ui-font-size-xs);
     text-align: center;
     border-radius: var(--ui-radius-sm);
@@ -400,14 +456,14 @@ export default {
 
   &__input-label {
     color: var(--ui-color-text-tertiary);
-    font-size: 20rpx;
+    font-size: var(--ui-font-size-xs);
     margin-top: 6rpx;
   }
 
   &__presets {
     gap: var(--ui-spacing-xs);
     display: grid;
-    margin-top: 20rpx;
+    margin-top: var(--ui-color-panel-section-gap);
   }
 
   &__preset {
@@ -417,8 +473,11 @@ export default {
     transition:
       transform 0.15s ease,
       box-shadow 0.15s ease;
-    aspect-ratio: 1;
+    // aspect-ratio 在部分小程序老版本不稳定，用 padding-bottom hack 撑出 1:1
+    width: 100%;
+    height: 0;
     border-radius: var(--ui-radius-sm);
+    padding-bottom: 100%;
 
     &:active {
       transform: scale(0.9);
