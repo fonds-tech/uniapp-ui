@@ -490,7 +490,7 @@ describe("uiDateRangeSelect 组件", () => {
   })
 
   describe("confirmText 属性测试", () => {
-    it("默认确认按钮文字应该是 '确认'", () => {
+    it("默认确认按钮文字应该是 '确定'", () => {
       const wrapper = mount(UiDateRangeSelect, {
         global: {
           stubs: {
@@ -499,7 +499,7 @@ describe("uiDateRangeSelect 组件", () => {
           },
         },
       })
-      expect(wrapper.props("confirmText")).toBe("确认")
+      expect(wrapper.props("confirmText")).toBe("确定")
     })
   })
 

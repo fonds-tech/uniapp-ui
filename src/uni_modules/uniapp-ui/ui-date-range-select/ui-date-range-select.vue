@@ -1,6 +1,6 @@
 <template>
   <view class="ui-date-range-select" :class="[classs, props.customClass]" :style="[style]">
-    <view class="ui-date-range-select__trigger" :hover-class="hoverClass" :hover-stay-time="50">
+    <view class="ui-date-range-select__trigger" :hover-class="hoverClass" :hover-stay-time="+props.hoverStayTime">
       <view class="ui-date-range-select__item ui-date-range-select__start" @click="handleClick('start')">
         <slot name="start" :text="startDisplayText" :value="startValue" :placeholder="props.startPlaceholder">
           <text v-if="startDisplayText" class="ui-date-range-select__text" :style="[textStyle]">{{ startDisplayText }}</text>
@@ -38,6 +38,7 @@
       :min-date="props.minDate"
       :max-date="props.maxDate"
       :format="props.format"
+      :steps="props.steps"
       :column-filter="props.columnFilter"
       :column-formatter="props.columnFormatter"
       :mode="props.mode"
@@ -288,24 +289,11 @@ function open(type: DateRangeSelectActiveType = "start") {
   rangePickerRef.value?.open(type)
 }
 
-function close() {
-  rangePickerRef.value?.close()
-}
-
-function confirm() {
-  rangePickerRef.value?.confirm()
-}
-
-function cancel() {
-  rangePickerRef.value?.cancel()
-}
-
 defineExpose({
-  name: "ui-date-range-select",
   open,
-  close,
-  confirm,
-  cancel,
+  close: () => rangePickerRef.value?.close(),
+  confirm: () => rangePickerRef.value?.confirm(),
+  cancel: () => rangePickerRef.value?.cancel(),
   getSelectedRange,
 })
 </script>
