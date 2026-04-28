@@ -19,12 +19,10 @@ const emits = defineEmits(configProviderEmits)
 // 收集子组件
 const { linkChildren } = useChildren(configProviderKey)
 
-// 当前路由
-const route = ref("")
+// 主题变化监听函数（无需响应式，仅为 onUnmounted 解绑保留引用）
+let themeChangeHandler: ((result: { theme: "light" | "dark" }) => void) | null = null
 // 系统主题
 const systemTheme = ref<"light" | "dark">("light")
-// 主题变化监听函数引用
-const themeChangeHandler = ref<((result: { theme: "light" | "dark" }) => void) | null>(null)
 // 事件总线
 const mitt = useMitt()
 
@@ -54,16 +52,7 @@ const style = computed(() => {
   return useStyle({ ...style, ...useStyle(props.customStyle) })
 })
 
-// 初始化
-function init() {
-  const pages = getCurrentPages()
-  const page = pages[pages.length - 1]
-  route.value = page.route
-
-  initSystemTheme()
-}
-
-// 初始化系统主题
+// 初始化系统主题（含 onThemeChange 监听）
 function initSystemTheme() {
   try {
     const systemInfo = useSystemInfo()
@@ -72,14 +61,13 @@ function initSystemTheme() {
     systemTheme.value = "light"
   }
 
-  const handler = (result: { theme: "light" | "dark" }) => {
+  themeChangeHandler = (result) => {
     systemTheme.value = result.theme === "dark" ? "dark" : "light"
   }
-  themeChangeHandler.value = handler
-  uni.onThemeChange?.(handler)
+  uni.onThemeChange?.(themeChangeHandler)
 }
 
-// 生成颜色 CSS 变量
+// 生成颜色 CSS 变量（同时附带 -rgb 后缀以便 rgba() 用）
 function generateColorVars(name: string, color: string): Record<string, string> {
   const cssVarName = `--ui-color-${name}`
   const vars: Record<string, string> = {
@@ -116,19 +104,15 @@ function applyCustomCssVars(target: CSSProperties, vars: Record<string, string |
   })
 }
 
-// 触摸开始
+// 触摸事件转发到全局事件总线，子组件可通过 mitt 订阅（如全局点击关闭浮层等场景）
 function onTouchstart(e: any) {
   emits("touchstart", e)
   mitt.emit("touchstart", e)
 }
-
-// 触摸结束
 function onTouchend(e: any) {
   emits("touchend", e)
   mitt.emit("touchend", e)
 }
-
-// 触摸移动
 function onTouchmove(e: any) {
   emits("touchmove", e)
   mitt.emit("touchmove", e)
@@ -137,13 +121,13 @@ function onTouchmove(e: any) {
 // 建立父子组件关联
 linkChildren({ props, mitt })
 
-// 组件挂载时初始化
-onMounted(init)
-// 组件卸载时清理
+onMounted(() => {
+  initSystemTheme()
+})
 onUnmounted(() => {
-  if (themeChangeHandler.value) {
-    uni.offThemeChange?.(themeChangeHandler.value)
-    themeChangeHandler.value = null
+  if (themeChangeHandler) {
+    uni.offThemeChange?.(themeChangeHandler)
+    themeChangeHandler = null
   }
 })
 

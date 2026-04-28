@@ -36,7 +36,7 @@ export type ThemeMode = "light" | "dark" | "auto"
 export const configProviderKey: InjectionKey<ConfigProviderProvide> = Symbol("ui-config-provider")
 
 const defaultProps = buildDefaultProps("config-provider", {
-  theme: "light",
+  theme: "light" as ThemeMode,
   themeVars: () => ({}),
   cssVars: () => ({}),
   height: "",
@@ -63,12 +63,6 @@ export const configProviderProps = {
 }
 
 export const configProviderEmits = {
-  /** 滚动事件 */
-  scroll: (options: Page.PageScrollOption) => options,
-  /** 到达顶部事件 */
-  reachTop: () => true,
-  /** 到达底部事件 */
-  reachBottom: () => true,
   /** 触摸开始事件 */
   touchstart: (event: any) => event,
   /** 触摸结束事件 */
@@ -80,8 +74,6 @@ export const configProviderEmits = {
 export interface ConfigProviderProvide {
   props: ConfigProviderProps
   mitt: Mitt
-  rect: UniApp.NodeInfo
-  scrollTop: number
 }
 
 export type ConfigProviderEmits = typeof configProviderEmits
