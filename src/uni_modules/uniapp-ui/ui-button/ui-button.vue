@@ -322,7 +322,7 @@ export default {
 
   // 镂空：文字用主色，背景透明，边框用主色
   &--plain {
-    color: var(--ui-button-background);
+    color: var(--ui-button-text-color);
     background: var(--ui-color-background);
     border-color: var(--ui-button-background);
     border-width: var(--ui-border-width);
@@ -332,7 +332,6 @@ export default {
     }
 
     &.ui-button--default {
-      color: var(--ui-button-text-color);
       border-color: var(--ui-button-border-color);
 
       &::before {
@@ -343,17 +342,19 @@ export default {
 
   // 文本按钮：去边框背景
   &--text {
-    color: var(--ui-button-background);
+    color: var(--ui-button-text-color);
     height: fit-content;
     display: inline-flex;
     padding: 0;
     background: transparent;
     line-height: normal;
     border-width: 0;
+  }
 
-    &.ui-button--default {
-      color: var(--ui-button-text-color);
-    }
+  // text/plain 非 default 类型：text-color 默认跟随 background（textColor inline 显式时优先级最高）
+  &--text:not(.ui-button--default),
+  &--plain:not(.ui-button--default) {
+    --ui-button-text-color: var(--ui-button-background);
   }
 
   &--block {

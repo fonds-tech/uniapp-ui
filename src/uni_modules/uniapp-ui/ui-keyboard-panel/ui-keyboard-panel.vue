@@ -4,7 +4,7 @@
       <view v-if="props.showHeader" class="ui-keyboard__header">
         <view v-if="props.showCancel" class="ui-keyboard__cancel" @click="onCancel">
           <slot name="cancel">
-            <ui-button text text-color="text-tertiary">{{ props.cancelText }}</ui-button>
+            <ui-button text color="text-secondary">{{ props.cancelText }}</ui-button>
           </slot>
         </view>
         <view class="ui-keyboard__title">
@@ -14,7 +14,7 @@
         </view>
         <view v-if="props.showConfirm" class="ui-keyboard__confirm" @click="onConfirm">
           <slot name="confirm">
-            <ui-button text>{{ props.confirmText }}</ui-button>
+            <ui-button text type="primary">{{ props.confirmText }}</ui-button>
           </slot>
         </view>
       </view>

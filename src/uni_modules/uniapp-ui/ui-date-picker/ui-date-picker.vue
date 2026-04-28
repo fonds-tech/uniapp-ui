@@ -21,9 +21,7 @@
           <view v-if="props.showHeader" class="ui-date-picker__header">
             <view class="ui-date-picker__header__cancel" @click="onCancel">
               <slot name="cancel">
-                <ui-button text text-color="text-tertiary">
-                  {{ props.cancelText }}
-                </ui-button>
+                <ui-button text color="text-secondary">{{ props.cancelText }}</ui-button>
               </slot>
             </view>
             <view class="ui-date-picker__header__title">
@@ -31,7 +29,7 @@
             </view>
             <view class="ui-date-picker__header__confirm" @click="onConfirm">
               <slot name="confirm">
-                <ui-button text>{{ props.confirmText }}</ui-button>
+                <ui-button text type="primary">{{ props.confirmText }}</ui-button>
               </slot>
             </view>
           </view>
