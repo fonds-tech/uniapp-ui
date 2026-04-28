@@ -402,79 +402,8 @@ describe("uiDropdownItem 组件", () => {
     })
   })
 
-  describe("overlay 属性测试", () => {
-    it("默认应该显示遮罩层", () => {
-      const wrapper = mountDropdownItem({
-        title: "菜单",
-        options: [],
-      })
-      expect(wrapper.props("overlay")).toBe(true)
-    })
-
-    it("应该支持关闭遮罩层", () => {
-      const wrapper = mountDropdownItem({
-        title: "菜单",
-        overlay: false,
-        options: [],
-      })
-      expect(wrapper.props("overlay")).toBe(false)
-    })
-  })
-
-  describe("closeOnClickOverlay 属性测试", () => {
-    it("默认点击遮罩层应该关闭菜单", () => {
-      const wrapper = mountDropdownItem({
-        title: "菜单",
-        options: [],
-      })
-      expect(wrapper.props("closeOnClickOverlay")).toBe(true)
-    })
-
-    it("应该支持禁止点击遮罩层关闭", () => {
-      const wrapper = mountDropdownItem({
-        title: "菜单",
-        closeOnClickOverlay: false,
-        options: [],
-      })
-      expect(wrapper.props("closeOnClickOverlay")).toBe(false)
-    })
-  })
-
-  describe("自定义字段测试", () => {
-    it("应该支持自定义 labelField", () => {
-      const wrapper = mountDropdownItem({
-        title: "菜单",
-        labelField: "name",
-        options: [{ name: "选项1", id: "1" }],
-      })
-      expect(wrapper.props("labelField")).toBe("name")
-    })
-
-    it("应该支持自定义 valueField", () => {
-      const wrapper = mountDropdownItem({
-        title: "菜单",
-        valueField: "id",
-        options: [{ label: "选项1", id: "1" }],
-      })
-      expect(wrapper.props("valueField")).toBe("id")
-    })
-
-    it("默认 labelField 应该是 label", () => {
-      const wrapper = mountDropdownItem({
-        title: "菜单",
-        options: [],
-      })
-      expect(wrapper.props("labelField")).toBe("label")
-    })
-
-    it("默认 valueField 应该是 value", () => {
-      const wrapper = mountDropdownItem({
-        title: "菜单",
-        options: [],
-      })
-      expect(wrapper.props("valueField")).toBe("value")
-    })
-  })
+  // overlay / closeOnClickOverlay / labelField / valueField 已从 item 移除，由父级 ui-dropdown-menu 统一控制
+  // 这些 prop 的测试在 dropdown-menu 自身测试中覆盖
 
   describe("插槽测试", () => {
     it("应该支持默认插槽", async () => {

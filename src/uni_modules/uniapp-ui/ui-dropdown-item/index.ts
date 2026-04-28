@@ -2,8 +2,8 @@ import type DropdownItem from "./ui-dropdown-item.vue"
 import type { PropType, CSSProperties, ExtractPropTypes } from "vue"
 import { buildDefaultProps } from "../utils/props"
 
-export const dropdownItemKey = Symbol("ui-dropdown-item")
-
+// 注：showIcon / overlay / closeOnClickOverlay / labelField / valueField 等 menu 级容器配置
+// 从 item 移除（避免 item 默认值覆盖 menu 设置），统一由父级 ui-dropdown-menu 控制
 const defaultProps = buildDefaultProps("dropdown-item", {
   modelValue: undefined,
   mode: "single",
@@ -23,8 +23,6 @@ const defaultProps = buildDefaultProps("dropdown-item", {
   iconColor: undefined,
   iconWeight: undefined,
   activeIconColor: undefined,
-  showIcon: true,
-  overlay: true,
   duration: undefined,
   direction: undefined,
   background: undefined,
@@ -35,10 +33,7 @@ const defaultProps = buildDefaultProps("dropdown-item", {
   activeOptionSize: undefined,
   activeOptionColor: undefined,
   activeOptionWeight: undefined,
-  closeOnClickOverlay: true,
   zIndex: undefined,
-  labelField: "label",
-  valueField: "value",
   customClass: undefined,
   customStyle: undefined,
 })
@@ -58,6 +53,7 @@ export const dropdownItemProps = {
   minHeight: defaultProps("minHeight", { type: [Number, String] }),
   /** 菜单最大高度 */
   maxHeight: defaultProps("maxHeight", { type: [Number, String] }),
+  // 注：showIcon / overlay / closeOnClickOverlay / labelField / valueField 已移除，由父级 ui-dropdown-menu 统一控制
   /** 标题颜色 */
   titleColor: defaultProps("titleColor", { type: String }),
   /** 标题大小 */
@@ -80,10 +76,6 @@ export const dropdownItemProps = {
   iconWeight: defaultProps("iconWeight", { type: [Number, String] }),
   /** 激活图标颜色 */
   activeIconColor: defaultProps("activeIconColor", { type: String }),
-  /** 是否显示图标 */
-  showIcon: defaultProps("showIcon", { type: Boolean }),
-  /** 是否显示遮罩层 */
-  overlay: defaultProps("overlay", { type: Boolean }),
   /** 动画时长，单位毫秒 */
   duration: defaultProps("duration", { type: [Number, String] }),
   /** 菜单展开方向，可选值up、down */
@@ -104,14 +96,8 @@ export const dropdownItemProps = {
   activeOptionColor: defaultProps("activeOptionColor", { type: String }),
   /** 激活选项文字图标粗细 */
   activeOptionWeight: defaultProps("activeOptionWeight", { type: [Number, String] }),
-  /** 是否在点击遮罩层后关闭菜单 */
-  closeOnClickOverlay: defaultProps("closeOnClickOverlay", { type: Boolean }),
   /** 弹出层 zIndex */
   zIndex: defaultProps("zIndex", { type: [Number, String] }),
-  /** option 名称字段 */
-  labelField: defaultProps("labelField", { type: String }),
-  /** option 内容字段 */
-  valueField: defaultProps("valueField", { type: String }),
   /** 自定义类名 */
   customClass: defaultProps("customClass", { type: String }),
   /** 自定义样式 */

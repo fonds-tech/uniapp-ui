@@ -13,22 +13,17 @@
 <script setup lang="ts">
 import type { CSSProperties } from "vue"
 import { dropdownMenuKey, dropdownMenuProps } from "./index"
+import { ref, computed, onMounted, getCurrentInstance } from "vue"
 import { useRect, useUnit, useColor, useStyle, useChildren } from "../hooks"
-import { ref, toRef, computed, onMounted, getCurrentInstance } from "vue"
 
-// 定义组件名称
 defineOptions({ name: "ui-dropdown-menu" })
 
-// 定义props
 const props = defineProps(dropdownMenuProps)
-// 使用useChildren hook获取子组件
 const { childrens, linkChildren } = useChildren(dropdownMenuKey)
 
-// 定义rect和instance
 const rect = ref<UniApp.NodeInfo>({})
 const instance = getCurrentInstance()
 
-// 链接子组件
 linkChildren({ props, rect, close, resize })
 
 const style = computed(() => {
@@ -39,63 +34,70 @@ const style = computed(() => {
   return useStyle({ ...style, ...useStyle(props.customStyle) })
 })
 
-const itemClass = computed(() => (item: any) => {
+// 是否有打开的子项（用于页面滚动时判断是否需要重新计算 rect）
+const isVisible = computed(() => childrens.some((item: any) => item.exposed.visible))
+
+// 子项类名（普通函数，避免 computed 包装单参数函数的反模式）
+function itemClass(item: any): string[] {
   const list: string[] = []
   if (item.exposed.props.disabled) list.push("is-disabled")
-  if (toRef(item.exposed.visible).value) list.push("is-active")
+  if (item.exposed.visible) list.push("is-active")
   return list
-})
-
-const titleStyle = computed(() => {
-  return (item: any) => {
-    const style: CSSProperties = {}
-    style.color = toRef(item.exposed.visible).value ? useColor(prop(item, "activeTitleColor")) : useColor(prop(item, "titleColor"))
-    style.fontSize = useUnit(prop(item, "titleSize"))
-    style.fontWeight = prop(item, "titleWeight")
-    return useStyle(style)
-  }
-})
-
-// 计算图标样式，包括旋转
-const iconStyle = computed(() => (item: any) => {
-  const style: CSSProperties = {}
-  if (toRef(item.exposed.visible).value) style.transform = "rotate(180deg)"
-  return useStyle(style)
-})
-
-const itemTitle = computed(() => (item: any) => toRef(item.exposed.title).value)
-// 计算是否有显示的子项
-const isVisible = computed(() => childrens.some((item: any) => toRef(item.exposed.visible).value))
-// 根据状态获取菜单图标颜色
-const iconColor = computed(() => (item: any) => (toRef(item.exposed.visible).value ? useColor(prop(item, "activeIconColor")) : useColor(prop(item, "iconColor"))))
-
-// 获取指定菜单实例prop值
-function prop(item: any, name: string) {
-  return item.props[name] ?? props[name]
 }
 
-// 获取节点信息
+// 子项标题样式
+function titleStyle(item: any) {
+  const style: CSSProperties = {}
+  style.color = item.exposed.visible ? useColor(prop(item, "activeTitleColor")) : useColor(prop(item, "titleColor"))
+  style.fontSize = useUnit(prop(item, "titleSize"))
+  style.fontWeight = prop(item, "titleWeight")
+  return useStyle(style)
+}
+
+// 子项图标样式（打开时旋转 180）
+function iconStyle(item: any) {
+  const style: CSSProperties = {}
+  if (item.exposed.visible) style.transform = "rotate(180deg)"
+  return useStyle(style)
+}
+
+// 子项标题文本
+function itemTitle(item: any) {
+  return item.exposed.title
+}
+
+// 子项图标颜色
+function iconColor(item: any) {
+  return item.exposed.visible ? useColor(prop(item, "activeIconColor")) : useColor(prop(item, "iconColor"))
+}
+
+// 取子项 prop（自身 > 父级菜单回退）
+function prop(item: any, name: string) {
+  return item.props[name] ?? props[name as keyof typeof props]
+}
+
+// 测量菜单 rect（供子项计算定位）
 async function resize() {
   rect.value = await useRect(".ui-dropdown-menu", instance)
 }
 
-// 点击菜单处理函数
+// 点击菜单项
 function onClick(item: any, index: number) {
   if (item.exposed.props.disabled) return
   toggleItem(index)
 }
 
-// 关闭所有菜单
+// 关闭所有子菜单
 function close() {
   childrens?.forEach((item: any) => item.exposed.toggle(false))
 }
 
 async function toggleItem(index: number) {
   await resize()
-  childrens?.forEach((item, childrenIndex) => {
+  childrens?.forEach((item: any, childrenIndex) => {
     if (index === childrenIndex) {
       item.exposed.toggle()
-    } else if (toRef(item.exposed.visible).value) {
+    } else if (item.exposed.visible) {
       item.exposed.toggle(false)
     }
   })
