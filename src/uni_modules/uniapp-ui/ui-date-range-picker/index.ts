@@ -1,6 +1,7 @@
 import type DateRangePicker from "./ui-date-range-picker.vue"
+import type { PopupMode } from "../ui-popup"
 import type { PropType, CSSProperties, ExtractPropTypes } from "vue"
-import type { PopupMode, DatePickerColumnType, DatePickerColumnFilter, DatePickerColumnFormatter } from "../ui-date-picker"
+import type { DatePanelSteps, DatePanelOption, DatePanelColumnType, DatePanelColumnFilter, DatePanelColumnFormatter } from "../ui-date-panel"
 import { buildDefaultProps } from "../utils/props"
 
 /** 日期区间选择器值类型 */
@@ -39,9 +40,10 @@ const defaultProps = buildDefaultProps("date-range-picker", {
   minDate: undefined,
   maxDate: undefined,
   format: "YYYY-MM-DD",
+  steps: undefined,
   columnFilter: undefined,
-  columnFormatter: undefined,
-  mode: "bottom",
+  columnFormatter: (type: string, option: DatePanelOption) => option,
+  mode: "bottom" as PopupMode,
   borderRadius: "16rpx",
   closeOnClickOverlay: true,
   overlay: true,
@@ -52,7 +54,7 @@ const defaultProps = buildDefaultProps("date-range-picker", {
   showHeader: true,
   title: undefined,
   cancelText: "取消",
-  confirmText: "确认",
+  confirmText: "确定",
   columnHeight: "88rpx",
   visibleColumnNum: 5,
   columnSize: undefined,
@@ -77,17 +79,19 @@ export const dateRangePickerProps = {
   /** 选择开始日期后自动切换到结束日期 */
   autoSwitchToEnd: defaultProps("autoSwitchToEnd", { type: Boolean }),
   /** 列类型 */
-  columns: defaultProps("columns", { type: Array as PropType<DatePickerColumnType[]> }),
+  columns: defaultProps("columns", { type: Array as PropType<DatePanelColumnType[]> }),
   /** 最小日期 */
   minDate: defaultProps("minDate", { type: [String, Date, Number] as PropType<string | Date | number> }),
   /** 最大日期 */
   maxDate: defaultProps("maxDate", { type: [String, Date, Number] as PropType<string | Date | number> }),
   /** 日期格式 */
   format: defaultProps("format", { type: String }),
+  /** 列步进配置（透传 ui-date-panel） */
+  steps: defaultProps("steps", { type: Object as PropType<DatePanelSteps> }),
   /** 选项过滤函数 */
-  columnFilter: defaultProps("columnFilter", { type: Function as PropType<DatePickerColumnFilter> }),
+  columnFilter: defaultProps("columnFilter", { type: Function as PropType<DatePanelColumnFilter> }),
   /** 选项格式化函数 */
-  columnFormatter: defaultProps("columnFormatter", { type: Function as PropType<DatePickerColumnFormatter> }),
+  columnFormatter: defaultProps("columnFormatter", { type: Function as PropType<DatePanelColumnFormatter> }),
   /** 弹窗位置 */
   mode: defaultProps("mode", { type: String as PropType<PopupMode> }),
   /** 圆角大小 */

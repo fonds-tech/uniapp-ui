@@ -19,12 +19,24 @@
       <template #header>
         <slot name="header">
           <view v-if="props.showHeader" class="ui-date-range-picker__header">
-            <view class="ui-date-range-picker__header__cancel" @click="handleCancel">
-              <slot name="cancel">
-                <ui-button text color="text-secondary">{{ props.cancelText }}</ui-button>
-              </slot>
+            <!-- 第 1 行：取消 + 标题 + 确定（与其他 popup 一致） -->
+            <view class="ui-date-range-picker__header__top">
+              <view class="ui-date-range-picker__header__cancel" @click="handleCancel">
+                <slot name="cancel">
+                  <ui-button text color="text-secondary">{{ props.cancelText }}</ui-button>
+                </slot>
+              </view>
+              <view class="ui-date-range-picker__header__title">
+                <slot name="title">{{ props.title }}</slot>
+              </view>
+              <view class="ui-date-range-picker__header__confirm" @click="handleConfirm">
+                <slot name="confirm">
+                  <ui-button text type="primary">{{ props.confirmText }}</ui-button>
+                </slot>
+              </view>
             </view>
 
+            <!-- 第 2 行：开始 / 结束 segmented 切换 -->
             <view class="ui-date-range-picker__tabs">
               <view class="ui-date-range-picker__tab" :class="{ 'is-active': activeType === 'start' }" @click="switchTab('start')">
                 <text class="ui-date-range-picker__tab-text">{{ startTabText }}</text>
@@ -32,12 +44,6 @@
               <view class="ui-date-range-picker__tab" :class="{ 'is-active': activeType === 'end' }" @click="switchTab('end')">
                 <text class="ui-date-range-picker__tab-text">{{ endTabText }}</text>
               </view>
-            </view>
-
-            <view class="ui-date-range-picker__header__confirm" @click="handleConfirm">
-              <slot name="confirm">
-                <ui-button text type="primary">{{ props.confirmText }}</ui-button>
-              </slot>
             </view>
           </view>
         </slot>
@@ -51,6 +57,7 @@
           :min-date="panelMinDate"
           :max-date="panelMaxDate"
           :format="props.format"
+          :steps="props.steps"
           :column-filter="props.columnFilter"
           :column-formatter="props.columnFormatter"
           :column-height="props.columnHeight"
@@ -253,22 +260,6 @@ function open(type: DateRangePickerActiveType = props.activeType) {
   emits("update:show", true)
 }
 
-function close() {
-  emits("update:show", false)
-}
-
-function confirm() {
-  handleConfirm()
-}
-
-function cancel() {
-  handleCancel()
-}
-
-function getRange() {
-  return buildRange(startValue.value, endValue.value)
-}
-
 interface DateParts {
   y: number
   m: number
@@ -312,27 +303,27 @@ function parseDateInput(value: string | number | Date | null | undefined): DateP
   const parts = normalized.split(/[\s/:-]/)
 
   if (parts.length === 2 || parts.length === 3) {
-    const firstNum = Number.parseInt(parts[0])
+    const firstNum = Number.parseInt(parts[0], 10)
     if (firstNum >= 0 && firstNum <= 23) {
       return {
         y: now.getFullYear(),
         m: now.getMonth() + 1,
         d: now.getDate(),
         h: firstNum,
-        mi: Number.parseInt(parts[1]) || 0,
-        s: parts.length === 3 ? Number.parseInt(parts[2]) || 0 : 0,
+        mi: Number.parseInt(parts[1], 10) || 0,
+        s: parts.length === 3 ? Number.parseInt(parts[2], 10) || 0 : 0,
       }
     }
   }
 
   if (parts.length >= 3) {
     return {
-      y: Number.parseInt(parts[0]) || now.getFullYear(),
-      m: Number.parseInt(parts[1]) || 1,
-      d: Number.parseInt(parts[2]) || 1,
-      h: Number.parseInt(parts[3]) || 0,
-      mi: Number.parseInt(parts[4]) || 0,
-      s: Number.parseInt(parts[5]) || 0,
+      y: Number.parseInt(parts[0], 10) || now.getFullYear(),
+      m: Number.parseInt(parts[1], 10) || 1,
+      d: Number.parseInt(parts[2], 10) || 1,
+      h: Number.parseInt(parts[3], 10) || 0,
+      mi: Number.parseInt(parts[4], 10) || 0,
+      s: Number.parseInt(parts[5], 10) || 0,
     }
   }
 
@@ -371,12 +362,11 @@ function parsedToDate(parts: DateParts | null): Date | undefined {
 }
 
 defineExpose({
-  name: "ui-date-range-picker",
   open,
-  close,
-  confirm,
-  cancel,
-  getRange,
+  close: () => emits("update:show", false),
+  confirm: handleConfirm,
+  cancel: handleCancel,
+  getRange: () => buildRange(startValue.value, endValue.value),
 })
 </script>
 
@@ -391,37 +381,55 @@ export default {
 .ui-date-range-picker {
   &__header {
     display: flex;
-    padding: var(--ui-spacing-md);
-    align-items: center;
     border-bottom: var(--ui-border-width) solid var(--ui-color-border-light);
-    justify-content: space-between;
+    flex-direction: column;
+
+    // 第 1 行：标准 popup 头部（取消 / 标题 / 确定）
+    &__top {
+      display: flex;
+      padding: var(--ui-spacing-md);
+      align-items: center;
+      justify-content: space-between;
+    }
 
     &__cancel,
     &__confirm {
       flex-shrink: 0;
     }
+
+    &__title {
+      flex: 1;
+      color: var(--ui-color-text);
+      font-size: var(--ui-font-size-md);
+      text-align: center;
+      font-weight: var(--ui-font-weight-bold);
+    }
   }
 
+  // 第 2 行：开始 / 结束 segmented 切换
   &__tabs {
-    gap: var(--ui-spacing-lg);
-    flex: 1;
+    margin: 0 var(--ui-spacing-md) var(--ui-spacing-md);
     display: flex;
-    justify-content: center;
+    padding: 4rpx;
+    border-radius: var(--ui-radius-sm);
+    background-color: var(--ui-color-background-section);
   }
 
   &__tab {
-    padding: var(--ui-spacing-xs) var(--ui-spacing-md);
-    position: relative;
-    min-width: 160rpx;
+    flex: 1;
+    padding: var(--ui-spacing-xs) var(--ui-spacing-sm);
+    overflow: hidden;
     text-align: center;
-    transition: all var(--ui-transition-fast);
-    border-radius: var(--ui-radius-sm);
+    transition: background-color var(--ui-transition-fast);
+    border-radius: var(--ui-radius-xs);
 
     &.is-active {
-      background-color: var(--ui-color-primary-light, rgba(25, 137, 250, 0.1));
+      box-shadow: 0 1rpx 4rpx rgba(0, 0, 0, 0.08);
+      background-color: var(--ui-color-background);
 
       .ui-date-range-picker__tab-text {
         color: var(--ui-color-primary);
+        font-weight: var(--ui-font-weight-medium);
       }
     }
 
@@ -430,6 +438,7 @@ export default {
       overflow: hidden;
       font-size: var(--ui-font-size-sm);
       transition: color var(--ui-transition-fast);
+      line-height: 1.4;
       white-space: nowrap;
       text-overflow: ellipsis;
     }

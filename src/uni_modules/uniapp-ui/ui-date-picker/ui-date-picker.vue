@@ -44,6 +44,7 @@
           :min-date="props.minDate"
           :max-date="props.maxDate"
           :format="props.format"
+          :steps="props.steps"
           :column-filter="props.columnFilter"
           :column-formatter="props.columnFormatter"
           :column-height="props.columnHeight"
@@ -70,7 +71,6 @@ import type { DatePanelChangeData } from "../ui-date-panel/index"
 import type { DatePickerChangeData } from "./index"
 import UiPopup from "../ui-popup/ui-popup.vue"
 import UiDatePanel from "../ui-date-panel/ui-date-panel.vue"
-import { isDef } from "../utils/check"
 import { ref, watch, nextTick } from "vue"
 import { datePickerEmits, datePickerProps } from "./index"
 
@@ -79,7 +79,8 @@ defineOptions({ name: "ui-date-picker" })
 const props = defineProps(datePickerProps)
 const emits = defineEmits(datePickerEmits)
 const datePanelRef = ref<InstanceType<typeof UiDatePanel>>()
-const latestSelectedData = ref<DatePickerChangeData | null>(null)
+// 最近一次 panel 内的选中数据快照（panel 未挂载时（关闭态）兜底用）
+const latestSelectedData = ref<DatePickerChangeData>({ value: "", selectedValues: [], selectedIndexes: [] })
 
 watch(
   () => props.show,
@@ -109,21 +110,12 @@ function onPanelChange(data: DatePanelChangeData) {
   emits("update:modelValue", mappedData.value)
 }
 
-function formatModelValueFallback() {
-  if (!isDef(props.modelValue)) return ""
-  if (typeof props.modelValue === "string") return props.modelValue
-  if (props.modelValue instanceof Date) return Number.isNaN(props.modelValue.getTime()) ? "" : props.modelValue.toISOString()
-  if (typeof props.modelValue === "number") {
-    const date = new Date(props.modelValue)
-    return Number.isNaN(date.getTime()) ? "" : date.toISOString()
-  }
-  return ""
-}
-
+// panel 未挂载（关闭态）时的兜底值：优先 panel 实时值，其次 latestSelectedData 缓存，最后空数据
+// 不再用 toISOString 兜底（与用户 format 期望格式错位）；空字符串交给 panel 在挂载后按 format 格式化
 function buildSelectedData(): DatePickerChangeData {
-  const value = datePanelRef.value?.getSelectedValue?.() ?? latestSelectedData.value?.value ?? formatModelValueFallback()
-  const selectedValues = datePanelRef.value?.getSelectedValues?.() ?? latestSelectedData.value?.selectedValues ?? []
-  const selectedIndexes = datePanelRef.value?.getSelectedIndexes?.() ?? latestSelectedData.value?.selectedIndexes ?? []
+  const value = datePanelRef.value?.getSelectedValue?.() ?? latestSelectedData.value.value
+  const selectedValues = datePanelRef.value?.getSelectedValues?.() ?? latestSelectedData.value.selectedValues
+  const selectedIndexes = datePanelRef.value?.getSelectedIndexes?.() ?? latestSelectedData.value.selectedIndexes
   return { value, selectedValues, selectedIndexes }
 }
 
@@ -140,43 +132,14 @@ function onConfirm() {
   emits("update:show", false)
 }
 
-function open() {
-  emits("update:show", true)
-}
-
-function close() {
-  emits("update:show", false)
-}
-
-function getSelectedValue() {
-  return buildSelectedData().value
-}
-
-function getSelectedValues() {
-  return buildSelectedData().selectedValues
-}
-
-function getSelectedIndexes() {
-  return buildSelectedData().selectedIndexes
-}
-
-function confirm() {
-  onConfirm()
-}
-
-function cancel() {
-  onCancel()
-}
-
 defineExpose({
-  name: "ui-date-picker",
-  open,
-  close,
-  getSelectedValue,
-  getSelectedValues,
-  getSelectedIndexes,
-  confirm,
-  cancel,
+  open: () => emits("update:show", true),
+  close: () => emits("update:show", false),
+  getSelectedValue: () => buildSelectedData().value,
+  getSelectedValues: () => buildSelectedData().selectedValues,
+  getSelectedIndexes: () => buildSelectedData().selectedIndexes,
+  confirm: onConfirm,
+  cancel: onCancel,
 })
 </script>
 

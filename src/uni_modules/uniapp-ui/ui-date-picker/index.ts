@@ -1,21 +1,17 @@
 import type DatePicker from "./ui-date-picker.vue"
+import type { PopupMode } from "../ui-popup"
 import type { PropType, ExtractPropTypes } from "vue"
+import type { DatePanelSteps, DatePanelOption, DatePanelColumnType, DatePanelColumnFilter, DatePanelColumnFormatter } from "../ui-date-panel"
 import { buildDefaultProps } from "../utils/props"
 
-/** DatePicker 列类型 */
-export type DatePickerColumnType = "year" | "month" | "day" | "hour" | "minute" | "second"
-
-/** DatePicker 选项 */
-export interface DatePickerOption {
-  text: string
-  value: string
-}
-
-/** 列过滤函数 */
-export type DatePickerColumnFilter = (type: string, options: DatePickerOption[], values?: string[]) => DatePickerOption[]
-
-/** 列格式化函数 */
-export type DatePickerColumnFormatter = (type: string, option: DatePickerOption) => DatePickerOption
+// 复用 ui-date-panel 的类型，避免重复定义
+export type {
+  DatePanelColumnFilter as DatePickerColumnFilter,
+  DatePanelColumnFormatter as DatePickerColumnFormatter,
+  DatePanelColumnType as DatePickerColumnType,
+  DatePanelOption as DatePickerOption,
+  DatePanelSteps as DatePickerSteps,
+} from "../ui-date-panel"
 
 /** 日期变化事件数据 */
 export interface DatePickerChangeData {
@@ -24,12 +20,14 @@ export interface DatePickerChangeData {
   selectedIndexes: number[]
 }
 
-/** Popup 模式类型 */
-export type PopupMode = "top" | "bottom" | "left" | "right" | "center"
+/** 取消事件数据（结构同 DatePickerChangeData） */
+export type DatePickerCancelData = DatePickerChangeData
+/** 确认事件数据（结构同 DatePickerChangeData） */
+export type DatePickerConfirmData = DatePickerChangeData
 
 const defaultProps = buildDefaultProps("date-picker", {
   show: false,
-  mode: "bottom",
+  mode: "bottom" as PopupMode,
   borderRadius: "16rpx",
   closeOnClickOverlay: true,
   overlay: true,
@@ -40,14 +38,15 @@ const defaultProps = buildDefaultProps("date-picker", {
   showHeader: true,
   title: undefined,
   cancelText: "取消",
-  confirmText: "确认",
+  confirmText: "确定",
   modelValue: "",
   columns: () => ["year", "month", "day"],
   minDate: undefined,
   maxDate: undefined,
   format: "YYYY-MM-DD HH:mm:ss",
+  steps: undefined,
   columnFilter: undefined,
-  columnFormatter: (type: string, option: DatePickerOption) => option,
+  columnFormatter: (type: string, option: DatePanelOption) => option,
   columnHeight: "88rpx",
   visibleColumnNum: 5,
   columnSize: undefined,
@@ -88,17 +87,19 @@ export const datePickerProps = {
   /** 绑定日期 */
   modelValue: defaultProps("modelValue", { type: [String, Date, Number] }),
   /** 列类型 */
-  columns: defaultProps("columns", { type: Array as PropType<DatePickerColumnType[]> }),
+  columns: defaultProps("columns", { type: Array as PropType<DatePanelColumnType[]> }),
   /** 最小时间 */
   minDate: defaultProps("minDate", { type: [String, Date, Number] }),
   /** 最大时间 */
   maxDate: defaultProps("maxDate", { type: [String, Date, Number] }),
   /** 时间格式 */
   format: defaultProps("format", { type: String }),
+  /** 列步进配置（如 { minute: 15 } 或 { month: 3 } 季度） */
+  steps: defaultProps("steps", { type: Object as PropType<DatePanelSteps> }),
   /** 选项过滤函数 */
-  columnFilter: defaultProps("columnFilter", { type: Function as PropType<DatePickerColumnFilter> }),
+  columnFilter: defaultProps("columnFilter", { type: Function as PropType<DatePanelColumnFilter> }),
   /** 选项格式化函数 */
-  columnFormatter: defaultProps("columnFormatter", { type: Function as PropType<DatePickerColumnFormatter> }),
+  columnFormatter: defaultProps("columnFormatter", { type: Function as PropType<DatePanelColumnFormatter> }),
   /** 选项高度 */
   columnHeight: defaultProps("columnHeight", { type: [Number, String] }),
   /** 可见的选项个数 */
@@ -115,19 +116,6 @@ export const datePickerProps = {
   activeColumnColor: defaultProps("activeColumnColor", { type: String }),
   /** 激活选项文字字重 */
   activeColumnWeight: defaultProps("activeColumnWeight", { type: [Number, String] }),
-}
-
-/** 取消/确认事件数据 */
-export interface DatePickerCancelData {
-  value: string
-  selectedValues: string[]
-  selectedIndexes: number[]
-}
-
-export interface DatePickerConfirmData {
-  value: string
-  selectedValues: string[]
-  selectedIndexes: number[]
 }
 
 export const datePickerEmits = {

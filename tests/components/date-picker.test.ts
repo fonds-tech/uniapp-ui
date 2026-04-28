@@ -505,7 +505,7 @@ describe("uiDatePicker 组件", () => {
   })
 
   describe("confirmText 属性测试", () => {
-    it("默认确认按钮文字应该是 '确认'", () => {
+    it("默认确认按钮文字应该是 '确定'", () => {
       const wrapper = mount(UiDatePicker, {
         global: {
           stubs: {
@@ -515,7 +515,7 @@ describe("uiDatePicker 组件", () => {
           },
         },
       })
-      expect(wrapper.props("confirmText")).toBe("确认")
+      expect(wrapper.props("confirmText")).toBe("确定")
     })
 
     it("应该支持自定义确认按钮文字", () => {
