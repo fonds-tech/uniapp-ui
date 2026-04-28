@@ -393,7 +393,7 @@ describe("uiDateSelect 组件", () => {
   })
 
   describe("rightIcon 属性测试", () => {
-    it("默认 rightIcon 应该是 right", () => {
+    it("默认 rightIcon 应该是 arrow", () => {
       const wrapper = mount(UiDateSelect, {
         global: {
           stubs: {
@@ -402,7 +402,7 @@ describe("uiDateSelect 组件", () => {
           },
         },
       })
-      expect(wrapper.props("rightIcon")).toBe("right")
+      expect(wrapper.props("rightIcon")).toBe("arrow")
     })
 
     it("应该支持自定义右侧图标", () => {
@@ -489,7 +489,7 @@ describe("uiDateSelect 组件", () => {
   })
 
   describe("confirmText 属性测试", () => {
-    it("默认确认按钮文字应该是 '确认'", () => {
+    it("默认确认按钮文字应该是 '确定'", () => {
       const wrapper = mount(UiDateSelect, {
         global: {
           stubs: {
@@ -498,7 +498,7 @@ describe("uiDateSelect 组件", () => {
           },
         },
       })
-      expect(wrapper.props("confirmText")).toBe("确认")
+      expect(wrapper.props("confirmText")).toBe("确定")
     })
   })
 

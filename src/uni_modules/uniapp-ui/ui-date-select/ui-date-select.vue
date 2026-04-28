@@ -1,6 +1,6 @@
 <template>
   <view class="ui-date-select" :class="[classs, props.customClass]" :style="[style]">
-    <view class="ui-date-select__trigger" :hover-class="hoverClass" :hover-stay-time="50" @click="handleClick">
+    <view class="ui-date-select__trigger" :hover-class="hoverClass" :hover-stay-time="+props.hoverStayTime" @click="handleClick">
       <view class="ui-date-select__value" :style="[valueStyle]">
         <slot name="display" :text="displayText" :value="currentValue" :placeholder="props.placeholder">
           <text v-if="displayText" class="ui-date-select__text" :style="[textStyle]">{{ displayText }}</text>
@@ -33,6 +33,7 @@
       :min-date="props.minDate"
       :max-date="props.maxDate"
       :format="props.format"
+      :steps="props.steps"
       :column-filter="props.columnFilter"
       :column-formatter="props.columnFormatter"
       :column-height="props.columnHeight"
@@ -338,65 +339,18 @@ function handleConfirm(data: DatePickerConfirmData) {
   parent?.onChange(data.value)
 }
 
-/**
- * 打开弹窗
- */
-function open() {
-  if (!isInteractive.value) return
-  visible.value = true
-}
-
-/**
- * 关闭弹窗
- */
-function close() {
-  visible.value = false
-}
-
-/**
- * 确认选择
- */
-function confirm() {
-  datePickerRef.value?.confirm()
-}
-
-/**
- * 取消选择
- */
-function cancel() {
-  datePickerRef.value?.cancel()
-}
-
-/**
- * 获取格式化后的选中值
- */
-function getSelectedValue() {
-  return datePickerRef.value?.getSelectedValue?.() ?? currentValue.value
-}
-
-/**
- * 获取选中值数组
- */
-function getSelectedValues() {
-  return datePickerRef.value?.getSelectedValues?.() ?? []
-}
-
-/**
- * 获取选中索引数组
- */
-function getSelectedIndexes() {
-  return datePickerRef.value?.getSelectedIndexes?.() ?? []
-}
-
 defineExpose({
-  name: "ui-date-select",
-  open,
-  close,
-  confirm,
-  cancel,
-  getSelectedValue,
-  getSelectedValues,
-  getSelectedIndexes,
+  open: () => {
+    if (isInteractive.value) visible.value = true
+  },
+  close: () => {
+    visible.value = false
+  },
+  confirm: () => datePickerRef.value?.confirm(),
+  cancel: () => datePickerRef.value?.cancel(),
+  getSelectedValue: () => datePickerRef.value?.getSelectedValue?.() ?? currentValue.value,
+  getSelectedValues: () => datePickerRef.value?.getSelectedValues?.() ?? [],
+  getSelectedIndexes: () => datePickerRef.value?.getSelectedIndexes?.() ?? [],
 })
 </script>
 
