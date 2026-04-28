@@ -1,14 +1,14 @@
 <template>
   <view v-if="props.show" class="ui-empty" :class="[props.customClass]" :style="[style]">
     <slot name="icon">
-      <image v-if="props.icon" class="ui-empty__icon" :src="props.icon" mode="widthFix" :style="[iconStyle]" />
-      <image v-else class="ui-empty__icon" :src="emptyImg" mode="widthFix" :style="[iconStyle]" />
+      <image v-if="iconAsImage" class="ui-empty__icon" :src="iconAsImage" mode="widthFix" :style="[iconImageStyle]" />
+      <ui-icon v-else class="ui-empty__icon" :name="props.icon" :size="useUnit(props.iconSize)" :color="useColor(props.iconColor)" :weight="props.iconWeight" />
     </slot>
     <slot name="text">
       <text class="ui-empty__text" :style="[textStyle]">{{ props.text }}</text>
     </slot>
-    <view class="ui-empty__slot">
-      <slot />
+    <view v-if="$slots.footer" class="ui-empty__footer">
+      <slot name="footer" />
     </view>
   </view>
 </template>
@@ -34,13 +34,17 @@ const style = computed(() => {
   })
 })
 
-// 图标样式，设置颜色、尺寸等
-const iconStyle = computed(() => {
+// icon 解析：含 / 或 . = 图片 URL；空 = 默认 emptyImg；否则 = ui-icon 名（返回空走 ui-icon 分支）
+const iconAsImage = computed<string>(() => {
+  if (!props.icon) return emptyImg
+  if (props.icon.includes("/") || props.icon.includes(".")) return props.icon
+  return ""
+})
+
+// 图片模式样式（仅 image 分支用，width 控制，height 由 widthFix 自适应）
+const iconImageStyle = computed(() => {
   const style: any = {}
-  style.color = useColor(props.iconColor)
-  style.width = useUnit(props.iconSize || props.iconWidth)
-  style.height = useUnit(props.iconSize || props.iconHeight)
-  style.fontWeight = props.iconWeight
+  style.width = useUnit(props.iconSize)
   return useStyle(style)
 })
 
@@ -65,23 +69,19 @@ export default {
 .ui-empty {
   flex: 1;
   display: flex;
-  padding: 96rpx 0;
+  padding: var(--ui-spacing-xxl) 0;
   align-items: center;
   flex-shrink: 0;
   flex-direction: column;
   justify-content: center;
 
-  &__icon {
-    width: 450rpx;
-    height: 280rpx;
-  }
-
   &__text {
     color: var(--ui-color-text-secondary);
+    font-size: var(--ui-font-size-md);
     margin-top: var(--ui-spacing-xl);
   }
 
-  &__slot {
+  &__footer {
     margin-top: var(--ui-spacing-xl);
   }
 }
