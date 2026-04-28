@@ -25,7 +25,7 @@
           :key="index"
           class="ui-picker-panel__columns__column"
           :class="{ 'is-active': isActiveColumn(columnIndex, index) }"
-          :style="[columnStyle(columnIndex, index)]"
+          :style="[optionBaseStyle, columnStyle(columnIndex, index)]"
         >
           {{ item[resolvedFields.text] }}
         </view>
@@ -78,24 +78,23 @@ const columns = computed<PickerColumn[]>(() => {
 
 const style = computed(() => useStyle(props.customStyle))
 
+// 单项高度（px），全组件用同一单位避免 rpx/px 转换误差导致行不对齐
+const itemHeightPx = computed(() => useUnitToPx(props.columnHeight))
+
 const viewStyle = computed(() => {
-  return useStyle(
-    {
-      // 视图高度 = 单列高度 * 可见列数
-      height: `${useUnitToPx(props.columnHeight) * +props.visibleColumnNum}px`,
-    },
-    "string",
-  )
+  return useStyle({ height: `${itemHeightPx.value * +props.visibleColumnNum}px` }, "string")
 })
 
 const indicatorStyle = computed(() => {
-  return useStyle(
-    {
-      // 指示器高度与单列高度保持一致
-      height: `${useUnitToPx(props.columnHeight)}px`,
-    },
-    "string",
-  )
+  return useStyle({ height: `${itemHeightPx.value}px` }, "string")
+})
+
+// 选项基础样式：高度 + 行高与 indicator 保持像素级一致
+const optionBaseStyle = computed(() => {
+  return useStyle({
+    height: `${itemHeightPx.value}px`,
+    lineHeight: `${itemHeightPx.value}px`,
+  })
 })
 
 // 复用 isActiveColumn 判断逻辑，减少重复计算
