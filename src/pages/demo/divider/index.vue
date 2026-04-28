@@ -24,13 +24,6 @@
       </demo-block>
     </demo-section>
 
-    <demo-section title="虚线">
-      <demo-block direction="column">
-        <ui-divider dashed />
-        <ui-divider dashed>虚线分割</ui-divider>
-      </demo-block>
-    </demo-section>
-
     <demo-section title="线条类型">
       <demo-block direction="column">
         <ui-divider type="solid">实线 solid</ui-divider>
@@ -130,7 +123,7 @@
     <demo-section title="自定义样式">
       <demo-block direction="column">
         <ui-divider dashed border-color="primary" :custom-style="{ opacity: 0.6 }"> 组合样式 </ui-divider>
-        <ui-divider custom-class="custom-divider" border-color="#ff6b6b"> 自定义类名 </ui-divider>
+        <ui-divider border-color="danger" :custom-style="{ fontWeight: '600' }"> 加粗内容 </ui-divider>
       </demo-block>
     </demo-section>
   </demo-page>
@@ -150,12 +143,5 @@ definePage({
 
 .mt-16 {
   margin-top: 16rpx;
-}
-
-:deep(.custom-divider) {
-  .ui-divider__content {
-    color: #ff6b6b;
-    font-weight: 600;
-  }
 }
 </style>

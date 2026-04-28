@@ -62,7 +62,7 @@ export type { ColorPanelEmits, ColorPanelInstance, ColorPanelProps } from "./ui-
 export type { ColorPickerEmits, ColorPickerInstance, ColorPickerProps } from "./ui-color-picker"
 export { provideDialog } from "./ui-dialog"
 export type { DialogExpose, DialogInstance, DialogOptions } from "./ui-dialog"
-export type { DividerEmits, DividerExpose, DividerInstance, DividerProps } from "./ui-divider"
+export type { DividerEmits, DividerInstance, DividerProps } from "./ui-divider"
 export type { GridDirection, GridInstance, GridProps } from "./ui-grid"
 export type { GridItemInstance, GridItemProps } from "./ui-grid-item"
 export type { ListEmits, ListInstance, ListProps, ListStatus } from "./ui-list"

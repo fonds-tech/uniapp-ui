@@ -3,17 +3,17 @@ import type { PropType, CSSProperties, ExtractPropTypes } from "vue"
 import { buildDefaultProps } from "../utils/props"
 
 const defaultProps = buildDefaultProps("divider", {
-  type: "solid",
-  direction: "horizontal",
-  contentPosition: "center",
-  borderColor: "",
-  margin: "",
-  length: "",
-  thickness: "",
+  type: "solid" as "solid" | "dashed" | "dotted",
+  direction: "horizontal" as "horizontal" | "vertical",
+  contentPosition: "center" as "left" | "center" | "right",
+  borderColor: undefined,
+  margin: undefined,
+  length: undefined,
+  thickness: undefined,
   dashed: false,
   hairline: false,
-  customClass: "",
-  customStyle: "",
+  customClass: undefined,
+  customStyle: undefined,
 })
 
 export const dividerProps = {
@@ -40,9 +40,9 @@ export const dividerProps = {
   length: defaultProps("length", { type: [Number, String] }),
   /** 线条粗细，优先级高于 hairline */
   thickness: defaultProps("thickness", { type: [Number, String] }),
-  /** 是否为虚线（快捷属性，优先级高于 type） */
+  /** 是否为虚线（快捷属性，等价 type="dashed"） */
   dashed: defaultProps("dashed", { type: Boolean }),
-  /** 是否使用细线（0.5px） */
+  /** 是否使用细线（0.5px，等价 thickness="0.5px"） */
   hairline: defaultProps("hairline", { type: Boolean }),
   /** 自定义类名 */
   customClass: defaultProps("customClass", { type: String }),
@@ -54,9 +54,4 @@ export const dividerEmits = {}
 
 export type DividerEmits = typeof dividerEmits
 export type DividerProps = ExtractPropTypes<typeof dividerProps>
-
-export interface DividerExpose {
-  name: "ui-divider"
-}
-
 export type DividerInstance = InstanceType<typeof Divider>
