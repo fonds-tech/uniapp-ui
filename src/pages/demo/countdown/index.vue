@@ -102,13 +102,25 @@
     <demo-section title="自定义类名样式">
       <demo-block :cols="2" :gap="24">
         <view class="countdown-item">
-          <ui-count-down :time="time" custom-class="my-countdown" />
-          <text class="countdown-label">自定义类名</text>
+          <ui-count-down :time="time" :custom-style="customClassStyle" />
+          <text class="countdown-label">自定义样式（蓝）</text>
         </view>
         <view class="countdown-item">
-          <ui-count-down :time="time" :custom-style="{ color: '#ee0a24', fontSize: '36rpx', fontWeight: '600' }" />
-          <text class="countdown-label">自定义样式</text>
+          <ui-count-down :time="time" :custom-style="{ color: 'var(--ui-color-danger)', fontSize: '36rpx', fontWeight: '600' }" />
+          <text class="countdown-label">自定义样式（红）</text>
         </view>
+      </demo-block>
+    </demo-section>
+
+    <demo-section title="动态修改 time（自动 reset）">
+      <demo-block direction="column" :gap="16">
+        <ui-count-down :time="dynamicTime" format="HH:mm:ss" />
+        <demo-block :cols="3" :gap="12">
+          <ui-button size="small" @click="setDynamicTime(30 * 1000)">30 秒</ui-button>
+          <ui-button size="small" @click="setDynamicTime(5 * 60 * 1000)">5 分钟</ui-button>
+          <ui-button size="small" @click="setDynamicTime(60 * 60 * 1000)">1 小时</ui-button>
+        </demo-block>
+        <text class="demo-hint">修改 time 属性会自动 reset 并重启倒计时</text>
       </demo-block>
     </demo-section>
 
@@ -210,7 +222,7 @@ definePage({
 const toast = useToast()
 
 // 基础时间
-const time = ref(30 * 60 * 60 * 1000) // 30小时
+const time = ref(60 * 60 * 1000) // 1 小时
 const longTime = ref(3 * 24 * 60 * 60 * 1000 + 5 * 60 * 60 * 1000) // 3天5小时
 const eventTime = ref(10 * 1000)
 const saleTime = ref(2 * 60 * 60 * 1000 + 30 * 60 * 1000)
@@ -224,6 +236,22 @@ const countDownRef = ref()
 // 验证码倒计时
 const codeCountDownRef = ref()
 const codeCountingDown = ref(false)
+
+// 动态时间 demo
+const dynamicTime = ref(30 * 1000)
+function setDynamicTime(ms: number) {
+  dynamicTime.value = ms
+}
+
+// 自定义类名 demo 用的内联样式（替代 :deep 样式穿透）
+const customClassStyle = {
+  color: "var(--ui-color-primary)",
+  padding: "10rpx 18rpx",
+  fontSize: "32rpx",
+  background: "#e8f4ff",
+  fontWeight: "500",
+  borderRadius: "8rpx",
+}
 
 // 事件日志
 const eventLog = ref("等待 change 事件触发...")
@@ -488,14 +516,5 @@ function formatTargetDate(timestamp: number): string {
   padding: 0 8rpx;
   font-size: 26rpx;
   font-weight: bold;
-}
-
-:deep(.my-countdown) {
-  color: #1989fa;
-  padding: 10rpx 18rpx;
-  font-size: 32rpx;
-  background: #e8f4ff;
-  font-weight: 500;
-  border-radius: 8rpx;
 }
 </style>

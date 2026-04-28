@@ -18,21 +18,16 @@ defineOptions({ name: "ui-count-down" })
 const props = defineProps(countDownProps)
 const emits = defineEmits(countDownEmits)
 
-// 定时器
-const timer = ref<ReturnType<typeof setTimeout> | null>(null)
-// 是否运行中
-const runing = ref(false)
-// 开始时间
-const startTime = ref<number>(0)
-// 结束时间
-const endTime = ref<number>(0)
-// 总时间
-const totalTime = ref<number>(0)
-// 剩余时间
-const remainTime = ref<number>(0)
-// RAF 上次执行时间
-const rafLastTime = ref<number>(0)
-// 时间数据
+// 内部计时状态（仅内部计算用，不驱动模板，无需响应式）
+let timer: ReturnType<typeof setTimeout> | null = null
+let running = false
+let startTime = 0
+let endTime = 0
+let totalTime = 0
+let remainTime = 0
+let rafLastTime = 0
+
+// 时间数据（驱动 slot）
 const timeData = ref<CountDownTimeData>({
   days: 0,
   hours: 0,
@@ -42,16 +37,13 @@ const timeData = ref<CountDownTimeData>({
   total: 0,
   current: 0,
 })
-// 格式化后的时间文本
+// 格式化后的时间文本（驱动默认插槽）
 const formatTimeText = ref("")
 
 // 是否为正计时模式
 const isCountUp = computed(() => props.mode === "countup")
 // 根节点样式
-const style = computed(() => {
-  const style: any = {}
-  return useStyle({ ...style, ...useStyle(props.customStyle) })
-})
+const style = computed(() => useStyle(props.customStyle))
 
 // 监听时间变化
 watch(() => props.time, reset, { immediate: true })
@@ -67,47 +59,47 @@ watch(
 
 // 计时
 function tick() {
-  if (!runing.value) return
+  if (!running) return
   const now = Date.now()
   let current: number
 
   if (isCountUp.value) {
-    current = Math.min(now - startTime.value, totalTime.value)
+    current = Math.min(now - startTime, totalTime)
   } else {
-    current = Math.max(endTime.value - now, 0)
+    current = Math.max(endTime - now, 0)
   }
 
-  const parsed = parseTimeData(current, totalTime.value)
+  const parsed = parseTimeData(current, totalTime)
   timeData.value = parsed
   formatTimeText.value = parseTimeFormat(parsed, props.format)
 
   if (props.millisecond) {
     emits("change", parsed)
-  } else if (!isSameSecond(current, remainTime.value)) {
+  } else if (!isSameSecond(current, remainTime)) {
     emits("change", parsed)
   }
-  remainTime.value = current
+  remainTime = current
 
-  const finished = isCountUp.value ? current >= totalTime.value : current === 0
+  const finished = isCountUp.value ? current >= totalTime : current === 0
   if (finished) {
     emits("finish")
     pause()
   } else {
-    timer.value = useRequestAnimationFrame(tick)
+    timer = scheduleNextTick(tick)
   }
 }
 
 // 开始计时
 function start() {
-  if (runing.value) return
-  runing.value = true
+  if (running) return
+  running = true
   const now = Date.now()
   if (isCountUp.value) {
-    startTime.value = now - remainTime.value
+    startTime = now - remainTime
   } else {
-    endTime.value = now + remainTime.value
+    endTime = now + remainTime
   }
-  rafLastTime.value = now
+  rafLastTime = now
   tick()
 }
 
@@ -120,35 +112,35 @@ function reset() {
   if (target > 0) {
     const now = Date.now()
     if (isCountUp.value) {
-      totalTime.value = Math.max(target - now, 0)
-      remainTime.value = 0
+      totalTime = Math.max(target - now, 0)
+      remainTime = 0
     } else {
-      totalTime.value = Math.max(target - now, 0)
-      remainTime.value = totalTime.value
+      totalTime = Math.max(target - now, 0)
+      remainTime = totalTime
     }
   } else {
     const validTime = Number.isFinite(time) && time > 0 ? time : 0
-    totalTime.value = validTime
-    remainTime.value = isCountUp.value ? 0 : validTime
+    totalTime = validTime
+    remainTime = isCountUp.value ? 0 : validTime
   }
 
-  timeData.value = parseTimeData(remainTime.value, totalTime.value)
+  timeData.value = parseTimeData(remainTime, totalTime)
   formatTimeText.value = parseTimeFormat(timeData.value, props.format)
   if (props.autoStart) start()
 }
 
 // 暂停计时
 function pause() {
-  if (runing.value) {
+  if (running) {
     const now = Date.now()
     if (isCountUp.value) {
-      remainTime.value = Math.min(now - startTime.value, totalTime.value)
+      remainTime = Math.min(now - startTime, totalTime)
     } else {
-      remainTime.value = Math.max(endTime.value - now, 0)
+      remainTime = Math.max(endTime - now, 0)
     }
   }
-  runing.value = false
-  useCancelRequestAnimationFrame(timer.value)
+  running = false
+  cancelScheduledTick(timer)
 }
 
 // 判断是否为同一秒
@@ -196,23 +188,23 @@ function parseTimeData(time: number, total: number): CountDownTimeData {
   return { days, hours, minutes, seconds, milliseconds, total, current: time }
 }
 
-// 获取帧间隔
+// 获取帧间隔（millisecond 模式 ~60fps，否则 1s）
 function getFrameInterval() {
   return props.millisecond ? 16 : 1000
 }
 
-// 模拟 requestAnimationFrame
-function useRequestAnimationFrame(callback: () => void) {
+// 用 setTimeout 模拟下一帧调度，跨端兼容（小程序无 requestAnimationFrame）
+function scheduleNextTick(callback: () => void) {
   const interval = getFrameInterval()
   const currTime = Date.now()
-  const timeToCall = Math.max(0, interval - (currTime - rafLastTime.value))
+  const timeToCall = Math.max(0, interval - (currTime - rafLastTime))
   const id = setTimeout(callback, timeToCall)
-  rafLastTime.value = currTime + timeToCall
+  rafLastTime = currTime + timeToCall
   return id
 }
 
-// 取消 requestAnimationFrame
-function useCancelRequestAnimationFrame(id: ReturnType<typeof setTimeout> | null) {
+// 取消调度
+function cancelScheduledTick(id: ReturnType<typeof setTimeout> | null) {
   if (id !== null) clearTimeout(id)
 }
 
