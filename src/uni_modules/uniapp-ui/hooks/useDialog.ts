@@ -36,61 +36,38 @@ export interface DialogController {
  * @returns Dialog 控制器
  */
 function createDialogController(getInstance: () => DialogInstance | null): DialogController {
-  /**
-   * 显示 dialog 并返回 Promise
-   */
+  // instance 未挂载时，调用入队列并保存 resolve；instance 就绪后由 flushPendingQueue 把真实结果回填给 Promise
   function show(options?: DialogOptions): Promise<boolean> {
     const instance = getInstance()
-    if (instance) {
-      return instance.show(options)
-    } else {
-      // 实例未注册时，入队列
-      enqueuePendingDialog("show", options)
-      // 队列模式下无法返回 Promise 结果，默认 resolve(false)
-      return Promise.resolve(false)
-    }
+    if (instance) return instance.show(options)
+    return new Promise<boolean>((resolve) => {
+      enqueuePendingDialog({ action: "show", options, resolve })
+    })
   }
 
-  /**
-   * 关闭 dialog
-   */
   function close() {
     const instance = getInstance()
     if (instance) {
       instance.close()
     } else {
-      enqueuePendingDialog("close")
+      enqueuePendingDialog({ action: "close" })
     }
   }
 
-  /**
-   * 显示确认对话框
-   */
   function confirm(options?: string | DialogOptions): Promise<boolean> {
     const instance = getInstance()
-    if (instance) {
-      return instance.confirm(options)
-    } else {
-      // 实例未注册时，入队列
-      const opts = typeof options === "string" ? { title: options } : options
-      enqueuePendingDialog("show", { ...opts, showCancelButton: true })
-      return Promise.resolve(false)
-    }
+    if (instance) return instance.confirm(options)
+    return new Promise<boolean>((resolve) => {
+      enqueuePendingDialog({ action: "confirm", options, resolve })
+    })
   }
 
-  /**
-   * 显示提示对话框
-   */
   function alert(options?: string | DialogOptions): Promise<void> {
     const instance = getInstance()
-    if (instance) {
-      return instance.alert(options)
-    } else {
-      // 实例未注册时，入队列
-      const opts = typeof options === "string" ? { title: options } : options
-      enqueuePendingDialog("show", { ...opts, showCancelButton: false })
-      return Promise.resolve()
-    }
+    if (instance) return instance.alert(options)
+    return new Promise<void>((resolve) => {
+      enqueuePendingDialog({ action: "alert", options, resolve })
+    })
   }
 
   return {
@@ -105,7 +82,7 @@ function createDialogController(getInstance: () => DialogInstance | null): Dialo
  * 获取 Dialog 控制器（在任意页面/组件中调用）
  *
  * 特性：
- * - 即使在组件挂载前调用，也会将请求放入队列，组件挂载后自动执行
+ * - 即使在组件挂载前调用，也会将请求放入队列，组件挂载后自动执行；Promise 结果由队列保存的 resolve 回填
  * - 支持 Promise 风格的调用，可使用 async/await
  *
  * @returns Dialog 控制器，包含 show、close、confirm、alert 方法
@@ -117,28 +94,12 @@ function createDialogController(getInstance: () => DialogInstance | null): Dialo
  *
  * const dialog = useDialog()
  *
- * // 显示确认对话框
  * async function handleDelete() {
  *   const confirmed = await dialog.confirm("确认删除", "删除后无法恢复，是否继续？")
  *   if (confirmed) {
  *     // 执行删除操作
  *   }
  * }
- *
- * // 显示提示对话框
- * async function showTip() {
- *   await dialog.alert("提示", "操作已完成")
- *   // 用户点击确认后继续
- * }
- *
- * // 自定义选项
- * dialog.show({
- *   title: "自定义标题",
- *   content: "自定义内容",
- *   showCancelButton: true,
- *   confirmButtonText: "好的",
- *   cancelButtonText: "再想想",
- * })
  * </script>
  * ```
  */

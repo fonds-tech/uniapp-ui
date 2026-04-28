@@ -102,22 +102,16 @@ const cancelLoading = ref(false)
 // 确认按钮加载状态
 const confirmLoading = ref(false)
 
-// 配置合并：基础配置 < props配置 < open()传入配置
-const baseOptions = ref<DialogOptions>({
-  show: false,
-  contentAlign: "center",
-  showConfirmButton: true,
-  showCancelButton: false,
-  confirmButtonText: "确认",
-  confirmButtonColor: "var(--ui-color-primary)",
-  cancelButtonText: "取消",
-  overlay: true,
-  closeOnClickOverlay: false,
-  asyncClose: false,
-  duration: 300,
-})
+// 配置合并：props（含 buildDefaultProps 默认值）< open() 运行时传入配置
+// 删除冗余 baseOptions 硬编码（已由 buildDefaultProps 提供同份默认值）
 const propOptions = ref<DialogOptions>({})
 const mergedOptions = ref<DialogOptions>({})
+
+// 显示中再次调用 open 时的请求队列（关闭后自动处理下一个，避免请求被吞）
+const openQueue: Array<{ options: DialogOptions; action: DialogOpenAction }> = []
+
+// 当前 show/alert/confirm 的 Promise resolve 引用，dialog.close() 主动关闭时兜底触发，防止 Promise 泄漏
+let pendingPromiseResolve: ((value: unknown) => void) | null = null
 
 // 是否已初始化（懒渲染场景）
 const inited = computed(() => !props.lazyRender || transition.inited.value)
@@ -167,12 +161,19 @@ const footerClass = computed(() => (mergedOptions.value.buttonReverse ? "ui-dial
 transition.on("before-enter", () => emits("open"))
 transition.on("after-enter", () => emits("opened"))
 transition.on("before-leave", () => emits("close"))
-transition.on("after-leave", () => emits("closed"))
+transition.on("after-leave", () => {
+  emits("closed")
+  // 关闭动画结束后，处理排队的下一个请求
+  if (openQueue.length > 0) {
+    const next = openQueue.shift()
+    if (next) open(next.options, next.action)
+  }
+})
 
 watch(
   () => props,
   (options) => {
-    propOptions.value = merge(baseOptions.value, options)
+    propOptions.value = { ...options }
   },
   { deep: true, immediate: true },
 )
@@ -207,6 +208,11 @@ function doClose() {
   visible.value = false
   transition.leave()
   emits("update:show", false)
+  // 兜底：未被 confirm/cancel/overlay callback 消费的 Promise 在此 resolve（按取消语义）
+  if (pendingPromiseResolve) {
+    pendingPromiseResolve(false)
+    pendingPromiseResolve = null
+  }
 }
 
 /** 重置加载状态 */
@@ -271,13 +277,16 @@ function handleConfirm() {
   }
 }
 
-/** 打开对话框 */
+/** 打开对话框；显示中再次调用入队，关闭后自动处理 */
 function open(options: DialogOptions = {}, action: DialogOpenAction = "outside") {
-  if (visible.value) return
+  if (visible.value) {
+    openQueue.push({ options, action })
+    return
+  }
 
   initTransition()
   openAction.value = action
-  mergedOptions.value = merge(merge(baseOptions.value, propOptions.value), options)
+  mergedOptions.value = merge(propOptions.value, options)
   zIndex.value = isNumber(mergedOptions.value.zIndex) ? mergedOptions.value.zIndex : useGlobalZIndex()
   visible.value = true
   transition.enter()
@@ -288,11 +297,18 @@ function open(options: DialogOptions = {}, action: DialogOpenAction = "outside")
 function close(action: DialogCloseAction) {
   if (!visible.value) return
 
-  const callback = mergedOptions.value[`on${action.charAt(0).toUpperCase()}${action.slice(1)}` as keyof DialogOptions] as
-    | ((next?: { close: () => void; done: () => void }) => void)
-    | undefined
+  // 仅 confirm/cancel/overlay 三种 action 触发对应回调；"close" 为外部主动关闭，不触发
+  const callbackMap: Record<Exclude<DialogCloseAction, "close">, ((next?: { close: () => void; done: () => void }) => void) | undefined> = {
+    confirm: mergedOptions.value.onConfirm,
+    cancel: mergedOptions.value.onCancel,
+    overlay: mergedOptions.value.onOverlay,
+  }
+  const callback = action === "close" ? undefined : callbackMap[action]
 
-  if (isFunction(callback) && action !== "close") {
+  if (isFunction(callback)) {
+    // 有 callback（show/alert/confirm 注入的 wrapper 或用户传的 onConfirm/onCancel/onOverlay）
+    // → resolve 由 callback 自己处理，清空兜底引用，避免 doClose 触发 fallback resolve 抢先
+    pendingPromiseResolve = null
     if (mergedOptions.value.asyncClose) {
       callback({ close: doClose, done: () => resetLoading(action as DialogDoneAction) })
     } else {
@@ -307,9 +323,23 @@ function close(action: DialogCloseAction) {
 /** 创建 Promise 回调处理器 */
 function createPromiseCallbacks<T>(resolve: (value: T) => void, resolveValue: T, originalCallback?: (next?: { close: () => void; done: () => void }) => void) {
   return (next?: { close: () => void; done: () => void }) => {
-    originalCallback?.(next)
-    next?.close()
-    resolve(resolveValue)
+    if (next && originalCallback) {
+      // 异步模式 + 用户回调：用户掌握 close 时机；包装 next.close 让真正关闭时再 resolve
+      const userClose = next.close
+      const wrappedNext = {
+        close: () => {
+          userClose()
+          resolve(resolveValue)
+        },
+        done: next.done,
+      }
+      originalCallback(wrappedNext)
+    } else {
+      // 同步模式或无用户回调：原逻辑（先关再 resolve）
+      originalCallback?.(next)
+      next?.close()
+      resolve(resolveValue)
+    }
   }
 }
 
@@ -321,6 +351,7 @@ function closeDialog() {
 /** 显示对话框（Promise 风格） */
 function show(options?: DialogOptions): Promise<boolean> {
   return new Promise((resolve) => {
+    pendingPromiseResolve = resolve as (value: unknown) => void
     open({
       ...options,
       onConfirm: createPromiseCallbacks(resolve, true, options?.onConfirm),
@@ -340,15 +371,18 @@ function confirm(options?: string | DialogOptions): Promise<boolean> {
   })
 }
 
-/** 提示对话框（只有确认按钮） */
+/** 提示对话框（只有确认按钮）；包装 cancel/overlay 防止 closeOnClickOverlay 等场景下 Promise 泄漏 */
 function alert(options?: string | DialogOptions): Promise<void> {
   const opts = typeof options === "string" ? { title: options } : options
-  return new Promise((resolve) => {
+  return new Promise<void>((resolve) => {
+    pendingPromiseResolve = resolve as (value: unknown) => void
     open({
       ...opts,
       showCancelButton: false,
       showConfirmButton: true,
       onConfirm: createPromiseCallbacks(resolve, undefined, opts?.onConfirm),
+      onCancel: createPromiseCallbacks(resolve, undefined, opts?.onCancel),
+      onOverlay: createPromiseCallbacks(resolve, undefined, opts?.onOverlay),
     })
   })
 }

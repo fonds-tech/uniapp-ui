@@ -11,7 +11,7 @@ const defaultProps = buildDefaultProps("dialog", {
   contentAlign: "center",
   showConfirmButton: true,
   showCancelButton: false,
-  confirmButtonText: "确认",
+  confirmButtonText: "确定",
   confirmButtonColor: "primary",
   cancelButtonText: "取消",
   cancelButtonColor: undefined,
@@ -129,61 +129,8 @@ export const dialogEmits = {
   clickOverlay: (next?: DialogOverlayNext) => true,
 }
 
-export interface DialogOptions {
-  /** 是否显示 */
-  show?: boolean
-  /** 标题 */
-  title?: string
-  /** 宽度 */
-  width?: string | number
-  /** 高度 */
-  height?: string | number
-  /** 内容 */
-  content?: string
-  /** 内容对齐方式 */
-  contentAlign?: "left" | "center" | "right"
-  /** 是否显示确认按钮 */
-  showConfirmButton?: boolean
-  /** 是否显示取消按钮 */
-  showCancelButton?: boolean
-  /** 确认按钮文字 */
-  confirmButtonText?: string
-  /** 确认按钮文字颜色 */
-  confirmButtonColor?: string
-  /** 取消按钮文字 */
-  cancelButtonText?: string
-  /** 取消按钮文字颜色 */
-  cancelButtonColor?: string
-  /** 进入动画函数 */
-  enterTimingFunction?: string
-  /** 离开动画函数 */
-  leaveTimingFunction?: string
-  /** 是否对调确认和取消按钮位置 */
-  buttonReverse?: boolean
-  /** 是否显示遮罩层 */
-  overlay?: boolean
-  /** 自定义遮罩层样式 */
-  overlayStyle?: string | CSSProperties
-  /** 是否点击遮罩层后关闭 */
-  closeOnClickOverlay?: boolean
-  /** 是否在显示时才渲染节点 */
-  lazyRender?: boolean
-  /** 内边距 */
-  padding?: string | number
-  /** 弹窗顶部偏移 */
-  offsetTop?: string | number
-  /** 是否异步关闭 */
-  asyncClose?: boolean
-  /** 元素层级 */
-  zIndex?: string | number
-  /** 弹窗打开过渡时间，单位毫秒 */
-  duration?: string | number
-  /** 背景颜色 */
-  background?: string
-  /** 弹窗圆角 */
-  borderRadius?: string | number
-  /** 自定义样式 */
-  customStyle?: string | CSSProperties
+/** 命令式 open() / show() 等方法的入参，复用 props 类型并扩展回调 */
+export type DialogOptions = Partial<DialogProps> & {
   /** 确认回调 */
   onConfirm?: (next?: { close: (action?: DialogCloseAction) => void; done: (action?: DialogDoneAction) => void }) => void
   /** 取消回调 */
@@ -213,13 +160,27 @@ export type DialogInstance = InstanceType<typeof Dialog>
 /** 全局 Dialog 实例存储 */
 let globalDialogInstance: Ref<DialogInstance | null> | null = null
 
-/** 待执行的 dialog 调用队列 */
-const pendingQueue: Array<{ action: "show" | "close"; options?: DialogOptions }> = []
+/** 待执行队列项：支持 show/alert/confirm/close 四种 action，可选保存 resolve 以便 instance 挂载后回填 Promise 结果 */
+type PendingItem =
+  | { action: "show"; options?: DialogOptions; resolve?: (value: boolean) => void }
+  | { action: "alert"; options?: string | DialogOptions; resolve?: () => void }
+  | { action: "confirm"; options?: string | DialogOptions; resolve?: (value: boolean) => void }
+  | { action: "close" }
+
+const pendingQueue: PendingItem[] = []
 
 /** 注册全局 Dialog 实例（在根组件中调用） */
 export function provideDialog(instance: Ref<DialogInstance | null>) {
   globalDialogInstance = instance
   flushPendingQueue()
+}
+
+/** 注销全局 Dialog 实例（在根组件 onUnmounted 时调用，避免持有失效 ref） */
+export function unprovideDialog(instance?: Ref<DialogInstance | null>) {
+  // 仅在传入 ref 与当前注册的相同时才清空，避免误清后注册的新 instance
+  if (!instance || globalDialogInstance === instance) {
+    globalDialogInstance = null
+  }
 }
 
 /** 获取全局 Dialog 实例（内部使用） */
@@ -228,22 +189,30 @@ export function getGlobalDialogInstance(): Ref<DialogInstance | null> | null {
 }
 
 /** 将调用加入待执行队列 */
-export function enqueuePendingDialog(action: "show" | "close", options?: DialogOptions) {
-  pendingQueue.push({ action, options })
+export function enqueuePendingDialog(item: PendingItem) {
+  pendingQueue.push(item)
 }
 
-/** 执行队列中的待处理调用 */
+/** 执行队列中的待处理调用，按 action 类型分发到 instance 对应方法 */
 function flushPendingQueue() {
-  if (!globalDialogInstance?.value) return
+  const instance = globalDialogInstance?.value
+  if (!instance) return
 
   while (pendingQueue.length > 0) {
     const item = pendingQueue.shift()
     if (!item) continue
 
     if (item.action === "show") {
-      globalDialogInstance.value.open(item.options)
+      const promise = instance.show(item.options)
+      if (item.resolve) promise.then(item.resolve)
+    } else if (item.action === "alert") {
+      const promise = instance.alert(item.options)
+      if (item.resolve) promise.then(item.resolve)
+    } else if (item.action === "confirm") {
+      const promise = instance.confirm(item.options)
+      if (item.resolve) promise.then(item.resolve)
     } else if (item.action === "close") {
-      globalDialogInstance.value.close()
+      instance.close()
     }
   }
 }

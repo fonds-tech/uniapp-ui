@@ -9,15 +9,23 @@
       </demo-block>
     </demo-section>
 
-    <demo-section title="圆角按钮">
+    <demo-section title="Promise API（alert / confirm）">
+      <demo-block :cols="2" :gap="24">
+        <ui-button @click="callAlert">alert()</ui-button>
+        <ui-button @click="callConfirm">confirm()</ui-button>
+      </demo-block>
+      <text v-if="promiseResult" class="demo-text">{{ promiseResult }}</text>
+    </demo-section>
+
+    <demo-section title="自定义圆角">
       <demo-block>
-        <ui-button @click="showRoundDialog">圆角按钮</ui-button>
+        <ui-button @click="showRoundDialog">borderRadius=24rpx</ui-button>
       </demo-block>
     </demo-section>
 
     <demo-section title="异步关闭">
       <demo-block>
-        <ui-button @click="showAsyncDialog">异步关闭</ui-button>
+        <ui-button @click="showAsyncDialog">点确认延迟 1 秒关闭</ui-button>
       </demo-block>
     </demo-section>
 
@@ -70,9 +78,12 @@
       </demo-block>
     </demo-section>
 
-    <demo-section title="事件处理">
-      <demo-block>
-        <ui-button type="primary" @click="showEventDialog = true">监听事件</ui-button>
+    <demo-section title="事件监听">
+      <demo-block direction="column" :gap="12">
+        <ui-button type="primary" @click="showEventDialog = true">触发事件</ui-button>
+        <view class="event-list">
+          <text v-for="(log, index) in eventLogs" :key="index" class="event-text">{{ log }}</text>
+        </view>
       </demo-block>
     </demo-section>
 
@@ -114,18 +125,14 @@
 
 <script setup lang="ts">
 import type { DialogInstance } from "@/uni_modules/uniapp-ui"
-import { ref, onMounted } from "vue"
-
-import { useToast, useDialog, provideDialog } from "@/uni_modules/uniapp-ui"
+import { useDialog, provideDialog } from "@/uni_modules/uniapp-ui"
 
 definePage({
   style: { navigationBarTitleText: "Dialog 对话框" },
 })
 
-// 用于函数式调用的全局 Dialog 实例
 const globalDialogRef = ref<DialogInstance | null>(null)
 
-// 注册全局 Dialog 实例（页面级别）
 onMounted(() => {
   if (globalDialogRef.value) {
     provideDialog(globalDialogRef)
@@ -133,13 +140,20 @@ onMounted(() => {
 })
 
 const dialog = useDialog()
-const toast = useToast()
 
-// 组件方式调用的状态
 const showComponentDialog = ref(false)
 const showSlotDialog = ref(false)
 const showFooterSlotDialog = ref(false)
 const showEventDialog = ref(false)
+
+const promiseResult = ref("")
+const eventLogs = ref<string[]>([])
+
+function addEventLog(log: string) {
+  const time = new Date().toLocaleTimeString()
+  eventLogs.value.unshift(`[${time}] ${log}`)
+  if (eventLogs.value.length > 5) eventLogs.value.pop()
+}
 
 // 基础用法
 function showBasicDialog() {
@@ -157,11 +171,28 @@ function showConfirmDialog() {
   })
 }
 
-// 圆角按钮
+// Promise API
+async function callAlert() {
+  await dialog.alert({
+    title: "提示",
+    content: "alert 是 Promise 风格，仅含确定按钮",
+  })
+  promiseResult.value = "alert() resolved"
+}
+
+async function callConfirm() {
+  const ok = await dialog.confirm({
+    title: "确认",
+    content: "confirm 返回 Promise<boolean>，确定 true / 取消 false",
+  })
+  promiseResult.value = `confirm() = ${ok}`
+}
+
+// 圆角
 function showRoundDialog() {
   dialog.show({
     title: "提示",
-    content: "这是圆角按钮弹窗",
+    content: "borderRadius 自定义为 24rpx",
     borderRadius: "24rpx",
   })
 }
@@ -170,7 +201,7 @@ function showRoundDialog() {
 function showAsyncDialog() {
   dialog.show({
     title: "异步关闭",
-    content: "点击确认后延迟1秒关闭",
+    content: "点击确认后延迟 1 秒关闭",
     showCancelButton: true,
     asyncClose: true,
     onConfirm: (next) => {
@@ -206,16 +237,16 @@ function showAlignDialog(align: "left" | "center" | "right") {
   })
 }
 
-// 按钮样式定制
+// 按钮样式（用 token 名）
 function showCustomButtonDialog() {
   dialog.show({
     title: "自定义按钮",
     content: "可以自定义按钮的文字和颜色",
     showCancelButton: true,
     confirmButtonText: "好的",
-    confirmButtonColor: "#07c160",
+    confirmButtonColor: "success",
     cancelButtonText: "算了",
-    cancelButtonColor: "#ee0a24",
+    cancelButtonColor: "danger",
   })
 }
 
@@ -228,7 +259,7 @@ function showReverseButtonDialog() {
   })
 }
 
-// 遮罩层配置
+// 遮罩层
 function showClickOverlayDialog() {
   dialog.show({
     title: "点击遮罩关闭",
@@ -245,12 +276,12 @@ function showNoOverlayDialog() {
   })
 }
 
-// 样式定制
+// 样式定制（用 token）
 function showCustomStyleDialog() {
   dialog.show({
     title: "自定义样式",
     content: "可以自定义弹窗的背景色和圆角",
-    background: "#f0f9eb",
+    background: "var(--ui-color-success-light)",
     borderRadius: 32,
   })
 }
@@ -264,33 +295,51 @@ function showCustomSizeDialog() {
   })
 }
 
-// 事件处理
+// 事件
 function onDialogOpen() {
-  console.log("Dialog opened")
+  addEventLog("open")
 }
-
 function onDialogOpened() {
-  toast.success("弹窗已打开")
+  addEventLog("opened")
 }
-
 function onDialogClose() {
-  console.log("Dialog closing")
+  addEventLog("close")
 }
-
 function onDialogClosed() {
-  toast.text("弹窗已关闭")
+  addEventLog("closed")
 }
-
 function onDialogConfirm() {
-  toast.success("点击了确认")
+  addEventLog("confirm")
 }
-
 function onDialogCancel() {
-  toast.fail("点击了取消")
+  addEventLog("cancel")
 }
 </script>
 
 <style lang="scss" scoped>
+.demo-text {
+  color: var(--ui-color-text-secondary);
+  font-size: 24rpx;
+  margin-top: 8rpx;
+}
+
+.event-list {
+  gap: 4rpx;
+  width: 100%;
+  display: flex;
+  padding: 16rpx;
+  background: var(--ui-color-background-page);
+  max-height: 250rpx;
+  overflow-y: auto;
+  border-radius: 8rpx;
+  flex-direction: column;
+}
+
+.event-text {
+  color: var(--ui-color-text-secondary);
+  font-size: 22rpx;
+}
+
 .custom-content {
   gap: 24rpx;
   display: flex;
@@ -299,7 +348,7 @@ function onDialogCancel() {
   flex-direction: column;
 
   &__text {
-    color: #666;
+    color: var(--ui-color-text-secondary);
     font-size: 28rpx;
     text-align: center;
   }
