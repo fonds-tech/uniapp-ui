@@ -1,5 +1,5 @@
 <template>
-  <view class="ui-image" :class="[classs, props.customClass]" :style="[style]" @click="onClick">
+  <view class="ui-image" :class="[classNames, props.customClass]" :style="[rootStyle]" @click="onClick">
     <view v-if="showLoading" class="ui-image__placeholder">
       <slot name="loading">
         <view class="ui-image__icon ui-image__icon--loading" />
@@ -38,34 +38,30 @@ defineOptions({ name: "ui-image" })
 const props = defineProps(imageProps)
 const emits = defineEmits(imageEmits)
 
-// 加载错误状态
 const error = ref(false)
-// 加载中状态
 const loading = ref(true)
 
-// 根节点样式
-const style = computed(() => {
-  const style: CSSProperties = {}
-  style.width = useUnit(props.width)
-  style.height = useUnit(props.height)
-  style.background = useColor(props.background)
-  style.borderRadius = useUnit(props.radius)
-  return useStyle({ ...style, ...useStyle(props.customStyle) })
-})
-// 类名数组
-const classs = computed(() => {
-  const list = []
+const showError = computed(() => props.src && error.value)
+const showLoading = computed(() => !props.src || (loading.value && !error.value))
+
+const classNames = computed(() => {
+  const list: string[] = []
   if (props.round) list.push("ui-image--round")
   if (props.block) list.push("ui-image--block")
   if (props.square) list.push("ui-image--square")
   return list
 })
-// 是否显示加载中
-const showLoading = computed(() => !props.src || (loading.value && !error.value))
-// 是否显示错误
-const showError = computed(() => props.src && error.value)
 
-// 监听 src 变化
+const rootStyle = computed(() => {
+  const style: CSSProperties = {
+    width: useUnit(props.width),
+    height: useUnit(props.height),
+    background: useColor(props.background),
+    borderRadius: useUnit(props.radius),
+  }
+  return useStyle({ ...style, ...useStyle(props.customStyle) })
+})
+
 watch(
   () => props.src,
   () => {
@@ -74,20 +70,17 @@ watch(
   },
 )
 
-// 图片加载成功
 function onImageLoad(event: any) {
   loading.value = false
   emits("load", event)
 }
 
-// 图片加载失败
 function onImageError(event: any) {
   loading.value = false
   error.value = true
   emits("error", event)
 }
 
-// 点击事件
 function onClick(event: any) {
   emits("click", event)
 }

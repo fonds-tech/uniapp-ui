@@ -13,41 +13,24 @@ import { useUnit, useStyle, useChildren } from "../hooks"
 defineOptions({ name: "ui-grid" })
 
 const props = defineProps(gridProps)
-
-// 收集子组件
 const { linkChildren } = useChildren(gridKey)
 
-// 根节点样式
-const rootStyle = computed(() => {
-  const style: CSSProperties = {}
-  const columnNum = props.columnNum || 4
-
-  // 使用 CSS Grid 布局
-  style.display = "grid"
-  style.gridTemplateColumns = `repeat(${columnNum}, 1fr)`
-
-  // 有间距时设置 gap
-  if (props.gutter) {
-    const gutterValue = useUnit(props.gutter)
-    style.gap = gutterValue
-  }
-
-  return useStyle({ ...style, ...useStyle(props.customStyle) })
-})
-
-// 根节点类名
 const rootClass = computed(() => {
   const list: string[] = []
-  if (props.border && !props.gutter) {
-    list.push("ui-grid--border")
-  }
+  if (props.border && !props.gutter) list.push("ui-grid--border")
   return list
 })
 
-// 建立父子组件关联
-linkChildren({ props })
+const rootStyle = computed(() => {
+  const style: CSSProperties = {
+    display: "grid",
+    gridTemplateColumns: `repeat(${props.columnNum || 4}, 1fr)`,
+  }
+  if (props.gutter) style.gap = useUnit(props.gutter)
+  return useStyle({ ...style, ...useStyle(props.customStyle) })
+})
 
-defineExpose({ name: "ui-grid" })
+linkChildren({ props })
 </script>
 
 <script lang="ts">

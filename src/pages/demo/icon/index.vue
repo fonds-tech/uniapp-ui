@@ -1,122 +1,256 @@
 <template>
-  <demo-page class="bg-[#F7F8FA] min-h-screen flex flex-col">
-    <view class="flex-shrink-0 bg-[#F7F8FA] mb-[16rpx]">
-      <view class="bg-white rounded-full flex items-center px-[32rpx] py-[24rpx] shadow-sm border border-[#F0F0F2]">
-        <ui-icon name="search" size="36rpx" class="text-[#86909C] mr-[16rpx]" />
-        <input v-model="keyword" class="flex-1 text-[28rpx] text-[#1D1D1F] h-[40rpx] leading-[40rpx]" placeholder="搜索图标名称" placeholder-style="color: #86909C" />
-        <view v-if="keyword" class="w-[48rpx] h-[48rpx] flex items-center justify-center bg-[#F2F3F5] rounded-full" @click="keyword = ''">
-          <ui-icon name="close" size="24rpx" class="text-[#86909C]" />
+  <demo-page>
+    <demo-section title="基础用法" desc="字体图标 + 图片图标双模式，name 为图片地址自动切换 image 渲染">
+      <demo-block :gap="24">
+        <ui-icon name="search" size="48rpx" />
+        <ui-icon name="heart" size="48rpx" />
+        <ui-icon name="star" size="48rpx" />
+        <ui-icon name="setting" size="48rpx" />
+        <ui-icon name="user" size="48rpx" />
+        <ui-icon name="bell" size="48rpx" />
+      </demo-block>
+    </demo-section>
+
+    <demo-section title="颜色 (color)">
+      <demo-block :cols="6" :gap="16">
+        <view v-for="c in colors" :key="c.value" class="icon-cell" @click="currentColor = c.value">
+          <ui-icon name="heart" size="44rpx" :color="c.value" />
+          <text class="icon-cell__label">{{ c.label }}</text>
+        </view>
+      </demo-block>
+    </demo-section>
+
+    <demo-section title="尺寸 (size)">
+      <demo-block :cols="5" :gap="16">
+        <view v-for="s in sizes" :key="s" class="icon-cell">
+          <ui-icon name="star" :size="s" color="#1989fa" />
+          <text class="icon-cell__label">{{ s }}rpx</text>
+        </view>
+      </demo-block>
+    </demo-section>
+
+    <demo-section title="粗细 (weight)" desc="iconfont 字体粗细，支持 100-900">
+      <demo-block :cols="5" :gap="16">
+        <view v-for="w in weights" :key="w" class="icon-cell">
+          <ui-icon name="check" size="44rpx" :weight="w" />
+          <text class="icon-cell__label">{{ w }}</text>
+        </view>
+      </demo-block>
+    </demo-section>
+
+    <demo-section title="背景 + 圆角 (background / radius)" desc="徽章型图标常见用法">
+      <demo-block :cols="4" :gap="16">
+        <view v-for="b in bgIcons" :key="b.name" class="icon-cell">
+          <ui-icon :name="b.name" size="40rpx" color="#fff" :background="b.bg" radius="50%" custom-style="padding: 16rpx" />
+          <text class="icon-cell__label">{{ b.label }}</text>
+        </view>
+      </demo-block>
+    </demo-section>
+
+    <demo-section title="hoverClass" desc="按下时附加类名做反馈">
+      <demo-block :gap="24">
+        <ui-icon name="like" size="60rpx" color="#ee0a24" hover-class="icon-hover" />
+        <ui-icon name="star" size="60rpx" color="#ff976a" hover-class="icon-hover" />
+        <ui-icon name="heart" size="60rpx" color="#1989fa" hover-class="icon-hover" />
+      </demo-block>
+      <text class="demo-text">长按图标查看反馈效果</text>
+    </demo-section>
+
+    <demo-section title="图片图标 (imageMode)" desc="name 为 http(s):// 或 / 开头时自动切到 image 渲染">
+      <demo-block :cols="4" :gap="16">
+        <view v-for="m in imageModes" :key="m" class="icon-cell">
+          <ui-icon name="https://picsum.photos/100/60?random=1" :width="80" :height="60" :image-mode="m" />
+          <text class="icon-cell__label">{{ m }}</text>
+        </view>
+      </demo-block>
+    </demo-section>
+
+    <demo-section title="点击事件 (@click)">
+      <demo-block :gap="24">
+        <ui-icon v-for="i in clickIcons" :key="i.name" :name="i.name" size="48rpx" :color="i.color" @click="onTap(i.name)" />
+      </demo-block>
+      <text v-if="lastClicked" class="demo-text">最近点击: {{ lastClicked }}</text>
+    </demo-section>
+
+    <demo-section title="图标库 (点击复制名称)" :extra="`共 ${filteredIcons.length} 个`">
+      <view class="search-bar">
+        <ui-icon name="search" size="32rpx" color="#86909C" />
+        <input v-model="keyword" class="search-bar__input" placeholder="搜索图标名称" placeholder-style="color: #86909C" />
+        <view v-if="keyword" class="search-bar__clear" @click="keyword = ''">
+          <ui-icon name="close" size="24rpx" color="#86909C" />
         </view>
       </view>
-    </view>
-
-    <scroll-view class="flex-1" scroll-y enhanced :show-scrollbar="false">
-      <view class="">
-        <demo-block :cols="4" :gap="16">
-          <view v-for="icon in filteredIcons" :key="icon.name" class="icon-card group active:scale-95 transition-all" @click="copyIconName(icon.name)">
-            <view class="icon-content">
-              <view class="icon-wrapper">
-                <ui-icon :name="icon.name" size="44rpx" class="text-[#1D1D1F] group-active:text-[#2979FF] transition-colors" />
-              </view>
-              <text class="icon-name text-[#4E5969]">{{ icon.name }}</text>
-            </view>
-          </view>
-        </demo-block>
-
-        <view v-if="filteredIcons.length === 0" class="flex flex-col items-center justify-center py-[100rpx]">
-          <ui-icon name="search" size="80rpx" class="text-[#F2F3F5] mb-[24rpx]" />
-          <text class="text-[#86909C] text-[28rpx]">未找到包含 "{{ keyword }}" 的图标</text>
+      <demo-block :cols="4" :gap="16" custom-style="margin-top: 16rpx">
+        <view v-for="icon in filteredIcons" :key="icon.name" class="icon-card" @click="copyName(icon.name)">
+          <ui-icon :name="icon.name" size="44rpx" />
+          <text class="icon-card__name">{{ icon.name }}</text>
         </view>
+      </demo-block>
+      <view v-if="filteredIcons.length === 0" class="empty">
+        <ui-icon name="search" size="80rpx" color="#F2F3F5" />
+        <text class="empty__text">未找到 "{{ keyword }}"</text>
       </view>
-    </scroll-view>
-
-    <ui-toast ref="toast"></ui-toast>
+    </demo-section>
   </demo-page>
 </template>
 
 <script setup lang="ts">
-import type { ToastInstance } from "@/uni_modules/uniapp-ui/ui-toast"
 import iconsData from "@/uni_modules/uniapp-ui/ui-icon/iconfont.json"
+import { useToast } from "@/uni_modules/uniapp-ui"
 import { ref, computed } from "vue"
 
 definePage({ style: { navigationBarTitleText: "Icon 图标" } })
 
-const toast = ref<ToastInstance>()
+const toast = useToast()
 
-// 搜索关键词
+const colors = [
+  { label: "默认", value: "" },
+  { label: "主色", value: "#1989fa" },
+  { label: "成功", value: "#07c160" },
+  { label: "警告", value: "#ff976a" },
+  { label: "危险", value: "#ee0a24" },
+  { label: "紫", value: "#7232dd" },
+]
+
+const sizes = ["24", "32", "44", "56", "72"]
+const weights = [100, 300, 400, 600, 900]
+
+const bgIcons = [
+  { name: "user", bg: "#1989fa", label: "蓝" },
+  { name: "heart", bg: "#ee0a24", label: "红" },
+  { name: "star", bg: "#ff976a", label: "橙" },
+  { name: "check", bg: "#07c160", label: "绿" },
+]
+
+const imageModes = ["scaleToFill", "aspectFit", "aspectFill", "widthFix"]
+
+const clickIcons = [
+  { name: "thumbs-up", color: "#1989fa" },
+  { name: "heart", color: "#ee0a24" },
+  { name: "star", color: "#ff976a" },
+  { name: "share", color: "#07c160" },
+]
+
+const currentColor = ref("")
+const lastClicked = ref("")
 const keyword = ref("")
 
-// 图标列表
-// icons.json 为 iconfont 导出的完整结构，这里转换为组件使用的精简列表
-const icons = ref<{ name: string; unicode: string }[]>(
-  iconsData.glyphs.map((item) => ({
-    name: item.font_class,
-    unicode: item.unicode,
-  })),
-)
+const icons = iconsData.glyphs.map((item) => ({
+  name: item.font_class,
+  unicode: item.unicode,
+}))
 
-// 过滤后的图标列表
 const filteredIcons = computed(() => {
-  if (!keyword.value) return icons.value
+  if (!keyword.value) return icons
   const kw = keyword.value.toLowerCase()
-  return icons.value.filter((icon) => icon.name.toLowerCase().includes(kw))
+  return icons.filter((icon) => icon.name.toLowerCase().includes(kw))
 })
 
-// 复制图标名称
-function copyIconName(name: string) {
+function onTap(name: string) {
+  lastClicked.value = name
+  toast.text(`点击了 ${name}`)
+}
+
+function copyName(name: string) {
   uni.setClipboardData({
     data: name,
     showToast: false,
-    success: () => {
-      toast.value?.success("已复制")
-    },
+    success: () => toast.success(`已复制 ${name}`),
   })
 }
 </script>
 
 <style lang="scss" scoped>
-.icon-card {
-  border: 1rpx solid rgba(0, 0, 0, 0.05);
-  overflow: hidden;
-  position: relative;
-  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.04);
-  border-radius: 16rpx;
-  background-color: #ffffff;
+.demo-text {
+  color: var(--ui-color-text-secondary);
+  display: block;
+  font-size: 24rpx;
+  margin-top: 12rpx;
+}
 
-  /* 正方形：使用 padding-bottom 撑开高度 */
-  &::before {
-    content: "";
-    display: block;
-    padding-bottom: 100%;
+.icon-cell {
+  gap: 8rpx;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+
+  &__label {
+    color: var(--ui-color-text-secondary);
+    font-size: 22rpx;
+  }
+}
+
+.icon-hover {
+  opacity: 0.5;
+  transform: scale(0.92);
+  transition: var(--ui-transition-fast);
+}
+
+// === 图标库 ===
+.search-bar {
+  gap: 12rpx;
+  display: flex;
+  padding: 16rpx 24rpx;
+  background: var(--ui-color-background-page);
+  align-items: center;
+  border-radius: var(--ui-radius-round);
+
+  &__input {
+    flex: 1;
+    color: var(--ui-color-text);
+    height: 40rpx;
+    font-size: 26rpx;
+    line-height: 40rpx;
   }
 
-  /* 内容容器：整体居中 */
-  .icon-content {
-    top: 50%;
-    left: 50%;
-    width: 100%;
+  &__clear {
+    width: 40rpx;
+    height: 40rpx;
     display: flex;
-    padding: 0 8rpx;
-    position: absolute;
-    transform: translate(-50%, -50%);
+    background: var(--ui-color-background-disabled);
     align-items: center;
-    flex-direction: column;
-  }
-
-  /* 图标区域：固定高度 */
-  .icon-wrapper {
-    height: 48rpx;
-    display: flex;
-    align-items: center;
+    border-radius: 50%;
     justify-content: center;
   }
+}
 
-  /* 文字区域：固定高度，确保图标位置一致 */
-  .icon-name {
-    height: 34rpx;
-    font-size: 24rpx;
-    margin-top: 8rpx;
+.icon-card {
+  gap: 8rpx;
+  border: 1rpx solid var(--ui-color-border-light);
+  display: flex;
+  padding: 24rpx 8rpx;
+  position: relative;
+  background: var(--ui-color-background);
+  align-items: center;
+  border-radius: var(--ui-radius-md);
+  flex-direction: column;
+
+  &__name {
+    color: var(--ui-color-text-secondary);
+    width: 100%;
+    height: 32rpx;
+    overflow: hidden;
+    font-size: 22rpx;
     text-align: center;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  &:active {
+    background: var(--ui-color-background-hover);
+  }
+}
+
+.empty {
+  gap: 24rpx;
+  display: flex;
+  padding: 100rpx 0;
+  align-items: center;
+  flex-direction: column;
+
+  &__text {
+    color: var(--ui-color-text-secondary);
+    font-size: 26rpx;
   }
 }
 </style>

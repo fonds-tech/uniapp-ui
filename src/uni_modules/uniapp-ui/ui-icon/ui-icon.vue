@@ -30,6 +30,7 @@
 </template>
 
 <script setup lang="ts">
+import type { CSSProperties } from "vue"
 import { isImage } from "../utils/check"
 import { ref, computed } from "vue"
 import { iconEmits, iconProps } from "./index"
@@ -40,56 +41,44 @@ defineOptions({ name: "ui-icon" })
 const props = defineProps(iconProps)
 const emits = defineEmits(iconEmits)
 
-// 是否 hover 状态
 const isHover = ref(false)
 
-// 图标类名前缀
-const prefix = computed(() => {
-  return props.customPrefix || "ui-icon"
-})
-// hover 类名
-const hoverClass = computed(() => {
-  return props.hoverClass && isHover.value ? props.hoverClass : ""
-})
-// 图片模式
-const imageMode: any = computed(() => props.imageMode)
-// 图标样式
+const prefix = computed(() => props.customPrefix || "ui-icon")
+const imageMode = computed<any>(() => props.imageMode)
+const hoverClass = computed(() => (props.hoverClass && isHover.value ? props.hoverClass : ""))
+
 const iconStyle = computed(() => {
-  const style: any = {}
-  style.color = useColor(props.color)
-  style.fontSize = useUnit(props.size)
-  style.fontWeight = props.weight
-  style.lineHeight = props.lineHeight
-  style.borderRadius = useUnit(props.radius)
-  style.background = useColor(props.background)
-  // 自定义字体族
-  if (props.fontFamily) {
-    style.fontFamily = props.fontFamily
+  const style: CSSProperties = {
+    color: useColor(props.color),
+    fontSize: useUnit(props.size),
+    fontWeight: props.weight,
+    lineHeight: props.lineHeight,
+    borderRadius: useUnit(props.radius),
+    background: useColor(props.background),
+  }
+  if (props.fontFamily) style.fontFamily = props.fontFamily
+  return useStyle({ ...style, ...useStyle(props.customStyle) })
+})
+
+const imageStyle = computed(() => {
+  const style: CSSProperties = {
+    width: useUnit(props.width || props.size),
+    height: useUnit(props.height || props.size),
+    background: useColor(props.background),
+    borderRadius: useUnit(props.radius),
   }
   return useStyle({ ...style, ...useStyle(props.customStyle) })
 })
-// 图片样式
-const imageStyle = computed(() => {
-  const style: any = {}
-  style.width = useUnit(props.width || props.size)
-  style.height = useUnit(props.height || props.size)
-  style.background = useColor(props.background)
-  style.borderRadius = useUnit(props.radius)
-  return useStyle({ ...style, ...useStyle(props.customStyle) })
-})
 
-// 点击事件
 function onClick() {
   emits("click")
 }
 
-// hover 开始
 function onHoverStart() {
   if (!props.hoverClass) return
   isHover.value = true
 }
 
-// hover 结束
 function onHoverEnd() {
   if (!props.hoverClass) return
   isHover.value = false

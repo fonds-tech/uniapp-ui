@@ -1,206 +1,167 @@
 <template>
   <demo-page>
-    <demo-section title="基础用法">
+    <demo-section title="基础用法" desc="带宽高 + 自动 loading/error 占位">
       <demo-block :cols="3" :gap="24">
-        <ui-image src="https://picsum.photos/200" width="200rpx" height="200rpx" />
-        <ui-image src="https://picsum.photos/201" width="200rpx" height="200rpx" />
-        <ui-image src="https://picsum.photos/202" width="200rpx" height="200rpx" />
+        <ui-image v-for="i in 3" :key="i" :src="`https://picsum.photos/200?random=${i}`" width="200rpx" height="200rpx" />
       </demo-block>
     </demo-section>
 
-    <demo-section title="填充模式">
+    <demo-section title="填充模式 (mode)">
+      <demo-block :cols="4" :gap="12">
+        <ui-button v-for="m in modes" :key="m" size="small" :type="mode === m ? 'primary' : 'default'" @click="mode = m">{{ m }}</ui-button>
+      </demo-block>
+      <demo-block :cols="2" :gap="24" custom-style="margin-top: 16rpx">
+        <view class="cell">
+          <ui-image src="https://picsum.photos/300/200?random=10" width="240rpx" height="240rpx" :mode="mode" />
+          <text class="cell__label">横图 3:2</text>
+        </view>
+        <view class="cell">
+          <ui-image src="https://picsum.photos/200/300?random=11" width="240rpx" height="240rpx" :mode="mode" />
+          <text class="cell__label">竖图 2:3</text>
+        </view>
+      </demo-block>
+    </demo-section>
+
+    <demo-section title="形状" desc="默认 / round 圆 / square 1:1 自动撑高">
       <demo-block :cols="3" :gap="24">
-        <view class="image-item">
-          <ui-image src="https://picsum.photos/300/200" width="200rpx" height="200rpx" mode="scaleToFill" />
-          <text class="image-label">scaleToFill</text>
+        <view class="cell">
+          <ui-image src="https://picsum.photos/200?random=20" width="180rpx" height="180rpx" radius="16rpx" />
+          <text class="cell__label">默认</text>
         </view>
-        <view class="image-item">
-          <ui-image src="https://picsum.photos/300/200" width="200rpx" height="200rpx" mode="aspectFit" />
-          <text class="image-label">aspectFit</text>
+        <view class="cell">
+          <ui-image src="https://picsum.photos/200?random=21" width="180rpx" height="180rpx" round />
+          <text class="cell__label">round</text>
         </view>
-        <view class="image-item">
-          <ui-image src="https://picsum.photos/300/200" width="200rpx" height="200rpx" mode="aspectFill" />
-          <text class="image-label">aspectFill</text>
-        </view>
-        <view class="image-item">
-          <ui-image src="https://picsum.photos/300/200" width="200rpx" height="200rpx" mode="widthFix" />
-          <text class="image-label">widthFix</text>
-        </view>
-        <view class="image-item">
-          <ui-image src="https://picsum.photos/200/300" width="200rpx" height="200rpx" mode="heightFix" />
-          <text class="image-label">heightFix</text>
-        </view>
-        <view class="image-item">
-          <ui-image src="https://picsum.photos/300/200" width="200rpx" height="200rpx" mode="center" />
-          <text class="image-label">center</text>
+        <view class="cell">
+          <ui-image src="https://picsum.photos/200/300?random=22" width="180rpx" square radius="16rpx" />
+          <text class="cell__label">square</text>
         </view>
       </demo-block>
     </demo-section>
 
-    <demo-section title="圆形图片">
-      <demo-block :cols="4" :gap="24">
-        <ui-image src="https://picsum.photos/203" width="140rpx" height="140rpx" round />
-        <ui-image src="https://picsum.photos/204" width="140rpx" height="140rpx" round />
-        <ui-image src="https://picsum.photos/205" width="140rpx" height="140rpx" round />
-        <ui-image src="https://picsum.photos/206" width="140rpx" height="140rpx" round />
+    <demo-section title="圆角 (radius)">
+      <demo-block :cols="4" :gap="12">
+        <ui-button v-for="r in radii" :key="r" size="small" :type="radius === r ? 'primary' : 'default'" @click="radius = r">{{ r || "0" }}</ui-button>
+      </demo-block>
+      <demo-block custom-style="margin-top: 16rpx">
+        <ui-image src="https://picsum.photos/300?random=30" width="200rpx" height="200rpx" :radius="radius" />
       </demo-block>
     </demo-section>
 
-    <demo-section title="圆角大小">
-      <demo-block :cols="4" :gap="24">
-        <view class="image-item">
-          <ui-image src="https://picsum.photos/207" width="140rpx" height="140rpx" radius="0" />
-          <text class="image-label">0</text>
-        </view>
-        <view class="image-item">
-          <ui-image src="https://picsum.photos/208" width="140rpx" height="140rpx" radius="8rpx" />
-          <text class="image-label">8rpx</text>
-        </view>
-        <view class="image-item">
-          <ui-image src="https://picsum.photos/209" width="140rpx" height="140rpx" radius="16rpx" />
-          <text class="image-label">16rpx</text>
-        </view>
-        <view class="image-item">
-          <ui-image src="https://picsum.photos/210" width="140rpx" height="140rpx" radius="32rpx" />
-          <text class="image-label">32rpx</text>
-        </view>
-      </demo-block>
-    </demo-section>
-
-    <demo-section title="正方形图片">
+    <demo-section title="加载状态" desc="空 src 显加载占位 / 失败 src 显错误占位 / fade 淡入">
       <demo-block :cols="3" :gap="24">
-        <ui-image src="https://picsum.photos/300/200" width="200rpx" square radius="8rpx" />
-        <ui-image src="https://picsum.photos/200/300" width="200rpx" square radius="8rpx" />
-        <ui-image src="https://picsum.photos/400/200" width="200rpx" square radius="8rpx" />
-      </demo-block>
-    </demo-section>
-
-    <demo-section title="块级元素">
-      <demo-block direction="column" :gap="16">
-        <ui-image src="https://picsum.photos/600/200" height="200rpx" block radius="8rpx" />
-        <text class="demo-text">block 属性使图片宽度充满容器</text>
-      </demo-block>
-    </demo-section>
-
-    <demo-section title="加载状态">
-      <demo-block :cols="3" :gap="24">
-        <view class="image-item">
-          <ui-image src="" width="200rpx" height="200rpx" />
-          <text class="image-label">加载中</text>
+        <view class="cell">
+          <ui-image src="" width="180rpx" height="180rpx" radius="12rpx" />
+          <text class="cell__label">加载中</text>
         </view>
-        <view class="image-item">
-          <ui-image src="https://invalid-url.com/404.jpg" width="200rpx" height="200rpx" />
-          <text class="image-label">加载失败</text>
+        <view class="cell">
+          <ui-image src="https://invalid.example.com/x.jpg" width="180rpx" height="180rpx" radius="12rpx" />
+          <text class="cell__label">加载失败</text>
         </view>
-        <view class="image-item">
-          <ui-image src="https://picsum.photos/211" width="200rpx" height="200rpx" fade />
-          <text class="image-label">淡入效果</text>
+        <view class="cell">
+          <ui-image :key="fadeKey" :src="`https://picsum.photos/200?random=${fadeKey}`" width="180rpx" height="180rpx" radius="12rpx" fade />
+          <ui-button size="small" custom-style="margin-top: 8rpx" @click="fadeKey++">重载淡入</ui-button>
         </view>
       </demo-block>
     </demo-section>
 
-    <demo-section title="自定义占位">
+    <demo-section title="自定义占位 (loading / error 插槽)">
       <demo-block :cols="2" :gap="24">
-        <view class="image-item">
-          <ui-image src="" width="200rpx" height="200rpx">
+        <view class="cell">
+          <ui-image src="" width="200rpx" height="200rpx" radius="12rpx">
             <template #loading>
               <ui-loading size="48rpx" />
             </template>
           </ui-image>
-          <text class="image-label">自定义加载</text>
+          <text class="cell__label">自定义 loading</text>
         </view>
-        <view class="image-item">
-          <ui-image src="https://invalid-url.com/404.jpg" width="200rpx" height="200rpx">
+        <view class="cell">
+          <ui-image src="https://invalid.example.com/x.jpg" width="200rpx" height="200rpx" radius="12rpx">
             <template #error>
-              <view class="custom-error">
+              <view class="placeholder-error">
                 <ui-icon name="warning" size="40rpx" color="#999" />
-                <text class="custom-error-text">加载失败</text>
+                <text class="placeholder-error__text">加载失败</text>
               </view>
             </template>
           </ui-image>
-          <text class="image-label">自定义错误</text>
+          <text class="cell__label">自定义 error</text>
         </view>
       </demo-block>
     </demo-section>
 
-    <demo-section title="背景色">
+    <demo-section title="背景色 (background)" desc="placeholder 占位时的底色">
       <demo-block :cols="3" :gap="24">
-        <ui-image src="https://picsum.photos/212" width="200rpx" height="200rpx" background="#f5f5f5" radius="8rpx" />
-        <ui-image src="https://picsum.photos/213" width="200rpx" height="200rpx" background="#e8f4ff" radius="8rpx" />
-        <ui-image src="https://picsum.photos/214" width="200rpx" height="200rpx" background="#fff0f0" radius="8rpx" />
+        <view v-for="b in bgColors" :key="b.value" class="cell">
+          <ui-image src="" width="180rpx" height="180rpx" radius="12rpx" :background="b.value" />
+          <text class="cell__label">{{ b.label }}</text>
+        </view>
       </demo-block>
     </demo-section>
 
-    <demo-section title="懒加载">
-      <demo-block direction="column" align="start" :gap="16">
-        <demo-block :cols="3" :gap="24">
-          <ui-image src="https://picsum.photos/220" width="200rpx" height="200rpx" lazy-load radius="8rpx" />
-          <ui-image src="https://picsum.photos/221" width="200rpx" height="200rpx" lazy-load radius="8rpx" />
-          <ui-image src="https://picsum.photos/222" width="200rpx" height="200rpx" lazy-load radius="8rpx" />
+    <demo-section title="块级 (block)" desc="宽度撑满父容器">
+      <ui-image src="https://picsum.photos/600/200?random=40" height="200rpx" block radius="12rpx" />
+    </demo-section>
+
+    <demo-section title="开关配置" desc="lazyLoad / draggable / webp / showMenuByLongpress">
+      <demo-block direction="column" align="start" :gap="12">
+        <demo-block align="center" :gap="20">
+          <demo-block align="center" :gap="8">
+            <ui-switch v-model="lazyLoad" />
+            <text class="switch-label">lazyLoad</text>
+          </demo-block>
+          <demo-block align="center" :gap="8">
+            <ui-switch v-model="draggable" />
+            <text class="switch-label">draggable</text>
+          </demo-block>
         </demo-block>
-        <text class="demo-text">lazy-load 属性开启懒加载，仅在 page/scroll-view 中生效</text>
-      </demo-block>
-    </demo-section>
-
-    <demo-section title="拖动配置">
-      <demo-block :cols="2" :gap="24">
-        <view class="image-item">
-          <ui-image src="https://picsum.photos/223" width="200rpx" height="200rpx" draggable radius="8rpx" />
-          <text class="image-label">可拖动</text>
-        </view>
-        <view class="image-item">
-          <ui-image src="https://picsum.photos/224" width="200rpx" height="200rpx" :draggable="false" radius="8rpx" />
-          <text class="image-label">不可拖动</text>
-        </view>
-      </demo-block>
-    </demo-section>
-
-    <demo-section title="Webp 格式">
-      <demo-block direction="column" align="start" :gap="16">
-        <ui-image src="https://www.gstatic.com/webp/gallery/1.webp" width="300rpx" height="200rpx" webp radius="8rpx" />
-        <text class="demo-text">webp 属性在不支持 webp 的系统上单独启用 webp 格式</text>
-      </demo-block>
-    </demo-section>
-
-    <demo-section title="长按菜单">
-      <demo-block direction="column" align="start" :gap="16">
-        <ui-image src="https://picsum.photos/225" width="300rpx" height="200rpx" show-menu-by-longpress radius="8rpx" />
-        <text class="demo-text">长按图片可显示小程序码识别菜单（仅小程序端生效）</text>
-      </demo-block>
-    </demo-section>
-
-    <demo-section title="事件处理">
-      <demo-block direction="column" align="start" :gap="16">
-        <demo-block :cols="2" :gap="24">
-          <view class="image-item">
-            <ui-image src="https://picsum.photos/226" width="200rpx" height="200rpx" radius="8rpx" @load="onImageLoad" @click="onImageClick" />
-            <text class="image-label">点击试试</text>
-          </view>
-          <view class="image-item">
-            <ui-image src="https://invalid-url.com/error.jpg" width="200rpx" height="200rpx" radius="8rpx" @error="onImageError" />
-            <text class="image-label">加载失败事件</text>
-          </view>
+        <demo-block align="center" :gap="20">
+          <demo-block align="center" :gap="8">
+            <ui-switch v-model="webp" />
+            <text class="switch-label">webp</text>
+          </demo-block>
+          <demo-block align="center" :gap="8">
+            <ui-switch v-model="longpress" />
+            <text class="switch-label">长按菜单</text>
+          </demo-block>
         </demo-block>
-        <text class="demo-text">{{ eventLog }}</text>
+      </demo-block>
+      <ui-image src="https://picsum.photos/300?random=50" width="240rpx" height="240rpx" radius="12rpx" :lazy-load="lazyLoad" :draggable="draggable" :webp="webp" :show-menu-by-longpress="longpress" custom-style="margin-top: 16rpx" />
+    </demo-section>
+
+    <demo-section title="事件 (load / error / click)">
+      <demo-block :cols="2" :gap="24">
+        <ui-image src="https://picsum.photos/200?random=60" width="200rpx" height="200rpx" radius="12rpx" @load="onLoad" @click="onClick" />
+        <ui-image src="https://invalid.example.com/x.jpg" width="200rpx" height="200rpx" radius="12rpx" @error="onError" />
+      </demo-block>
+      <text class="demo-text">{{ eventLog }}</text>
+    </demo-section>
+
+    <demo-section title="场景：用户头像" desc="round + 小尺寸，常见列表头像">
+      <demo-block :gap="16">
+        <ui-image v-for="i in 5" :key="i" :src="`https://picsum.photos/100?random=${100 + i}`" width="80rpx" height="80rpx" round />
       </demo-block>
     </demo-section>
 
-    <demo-section title="自定义样式">
-      <demo-block :cols="2" :gap="24">
-        <view class="image-item">
-          <ui-image src="https://picsum.photos/227" width="200rpx" height="200rpx" custom-class="my-image" />
-          <text class="image-label">自定义类名</text>
+    <demo-section title="场景：商品卡片" desc="square + radius，固定宽度自动撑高">
+      <demo-block :cols="3" :gap="16">
+        <view v-for="p in products" :key="p.id" class="product">
+          <ui-image :src="p.img" width="100%" square radius="12rpx" />
+          <text class="product__title">{{ p.title }}</text>
+          <text class="product__price">¥{{ p.price }}</text>
         </view>
-        <view class="image-item">
-          <ui-image src="https://picsum.photos/228" width="200rpx" height="200rpx" :custom-style="{ boxShadow: '0 8rpx 24rpx rgba(0,0,0,0.15)', borderRadius: '16rpx' }" />
-          <text class="image-label">自定义样式</text>
-        </view>
+      </demo-block>
+    </demo-section>
+
+    <demo-section title="场景：相册九宫格" desc="3 列 square，类朋友圈">
+      <demo-block :cols="3" :gap="8">
+        <ui-image v-for="i in 9" :key="i" :src="`https://picsum.photos/200?random=${200 + i}`" width="100%" square radius="8rpx" />
       </demo-block>
     </demo-section>
   </demo-page>
 </template>
 
 <script setup lang="ts">
+import { ref } from "vue"
 import { useToast } from "@/uni_modules/uniapp-ui"
 
 definePage({
@@ -209,58 +170,100 @@ definePage({
 
 const toast = useToast()
 
-// 事件日志
-const eventLog = ref("点击图片或等待加载事件触发")
+const modes = ["scaleToFill", "aspectFit", "aspectFill", "widthFix", "heightFix", "center", "top", "bottom"] as const
+const radii = ["", "8rpx", "16rpx", "32rpx"]
+const bgColors = [
+  { label: "默认", value: "" },
+  { label: "浅蓝", value: "#e8f4ff" },
+  { label: "浅粉", value: "#fff0f0" },
+]
 
-// 事件处理
-function onImageLoad(event: any) {
-  eventLog.value = `触发 load 事件，图片加载成功`
-  toast.success("图片加载成功")
+const products = [
+  { id: 1, img: "https://picsum.photos/300?random=301", title: "无线耳机", price: "299" },
+  { id: 2, img: "https://picsum.photos/300?random=302", title: "智能手表", price: "1299" },
+  { id: 3, img: "https://picsum.photos/300?random=303", title: "蓝牙音箱", price: "499" },
+]
+
+const mode = ref<typeof modes[number]>("aspectFill")
+const radius = ref("8rpx")
+const fadeKey = ref(1)
+
+const lazyLoad = ref(true)
+const draggable = ref(false)
+const webp = ref(false)
+const longpress = ref(false)
+
+const eventLog = ref("点击图片或等加载事件")
+
+function onLoad() {
+  eventLog.value = "load: 加载成功"
+  toast.success("加载成功")
 }
 
-function onImageError(event: any) {
-  eventLog.value = `触发 error 事件，图片加载失败`
-  toast.fail("图片加载失败")
+function onError() {
+  eventLog.value = "error: 加载失败"
 }
 
-function onImageClick(event: any) {
-  eventLog.value = `触发 click 事件，时间: ${new Date().toLocaleTimeString()}`
-  toast.text("图片被点击")
+function onClick() {
+  eventLog.value = `click: ${new Date().toLocaleTimeString()}`
+  toast.text("点击图片")
 }
 </script>
 
 <style lang="scss" scoped>
-.image-item {
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-}
-
-.image-label {
+.demo-text {
   color: var(--ui-color-text-secondary);
+  display: block;
   font-size: 24rpx;
   margin-top: 12rpx;
 }
 
-.demo-text {
-  color: var(--ui-color-text-secondary);
-  font-size: 24rpx;
+.switch-label {
+  color: var(--ui-color-text);
+  font-size: 26rpx;
 }
 
-.custom-error {
+.cell {
   gap: 8rpx;
   display: flex;
   align-items: center;
   flex-direction: column;
+
+  &__label {
+    color: var(--ui-color-text-secondary);
+    font-size: 22rpx;
+  }
 }
 
-.custom-error-text {
-  color: #999;
-  font-size: 22rpx;
+.placeholder-error {
+  gap: 8rpx;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+
+  &__text {
+    color: var(--ui-color-text-secondary);
+    font-size: 22rpx;
+  }
 }
 
-:deep(.my-image) {
-  border: 4rpx solid #1989fa;
-  border-radius: 16rpx;
+.product {
+  gap: 6rpx;
+  display: flex;
+  flex-direction: column;
+
+  &__title {
+    color: var(--ui-color-text);
+    overflow: hidden;
+    font-size: 24rpx;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  &__price {
+    color: var(--ui-color-danger);
+    font-size: 26rpx;
+    font-weight: 600;
+  }
 }
 </style>

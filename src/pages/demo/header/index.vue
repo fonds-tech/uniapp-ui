@@ -1,435 +1,231 @@
 <template>
-  <view class="demo-header">
-    <view class="preview-area">
-      <view class="preview-box">
-        <view class="status-bar">
-          <text class="status-bar__time">9:41</text>
-          <view class="status-bar__icons">
-            <ui-icon name="wifi" size="28rpx" color="#000" />
-          </view>
+  <demo-page>
+    <ui-header
+      ref="headerRef"
+      :background="background"
+      :offset="offset"
+      :z-index="zIndex"
+      :safe-area-inset-top="safe"
+      :custom-style="customStyle"
+      @rect="onRect"
+      @height="onHeight"
+    >
+      <view v-if="current === 0" class="scene-shop">
+        <view class="scene-shop__location">
+          <ui-icon name="location" size="28rpx" color="#fff" />
+          <text class="scene-shop__city">杭州</text>
+          <ui-icon name="down" size="20rpx" color="#fff" />
         </view>
-
-        <view v-if="currentScene === 0" class="preview-header" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%)">
-          <view class="header-shop">
-            <view class="header-shop__location">
-              <ui-icon name="location" size="28rpx" color="#fff" />
-              <text class="header-shop__city">杭州</text>
-              <ui-icon name="down" size="20rpx" color="#fff" />
-            </view>
-            <view class="header-shop__search">
-              <ui-icon name="search" size="28rpx" color="#999" />
-              <text class="header-shop__placeholder">搜索商品</text>
-            </view>
-            <view class="header-shop__actions">
-              <ui-icon name="scan" size="40rpx" color="#fff" />
-              <ui-icon name="bell" size="40rpx" color="#fff" />
-            </view>
-          </view>
+        <view class="scene-shop__search">
+          <ui-icon name="search" size="28rpx" color="#999" />
+          <text class="scene-shop__placeholder">搜索商品</text>
         </view>
-
-        <view v-else-if="currentScene === 1" class="preview-header" style="background: #fff">
-          <view class="header-filter">
-            <view v-for="(item, index) in filterTabs" :key="item.key" class="header-filter__item" :class="{ active: activeFilter === index }" @click="activeFilter = index">
-              <text>{{ item.label }}</text>
-              <ui-icon v-if="item.sortable" :name="item.asc ? 'up' : 'down'" size="20rpx" />
-            </view>
-          </view>
-        </view>
-
-        <view v-else-if="currentScene === 2" class="preview-header" style="background: #fff">
-          <scroll-view scroll-x class="header-tabs">
-            <view class="header-tabs__inner">
-              <view v-for="(tab, index) in categoryTabs" :key="tab" class="header-tabs__item" :class="{ active: activeTab === index }" @click="activeTab = index">
-                <text>{{ tab }}</text>
-                <view v-if="activeTab === index" class="header-tabs__line" />
-              </view>
-            </view>
-          </scroll-view>
-        </view>
-
-        <view v-else-if="currentScene === 3" class="preview-header" style="background: #fff">
-          <view class="header-player">
-            <image class="header-player__cover" src="https://picsum.photos/80/80?random=1" mode="aspectFill" />
-            <view class="header-player__info">
-              <text class="header-player__title">晴天 - 周杰伦</text>
-              <text class="header-player__sub">正在播放</text>
-            </view>
-            <view class="header-player__controls">
-              <ui-icon name="step-backward" size="36rpx" color="#333" />
-              <view class="header-player__play" @click="isPlaying = !isPlaying">
-                <ui-icon :name="isPlaying ? 'pause' : 'caret-right'" size="28rpx" color="#fff" />
-              </view>
-              <ui-icon name="step-forward" size="36rpx" color="#333" />
-            </view>
-          </view>
-        </view>
-
-        <view v-else-if="currentScene === 4" class="preview-header" style="background: #fff">
-          <view class="header-steps">
-            <view v-for="(step, index) in steps" :key="step" class="header-steps__item">
-              <view class="header-steps__dot" :class="{ active: index <= currentStep, done: index < currentStep }">
-                <ui-icon v-if="index < currentStep" name="check" size="20rpx" color="#fff" />
-                <text v-else>{{ index + 1 }}</text>
-              </view>
-              <text class="header-steps__label" :class="{ active: index <= currentStep }">{{ step }}</text>
-              <view v-if="index < steps.length - 1" class="header-steps__line" :class="{ active: index < currentStep }" />
-            </view>
-          </view>
-        </view>
-
-        <view v-else-if="currentScene === 5" class="preview-header" style="background: #fffbe6">
-          <view class="header-notice">
-            <ui-icon name="sound" size="32rpx" color="#fa8c16" />
-            <text class="header-notice__text">双11活动进行中，全场满300减50</text>
-            <ui-icon name="close" size="28rpx" color="#999" />
-          </view>
-        </view>
-
-        <view class="preview-content">
-          <view class="preview-content__placeholder">
-            <text>页面内容区域</text>
-          </view>
-        </view>
-      </view>
-    </view>
-
-    <scroll-view scroll-y class="scene-list">
-      <view class="scene-list__header">
-        <text class="scene-list__title">选择场景</text>
-        <text class="scene-list__subtitle">点击切换上方预览效果</text>
-      </view>
-
-      <view class="scene-list__grid">
-        <view v-for="(scene, index) in scenes" :key="scene.title" class="scene-item" :class="{ active: currentScene === index }" @click="currentScene = index">
-          <view class="scene-item__icon" :style="{ background: scene.color }">
-            <ui-icon :name="scene.icon" size="36rpx" color="#fff" />
-          </view>
-          <text class="scene-item__title">{{ scene.title }}</text>
+        <view class="scene-shop__actions">
+          <ui-icon name="scan" size="40rpx" color="#fff" />
+          <ui-icon name="bell" size="40rpx" color="#fff" />
         </view>
       </view>
 
-      <view class="scene-info">
-        <text class="scene-info__title">{{ scenes[currentScene].title }}</text>
-        <text class="scene-info__desc">{{ scenes[currentScene].desc }}</text>
-        <view class="scene-info__props">
-          <text class="scene-info__label">常用属性：</text>
-          <view class="scene-info__tags">
-            <text v-for="prop in scenes[currentScene].props" :key="prop" class="scene-info__tag">{{ prop }}</text>
-          </view>
+      <view v-else-if="current === 1" class="scene-filter">
+        <view v-for="(item, i) in filterTabs" :key="item.key" class="scene-filter__item" :class="{ active: activeFilter === i }" @click="activeFilter = i">
+          <text>{{ item.label }}</text>
+          <ui-icon v-if="item.sortable" :name="item.asc ? 'up' : 'down'" size="20rpx" />
         </view>
       </view>
 
-      <view v-if="currentScene === 4" class="scene-actions">
+      <view v-else-if="current === 2" class="scene-tabs">
+        <scroll-view scroll-x class="scene-tabs__scroll">
+          <view class="scene-tabs__inner">
+            <view v-for="(tab, i) in categoryTabs" :key="tab" class="scene-tabs__item" :class="{ active: activeTab === i }" @click="activeTab = i">
+              <text>{{ tab }}</text>
+              <view v-if="activeTab === i" class="scene-tabs__line" />
+            </view>
+          </view>
+        </scroll-view>
+      </view>
+
+      <view v-else-if="current === 3" class="scene-player">
+        <view class="scene-player__cover" />
+        <view class="scene-player__info">
+          <text class="scene-player__title">晴天 - 周杰伦</text>
+          <text class="scene-player__sub">{{ isPlaying ? "正在播放" : "已暂停" }}</text>
+        </view>
+        <view class="scene-player__controls">
+          <ui-icon name="step-backward" size="36rpx" color="#333" />
+          <view class="scene-player__play" @click="isPlaying = !isPlaying">
+            <ui-icon :name="isPlaying ? 'pause' : 'caret-right'" size="28rpx" color="#fff" />
+          </view>
+          <ui-icon name="step-forward" size="36rpx" color="#333" />
+        </view>
+      </view>
+
+      <view v-else-if="current === 4" class="scene-steps">
+        <view v-for="(step, i) in steps" :key="step" class="scene-steps__item">
+          <view class="scene-steps__dot" :class="{ active: i <= currentStep, done: i < currentStep }">
+            <ui-icon v-if="i < currentStep" name="check" size="20rpx" color="#fff" />
+            <text v-else>{{ i + 1 }}</text>
+          </view>
+          <text class="scene-steps__label" :class="{ active: i <= currentStep }">{{ step }}</text>
+          <view v-if="i < steps.length - 1" class="scene-steps__line" :class="{ active: i < currentStep }" />
+        </view>
+      </view>
+
+      <view v-else class="scene-notice">
+        <ui-icon name="sound" size="32rpx" color="#fa8c16" />
+        <text class="scene-notice__text">双 11 活动进行中，全场满 300 减 50</text>
+        <ui-icon name="close" size="28rpx" color="#999" />
+      </view>
+    </ui-header>
+
+    <demo-section title="基础用法" desc="顶部固定栏，自动避让 ui-navbar 与顶部安全区，提供占位防遮挡。下滑页面查看效果。" />
+
+    <demo-section title="场景切换" desc="同一个 ui-header 实例，按钮切换 slot 内容">
+      <demo-block direction="column" align="start" :gap="12">
+        <demo-block :cols="3" :gap="12">
+          <ui-button v-for="(s, i) in scenes" :key="s.key" size="small" :type="current === i ? 'primary' : 'default'" @click="current = i">{{ s.label }}</ui-button>
+        </demo-block>
+        <text class="demo-text">{{ scenes[current].desc }}</text>
+      </demo-block>
+    </demo-section>
+
+    <demo-section title="背景色 (background)">
+      <demo-block :cols="4" :gap="12">
+        <ui-button size="small" :type="background === '' ? 'primary' : 'default'" @click="background = ''">默认</ui-button>
+        <ui-button size="small" :type="background === '#fff' ? 'primary' : 'default'" @click="background = '#fff'">白</ui-button>
+        <ui-button size="small" :type="background === '#1989fa' ? 'primary' : 'default'" @click="background = '#1989fa'">蓝</ui-button>
+        <ui-button size="small" :type="background.startsWith('linear') ? 'primary' : 'default'" @click="background = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'">渐变</ui-button>
+      </demo-block>
+    </demo-section>
+
+    <demo-section title="顶部偏移 (offset)" desc="数值默认 px，字符串透传单位">
+      <demo-block :cols="4" :gap="12">
+        <ui-button v-for="o in offsetOptions" :key="String(o)" size="small" :type="offset === o ? 'primary' : 'default'" @click="offset = o">{{ o === 0 ? "0" : o }}</ui-button>
+      </demo-block>
+    </demo-section>
+
+    <demo-section title="层级 (z-index)">
+      <demo-block :cols="3" :gap="12">
+        <ui-button v-for="z in [50, 100, 999]" :key="z" size="small" :type="zIndex === z ? 'primary' : 'default'" @click="zIndex = z">{{ z }}</ui-button>
+      </demo-block>
+    </demo-section>
+
+    <demo-section title="安全区域 (safe-area-inset-top)" desc="iOS 全面屏顶部刘海避让">
+      <demo-block align="center" :gap="16">
+        <ui-switch v-model="safe" />
+        <text class="switch-label">{{ safe ? "启用" : "禁用" }}</text>
+      </demo-block>
+    </demo-section>
+
+    <demo-section title="自定义样式 (customStyle)" desc="常见用法：底部阴影、底部分割线">
+      <demo-block :cols="3" :gap="12">
+        <ui-button size="small" :type="customStyle === '' ? 'primary' : 'default'" @click="customStyle = ''">无</ui-button>
+        <ui-button size="small" :type="customStyle.includes('shadow') ? 'primary' : 'default'" @click="customStyle = 'box-shadow: 0 4rpx 16rpx rgba(0,0,0,0.08)'">底部阴影</ui-button>
+        <ui-button size="small" :type="customStyle.includes('border-bottom') ? 'primary' : 'default'" @click="customStyle = 'border-bottom: 1rpx solid #e5e7eb'">底部分割线</ui-button>
+      </demo-block>
+    </demo-section>
+
+    <demo-section title="事件回显 (rect / height)" desc="ui-resize 触发，slot 内容变化时高度自动上报">
+      <demo-block direction="column" align="start" :gap="8">
+        <text class="demo-text">height: {{ headerHeight }} px</text>
+        <text class="demo-text">rect: {{ rectText }}</text>
+      </demo-block>
+    </demo-section>
+
+    <demo-section title="实例方法 (resize)" desc="ref 调用，强制重算高度">
+      <demo-block :gap="12">
+        <ui-button size="small" @click="onResize">手动触发 resize()</ui-button>
+      </demo-block>
+    </demo-section>
+
+    <demo-section title="步骤场景控制" desc="切换到「步骤进度」场景后可前进/后退">
+      <demo-block :cols="2" :gap="12">
         <ui-button size="small" :disabled="currentStep === 0" @click="currentStep--">上一步</ui-button>
         <ui-button size="small" type="primary" :disabled="currentStep === 2" @click="currentStep++">下一步</ui-button>
-      </view>
+      </demo-block>
+    </demo-section>
 
-      <view class="size-monitor">
-        <view class="size-monitor__header">
-          <text class="size-monitor__title">尺寸监听</text>
-          <text class="size-monitor__subtitle">@height / @rect 事件实时数据</text>
-        </view>
-        <view class="size-monitor__content">
-          <view class="size-monitor__item">
-            <text class="size-monitor__label">高度 (height)</text>
-            <view class="size-monitor__value">
-              <text class="size-monitor__number">{{ headerHeight }}</text>
-              <text class="size-monitor__unit">px</text>
-            </view>
-          </view>
-          <view class="size-monitor__item">
-            <text class="size-monitor__label">宽度 (width)</text>
-            <view class="size-monitor__value">
-              <text class="size-monitor__number">{{ headerRect.width || 0 }}</text>
-              <text class="size-monitor__unit">px</text>
-            </view>
-          </view>
-          <view class="size-monitor__item">
-            <text class="size-monitor__label">顶部位置 (top)</text>
-            <view class="size-monitor__value">
-              <text class="size-monitor__number">{{ headerRect.top || 0 }}</text>
-              <text class="size-monitor__unit">px</text>
-            </view>
-          </view>
-        </view>
-      </view>
-    </scroll-view>
-  </view>
+    <demo-section v-for="i in 6" :key="i" :title="`占位内容 ${i}`" desc="滚动查看 header 始终贴顶" />
+  </demo-page>
 </template>
 
 <script setup lang="ts">
+import type { HeaderInstance } from "@/uni_modules/uniapp-ui/ui-header"
+import { ref } from "vue"
+import { useToast } from "@/uni_modules/uniapp-ui"
+
 definePage({
-  style: {
-    navigationBarTitleText: "Header 页头",
-  },
+  style: { navigationBarTitleText: "Header 页头" },
 })
 
-const currentScene = ref(0)
+const toast = useToast()
 
-// 尺寸监听
-const headerHeight = ref(0)
-const headerRect = ref<UniApp.NodeInfo>({})
-
-function onHeaderHeight(height: number) {
-  headerHeight.value = Math.round(height)
-}
-
-function onHeaderRect(rect: UniApp.NodeInfo) {
-  headerRect.value = {
-    ...rect,
-    width: Math.round(rect.width || 0),
-    top: Math.round(rect.top || 0),
-  }
-}
-
-// 场景配置
 const scenes = [
-  {
-    title: "电商搜索栏",
-    desc: "包含定位、搜索框、扫码和消息图标，适用于电商首页顶部导航。",
-    icon: "search",
-    color: "#667eea",
-    props: ["background", "safe-area-inset-top"],
-  },
-  {
-    title: "筛选排序栏",
-    desc: "商品列表页常用的综合、销量、价格排序筛选，支持升降序切换。",
-    icon: "filter",
-    color: "#f5576c",
-    props: ["background", "z-index"],
-  },
-  {
-    title: "分类导航",
-    desc: "横向滚动的分类标签，带选中态指示器，适用于分类页或列表页。",
-    icon: "layout",
-    color: "#4facfe",
-    props: ["background", "custom-style"],
-  },
-  {
-    title: "迷你播放器",
-    desc: "音乐/视频类应用的悬浮播放控制条，显示封面、信息和控制按钮。",
-    icon: "sound",
-    color: "#43e97b",
-    props: ["background", "offset"],
-  },
-  {
-    title: "步骤进度",
-    desc: "订单流程、表单向导等场景的步骤进度指示器，支持已完成状态。",
-    icon: "branches",
-    color: "#fa709a",
-    props: ["background", "custom-class"],
-  },
-  {
-    title: "公告通知栏",
-    desc: "顶部的活动公告或系统通知，支持关闭按钮和跑马灯效果。",
-    icon: "bell",
-    color: "#fa8c16",
-    props: ["background", "z-index"],
-  },
+  { key: "shop", label: "电商搜索栏", desc: "定位 + 搜索 + 扫码/消息，电商首页顶部" },
+  { key: "filter", label: "筛选排序", desc: "综合 / 销量 / 价格，支持升降序切换" },
+  { key: "tabs", label: "分类导航", desc: "横向滚动标签 + 选中态指示器" },
+  { key: "player", label: "迷你播放器", desc: "悬浮播放控制条 + 上下首/暂停" },
+  { key: "steps", label: "步骤进度", desc: "订单/向导步骤指示，已完成态" },
+  { key: "notice", label: "公告通知", desc: "顶部活动公告 + 关闭按钮" },
 ]
 
-// 场景2: 筛选
+const offsetOptions = [0, "20rpx", "40rpx", "80rpx"] as const
+
+const safe = ref(false)
+const current = ref(0)
+const zIndex = ref(100)
+const offset = ref<number | string>(0)
+const background = ref("linear-gradient(135deg, #667eea 0%, #764ba2 100%)")
+const customStyle = ref("")
+
+const headerHeight = ref(0)
+const rectText = ref("尚未触发")
+const headerRef = ref<HeaderInstance>()
+
 const activeFilter = ref(0)
 const filterTabs = [
-  { key: "default", label: "综合", sortable: false },
+  { key: "default", label: "综合", sortable: false, asc: false },
   { key: "sales", label: "销量", sortable: true, asc: false },
   { key: "price", label: "价格", sortable: true, asc: true },
-  { key: "new", label: "新品", sortable: false },
+  { key: "new", label: "新品", sortable: false, asc: false },
 ]
 
-// 场景3: 分类
 const activeTab = ref(0)
 const categoryTabs = ["推荐", "手机", "电脑", "家电", "服饰", "美妆", "食品"]
 
-// 场景4: 播放器
 const isPlaying = ref(true)
-
-// 场景5: 步骤
 const currentStep = ref(1)
 const steps = ["填写信息", "确认订单", "支付完成"]
+
+function onHeight(h: number) {
+  headerHeight.value = Math.round(h)
+}
+
+function onRect(rect: UniApp.NodeInfo) {
+  rectText.value = `top=${Math.round(rect.top ?? 0)}, height=${Math.round(rect.height ?? 0)}`
+}
+
+function onResize() {
+  headerRef.value?.resize()
+  toast.text("已触发 resize()")
+}
 </script>
 
 <style lang="scss" scoped>
-.demo-header {
-  height: 100vh;
-  display: flex;
-  background: #f5f7fa;
-  flex-direction: column;
+.demo-text {
+  color: var(--ui-color-text-secondary);
+  display: block;
+  font-size: 24rpx;
+  word-break: break-all;
 }
 
-// 上半部分：预览区
-.preview-area {
-  padding: 24rpx;
-  background: linear-gradient(180deg, #e8ecf3 0%, #f5f7fa 100%);
-  flex-shrink: 0;
+.switch-label {
+  color: var(--ui-color-text);
+  font-size: 26rpx;
+  margin-left: 12rpx;
 }
 
-.preview-box {
-  overflow: hidden;
-  background: #fff;
-  box-shadow: 0 8rpx 40rpx rgba(0, 0, 0, 0.12);
-  border-radius: 32rpx;
-}
-
-.status-bar {
-  display: flex;
-  padding: 16rpx 32rpx;
-  background: #f8f8f8;
-  align-items: center;
-  justify-content: space-between;
-
-  &__time {
-    color: #000;
-    font-size: 26rpx;
-    font-weight: 600;
-  }
-
-  &__icons {
-    gap: 8rpx;
-    display: flex;
-  }
-}
-
-.preview-header {
-  transition: all 0.3s ease;
-}
-
-.preview-content {
-  height: 300rpx;
-  background: #f8f9fa;
-
-  &__placeholder {
-    color: #ccc;
-    height: 100%;
-    display: flex;
-    font-size: 28rpx;
-    align-items: center;
-    justify-content: center;
-  }
-}
-
-// 下半部分：场景列表
-.scene-list {
-  flex: 1;
-  overflow-x: hidden;
-
-  &__header {
-    padding: 24rpx 24rpx 0;
-    margin-bottom: 24rpx;
-  }
-
-  &__title {
-    color: #1a1a1a;
-    display: block;
-    font-size: 32rpx;
-    font-weight: 600;
-    margin-bottom: 8rpx;
-  }
-
-  &__subtitle {
-    color: #999;
-    font-size: 24rpx;
-  }
-
-  &__grid {
-    gap: 20rpx;
-    display: grid;
-    padding: 0 24rpx;
-    margin-bottom: 32rpx;
-    grid-template-columns: repeat(3, 1fr);
-  }
-}
-
-.scene-item {
-  border: 2rpx solid transparent;
-  display: flex;
-  padding: 24rpx 16rpx;
-  background: #fff;
-  transition: all 0.2s;
-  align-items: center;
-  border-radius: 20rpx;
-  flex-direction: column;
-
-  &.active {
-    background: #f0f9ff;
-    border-color: #1989fa;
-  }
-
-  &__icon {
-    width: 80rpx;
-    height: 80rpx;
-    display: flex;
-    align-items: center;
-    border-radius: 20rpx;
-    margin-bottom: 12rpx;
-    justify-content: center;
-  }
-
-  &__title {
-    color: #666;
-    font-size: 22rpx;
-    text-align: center;
-  }
-}
-
-.scene-info {
-  margin: 0 24rpx 24rpx;
-  padding: 28rpx;
-  background: #fff;
-  border-radius: 20rpx;
-
-  &__title {
-    color: #333;
-    display: block;
-    font-size: 30rpx;
-    font-weight: 600;
-    margin-bottom: 12rpx;
-  }
-
-  &__desc {
-    color: #666;
-    display: block;
-    font-size: 26rpx;
-    line-height: 1.6;
-    margin-bottom: 20rpx;
-  }
-
-  &__label {
-    color: #999;
-    font-size: 24rpx;
-    margin-right: 12rpx;
-  }
-
-  &__props {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-  }
-
-  &__tags {
-    gap: 12rpx;
-    display: flex;
-    flex-wrap: wrap;
-  }
-
-  &__tag {
-    color: #1989fa;
-    padding: 6rpx 16rpx;
-    font-size: 22rpx;
-    background: #e6f4ff;
-    border-radius: 8rpx;
-  }
-}
-
-.scene-actions {
-  gap: 24rpx;
-  display: flex;
-  padding: 0 24rpx 48rpx;
-  justify-content: center;
-}
-
-// Header 场景样式
-.header-shop {
+// === 场景：电商搜索栏 ===
+.scene-shop {
   gap: 16rpx;
   display: flex;
   padding: 20rpx 24rpx;
@@ -442,7 +238,7 @@ const steps = ["填写信息", "确认订单", "支付完成"]
   }
 
   &__city {
-    color: #fff;
+    color: var(--ui-color-text-inverse);
     font-size: 24rpx;
   }
 
@@ -452,13 +248,13 @@ const steps = ["填写信息", "确认订单", "支付完成"]
     height: 56rpx;
     display: flex;
     padding: 0 20rpx;
-    background: #fff;
+    background: var(--ui-color-background);
     align-items: center;
     border-radius: 28rpx;
   }
 
   &__placeholder {
-    color: #999;
+    color: var(--ui-color-text-secondary);
     font-size: 24rpx;
   }
 
@@ -468,28 +264,35 @@ const steps = ["填写信息", "确认订单", "支付完成"]
   }
 }
 
-.header-filter {
+// === 场景：筛选 ===
+.scene-filter {
   display: flex;
   padding: 20rpx 24rpx;
+  background: var(--ui-color-background);
 
   &__item {
     gap: 4rpx;
     flex: 1;
-    color: #666;
+    color: var(--ui-color-text-secondary);
     display: flex;
     font-size: 26rpx;
     align-items: center;
     justify-content: center;
 
     &.active {
-      color: #1989fa;
+      color: var(--ui-color-primary);
       font-weight: 600;
     }
   }
 }
 
-.header-tabs {
-  white-space: nowrap;
+// === 场景：分类标签 ===
+.scene-tabs {
+  background: var(--ui-color-background);
+
+  &__scroll {
+    white-space: nowrap;
+  }
 
   &__inner {
     display: inline-flex;
@@ -497,13 +300,13 @@ const steps = ["填写信息", "确认订单", "支付完成"]
   }
 
   &__item {
-    color: #666;
+    color: var(--ui-color-text-secondary);
     padding: 24rpx 28rpx;
     position: relative;
     font-size: 26rpx;
 
     &.active {
-      color: #1989fa;
+      color: var(--ui-color-primary);
       font-weight: 600;
     }
   }
@@ -515,20 +318,23 @@ const steps = ["填写信息", "确认订单", "支付完成"]
     height: 6rpx;
     position: absolute;
     transform: translateX(-50%);
-    background: #1989fa;
+    background: var(--ui-color-primary);
     border-radius: 3rpx;
   }
 }
 
-.header-player {
+// === 场景：迷你播放器 ===
+.scene-player {
   gap: 16rpx;
   display: flex;
   padding: 16rpx 24rpx;
+  background: var(--ui-color-background);
   align-items: center;
 
   &__cover {
     width: 72rpx;
     height: 72rpx;
+    background: linear-gradient(135deg, #1989fa, #07c160);
     border-radius: 12rpx;
   }
 
@@ -537,14 +343,14 @@ const steps = ["填写信息", "确认订单", "支付完成"]
   }
 
   &__title {
-    color: #333;
+    color: var(--ui-color-text);
     display: block;
     font-size: 26rpx;
     font-weight: 500;
   }
 
   &__sub {
-    color: #999;
+    color: var(--ui-color-text-secondary);
     font-size: 22rpx;
   }
 
@@ -558,16 +364,18 @@ const steps = ["填写信息", "确认订单", "支付完成"]
     width: 56rpx;
     height: 56rpx;
     display: flex;
-    background: #1989fa;
+    background: var(--ui-color-primary);
     align-items: center;
     border-radius: 50%;
     justify-content: center;
   }
 }
 
-.header-steps {
+// === 场景：步骤进度 ===
+.scene-steps {
   display: flex;
   padding: 28rpx 24rpx;
+  background: var(--ui-color-background);
 
   &__item {
     flex: 1;
@@ -578,34 +386,34 @@ const steps = ["填写信息", "确认订单", "支付完成"]
   }
 
   &__dot {
-    color: #999;
+    color: var(--ui-color-text-secondary);
     width: 40rpx;
     height: 40rpx;
     display: flex;
     z-index: 2;
     font-size: 22rpx;
-    background: #e8e8e8;
+    background: var(--ui-color-background-disabled);
     align-items: center;
     border-radius: 50%;
     justify-content: center;
 
     &.active {
-      color: #fff;
-      background: #1989fa;
+      color: var(--ui-color-text-inverse);
+      background: var(--ui-color-primary);
     }
 
     &.done {
-      background: #07c160;
+      background: var(--ui-color-success);
     }
   }
 
   &__label {
-    color: #999;
+    color: var(--ui-color-text-secondary);
     font-size: 22rpx;
     margin-top: 12rpx;
 
     &.active {
-      color: #333;
+      color: var(--ui-color-text);
     }
   }
 
@@ -616,18 +424,20 @@ const steps = ["填写信息", "确认订单", "支付完成"]
     height: 4rpx;
     z-index: 1;
     position: absolute;
-    background: #e8e8e8;
+    background: var(--ui-color-background-disabled);
 
     &.active {
-      background: #07c160;
+      background: var(--ui-color-success);
     }
   }
 }
 
-.header-notice {
+// === 场景：公告通知 ===
+.scene-notice {
   gap: 12rpx;
   display: flex;
   padding: 20rpx 24rpx;
+  background: #fffbe6;
   align-items: center;
 
   &__text {

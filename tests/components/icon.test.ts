@@ -179,8 +179,9 @@ describe("ui-icon 图标组件", () => {
         },
       })
 
-      expect(wrapper.classes()).toContain("my-icon")
+      // customPrefix 仅替换 `${prefix}-${name}` 部分；根 ui-icon 类名保留作为 base 样式 hook
       expect(wrapper.classes()).toContain("my-icon-star")
+      expect(wrapper.classes()).toContain("ui-icon")
     })
 
     it("默认前缀应为 ui-icon", () => {

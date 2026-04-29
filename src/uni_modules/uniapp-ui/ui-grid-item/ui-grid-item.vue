@@ -1,7 +1,6 @@
 <template>
   <view class="ui-grid-item" :class="[itemClass, props.customClass]" :style="[itemStyle]" @click="onClick">
-    <view class="ui-grid-item__content" :class="[contentClass]" :style="[contentStyle]">
-      <!-- 图标插槽 -->
+    <view class="ui-grid-item__content" :class="[contentClass]">
       <view v-if="hasIcon" class="ui-grid-item__icon">
         <slot name="icon">
           <ui-badge :dot="props.dot" :value="props.badge">
@@ -9,13 +8,11 @@
           </ui-badge>
         </slot>
       </view>
-      <!-- 文字插槽 -->
       <view v-if="hasText" class="ui-grid-item__text">
         <slot name="text">
           <text>{{ props.text }}</text>
         </slot>
       </view>
-      <!-- 默认插槽 -->
       <slot />
     </view>
   </view>
@@ -33,103 +30,39 @@ defineOptions({ name: "ui-grid-item" })
 const props = defineProps(gridItemProps)
 const emits = defineEmits(gridItemEmits)
 const slots = useSlots()
-
-// 获取父组件
 const { parent } = useParent(gridKey)
 
-// 默认图标大小
-const DEFAULT_ICON_SIZE = "56rpx"
+const hasIcon = computed(() => props.icon || slots.icon)
+const hasText = computed(() => props.text || slots.text)
+const iconSize = computed(() => useUnit(props.iconSize) || "56rpx")
 
-// 计算图标大小
-const iconSize = computed(() => {
-  if (props.iconSize) return useUnit(props.iconSize)
-  return DEFAULT_ICON_SIZE
+const itemClass = computed(() => {
+  const list: string[] = []
+  if (parent?.props.square) list.push("ui-grid-item--square")
+  if (parent?.props.border && !parent?.props.gutter) list.push("ui-grid-item--border")
+  return list
 })
 
-// 是否有图标
-const hasIcon = computed(() => {
-  return props.icon || slots.icon
-})
-
-// 是否有文字内容
-const hasText = computed(() => {
-  return props.text || slots.text
-})
-
-// grid-item 样式
 const itemStyle = computed(() => {
   const style: CSSProperties = {}
-  const isSquare = parent?.props.square
-
-  // 正方形模式：使用 padding-top 撑开高度
-  if (isSquare) {
-    style.paddingTop = "100%"
-  }
-
+  // square 模式靠 padding-top:100% 撑开等高
+  if (parent?.props.square) style.paddingTop = "100%"
   return useStyle({ ...style, ...useStyle(props.customStyle) })
 })
 
-// grid-item 类名
-const itemClass = computed(() => {
-  const list: string[] = []
-
-  if (parent?.props.square) {
-    list.push("ui-grid-item--square")
-  }
-
-  if (parent?.props.border && !parent?.props.gutter) {
-    list.push("ui-grid-item--border")
-  }
-
-  return list
-})
-
-// content 样式
-const contentStyle = computed(() => {
-  const style: CSSProperties = {}
-  return useStyle(style)
-})
-
-// content 类名
 const contentClass = computed(() => {
   const list: string[] = []
-
-  // 内容排列方向
-  if (parent?.props.direction === "horizontal") {
-    list.push("ui-grid-item__content--horizontal")
-  }
-
-  // 居中
-  if (parent?.props.center) {
-    list.push("ui-grid-item__content--center")
-  }
-
-  // 正方形
-  if (parent?.props.square) {
-    list.push("ui-grid-item__content--square")
-  }
-
-  // 可点击
-  if (parent?.props.clickable) {
-    list.push("ui-grid-item__content--clickable")
-  }
-
-  // 有间距时显示圆角边框
-  if (parent?.props.gutter) {
-    list.push("ui-grid-item__content--gutter")
-  }
-
+  if (parent?.props.direction === "horizontal") list.push("ui-grid-item__content--horizontal")
+  if (parent?.props.center) list.push("ui-grid-item__content--center")
+  if (parent?.props.square) list.push("ui-grid-item__content--square")
+  if (parent?.props.clickable) list.push("ui-grid-item__content--clickable")
+  if (parent?.props.gutter) list.push("ui-grid-item__content--gutter")
   return list
 })
 
-// 点击事件
 function onClick(event: any) {
-  if (parent?.props.clickable) {
-    emits("click", event)
-  }
+  if (parent?.props.clickable) emits("click", event)
 }
-
-defineExpose({ name: "ui-grid-item" })
 </script>
 
 <script lang="ts">
