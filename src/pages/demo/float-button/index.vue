@@ -88,7 +88,8 @@
           <ui-button size="small" @click="customColor = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'">渐变</ui-button>
         </demo-block>
         <text class="demo-text">前景色 (图标/文字):</text>
-        <demo-block :cols="4" :gap="16">
+        <demo-block :cols="5" :gap="16">
+          <ui-button size="small" @click="foregroundColor = ''">默认</ui-button>
           <ui-button size="small" @click="foregroundColor = '#fff'">白色</ui-button>
           <ui-button size="small" @click="foregroundColor = '#333'">黑色</ui-button>
           <ui-button size="small" @click="foregroundColor = '#ffd700'">金色</ui-button>
@@ -159,7 +160,7 @@ const dragInfo = ref("")
 const currentSize = ref("100rpx")
 const currentPosition = ref("right-bottom")
 const customColor = ref("")
-const foregroundColor = ref("#fff")
+const foregroundColor = ref("")
 const iconSize = ref("40rpx")
 const isDisabled = ref(false)
 

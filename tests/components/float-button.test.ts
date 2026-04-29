@@ -71,6 +71,17 @@ describe("uiFloatButton 组件", () => {
       await waitForTransition()
       expect(wrapper.find(".ui-float-button--with-text").exists()).toBe(true)
     })
+
+    it("有文本时 inline width/height 不应被设置（让 SCSS 撑开）", async () => {
+      const wrapper = mount(UiFloatButton, {
+        props: { text: "添加", size: "100rpx" },
+        global: { stubs: commonStubs },
+      })
+      await waitForTransition()
+      const style = wrapper.find(".ui-float-button").attributes("style") || ""
+      expect(style).not.toMatch(/width:\s*100rpx/)
+      expect(style).not.toMatch(/height:\s*100rpx/)
+    })
   })
 
   describe("type 属性测试", () => {
@@ -163,9 +174,9 @@ describe("uiFloatButton 组件", () => {
       expect(wrapper.props("color")).toBe("#1989fa")
     })
 
-    it("默认 foregroundColor 应该是 #fff", () => {
+    it("默认 foregroundColor 应该是空字符串", () => {
       const wrapper = mount(UiFloatButton, { global: { stubs: commonStubs } })
-      expect(wrapper.props("foregroundColor")).toBe("#fff")
+      expect(wrapper.props("foregroundColor")).toBe("")
     })
 
     it("默认 iconSize 应该是 40rpx", () => {
@@ -306,14 +317,14 @@ describe("uiFloatButton 组件", () => {
       expect(wrapper.props("position")).toBe("right-bottom")
     })
 
-    it("show 变化应触发 update:show", async () => {
+    it("show 变化不应触发多余的 update:show", async () => {
       const wrapper = mount(UiFloatButton, { global: { stubs: commonStubs } })
       await waitForTransition()
 
       await wrapper.setProps({ show: false })
       await waitForTransition()
 
-      expect(wrapper.emitted("update:show")?.[0]).toEqual([false])
+      expect(wrapper.emitted("update:show")).toBeFalsy()
     })
   })
 })

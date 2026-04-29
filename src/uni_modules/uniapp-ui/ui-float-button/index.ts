@@ -13,7 +13,7 @@ const defaultProps = buildDefaultProps("float-button", {
   offsetY: "100rpx",
   zIndex: 100,
   color: "",
-  foregroundColor: "#fff",
+  foregroundColor: "",
   iconSize: "40rpx",
   disabled: false,
   draggable: false,
