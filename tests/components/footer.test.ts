@@ -132,7 +132,7 @@ describe("ui-footer 底部固定组件", () => {
       expect(wrapper.props("safeAreaInsetBottom")).toBe(false)
     })
 
-    it("启用安全区域时应添加对应类名", async () => {
+    it("启用安全区域时应渲染 ui-safe-area-bottom 子组件", async () => {
       const wrapper = mount(UiFooter, {
         props: { safeAreaInsetBottom: true },
         global: { stubs },
@@ -140,7 +140,18 @@ describe("ui-footer 底部固定组件", () => {
 
       await waitForTransition()
 
-      expect(wrapper.find(".safe-area-inset-bottom").exists()).toBe(true)
+      expect(wrapper.findComponent({ name: "ui-safe-area-bottom" }).exists()).toBe(true)
+    })
+
+    it("禁用安全区域时不应渲染 ui-safe-area-bottom 子组件", async () => {
+      const wrapper = mount(UiFooter, {
+        props: { safeAreaInsetBottom: false },
+        global: { stubs },
+      })
+
+      await waitForTransition()
+
+      expect(wrapper.findComponent({ name: "ui-safe-area-bottom" }).exists()).toBe(false)
     })
   })
 

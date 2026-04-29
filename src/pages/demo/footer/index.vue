@@ -1,386 +1,245 @@
 <template>
-  <view class="demo-footer">
-    <view class="preview-area">
-      <view class="preview-box">
-        <view class="preview-content">
-          <view class="preview-content__placeholder">
-            <text>页面内容区域</text>
+  <demo-page>
+    <demo-section title="基础用法" desc="底部固定栏，自动避让 tabbar 与底部安全区域，提供占位防内容遮挡。下滑页面查看效果。" />
+
+    <demo-section title="场景切换" desc="同一个 ui-footer 实例，按钮切换 slot 内容">
+      <demo-block direction="column" align="start" :gap="12">
+        <demo-block :cols="3" :gap="12">
+          <ui-button v-for="(s, i) in scenes" :key="s.key" size="small" :type="current === i ? 'primary' : 'default'" @click="current = i">{{ s.label }}</ui-button>
+        </demo-block>
+        <text class="demo-text">{{ scenes[current].desc }}</text>
+      </demo-block>
+    </demo-section>
+
+    <demo-section title="背景色 (background)">
+      <demo-block :cols="4" :gap="12">
+        <ui-button size="small" :type="background === '' ? 'primary' : 'default'" @click="background = ''">默认</ui-button>
+        <ui-button size="small" :type="background === '#f5f7fa' ? 'primary' : 'default'" @click="background = '#f5f7fa'">浅灰</ui-button>
+        <ui-button size="small" :type="background === '#1989fa' ? 'primary' : 'default'" @click="background = '#1989fa'">蓝色</ui-button>
+        <ui-button size="small" :type="background.startsWith('linear') ? 'primary' : 'default'" @click="background = 'linear-gradient(135deg, #ff6b6b 0%, #ee0a24 100%)'">渐变</ui-button>
+      </demo-block>
+    </demo-section>
+
+    <demo-section title="底部偏移 (offset)" desc="数字默认 px，字符串透传单位">
+      <demo-block :cols="4" :gap="12">
+        <ui-button size="small" :type="offset === 0 ? 'primary' : 'default'" @click="offset = 0">0</ui-button>
+        <ui-button size="small" :type="offset === '20rpx' ? 'primary' : 'default'" @click="offset = '20rpx'">20rpx</ui-button>
+        <ui-button size="small" :type="offset === '40rpx' ? 'primary' : 'default'" @click="offset = '40rpx'">40rpx</ui-button>
+        <ui-button size="small" :type="offset === '80rpx' ? 'primary' : 'default'" @click="offset = '80rpx'">80rpx</ui-button>
+      </demo-block>
+    </demo-section>
+
+    <demo-section title="层级 (z-index)">
+      <demo-block :cols="3" :gap="12">
+        <ui-button size="small" :type="zIndex === 50 ? 'primary' : 'default'" @click="zIndex = 50">50</ui-button>
+        <ui-button size="small" :type="zIndex === 100 ? 'primary' : 'default'" @click="zIndex = 100">100</ui-button>
+        <ui-button size="small" :type="zIndex === 999 ? 'primary' : 'default'" @click="zIndex = 999">999</ui-button>
+      </demo-block>
+    </demo-section>
+
+    <demo-section title="安全区域 (safe-area-inset-bottom)" desc="iOS 全面屏底部小条避让">
+      <demo-block align="center" :gap="16">
+        <ui-switch v-model="safe" />
+        <text class="switch-label">{{ safe ? "启用" : "禁用" }}</text>
+      </demo-block>
+    </demo-section>
+
+    <demo-section title="自定义样式 (customStyle)" desc="常见用法：顶部阴影、顶部分割线">
+      <demo-block :cols="3" :gap="12">
+        <ui-button size="small" :type="customStyle === '' ? 'primary' : 'default'" @click="customStyle = ''">无</ui-button>
+        <ui-button size="small" :type="customStyle.includes('shadow') ? 'primary' : 'default'" @click="customStyle = 'box-shadow: 0 -4rpx 16rpx rgba(0,0,0,0.08)'">顶部阴影</ui-button>
+        <ui-button size="small" :type="customStyle.includes('border-top') ? 'primary' : 'default'" @click="customStyle = 'border-top: 1rpx solid #e5e7eb'">顶部分割线</ui-button>
+      </demo-block>
+    </demo-section>
+
+    <demo-section title="事件回显 (rect / height)" desc="ui-resize 触发，slot 内容变化时高度自动上报">
+      <demo-block direction="column" align="start" :gap="8">
+        <text class="demo-text">height: {{ footerHeight }} px</text>
+        <text class="demo-text">rect: {{ rectText }}</text>
+      </demo-block>
+    </demo-section>
+
+    <demo-section title="实例方法 (resize)" desc="ref 调用，强制重算高度">
+      <demo-block :gap="12">
+        <ui-button size="small" @click="onResize">手动触发 resize()</ui-button>
+      </demo-block>
+    </demo-section>
+
+    <demo-section v-for="i in 6" :key="i" :title="`占位内容 ${i}`" desc="滚动查看 footer 始终贴底" />
+
+    <ui-footer
+      ref="footerRef"
+      :background="background"
+      :offset="offset"
+      :z-index="zIndex"
+      :safe-area-inset-bottom="safe"
+      :custom-style="customStyle"
+      @rect="onRect"
+      @height="onHeight"
+    >
+      <view v-if="current === 0" class="scene-product">
+        <view class="scene-product__left">
+          <view class="scene-product__item" @click="onTap('客服')">
+            <ui-icon name="message" size="36rpx" color="#666" />
+            <text class="scene-product__text">客服</text>
+          </view>
+          <view class="scene-product__item" @click="favorite = !favorite">
+            <ui-icon :name="favorite ? 'heart-fill' : 'heart'" size="36rpx" :color="favorite ? '#ee0a24' : '#666'" />
+            <text class="scene-product__text">{{ favorite ? "已收藏" : "收藏" }}</text>
+          </view>
+          <view class="scene-product__item">
+            <ui-icon name="shopping" size="36rpx" color="#666" />
+            <text class="scene-product__text">购物车</text>
+            <view class="scene-product__badge">{{ cartCount }}</view>
           </view>
         </view>
-
-        <view v-if="currentScene === 0" class="preview-footer" style="background: #fff">
-          <view class="footer-product">
-            <view class="footer-product__left">
-              <view class="footer-product__item" @click="onServiceClick">
-                <ui-icon name="message" size="36rpx" color="#666" />
-                <text class="footer-product__text">客服</text>
-              </view>
-              <view class="footer-product__item" @click="toggleFavorite">
-                <ui-icon :name="isFavorite ? 'heart-fill' : 'heart'" size="36rpx" :color="isFavorite ? '#ee0a24' : '#666'" />
-                <text class="footer-product__text">{{ isFavorite ? "已收藏" : "收藏" }}</text>
-              </view>
-              <view class="footer-product__item">
-                <ui-icon name="shopping" size="36rpx" color="#666" />
-                <text class="footer-product__text">购物车</text>
-                <view class="footer-product__badge">{{ cartCount }}</view>
-              </view>
-            </view>
-            <view class="footer-product__right">
-              <view class="footer-product__btn footer-product__btn--warning" @click="onAddCart">加入购物车</view>
-              <view class="footer-product__btn footer-product__btn--primary">立即购买</view>
-            </view>
-          </view>
-        </view>
-
-        <view v-else-if="currentScene === 1" class="preview-footer" style="background: #fff">
-          <view class="footer-cart">
-            <view class="footer-cart__left" @click="isAllChecked = !isAllChecked">
-              <ui-icon :name="isAllChecked ? 'check-circle-fill' : 'check-circle'" size="40rpx" :color="isAllChecked ? '#1989fa' : '#ccc'" />
-              <text class="footer-cart__text">全选</text>
-            </view>
-            <view class="footer-cart__right">
-              <view class="footer-cart__price">
-                <text class="footer-cart__label">合计：</text>
-                <text class="footer-cart__amount">¥{{ totalPrice.toFixed(2) }}</text>
-              </view>
-              <view class="footer-cart__btn">结算({{ cartItems }})</view>
-            </view>
-          </view>
-        </view>
-
-        <view v-else-if="currentScene === 2" class="preview-footer" style="background: #fff">
-          <view class="footer-input">
-            <view class="footer-input__box">
-              <input v-model="inputText" class="footer-input__field" placeholder="说点什么..." />
-            </view>
-            <view class="footer-input__actions">
-              <ui-icon name="image" size="40rpx" color="#666" />
-              <ui-icon name="smile" size="40rpx" color="#666" />
-              <view v-if="inputText" class="footer-input__send" @click="onSend">发送</view>
-            </view>
-          </view>
-        </view>
-
-        <view v-else-if="currentScene === 3" class="preview-footer" style="background: #fff">
-          <view class="footer-form">
-            <view class="footer-form__btn footer-form__btn--default">取消</view>
-            <view class="footer-form__btn footer-form__btn--primary">提交</view>
-          </view>
-        </view>
-
-        <view v-else-if="currentScene === 4" class="preview-footer" style="background: #f8f9fa">
-          <view class="footer-copyright">
-            <view class="footer-copyright__links">
-              <text class="footer-copyright__link">关于我们</text>
-              <text class="footer-copyright__divider">|</text>
-              <text class="footer-copyright__link">联系我们</text>
-              <text class="footer-copyright__divider">|</text>
-              <text class="footer-copyright__link">隐私政策</text>
-            </view>
-            <text class="footer-copyright__text">Copyright © 2024 UniApp UI</text>
-          </view>
-        </view>
-
-        <view v-else-if="currentScene === 5" class="preview-footer" style="background: #fff">
-          <view class="footer-nav">
-            <view v-for="(item, index) in navItems" :key="item.icon" class="footer-nav__item" :class="{ active: activeNav === index }" @click="activeNav = index">
-              <ui-icon :name="activeNav === index ? item.activeIcon : item.icon" size="40rpx" :color="activeNav === index ? '#1989fa' : '#999'" />
-              <text class="footer-nav__text" :class="{ active: activeNav === index }">{{ item.text }}</text>
-            </view>
-          </view>
-        </view>
-      </view>
-    </view>
-
-    <scroll-view scroll-y class="scene-list">
-      <view class="scene-list__header">
-        <text class="scene-list__title">选择场景</text>
-        <text class="scene-list__subtitle">点击切换上方预览效果</text>
-      </view>
-
-      <view class="scene-list__grid">
-        <view v-for="(scene, index) in scenes" :key="scene.title" class="scene-item" :class="{ active: currentScene === index }" @click="currentScene = index">
-          <view class="scene-item__icon" :style="{ background: scene.color }">
-            <ui-icon :name="scene.icon" size="36rpx" color="#fff" />
-          </view>
-          <text class="scene-item__title">{{ scene.title }}</text>
+        <view class="scene-product__right">
+          <view class="scene-product__btn scene-product__btn--warning" @click="addCart">加入购物车</view>
+          <view class="scene-product__btn scene-product__btn--primary" @click="onTap('立即购买')">立即购买</view>
         </view>
       </view>
 
-      <view class="scene-info">
-        <text class="scene-info__title">{{ scenes[currentScene].title }}</text>
-        <text class="scene-info__desc">{{ scenes[currentScene].desc }}</text>
-        <view class="scene-info__props">
-          <text class="scene-info__label">常用属性：</text>
-          <view class="scene-info__tags">
-            <text v-for="prop in scenes[currentScene].props" :key="prop" class="scene-info__tag">{{ prop }}</text>
+      <view v-else-if="current === 1" class="scene-cart">
+        <view class="scene-cart__left" @click="allChecked = !allChecked">
+          <ui-icon :name="allChecked ? 'check-circle-fill' : 'check-circle'" size="40rpx" :color="allChecked ? '#1989fa' : '#ccc'" />
+          <text class="scene-cart__text">全选</text>
+        </view>
+        <view class="scene-cart__right">
+          <view class="scene-cart__price">
+            <text class="scene-cart__label">合计：</text>
+            <text class="scene-cart__amount">¥{{ totalPrice.toFixed(2) }}</text>
           </view>
+          <view class="scene-cart__btn" @click="onTap(`结算 ${cartItems} 件`)">结算({{ cartItems }})</view>
         </view>
       </view>
-    </scroll-view>
 
-    <ui-toast ref="toast" />
-  </view>
+      <view v-else-if="current === 2" class="scene-input">
+        <view class="scene-input__box">
+          <input v-model="inputText" class="scene-input__field" placeholder="说点什么..." />
+        </view>
+        <view class="scene-input__actions">
+          <ui-icon name="image" size="40rpx" color="#666" />
+          <ui-icon name="smile" size="40rpx" color="#666" />
+          <view v-if="inputText" class="scene-input__send" @click="sendMsg">发送</view>
+        </view>
+      </view>
+
+      <view v-else-if="current === 3" class="scene-form">
+        <view class="scene-form__btn scene-form__btn--default" @click="onTap('取消')">取消</view>
+        <view class="scene-form__btn scene-form__btn--primary" @click="onTap('提交')">提交</view>
+      </view>
+
+      <view v-else-if="current === 4" class="scene-copyright">
+        <view class="scene-copyright__links">
+          <text class="scene-copyright__link">关于</text>
+          <text class="scene-copyright__divider">|</text>
+          <text class="scene-copyright__link">联系</text>
+          <text class="scene-copyright__divider">|</text>
+          <text class="scene-copyright__link">隐私</text>
+        </view>
+        <text class="scene-copyright__text">© 2024 UniApp UI</text>
+      </view>
+
+      <view v-else class="scene-nav">
+        <view v-for="(item, i) in navItems" :key="item.key" class="scene-nav__item" @click="activeNav = i">
+          <ui-icon :name="item.icon" size="40rpx" :color="activeNav === i ? '#1989fa' : '#999'" />
+          <text class="scene-nav__text" :class="{ active: activeNav === i }">{{ item.text }}</text>
+        </view>
+      </view>
+    </ui-footer>
+  </demo-page>
 </template>
 
 <script setup lang="ts">
+import type { FooterInstance } from "@/uni_modules/uniapp-ui/ui-footer"
+import { ref } from "vue"
+import { useToast } from "@/uni_modules/uniapp-ui"
+
 definePage({
-  style: {
-    navigationBarTitleText: "Footer 页脚",
-  },
+  style: { navigationBarTitleText: "Footer 页脚" },
 })
 
-const toast = ref()
-const currentScene = ref(0)
+const toast = useToast()
 
-// 场景配置
 const scenes = [
-  {
-    title: "商品详情栏",
-    desc: "包含客服、收藏、购物车图标，加入购物车和立即购买按钮，适用于商品详情页。",
-    icon: "shop",
-    color: "#1989fa",
-    props: ["background", "safe-area-inset-bottom"],
-  },
-  {
-    title: "购物车结算",
-    desc: "全选按钮、合计金额和结算按钮，适用于购物车页面底部。",
-    icon: "shopping",
-    color: "#07c160",
-    props: ["background", "z-index"],
-  },
-  {
-    title: "评论输入栏",
-    desc: "带输入框、表情和图片按钮的底部输入栏，适用于评论或聊天页面。",
-    icon: "message",
-    color: "#ff976a",
-    props: ["background", "offset"],
-  },
-  {
-    title: "表单提交栏",
-    desc: "取消和提交双按钮布局，适用于表单填写页面底部。",
-    icon: "check-square",
-    color: "#722ed1",
-    props: ["background", "custom-style"],
-  },
-  {
-    title: "版权信息栏",
-    desc: "快捷链接和版权声明，适用于关于页面或设置页面底部。",
-    icon: "info-circle",
-    color: "#eb2f96",
-    props: ["background", "safe-area-inset-bottom"],
-  },
-  {
-    title: "快捷导航栏",
-    desc: "类似 Tabbar 的快捷操作入口，适用于需要固定底部导航的页面。",
-    icon: "appstore",
-    color: "#fa8c16",
-    props: ["background", "z-index"],
-  },
+  { key: "product", label: "商品详情栏", desc: "客服/收藏/购物车图标 + 加购/立即购买按钮，商品详情页" },
+  { key: "cart", label: "购物车结算", desc: "全选 + 合计金额 + 结算按钮，购物车页底部" },
+  { key: "input", label: "评论输入栏", desc: "输入框 + 表情/图片/发送，聊天评论页" },
+  { key: "form", label: "表单提交栏", desc: "取消 + 提交双按钮，表单页" },
+  { key: "copyright", label: "版权信息", desc: "快捷链接 + 版权声明，关于页/设置页" },
+  { key: "nav", label: "快捷导航", desc: "类 tabbar 导航入口，需固定底部导航的页面" },
 ]
 
-// 场景1: 商品详情
-const isFavorite = ref(false)
-const cartCount = ref(2)
-
-function toggleFavorite() {
-  isFavorite.value = !isFavorite.value
-  toast.value?.success(isFavorite.value ? "已收藏" : "已取消收藏")
-}
-
-function onServiceClick() {
-  toast.value?.text("联系客服")
-}
-
-function onAddCart() {
-  cartCount.value++
-  toast.value?.success("已加入购物车")
-}
-
-// 场景2: 购物车
-const isAllChecked = ref(true)
-const totalPrice = ref(299.0)
-const cartItems = ref(3)
-
-// 场景3: 评论输入
-const inputText = ref("")
-
-function onSend() {
-  if (inputText.value) {
-    toast.value?.success("发送成功")
-    inputText.value = ""
-  }
-}
-
-// 场景6: 快捷导航
-const activeNav = ref(0)
 const navItems = [
-  { icon: "home", activeIcon: "home", text: "首页" },
-  { icon: "compass", activeIcon: "compass", text: "发现" },
-  { icon: "plus-circle", activeIcon: "plus-circle", text: "发布" },
-  { icon: "bell", activeIcon: "bell", text: "消息" },
-  { icon: "user", activeIcon: "user", text: "我的" },
+  { key: "home", icon: "home", text: "首页" },
+  { key: "compass", icon: "compass", text: "发现" },
+  { key: "publish", icon: "plus-circle", text: "发布" },
+  { key: "msg", icon: "bell", text: "消息" },
+  { key: "me", icon: "user", text: "我的" },
 ]
+
+const safe = ref(true)
+const current = ref(0)
+const zIndex = ref(100)
+const favorite = ref(false)
+const cartCount = ref(2)
+const cartItems = ref(3)
+const allChecked = ref(true)
+const totalPrice = ref(299)
+const inputText = ref("")
+const activeNav = ref(0)
+const background = ref("")
+const customStyle = ref("")
+
+const footerHeight = ref(0)
+const rectText = ref("尚未触发")
+const footerRef = ref<FooterInstance>()
+
+const offset = ref<number | string>(0)
+
+function onTap(label: string) {
+  toast.text(label)
+}
+
+function addCart() {
+  cartCount.value++
+  toast.success("已加入购物车")
+}
+
+function sendMsg() {
+  if (!inputText.value) return
+  toast.success("已发送")
+  inputText.value = ""
+}
+
+function onHeight(h: number) {
+  footerHeight.value = h
+}
+
+function onRect(rect: UniApp.NodeInfo) {
+  rectText.value = `top=${rect.top?.toFixed?.(0) ?? "?"}, height=${rect.height ?? 0}`
+}
+
+function onResize() {
+  footerRef.value?.resize()
+  toast.text("已触发 resize()")
+}
 </script>
 
 <style lang="scss" scoped>
-.demo-footer {
-  height: 100vh;
-  display: flex;
-  background: #f5f7fa;
-  flex-direction: column;
+.demo-text {
+  color: var(--ui-color-text-secondary);
+  font-size: 24rpx;
 }
 
-// 上半部分：预览区
-.preview-area {
-  padding: 24rpx;
-  background: linear-gradient(180deg, #e8ecf3 0%, #f5f7fa 100%);
-  flex-shrink: 0;
+.switch-label {
+  color: var(--ui-color-text);
+  font-size: 28rpx;
+  margin-left: 16rpx;
 }
 
-.preview-box {
-  display: flex;
-  overflow: hidden;
-  background: #fff;
-  box-shadow: 0 8rpx 40rpx rgba(0, 0, 0, 0.12);
-  border-radius: 32rpx;
-  flex-direction: column;
-}
-
-.preview-content {
-  height: 340rpx;
-  background: #f8f9fa;
-
-  &__placeholder {
-    color: #ccc;
-    height: 100%;
-    display: flex;
-    font-size: 28rpx;
-    align-items: center;
-    justify-content: center;
-  }
-}
-
-.preview-footer {
-  border-top: 1rpx solid #f0f0f0;
-  transition: all 0.3s ease;
-}
-
-// 下半部分：场景列表
-.scene-list {
-  flex: 1;
-  overflow-x: hidden;
-
-  &__header {
-    padding: 24rpx 24rpx 0;
-    margin-bottom: 24rpx;
-  }
-
-  &__title {
-    color: #1a1a1a;
-    display: block;
-    font-size: 32rpx;
-    font-weight: 600;
-    margin-bottom: 8rpx;
-  }
-
-  &__subtitle {
-    color: #999;
-    font-size: 24rpx;
-  }
-
-  &__grid {
-    gap: 20rpx;
-    display: grid;
-    padding: 0 24rpx;
-    margin-bottom: 32rpx;
-    grid-template-columns: repeat(3, 1fr);
-  }
-}
-
-.scene-item {
-  border: 2rpx solid transparent;
-  display: flex;
-  padding: 24rpx 16rpx;
-  background: #fff;
-  transition: all 0.2s;
-  align-items: center;
-  border-radius: 20rpx;
-  flex-direction: column;
-
-  &.active {
-    background: #f0f9ff;
-    border-color: #1989fa;
-  }
-
-  &__icon {
-    width: 80rpx;
-    height: 80rpx;
-    display: flex;
-    align-items: center;
-    border-radius: 20rpx;
-    margin-bottom: 12rpx;
-    justify-content: center;
-  }
-
-  &__title {
-    color: #666;
-    font-size: 22rpx;
-    text-align: center;
-  }
-}
-
-.scene-info {
-  margin: 0 24rpx 24rpx;
-  padding: 28rpx;
-  background: #fff;
-  border-radius: 20rpx;
-
-  &__title {
-    color: #333;
-    display: block;
-    font-size: 30rpx;
-    font-weight: 600;
-    margin-bottom: 12rpx;
-  }
-
-  &__desc {
-    color: #666;
-    display: block;
-    font-size: 26rpx;
-    line-height: 1.6;
-    margin-bottom: 20rpx;
-  }
-
-  &__label {
-    color: #999;
-    font-size: 24rpx;
-    margin-right: 12rpx;
-  }
-
-  &__props {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-  }
-
-  &__tags {
-    gap: 12rpx;
-    display: flex;
-    flex-wrap: wrap;
-  }
-
-  &__tag {
-    color: #1989fa;
-    padding: 6rpx 16rpx;
-    font-size: 22rpx;
-    background: #e6f4ff;
-    border-radius: 8rpx;
-  }
-}
-
-// Footer 场景样式
-.footer-product {
+// === 场景：商品详情栏 ===
+.scene-product {
   display: flex;
   padding: 16rpx 24rpx;
   align-items: center;
@@ -400,13 +259,13 @@ const navItems = [
   }
 
   &__text {
-    color: #666;
+    color: var(--ui-color-text-secondary);
     font-size: 20rpx;
   }
 
   &__badge {
     top: -8rpx;
-    color: #fff;
+    color: var(--ui-color-text-inverse);
     right: -16rpx;
     height: 28rpx;
     display: flex;
@@ -414,7 +273,7 @@ const navItems = [
     position: absolute;
     font-size: 18rpx;
     min-width: 28rpx;
-    background: #ee0a24;
+    background: var(--ui-color-danger);
     align-items: center;
     border-radius: 14rpx;
     justify-content: center;
@@ -426,24 +285,24 @@ const navItems = [
   }
 
   &__btn {
+    color: var(--ui-color-text-inverse);
     padding: 16rpx 28rpx;
     font-size: 26rpx;
     font-weight: 500;
     border-radius: 32rpx;
 
     &--warning {
-      color: #fff;
       background: linear-gradient(135deg, #ffa940 0%, #ff7a00 100%);
     }
 
     &--primary {
-      color: #fff;
       background: linear-gradient(135deg, #ff6b6b 0%, #ee0a24 100%);
     }
   }
 }
 
-.footer-cart {
+// === 场景：购物车结算 ===
+.scene-cart {
   display: flex;
   padding: 16rpx 24rpx;
   align-items: center;
@@ -456,7 +315,7 @@ const navItems = [
   }
 
   &__text {
-    color: #333;
+    color: var(--ui-color-text);
     font-size: 26rpx;
   }
 
@@ -466,23 +325,19 @@ const navItems = [
     align-items: center;
   }
 
-  &__price {
-    text-align: right;
-  }
-
   &__label {
-    color: #666;
+    color: var(--ui-color-text-secondary);
     font-size: 24rpx;
   }
 
   &__amount {
-    color: #ee0a24;
+    color: var(--ui-color-danger);
     font-size: 36rpx;
     font-weight: 600;
   }
 
   &__btn {
-    color: #fff;
+    color: var(--ui-color-text-inverse);
     padding: 16rpx 36rpx;
     font-size: 26rpx;
     background: linear-gradient(135deg, #ff6b6b 0%, #ee0a24 100%);
@@ -491,7 +346,8 @@ const navItems = [
   }
 }
 
-.footer-input {
+// === 场景：评论输入栏 ===
+.scene-input {
   gap: 20rpx;
   display: flex;
   padding: 16rpx 24rpx;
@@ -502,14 +358,14 @@ const navItems = [
     height: 64rpx;
     display: flex;
     padding: 0 24rpx;
-    background: #f5f7fa;
+    background: var(--ui-color-background-page);
     align-items: center;
     border-radius: 32rpx;
   }
 
   &__field {
     flex: 1;
-    color: #333;
+    color: var(--ui-color-text);
     font-size: 26rpx;
   }
 
@@ -520,15 +376,16 @@ const navItems = [
   }
 
   &__send {
-    color: #fff;
+    color: var(--ui-color-text-inverse);
     padding: 12rpx 28rpx;
     font-size: 26rpx;
-    background: #1989fa;
+    background: var(--ui-color-primary);
     border-radius: 24rpx;
   }
 }
 
-.footer-form {
+// === 场景：表单提交栏 ===
+.scene-form {
   gap: 24rpx;
   display: flex;
   padding: 16rpx 24rpx;
@@ -544,45 +401,47 @@ const navItems = [
     justify-content: center;
 
     &--default {
-      color: #666;
-      background: #f5f7fa;
+      color: var(--ui-color-text-secondary);
+      background: var(--ui-color-background-page);
     }
 
     &--primary {
-      color: #fff;
+      color: var(--ui-color-text-inverse);
       background: linear-gradient(135deg, #4facfe 0%, #1989fa 100%);
     }
   }
 }
 
-.footer-copyright {
+// === 场景：版权信息 ===
+.scene-copyright {
   padding: 24rpx;
   text-align: center;
 
   &__links {
     gap: 16rpx;
     display: flex;
-    margin-bottom: 16rpx;
+    margin-bottom: 12rpx;
     justify-content: center;
   }
 
   &__link {
-    color: #666;
+    color: var(--ui-color-text-secondary);
     font-size: 24rpx;
   }
 
   &__divider {
-    color: #ddd;
+    color: var(--ui-color-border-light);
     font-size: 24rpx;
   }
 
   &__text {
-    color: #999;
+    color: var(--ui-color-text-tertiary);
     font-size: 22rpx;
   }
 }
 
-.footer-nav {
+// === 场景：快捷导航 ===
+.scene-nav {
   display: flex;
   padding: 12rpx 0;
 
@@ -596,11 +455,11 @@ const navItems = [
   }
 
   &__text {
-    color: #999;
+    color: var(--ui-color-text-tertiary);
     font-size: 20rpx;
 
     &.active {
-      color: #1989fa;
+      color: var(--ui-color-primary);
       font-weight: 500;
     }
   }
