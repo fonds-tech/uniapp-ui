@@ -54,12 +54,14 @@ describe("uiIndexBar 组件", () => {
   describe("交互行为", () => {
     it("点击索引项应触发 select 事件", async () => {
       const wrapper = mount(UiIndexBar, {
+        props: { indexs: ["A", "B"] },
         slots: {
           default: [h(UiIndexAnchor, { name: "A", text: "A" }), h(UiIndexAnchor, { name: "B", text: "B" })],
         },
         global: {
+          // 用透传 slot 的 stub 替代默认 stub，否则 <slot /> 不渲染，子锚点不会挂载
           stubs: {
-            "scroll-view": true,
+            "scroll-view": { template: "<div><slot /></div>" },
           },
         },
       })

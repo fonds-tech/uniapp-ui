@@ -1,5 +1,5 @@
 <template>
-  <view class="ui-index-bar" :class="[customClass]" :style="[style]">
+  <view class="ui-index-bar" :class="[customClass]" :style="[rootStyle]">
     <view class="ui-index-bar__list">
       <view v-for="(item, index) in indexs" :key="index" class="ui-index-bar__index" :class="[itemClass(item)]" @click.stop="onClick(item)" @touchmove.stop.prevent="onTouchMove">
         {{ item }}
@@ -12,52 +12,33 @@
 </template>
 
 <script setup lang="ts">
+import type { CSSProperties } from "vue"
 import { debounce } from "../utils/utils"
 import { useRect, useRects, useStyle, useChildren } from "../hooks"
 import { indexBarKey, indexBarEmits, indexBarProps } from "../ui-index-bar"
+import { ref, toRef, watch, computed, getCurrentInstance } from "vue"
 
-// 定义组件名称
 defineOptions({ name: "ui-index-bar" })
 
-// 定义 props 和 emits
 const props = defineProps(indexBarProps)
 const emits = defineEmits(indexBarEmits)
 
-// 组件实例
-const instance = getCurrentInstance()
-
-// 收集子组件
 const { childrens, linkChildren } = useChildren(indexBarKey)
 
-// 是否已初始化
+const instance = getCurrentInstance()
+
 const init = ref(false)
-// 容器位置信息
-const rect = ref<UniApp.NodeInfo>(null)
-// 索引项位置信息
-const itemsRect = ref<UniApp.NodeInfo[]>([])
-// 是否正在动画
 const animating = ref(false)
-// 滚动位置
-const scrollTop = ref(0.01)
-// 当前滚动位置
+const rect = ref<UniApp.NodeInfo | null>(null)
+const itemsRect = ref<UniApp.NodeInfo[]>([])
+const currentName = ref<string | number | null>(null)
+// scroll-view 不响应相同值，初始 0.01 用作 sentinel 触发首次滚动
 const currentScrollTop = ref(0.01)
-// 当前激活的索引名称
-const currentName = ref(null)
 
-// 根节点样式
-const style = computed(() => {
-  const style: any = {}
-  style.zIndex = props.zIndex
-  return useStyle({ ...style, ...useStyle(props.customStyle) })
-})
+const rootStyle = computed(() => useStyle({ zIndex: props.zIndex, ...useStyle(props.customStyle) } as CSSProperties))
 
-// 索引项类名
-const itemClass = computed(() => (item: string | number) => (currentName.value === item ? "is-active" : ""))
-
-// 监听子组件数量变化
 watch(() => childrens.length, resize)
 
-// 防抖后的布局计算
 const debouncedResize = debounce(async () => {
   rect.value = await useRect(".ui-index-bar", instance)
   itemsRect.value = await useRects(".ui-index-bar__index", instance)
@@ -65,57 +46,55 @@ const debouncedResize = debounce(async () => {
   init.value = true
 }, 100)
 
-// 重新计算布局
 function resize() {
   debouncedResize()
 }
 
-// 点击索引
-function onClick(name: number | string) {
-  if (currentName.value === name) return
-  const children = childrens.find((children) => toRef(children.exposed.name).value === name)
-  if (children) {
-    animating.value = true
-    currentScrollTop.value = toRef(children.exposed.rect).value.top - rect.value.top + 1
-    currentName.value = toRef(children.exposed.name).value
-    emits("select", name)
-    setTimeout(() => (animating.value = false), 30)
-  }
+function itemClass(item: string | number) {
+  return currentName.value === item ? "is-active" : ""
 }
 
-// 触摸移动事件
+function onClick(name: number | string) {
+  if (currentName.value === name) return
+  // exposed 经 Vue 自动 unwrap，再 toRef 包回访问最新 reactive 值
+  const child = childrens.find((c) => toRef(c.exposed!, "name").value === name)
+  if (!child) return
+  animating.value = true
+  currentName.value = toRef(child.exposed!, "name").value
+  const childRect = toRef(child.exposed!, "rect").value
+  // rect 未测量好时跳过滚动，仅切换激活态并 emit
+  if (rect.value && childRect) {
+    currentScrollTop.value = childRect.top - rect.value.top + 1
+  }
+  emits("select", name)
+  // 等 scroll-view 滚动稳定后再放开 onScroll 抢回 currentName
+  setTimeout(() => (animating.value = false), 30)
+}
+
 function onTouchMove(event: any) {
   const y = event.changedTouches[0].pageY
   itemsRect.value?.forEach((item, index) => {
     const { top, bottom } = item
-    if (y >= top && y <= bottom) {
-      onClick(props.indexs[index])
-    }
+    if (y >= top && y <= bottom) onClick(props.indexs[index])
   })
 }
 
-// 滚动事件
 function onScroll(event: any) {
-  if (animating.value) return
-  if (init.value) {
-    scrollTop.value = event.detail.scrollTop
-
-    const children = childrens.find((children, index) => {
-      if (children.exposed.rect) {
-        const next = childrens[Math.min(index + 1, childrens.length - 1)].exposed.rect
-        const currentTop = toRef(children.exposed.rect).value.top - rect.value.top
-        const nextTop = toRef(next).value.top - rect.value.top
-        return scrollTop.value >= currentTop && scrollTop.value < nextTop
-      }
-      return false
-    })
-
-    if (children) currentName.value = toRef(children.exposed.name).value
-    if (scrollTop.value === 0) currentName.value = ""
-  }
+  if (animating.value || !init.value || !rect.value) return
+  const top = event.detail.scrollTop
+  const child = childrens.find((c, index) => {
+    const cur = toRef(c.exposed!, "rect").value
+    if (!cur) return false
+    const next = toRef(childrens[Math.min(index + 1, childrens.length - 1)].exposed!, "rect").value
+    if (!next) return false
+    const currentTop = cur.top - rect.value!.top
+    const nextTop = next.top - rect.value!.top
+    return top >= currentTop && top < nextTop
+  })
+  if (child) currentName.value = toRef(child.exposed!, "name").value
+  if (top === 0) currentName.value = null
 }
 
-// 建立父子组件关联
 linkChildren({ props, currentName })
 
 defineExpose({ resize })

@@ -47,11 +47,5 @@ export const indexAnchorProps = {
   customStyle: defaultProps("customStyle", { type: [String, Object] as PropType<string | CSSProperties> }),
 }
 
-export const indexAnchorEmits = {
-  /** 失焦事件 */
-  blur: () => true,
-}
-
-export type IndexAnchorEmits = typeof indexAnchorEmits
 export type IndexAnchorProps = ExtractPropTypes<typeof indexAnchorProps>
 export type IndexAnchorInstance = InstanceType<typeof IndexAnchor>
