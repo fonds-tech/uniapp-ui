@@ -409,4 +409,90 @@ describe("uiForm 组件", () => {
       expect(wrapper.props("rules")).toEqual({})
     })
   })
+
+  describe("disabled / readonly 传播链", () => {
+    it("form 级 disabled 应通过 form-item 传播给 ui-input", async () => {
+      const UiInput = (await import("@/uni_modules/uniapp-ui/ui-input/ui-input.vue")).default
+      const wrapper = mount(UiForm, {
+        props: { model: { name: "" }, disabled: true },
+        slots: {
+          default: () => h(UiFormItem, { prop: "name", label: "name" }, () => h(UiInput, { modelValue: "" })),
+        },
+      })
+      await waitForTransition()
+      // ui-input 内根 view 应有 --disabled class
+      expect(wrapper.find(".ui-input--disabled").exists()).toBe(true)
+    })
+
+    it("form 级 readonly 应通过 form-item 传播给 ui-input", async () => {
+      const UiInput = (await import("@/uni_modules/uniapp-ui/ui-input/ui-input.vue")).default
+      const wrapper = mount(UiForm, {
+        props: { model: { name: "" }, readonly: true },
+        slots: {
+          default: () => h(UiFormItem, { prop: "name", label: "name" }, () => h(UiInput, { modelValue: "" })),
+        },
+      })
+      await waitForTransition()
+      expect(wrapper.find(".ui-input--readonly").exists()).toBe(true)
+    })
+
+    it("form-item 自身 disabled=false 应覆盖 form 级 disabled=true", async () => {
+      const UiInput = (await import("@/uni_modules/uniapp-ui/ui-input/ui-input.vue")).default
+      const wrapper = mount(UiForm, {
+        props: { model: { name: "" }, disabled: true },
+        slots: {
+          default: () => h(UiFormItem, { prop: "name", label: "name", disabled: false }, () => h(UiInput, { modelValue: "" })),
+        },
+      })
+      await waitForTransition()
+      // form-item 强制 disabled=false，子组件不应有 disabled class
+      expect(wrapper.find(".ui-input--disabled").exists()).toBe(false)
+    })
+  })
+
+  describe("深层 prop", () => {
+    it("validate 应支持深层 prop（点路径）", async () => {
+      const model = { user: { name: "" } }
+      const rules = { "user.name": [{ required: true, message: "请输入" }] }
+      const wrapper = mount(UiForm, {
+        props: { model, rules },
+        slots: {
+          default: () => h(UiFormItem, { prop: "user.name", label: "name" }),
+        },
+      })
+      await waitForTransition()
+      await expect(wrapper.vm.validate()).rejects.toEqual([{ prop: "user.name", message: "请输入" }])
+    })
+
+    it("getValues 应按深层 prop 提取嵌套值", async () => {
+      const model = { user: { name: "alice" } }
+      const wrapper = mount(UiForm, {
+        props: { model },
+        slots: {
+          default: () => h(UiFormItem, { prop: "user.name", label: "name" }),
+        },
+      })
+      await waitForTransition()
+      const values = wrapper.vm.getValues()
+      expect(values["user.name"]).toBe("alice")
+    })
+
+    it("resetFields 应正确写回深层 prop 而非创建顶层字面 key", async () => {
+      const model = { user: { name: "" } }
+      const wrapper = mount(UiForm, {
+        props: { model },
+        slots: {
+          default: () => h(UiFormItem, { prop: "user.name", label: "name" }),
+        },
+      })
+      await waitForTransition()
+      // 用户改深层字段后重置
+      model.user.name = "changed"
+      wrapper.vm.resetFields("user.name")
+      await waitForTransition()
+      expect(model.user.name).toBe("")
+      // 不应产生顶层 "user.name" 字面 key
+      expect((model as any)["user.name"]).toBeUndefined()
+    })
+  })
 })

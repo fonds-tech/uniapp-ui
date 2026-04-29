@@ -17,6 +17,7 @@
 
 <script setup lang="ts">
 import type { CheckboxProps } from "./index"
+import { formItemKey } from "../ui-form-item"
 import { checkboxGroupKey } from "../ui-checkbox-group"
 import { isDef, isBoolean } from "../utils/check"
 import { checkboxEmits, checkboxProps } from "./index"
@@ -29,8 +30,9 @@ const props = defineProps(checkboxProps)
 const emits = defineEmits(checkboxEmits)
 const slots = useSlots()
 
-// 父级 checkbox-group
+// 父级 checkbox-group + form-item（form-item 已合并 form 级 disabled/readonly）
 const { index, parent } = useParent(checkboxGroupKey)
+const { parent: formItem } = useParent(formItemKey)
 
 // 内部图标字号：默认占容器 70%（基于 --ui-checkbox-icon-size 计算）
 const symbolSize = "calc(var(--ui-checkbox-icon-size) * 0.7)"
@@ -40,8 +42,8 @@ const name = computed(() => (isDef(props.name) ? props.name : index.value))
 const isRound = computed(() => !!prop("round"))
 const hasLabel = computed(() => !!slots.default || isDef(props.label))
 const isChecked = computed(() => (props.bindGroup && parent ? parent.props.modelValue.includes(name.value) : !!props.modelValue))
-const isDisabled = computed(() => !!prop("disabled"))
-const isReadonly = computed(() => !!prop("readonly"))
+const isDisabled = computed(() => !!prop("disabled") || !!formItem?.disabled?.value)
+const isReadonly = computed(() => !!prop("readonly") || !!formItem?.readonly?.value)
 const actualShape = computed(() => prop("shape"))
 const isLabelLeft = computed(() => prop("labelPosition") === "left")
 const isIndeterminate = computed(() => !!prop("indeterminate"))

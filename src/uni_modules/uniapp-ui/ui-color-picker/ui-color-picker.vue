@@ -41,8 +41,8 @@
           :show-preview="props.showPreview"
           :columns="props.columns"
           :panel-height="props.panelHeight"
-          :disabled="props.disabled"
-          :readonly="props.readonly"
+          :disabled="effectiveDisabled"
+          :readonly="effectiveReadonly"
         />
       </view>
     </ui-popup>
@@ -50,6 +50,8 @@
 </template>
 
 <script lang="ts" setup>
+import { useParent } from "../hooks"
+import { formItemKey } from "../ui-form-item"
 import { ref, watch, computed } from "vue"
 import { DEFAULT_PRESET_COLORS } from "../ui-color-panel"
 import { colorPickerEmits, colorPickerProps } from "./index"
@@ -58,6 +60,11 @@ defineOptions({ name: "ui-color-picker" })
 
 const props = defineProps(colorPickerProps)
 const emits = defineEmits(colorPickerEmits)
+
+// 有效 disabled/readonly：合并 form/form-item 级
+const { parent: formItem } = useParent(formItemKey)
+const effectiveDisabled = computed(() => Boolean(props.disabled) || Boolean(formItem?.disabled?.value))
+const effectiveReadonly = computed(() => Boolean(props.readonly) || Boolean(formItem?.readonly?.value))
 
 // 临时颜色（确认前的编辑值，取消时还原）
 const tempColor = ref(props.modelValue || "")
@@ -86,7 +93,7 @@ watch(
 )
 
 function onConfirm() {
-  if (props.disabled || props.readonly) return
+  if (effectiveDisabled.value || effectiveReadonly.value) return
   emits("update:modelValue", tempColor.value)
   emits("change", tempColor.value)
   emits("confirm", tempColor.value)

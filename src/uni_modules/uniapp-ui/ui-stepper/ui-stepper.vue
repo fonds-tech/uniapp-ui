@@ -7,7 +7,7 @@
     :aria-valuenow="+current"
     :aria-valuemin="+props.min"
     :aria-valuemax="+props.max"
-    :aria-disabled="props.disabled"
+    :aria-disabled="effectiveDisabled"
   >
     <button
       v-if="showMinus"
@@ -59,11 +59,12 @@
 <script setup lang="ts">
 import type { CSSProperties } from "vue"
 import { addNumber } from "../utils/utils"
+import { formItemKey } from "../ui-form-item"
 import { formatNumber } from "../utils/format"
 import { callInterceptor } from "../utils/interceptor"
 import { stepperEmits, stepperProps } from "./index"
-import { useUnit, useColor, useStyle } from "../hooks"
 import { ref, watch, computed, nextTick } from "vue"
+import { useUnit, useColor, useStyle, useParent } from "../hooks"
 import { isEmpty, isEqual, isNumber, isFunction } from "../utils/check"
 
 defineOptions({ name: "ui-stepper" })
@@ -82,14 +83,19 @@ const current = ref(initialValue())
 // 是否长按中
 const isLongPress = ref(false)
 
+// 有效 disabled / readonly：合并 form/form-item 级
+const { parent: formItem } = useParent(formItemKey)
+const effectiveDisabled = computed(() => Boolean(props.disabled) || Boolean(formItem?.disabled?.value))
+const effectiveReadonly = computed(() => Boolean(formItem?.readonly?.value))
+
 // 输入类型
 const inputType = computed(() => (props.integer ? "number" : "digit"))
 // 加号是否禁用
-const plusDisabled = computed(() => props.disabled || props.disablePlus || +current.value >= +props.max)
+const plusDisabled = computed(() => effectiveDisabled.value || effectiveReadonly.value || props.disablePlus || +current.value >= +props.max)
 // 减号是否禁用
-const minusDisabled = computed(() => props.disabled || props.disableMinus || +current.value <= +props.min)
+const minusDisabled = computed(() => effectiveDisabled.value || effectiveReadonly.value || props.disableMinus || +current.value <= +props.min)
 // 输入框是否禁用
-const inputDisabled = computed(() => props.disabled || props.disabledInput)
+const inputDisabled = computed(() => effectiveDisabled.value || effectiveReadonly.value || props.disabledInput)
 // 是否显示减号
 const showMinus = computed(() => props.showMinus)
 // 是否显示加号
@@ -111,7 +117,7 @@ const classes = computed(() => {
   const list: string[] = []
   list.push(`ui-stepper--${props.size}`)
   list.push(`ui-stepper--${props.theme}`)
-  if (props.disabled) list.push("ui-stepper--disabled")
+  if (effectiveDisabled.value) list.push("ui-stepper--disabled")
   if (loading.value) list.push("ui-stepper--loading")
   return list
 })

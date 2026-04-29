@@ -56,8 +56,10 @@ defineOptions({ name: "ui-input" })
 const props = defineProps(inputProps)
 const emits = defineEmits(inputEmits)
 
-// 表单项父组件
+// 表单项父组件 + 有效 disabled/readonly（合并 form/form-item 级）
 const { parent } = useParent(formItemKey)
+const effectiveDisabled = computed(() => Boolean(props.disabled) || Boolean(parent?.disabled?.value))
+const effectiveReadonly = computed(() => Boolean(props.readonly) || Boolean(parent?.readonly?.value))
 
 // 当前输入值
 const current = ref("")
@@ -78,8 +80,8 @@ const style = computed(() => {
 // 类名数组
 const classes = computed(() => {
   const list: string[] = []
-  if (props.readonly) list.push("ui-input--readonly")
-  if (props.disabled) list.push("ui-input--disabled")
+  if (effectiveReadonly.value) list.push("ui-input--readonly")
+  if (effectiveDisabled.value) list.push("ui-input--disabled")
   if (props.clearable) list.push("ui-input--clearable")
   return list
 })
@@ -96,7 +98,7 @@ const inputStyle = computed(() => {
 const inputClass = computed(() => {
   const list: string[] = []
   list.push(`ui-input__input--${props.inputAlign}`)
-  if (props.readonly) list.push("ui-input__input--readonly")
+  if (effectiveReadonly.value) list.push("ui-input__input--readonly")
   return list
 })
 // 清除按钮样式
@@ -120,10 +122,8 @@ const type = computed(() => {
 const password = computed(() => {
   return props.password || props.type === "password"
 })
-// 是否禁用
-const disabled = computed(() => {
-  return props.disabled || props.readonly
-})
+// input 元素 disabled 属性：disabled 或 readonly 都阻止输入
+const disabled = computed(() => effectiveDisabled.value || effectiveReadonly.value)
 
 // 监听 modelValue 变化
 watch(

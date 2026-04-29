@@ -53,8 +53,10 @@ defineOptions({ name: "ui-textarea" })
 const props = defineProps(textareaProps)
 const emits = defineEmits(textareaEmits)
 
-// 表单项父组件
+// 表单项父组件 + 有效 disabled/readonly（合并 form/form-item 级）
 const { parent } = useParent(formItemKey)
+const effectiveDisabled = computed(() => Boolean(props.disabled) || Boolean(parent?.disabled?.value))
+const effectiveReadonly = computed(() => Boolean(props.readonly) || Boolean(parent?.readonly?.value))
 
 // 是否聚焦
 const isFocus = ref(false)
@@ -75,8 +77,8 @@ const style = computed(() => {
 // 类名数组
 const classes = computed(() => {
   const list: string[] = []
-  if (props.readonly) list.push("ui-textarea--readonly")
-  if (props.disabled) list.push("ui-textarea--disabled")
+  if (effectiveReadonly.value) list.push("ui-textarea--readonly")
+  if (effectiveDisabled.value) list.push("ui-textarea--disabled")
   return list
 })
 // 文本域样式
@@ -92,7 +94,7 @@ const textareaStyle = computed(() => {
 const textareaClass = computed(() => {
   const list: string[] = []
   list.push(`ui-textarea__input--${props.inputAlign}`)
-  if (props.readonly) list.push("ui-textarea__input--readonly")
+  if (effectiveReadonly.value) list.push("ui-textarea__input--readonly")
   return list
 })
 // 占位符样式
@@ -123,10 +125,8 @@ const valueLength = computed(() => {
   const count = String(props.modelValue).length
   return props.maxlength === -1 ? count : `${count}/${props.maxlength}`
 })
-// 是否禁用
-const disabled = computed(() => {
-  return props.disabled || props.readonly
-})
+// textarea 元素 disabled 属性：disabled 或 readonly 都阻止输入
+const disabled = computed(() => effectiveDisabled.value || effectiveReadonly.value)
 
 // 监听 modelValue 变化
 watch(

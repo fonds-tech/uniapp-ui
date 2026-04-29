@@ -104,18 +104,22 @@ const emits = defineEmits(dateRangeSelectEmits)
 const slots = useSlots()
 const { parent } = useParent(formItemKey)
 
+// 有效 disabled/readonly：合并 form/form-item 级
+const effectiveDisabled = computed(() => Boolean(props.disabled) || Boolean(parent?.disabled?.value))
+const effectiveReadonly = computed(() => Boolean(props.readonly) || Boolean(parent?.readonly?.value))
+
 const rangePickerRef = ref<DateRangePickerInstance>()
 const visible = ref(false)
 const pickerActiveType = ref<DateRangeSelectActiveType>("start")
 const startValue = ref("")
 const endValue = ref("")
 
-const isInteractive = computed(() => !props.disabled && !props.readonly)
+const isInteractive = computed(() => !effectiveDisabled.value && !effectiveReadonly.value)
 
 const classs = computed(() => {
   const list: string[] = []
-  if (props.disabled) list.push("ui-date-range-select--disabled")
-  if (props.readonly) list.push("ui-date-range-select--readonly")
+  if (effectiveDisabled.value) list.push("ui-date-range-select--disabled")
+  if (effectiveReadonly.value) list.push("ui-date-range-select--readonly")
   return list
 })
 

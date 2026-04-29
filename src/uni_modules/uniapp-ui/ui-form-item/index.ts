@@ -10,6 +10,8 @@ const defaultProps = buildDefaultProps("form-item", {
   border: undefined,
   borderColor: undefined,
   required: undefined,
+  disabled: undefined,
+  readonly: undefined,
   padding: undefined,
   labelGap: undefined,
   labelSize: undefined,
@@ -44,6 +46,10 @@ export const formItemProps = {
   borderColor: defaultProps("borderColor", { type: String }),
   /** 必填星号显示模式：true 始终显示，false 始终隐藏，'auto' 根据 rules 自动判断，undefined 继承 form */
   required: defaultProps("required", { type: [Boolean, String] as PropType<boolean | "auto"> }),
+  /** 是否禁用（undefined 继承 form） */
+  disabled: defaultProps("disabled", { type: Boolean }),
+  /** 是否只读（undefined 继承 form） */
+  readonly: defaultProps("readonly", { type: Boolean }),
   /** 内边距 */
   padding: defaultProps("padding", { type: [Number, String] }),
   /** 表单域标签文字和内容的间隔 */
@@ -105,6 +111,10 @@ export interface FormItemProvide {
   onBlur: (value?: unknown) => void
   /** 触发 change 验证 */
   onChange: (value?: unknown) => void
+  /** 有效禁用态（form 与 form-item 自身合并） */
+  disabled: import("vue").ComputedRef<boolean>
+  /** 有效只读态（form 与 form-item 自身合并） */
+  readonly: import("vue").ComputedRef<boolean>
 }
 
 export const formItemKey: InjectionKey<FormItemProvide> = Symbol("ui-form-item")

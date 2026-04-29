@@ -17,6 +17,7 @@
 import type { CSSProperties } from "vue"
 import type { RadioValueType } from "./index"
 import { isDef } from "../utils/check"
+import { formItemKey } from "../ui-form-item"
 import { radioGroupKey } from "../ui-radio-group"
 import { radioEmits, radioProps } from "./index"
 import { toRaw, watch, computed, useSlots } from "vue"
@@ -28,8 +29,9 @@ const props = defineProps(radioProps)
 const emits = defineEmits(radioEmits)
 const slots = useSlots()
 
-// 父组件（RadioGroup）
+// 父组件（RadioGroup） + form-item（form-item 已合并 form 级 disabled/readonly）
 const { index, parent } = useParent(radioGroupKey)
+const { parent: formItem } = useParent(formItemKey)
 
 // 实际形状
 const actualShape = computed(() => prop("shape") || "dot")
@@ -52,8 +54,8 @@ const rootStyle = computed(() => {
 const rootClass = computed(() => {
   const list: string[] = []
   if (checked.value) list.push("ui-radio--checked")
-  if (prop("disabled")) list.push("ui-radio--disabled")
-  if (prop("readonly")) list.push("ui-radio--readonly")
+  if (disabled.value) list.push("ui-radio--disabled")
+  if (readonly.value) list.push("ui-radio--readonly")
   if (isLabelLeft.value) list.push("ui-radio--left")
   return list
 })
@@ -140,7 +142,8 @@ const checked = computed(() => {
   return !!props.modelValue
 })
 // 是否禁用
-const disabled = computed(() => prop("disabled"))
+const disabled = computed(() => Boolean(prop("disabled")) || Boolean(formItem?.disabled?.value))
+const readonly = computed(() => Boolean(prop("readonly")) || Boolean(formItem?.readonly?.value))
 // 标签文本
 const label = computed(() => props.label)
 
@@ -166,7 +169,7 @@ async function updateValue(value: RadioValueType) {
 
 // 切换选中状态
 function toggle(check?: boolean) {
-  if (prop("disabled") || prop("readonly")) return
+  if (disabled.value || readonly.value) return
 
   if (parent && props.bindGroup) {
     if (!checked.value) {

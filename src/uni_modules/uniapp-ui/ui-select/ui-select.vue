@@ -87,6 +87,10 @@ const slots = useSlots()
 
 const { parent } = useParent(formItemKey)
 
+// 有效 disabled/readonly：合并 form/form-item 级
+const effectiveDisabled = computed(() => Boolean(props.disabled) || Boolean(parent?.disabled?.value))
+const effectiveReadonly = computed(() => Boolean(props.readonly) || Boolean(parent?.readonly?.value))
+
 const pickerRef = ref<PickerInstance | null>(null)
 const currentValue = ref<PickerValue[]>([])
 const lastAction = ref<"confirm" | "cancel" | null>(null)
@@ -111,12 +115,12 @@ const resolvedFields = computed(() => {
   return merge({ text: "text", value: "value", children: "children" }, props.columnsFields) as Required<PickerColumnFields>
 })
 
-const isInteractive = computed(() => !props.disabled && !props.readonly)
+const isInteractive = computed(() => !effectiveDisabled.value && !effectiveReadonly.value)
 
 const classs = computed(() => {
   const list: string[] = []
-  if (props.disabled) list.push("ui-select--disabled")
-  if (props.readonly) list.push("ui-select--readonly")
+  if (effectiveDisabled.value) list.push("ui-select--disabled")
+  if (effectiveReadonly.value) list.push("ui-select--readonly")
   return list
 })
 

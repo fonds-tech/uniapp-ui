@@ -74,8 +74,9 @@
 import type { CSSProperties } from "vue"
 import type { SliderMarks, SliderValue } from "./index"
 import { isArray } from "../utils/check"
+import { formItemKey } from "../ui-form-item"
 import { sliderEmits, sliderProps } from "./index"
-import { useRect, useColor, useStyle, useUnitToPx } from "../hooks"
+import { useRect, useColor, useStyle, useParent, useUnitToPx } from "../hooks"
 import { ref, watch, computed, onUnmounted, getCurrentInstance } from "vue"
 
 defineOptions({ name: "ui-slider" })
@@ -84,6 +85,11 @@ const props = defineProps(sliderProps)
 const emit = defineEmits(sliderEmits)
 // 组件实例
 const instance = getCurrentInstance()
+
+// 有效 disabled/readonly：合并 form/form-item 级
+const { parent: formItem } = useParent(formItemKey)
+const effectiveDisabled = computed(() => Boolean(props.disabled) || Boolean(formItem?.disabled?.value))
+const effectiveReadonly = computed(() => Boolean(props.readonly) || Boolean(formItem?.readonly?.value))
 
 // 尺寸预设配置（px 单位）
 const SIZE_PRESETS = {
@@ -161,8 +167,8 @@ const rootClass = computed(() => {
   const list: string[] = ["ui-slider"]
   list.push(`ui-slider--${props.size}`)
   if (props.vertical) list.push("ui-slider--vertical")
-  if (props.disabled) list.push("ui-slider--disabled")
-  if (props.readonly) list.push("ui-slider--readonly")
+  if (effectiveDisabled.value) list.push("ui-slider--disabled")
+  if (effectiveReadonly.value) list.push("ui-slider--readonly")
   if (draggingIndex.value !== -1) list.push("ui-slider--dragging")
   if (props.customClass) list.push(props.customClass)
   return list
@@ -413,7 +419,7 @@ async function updateTrackRect() {
 }
 
 async function onTrackClick(event: any) {
-  if (props.disabled || props.readonly) return
+  if (effectiveDisabled.value || effectiveReadonly.value) return
   if (Date.now() - lastTouchEndTime.value < 300) return
 
   await updateTrackRect()
@@ -485,13 +491,13 @@ async function onTrackClick(event: any) {
 
 // 触摸开始
 function onTouchStart() {
-  if (props.disabled || props.readonly) return
+  if (effectiveDisabled.value || effectiveReadonly.value) return
   updateTrackRect()
 }
 
 // 把手触摸开始
 function onHandleTouchStart(event: TouchEvent, index: number) {
-  if (props.disabled || props.readonly) return
+  if (effectiveDisabled.value || effectiveReadonly.value) return
 
   draggingIndex.value = index
   startPosition.value = {
@@ -505,7 +511,7 @@ function onHandleTouchStart(event: TouchEvent, index: number) {
 
 // 触摸移动
 function onTouchMove(event: TouchEvent) {
-  if (props.disabled || props.readonly) return
+  if (effectiveDisabled.value || effectiveReadonly.value) return
   if (draggingIndex.value === -1) return
 
   const touch = event.touches[0]
@@ -561,13 +567,13 @@ function onTouchEnd() {
 
 // 鼠标按下（PC 端支持）
 function onMouseDown(_event: MouseEvent) {
-  if (props.disabled || props.readonly) return
+  if (effectiveDisabled.value || effectiveReadonly.value) return
   updateTrackRect()
 }
 
 // 鼠标移动处理函数
 function handleMouseMove(event: MouseEvent) {
-  if (props.disabled || props.readonly) return
+  if (effectiveDisabled.value || effectiveReadonly.value) return
   if (draggingIndex.value === -1) return
 
   const rect = trackRect.value
@@ -623,7 +629,7 @@ function handleMouseUp() {
 
 // 把手鼠标按下
 function onHandleMouseDown(event: MouseEvent, index: number) {
-  if (props.disabled || props.readonly) return
+  if (effectiveDisabled.value || effectiveReadonly.value) return
 
   event.preventDefault()
   draggingIndex.value = index

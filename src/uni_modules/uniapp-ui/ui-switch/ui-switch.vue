@@ -14,15 +14,20 @@
 </template>
 
 <script setup lang="ts">
+import { formItemKey } from "../ui-form-item"
 import { isDef, isFunction } from "../utils/check"
 import { switchEmits, switchProps } from "./index"
-import { useRect, useUnit, useColor, useStyle, useUnitToPx } from "../hooks"
+import { useRect, useUnit, useColor, useStyle, useParent, useUnitToPx } from "../hooks"
 import { ref, watch, computed, nextTick, onMounted, getCurrentInstance } from "vue"
 
 defineOptions({ name: "ui-switch" })
 
 const props = defineProps(switchProps)
 const emits = defineEmits(switchEmits)
+
+// 有效 disabled（合并 form/form-item 级）
+const { parent: formItem } = useParent(formItemKey)
+const effectiveDisabled = computed(() => Boolean(props.disabled) || Boolean(formItem?.disabled?.value))
 
 // 唯一 ID
 const switchId = `switch-${Math.random().toString(36).slice(2, 10)}`
@@ -50,7 +55,7 @@ const style = computed(() => {
 const classs = computed(() => {
   const list: string[] = []
   if (isActive.value) list.push("ui-switch--active")
-  if (props.disabled) list.push("ui-switch--disabled")
+  if (effectiveDisabled.value) list.push("ui-switch--disabled")
   return list
 })
 // 节点样式
@@ -107,7 +112,7 @@ async function resize() {
 // 点击事件
 function onClick() {
   if (props.loading) return
-  if (props.disabled) return
+  if (effectiveDisabled.value) return
   updateValue(isActive.value ? props.inactiveValue : props.activeValue)
 }
 

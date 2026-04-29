@@ -339,6 +339,26 @@ export function getDeepValue(obj: Record<string, any>, keyName: string): any {
 }
 
 /**
+ * 根据对象和键名设置深层次属性值（缺失中间节点时自动创建）
+ * @param obj 待写入的对象
+ * @param keyName 深层次属性的键名，支持 a.b.c 格式
+ * @param value 要写入的值
+ */
+export function setDeepValue(obj: Record<string, any>, keyName: string, value: any): void {
+  const keys = keyName.split(".")
+  const lastKey = keys.pop()
+  if (!lastKey) return
+  let target: Record<string, any> = obj
+  for (const key of keys) {
+    if (target[key] === undefined || target[key] === null || typeof target[key] !== "object") {
+      target[key] = {}
+    }
+    target = target[key]
+  }
+  target[lastKey] = value
+}
+
+/**
  * 获取链接后缀名
  * @param link 链接
  * @returns 返回小写的扩展名，如果无法获取则返回空字符串

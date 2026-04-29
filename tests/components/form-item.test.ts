@@ -10,7 +10,7 @@ import { formKey } from "@/uni_modules/uniapp-ui/ui-form"
 import { waitForTransition } from "../setup"
 import { it, vi, expect, describe, afterEach, beforeEach } from "vitest"
 
-// Mock form 父组件上下文
+// Mock form 父组件上下文（与真实 FormProvide 接口对齐）
 function createMockFormProvide() {
   return {
     props: {
@@ -22,11 +22,15 @@ function createMockFormProvide() {
       borderColor: "#eee",
       errorMessageColor: "danger",
       validateTrigger: "blur",
+      disabled: false,
+      readonly: false,
     },
     model: ref({}),
     initialModel: ref({}),
     rules: {},
     maxLabelWidth: ref(0),
+    registerLabelWidth: vi.fn(),
+    unregisterLabelWidth: vi.fn(),
     link: vi.fn(),
     unlink: vi.fn(),
     childrens: [],

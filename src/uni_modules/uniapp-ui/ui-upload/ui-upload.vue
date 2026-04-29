@@ -30,10 +30,11 @@
 <script setup lang="ts">
 import type { UploadFile } from "./index"
 import type { CSSProperties } from "vue"
+import { formItemKey } from "../ui-form-item"
 import { uuid, clone } from "../utils/utils"
 import { callInterceptor } from "../utils/interceptor"
 import { uploadEmits, uploadProps } from "./index"
-import { useRect, useUnit, useColor, useRects, useStyle } from "../hooks"
+import { useRect, useUnit, useColor, useRects, useStyle, useParent } from "../hooks"
 import { ref, watch, computed, nextTick, reactive, getCurrentInstance } from "vue"
 import { isArray, isNoEmpty, isFunction, isImage as isImageLink, isDocument as isDocumentLink } from "../utils/check"
 
@@ -46,6 +47,10 @@ const triggerRect = ref<UniApp.NodeInfo>({})
 const previewRects = ref<UniApp.NodeInfo[]>([])
 const instance = getCurrentInstance()
 
+// 有效 disabled：合并 form/form-item 级（form readonly 也视为 disabled，因为上传无 readonly 概念）
+const { parent: formItem } = useParent(formItemKey)
+const effectiveDisabled = computed(() => Boolean(props.disabled) || Boolean(formItem?.disabled?.value) || Boolean(formItem?.readonly?.value))
+
 const style = computed(() => {
   const style: CSSProperties = {}
   return useStyle({ ...style, ...useStyle(props.customStyle) })
@@ -53,7 +58,7 @@ const style = computed(() => {
 
 const classs = computed(() => {
   const list: string[] = []
-  if (props.disabled) list.push("ui-upload--disabled")
+  if (effectiveDisabled.value) list.push("ui-upload--disabled")
   return list
 })
 
@@ -81,7 +86,7 @@ const triggerStyle = computed(() => {
   style.width = useUnit(props.width)
   style.height = useUnit(props.height)
   style.background = useColor(props.background)
-  if (props.disabled) {
+  if (effectiveDisabled.value) {
     style.opacity = 0.6
     style.cursor = "not-allowed"
   }
@@ -98,8 +103,8 @@ const triggerStyle = computed(() => {
 const isImage = computed(() => (url: string) => isImageLink(url))
 const isDocument = computed(() => (url: string) => isDocumentLink(url))
 const isShowStatus = computed(() => (item: UploadFile) => ["fail", "uploading"].includes(item.status))
-const isShowDelete = computed(() => (item: UploadFile) => item.status !== "uploading" && props.deletable && !props.disabled)
-const triggerHoverClass = computed(() => (props.disabled ? "" : "ui-upload__trigger--active"))
+const isShowDelete = computed(() => (item: UploadFile) => item.status !== "uploading" && props.deletable && !effectiveDisabled.value)
+const triggerHoverClass = computed(() => (effectiveDisabled.value ? "" : "ui-upload__trigger--active"))
 const renderList = computed(() => list.slice(0, props.maxCount))
 
 watch(() => list, resize, { deep: true, immediate: true })
@@ -113,7 +118,7 @@ async function resize() {
 
 // 触发上传
 async function triggerUpload() {
-  if (props.disabled) return
+  if (effectiveDisabled.value) return
   const files = await handleChoose()
   beforeRead(reactive(files))
 }

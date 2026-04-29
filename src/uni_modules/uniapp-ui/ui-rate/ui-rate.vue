@@ -12,8 +12,9 @@
 </template>
 
 <script setup lang="ts">
+import { formItemKey } from "../ui-form-item"
 import { rateEmits, rateProps } from "./index"
-import { useRect, useRects, useStyle, useUnitToPx } from "../hooks"
+import { useRect, useRects, useStyle, useParent, useUnitToPx } from "../hooks"
 import { ref, watch, computed, nextTick, onMounted, getCurrentInstance } from "vue"
 
 defineOptions({ name: "ui-rate" })
@@ -23,6 +24,11 @@ const emits = defineEmits(rateEmits)
 
 // 组件实例
 const instance = getCurrentInstance()
+
+// 有效 disabled/readonly：合并 form/form-item 级
+const { parent: formItem } = useParent(formItemKey)
+const effectiveDisabled = computed(() => Boolean(props.disabled) || Boolean(formItem?.disabled?.value))
+const effectiveReadonly = computed(() => Boolean(props.readonly) || Boolean(formItem?.readonly?.value))
 
 // 当前分数
 const score = ref<number | null>(props.modelValue)
@@ -47,8 +53,8 @@ const style = computed(() => {
 // 类名数组
 const classes = computed(() => {
   const list: string[] = []
-  if (props.disabled) list.push("ui-rate--disabled")
-  if (props.readonly) list.push("ui-rate--readonly")
+  if (effectiveDisabled.value) list.push("ui-rate--disabled")
+  if (effectiveReadonly.value) list.push("ui-rate--readonly")
   return list
 })
 // 评分项样式
@@ -100,9 +106,9 @@ watch(
 function getRateStatus(value: number, index: number) {
   if (value >= index) return { status: "full", value: 1 }
 
-  if (value + 0.5 >= index && props.allowHalf && !props.readonly) return { status: "half", value: 0.5 }
+  if (value + 0.5 >= index && props.allowHalf && !effectiveReadonly.value) return { status: "half", value: 0.5 }
 
-  if (value + 1 >= index && props.allowHalf && props.readonly) {
+  if (value + 1 >= index && props.allowHalf && effectiveReadonly.value) {
     const cardinal = 10 ** 10
     return { status: "half", value: Math.round((value - index + 1) * cardinal) / cardinal }
   }
@@ -155,8 +161,8 @@ function getScoreByPosition(x: number) {
 
 // 更新值
 async function updateValue(value: number) {
-  if (props.disabled) return
-  if (props.readonly) return
+  if (effectiveDisabled.value) return
+  if (effectiveReadonly.value) return
   if (value === props.modelValue) return
   if (value === score.value) return
   emits("change", value)

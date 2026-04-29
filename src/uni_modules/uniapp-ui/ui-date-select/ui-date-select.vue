@@ -89,6 +89,10 @@ const slots = useSlots()
 
 const { parent } = useParent(formItemKey)
 
+// 有效 disabled/readonly：合并 form/form-item 级
+const effectiveDisabled = computed(() => Boolean(props.disabled) || Boolean(parent?.disabled?.value))
+const effectiveReadonly = computed(() => Boolean(props.readonly) || Boolean(parent?.readonly?.value))
+
 // date-picker 组件引用
 const datePickerRef = ref<DatePickerInstance | null>(null)
 // 当前选中的日期值
@@ -99,13 +103,13 @@ const lastAction = ref<"confirm" | "cancel" | null>(null)
 const visible = ref(false)
 
 // 是否可交互（非禁用且非只读）
-const isInteractive = computed(() => !props.disabled && !props.readonly)
+const isInteractive = computed(() => !effectiveDisabled.value && !effectiveReadonly.value)
 
 // 根节点类名数组
 const classs = computed(() => {
   const list: string[] = []
-  if (props.disabled) list.push("ui-date-select--disabled")
-  if (props.readonly) list.push("ui-date-select--readonly")
+  if (effectiveDisabled.value) list.push("ui-date-select--disabled")
+  if (effectiveReadonly.value) list.push("ui-date-select--readonly")
   return list
 })
 
