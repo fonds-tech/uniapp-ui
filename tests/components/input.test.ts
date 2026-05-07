@@ -5,6 +5,8 @@
 
 import UiInput from "@/uni_modules/uniapp-ui/ui-input/ui-input.vue"
 import { mount } from "@vue/test-utils"
+import { computed, defineComponent, h, provide, ref } from "vue"
+import { formItemKey } from "@/uni_modules/uniapp-ui/ui-form-item"
 import { waitForTransition } from "../setup"
 import { it, vi, expect, describe, afterEach, beforeEach } from "vitest"
 
@@ -569,6 +571,59 @@ describe("ui-input 输入框组件", () => {
       await waitForTransition()
 
       expect(wrapper.find("input").element.value).toBe("")
+    })
+  })
+
+  describe("表单联动", () => {
+    function createFormItemHost(disabled = ref(false), readonly = ref(false)) {
+      return defineComponent({
+        setup(_, { slots }) {
+          provide(formItemKey, {
+            props: {} as any,
+            prop: "",
+            onBlur: vi.fn(),
+            onChange: vi.fn(),
+            disabled: computed(() => disabled.value),
+            readonly: computed(() => readonly.value),
+            link: vi.fn(),
+            unlink: vi.fn(),
+            childrens: [],
+          } as any)
+          return () => h("div", slots.default?.())
+        },
+      })
+    }
+
+    it("form-item 父级 disabled=true 时应继承禁用样式", async () => {
+      const Host = createFormItemHost(ref(true))
+      const wrapper = mount(Host, {
+        slots: { default: () => h(UiInput) },
+      })
+      await waitForTransition()
+
+      expect(wrapper.find(".ui-input").classes()).toContain("ui-input--disabled")
+      expect(wrapper.find("input").attributes("disabled")).toBeDefined()
+    })
+
+    it("form-item 父级 readonly=true 时应继承只读样式", async () => {
+      const Host = createFormItemHost(ref(false), ref(true))
+      const wrapper = mount(Host, {
+        slots: { default: () => h(UiInput) },
+      })
+      await waitForTransition()
+
+      expect(wrapper.find(".ui-input").classes()).toContain("ui-input--readonly")
+    })
+
+    it("自身 disabled 与父级 disabled 任一为 true 即生效", async () => {
+      const parentDisabled = ref(false)
+      const Host = createFormItemHost(parentDisabled)
+      const wrapper = mount(Host, {
+        slots: { default: () => h(UiInput, { disabled: true }) },
+      })
+      await waitForTransition()
+
+      expect(wrapper.find(".ui-input").classes()).toContain("ui-input--disabled")
     })
   })
 })

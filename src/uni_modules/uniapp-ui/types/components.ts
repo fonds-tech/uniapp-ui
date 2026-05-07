@@ -37,6 +37,7 @@ import type { SwitchProps } from "../ui-switch"
 import type { TabbarProps } from "../ui-tabbar"
 import type { UploadProps } from "../ui-upload"
 import type { BackTopProps } from "../ui-back-top"
+import type { ListProps } from "../ui-list"
 import type { LoadingProps } from "../ui-loading"
 import type { OverlayProps } from "../ui-overlay"
 import type { SidebarProps } from "../ui-sidebar"
@@ -125,6 +126,7 @@ export interface Components {
   input: Partial<InputProps>
   keyboard: Partial<KeyboardProps>
   "keyboard-panel": Partial<KeyboardPanelProps>
+  list: Partial<ListProps>
   loading: Partial<LoadingProps>
   navbar: Partial<NavbarProps>
   "notice-bar": Partial<NoticeBarProps>

@@ -46,7 +46,7 @@ const defaultProps = buildDefaultProps("input", {
   suffixIconWeight: undefined,
   clearIcon: "close",
   clearIconSize: "28rpx",
-  clearIconColor: "",
+  clearIconColor: undefined,
   clearIconWeight: undefined,
   customClass: "",
   customStyle: "",
