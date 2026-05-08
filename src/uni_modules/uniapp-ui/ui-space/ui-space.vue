@@ -99,9 +99,20 @@ export default {
     display: inline-flex;
   }
 
-  // 填充
+  // 填充：MP WXSS 不支持 *，列举常见直接子元素标签
   &--fill {
-    > * {
+    > view,
+    > text,
+    > image,
+    > button,
+    > navigator,
+    > scroll-view,
+    > swiper,
+    > swiper-item,
+    > label,
+    > picker,
+    > input,
+    > textarea {
       flex: 1;
     }
   }

@@ -179,3 +179,7 @@ export const buttonProps = {
 4. `types/components.ts` 注册 `"xxx": Partial<XxxProps>`。
 5. `tests/components/xxx.test.ts` 覆盖 props / events / slots / 边界态。
 6. `pnpm lint && pnpm type-check && pnpm test tests/components/xxx.test.ts` 全绿。
+
+## 子规则导入
+
+@.claude/rules/mp-pitfalls.md

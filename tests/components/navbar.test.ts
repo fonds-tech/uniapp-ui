@@ -189,10 +189,10 @@ describe("ui-navbar 导航栏组件", () => {
   })
 
   describe("背景配置", () => {
-    it("默认背景为白色", async () => {
+    it("默认背景未设置时由 SCSS token 兜底", async () => {
       const wrapper = mount(UiNavbar)
       await waitForTransition()
-      expect(wrapper.props("background")).toBe("#ffffff")
+      expect(wrapper.props("background")).toBeUndefined()
     })
 
     it("应支持自定义背景颜色", async () => {

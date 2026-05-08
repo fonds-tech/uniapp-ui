@@ -3,36 +3,36 @@ import type { PropType, CSSProperties, ExtractPropTypes } from "vue"
 import { buildDefaultProps } from "../utils/props"
 
 const defaultProps = buildDefaultProps("navbar", {
-  height: "",
-  padding: "20rpx",
-  backIconColor: "#333333",
+  height: undefined,
+  padding: undefined,
+  backIconColor: undefined,
   backIconName: "arrow-left",
   backIconSize: "44rpx",
   backText: "",
-  backTextSize: "30rpx",
-  backTextColor: "#333333",
-  backTextWeight: "",
+  backTextSize: undefined,
+  backTextColor: undefined,
+  backTextWeight: undefined,
   title: "",
   centerTitle: true,
-  titleSize: "32rpx",
-  titleColor: "#333333",
-  titleWeight: 700,
+  titleSize: undefined,
+  titleColor: undefined,
+  titleWeight: undefined,
   showBack: true,
   placeholder: true,
   gradient: false,
   gradientHeight: "100",
-  background: "#ffffff",
+  background: undefined,
   fixed: true,
   immersive: false,
   borderBottom: false,
   scrollTop: undefined,
-  zIndex: "",
+  zIndex: undefined,
   customBack: undefined,
-  homePath: "",
+  homePath: undefined,
   homeIconName: "arrow-left",
   homeType: "tab",
-  customClass: "",
-  customStyle: "",
+  customClass: undefined,
+  customStyle: undefined,
 })
 
 export const navbarProps = {
@@ -49,7 +49,7 @@ export const navbarProps = {
   /** 返回按钮文字 */
   backText: defaultProps("backText", { type: String }),
   /** 返回按钮文字大小 */
-  backTextSize: defaultProps("backTextSize", { type: String }),
+  backTextSize: defaultProps("backTextSize", { type: [Number, String] }),
   /** 返回按钮文字颜色 */
   backTextColor: defaultProps("backTextColor", { type: String }),
   /** 返回按钮文字粗细 */

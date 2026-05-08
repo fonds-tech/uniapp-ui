@@ -1,28 +1,26 @@
 <template>
-  <view class="ui-navbar" :class="[props.customClass]">
-    <view class="ui-navbar__content" :style="[contentStyle]" :class="[contentClass]">
+  <view class="ui-navbar" :class="[props.customClass]" :style="[rootStyle]">
+    <view class="ui-navbar__content" :class="{ 'is-fixed': props.fixed, 'is-border': props.borderBottom }" :style="[contentStyle]">
       <view class="ui-navbar__status-bar" :style="[statusBarStyle]" />
       <view class="ui-navbar__body" :style="[bodyStyle]">
         <view class="ui-navbar__left">
-          <view v-if="slots.left">
-            <slot name="left" />
-          </view>
+          <slot v-if="hasLeftSlot" name="left" />
           <view v-else-if="props.showBack" class="ui-navbar__back" @click="onClickBack">
             <slot name="back">
-              <ui-icon :name="backIcon" :color="props.backIconColor" :size="props.backIconSize" />
+              <ui-icon :name="backIcon" :color="resolvedBackIconColor" :size="props.backIconSize" />
             </slot>
-            <view v-if="props.backText" class="ui-navbar__back__text" :style="[backTextStyle]">
+            <view v-if="props.backText" class="ui-navbar__back__text">
               {{ props.backText }}
             </view>
           </view>
         </view>
 
-        <view v-if="props.title || slots.title" class="ui-navbar__title" :class="[titleClass]" :style="[titleStyle]" @click="onTitleClick">
+        <view v-if="props.title || hasTitleSlot" class="ui-navbar__title" :class="{ 'is-center': props.centerTitle }" :style="[titleStyle]" @click="onTitleClick">
           <slot name="title">
             <text class="ui-navbar__title__text">{{ props.title }}</text>
           </slot>
         </view>
-        <view v-else-if="slots.default" class="ui-navbar__default">
+        <view v-else-if="hasDefaultSlot" class="ui-navbar__default">
           <slot />
         </view>
 
@@ -45,45 +43,92 @@ import { navbarEmits, navbarProps } from "./index"
 import { ref, watch, computed, nextTick, useSlots, onMounted, onUnmounted, getCurrentInstance } from "vue"
 import { useRgb, useMitt, useRect, useUnit, useColor, useStyle, useUnitToPx, useUnitToRpx, useSystemInfo } from "../hooks"
 
-// 定义组件名称
 defineOptions({ name: "ui-navbar" })
 
-// 定义组件的 props 和 emits
 const props = defineProps(navbarProps)
 const emits = defineEmits(navbarEmits)
 
 const mitt = useMitt()
 const slots = useSlots()
-
-// 获取系统信息，用于后续计算
 const systemInfo = useSystemInfo()
-// #ifdef MP
-// 获取胶囊按钮信息（仅在特定小程序平台可用）
-const menuButtonInfo = uni.getMenuButtonBoundingClientRect()
-// #endif
-
-// 定义响应式变量，用于存储导航栏的尺寸信息
-const rect = ref<UniApp.NodeInfo>({})
-// 左侧偏移量（用于标题居中计算）
-const leftOffset = ref(0)
-// 右侧偏移量（用于标题居中计算）
-const rightOffset = ref(0)
-// 存储当前路由信息
-const routes = ref<Page.PageInstance[]>([])
-// 存储滚动位置，用于渐变效果
-const innerScrollTop = ref(0)
-// IntersectionObserver 观察器列表
-const observerList = ref<UniApp.IntersectionObserver[]>([])
 
 const instance = getCurrentInstance()
 
+// #ifdef MP
+// 胶囊按钮信息（小程序专用，setup 期单次取值）
+const menuButtonInfo = uni.getMenuButtonBoundingClientRect()
+// #endif
+
+// 导航栏内容尺寸缓存
+const rect = ref<UniApp.NodeInfo>({})
+// 标题居中模式下左侧偏移量
+const leftOffset = ref(0)
+// 标题居中模式下右侧偏移量
+const rightOffset = ref(0)
+// 当前页面栈
+const routes = ref<Page.PageInstance[]>([])
+// 内部滚动值（渐变联动）
+const innerScrollTop = ref(0)
+// IntersectionObserver 实例池
+const observerList = ref<UniApp.IntersectionObserver[]>([])
+
+// 状态栏高度
+const statusBarHeight = computed(() => systemInfo.statusBarHeight)
+// 返回图标：栈顶页用 home 图标，其余用返回图标
+const backIcon = computed(() => (routes.value.length === 1 ? props.homeIconName : props.backIconName))
+// 返回图标颜色：未传时回落到 CSS 变量（ui-icon 内部 inline，避免依赖 MP 跨组件 color 继承）
+const resolvedBackIconColor = computed(() => props.backIconColor || "var(--ui-navbar-back-icon-color)")
+
+// 判断 slot 是否实际渲染了非注释节点（MP 下 v-if 在 template 标签上不卸载 slot，需运行期检测真实 VNode）
+// uni-mp-vue 不导出 Text/Comment，用 typeof type === "symbol" 兜底（Fragment/Comment/Static 均为 Symbol）
+function hasNodes(nodes: any): boolean {
+  if (!Array.isArray(nodes)) return false
+  return nodes.some((n) => {
+    if (typeof n.type === "symbol") return Array.isArray(n.children) && hasNodes(n.children)
+    return true
+  })
+}
+function hasSlotContent(name: string) {
+  const fn = slots[name]
+  return typeof fn === "function" && hasNodes(fn())
+}
+const hasLeftSlot = computed(() => hasSlotContent("left"))
+const hasTitleSlot = computed(() => hasSlotContent("title"))
+const hasDefaultSlot = computed(() => hasSlotContent("default"))
+
+// 导航栏 body 高度（小程序对齐胶囊；其他平台 44）
+const navbarHeight = computed(() => {
+  if (props.height) return useUnitToRpx(props.height)
+  // #ifdef MP
+  // 上下间隙对称：body 高度 = 胶囊高度 + 顶部间隙 * 2
+  const gap = menuButtonInfo.top - statusBarHeight.value
+  return menuButtonInfo.height + gap * 2
+  // #endif
+  // #ifndef MP
+  return 44
+  // #endif
+})
+
+// 根节点样式：所有可定制项通过 CSS var 注入
+const rootStyle = computed(() => {
+  const vars: Record<string, string | number | undefined> = {}
+  if (props.zIndex !== undefined) vars["--ui-navbar-z-index"] = props.zIndex
+  if (props.padding !== undefined) vars["--ui-navbar-padding"] = useUnit(props.padding)
+  if (props.titleColor) vars["--ui-navbar-title-color"] = useColor(props.titleColor)
+  if (props.titleSize !== undefined) vars["--ui-navbar-title-size"] = useUnit(props.titleSize)
+  if (props.titleWeight !== undefined) vars["--ui-navbar-title-weight"] = String(props.titleWeight)
+  if (props.backIconColor) vars["--ui-navbar-back-icon-color"] = useColor(props.backIconColor)
+  if (props.backTextColor) vars["--ui-navbar-back-text-color"] = useColor(props.backTextColor)
+  if (props.backTextSize !== undefined) vars["--ui-navbar-back-text-size"] = useUnit(props.backTextSize)
+  if (props.backTextWeight !== undefined) vars["--ui-navbar-back-text-weight"] = String(props.backTextWeight)
+  return useStyle({ ...vars, ...useStyle(props.customStyle) })
+})
+
+// content 背景：渐变模式下根据 scrollTop 计算 alpha
 const contentStyle = computed(() => {
   const style: CSSProperties = {}
-  style.zIndex = props.zIndex
-  style.background = useColor(props.background)
-  // 如果启用了渐变效果，根据滚动位置计算背景颜色
+  if (props.background) style.background = useColor(props.background)
   if (props.gradient && props.background) {
-    // 先将主题色键名转换为实际颜色值，再解析 RGB
     const colorValue = useColor(props.background)
     const rgb = useRgb(colorValue)
     if (rgb) {
@@ -96,152 +141,88 @@ const contentStyle = computed(() => {
   return useStyle(style)
 })
 
-const contentClass = computed(() => {
-  const list: string[] = []
-  if (props.fixed) list.push("is-fixed")
-  if (props.borderBottom) list.push("is-border")
-  return list
-})
-
+// 状态栏占位高度（仅 fixed 时撑开）
 const statusBarStyle = computed(() => {
   const style: CSSProperties = {}
-  if (props.fixed) {
-    style.height = `${statusBarHeight.value}px`
-  }
+  if (props.fixed) style.height = `${statusBarHeight.value}px`
   return useStyle(style)
 })
 
+// body 高度 + 自定义高度时顶部对齐
 const bodyStyle = computed(() => {
   const style: CSSProperties = {}
   style.height = `${navbarHeight.value}px`
-  style.paddingLeft = useUnit(props.padding)
   // #ifdef MP
-  // 小程序下需要考虑胶囊按钮的位置，避免右侧内容与胶囊重叠
-  // 右侧 padding = 到胶囊的距离 + padding 间距（和左侧保持一致）
+  // 小程序右侧需让出胶囊宽度：右 padding = 到胶囊距离 + 自定义 padding（与左侧对称）
   const menuOffset = systemInfo.windowWidth - menuButtonInfo.left
-  const paddingPx = useUnitToPx(props.padding) || 0
+  const paddingPx = props.padding ? useUnitToPx(props.padding) || 0 : 0
   style.paddingRight = `${menuOffset + paddingPx}px`
   // #endif
-  // #ifndef MP
-  style.paddingRight = useUnit(props.padding)
-  // #endif
   if (props.height) style.alignItems = "flex-start"
-  return useStyle({ ...style, ...useStyle(props.customStyle) })
-})
-
-const backTextStyle = computed(() => {
-  const style: CSSProperties = {}
-  style.color = useColor(props.backTextColor)
-  style.fontSize = useUnit(props.backTextSize)
-  style.fontWeight = props.backTextWeight
   return useStyle(style)
 })
 
-const titleClass = computed(() => {
-  const list: string[] = []
-  if (props.centerTitle) list.push("is-center")
-  return list
-})
-
+// 标题居中：通过左右偏移最大值定位，避免与左右内容重叠；垂直让出状态栏（fixed 时）
 const titleStyle = computed(() => {
   const style: CSSProperties = {}
-  // 居中模式下，通过 left/right 限制标题区域避免与左右内容重叠
   if (props.centerTitle) {
-    // 取左右偏移的最大值，确保标题真正居中
     const maxOffset = Math.max(leftOffset.value, rightOffset.value)
     if (maxOffset > 0) {
       style.left = `${maxOffset}px`
       style.right = `${maxOffset}px`
     }
+    if (props.fixed) style.top = `${statusBarHeight.value}px`
   }
-  style.color = useColor(props.titleColor)
-  style.fontSize = useUnit(props.titleSize)
-  style.fontWeight = props.titleWeight
   return useStyle(style)
 })
 
-// 计算占位符样式，用于固定定位时
-const placeholderStyle = computed(() => {
-  const style: CSSProperties = {}
-  style.height = `${navbarHeight.value + statusBarHeight.value}px`
-  return useStyle(style)
-})
+// 占位元素高度 = navbar + 状态栏
+const placeholderStyle = computed(() => useStyle({ height: `${navbarHeight.value + statusBarHeight.value}px` }))
 
+// 渐变触发区高度（用 IntersectionObserver 监测）：负 margin 抵消高度避免影响布局
 const gradientTriggerStyle = computed(() => {
-  const style: CSSProperties = {}
   const gradientHeightPx = useUnitToPx(props.gradientHeight)
-  style.height = `${gradientHeightPx}px`
-  // 使用负 margin 抵消高度，避免影响页面布局
-  style.marginBottom = `-${gradientHeightPx}px`
-  return useStyle(style)
+  return useStyle({ height: `${gradientHeightPx}px`, marginBottom: `-${gradientHeightPx}px` })
 })
-
-// 计算状态栏高度（所有平台统一使用系统信息）
-const statusBarHeight = computed(() => systemInfo.statusBarHeight)
-
-// 计算导航栏高度
-const navbarHeight = computed(() => {
-  if (props.height) return useUnitToRpx(props.height)
-  // #ifdef MP
-  // 小程序中，计算间隙确保与胶囊按钮垂直对齐
-  // 间隙 = 胶囊顶部 - 状态栏底部
-  const gap = menuButtonInfo.top - statusBarHeight.value
-  // body 高度 = 胶囊高度 + 间隙 * 2（上下对称）
-  return menuButtonInfo.height + gap * 2
-  // #endif
-  // #ifndef MP
-  return 44
-  // #endif
-})
-
-// 计算返回图标，根据路由层级决定显示首页图标还是返回图标
-const backIcon = computed(() => (routes.value.length === 1 ? props.homeIconName : props.backIconName))
 
 watch(
   () => props.scrollTop,
   (val) => {
     if (isNumber(val)) {
       innerScrollTop.value = val
-      if (props.gradient) {
-        emits("gradient", val)
-      }
+      if (props.gradient) emits("gradient", val)
     }
   },
   { immediate: true },
 )
 
-// 清除所有观察器
+// 销毁所有 observer
 function clearObserver() {
   while (observerList.value.length > 0) {
     observerList.value.pop()?.disconnect()
   }
 }
 
-// 创建观察器
+// 创建 observer 并入池
 function createObserver(thresholds: number[] = [0, 1]) {
   const observer = uni.createIntersectionObserver(instance, { thresholds })
   observerList.value.push(observer)
   return observer
 }
 
-/**
- * 使用 IntersectionObserver 监听滚动，实现渐变效果
- * 通过监听渐变触发区与视口的交叉比例来计算滚动进度
- */
+// IntersectionObserver 监听渐变触发区，反推滚动比例
 function observeGradient() {
-  // 如果已经通过 scrollTop prop 传入滚动值，则不需要 observer
   if (!props.gradient || !props.fixed || isNumber(props.scrollTop)) return
 
   clearObserver()
 
   const gradientHeightPx = useUnitToPx(props.gradientHeight) || 200
-  // 创建更多阈值点实现平滑渐变（0, 0.01, 0.02, ..., 1）共 101 个点
+  // 0~1 共 101 个阈值点，确保渐变平滑
   const thresholds = Array.from({ length: 101 }, (_, i) => i / 100)
 
   createObserver(thresholds)
     .relativeToViewport({ top: 0 })
     .observe(".ui-navbar__gradient-trigger", (result) => {
-      // intersectionRatio: 1 表示完全可见（未滚动），0 表示完全不可见（已滚动过渐变区域）
       const ratio = 1 - (result.intersectionRatio ?? 1)
       const scrollTop = ratio * gradientHeightPx
       innerScrollTop.value = Math.max(0, Math.min(scrollTop, gradientHeightPx))
@@ -249,41 +230,7 @@ function observeGradient() {
     })
 }
 
-function onEvent() {
-  // 监听获取导航栏尺寸的事件（保留 mitt 用于组件间通信）
-  if (props.gradient) {
-    nextTick(() => observeGradient())
-  }
-}
-
-// 更新左右区域偏移量
-async function updateSideWidth() {
-  if (!props.centerTitle) return
-  await nextTick()
-
-  const paddingPx = useUnitToPx(props.padding) || 0
-  const marginPx = useUnitToPx("16rpx") // 对应 --ui-spacing-sm
-
-  const [leftRect, rightRect] = await Promise.all([useRect(".ui-navbar__left", instance), useRect(".ui-navbar__right", instance)])
-
-  // 左侧偏移 = 左侧内容宽度 + padding + margin
-  leftOffset.value = (leftRect?.width || 0) + paddingPx + marginPx
-
-  // 右侧偏移 = 右侧内容宽度 + padding + margin
-  const rightContentOffset = (rightRect?.width || 0) + paddingPx + marginPx
-
-  // #ifdef MP
-  // 小程序下需要考虑胶囊按钮的位置
-  // 右侧偏移 = 到胶囊的距离 + padding 间距 + 右侧内容宽度 + margin
-  const menuOffset = systemInfo.windowWidth - (menuButtonInfo.left || 0)
-  rightOffset.value = menuOffset + paddingPx + (rightRect?.width || 0) + marginPx
-  // #endif
-  // #ifndef MP
-  rightOffset.value = rightContentOffset
-  // #endif
-}
-
-// 重新计算尺寸
+// 重新测量并更新左右偏移、对外发尺寸事件
 async function resize() {
   await nextTick()
   routes.value = getCurrentPages()
@@ -294,38 +241,56 @@ async function resize() {
   emits("height", rect.value.height)
 }
 
-// 处理标题点击
+// 标题居中模式下左右内容宽度测量
+async function updateSideWidth() {
+  if (!props.centerTitle) return
+  await nextTick()
+
+  const paddingPx = props.padding ? useUnitToPx(props.padding) || 0 : 0
+  // --ui-spacing-sm 对应间距
+  const marginPx = useUnitToPx("16rpx")
+
+  const [leftRect, rightRect] = await Promise.all([useRect(".ui-navbar__left", instance), useRect(".ui-navbar__right", instance)])
+
+  leftOffset.value = (leftRect?.width || 0) + paddingPx + marginPx
+
+  // #ifdef MP
+  // 小程序右侧含胶囊偏移
+  const menuOffset = systemInfo.windowWidth - (menuButtonInfo.left || 0)
+  rightOffset.value = menuOffset + paddingPx + (rightRect?.width || 0) + marginPx
+  // #endif
+  // #ifndef MP
+  rightOffset.value = (rightRect?.width || 0) + paddingPx + marginPx
+  // #endif
+}
+
 function onTitleClick() {
   emits("titleClick")
 }
 
-// 处理返回按钮点击
+// 返回逻辑：自定义函数 > 栈顶时跳首页 > 普通后退
 function onClickBack() {
   emits("back")
   if (typeof props.customBack === "function") {
-    // 如果有自定义返回函数，则调用它
     props.customBack()
-  } else {
-    if (routes.value.length === 1) {
-      // 如果只有一个页面，则跳转到首页
-      const homePath = props.homePath
-      const homeType = props.homeType
-
-      // 根据类型选择跳转方式
-      if (homeType === "tab") {
-        uni.switchTab({ url: homePath })
-      } else {
-        uni.reLaunch({ url: homePath })
-      }
+    return
+  }
+  if (routes.value.length === 1) {
+    if (!props.homePath) return
+    if (props.homeType === "tab") {
+      uni.switchTab({ url: props.homePath })
     } else {
-      // 否则返回上一页
-      uni.navigateBack()
+      uni.reLaunch({ url: props.homePath })
     }
+  } else {
+    uni.navigateBack()
   }
 }
 
-onEvent()
-onMounted(resize)
+onMounted(() => {
+  resize()
+  if (props.gradient) nextTick(() => observeGradient())
+})
 onUnmounted(() => clearObserver())
 defineExpose({ resize })
 </script>
@@ -339,9 +304,20 @@ export default {
 
 <style lang="scss" scoped>
 .ui-navbar {
+  --ui-navbar-padding: var(--ui-spacing-md);
+  --ui-navbar-z-index: var(--ui-z-index-fixed);
+  --ui-navbar-background: var(--ui-color-background);
+  --ui-navbar-title-size: var(--ui-font-size-md);
+  --ui-navbar-title-color: var(--ui-color-text);
+  --ui-navbar-title-weight: var(--ui-font-weight-bold);
+  --ui-navbar-back-text-size: var(--ui-font-size-md);
+  --ui-navbar-back-icon-color: var(--ui-color-text);
+  --ui-navbar-back-text-color: var(--ui-color-text);
+  --ui-navbar-back-text-weight: inherit;
+
   width: 100%;
   display: flex;
-  z-index: var(--ui-z-index-fixed);
+  z-index: var(--ui-navbar-z-index);
   position: relative;
   flex-direction: column;
 
@@ -349,6 +325,7 @@ export default {
     flex: 1;
     display: flex;
     position: relative;
+    background: var(--ui-navbar-background);
     flex-direction: column;
 
     &.is-fixed {
@@ -372,8 +349,7 @@ export default {
   &__body {
     height: 100%;
     display: flex;
-    padding: 0 var(--ui-spacing-md);
-    position: relative;
+    padding: 0 var(--ui-navbar-padding);
     align-items: center;
     justify-content: space-between;
   }
@@ -396,20 +372,27 @@ export default {
   }
 
   &__back {
+    color: var(--ui-navbar-back-icon-color);
     display: flex;
     align-items: center;
 
     &__text {
+      color: var(--ui-navbar-back-text-color);
+      font-size: var(--ui-navbar-back-text-size);
+      font-weight: var(--ui-navbar-back-text-weight);
       padding-left: var(--ui-spacing-xs);
     }
   }
 
   &__title {
     flex: 1;
+    color: var(--ui-navbar-title-color);
     display: flex;
     overflow: hidden;
+    font-size: var(--ui-navbar-title-size);
     text-align: center;
     align-items: center;
+    font-weight: var(--ui-navbar-title-weight);
 
     &__text {
       overflow: hidden;
@@ -417,7 +400,7 @@ export default {
       text-overflow: ellipsis;
     }
 
-    // 标题居中模式：使用绝对定位实现真正的屏幕居中
+    // 居中模式：绝对定位真居中，左右内容用 pointer-events 让出点击
     &.is-center {
       top: 0;
       left: 0;
@@ -428,7 +411,6 @@ export default {
       pointer-events: none;
       justify-content: center;
 
-      // 允许内部内容响应点击
       .ui-navbar__title__text {
         pointer-events: auto;
       }
