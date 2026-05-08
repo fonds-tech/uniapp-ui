@@ -149,8 +149,9 @@ describe("ui-loading 加载组件", () => {
         props: { text: "加载中", textColor: "#333333" },
       })
 
-      const textStyle = wrapper.find(".ui-loading__text").attributes("style") || ""
-      expect(textStyle).toContain("color")
+      const rootStyle = wrapper.find(".ui-loading").attributes("style") || ""
+      expect(rootStyle).toContain("--ui-loading-text-color")
+      expect(rootStyle).toContain("#333333")
     })
 
     it("应支持自定义文本大小", () => {
@@ -177,22 +178,21 @@ describe("ui-loading 加载组件", () => {
       expect(wrapper.props("textGap")).toBe(20)
     })
 
-    it("横向布局应使用 margin-left", () => {
+    it("textGap 应通过 CSS 变量注入", () => {
       const wrapper = mount(UiLoading, {
-        props: { text: "加载中", textGap: 12, vertical: false },
+        props: { text: "加载中", textGap: 12 },
       })
 
-      const textStyle = wrapper.find(".ui-loading__text").attributes("style") || ""
-      expect(textStyle).toContain("margin-left")
+      const rootStyle = wrapper.find(".ui-loading").attributes("style") || ""
+      expect(rootStyle).toContain("--ui-loading-text-gap")
     })
 
-    it("纵向布局应使用 margin-top", () => {
+    it("纵向布局应附加 vertical 修饰类", () => {
       const wrapper = mount(UiLoading, {
-        props: { text: "加载中", textGap: 12, vertical: true },
+        props: { text: "加载中", vertical: true },
       })
 
-      const textStyle = wrapper.find(".ui-loading__text").attributes("style") || ""
-      expect(textStyle).toContain("margin-top")
+      expect(wrapper.find(".ui-loading--vertical").exists()).toBe(true)
     })
   })
 

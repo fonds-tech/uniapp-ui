@@ -5,10 +5,10 @@ import { buildDefaultProps } from "../utils/props"
 const defaultProps = buildDefaultProps("loading", {
   show: true,
   type: "circular",
-  size: "32rpx",
-  color: "#999999",
+  size: undefined,
+  color: undefined,
   text: undefined,
-  textGap: "12rpx",
+  textGap: undefined,
   textSize: undefined,
   textColor: undefined,
   textWeight: undefined,

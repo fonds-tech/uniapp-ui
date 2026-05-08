@@ -1,69 +1,41 @@
 <template>
-  <view v-if="props.show" class="ui-loading" :class="[classs, props.customClass]" :style="[style]">
-    <view class="ui-loading__icon" :style="[iconStyle]">
+  <view
+    v-if="props.show"
+    class="ui-loading"
+    :class="[{ 'ui-loading--vertical': props.vertical }, props.customClass]"
+    :style="[rootStyle]"
+  >
+    <view class="ui-loading__icon">
       <slot name="icon">
-        <view class="ui-loading__rotate" :class="[rotateClass]" />
+        <view class="ui-loading__rotate" :class="`ui-loading__rotate--${props.type}`" />
       </slot>
     </view>
-    <text v-if="isShowText" class="ui-loading__text" :style="[textStyle]">
+    <text v-if="props.text || $slots.default" class="ui-loading__text">
       <slot>{{ props.text }}</slot>
     </text>
   </view>
 </template>
 
 <script setup lang="ts">
-import type { CSSProperties } from "vue"
-import { computed, useSlots } from "vue"
-import { loadingEmits, loadingProps } from "./index"
+import { computed } from "vue"
+import { loadingProps } from "./index"
 import { useUnit, useColor, useStyle } from "../hooks"
 
 defineOptions({ name: "ui-loading" })
 
 const props = defineProps(loadingProps)
-const emits = defineEmits(loadingEmits)
-const slots = useSlots()
 
-// 根节点样式
-const style = computed(() => {
-  const style: CSSProperties = {}
-  style.color = useColor(props.color)
-  return useStyle({ ...style, ...useStyle(props.customStyle) })
+// 根节点样式：所有可定制项通过 CSS var 注入，SCSS 提供默认值
+const rootStyle = computed(() => {
+  const vars: Record<string, string | number | undefined> = {}
+  if (props.color) vars["--ui-loading-color"] = useColor(props.color)
+  if (props.size !== undefined) vars["--ui-loading-size"] = useUnit(props.size)
+  if (props.textGap !== undefined) vars["--ui-loading-text-gap"] = useUnit(props.textGap)
+  if (props.textSize !== undefined) vars["--ui-loading-text-size"] = useUnit(props.textSize)
+  if (props.textColor) vars["--ui-loading-text-color"] = useColor(props.textColor)
+  if (props.textWeight !== undefined) vars["--ui-loading-text-weight"] = String(props.textWeight)
+  return useStyle({ ...vars, ...useStyle(props.customStyle) })
 })
-// 类名数组
-const classs = computed(() => {
-  const list: string[] = []
-  if (props.vertical) list.push("ui-loading--vertical")
-  return list
-})
-// 图标样式
-const iconStyle = computed(() => {
-  const style: CSSProperties = {}
-  style.color = useColor(props.color)
-  style.width = useUnit(props.size)
-  style.height = useUnit(props.size)
-  return useStyle(style)
-})
-// 旋转类名
-const rotateClass = computed(() => {
-  const list: string[] = []
-  list.push(`ui-loading__rotate--${props.type}`)
-  return list
-})
-// 文字样式
-const textStyle = computed(() => {
-  const style: CSSProperties = {}
-  style.color = useColor(props.textColor)
-  style.fontSize = useUnit(props.textSize)
-  style.fontWeight = props.textWeight
-  if (props.vertical) {
-    style.marginTop = useUnit(props.textGap)
-  } else {
-    style.marginLeft = useUnit(props.textGap)
-  }
-  return useStyle(style)
-})
-// 是否显示文字
-const isShowText = computed(() => props.text || slots.default)
 </script>
 
 <script lang="ts">
@@ -81,14 +53,21 @@ export default {
 
 <style scoped lang="scss">
 .ui-loading {
-  color: inherit;
+  --ui-loading-size: 32rpx;
+  --ui-loading-color: var(--ui-color-text-tertiary);
+  --ui-loading-text-gap: 12rpx;
+  --ui-loading-text-size: inherit;
+  --ui-loading-text-color: inherit;
+  --ui-loading-text-weight: inherit;
+
+  color: var(--ui-loading-color);
   display: inline-flex;
   align-items: center;
   justify-content: center;
 
   &__icon {
-    width: 1em;
-    height: 1em;
+    width: var(--ui-loading-size);
+    height: var(--ui-loading-size);
     display: flex;
     position: relative;
     align-items: center;
@@ -112,8 +91,20 @@ export default {
     }
   }
 
+  &__text {
+    color: var(--ui-loading-text-color);
+    font-size: var(--ui-loading-text-size);
+    font-weight: var(--ui-loading-text-weight);
+    margin-left: var(--ui-loading-text-gap);
+  }
+
   &--vertical {
     flex-direction: column;
+
+    .ui-loading__text {
+      margin-top: var(--ui-loading-text-gap);
+      margin-left: 0;
+    }
   }
 }
 </style>
