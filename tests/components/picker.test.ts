@@ -341,7 +341,7 @@ describe("uiPicker 组件", () => {
       expect(wrapper.props("cancelText")).toBe("取消")
     })
 
-    it("默认确认按钮文字应该是 '确认'", () => {
+    it("默认确认按钮文字应该是 '确定'", () => {
       const wrapper = mount(UiPicker, {
         props: {
           show: false,
@@ -355,7 +355,7 @@ describe("uiPicker 组件", () => {
           },
         },
       })
-      expect(wrapper.props("confirmText")).toBe("确认")
+      expect(wrapper.props("confirmText")).toBe("确定")
     })
 
     it("应该支持自定义按钮文字", () => {
@@ -462,7 +462,7 @@ describe("uiPicker 组件", () => {
   })
 
   describe("尺寸属性测试", () => {
-    it("默认选项高度应该是 88rpx", () => {
+    it("默认选项高度应该交由 picker-panel 兜底", () => {
       const wrapper = mount(UiPicker, {
         props: {
           show: false,
@@ -476,7 +476,7 @@ describe("uiPicker 组件", () => {
           },
         },
       })
-      expect(wrapper.props("columnHeight")).toBe("88rpx")
+      expect(wrapper.props("columnHeight")).toBeUndefined()
     })
 
     it("默认可见选项数应该是 5", () => {
@@ -590,7 +590,7 @@ describe("uiPicker 组件", () => {
   })
 
   describe("弹窗属性测试", () => {
-    it("默认圆角应该是 16rpx", () => {
+    it("默认圆角应该交由 popup 兜底", () => {
       const wrapper = mount(UiPicker, {
         props: {
           show: false,
@@ -604,7 +604,7 @@ describe("uiPicker 组件", () => {
           },
         },
       })
-      expect(wrapper.props("borderRadius")).toBe("16rpx")
+      expect(wrapper.props("borderRadius")).toBeUndefined()
     })
 
     it("默认点击遮罩应该关闭", () => {
@@ -673,220 +673,6 @@ describe("uiPicker 组件", () => {
         },
       })
       expect(wrapper.props("safeAreaInsetBottom")).toBe(true)
-    })
-  })
-
-  describe("暴露方法测试", () => {
-    it("应该暴露 name 属性", () => {
-      const wrapper = mount(UiPicker, {
-        props: {
-          show: false,
-          columns: [],
-        },
-        global: {
-          stubs: {
-            "ui-popup": true,
-            "ui-picker-panel": true,
-            "ui-button": true,
-          },
-        },
-      })
-      expect(wrapper.vm.name).toBe("ui-picker")
-    })
-
-    it("应该暴露 open 方法", () => {
-      const wrapper = mount(UiPicker, {
-        props: {
-          show: false,
-          columns: [],
-        },
-        global: {
-          stubs: {
-            "ui-popup": true,
-            "ui-picker-panel": true,
-            "ui-button": true,
-          },
-        },
-      })
-      expect(typeof wrapper.vm.open).toBe("function")
-    })
-
-    it("应该暴露 close 方法", () => {
-      const wrapper = mount(UiPicker, {
-        props: {
-          show: false,
-          columns: [],
-        },
-        global: {
-          stubs: {
-            "ui-popup": true,
-            "ui-picker-panel": true,
-            "ui-button": true,
-          },
-        },
-      })
-      expect(typeof wrapper.vm.close).toBe("function")
-    })
-
-    it("应该暴露 confirm 方法", () => {
-      const wrapper = mount(UiPicker, {
-        props: {
-          show: false,
-          columns: [],
-        },
-        global: {
-          stubs: {
-            "ui-popup": true,
-            "ui-picker-panel": true,
-            "ui-button": true,
-          },
-        },
-      })
-      expect(typeof wrapper.vm.confirm).toBe("function")
-    })
-
-    it("应该暴露 cancel 方法", () => {
-      const wrapper = mount(UiPicker, {
-        props: {
-          show: false,
-          columns: [],
-        },
-        global: {
-          stubs: {
-            "ui-popup": true,
-            "ui-picker-panel": true,
-            "ui-button": true,
-          },
-        },
-      })
-      expect(typeof wrapper.vm.cancel).toBe("function")
-    })
-
-    it("应该暴露 getSelectedValues 方法", () => {
-      const wrapper = mount(UiPicker, {
-        props: {
-          show: false,
-          columns: [],
-        },
-        global: {
-          stubs: {
-            "ui-popup": true,
-            "ui-picker-panel": true,
-            "ui-button": true,
-          },
-        },
-      })
-      expect(typeof wrapper.vm.getSelectedValues).toBe("function")
-    })
-
-    it("应该暴露 getSelectedIndexs 方法", () => {
-      const wrapper = mount(UiPicker, {
-        props: {
-          show: false,
-          columns: [],
-        },
-        global: {
-          stubs: {
-            "ui-popup": true,
-            "ui-picker-panel": true,
-            "ui-button": true,
-          },
-        },
-      })
-      expect(typeof wrapper.vm.getSelectedIndexs).toBe("function")
-    })
-
-    it("应该暴露 getSelectedColumns 方法", () => {
-      const wrapper = mount(UiPicker, {
-        props: {
-          show: false,
-          columns: [],
-        },
-        global: {
-          stubs: {
-            "ui-popup": true,
-            "ui-picker-panel": pickerPanelStub,
-            "ui-button": true,
-          },
-        },
-      })
-      expect(typeof wrapper.vm.getSelectedColumns).toBe("function")
-    })
-  })
-
-  describe("交互与方法", () => {
-    it("confirm 方法应触发 confirm 与 update:modelValue", async () => {
-      const wrapper = mount(UiPicker, {
-        props: {
-          show: true,
-          columns: [{ text: "选项1", value: "1" }],
-          modelValue: "1",
-        },
-        global: {
-          stubs: {
-            "ui-popup": true,
-            "ui-picker-panel": pickerPanelStub,
-            "ui-button": true,
-          },
-        },
-      })
-      await waitForTransition()
-
-      wrapper.vm.confirm()
-      await waitForTransition()
-
-      expect(wrapper.emitted("confirm")).toBeTruthy()
-      expect(wrapper.emitted("update:modelValue")?.[0]).toEqual(["1"])
-      expect(wrapper.emitted("update:show")?.slice(-1)[0]).toEqual([false])
-    })
-
-    it("cancel 方法应触发 cancel 并关闭", async () => {
-      const wrapper = mount(UiPicker, {
-        props: {
-          show: true,
-          columns: [{ text: "选项1", value: "1" }],
-          modelValue: "1",
-        },
-        global: {
-          stubs: {
-            "ui-popup": true,
-            "ui-picker-panel": pickerPanelStub,
-            "ui-button": true,
-          },
-        },
-      })
-      await waitForTransition()
-
-      wrapper.vm.cancel()
-      await waitForTransition()
-
-      expect(wrapper.emitted("cancel")).toBeTruthy()
-      expect(wrapper.emitted("update:show")?.slice(-1)[0]).toEqual([false])
-    })
-
-    it("open/close 方法应更新 show", async () => {
-      const wrapper = mount(UiPicker, {
-        props: {
-          show: false,
-          columns: [{ text: "选项1", value: "1" }],
-        },
-        global: {
-          stubs: {
-            "ui-popup": true,
-            "ui-picker-panel": pickerPanelStub,
-            "ui-button": true,
-          },
-        },
-      })
-      await waitForTransition()
-
-      wrapper.vm.open()
-      await waitForTransition()
-      expect(wrapper.emitted("update:show")?.slice(-1)[0]).toEqual([true])
-
-      wrapper.vm.close()
-      await waitForTransition()
-      expect(wrapper.emitted("update:show")?.slice(-1)[0]).toEqual([false])
     })
   })
 

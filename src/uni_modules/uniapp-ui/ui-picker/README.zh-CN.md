@@ -112,19 +112,19 @@ const areaColumns = ref([
 | duration             | 动画时长(ms)     | `number`                                             | `300`                                                    |
 | zIndex               | 弹窗层级         | `number`                                             | -                                                        |
 | background           | 背景色           | `string`                                             | -                                                        |
-| borderRadius         | 圆角大小         | `string \| number`                                   | `'16rpx'`                                                |
+| borderRadius         | 圆角大小         | `string \| number`                                   | -                                                        |
 | safeAreaInsetBottom  | 底部安全区       | `boolean`                                            | `true`                                                   |
 | **头部相关**         |                  |                                                      |                                                          |
 | showHeader           | 是否显示头部     | `boolean`                                            | `true`                                                   |
 | title                | 标题             | `string`                                             | -                                                        |
 | cancelText           | 取消按钮文字     | `string`                                             | `'取消'`                                                 |
-| confirmText          | 确认按钮文字     | `string`                                             | `'确认'`                                                 |
+| confirmText          | 确认按钮文字     | `string`                                             | `'确定'`                                                 |
 | **选择器相关**       |                  |                                                      |                                                          |
 | modelValue (v-model) | 绑定值           | `Array<string \| number>`                            | `[]`                                                     |
 | columns              | 列数据           | `PickerColumn[]`                                     | `[]`                                                     |
 | loading              | 是否加载中       | `boolean`                                            | `false`                                                  |
 | columnFields         | 字段映射         | `PickerColumnFields`                                 | `{ text: 'text', value: 'value', children: 'children' }` |
-| columnHeight         | 选项高度         | `string \| number`                                   | `'88rpx'`                                                |
+| columnHeight         | 选项高度         | `string \| number`                                   | -                                                        |
 | visibleColumnNum     | 可见选项数       | `number`                                             | `5`                                                      |
 | columnSize           | 选项文字大小     | `string \| number`                                   | -                                                        |
 | columnColor          | 选项文字颜色     | `string`                                             | -                                                        |
@@ -158,35 +158,6 @@ const areaColumns = ref([
 | cancel  | 自定义取消按钮 | -                                         |
 | confirm | 自定义确认按钮 | -                                         |
 | footer  | 自定义底部区域 | `{ confirm: Function, cancel: Function }` |
-
-### 方法
-
-通过 ref 可以调用组件方法:
-
-```typescript
-const pickerRef = ref()
-
-// 打开弹窗
-pickerRef.value.open()
-
-// 关闭弹窗
-pickerRef.value.close()
-
-// 确认选择
-pickerRef.value.confirm()
-
-// 取消选择
-pickerRef.value.cancel()
-
-// 获取选中值
-const values = pickerRef.value.getSelectedValues()
-
-// 获取选中索引
-const indexs = pickerRef.value.getSelectedIndexs()
-
-// 获取选中列数据
-const columns = pickerRef.value.getSelectedColumns()
-```
 
 ## 类型定义
 

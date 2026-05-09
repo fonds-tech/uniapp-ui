@@ -10,7 +10,7 @@
       :z-index="props.zIndex"
       :background="props.background"
       :safe-area-inset-bottom="props.safeAreaInsetBottom"
-      @update:show="handleUpdateShow"
+      @update:show="onUpdateShow"
       @open="emits('open')"
       @opened="emits('opened')"
       @close="emits('close', $event)"
@@ -19,15 +19,15 @@
       <template #header>
         <slot name="header">
           <view v-if="props.showHeader" class="ui-picker__header">
-            <view class="ui-picker__header__cancel" @click="onCancel">
+            <view class="ui-picker__cancel" @click="onCancel">
               <slot name="cancel">
                 <ui-button text color="text-secondary">{{ props.cancelText }}</ui-button>
               </slot>
             </view>
-            <view class="ui-picker__header__title">
+            <view class="ui-picker__title">
               <slot name="title">{{ props.title }}</slot>
             </view>
-            <view class="ui-picker__header__confirm" @click="onConfirm">
+            <view class="ui-picker__confirm" @click="onConfirm">
               <slot name="confirm">
                 <ui-button text type="primary">{{ props.confirmText }}</ui-button>
               </slot>
@@ -56,13 +56,13 @@
         :mask-bottom-style="props.maskBottomStyle"
         :mask-class="props.maskClass"
         :immediate-change="props.immediateChange"
-        @change="handlePanelChange"
+        @change="onPanelChange"
         @pickstart="emits('pickstart')"
         @pickend="emits('pickend')"
       />
 
       <template #footer>
-        <slot name="footer" :confirm="onConfirm" :cancel="onCancel"> </slot>
+        <slot name="footer" :confirm="onConfirm" :cancel="onCancel" />
       </template>
     </ui-popup>
   </view>
@@ -81,94 +81,58 @@ defineOptions({ name: "ui-picker" })
 
 const props = defineProps(pickerProps)
 const emits = defineEmits(pickerEmits)
-// picker-panel 组件引用
+
 const panelRef = ref<PickerPanelInstance | null>(null)
-// 内部值,用于双向绑定
 const internalValue = ref<(string | number)[]>([])
 
-/**
- * 统一字段映射
- */
-const resolvedFields = computed(() => {
-  return merge({ text: "text", value: "value", children: "children" }, props.columnFields) as Required<PickerColumnFields>
-})
-
-/**
- * 判断列数据类型（单列/多列/级联）
- */
+// 字段映射
+const resolvedFields = computed(() => merge({ text: "text", value: "value", children: "children" }, props.columnFields) as Required<PickerColumnFields>)
+// 列数据形态
 const columnsType = computed<PickerColumnsType>(() => {
-  const firstColumn = props.columns[0]
-  if (firstColumn) {
-    if (Array.isArray(firstColumn)) return "multiple"
-    if (resolvedFields.value.children in firstColumn) return "cascade"
+  const first = props.columns[0]
+  if (first) {
+    if (Array.isArray(first)) return "multiple"
+    if (resolvedFields.value.children in first) return "cascade"
   }
   return "default"
 })
+// 单值模式
+const isSingleValueMode = computed(() => columnsType.value === "default")
 
-const isSingleValueMode = computed(() => {
-  return columnsType.value === "default"
-})
-
-// 监听外部 modelValue 变化,使用 immediate 确保初始值同步
 watch(
   () => props.modelValue,
-  (val) => {
-    internalValue.value = parseValue(val)
-  },
+  (val) => (internalValue.value = parseValue(val)),
   { immediate: true, deep: true },
 )
 
-// 监听 show 变化,弹窗打开时同步最新值
 watch(
   () => props.show,
   (val) => {
-    if (val) {
-      // 弹窗打开时,确保内部值与外部同步
-      internalValue.value = parseValue(props.modelValue)
-    }
+    if (val) internalValue.value = parseValue(props.modelValue)
   },
 )
 
-/**
- * 将外部传入的值解析为内部数组格式
- */
+// 外部值规范化为内部数组
 function parseValue(value: PickerModelValue | undefined): PickerValue[] {
-  if (value === undefined || value === null || value === "") {
-    return []
-  }
-  if (Array.isArray(value)) {
-    return value
-  }
+  if (value === undefined || value === null || value === "") return []
+  if (Array.isArray(value)) return value
   return [value]
 }
 
-/**
- * 将内部数组格式转换为外部期望的格式
- */
+// 内部数组按形态格式化为外部值
 function formatValue(values: PickerValue[]): PickerModelValue {
-  if (isSingleValueMode.value) {
-    return values[0] ?? ""
-  }
+  if (isSingleValueMode.value) return values[0] ?? ""
   return values
 }
 
-/**
- * 处理弹窗显示状态变化
- */
-function handleUpdateShow(show: boolean) {
+function onUpdateShow(show: boolean) {
   emits("update:show", show)
 }
 
-/**
- * 处理面板选择变化
- */
-function handlePanelChange(data: PickerChangeData) {
+function onPanelChange(data: PickerChangeData) {
   emits("change", data)
 }
 
-/**
- * 取消按钮点击
- */
 function onCancel() {
   emits("cancel", {
     values: panelRef.value?.getSelectedValues() ?? [],
@@ -178,52 +142,49 @@ function onCancel() {
   emits("update:show", false)
 }
 
-/**
- * 确认按钮点击
- */
 function onConfirm() {
   const values = panelRef.value?.getSelectedValues() ?? []
   const indexs = panelRef.value?.getSelectedIndexs() ?? []
   const columns = panelRef.value?.getSelectedColumns() ?? []
-
   emits("confirm", { values, indexs, columns })
   emits("update:modelValue", formatValue(values))
   emits("update:show", false)
 }
-
-defineExpose({
-  name: "ui-picker",
-  open: () => emits("update:show", true),
-  close: () => emits("update:show", false),
-  getSelectedValues: () => panelRef.value?.getSelectedValues(),
-  getSelectedIndexs: () => panelRef.value?.getSelectedIndexs(),
-  getSelectedColumns: () => panelRef.value?.getSelectedColumns(),
-  confirm: onConfirm,
-  cancel: onCancel,
-})
 </script>
 
 <script lang="ts">
 export default {
   name: "ui-picker",
-  options: { virtualHost: true, multipleSlots: true, styleIsolation: "shared" },
+  options: {
+    // #ifndef MP-TOUTIAO
+    virtualHost: true,
+    // #endif
+    multipleSlots: true,
+    styleIsolation: "shared",
+  },
 }
 </script>
 
 <style lang="scss">
 .ui-picker {
+  --ui-picker-title-size: var(--ui-font-size-md);
+  --ui-picker-title-color: var(--ui-color-text);
+  --ui-picker-border-color: var(--ui-color-border-light);
+  --ui-picker-title-weight: bold;
+  --ui-picker-header-padding: var(--ui-spacing-md);
+
   &__header {
     display: flex;
-    padding: var(--ui-spacing-md);
+    padding: var(--ui-picker-header-padding);
     align-items: center;
-    border-bottom: var(--ui-border-width) solid var(--ui-color-border-light);
+    border-bottom: var(--ui-border-width) solid var(--ui-picker-border-color);
     justify-content: space-between;
+  }
 
-    &__title {
-      color: var(--ui-color-text);
-      font-size: var(--ui-font-size-md);
-      font-weight: var(--ui-font-weight-bold);
-    }
+  &__title {
+    color: var(--ui-picker-title-color);
+    font-size: var(--ui-picker-title-size);
+    font-weight: var(--ui-picker-title-weight);
   }
 }
 </style>
