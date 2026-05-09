@@ -222,14 +222,6 @@ describe("uiProgress 组件", () => {
     })
   })
 
-  describe("暴露属性测试", () => {
-    it("应该暴露 name 属性", async () => {
-      const wrapper = mount(UiProgress)
-      await waitForTransition()
-      expect(wrapper.vm.name).toBe("ui-progress")
-    })
-  })
-
   describe("动态更新测试", () => {
     it("应该响应 percentage 变化", async () => {
       const wrapper = mount(UiProgress, { props: { percentage: 0 } })
@@ -414,7 +406,7 @@ describe("uiProgress 组件", () => {
       await waitForTransition()
       const pivot = wrapper.find(".ui-progress__pivot")
       expect(pivot.attributes("style")).toContain("right: 0")
-      expect(pivot.attributes("style")).toContain("transform: none")
+      expect(pivot.attributes("style")).toContain("transform: translateY(-50%)")
     })
   })
 

@@ -2,7 +2,7 @@
   <view
     class="ui-progress"
     :class="[customClass]"
-    :style="[style]"
+    :style="[rootStyle]"
     role="progressbar"
     :aria-valuemin="0"
     :aria-valuemax="100"
@@ -10,7 +10,6 @@
     :aria-valuetext="displayText"
   >
     <view class="ui-progress__portion" :style="[portionStyle]" />
-
     <view v-if="showText && props.textPosition !== 'none'" class="ui-progress__pivot" :style="[pivotStyle]">
       <slot name="text" :percentage="validPercentage">
         <text class="ui-progress__text" :style="[textStyle]">{{ displayText }}</text>
@@ -25,84 +24,69 @@ import { watch, computed } from "vue"
 import { useUnit, useColor, useStyle } from "../hooks"
 import { progressEmits, progressProps } from "./index"
 
-// 定义组件名称
 defineOptions({ name: "ui-progress" })
 
-// 定义 props 和 emits
 const props = defineProps(progressProps)
 const emits = defineEmits(progressEmits)
 
-// 百分比边界校验
+// 百分比夹紧到 [0, 100]
 const validPercentage = computed(() => {
   const value = Number(props.percentage)
   if (Number.isNaN(value)) return 0
   return Math.max(0, Math.min(100, value))
 })
 
-// 显示文本
-const displayText = computed(() => {
-  return props.text || `${validPercentage.value}%`
-})
+const displayText = computed(() => props.text || `${validPercentage.value}%`)
 
-// 监听进度达到100%触发finish事件
 watch(validPercentage, (newVal, oldVal) => {
-  if (newVal === 100 && oldVal !== 100) {
-    emits("finish")
-  }
+  if (newVal === 100 && oldVal !== 100) emits("finish")
 })
 
-const style = computed(() => {
-  const result: CSSProperties = {
-    height: useUnit(props.height),
-  }
-  if (props.trackColor) {
-    result.backgroundColor = useColor(props.trackColor)
-  }
-  return useStyle({ ...result, ...useStyle(props.customStyle) })
+const rootStyle = computed(() => {
+  const style: CSSProperties = {}
+  if (props.height !== undefined) style.height = useUnit(props.height)
+  if (props.trackColor) style.backgroundColor = useColor(props.trackColor)
+  return useStyle({ ...style, ...useStyle(props.customStyle) })
 })
 
 const textStyle = computed(() => {
-  const result: CSSProperties = {}
-  if (props.textColor) result.color = useColor(props.textColor)
-  if (props.textSize) result.fontSize = useUnit(props.textSize)
-  if (props.textWeight) result.fontWeight = props.textWeight as CSSProperties["fontWeight"]
-  return useStyle(result)
+  const style: CSSProperties = {}
+  if (props.textColor) style.color = useColor(props.textColor)
+  if (props.textSize) style.fontSize = useUnit(props.textSize)
+  if (props.textWeight) style.fontWeight = props.textWeight as CSSProperties["fontWeight"]
+  return useStyle(style)
 })
 
 const pivotStyle = computed(() => {
-  const result: CSSProperties = {}
-  const isInside = props.textPosition === "inside"
-
-  if (isInside) {
-    // 内部文本：跟随进度条，但限制最小位置防止溢出
-    const minLeft = 10 // 最小10%位置，防止文字溢出左侧
-    result.left = `${Math.max(validPercentage.value, minLeft)}%`
+  const style: CSSProperties = {}
+  if (props.textPosition === "inside") {
+    // 进度低于 10% 时锁 left=10%，避免 transform: translate(-100%) 把 inside 文字推出左侧外部
+    style.left = `${Math.max(validPercentage.value, 10)}%`
   } else {
-    // 外部文本：固定在右侧
-    result.right = "0"
-    result.transform = "none"
+    // outside: 钉右边；只保留 Y 居中，去掉 X 方向的 -100% 平移（不能 transform:none，否则 Y 也丢）
+    style.right = "0"
+    style.transform = "translateY(-50%)"
   }
-
-  return useStyle(result)
+  return useStyle(style)
 })
 
 const portionStyle = computed(() => {
-  const result: CSSProperties = {
-    width: `${validPercentage.value}%`,
-  }
-  if (props.color) {
-    result.backgroundColor = useColor(props.color)
-  }
-  return useStyle(result)
+  const style: CSSProperties = { width: `${validPercentage.value}%` }
+  if (props.color) style.backgroundColor = useColor(props.color)
+  return useStyle(style)
 })
-
-defineExpose({ name: "ui-progress" })
 </script>
 
 <script lang="ts">
 export default {
   name: "ui-progress",
-  options: { virtualHost: true, multipleSlots: true, styleIsolation: "shared" },
+  options: {
+    // #ifndef MP-TOUTIAO
+    virtualHost: true,
+    // #endif
+    multipleSlots: true,
+    styleIsolation: "shared",
+  },
 }
 </script>
 
@@ -118,8 +102,8 @@ export default {
 
   &__pivot {
     top: 50%;
-    display: flex;
     z-index: calc(var(--ui-z-index-base) + 1);
+    display: flex;
     position: absolute;
     transform: translate(-100%, -50%);
     box-sizing: border-box;

@@ -1,85 +1,72 @@
 /**
  * ui-poster 组件单元测试
- * 测试海报生成组件的 props、methods 和渲染逻辑
+ * 测试海报生成组件的 props、暴露方法和 ready 事件。
+ * 注：内部 helper (如像素换算 / 文本测量) 不再 expose，转为黑盒测试公开 API。
  */
 
 import UiPoster from "@/uni_modules/uniapp-ui/ui-poster/ui-poster.vue"
 import { mount } from "@vue/test-utils"
-import { waitForTransition } from "../setup"
 import { it, vi, expect, describe, afterEach, beforeEach } from "vitest"
 
 describe("ui-poster 海报生成组件", () => {
-  // 启用 fake timers
   beforeEach(() => {
     vi.useFakeTimers()
   })
 
-  // 每个测试后恢复真实计时器
   afterEach(() => {
     vi.useRealTimers()
   })
 
   describe("基础渲染", () => {
-    it("应正确渲染默认海报组件", async () => {
+    it("应正确渲染默认海报组件", () => {
       const wrapper = mount(UiPoster)
-
-      await waitForTransition()
-
       expect(wrapper.find(".ui-poster").exists()).toBe(true)
     })
 
-    it("应渲染 canvas 元素", async () => {
+    it("应渲染 canvas 元素", () => {
       const wrapper = mount(UiPoster)
-
-      await waitForTransition()
-
-      // 组件使用 canvas 标签
       expect(wrapper.find("canvas").exists()).toBe(true)
+    })
+
+    it("canvas 元素应有唯一 canvasId", () => {
+      const a = mount(UiPoster)
+      const b = mount(UiPoster)
+      // 多实例不能共享 canvasId，否则同页面共存时画布串扰
+      expect(a.vm.canvasId).not.toBe(b.vm.canvasId)
+      expect(a.vm.canvasId).toMatch(/^ui-poster-/)
     })
   })
 
   describe("尺寸配置", () => {
     it("应支持自定义宽度", () => {
-      const wrapper = mount(UiPoster, {
-        props: { width: 600 },
-      })
-
+      const wrapper = mount(UiPoster, { props: { width: 600 } })
       expect(wrapper.props("width")).toBe(600)
     })
 
     it("应支持自定义高度", () => {
-      const wrapper = mount(UiPoster, {
-        props: { height: 800 },
-      })
-
+      const wrapper = mount(UiPoster, { props: { height: 800 } })
       expect(wrapper.props("height")).toBe(800)
     })
 
     it("默认宽度应为 700", () => {
       const wrapper = mount(UiPoster)
-
       expect(wrapper.props("width")).toBe(700)
     })
 
     it("默认高度应为 1100", () => {
       const wrapper = mount(UiPoster)
-
       expect(wrapper.props("height")).toBe(1100)
     })
   })
 
   describe("像素比配置", () => {
     it("应支持像素比", () => {
-      const wrapper = mount(UiPoster, {
-        props: { pixel: 2 },
-      })
-
+      const wrapper = mount(UiPoster, { props: { pixel: 2 } })
       expect(wrapper.props("pixel")).toBe(2)
     })
 
     it("默认像素比应为 3", () => {
       const wrapper = mount(UiPoster)
-
       expect(wrapper.props("pixel")).toBe(3)
     })
   })
@@ -87,114 +74,44 @@ describe("ui-poster 海报生成组件", () => {
   describe("暴露的方法", () => {
     it("应暴露 draw 方法", () => {
       const wrapper = mount(UiPoster)
-
       expect(typeof wrapper.vm.draw).toBe("function")
     })
 
     it("应暴露 save 方法", () => {
       const wrapper = mount(UiPoster)
-
       expect(typeof wrapper.vm.save).toBe("function")
     })
 
-    it("应暴露 usePixel 方法", () => {
+    it("应暴露 canvasId", () => {
       const wrapper = mount(UiPoster)
-
-      expect(typeof wrapper.vm.usePixel).toBe("function")
-    })
-
-    it("应暴露 toast 方法", () => {
-      const wrapper = mount(UiPoster)
-
-      expect(typeof wrapper.vm.toast).toBe("function")
+      expect(typeof wrapper.vm.canvasId).toBe("string")
     })
   })
 
   describe("事件触发", () => {
     it("挂载后应触发 ready 事件", async () => {
       const wrapper = mount(UiPoster)
-
       await vi.advanceTimersByTimeAsync(60)
-
       expect(wrapper.emitted("ready")).toBeTruthy()
     })
   })
 
-  describe("内部状态", () => {
-    it("应有 canvasId", () => {
-      const wrapper = mount(UiPoster)
-
-      expect(wrapper.vm.canvasId).toBeDefined()
-      expect(typeof wrapper.vm.canvasId).toBe("string")
-    })
-
-    it("应有 cv_width", () => {
-      const wrapper = mount(UiPoster)
-
-      expect(wrapper.vm.cv_width).toBeDefined()
-    })
-
-    it("应有 cv_height", () => {
-      const wrapper = mount(UiPoster)
-
-      expect(wrapper.vm.cv_height).toBeDefined()
-    })
-  })
-
-  describe("方法与状态联动", () => {
-    it("usePixel 应按像素比计算", () => {
-      const wrapper = mount(UiPoster, {
-        props: { pixel: 3 },
-      })
-
-      const result = wrapper.vm.usePixel(100)
-      // 100rpx -> 50px, 再乘以像素比 3
-      expect(result).toBe(150)
-    })
-
-    it("width/height 变化应更新 cv_width/cv_height", async () => {
-      const wrapper = mount(UiPoster, {
-        props: { width: 100, height: 200, pixel: 2 },
-      })
-
-      const initialWidth = wrapper.vm.cv_width
-      const initialHeight = wrapper.vm.cv_height
-
-      await wrapper.setProps({ width: 200, height: 300 })
-      await vi.advanceTimersByTimeAsync(0)
-
-      expect(wrapper.vm.cv_width).not.toBe(initialWidth)
-      expect(wrapper.vm.cv_height).not.toBe(initialHeight)
-    })
-
-    it("toast 方法应调用 uni.showToast", () => {
-      const wrapper = mount(UiPoster)
-      const toastSpy = vi.spyOn(uni, "showToast")
-
-      wrapper.vm.toast("提示文案")
-
-      expect(toastSpy).toHaveBeenCalled()
-    })
-  })
-
   describe("边界情况", () => {
-    it("宽高为 0 时应正常渲染", async () => {
-      const wrapper = mount(UiPoster, {
-        props: { width: 0, height: 0 },
-      })
-
-      await waitForTransition()
-
+    it("宽高为 0 时应正常渲染", () => {
+      const wrapper = mount(UiPoster, { props: { width: 0, height: 0 } })
       expect(wrapper.find(".ui-poster").exists()).toBe(true)
     })
 
     it("字符串类型尺寸应正常渲染", () => {
-      const wrapper = mount(UiPoster, {
-        props: { width: "500", height: "800" },
-      })
-
+      const wrapper = mount(UiPoster, { props: { width: "500", height: "800" } })
       expect(wrapper.props("width")).toBe("500")
       expect(wrapper.props("height")).toBe("800")
+    })
+
+    it("draw 不传 items 应抛错", async () => {
+      const wrapper = mount(UiPoster)
+      await vi.advanceTimersByTimeAsync(60)
+      await expect(wrapper.vm.draw([])).rejects.toThrow()
     })
   })
 })

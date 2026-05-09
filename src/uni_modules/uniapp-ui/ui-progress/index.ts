@@ -6,15 +6,15 @@ export type ProgressTextPosition = "inside" | "outside" | "none"
 
 const defaultProps = buildDefaultProps("progress", {
   percentage: 0,
-  color: "",
-  trackColor: "",
+  color: undefined,
+  trackColor: undefined,
   text: "",
   showText: true,
   textPosition: "inside",
-  textColor: "",
-  textSize: "",
-  textWeight: "",
-  height: "28rpx",
+  textColor: undefined,
+  textSize: undefined,
+  textWeight: undefined,
+  height: undefined,
   customClass: "",
   customStyle: "",
 })
@@ -26,19 +26,19 @@ export const progressProps = {
   color: defaultProps("color", { type: String }),
   /** 进度条轨道背景色 */
   trackColor: defaultProps("trackColor", { type: String }),
-  /** 进度文本内容 */
+  /** 进度文本 (默认 `${percentage}%`) */
   text: defaultProps("text", { type: String }),
-  /** 是否显示进度文本 */
+  /** 显示进度文本 */
   showText: defaultProps("showText", { type: Boolean }),
-  /** 文本位置 */
+  /** 文本位置: inside 跟随 portion / outside 固定右侧 / none 不渲染 */
   textPosition: defaultProps("textPosition", { type: String as PropType<ProgressTextPosition> }),
   /** 进度文本颜色 */
   textColor: defaultProps("textColor", { type: String }),
-  /** 进度文本大小 */
+  /** 进度文本字号 */
   textSize: defaultProps("textSize", { type: [Number, String] }),
-  /** 进度文本粗细 */
+  /** 进度文本字重 */
   textWeight: defaultProps("textWeight", { type: [Number, String] }),
-  /** 进度条的高度 */
+  /** 进度条高度 */
   height: defaultProps("height", { type: [Number, String] }),
   /** 自定义类名 */
   customClass: defaultProps("customClass", { type: String }),
@@ -47,14 +47,10 @@ export const progressProps = {
 }
 
 export const progressEmits = {
-  /** 进度完成事件 */
+  /** 百分比由非 100 跨入 100 时触发一次 */
   finish: () => true,
 }
 
+export type ProgressEmits = typeof progressEmits
 export type ProgressProps = ExtractPropTypes<typeof progressProps>
-
-export interface ProgressExpose {
-  name: "ui-progress"
-}
-
 export type ProgressInstance = InstanceType<typeof Progress>
