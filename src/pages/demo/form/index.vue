@@ -20,7 +20,9 @@
 
     <demo-section title="必填星号 (required)" desc="auto 跟随 rules / true 全显 / false 全隐 / 单项可覆盖父级">
       <demo-block :cols="4" :gap="12">
-        <ui-button v-for="m in requiredModes" :key="String(m.value)" size="small" :type="requiredMode === m.value ? 'primary' : 'default'" @click="requiredMode = m.value">{{ m.label }}</ui-button>
+        <ui-button v-for="m in requiredModes" :key="String(m.value)" size="small" :type="requiredMode === m.value ? 'primary' : 'default'" @click="requiredMode = m.value">{{
+          m.label
+        }}</ui-button>
       </demo-block>
       <ui-form :model="requiredData" :rules="requiredRules" :required="requiredMode">
         <ui-form-item label="姓名" prop="name">
@@ -290,14 +292,8 @@ const customRules = {
       },
     },
   ],
-  password: [
-    { required: true, message: "请输入密码" },
-    { validator: (v: string) => (v.length < 6 ? "密码至少 6 位" : true) },
-  ],
-  confirmPassword: [
-    { required: true, message: "请确认密码" },
-    { validator: (v: string) => (v !== customData.value.password ? "两次密码不一致" : true) },
-  ],
+  password: [{ required: true, message: "请输入密码" }, { validator: (v: string) => (v.length < 6 ? "密码至少 6 位" : true) }],
+  confirmPassword: [{ required: true, message: "请确认密码" }, { validator: (v: string) => (v !== customData.value.password ? "两次密码不一致" : true) }],
 }
 
 // 异步
@@ -343,10 +339,7 @@ const methodFormRef = ref()
 const validateFirst = ref(false)
 const methodData = ref({ username: "", email: "" })
 const methodRules = {
-  username: [
-    { required: true, message: "请输入用户名" },
-    { validator: (v: string) => (v.length < 3 ? "至少 3 位" : true) },
-  ],
+  username: [{ required: true, message: "请输入用户名" }, { validator: (v: string) => (v.length < 3 ? "至少 3 位" : true) }],
   email: [
     { required: true, message: "请输入邮箱" },
     { pattern: /^[\w-]+@[\w-]+\.\w+$/, message: "邮箱格式不正确" },
@@ -410,7 +403,9 @@ async function onErrorSubmit() {
   try {
     await errorFormRef.value?.validate()
     toast.success("校验通过")
-  } catch { /* 错误信息会显示 */ }
+  } catch {
+    /* 错误信息会显示 */
+  }
 }
 
 function onFormSubmit(values: Record<string, unknown>) {

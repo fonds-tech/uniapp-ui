@@ -56,19 +56,19 @@
 
 ## Props
 
-| 参数         | 说明                                 | 类型                                                                 | 默认值         |
-| ------------ | ------------------------------------ | -------------------------------------------------------------------- | -------------- |
-| direction    | 排列方向                             | `'horizontal' \| 'vertical'`                                        | `'horizontal'` |
-| size         | 间距大小（支持预设值或自定义值）     | `'mini' \| 'small' \| 'normal' \| 'large' \| string \| number` | `'normal'`     |
-| align        | 交叉轴对齐方式                       | `'start' \| 'end' \| 'center' \| 'baseline' \| 'stretch' \| ''` | `''`           |
-| justify      | 主轴对齐方式                         | `'start' \| 'end' \| 'center' \| 'space-between' \| 'space-around' \| 'space-evenly' \| ''` | `''`           |
-| wrap         | 是否换行（仅水平排列有效）           | `boolean`                                                            | `false`        |
-| fill         | 子元素是否填充可用空间               | `boolean`                                                            | `false`        |
-| inline       | 是否使用 `inline-flex` 布局          | `boolean`                                                            | `false`        |
-| gap-row      | 行间距（优先级高于 `size`）          | `string \| number`                                                  | `''`           |
-| gap-col      | 列间距（优先级高于 `size`）          | `string \| number`                                                  | `''`           |
-| custom-class | 自定义类名                           | `string`                                                             | `''`           |
-| custom-style | 自定义样式                           | `string \| object`                                                  | `''`           |
+| 参数         | 说明                             | 类型                                                                                        | 默认值         |
+| ------------ | -------------------------------- | ------------------------------------------------------------------------------------------- | -------------- |
+| direction    | 排列方向                         | `'horizontal' \| 'vertical'`                                                                | `'horizontal'` |
+| size         | 间距大小（支持预设值或自定义值） | `'mini' \| 'small' \| 'normal' \| 'large' \| string \| number`                              | `'normal'`     |
+| align        | 交叉轴对齐方式                   | `'start' \| 'end' \| 'center' \| 'baseline' \| 'stretch' \| ''`                             | `''`           |
+| justify      | 主轴对齐方式                     | `'start' \| 'end' \| 'center' \| 'space-between' \| 'space-around' \| 'space-evenly' \| ''` | `''`           |
+| wrap         | 是否换行（仅水平排列有效）       | `boolean`                                                                                   | `false`        |
+| fill         | 子元素是否填充可用空间           | `boolean`                                                                                   | `false`        |
+| inline       | 是否使用 `inline-flex` 布局      | `boolean`                                                                                   | `false`        |
+| gap-row      | 行间距（优先级高于 `size`）      | `string \| number`                                                                          | `''`           |
+| gap-col      | 列间距（优先级高于 `size`）      | `string \| number`                                                                          | `''`           |
+| custom-class | 自定义类名                       | `string`                                                                                    | `''`           |
+| custom-style | 自定义样式                       | `string \| object`                                                                          | `''`           |
 
 ## Slots
 

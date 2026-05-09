@@ -125,7 +125,17 @@
           </demo-block>
         </demo-block>
       </demo-block>
-      <ui-image src="https://picsum.photos/300?random=50" width="240rpx" height="240rpx" radius="12rpx" :lazy-load="lazyLoad" :draggable="draggable" :webp="webp" :show-menu-by-longpress="longpress" custom-style="margin-top: 16rpx" />
+      <ui-image
+        src="https://picsum.photos/300?random=50"
+        width="240rpx"
+        height="240rpx"
+        radius="12rpx"
+        :lazy-load="lazyLoad"
+        :draggable="draggable"
+        :webp="webp"
+        :show-menu-by-longpress="longpress"
+        custom-style="margin-top: 16rpx"
+      />
     </demo-section>
 
     <demo-section title="事件 (load / error / click)">
@@ -184,7 +194,7 @@ const products = [
   { id: 3, img: "https://picsum.photos/300?random=303", title: "蓝牙音箱", price: "499" },
 ]
 
-const mode = ref<typeof modes[number]>("aspectFill")
+const mode = ref<(typeof modes)[number]>("aspectFill")
 const radius = ref("8rpx")
 const fadeKey = ref(1)
 

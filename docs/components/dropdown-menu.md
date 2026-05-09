@@ -126,14 +126,14 @@ const options = [
 
 ## DropdownItem Events
 
-| 事件名 | 说明             | 回调参数 |
-| ------ | ---------------- | -------- |
-| change | 选中值变化时触发 | `value`  |
-| open   | 打开菜单时触发   | -        |
-| opened | 打开动画结束时触发 | -      |
-| close  | 关闭菜单时触发   | -        |
-| closed | 关闭动画结束时触发 | -      |
-| update:modelValue | 更新绑定值 | `value` |
+| 事件名            | 说明               | 回调参数 |
+| ----------------- | ------------------ | -------- |
+| change            | 选中值变化时触发   | `value`  |
+| open              | 打开菜单时触发     | -        |
+| opened            | 打开动画结束时触发 | -        |
+| close             | 关闭菜单时触发     | -        |
+| closed            | 关闭动画结束时触发 | -        |
+| update:modelValue | 更新绑定值         | `value`  |
 
 ## DropdownItem Slots
 
@@ -150,48 +150,48 @@ const options = [
 
 通过 `ref` 可访问以下公开方法：
 
-| 方法名 | 说明 |
-| ------ | ---- |
-| close  | 关闭所有下拉项 |
+| 方法名 | 说明             |
+| ------ | ---------------- |
+| close  | 关闭所有下拉项   |
 | resize | 重新计算菜单尺寸 |
 
 ## DropdownItem Methods
 
 通过 `ref` 可访问以下公开方法：
 
-| 方法名 | 说明 |
-| ------ | ---- |
+| 方法名 | 说明              |
+| ------ | ----------------- |
 | toggle | 切换展开/收起状态 |
 
-
 <!-- AUTO-PROPS-SUPPLEMENT: ui-dropdown-item -->
+
 ## DropdownItem Props 补充（源码新增）
 
 以下参数已在最新源码中支持，本文档补充如下：
 
-| 参数 |
-| --- |
-| `min-height` |
-| `max-height` |
-| `title-weight` |
-| `active-title-size` |
-| `active-title-weight` |
-| `icon-weight` |
-| `active-icon-color` |
-| `option-size` |
-| `option-color` |
-| `option-weight` |
-| `active-option-size` |
-| `active-option-color` |
+| 参数                   |
+| ---------------------- |
+| `min-height`           |
+| `max-height`           |
+| `title-weight`         |
+| `active-title-size`    |
+| `active-title-weight`  |
+| `icon-weight`          |
+| `active-icon-color`    |
+| `option-size`          |
+| `option-color`         |
+| `option-weight`        |
+| `active-option-size`   |
+| `active-option-color`  |
 | `active-option-weight` |
 
 <!-- AUTO-SLOTS-SUPPLEMENT: ui-dropdown-item -->
+
 ## DropdownItem Slots 补充（源码新增）
 
 以下能力已在最新源码中提供，补充如下：
 
-| 插槽名 |
-| --- |
+| 插槽名   |
+| -------- |
 | `header` |
 | `footer` |
-

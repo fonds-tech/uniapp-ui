@@ -96,34 +96,34 @@ const maxDate = new Date(2025, 11, 31)
 | close   | 关闭时触发         | `action: string`                             |
 | closed  | 关闭动画结束时触发 | `action: string`                             |
 
-
 <!-- AUTO-PROPS-SUPPLEMENT: ui-date-picker -->
+
 ## DatePicker Props 补充（源码新增）
 
 以下参数已在最新源码中支持，本文档补充如下：
 
-| 参数 |
-| --- |
-| `show` |
-| `overlay` |
-| `duration` |
-| `z-index` |
-| `background` |
-| `column-size` |
-| `column-color` |
-| `column-weight` |
-| `active-column-size` |
-| `active-column-color` |
+| 参数                   |
+| ---------------------- |
+| `show`                 |
+| `overlay`              |
+| `duration`             |
+| `z-index`              |
+| `background`           |
+| `column-size`          |
+| `column-color`         |
+| `column-weight`        |
+| `active-column-size`   |
+| `active-column-color`  |
 | `active-column-weight` |
 
 <!-- AUTO-METHODS-SUPPLEMENT: ui-date-picker -->
+
 ## DatePicker Methods/Expose 补充（源码新增）
 
 以下能力已在最新源码中提供，补充如下：
 
-| 方法/字段 |
-| --- |
-| `get-selected-value` |
-| `get-selected-values` |
+| 方法/字段              |
+| ---------------------- |
+| `get-selected-value`   |
+| `get-selected-values`  |
 | `get-selected-indexes` |
-

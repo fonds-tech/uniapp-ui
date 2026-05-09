@@ -1,10 +1,13 @@
 <template>
   <view class="ui-tooltip" :class="[props.customClass]" :style="[rootStyle]" @click.stop="noop">
-    <!-- 用于测量尺寸的隐藏元素 -->
+    <!-- 用于测量尺寸的隐藏元素（结构镜像显示分支，靠 Vue 原生 slot fallback 处理空 slot） -->
     <view id="measure" class="ui-tooltip__measure">
       <view class="ui-tooltip__popup">
-        <view v-if="!$slots.content" class="ui-tooltip__inner">{{ props.content }}</view>
-        <slot v-else name="content" />
+        <view class="ui-tooltip__inner">
+          <slot name="content">
+            <text class="ui-tooltip__text">{{ props.content }}</text>
+          </slot>
+        </view>
       </view>
     </view>
 

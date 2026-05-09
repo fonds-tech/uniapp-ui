@@ -48,8 +48,8 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue"
 import type { CalendarPanelConfirmData } from "@/uni_modules/uniapp-ui/ui-calendar-panel"
+import { ref } from "vue"
 
 const result1 = ref("")
 const result2 = ref("")
@@ -82,9 +82,9 @@ function onConfirm5(data: CalendarPanelConfirmData) {
 
 <style lang="scss" scoped>
 .panel-box {
+  overflow: hidden;
   border-radius: 16rpx;
   background-color: var(--ui-color-background);
-  overflow: hidden;
 }
 
 .demo-text {

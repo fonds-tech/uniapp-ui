@@ -5,9 +5,9 @@
 
 import UiInput from "@/uni_modules/uniapp-ui/ui-input/ui-input.vue"
 import { mount } from "@vue/test-utils"
-import { computed, defineComponent, h, provide, ref } from "vue"
 import { formItemKey } from "@/uni_modules/uniapp-ui/ui-form-item"
 import { waitForTransition } from "../setup"
+import { h, ref, provide, computed, defineComponent } from "vue"
 import { it, vi, expect, describe, afterEach, beforeEach } from "vitest"
 
 describe("ui-input 输入框组件", () => {

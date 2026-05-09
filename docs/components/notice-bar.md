@@ -66,29 +66,29 @@ const notices = ["通知内容一", "通知内容二", "通知内容三"]
 
 ## Props
 
-| 参数         | 说明                   | 类型                     | 默认值       |
-| ------------ | ---------------------- | ------------------------ | ------------ |
-| text         | 通知文本内容           | `string \| string[]`     | -            |
-| mode         | 滚动模式               | `horizontal \| vertical` | `horizontal` |
-| color        | 文本颜色               | `string`                 | -            |
-| speed        | 滚动速率(px/s)         | `number`                 | `60`         |
-| interval     | 垂直滚动时切换间隔(ms) | `number`                 | `3000`       |
-| duration     | 垂直滚动时动画时长(ms) | `number`                 | `500`        |
-| scrollable   | 是否开启滚动           | `boolean`                | `true`       |
-| min-height   | 最小高度               | `string \| number`       | `72rpx`      |
-| font-size    | 文本大小               | `string \| number`       | -            |
-| font-weight  | 文本粗细               | `string \| number`       | -            |
-| icon         | 左侧图标               | `string`                 | `volume-o`   |
-| icon-size    | 左侧图标大小           | `string \| number`       | -            |
-| icon-color   | 左侧图标颜色           | `string`                 | `warning`    |
-| icon-weight  | 左侧图标粗细           | `string \| number`       | -            |
-| right-icon   | 右侧图标               | `string`                 | -            |
+| 参数              | 说明                   | 类型                     | 默认值       |
+| ----------------- | ---------------------- | ------------------------ | ------------ |
+| text              | 通知文本内容           | `string \| string[]`     | -            |
+| mode              | 滚动模式               | `horizontal \| vertical` | `horizontal` |
+| color             | 文本颜色               | `string`                 | -            |
+| speed             | 滚动速率(px/s)         | `number`                 | `60`         |
+| interval          | 垂直滚动时切换间隔(ms) | `number`                 | `3000`       |
+| duration          | 垂直滚动时动画时长(ms) | `number`                 | `500`        |
+| scrollable        | 是否开启滚动           | `boolean`                | `true`       |
+| min-height        | 最小高度               | `string \| number`       | `72rpx`      |
+| font-size         | 文本大小               | `string \| number`       | -            |
+| font-weight       | 文本粗细               | `string \| number`       | -            |
+| icon              | 左侧图标               | `string`                 | `volume-o`   |
+| icon-size         | 左侧图标大小           | `string \| number`       | -            |
+| icon-color        | 左侧图标颜色           | `string`                 | `warning`    |
+| icon-weight       | 左侧图标粗细           | `string \| number`       | -            |
+| right-icon        | 右侧图标               | `string`                 | -            |
 | right-icon-size   | 右侧图标大小           | `string \| number`       | -            |
 | right-icon-color  | 右侧图标颜色           | `string`                 | `warning`    |
 | right-icon-weight | 右侧图标粗细           | `string \| number`       | -            |
-| background   | 背景颜色               | `string`                 | -            |
-| custom-class | 自定义类名             | `string`                 | -            |
-| custom-style | 自定义样式             | `string \| object`       | -            |
+| background        | 背景颜色               | `string`                 | -            |
+| custom-class      | 自定义类名             | `string`                 | -            |
+| custom-style      | 自定义样式             | `string \| object`       | -            |
 
 ## Events
 

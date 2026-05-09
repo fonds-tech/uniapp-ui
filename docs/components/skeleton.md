@@ -108,45 +108,45 @@
 
 ## SkeletonTitle Props
 
-| 参数   | 说明 | 类型               | 默认值 |
-| ------ | ---- | ------------------ | ------ |
-| width  | 宽度 | `string \| number` | -      |
-| height | 高度 | `string \| number` | -      |
-| radius | 圆角 | `string \| number` | -      |
-| custom-class | 自定义类名 | `string` | - |
-| custom-style | 自定义样式 | `string \| object` | - |
+| 参数         | 说明       | 类型               | 默认值 |
+| ------------ | ---------- | ------------------ | ------ |
+| width        | 宽度       | `string \| number` | -      |
+| height       | 高度       | `string \| number` | -      |
+| radius       | 圆角       | `string \| number` | -      |
+| custom-class | 自定义类名 | `string`           | -      |
+| custom-style | 自定义样式 | `string \| object` | -      |
 
 ## SkeletonParagraph Props
 
-| 参数       | 说明     | 类型                        | 默认值 |
-| ---------- | -------- | --------------------------- | ------ |
-| row        | 行数     | `number`                    | `3`    |
-| row-width  | 每行宽度 | `string \| number \| array` | `100%` |
-| row-height | 行高     | `string \| number`          | -      |
-| row-gap    | 行间距   | `string \| number`          | -      |
-| custom-class | 自定义类名 | `string` | - |
-| custom-style | 自定义样式 | `string \| object` | - |
+| 参数         | 说明       | 类型                        | 默认值 |
+| ------------ | ---------- | --------------------------- | ------ |
+| row          | 行数       | `number`                    | `3`    |
+| row-width    | 每行宽度   | `string \| number \| array` | `100%` |
+| row-height   | 行高       | `string \| number`          | -      |
+| row-gap      | 行间距     | `string \| number`          | -      |
+| custom-class | 自定义类名 | `string`                    | -      |
+| custom-style | 自定义样式 | `string \| object`          | -      |
 
 ## SkeletonAvatar Props
 
-| 参数  | 说明     | 类型               | 默认值  |
-| ----- | -------- | ------------------ | ------- |
-| size  | 头像大小 | `string \| number` | -       |
-| shape | 头像形状 | `round \| square`  | `round` |
-| custom-class | 自定义类名 | `string` | - |
-| custom-style | 自定义样式 | `string \| object` | - |
+| 参数         | 说明       | 类型               | 默认值  |
+| ------------ | ---------- | ------------------ | ------- |
+| size         | 头像大小   | `string \| number` | -       |
+| shape        | 头像形状   | `round \| square`  | `round` |
+| custom-class | 自定义类名 | `string`           | -       |
+| custom-style | 自定义样式 | `string \| object` | -       |
 
 ## SkeletonImage Props
 
-| 参数   | 说明     | 类型               | 默认值 |
-| ------ | -------- | ------------------ | ------ |
-| size   | 图片大小 | `string \| number` | -      |
-| width  | 图片宽度 | `string \| number` | -      |
-| height | 图片高度 | `string \| number` | -      |
-| radius | 圆角     | `string \| number` | -      |
-| square | 是否正方 | `boolean`          | `false` |
-| custom-class | 自定义类名 | `string` | - |
-| custom-style | 自定义样式 | `string \| object` | - |
+| 参数         | 说明       | 类型               | 默认值  |
+| ------------ | ---------- | ------------------ | ------- |
+| size         | 图片大小   | `string \| number` | -       |
+| width        | 图片宽度   | `string \| number` | -       |
+| height       | 图片高度   | `string \| number` | -       |
+| radius       | 圆角       | `string \| number` | -       |
+| square       | 是否正方   | `boolean`          | `false` |
+| custom-class | 自定义类名 | `string`           | -       |
+| custom-style | 自定义样式 | `string \| object` | -       |
 
 ## SkeletonTitle / SkeletonParagraph / SkeletonAvatar / SkeletonImage Events
 

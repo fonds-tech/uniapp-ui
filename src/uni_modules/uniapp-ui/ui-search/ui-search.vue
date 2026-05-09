@@ -1,7 +1,7 @@
 <template>
   <view class="ui-search" :class="[props.customClass]" :style="[rootStyle]" role="search" @click="onClick">
     <view class="ui-search__content" :class="[contentClass]" :style="[contentStyle]">
-      <view v-if="$slots.left" class="ui-search__left">
+      <view class="ui-search__left">
         <slot name="left" />
       </view>
       <view class="ui-search__icon">

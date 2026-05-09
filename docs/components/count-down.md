@@ -93,16 +93,16 @@ function onFinish() {
 
 ## Props
 
-| 参数         | 说明               | 类型               | 默认值     |
-| ------------ | ------------------ | ------------------ | ---------- |
-| time         | 倒计时时长(ms)     | `string \| number` | -          |
-| format       | 时间格式           | `string`           | `HH:mm:ss` |
-| auto-start   | 是否自动开始倒计时 | `boolean`          | `true`     |
-| millisecond  | 是否开启毫秒级渲染 | `boolean`          | `false`    |
-| mode         | 计时模式           | `countdown \| countup` | `countdown` |
-| target-time  | 目标时间戳(ms)，设置后优先于 time | `string \| number` | `0` |
-| custom-class | 自定义类名         | `string`           | -          |
-| custom-style | 自定义样式         | `string \| object` | -          |
+| 参数         | 说明                              | 类型                   | 默认值      |
+| ------------ | --------------------------------- | ---------------------- | ----------- |
+| time         | 倒计时时长(ms)                    | `string \| number`     | -           |
+| format       | 时间格式                          | `string`               | `HH:mm:ss`  |
+| auto-start   | 是否自动开始倒计时                | `boolean`              | `true`      |
+| millisecond  | 是否开启毫秒级渲染                | `boolean`              | `false`     |
+| mode         | 计时模式                          | `countdown \| countup` | `countdown` |
+| target-time  | 目标时间戳(ms)，设置后优先于 time | `string \| number`     | `0`         |
+| custom-class | 自定义类名                        | `string`               | -           |
+| custom-style | 自定义样式                        | `string \| object`     | -           |
 
 ## format 格式说明
 
@@ -131,18 +131,18 @@ function onFinish() {
 
 ## Slots
 
-| 名称    | 说明       | 参数              |
-| ------- | ---------- | ----------------- |
+| 名称    | 说明       | 参数                 |
+| ------- | ---------- | -------------------- |
 | default | 自定义内容 | `{ time: timeData }` |
 
 ## timeData 结构
 
-| 属性         | 说明     | 类型     |
-| ------------ | -------- | -------- |
-| days         | 剩余天数 | `number` |
-| hours        | 剩余小时 | `number` |
-| minutes      | 剩余分钟 | `number` |
-| seconds      | 剩余秒数 | `number` |
-| milliseconds | 剩余毫秒 | `number` |
-| total        | 初始总时间(ms) | `number` |
+| 属性         | 说明                  | 类型     |
+| ------------ | --------------------- | -------- |
+| days         | 剩余天数              | `number` |
+| hours        | 剩余小时              | `number` |
+| minutes      | 剩余分钟              | `number` |
+| seconds      | 剩余秒数              | `number` |
+| milliseconds | 剩余毫秒              | `number` |
+| total        | 初始总时间(ms)        | `number` |
 | current      | 当前剩余/已过时间(ms) | `number` |

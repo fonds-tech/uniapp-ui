@@ -83,14 +83,13 @@ const show = ref(false)
 | ------- | ---------- |
 | default | 遮罩层内容 |
 
-
 <!-- AUTO-PROPS-SUPPLEMENT: ui-overlay -->
+
 ## Overlay Props 补充（源码新增）
 
 以下参数已在最新源码中支持，本文档补充如下：
 
-| 参数 |
-| --- |
+| 参数                    |
+| ----------------------- |
 | `enter-timing-function` |
 | `leave-timing-function` |
-

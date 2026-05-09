@@ -137,32 +137,32 @@ const value = ref("1")
 
 ## Radio Props
 
-| 参数                | 说明               | 类型                | 默认值    |
-| ------------------- | ------------------ | ------------------- | --------- |
-| name                | 标识符（必填）     | `string \| number`  | -         |
-| v-model             | 当前选中的值       | `string \| number \| boolean` | `""` |
-| label               | 文本内容           | `string \| number`  | `""`    |
-| disabled            | 是否禁用           | `boolean`           | `false`   |
-| readonly            | 是否只读           | `boolean`           | `false`   |
-| bind-group          | 是否与 RadioGroup 绑定 | `boolean`        | `true`    |
-| icon                | 图标名称           | `string`            | `check`   |
-| shape               | 形状               | `icon \| dot \| ""` | `""`   |
-| round               | 是否圆形图标       | `boolean`           | `true`    |
-| checked-color       | 选中时的颜色       | `string`            | `""`    |
-| icon-size           | 图标大小           | `string \| number`  | `""`    |
-| icon-color          | 图标颜色           | `string`            | `""`    |
-| icon-weight         | 图标粗细           | `string \| number`  | `""`    |
-| icon-radius         | 图标圆角           | `string \| number`  | `""`    |
-| label-size          | 文本大小           | `string \| number`  | `""`    |
-| label-color         | 文本颜色           | `string`            | `""`    |
-| label-weight        | 文本粗细           | `string \| number`  | `""`    |
-| label-gap           | 文本与图标间距     | `string \| number`  | `""`    |
-| label-left          | 文本是否在左侧     | `boolean`           | `false`   |
-| label-disabled      | 是否禁用文本点击   | `boolean`           | `false`   |
-| checked-icon-color  | 选中时图标颜色     | `string`            | `primary` |
-| checked-label-color | 选中时文本颜色     | `string`            | `""`    |
-| custom-class        | 自定义类名         | `string`            | `""`    |
-| custom-style        | 自定义样式         | `string \| object`  | `""`    |
+| 参数                | 说明                   | 类型                          | 默认值    |
+| ------------------- | ---------------------- | ----------------------------- | --------- |
+| name                | 标识符（必填）         | `string \| number`            | -         |
+| v-model             | 当前选中的值           | `string \| number \| boolean` | `""`      |
+| label               | 文本内容               | `string \| number`            | `""`      |
+| disabled            | 是否禁用               | `boolean`                     | `false`   |
+| readonly            | 是否只读               | `boolean`                     | `false`   |
+| bind-group          | 是否与 RadioGroup 绑定 | `boolean`                     | `true`    |
+| icon                | 图标名称               | `string`                      | `check`   |
+| shape               | 形状                   | `icon \| dot \| ""`           | `""`      |
+| round               | 是否圆形图标           | `boolean`                     | `true`    |
+| checked-color       | 选中时的颜色           | `string`                      | `""`      |
+| icon-size           | 图标大小               | `string \| number`            | `""`      |
+| icon-color          | 图标颜色               | `string`                      | `""`      |
+| icon-weight         | 图标粗细               | `string \| number`            | `""`      |
+| icon-radius         | 图标圆角               | `string \| number`            | `""`      |
+| label-size          | 文本大小               | `string \| number`            | `""`      |
+| label-color         | 文本颜色               | `string`                      | `""`      |
+| label-weight        | 文本粗细               | `string \| number`            | `""`      |
+| label-gap           | 文本与图标间距         | `string \| number`            | `""`      |
+| label-left          | 文本是否在左侧         | `boolean`                     | `false`   |
+| label-disabled      | 是否禁用文本点击       | `boolean`                     | `false`   |
+| checked-icon-color  | 选中时图标颜色         | `string`                      | `primary` |
+| checked-label-color | 选中时文本颜色         | `string`                      | `""`      |
+| custom-class        | 自定义类名             | `string`                      | `""`      |
+| custom-style        | 自定义样式             | `string \| object`            | `""`      |
 
 ## Radio Events
 
@@ -174,9 +174,9 @@ const value = ref("1")
 
 ## Radio Slots
 
-| 名称    | 说明       |
-| ------- | ---------- |
-| default | 文本内容   |
+| 名称    | 说明                                  |
+| ------- | ------------------------------------- |
+| default | 文本内容                              |
 | icon    | 图标插槽（作用域：checked, disabled） |
 
 ## Radio Methods/Expose
@@ -187,30 +187,30 @@ const value = ref("1")
 
 ## RadioGroup Props
 
-| 参数                | 说明                               | 类型               | 默认值    |
-| ------------------- | ---------------------------------- | ------------------ | --------- |
-| v-model             | 当前选中的值                       | `string \| number` | `""`    |
-| gap                 | 选项间距                           | `string \| number` | `0`       |
-| columns             | 网格布局列数                       | `string \| number` | `""`    |
-| disabled            | 是否禁用所有选项                   | `boolean`          | `false`   |
-| icon                | 图标名称                           | `string`           | `""`    |
-| shape               | 形状                               | `icon \| dot`      | `dot`     |
-| round               | 是否圆形图标                       | `boolean`          | `true`    |
-| checked-color       | 选中时的颜色                       | `string`           | `""`    |
-| icon-size           | 图标大小                           | `string \| number` | `36rpx`   |
-| icon-color          | 图标颜色                           | `string`           | `""`    |
-| icon-weight         | 图标粗细                           | `string \| number` | `""`    |
-| icon-radius         | 图标圆角                           | `string \| number` | `""`    |
-| label-size          | 文本大小                           | `string \| number` | `""`    |
-| label-color         | 文本颜色                           | `string`           | `""`    |
-| label-weight        | 文本粗细                           | `string \| number` | `""`    |
-| label-gap           | 文本与图标间距                     | `string \| number` | `""`    |
-| label-left          | 文本是否在左侧                     | `boolean`          | `false`   |
-| label-disabled      | 是否禁用文本点击                   | `boolean`          | `false`   |
-| checked-icon-color  | 选中时图标颜色                     | `string`           | `primary` |
-| checked-label-color | 选中时文本颜色                     | `string`           | `""`    |
-| custom-class        | 自定义类名                         | `string`           | `""`    |
-| custom-style        | 自定义样式                         | `string \| object` | `""`    |
+| 参数                | 说明             | 类型               | 默认值    |
+| ------------------- | ---------------- | ------------------ | --------- |
+| v-model             | 当前选中的值     | `string \| number` | `""`      |
+| gap                 | 选项间距         | `string \| number` | `0`       |
+| columns             | 网格布局列数     | `string \| number` | `""`      |
+| disabled            | 是否禁用所有选项 | `boolean`          | `false`   |
+| icon                | 图标名称         | `string`           | `""`      |
+| shape               | 形状             | `icon \| dot`      | `dot`     |
+| round               | 是否圆形图标     | `boolean`          | `true`    |
+| checked-color       | 选中时的颜色     | `string`           | `""`      |
+| icon-size           | 图标大小         | `string \| number` | `36rpx`   |
+| icon-color          | 图标颜色         | `string`           | `""`      |
+| icon-weight         | 图标粗细         | `string \| number` | `""`      |
+| icon-radius         | 图标圆角         | `string \| number` | `""`      |
+| label-size          | 文本大小         | `string \| number` | `""`      |
+| label-color         | 文本颜色         | `string`           | `""`      |
+| label-weight        | 文本粗细         | `string \| number` | `""`      |
+| label-gap           | 文本与图标间距   | `string \| number` | `""`      |
+| label-left          | 文本是否在左侧   | `boolean`          | `false`   |
+| label-disabled      | 是否禁用文本点击 | `boolean`          | `false`   |
+| checked-icon-color  | 选中时图标颜色   | `string`           | `primary` |
+| checked-label-color | 选中时文本颜色   | `string`           | `""`      |
+| custom-class        | 自定义类名       | `string`           | `""`      |
+| custom-style        | 自定义样式       | `string \| object` | `""`      |
 
 ## RadioGroup Events
 
@@ -222,8 +222,8 @@ const value = ref("1")
 
 ## RadioGroup Slots
 
-| 名称    | 说明 |
-| ------- | ---- |
+| 名称    | 说明       |
+| ------- | ---------- |
 | default | 单选项内容 |
 
 ## RadioGroup Methods

@@ -91,31 +91,31 @@ const active = ref("a")
 
 ## Tabs Props
 
-| 参数                   | 说明                         | 类型               | 默认值    |
-| ---------------------- | ---------------------------- | ------------------ | --------- |
-| v-model                | 当前选中标签名称或索引       | `string \| number` | `0`       |
-| height                 | 标签栏高度                   | `string \| number` | -         |
-| scrollable             | 是否可滚动                   | `boolean`          | `false`   |
-| active-size            | 选中标签字体大小             | `string \| number` | -         |
-| active-color           | 选中标签颜色                 | `string`           | -         |
-| active-weight          | 选中标签字重                 | `string \| number` | -         |
-| inactive-size          | 未选中标签字体大小           | `string \| number` | -         |
-| inactive-color         | 未选中标签颜色               | `string`           | -         |
-| inactive-weight        | 未选中标签字重               | `string \| number` | -         |
-| indicator-color        | 指示器颜色                   | `string`           | -         |
-| indicator-width        | 指示器宽度                   | `string \| number` | `40rpx`   |
-| indicator-height       | 指示器高度                   | `string \| number` | -         |
-| indicator-radius       | 指示器圆角                   | `string \| number` | -         |
-| show-indicator         | 是否显示指示器               | `boolean`          | `true`    |
-| auto-indicator-width   | 指示器宽度是否自动匹配文字   | `boolean`          | `false`   |
-| item-width             | 单个标签宽度                 | `string \| number` | -         |
-| item-max-width         | 单个标签最大宽度             | `string \| number` | -         |
-| background             | 背景颜色                     | `string`           | -         |
-| duration               | 指示器动画时长(ms)           | `number`           | `300`     |
-| border-bottom          | 是否显示底部边框             | `boolean`          | `false`   |
-| z-index                | 层级                         | `string \| number` | -         |
-| custom-class           | 自定义类名                   | `string`           | -         |
-| custom-style           | 自定义样式                   | `string \| object` | -         |
+| 参数                 | 说明                       | 类型               | 默认值  |
+| -------------------- | -------------------------- | ------------------ | ------- |
+| v-model              | 当前选中标签名称或索引     | `string \| number` | `0`     |
+| height               | 标签栏高度                 | `string \| number` | -       |
+| scrollable           | 是否可滚动                 | `boolean`          | `false` |
+| active-size          | 选中标签字体大小           | `string \| number` | -       |
+| active-color         | 选中标签颜色               | `string`           | -       |
+| active-weight        | 选中标签字重               | `string \| number` | -       |
+| inactive-size        | 未选中标签字体大小         | `string \| number` | -       |
+| inactive-color       | 未选中标签颜色             | `string`           | -       |
+| inactive-weight      | 未选中标签字重             | `string \| number` | -       |
+| indicator-color      | 指示器颜色                 | `string`           | -       |
+| indicator-width      | 指示器宽度                 | `string \| number` | `40rpx` |
+| indicator-height     | 指示器高度                 | `string \| number` | -       |
+| indicator-radius     | 指示器圆角                 | `string \| number` | -       |
+| show-indicator       | 是否显示指示器             | `boolean`          | `true`  |
+| auto-indicator-width | 指示器宽度是否自动匹配文字 | `boolean`          | `false` |
+| item-width           | 单个标签宽度               | `string \| number` | -       |
+| item-max-width       | 单个标签最大宽度           | `string \| number` | -       |
+| background           | 背景颜色                   | `string`           | -       |
+| duration             | 指示器动画时长(ms)         | `number`           | `300`   |
+| border-bottom        | 是否显示底部边框           | `boolean`          | `false` |
+| z-index              | 层级                       | `string \| number` | -       |
+| custom-class         | 自定义类名                 | `string`           | -       |
+| custom-style         | 自定义样式                 | `string \| object` | -       |
 
 ## Tabs Events
 
@@ -149,8 +149,8 @@ const active = ref("a")
 
 ## Tab Slots
 
-| 名称    | 说明                           |
-| ------- | ------------------------------ |
+| 名称    | 说明                                       |
+| ------- | ------------------------------------------ |
 | default | 自定义标签内容（作用域：active、disabled） |
 
 ## Methods

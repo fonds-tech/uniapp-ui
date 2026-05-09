@@ -25,7 +25,11 @@ const model = computed({ get: () => props.model, set: (v) => emits("update:model
 
 // 子组件深层 mutation（如 form-item resetField + setDeepValue）不会触发 set，
 // 这里 deep watch 兜底，让 v-model:model 能拿到任意字段变化（同对象引用，不致循环）
-watch(() => props.model, (v) => emits("update:model", v), { deep: true })
+watch(
+  () => props.model,
+  (v) => emits("update:model", v),
+  { deep: true },
+)
 const maxLabelWidth = computed(() => {
   const widths = Object.values(labelWidthMap).filter((w) => w > 0)
   return widths.length > 0 ? Math.max(...widths) : 0
@@ -48,9 +52,7 @@ function unregisterLabelWidth(uid: number) {
 }
 
 function getFieldsByProps(fieldProps?: string[]) {
-  return fieldProps
-    ? childrens.filter((f) => fieldProps.includes(f.exposed.props.prop))
-    : childrens.filter((f) => f.exposed.props.prop)
+  return fieldProps ? childrens.filter((f) => fieldProps.includes(f.exposed.props.prop)) : childrens.filter((f) => f.exposed.props.prop)
 }
 
 function getValues() {

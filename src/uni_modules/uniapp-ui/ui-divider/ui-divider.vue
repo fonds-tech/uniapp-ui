@@ -16,17 +16,16 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from "vue"
 import { dividerProps } from "./index"
-import { computed, useSlots } from "vue"
-import { useUnit, useColor, useStyle } from "../hooks"
+import { useUnit, useColor, useStyle, useHasSlot } from "../hooks"
 
 defineOptions({ name: "ui-divider" })
 
 const props = defineProps(dividerProps)
-const slots = useSlots()
 
-// 是否有内容
-const hasContent = computed(() => !!slots.default)
+// 是否有内容（运行期检测 VNode，兼容小程序 slot 函数恒 truthy）
+const hasContent = useHasSlot("default")
 
 // 实际使用的线条类型（dashed 快捷属性优先）
 const lineType = computed(() => (props.dashed ? "dashed" : props.type))

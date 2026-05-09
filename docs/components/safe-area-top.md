@@ -65,11 +65,11 @@ function onHeight(height) {
 | height | 获取到安全区高度时触发 | `height: number` |
 
 <!-- AUTO-SLOTS-SUPPLEMENT: ui-safe-area-top -->
+
 ## SafeAreaTop Slots 补充（源码新增）
 
 以下能力已在最新源码中提供，补充如下：
 
-| 插槽名 |
-| --- |
+| 插槽名    |
+| --------- |
 | `default` |
-

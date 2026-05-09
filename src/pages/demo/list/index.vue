@@ -134,7 +134,11 @@ const finishCase = useList("完成项")
 const customCase = useList("自定义项", { delay: 1500 })
 
 // 商品列表
-interface Product { id: number; title: string; price: number }
+interface Product {
+  id: number
+  title: string
+  price: number
+}
 const product = reactive({
   list: [] as Product[],
   loading: false,

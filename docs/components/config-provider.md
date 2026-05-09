@@ -125,22 +125,23 @@ const cssVars = {
 | default | 默认插槽，放置应用内容 |
 
 <!-- AUTO-EVENTS-SUPPLEMENT: ui-config-provider -->
+
 ## ConfigProvider Events 补充（源码新增）
 
 以下能力已在最新源码中提供，补充如下：
 
-| 事件名 |
-| --- |
-| `scroll` |
-| `reach-top` |
+| 事件名         |
+| -------------- |
+| `scroll`       |
+| `reach-top`    |
 | `reach-bottom` |
 
 <!-- AUTO-METHODS-SUPPLEMENT: ui-config-provider -->
+
 ## ConfigProvider Methods/Expose 补充（源码新增）
 
 以下能力已在最新源码中提供，补充如下：
 
 | 方法/字段 |
-| --- |
-| `mitt` |
-
+| --------- |
+| `mitt`    |

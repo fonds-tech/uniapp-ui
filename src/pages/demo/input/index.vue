@@ -101,7 +101,15 @@
     <demo-section title="事件 (focus / blur / confirm / clear / click)" :card="false">
       <ui-cell-group>
         <ui-cell title="操作">
-          <ui-input v-model="state.event" placeholder="操作并查看日志" @focus="log('focus')" @blur="log('blur')" @confirm="log('confirm')" @clear="log('clear')" @click="log('click')" />
+          <ui-input
+            v-model="state.event"
+            placeholder="操作并查看日志"
+            @focus="log('focus')"
+            @blur="log('blur')"
+            @confirm="log('confirm')"
+            @clear="log('clear')"
+            @click="log('click')"
+          />
         </ui-cell>
         <ui-cell :title="eventLog" />
       </ui-cell-group>
@@ -124,7 +132,16 @@
 
     <demo-section title="场景：搜索栏" desc="圆角 + prefix + clearable" :card="false">
       <view class="search-wrap">
-        <ui-input v-model="state.searchBar" prefix-icon="search" radius="999rpx" padding="16rpx 24rpx" background="#f5f5f5" confirm-type="search" placeholder="搜索商品 / 店铺 / 用户" @confirm="onConfirm" />
+        <ui-input
+          v-model="state.searchBar"
+          prefix-icon="search"
+          radius="999rpx"
+          padding="16rpx 24rpx"
+          background="#f5f5f5"
+          confirm-type="search"
+          placeholder="搜索商品 / 店铺 / 用户"
+          @confirm="onConfirm"
+        />
       </view>
     </demo-section>
   </demo-page>
@@ -147,9 +164,9 @@ const aligns = ["left", "center", "right"] as const
 const state = reactive({
   basic: "",
   typed: "",
-  type: "text" as typeof types[number],
+  type: "text" as (typeof types)[number],
   aligned: "",
-  align: "left" as typeof aligns[number],
+  align: "left" as (typeof aligns)[number],
   clear1: "可以清除的内容",
   clear2: "",
   prefix: "",
@@ -171,7 +188,10 @@ const loginForm = ref<FormInstance>()
 const login = reactive({ account: "", password: "" })
 const loginRules: FormRules = {
   account: [{ required: true, message: "请输入账号" }],
-  password: [{ required: true, message: "请输入密码" }, { min: 6, message: "密码至少 6 位" }],
+  password: [
+    { required: true, message: "请输入密码" },
+    { min: 6, message: "密码至少 6 位" },
+  ],
 }
 
 function log(name: string) {

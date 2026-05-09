@@ -1,7 +1,7 @@
 <template>
   <view class="ui-arc" :class="[classNames, props.customClass]" :style="[containerStyle]" @click="emits('click')">
     <view class="ui-arc__inner" />
-    <view v-if="$slots.default" class="ui-arc__content">
+    <view class="ui-arc__content">
       <slot />
     </view>
   </view>
@@ -78,6 +78,11 @@ export default {
   &__content {
     z-index: var(--ui-z-index-base);
     position: relative;
+
+    // 空 slot 不占布局
+    &:empty {
+      display: none;
+    }
   }
 
   &--fixed {

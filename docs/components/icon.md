@@ -58,20 +58,19 @@
 | ------ | -------------- | -------- |
 | click  | 点击图标时触发 | -        |
 
-
 <!-- AUTO-PROPS-SUPPLEMENT: ui-icon -->
+
 ## Icon Props 补充（源码新增）
 
 以下参数已在最新源码中支持，本文档补充如下：
 
-| 参数 |
-| --- |
-| `radius` |
-| `width` |
-| `height` |
-| `line-height` |
-| `image-mode` |
-| `background` |
+| 参数            |
+| --------------- |
+| `radius`        |
+| `width`         |
+| `height`        |
+| `line-height`   |
+| `image-mode`    |
+| `background`    |
 | `custom-prefix` |
-| `hover-class` |
-
+| `hover-class`   |

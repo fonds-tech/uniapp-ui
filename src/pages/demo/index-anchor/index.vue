@@ -32,7 +32,16 @@
     <demo-section title="吸顶激活样式" desc="stickyColor / stickyFontSize / stickyFontWeight / stickyBackground">
       <view class="anchor-demo">
         <ui-index-bar :indexs="['A', 'B', 'C']">
-          <ui-index-anchor v-for="g in stickyGroups" :key="g.name" :name="g.name" :text="g.name" sticky-color="#1989fa" sticky-font-size="32rpx" sticky-font-weight="700" sticky-background="#e8f4ff" />
+          <ui-index-anchor
+            v-for="g in stickyGroups"
+            :key="g.name"
+            :name="g.name"
+            :text="g.name"
+            sticky-color="#1989fa"
+            sticky-font-size="32rpx"
+            sticky-font-weight="700"
+            sticky-background="#e8f4ff"
+          />
         </ui-index-bar>
       </view>
       <text class="demo-tip">滚动列表，命中锚点切换吸顶样式</text>

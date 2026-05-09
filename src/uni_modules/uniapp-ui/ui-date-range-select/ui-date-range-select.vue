@@ -72,16 +72,16 @@
       @cancel="handleCancel"
       @confirm="handleConfirm"
     >
-      <template v-if="$slots.header" #header>
+      <template v-if="hasHeaderSlot" #header>
         <slot name="header" />
       </template>
-      <template v-if="$slots.cancel" #cancel>
+      <template v-if="hasCancelSlot" #cancel>
         <slot name="cancel" />
       </template>
-      <template v-if="$slots.confirm" #confirm>
+      <template v-if="hasConfirmSlot" #confirm>
         <slot name="confirm" />
       </template>
-      <template v-if="$slots.footer" #footer="slotProps">
+      <template v-if="hasFooterSlot" #footer="slotProps">
         <slot name="footer" :confirm="slotProps.confirm" :cancel="slotProps.cancel" />
       </template>
     </ui-date-range-picker>
@@ -94,8 +94,8 @@ import type { DateRangeSelectValue, DateRangeSelectActiveType, DateRangeSelectCa
 import UiDateRangePicker from "../ui-date-range-picker/ui-date-range-picker.vue"
 import { formItemKey } from "../ui-form-item"
 import { ref, watch, computed, useSlots } from "vue"
-import { useUnit, useColor, useStyle, useParent } from "../hooks"
 import { dateRangeSelectEmits, dateRangeSelectProps } from "./index"
+import { useUnit, useColor, useStyle, useParent, useHasSlot } from "../hooks"
 
 defineOptions({ name: "ui-date-range-select" })
 
@@ -174,6 +174,11 @@ const endDisplayText = computed(() => {
   }
   return formatDisplayText(endValue.value)
 })
+
+const hasHeaderSlot = useHasSlot("header")
+const hasCancelSlot = useHasSlot("cancel")
+const hasConfirmSlot = useHasSlot("confirm")
+const hasFooterSlot = useHasSlot("footer")
 
 watch(
   () => props.modelValue,

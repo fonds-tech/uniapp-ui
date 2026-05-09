@@ -58,7 +58,16 @@
 
     <demo-section title="标题样式">
       <ui-cell padding="0" title="自定义标题" :value="value12Text || '请选择'" @click="show12 = true" />
-      <ui-cascader v-model="value12" v-model:show="show12" title="自定义标题样式" :options="areaOptions" title-size="36rpx" title-color="#ee0a24" title-weight="700" @finish="onFinish12" />
+      <ui-cascader
+        v-model="value12"
+        v-model:show="show12"
+        title="自定义标题样式"
+        :options="areaOptions"
+        title-size="36rpx"
+        title-color="#ee0a24"
+        title-weight="700"
+        @finish="onFinish12"
+      />
     </demo-section>
 
     <demo-section title="事件监听">

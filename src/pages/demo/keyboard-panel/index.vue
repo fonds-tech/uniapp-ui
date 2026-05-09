@@ -69,9 +69,9 @@ const value6 = ref("")
 
 <style lang="scss" scoped>
 .panel-box {
+  overflow: hidden;
   border-radius: 16rpx;
   background-color: var(--ui-color-background);
-  overflow: hidden;
 }
 
 .demo-text {

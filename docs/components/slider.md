@@ -194,7 +194,7 @@ const rangeValue = ref([20, 80])
 | --ui-color-primary         | -      | 激活轨道颜色   |
 | --ui-color-background      | -      | 滑块按钮颜色   |
 | --ui-color-background-dark | -      | 非激活轨道颜色 |
-| --ui-color-text    | -      | 值提示背景颜色 |
+| --ui-color-text            | -      | 值提示背景颜色 |
 | --ui-font-size-xs          | -      | 值提示文字大小 |
 | --ui-radius-round          | -      | 圆角大小       |
 
@@ -205,14 +205,13 @@ const rangeValue = ref([20, 80])
 3. 垂直模式下，需要设置容器高度或使用默认高度（300rpx）
 4. 在小程序中，建议使用 `touch` 事件而非 `click` 事件以获得更好的体验
 
-
 <!-- AUTO-PROPS-SUPPLEMENT: ui-slider -->
+
 ## Slider Props 补充（源码新增）
 
 以下参数已在最新源码中支持，本文档补充如下：
 
-| 参数 |
-| --- |
-| `handle-size` |
+| 参数           |
+| -------------- |
+| `handle-size`  |
 | `handle-color` |
-

@@ -99,31 +99,31 @@ function showDuration() {
 
 ## NotifyOptions
 
-| 参数         | 说明         | 类型                                      |
-| ------------ | ------------ | ----------------------------------------- |
-| show         | 是否显示     | `boolean`                                  |
-| type         | 通知类型     | `primary \| success \| warning \| danger` |
-| content      | 通知内容     | `string`                                  |
-| duration     | 展示时长(ms) | `number \| string`                        |
-| color        | 字体颜色     | `string`                                  |
-| fontSize     | 字体大小     | `string \| number`                        |
-| fontWeight   | 字体粗细     | `string \| number`                        |
-| background   | 背景颜色     | `string`                                  |
-| zIndex       | 层级         | `string \| number`                        |
-| offsetTop    | 顶部偏移     | `string \| number`                        |
-| customClass  | 自定义类名   | `string`                                  |
-| customStyle  | 自定义样式   | `string \| object`                        |
+| 参数        | 说明         | 类型                                      |
+| ----------- | ------------ | ----------------------------------------- |
+| show        | 是否显示     | `boolean`                                 |
+| type        | 通知类型     | `primary \| success \| warning \| danger` |
+| content     | 通知内容     | `string`                                  |
+| duration    | 展示时长(ms) | `number \| string`                        |
+| color       | 字体颜色     | `string`                                  |
+| fontSize    | 字体大小     | `string \| number`                        |
+| fontWeight  | 字体粗细     | `string \| number`                        |
+| background  | 背景颜色     | `string`                                  |
+| zIndex      | 层级         | `string \| number`                        |
+| offsetTop   | 顶部偏移     | `string \| number`                        |
+| customClass | 自定义类名   | `string`                                  |
+| customStyle | 自定义样式   | `string \| object`                        |
 
 ## Events
 
-| 事件名        | 说明               | 回调参数 |
-| ------------- | ------------------ | -------- |
-| click         | 点击通知时触发     | -        |
-| open          | 打开时触发         | -        |
-| opened        | 打开动画结束时触发 | -        |
-| close         | 关闭时触发         | -        |
-| closed        | 关闭动画结束时触发 | -        |
-| update:show   | 更新显示状态       | `show: boolean` |
+| 事件名      | 说明               | 回调参数        |
+| ----------- | ------------------ | --------------- |
+| click       | 点击通知时触发     | -               |
+| open        | 打开时触发         | -               |
+| opened      | 打开动画结束时触发 | -               |
+| close       | 关闭时触发         | -               |
+| closed      | 关闭动画结束时触发 | -               |
+| update:show | 更新显示状态       | `show: boolean` |
 
 ## Slots
 

@@ -199,7 +199,13 @@
     </demo-section>
 
     <demo-section title="自定义样式" desc="customClass / customStyle">
-      <ui-checkbox v-model="customCheck" shape="icon" custom-class="custom-checkbox" :custom-style="{ padding: '16rpx 24rpx', background: '#f5f6fa', borderRadius: '12rpx' }" label="带容器样式" />
+      <ui-checkbox
+        v-model="customCheck"
+        shape="icon"
+        custom-class="custom-checkbox"
+        :custom-style="{ padding: '16rpx 24rpx', background: '#f5f6fa', borderRadius: '12rpx' }"
+        label="带容器样式"
+      />
     </demo-section>
 
     <demo-section title="事件监听" desc="click / change">

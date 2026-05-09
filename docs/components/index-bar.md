@@ -65,11 +65,11 @@ function onSelect(index) {
 | index | 索引字符 | `string \| number` | -      |
 
 <!-- AUTO-METHODS-SUPPLEMENT: ui-index-bar -->
+
 ## IndexBar Methods/Expose 补充（源码新增）
 
 以下能力已在最新源码中提供，补充如下：
 
 | 方法/字段 |
-| --- |
-| `resize` |
-
+| --------- |
+| `resize`  |

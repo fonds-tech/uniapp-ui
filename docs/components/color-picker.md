@@ -44,28 +44,28 @@ const color = ref("")
 
 ## Props
 
-| 参数          | 说明             | 类型                          | 默认值 |
-| ------------- | ---------------- | ----------------------------- | ------ |
-| v-model       | 当前颜色值       | `string`                      | `''` |
-| v-model:show  | 是否显示弹窗     | `boolean`                     | `false` |
-| title         | 弹窗标题         | `string`                      | `''` |
+| 参数          | 说明             | 类型                             | 默认值     |
+| ------------- | ---------------- | -------------------------------- | ---------- |
+| v-model       | 当前颜色值       | `string`                         | `''`       |
+| v-model:show  | 是否显示弹窗     | `boolean`                        | `false`    |
+| title         | 弹窗标题         | `string`                         | `''`       |
 | size          | 面板尺寸         | `'small' \| 'medium' \| 'large'` | `'medium'` |
-| show-alpha    | 是否显示透明度   | `boolean`                     | `false` |
-| show-input    | 是否显示输入框   | `boolean`                     | `true` |
-| show-presets  | 是否显示预设色板 | `boolean`                     | `true` |
-| columns       | 预设色板每行列数 | `number`                      | `10` |
-| preset-colors | 预设颜色列表     | `string[]`                    | `[]` |
-| format        | 输出颜色格式     | `'hex' \| 'rgb' \| 'hsl'`   | `'hex'` |
-| custom-class  | 自定义类名       | `string`                      | `''` |
-| custom-style  | 自定义样式       | `string \| object`           | `''` |
+| show-alpha    | 是否显示透明度   | `boolean`                        | `false`    |
+| show-input    | 是否显示输入框   | `boolean`                        | `true`     |
+| show-presets  | 是否显示预设色板 | `boolean`                        | `true`     |
+| columns       | 预设色板每行列数 | `number`                         | `10`       |
+| preset-colors | 预设颜色列表     | `string[]`                       | `[]`       |
+| format        | 输出颜色格式     | `'hex' \| 'rgb' \| 'hsl'`        | `'hex'`    |
+| custom-class  | 自定义类名       | `string`                         | `''`       |
+| custom-style  | 自定义样式       | `string \| object`               | `''`       |
 
 ## Events
 
-| 事件名            | 说明           | 回调参数 |
-| ----------------- | -------------- | -------- |
-| update:modelValue | 更新绑定值     | `value: string` |
-| update:show       | 更新弹窗显示状态 | `value: boolean` |
-| change            | 颜色确认变更后触发 | `value: string` |
-| confirm           | 点击确认时触发 | `value: string` |
-| cancel            | 点击取消时触发 | - |
-| close             | 弹窗关闭时触发 | - |
+| 事件名            | 说明               | 回调参数         |
+| ----------------- | ------------------ | ---------------- |
+| update:modelValue | 更新绑定值         | `value: string`  |
+| update:show       | 更新弹窗显示状态   | `value: boolean` |
+| change            | 颜色确认变更后触发 | `value: string`  |
+| confirm           | 点击确认时触发     | `value: string`  |
+| cancel            | 点击取消时触发     | -                |
+| close             | 弹窗关闭时触发     | -                |

@@ -7,7 +7,7 @@
     <slot name="text">
       <text class="ui-empty__text" :style="[textStyle]">{{ props.text }}</text>
     </slot>
-    <view v-if="$slots.footer" class="ui-empty__footer">
+    <view class="ui-empty__footer">
       <slot name="footer" />
     </view>
   </view>
@@ -83,6 +83,11 @@ export default {
 
   &__footer {
     margin-top: var(--ui-spacing-xl);
+
+    // 空 footer 不占布局，避免多余 margin-top 留白
+    &:empty {
+      display: none;
+    }
   }
 }
 </style>

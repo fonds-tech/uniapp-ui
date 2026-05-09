@@ -62,11 +62,11 @@
 | default | 自定义加载图标 |
 
 <!-- AUTO-SLOTS-SUPPLEMENT: ui-loading -->
+
 ## Loading Slots 补充（源码新增）
 
 以下能力已在最新源码中提供，补充如下：
 
 | 插槽名 |
-| --- |
+| ------ |
 | `icon` |
-

@@ -81,11 +81,11 @@
 | blur   | 失去焦点时触发 | -        |
 
 <!-- AUTO-SLOTS-SUPPLEMENT: ui-index-anchor -->
+
 ## IndexAnchor Slots 补充（源码新增）
 
 以下能力已在最新源码中提供，补充如下：
 
-| 插槽名 |
-| --- |
+| 插槽名    |
+| --------- |
 | `default` |
-

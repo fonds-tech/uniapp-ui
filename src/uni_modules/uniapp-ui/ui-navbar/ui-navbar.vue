@@ -4,24 +4,22 @@
       <view class="ui-navbar__status-bar" :style="[statusBarStyle]" />
       <view class="ui-navbar__body" :style="[bodyStyle]">
         <view class="ui-navbar__left">
-          <slot v-if="hasLeftSlot" name="left" />
-          <view v-else-if="props.showBack" class="ui-navbar__back" @click="onClickBack">
-            <slot name="back">
-              <ui-icon :name="backIcon" :color="resolvedBackIconColor" :size="props.backIconSize" />
-            </slot>
-            <view v-if="props.backText" class="ui-navbar__back__text">
-              {{ props.backText }}
+          <slot name="left">
+            <view v-if="props.showBack" class="ui-navbar__back" @click="onClickBack">
+              <slot name="back">
+                <ui-icon :name="backIcon" :color="resolvedBackIconColor" :size="props.backIconSize" />
+              </slot>
+              <view v-if="props.backText" class="ui-navbar__back__text">
+                {{ props.backText }}
+              </view>
             </view>
-          </view>
-        </view>
-
-        <view v-if="props.title || hasTitleSlot" class="ui-navbar__title" :class="{ 'is-center': props.centerTitle }" :style="[titleStyle]" @click="onTitleClick">
-          <slot name="title">
-            <text class="ui-navbar__title__text">{{ props.title }}</text>
           </slot>
         </view>
-        <view v-else-if="hasDefaultSlot" class="ui-navbar__default">
-          <slot />
+
+        <view class="ui-navbar__title" :class="{ 'is-center': props.centerTitle }" :style="[titleStyle]" @click="onTitleClick">
+          <slot name="title">
+            <text v-if="props.title" class="ui-navbar__title__text">{{ props.title }}</text>
+          </slot>
         </view>
 
         <view class="ui-navbar__right">
@@ -40,7 +38,7 @@
 import type { CSSProperties } from "vue"
 import { isNumber } from "../utils/check"
 import { navbarEmits, navbarProps } from "./index"
-import { ref, watch, computed, nextTick, useSlots, onMounted, onUnmounted, getCurrentInstance } from "vue"
+import { ref, watch, computed, nextTick, onMounted, onUnmounted, getCurrentInstance } from "vue"
 import { useRgb, useMitt, useRect, useUnit, useColor, useStyle, useUnitToPx, useUnitToRpx, useSystemInfo } from "../hooks"
 
 defineOptions({ name: "ui-navbar" })
@@ -49,7 +47,6 @@ const props = defineProps(navbarProps)
 const emits = defineEmits(navbarEmits)
 
 const mitt = useMitt()
-const slots = useSlots()
 const systemInfo = useSystemInfo()
 
 const instance = getCurrentInstance()
@@ -78,23 +75,6 @@ const statusBarHeight = computed(() => systemInfo.statusBarHeight)
 const backIcon = computed(() => (routes.value.length === 1 ? props.homeIconName : props.backIconName))
 // 返回图标颜色：未传时回落到 CSS 变量（ui-icon 内部 inline，避免依赖 MP 跨组件 color 继承）
 const resolvedBackIconColor = computed(() => props.backIconColor || "var(--ui-navbar-back-icon-color)")
-
-// 判断 slot 是否实际渲染了非注释节点（MP 下 v-if 在 template 标签上不卸载 slot，需运行期检测真实 VNode）
-// uni-mp-vue 不导出 Text/Comment，用 typeof type === "symbol" 兜底（Fragment/Comment/Static 均为 Symbol）
-function hasNodes(nodes: any): boolean {
-  if (!Array.isArray(nodes)) return false
-  return nodes.some((n) => {
-    if (typeof n.type === "symbol") return Array.isArray(n.children) && hasNodes(n.children)
-    return true
-  })
-}
-function hasSlotContent(name: string) {
-  const fn = slots[name]
-  return typeof fn === "function" && hasNodes(fn())
-}
-const hasLeftSlot = computed(() => hasSlotContent("left"))
-const hasTitleSlot = computed(() => hasSlotContent("title"))
-const hasDefaultSlot = computed(() => hasSlotContent("default"))
 
 // 导航栏 body 高度（小程序对齐胶囊；其他平台 44）
 const navbarHeight = computed(() => {

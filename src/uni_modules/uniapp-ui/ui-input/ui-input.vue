@@ -1,5 +1,12 @@
 <template>
-  <view class="ui-input" :class="[classNames, props.customClass]" :style="[rootStyle]" :aria-disabled="effectiveDisabled || undefined" :aria-readonly="effectiveReadonly || undefined" @click="onClick">
+  <view
+    class="ui-input"
+    :class="[classNames, props.customClass]"
+    :style="[rootStyle]"
+    :aria-disabled="effectiveDisabled || undefined"
+    :aria-readonly="effectiveReadonly || undefined"
+    @click="onClick"
+  >
     <slot name="prefix">
       <view v-if="props.prefixIcon" class="ui-input__prefix">
         <ui-icon :name="props.prefixIcon" :size="props.prefixIconSize" :color="props.prefixIconColor" :weight="props.prefixIconWeight" />

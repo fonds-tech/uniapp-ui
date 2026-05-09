@@ -106,14 +106,7 @@
         </demo-block>
         <text v-if="refLog" class="demo-text">{{ refLog }}</text>
       </demo-block>
-      <ui-date-picker
-        ref="datePickerRef"
-        v-model="dateRef"
-        v-model:show="showRef"
-        title="ref 演示"
-        :columns="['year', 'month', 'day']"
-        format="YYYY-MM-DD"
-      />
+      <ui-date-picker ref="datePickerRef" v-model="dateRef" v-model:show="showRef" title="ref 演示" :columns="['year', 'month', 'day']" format="YYYY-MM-DD" />
     </demo-section>
 
     <demo-section title="事件回调">

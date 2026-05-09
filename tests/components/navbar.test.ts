@@ -33,12 +33,14 @@ describe("ui-navbar 导航栏组件", () => {
       expect(wrapper.find(".ui-navbar__title").text()).toBe("页面标题")
     })
 
-    it("无标题时不应渲染标题区域", async () => {
+    it("无标题且无 title 插槽时，标题区域内部为空（CSS :empty 隐藏）", async () => {
       const wrapper = mount(UiNavbar, {
         props: { title: "" },
       })
       await waitForTransition()
-      expect(wrapper.find(".ui-navbar__title").exists()).toBe(false)
+      // __title 容器始终渲染（用 Vue 原生 slot fallback，跨端可靠）；内部无 __title__text 表示视觉为空
+      expect(wrapper.find(".ui-navbar__title").exists()).toBe(true)
+      expect(wrapper.find(".ui-navbar__title__text").exists()).toBe(false)
     })
   })
 

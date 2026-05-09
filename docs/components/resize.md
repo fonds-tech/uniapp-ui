@@ -66,11 +66,11 @@ function onResize(info) {
 | default | 默认插槽，放置需要监听尺寸的内容 |
 
 <!-- AUTO-METHODS-SUPPLEMENT: ui-resize -->
+
 ## Resize Methods/Expose 补充（源码新增）
 
 以下能力已在最新源码中提供，补充如下：
 
 | 方法/字段 |
-| --- |
+| --------- |
 | `refresh` |
-

@@ -157,26 +157,26 @@ const visible = ref(true)
 | ------- | -------------- |
 | default | 自定义按钮内容 |
 
-
 <!-- AUTO-PROPS-SUPPLEMENT: ui-float-button -->
+
 ## FloatButton Props 补充（源码新增）
 
 以下参数已在最新源码中支持，本文档补充如下：
 
-| 参数 |
-| --- |
+| 参数       |
+| ---------- |
 | `offset-x` |
 | `offset-y` |
 | `magnetic` |
 
 <!-- AUTO-EVENTS-SUPPLEMENT: ui-float-button -->
+
 ## FloatButton Events 补充（源码新增）
 
 以下能力已在最新源码中提供，补充如下：
 
-| 事件名 |
-| --- |
+| 事件名       |
+| ------------ |
 | `drag-start` |
-| `drag-move` |
-| `drag-end` |
-
+| `drag-move`  |
+| `drag-end`   |

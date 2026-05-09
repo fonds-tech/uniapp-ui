@@ -130,52 +130,52 @@ function onReset() {
 
 ## FormItem Props
 
-| 参数                 | 说明                       | 类型                                | 默认值  |
-| -------------------- | -------------------------- | ----------------------------------- | ------- |
-| prop                 | model的键名                | `string`                            | -       |
-| label                | 标签文本                   | `string`                            | -       |
-| colon                | 是否在标签文字后面添加冒号 | `boolean`                           | `false` |
-| border               | 是否显示边框               | `boolean`                           | -       |
-| border-color         | 边框颜色                   | `string`                            | -       |
-| required             | 是否显示必填星号（支持 `true/false/auto`） | `boolean \| "auto"`          | 继承 Form |
-| padding              | 内边距                     | `string \| number`                  | -       |
-| label-gap            | 标签文字和内容的间隔       | `string \| number`                  | -       |
-| label-size           | 标签文字大小               | `string \| number`                  | -       |
-| label-color          | 标签文字颜色               | `string`                            | -       |
-| label-width          | 标签文字宽度               | `string \| number`                  | -       |
-| label-weight         | 标签文字字重               | `string \| number`                  | -       |
-| label-line-height    | 标签文字行高               | `string \| number`                  | -       |
-| label-align          | 标签对齐方式               | `top \| center \| bottom`           | -       |
-| label-position       | 标签文字位置               | `left \| right \| top`              | -       |
-| content-align        | 输入内容对齐方式           | `left \| center \| right`           | -       |
-| error-message        | 校验错误信息文字           | `string`                            | -       |
-| error-message-size   | 校验错误信息文字大小       | `string \| number`                  | -       |
-| error-message-color  | 校验错误信息文字颜色       | `string`                            | `error` |
-| error-message-weight | 校验错误信息文字字重       | `string \| number`                  | -       |
-| error-message-align  | 校验错误信息对齐方式       | `left \| center \| right`           | -       |
-| show-error-message   | 是否展示错误提示           | `boolean`                           | `true`  |
-| validate-trigger     | 表单校验触发时机           | `blur \| change \| submit \| array` | `blur`  |
-| custom-class         | 自定义类名                 | `string`                            | -       |
-| custom-style         | 自定义样式                 | `string \| object`                  | -       |
+| 参数                 | 说明                                       | 类型                                | 默认值    |
+| -------------------- | ------------------------------------------ | ----------------------------------- | --------- |
+| prop                 | model的键名                                | `string`                            | -         |
+| label                | 标签文本                                   | `string`                            | -         |
+| colon                | 是否在标签文字后面添加冒号                 | `boolean`                           | `false`   |
+| border               | 是否显示边框                               | `boolean`                           | -         |
+| border-color         | 边框颜色                                   | `string`                            | -         |
+| required             | 是否显示必填星号（支持 `true/false/auto`） | `boolean \| "auto"`                 | 继承 Form |
+| padding              | 内边距                                     | `string \| number`                  | -         |
+| label-gap            | 标签文字和内容的间隔                       | `string \| number`                  | -         |
+| label-size           | 标签文字大小                               | `string \| number`                  | -         |
+| label-color          | 标签文字颜色                               | `string`                            | -         |
+| label-width          | 标签文字宽度                               | `string \| number`                  | -         |
+| label-weight         | 标签文字字重                               | `string \| number`                  | -         |
+| label-line-height    | 标签文字行高                               | `string \| number`                  | -         |
+| label-align          | 标签对齐方式                               | `top \| center \| bottom`           | -         |
+| label-position       | 标签文字位置                               | `left \| right \| top`              | -         |
+| content-align        | 输入内容对齐方式                           | `left \| center \| right`           | -         |
+| error-message        | 校验错误信息文字                           | `string`                            | -         |
+| error-message-size   | 校验错误信息文字大小                       | `string \| number`                  | -         |
+| error-message-color  | 校验错误信息文字颜色                       | `string`                            | `error`   |
+| error-message-weight | 校验错误信息文字字重                       | `string \| number`                  | -         |
+| error-message-align  | 校验错误信息对齐方式                       | `left \| center \| right`           | -         |
+| show-error-message   | 是否展示错误提示                           | `boolean`                           | `true`    |
+| validate-trigger     | 表单校验触发时机                           | `blur \| change \| submit \| array` | `blur`    |
+| custom-class         | 自定义类名                                 | `string`                            | -         |
+| custom-style         | 自定义样式                                 | `string \| object`                  | -         |
 
 ## Form Events
 
-| 事件名 | 说明               | 回调参数                          |
-| ------ | ------------------ | --------------------------------- |
-| submit | 表单提交时触发     | `values: Record<string, unknown>` |
-| failed | 表单验证失败时触发 | `{ values, errors }`              |
+| 事件名       | 说明               | 回调参数                          |
+| ------------ | ------------------ | --------------------------------- |
+| submit       | 表单提交时触发     | `values: Record<string, unknown>` |
+| failed       | 表单验证失败时触发 | `{ values, errors }`              |
 | update:model | 更新表单数据时触发 | `values: Record<string, unknown>` |
 
 ## Form Methods
 
-| 方法名              | 说明         | 参数                        |
-| ------------------- | ------------ | --------------------------- |
-| validate            | 验证表单     | `name?: string \| string[]` |
-| validateField       | 验证单个字段 | `name?: string`             |
-| validateFields      | 验证多个字段 | `names: string[]`           |
-| resetValidation     | 重置表单验证 | `name?: string \| string[]` |
-| getValidationStatus | 获取验证状态 | -                           |
-| getValues           | 获取当前表单值 | -                         |
+| 方法名              | 说明           | 参数                        |
+| ------------------- | -------------- | --------------------------- |
+| validate            | 验证表单       | `name?: string \| string[]` |
+| validateField       | 验证单个字段   | `name?: string`             |
+| validateFields      | 验证多个字段   | `names: string[]`           |
+| resetValidation     | 重置表单验证   | `name?: string \| string[]` |
+| getValidationStatus | 获取验证状态   | -                           |
+| getValues           | 获取当前表单值 | -                           |
 
 ## FormRule 验证规则
 
@@ -197,10 +197,10 @@ function onReset() {
 
 ## FormItem Slots
 
-| 名称    | 说明           |
-| ------- | -------------- |
-| default | 表单项内容     |
-| label   | 自定义标签内容 |
+| 名称    | 说明                              |
+| ------- | --------------------------------- |
+| default | 表单项内容                        |
+| label   | 自定义标签内容                    |
 | error   | 自定义错误信息（作用域：message） |
 
 ## FormItem Events
@@ -211,19 +211,19 @@ function onReset() {
 
 通过 `ref` 可访问以下公开方法：
 
-| 方法名              | 说明         | 参数 |
-| ------------------- | ------------ | ---- |
-| validate            | 校验当前项   | `rules?` |
-| resetField          | 重置当前字段值与校验状态 | - |
-| resetValidate       | 重置当前字段校验状态 | - |
-| getValidationStatus | 获取当前字段校验状态 | - |
+| 方法名              | 说明                     | 参数     |
+| ------------------- | ------------------------ | -------- |
+| validate            | 校验当前项               | `rules?` |
+| resetField          | 重置当前字段值与校验状态 | -        |
+| resetValidate       | 重置当前字段校验状态     | -        |
+| getValidationStatus | 获取当前字段校验状态     | -        |
 
 <!-- AUTO-METHODS-SUPPLEMENT: ui-form-item -->
+
 ## FormItem Methods/Expose 补充（源码新增）
 
 以下能力已在最新源码中提供，补充如下：
 
-| 方法/字段 |
-| --- |
+| 方法/字段     |
+| ------------- |
 | `model-value` |
-

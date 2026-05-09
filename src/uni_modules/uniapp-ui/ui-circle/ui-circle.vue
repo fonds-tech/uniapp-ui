@@ -1,13 +1,5 @@
 <template>
-  <view
-    class="ui-circle"
-    :class="[props.customClass]"
-    :style="[rootStyle]"
-    role="progressbar"
-    :aria-valuenow="ariaValueNow"
-    aria-valuemin="0"
-    aria-valuemax="100"
-  >
+  <view class="ui-circle" :class="[props.customClass]" :style="[rootStyle]" role="progressbar" :aria-valuenow="ariaValueNow" aria-valuemin="0" aria-valuemax="100">
     <!-- #ifdef MP-WEIXIN -->
     <canvas :id="canvasId" type="2d" class="ui-circle__canvas" :style="canvasStyle" />
     <!-- #endif -->

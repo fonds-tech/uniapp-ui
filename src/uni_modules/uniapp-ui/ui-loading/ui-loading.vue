@@ -1,10 +1,5 @@
 <template>
-  <view
-    v-if="props.show"
-    class="ui-loading"
-    :class="[{ 'ui-loading--vertical': props.vertical }, props.customClass]"
-    :style="[rootStyle]"
-  >
+  <view v-if="props.show" class="ui-loading" :class="[{ 'ui-loading--vertical': props.vertical }, props.customClass]" :style="[rootStyle]">
     <view class="ui-loading__icon">
       <slot name="icon">
         <view class="ui-loading__rotate" :class="`ui-loading__rotate--${props.type}`" />

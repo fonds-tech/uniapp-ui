@@ -49,7 +49,7 @@
       <view v-else-if="props.icon" class="ui-button__icon">
         <ui-icon :name="props.icon" :color="props.iconColor" :size="props.iconSize" :weight="props.iconWeight" />
       </view>
-      <view v-if="hasSlotContent || resolvedLoadingText" class="ui-button__text">
+      <view class="ui-button__text">
         <template v-if="isLoading && resolvedLoadingText">
           {{ resolvedLoadingText }}
         </template>
@@ -65,13 +65,12 @@
 import { createThrottle } from "../utils/utils"
 import { buttonEmits, buttonProps } from "./index"
 import { useUnit, useColor, useStyle } from "../hooks"
-import { ref, watch, markRaw, computed, useSlots, shallowRef } from "vue"
+import { ref, watch, markRaw, computed, shallowRef } from "vue"
 
 defineOptions({ name: "ui-button" })
 
 const props = defineProps(buttonProps)
 const emits = defineEmits(buttonEmits)
-const slots = useSlots()
 
 const throttledEmit = shallowRef(markRaw(createThrottle(+props.throttle)))
 const internalLoading = ref(false)
@@ -81,7 +80,6 @@ const internalLoadingText = ref("")
 const isLoading = computed(() => props.loading || internalLoading.value)
 const isDisabled = computed(() => props.disabled || isLoading.value || internalDisabled.value)
 const hoverClass = computed(() => (isDisabled.value || isLoading.value ? "" : "ui-button--active"))
-const hasSlotContent = computed(() => !!slots.default)
 const openTypeValue = computed(() => (isDisabled.value ? undefined : props.openType))
 const resolvedLoadingText = computed(() => props.loadingText || internalLoadingText.value)
 
@@ -255,10 +253,16 @@ export default {
 
   &__text {
     display: flex;
+
+    // 空 text 节点不占布局（slot 未传内容时）
+    &:empty {
+      display: none;
+    }
   }
 
-  &__icon + &__text,
-  &--loading &__loading + &__text {
+  // 仅 text 非空时才与 icon/loading 留间距
+  &__icon + &__text:not(:empty),
+  &--loading &__loading + &__text:not(:empty) {
     margin-left: var(--ui-spacing-sm);
   }
 
@@ -266,7 +270,7 @@ export default {
     margin-left: var(--ui-spacing-sm);
   }
 
-  &__content--reverse &__icon + &__text {
+  &__content--reverse &__icon + &__text:not(:empty) {
     margin-left: 0;
   }
 
