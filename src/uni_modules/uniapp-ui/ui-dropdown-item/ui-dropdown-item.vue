@@ -27,7 +27,7 @@ import type { DropdownItemValue, DropdownItemOption } from "./index"
 import { noop } from "../utils/utils"
 import { dropdownMenuKey } from "../ui-dropdown-menu"
 import { dropdownItemEmits, dropdownItemProps } from "./index"
-import { isDef, isArray, isEmpty, isNumber, isString } from "../utils/check"
+import { isDef, isArray, isNumber, isString } from "../utils/check"
 import { ref, toRaw, watch, computed, nextTick, onMounted } from "vue"
 import { useUnit, useColor, useStyle, useParent, useLockScroll, useSystemInfo, useTransition, useGlobalZIndex } from "../hooks"
 
@@ -57,7 +57,7 @@ const style = computed(() => {
   // 用 var(--window-top/bottom) 抵消自定义 navbar / H5 tabbar 偏移；默认页面两值为 0，无副作用
   if (prop("direction") === "up") style.bottom = `calc(var(--window-bottom) + ${windowHeight.value - top}px)`
   if (prop("direction") === "down") style.top = `calc(var(--window-top) + ${bottom}px)`
-  if (isEmpty(transition.visible.value)) style.display = "none"
+  if (!transition.visible.value) style.display = "none"
   return useStyle({ ...style, ...useStyle(props.customStyle) })
 })
 
@@ -84,7 +84,7 @@ const contentStyle = computed(() => {
   // borderRadius 注入 CSS var，SCSS 内按 direction 选择对应两个角；未设时走 SCSS 默认
   const radius = prop("borderRadius")
   if (radius !== undefined) style["--ui-dropdown-item-radius"] = useUnit(radius as any)
-  if (isEmpty(transition.visible.value)) style.display = "none"
+  if (!transition.visible.value) style.display = "none"
   return useStyle({ ...style, ...transition.styles.value })
 })
 

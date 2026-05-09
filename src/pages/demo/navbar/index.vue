@@ -69,9 +69,7 @@
     <demo-section title="标题字号 (titleSize)">
       <demo-block :cols="4" :gap="12">
         <ui-button v-for="s in titleSizeOptions" :key="String(s)" size="small" :type="titleSize === s ? 'primary' : 'default'" @click="titleSize = s">
-          {{
-            s === "" ? "默认" : s
-          }}
+          {{ s === "" ? "默认" : s }}
         </ui-button>
       </demo-block>
     </demo-section>
@@ -79,9 +77,7 @@
     <demo-section title="标题粗细 (titleWeight)">
       <demo-block :cols="4" :gap="12">
         <ui-button v-for="w in titleWeightOptions" :key="String(w)" size="small" :type="titleWeight === w ? 'primary' : 'default'" @click="titleWeight = w">
-          {{
-            w === "" ? "默认" : w
-          }}
+          {{ w === "" ? "默认" : w }}
         </ui-button>
       </demo-block>
     </demo-section>
@@ -103,9 +99,7 @@
     <demo-section title="左右内边距 (padding)">
       <demo-block :cols="4" :gap="12">
         <ui-button v-for="p in paddingOptions" :key="String(p)" size="small" :type="padding === p ? 'primary' : 'default'" @click="padding = p">
-          {{
-            p === "" ? "默认" : p
-          }}
+          {{ p === "" ? "默认" : p }}
         </ui-button>
       </demo-block>
     </demo-section>

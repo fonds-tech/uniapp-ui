@@ -94,13 +94,24 @@ const columnStyle = computed(() => (columnIndex: string | number, index: string 
 // 是否激活列
 const isActiveColumn = computed(() => (columnIndex: string | number, index: string | number) => selectedIndexes.value[Number(columnIndex)] === Number(index))
 
-watch(() => props.modelValue, (val) => (selectedValues.value = val), { immediate: true })
-watch(() => columns.value, () => syncSelectedIndexes(), { immediate: true })
+watch(
+  () => props.modelValue,
+  (val) => (selectedValues.value = val),
+  { immediate: true },
+)
+watch(
+  () => columns.value,
+  () => syncSelectedIndexes(),
+  { immediate: true },
+)
 
 function onChange(data: PickerChangeEvent) {
   const { value } = data.detail
   // 第一个变更列索引
-  const index = Math.max(value.findIndex((v: number, i: number) => v !== prevSelectedIndexes.value[i]), 0)
+  const index = Math.max(
+    value.findIndex((v: number, i: number) => v !== prevSelectedIndexes.value[i]),
+    0,
+  )
 
   const selected = columns.value[index]?.[value[index]]?.[resolvedFields.value.value]
   if (selected !== undefined) setSelectedValue(index, selected)

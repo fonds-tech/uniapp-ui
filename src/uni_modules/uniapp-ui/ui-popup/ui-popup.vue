@@ -61,6 +61,8 @@ const style = computed(() => {
   style.zIndex = zIndex.value
   style.background = useColor(props.background)
   style["--ui-popup-border-radius"] = useUnit(props.borderRadius)
+  // 离开动画结束后 panel 仍 inited=true 留 DOM；center 模式 fade 动画 opacity:0 不出屏，必须 display:none 否则拦截点击
+  if (!transition.visible.value) style.display = "none"
   return useStyle({ ...style, ...useStyle(props.customStyle), ...transition.styles.value })
 })
 // 类名数组

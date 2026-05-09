@@ -97,6 +97,8 @@ const panelStyle = computed(() => {
     styles.borderTopLeftRadius = radius
     styles.borderTopRightRadius = radius
   }
+  // 离开动画结束后 panel 仍 inited=true 留 DOM；当前 slide-up 出屏不拦点击，加 display:none 防御未来动画变更
+  if (!transition.visible.value) styles.display = "none"
   return useStyle({ ...styles, ...useStyle(props.customStyle), ...transition.styles.value })
 })
 // 滚动区高度

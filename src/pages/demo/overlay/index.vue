@@ -45,7 +45,9 @@
 
     <demo-section title="背景色" desc="background 覆盖默认半透明黑（与 opacity 互斥）">
       <demo-block :cols="4" :gap="12">
-        <ui-button v-for="b in backgrounds" :key="b.value" size="small" :type="config.background === b.value ? 'primary' : 'default'" @click="apply('background', b.value)">{{ b.label }}</ui-button>
+        <ui-button v-for="b in backgrounds" :key="b.value" size="small" :type="config.background === b.value ? 'primary' : 'default'" @click="apply('background', b.value)">{{
+          b.label
+        }}</ui-button>
       </demo-block>
     </demo-section>
 

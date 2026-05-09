@@ -22,14 +22,7 @@
 
     <demo-section title="字段映射" desc="columns 用自定义字段名时,通过 columnFields 映射">
       <ui-cell title="选择菜品" :value="dish || '请选择'" is-link @click="show.dish = true" />
-      <ui-picker
-        v-model="dish"
-        v-model:show="show.dish"
-        title="选择菜品"
-        :columns="dishColumns"
-        :column-fields="{ text: 'name', value: 'id' }"
-        @confirm="onConfirm('菜品')"
-      />
+      <ui-picker v-model="dish" v-model:show="show.dish" title="选择菜品" :columns="dishColumns" :column-fields="{ text: 'name', value: 'id' }" @confirm="onConfirm('菜品')" />
     </demo-section>
 
     <demo-section title="自定义 footer" desc="footer slot 替代默认头部按钮 (showHeader=false)">

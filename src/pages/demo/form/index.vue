@@ -21,9 +21,7 @@
     <demo-section title="必填星号 (required)" desc="auto 跟随 rules / true 全显 / false 全隐 / 单项可覆盖父级">
       <demo-block :cols="4" :gap="12">
         <ui-button v-for="m in requiredModes" :key="String(m.value)" size="small" :type="requiredMode === m.value ? 'primary' : 'default'" @click="requiredMode = m.value">
-          {{
-            m.label
-          }}
+          {{ m.label }}
         </ui-button>
       </demo-block>
       <ui-form :model="requiredData" :rules="requiredRules" :required="requiredMode">

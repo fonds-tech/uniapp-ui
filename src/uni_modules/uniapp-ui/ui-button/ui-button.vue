@@ -263,11 +263,11 @@ export default {
   // 仅 text 非空时才与 icon/loading 留间距
   &__icon + &__text:not(:empty),
   &--loading &__loading + &__text:not(:empty) {
-    margin-left: var(--ui-spacing-sm);
+    margin-left: var(--ui-spacing-xs);
   }
 
   &__content--reverse &__icon {
-    margin-left: var(--ui-spacing-sm);
+    margin-left: var(--ui-spacing-xs);
   }
 
   &__content--reverse &__icon + &__text:not(:empty) {

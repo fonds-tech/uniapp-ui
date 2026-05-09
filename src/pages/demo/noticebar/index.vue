@@ -71,14 +71,7 @@
     </demo-section>
 
     <demo-section title="资讯快讯轮播">
-      <ui-notice-bar
-        :text="newsList"
-        mode="vertical"
-        icon="sound"
-        right-icon="right"
-        :interval="3000"
-        @click="onNewsClick"
-      />
+      <ui-notice-bar :text="newsList" mode="vertical" icon="sound" right-icon="right" :interval="3000" @click="onNewsClick" />
     </demo-section>
 
     <demo-section title="系统维护通知">

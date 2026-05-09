@@ -46,7 +46,10 @@ const columnStyle = computed(() => (index: number) => {
   return useStyle({ transform: `translateY(calc(${indexs.value[index] || 0} * var(--ui-number-roll-height) * -1))` })
 })
 
-watch(() => [props.value, props.decimalPlaces, props.trimZero, props.thousandsSep, props.fontSize], () => resize())
+watch(
+  () => [props.value, props.decimalPlaces, props.trimZero, props.thousandsSep, props.fontSize],
+  () => resize(),
+)
 
 onMounted(() => resize())
 
