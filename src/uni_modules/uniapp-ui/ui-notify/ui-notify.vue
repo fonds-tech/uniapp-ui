@@ -2,13 +2,13 @@
   <view
     v-if="inited"
     class="ui-notify"
-    :class="[typeClass, useOptions.customClass, { 'ui-notify--visible': visible }]"
-    :style="[panelStyle]"
+    :class="[`ui-notify--${useOptions.type || 'primary'}`, useOptions.customClass, { 'ui-notify--visible': visible }]"
+    :style="[rootStyle]"
     @click="onClick"
-    @touchmove.prevent.stop="noop"
+    @touchmove.prevent.stop="() => {}"
   >
     <slot>
-      <text class="ui-notify__content" :style="[contentStyle]">{{ useOptions.content }}</text>
+      <text class="ui-notify__content">{{ useOptions.content }}</text>
     </slot>
   </view>
 </template>
@@ -16,63 +16,35 @@
 <script setup lang="ts">
 import type { NotifyOptions } from "./index"
 import { merge } from "../utils/utils"
-import { notifyEmits, notifyProps } from "./index"
 import { useUnit, useColor, useStyle } from "../hooks"
 import { ref, watch, computed, onBeforeUnmount } from "vue"
+import { notifyEmits, notifyProps, NOTIFY_DEFAULT_DURATION, NOTIFY_ANIMATION_DURATION } from "./index"
 
 defineOptions({ name: "ui-notify" })
 
 const props = defineProps(notifyProps)
 const emits = defineEmits(notifyEmits)
+
 const inited = ref(false)
 const visible = ref(false)
 const useOptions = ref<NotifyOptions>({})
-const propOptions = ref<NotifyOptions>({})
-const closeTimer = ref<ReturnType<typeof setTimeout> | null>(null)
-const animationTimer = ref<ReturnType<typeof setTimeout> | null>(null)
+let closeTimer: ReturnType<typeof setTimeout> | null = null
+let animationTimer: ReturnType<typeof setTimeout> | null = null
 
-// 动画时长（毫秒）
-const ANIMATION_DURATION = 300
-
-const baseOptions = ref<NotifyOptions>({
-  type: "primary",
-  content: "",
-  color: "",
-  zIndex: 2000,
-  duration: 3000,
-  fontSize: "",
-  fontWeight: "",
-  background: "",
-  offsetTop: "",
-  customClass: "",
-  customStyle: "",
+// props 派生选项快照
+const propOptions = computed<NotifyOptions>(() => ({ ...props }))
+// 根节点 CSS var 注入
+const rootStyle = computed(() => {
+  const o = useOptions.value
+  const vars: Record<string, string | number | undefined> = {}
+  if (o.color) vars["--ui-notify-color"] = useColor(o.color)
+  if (o.background) vars["--ui-notify-background"] = useColor(o.background)
+  if (o.fontSize !== undefined) vars["--ui-notify-font-size"] = useUnit(o.fontSize)
+  if (o.fontWeight !== undefined) vars["--ui-notify-font-weight"] = String(o.fontWeight)
+  if (o.zIndex !== undefined) vars["--ui-notify-z-index"] = String(o.zIndex)
+  if (o.offsetTop !== undefined) vars["--ui-notify-offset-top"] = useUnit(o.offsetTop)
+  return useStyle({ ...vars, ...useStyle(o.customStyle) })
 })
-
-const typeClass = computed(() => `ui-notify--${useOptions.value.type || "primary"}`)
-
-const panelStyle = computed(() => {
-  const styles: Record<string, any> = {}
-  styles.zIndex = useOptions.value.zIndex
-  styles.top = useUnit(useOptions.value.offsetTop)
-  styles.background = useColor(useOptions.value.background)
-  return useStyle({ ...styles, ...useStyle(useOptions.value.customStyle) })
-})
-
-const contentStyle = computed(() => {
-  const styles: Record<string, any> = {}
-  styles.color = useColor(useOptions.value.color)
-  styles.fontSize = useUnit(useOptions.value.fontSize)
-  styles.fontWeight = useOptions.value.fontWeight
-  return useStyle(styles)
-})
-
-watch(
-  () => props,
-  (options) => {
-    propOptions.value = merge(baseOptions.value, options)
-  },
-  { deep: true, immediate: true },
-)
 
 watch(
   () => props.show,
@@ -87,18 +59,22 @@ watch(visible, (val) => {
   emits("update:show", val)
 })
 
-// 清理定时器
+onBeforeUnmount(() => {
+  clearCloseTimer()
+  clearAnimationTimer()
+})
+
 function clearCloseTimer() {
-  if (closeTimer.value) {
-    clearTimeout(closeTimer.value)
-    closeTimer.value = null
+  if (closeTimer) {
+    clearTimeout(closeTimer)
+    closeTimer = null
   }
 }
 
 function clearAnimationTimer() {
-  if (animationTimer.value) {
-    clearTimeout(animationTimer.value)
-    animationTimer.value = null
+  if (animationTimer) {
+    clearTimeout(animationTimer)
+    animationTimer = null
   }
 }
 
@@ -106,110 +82,98 @@ function clearAnimationTimer() {
 function show(options: NotifyOptions = {}) {
   clearCloseTimer()
   clearAnimationTimer()
+  useOptions.value = merge({ ...propOptions.value }, options)
 
-  useOptions.value = merge(merge(baseOptions.value, propOptions.value), options)
-
-  // 已显示时仅更新内容和重置定时器
+  // 已显示则只重置自动关闭定时器
+  const duration = +(useOptions.value.duration || 0) || NOTIFY_DEFAULT_DURATION
   if (visible.value) {
-    const duration = +useOptions.value.duration || 3000
-    closeTimer.value = setTimeout(() => close(), duration)
+    closeTimer = setTimeout(() => close(), duration)
     return
   }
 
   inited.value = true
-
   emits("open")
 
   setTimeout(() => {
     visible.value = true
-
-    // 动画结束后触发 opened
-    animationTimer.value = setTimeout(() => {
-      emits("opened")
-    }, ANIMATION_DURATION)
+    animationTimer = setTimeout(() => emits("opened"), NOTIFY_ANIMATION_DURATION)
   }, 20)
 
-  // 设置自动关闭定时器
-  const duration = +useOptions.value.duration || 3000
-  closeTimer.value = setTimeout(() => close(), duration)
+  closeTimer = setTimeout(() => close(), duration)
 }
 
 // 关闭通知
 function close() {
   if (!visible.value) return
-
   clearCloseTimer()
   clearAnimationTimer()
-
   emits("close")
-
   visible.value = false
-
-  // 动画结束后触发 closed
-  animationTimer.value = setTimeout(() => {
-    emits("closed")
-  }, ANIMATION_DURATION)
+  animationTimer = setTimeout(() => emits("closed"), NOTIFY_ANIMATION_DURATION)
 }
 
 function onClick() {
   emits("click")
 }
 
-function noop() {
-  return false
-}
-
-// 组件卸载时清理
-onBeforeUnmount(() => {
-  clearCloseTimer()
-  clearAnimationTimer()
-})
-
-defineExpose({ name: "ui-notify", show, close })
+defineExpose({ show, close })
 </script>
 
 <script lang="ts">
 export default {
   name: "ui-notify",
-  options: { virtualHost: true, multipleSlots: true, styleIsolation: "shared" },
+  options: {
+    // #ifndef MP-TOUTIAO
+    virtualHost: true,
+    // #endif
+    multipleSlots: true,
+    styleIsolation: "shared",
+  },
 }
 </script>
 
 <style lang="scss" scoped>
 .ui-notify {
-  top: 0;
+  --ui-notify-color: var(--ui-color-text-inverse);
+  --ui-notify-padding: var(--ui-spacing-md);
+  --ui-notify-z-index: 2000;
+  --ui-notify-font-size: var(--ui-font-size-sm);
+  --ui-notify-background: var(--ui-color-primary);
+  --ui-notify-offset-top: 0;
+  --ui-notify-font-weight: inherit;
+
+  top: var(--ui-notify-offset-top);
   left: 0;
   right: 0;
-  padding: var(--ui-spacing-md);
+  padding: var(--ui-notify-padding);
+  z-index: var(--ui-notify-z-index);
   position: fixed;
   transform: translateY(-100%);
+  background: var(--ui-notify-background);
   transition: transform var(--ui-transition-duration) var(--ui-transition-timing-ease-out);
 
   &--visible {
     transform: translateY(0);
   }
 
-  &--primary {
-    background-color: var(--ui-color-primary);
-  }
-
   &--success {
-    background-color: var(--ui-color-success);
+    --ui-notify-background: var(--ui-color-success);
   }
 
   &--warning {
-    background-color: var(--ui-color-warning);
+    --ui-notify-background: var(--ui-color-warning);
   }
 
   &--danger {
-    background-color: var(--ui-color-danger);
+    --ui-notify-background: var(--ui-color-danger);
   }
 
   &__content {
-    color: var(--ui-color-background);
+    color: var(--ui-notify-color);
     display: flex;
-    font-size: var(--ui-font-size-sm);
+    font-size: var(--ui-notify-font-size);
     align-items: center;
+    font-weight: var(--ui-notify-font-weight);
     justify-content: center;
   }
 }

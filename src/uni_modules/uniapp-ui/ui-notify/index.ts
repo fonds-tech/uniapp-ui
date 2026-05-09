@@ -2,17 +2,22 @@ import type Notify from "./ui-notify.vue"
 import type { Ref, PropType, CSSProperties, ExtractPropTypes } from "vue"
 import { buildDefaultProps } from "../utils/props"
 
+/** 进出场动画时长(ms)，与 SCSS `--ui-transition-duration` 对齐 */
+export const NOTIFY_ANIMATION_DURATION = 300
+/** 默认展示时长(ms) */
+export const NOTIFY_DEFAULT_DURATION = 3000
+
 const defaultProps = buildDefaultProps("notify", {
   show: false,
   type: "primary",
   content: "",
-  duration: "3000",
-  color: "",
-  fontSize: "",
-  fontWeight: "",
-  background: "",
-  zIndex: "2000",
-  offsetTop: "",
+  duration: NOTIFY_DEFAULT_DURATION,
+  color: undefined,
+  fontSize: undefined,
+  fontWeight: undefined,
+  background: undefined,
+  zIndex: 2000,
+  offsetTop: undefined,
   customClass: "",
   customStyle: "",
 })
@@ -27,17 +32,17 @@ export const notifyProps = {
   }),
   /** 展示内容 */
   content: defaultProps("content", { type: String }),
-  /** 展示时长，单位ms */
+  /** 展示时长 (ms) */
   duration: defaultProps("duration", { type: [Number, String] }),
-  /** 字体颜色 */
+  /** 文字颜色 */
   color: defaultProps("color", { type: String }),
-  /** 字体大小 */
+  /** 字号 */
   fontSize: defaultProps("fontSize", { type: [Number, String] }),
-  /** 字体粗细 */
-  fontWeight: defaultProps("fontWeight", { type: String }),
+  /** 字重 */
+  fontWeight: defaultProps("fontWeight", { type: [Number, String] }),
   /** 背景色 */
   background: defaultProps("background", { type: String }),
-  /** 元素层级 */
+  /** 层级 */
   zIndex: defaultProps("zIndex", { type: [Number, String] }),
   /** 距离顶部偏移 */
   offsetTop: defaultProps("offsetTop", { type: [Number, String] }),
@@ -48,17 +53,17 @@ export const notifyProps = {
 }
 
 export const notifyEmits = {
-  /** 打开弹出层事件 */
+  /** 弹层打开 */
   open: () => true,
-  /** 打开动画结束事件 */
+  /** 打开动画结束 */
   opened: () => true,
-  /** 关闭弹出层事件 */
+  /** 弹层关闭 */
   close: () => true,
-  /** 关闭动画结束事件 */
+  /** 关闭动画结束 */
   closed: () => true,
   /** 点击事件 */
   click: () => true,
-  /** 更新显示状态事件 */
+  /** show 双向绑定 */
   "update:show": (value: boolean) => true,
 }
 
@@ -69,48 +74,46 @@ export interface NotifyOptions {
   duration?: string | number
   color?: string
   fontSize?: string | number
-  fontWeight?: string
+  fontWeight?: string | number
   background?: string
   zIndex?: string | number
   offsetTop?: string | number
   customClass?: string
-  customStyle?: string | Record<string, any>
+  customStyle?: string | CSSProperties
 }
 
 export type NotifyType = "primary" | "success" | "warning" | "danger"
+export type NotifyEmits = typeof notifyEmits
 export type NotifyProps = ExtractPropTypes<typeof notifyProps>
 export type NotifyInstance = InstanceType<typeof Notify>
 
-/** 全局 Notify 实例存储 */
+/** 全局 Notify 实例 */
 let globalNotifyInstance: Ref<NotifyInstance | null> | null = null
-
-/** 待执行的 notify 调用队列 */
+/** 待执行调用队列 */
 const pendingQueue: Array<{ action: "show" | "close"; options?: NotifyOptions }> = []
 
-/** 注册全局 Notify 实例 */
+/** 注册全局实例 */
 export function provideNotify(instance: Ref<NotifyInstance | null>) {
   globalNotifyInstance = instance
   flushPendingQueue()
 }
 
-/** 获取全局 Notify 实例 */
+/** 获取全局实例 */
 export function getGlobalNotifyInstance(): Ref<NotifyInstance | null> | null {
   return globalNotifyInstance
 }
 
-/** 将调用加入待执行队列 */
+/** 入队 */
 export function enqueuePendingNotify(action: "show" | "close", options?: NotifyOptions) {
   pendingQueue.push({ action, options })
 }
 
-/** 执行队列中的待处理调用 */
+/** 出队执行 */
 function flushPendingQueue() {
   if (!globalNotifyInstance?.value) return
-
   while (pendingQueue.length > 0) {
     const item = pendingQueue.shift()
     if (!item) continue
-
     if (item.action === "show" && item.options !== undefined) {
       globalNotifyInstance.value.show(item.options)
     } else if (item.action === "close") {

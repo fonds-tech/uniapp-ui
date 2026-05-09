@@ -4,36 +4,36 @@ import { buildDefaultProps } from "../utils/props"
 
 const defaultProps = buildDefaultProps("number-roll", {
   value: 0,
-  color: "",
-  fontSize: 24,
-  fontWeight: "",
+  color: undefined,
+  fontSize: undefined,
+  fontWeight: undefined,
   trimZero: true,
   thousandsSep: "",
   decimalPlaces: 2,
-  duration: "",
-  timingFunction: "",
+  duration: undefined,
+  timingFunction: undefined,
   customClass: "",
   customStyle: "",
 })
 
 export const numberRollProps = {
-  /** 数据值 */
+  /** 数字值 */
   value: defaultProps("value", { type: [Number, String] }),
-  /** 字体颜色 */
+  /** 文字颜色 */
   color: defaultProps("color", { type: String }),
-  /** 字体大小 */
+  /** 字号 (同时决定行高) */
   fontSize: defaultProps("fontSize", { type: [Number, String] }),
-  /** 字体粗细 */
-  fontWeight: defaultProps("fontWeight", { type: String }),
-  /** 去除0 */
+  /** 字重 */
+  fontWeight: defaultProps("fontWeight", { type: [Number, String] }),
+  /** 去除小数末尾零 */
   trimZero: defaultProps("trimZero", { type: Boolean }),
   /** 千位分隔符 */
   thousandsSep: defaultProps("thousandsSep", { type: String }),
   /** 小数位数 */
   decimalPlaces: defaultProps("decimalPlaces", { type: Number }),
-  /** 过渡时间 */
+  /** 过渡时长 (ms 数字 / 带单位字符串) */
   duration: defaultProps("duration", { type: [Number, String] }),
-  /** 动画函数 */
+  /** 缓动函数 */
   timingFunction: defaultProps("timingFunction", { type: String }),
   /** 自定义类名 */
   customClass: defaultProps("customClass", { type: String }),
@@ -41,13 +41,5 @@ export const numberRollProps = {
   customStyle: defaultProps("customStyle", { type: [String, Object] as PropType<string | CSSProperties> }),
 }
 
-export const numberRollEmits = {}
-
-export type NumberRollEmits = typeof numberRollEmits
 export type NumberRollProps = ExtractPropTypes<typeof numberRollProps>
-
-export interface NumberRollExpose {
-  name: "ui-number-roll"
-}
-
 export type NumberRollInstance = InstanceType<typeof NumberRoll>

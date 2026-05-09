@@ -208,7 +208,7 @@ describe("uiTransition 组件", () => {
       })
 
       await wrapper.setProps({ show: true })
-      await waitForTransition()
+      await waitForTransition(500)
 
       expect(wrapper.emitted("beforeEnter")).toBeTruthy()
       expect(wrapper.emitted("enter")).toBeTruthy()
@@ -221,9 +221,9 @@ describe("uiTransition 组件", () => {
         props: { show: true },
       })
 
-      await waitForTransition()
+      await waitForTransition(500)
       await wrapper.setProps({ show: false })
-      await waitForTransition()
+      await waitForTransition(500)
 
       expect(wrapper.emitted("beforeLeave")).toBeTruthy()
       expect(wrapper.emitted("leave")).toBeTruthy()

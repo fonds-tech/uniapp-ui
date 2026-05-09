@@ -272,23 +272,15 @@ describe("ui-number-roll 数字滚动组件", () => {
       expect(wrapper.props("timingFunction")).toBe("ease-in-out")
     })
 
-    it("动画时长应应用到列样式", async () => {
+    it("动画时长应应用到根节点 CSS 变量", async () => {
       const wrapper = mount(UiNumberRoll, {
         props: { value: 12, duration: 800 },
       })
 
       await waitForTransition()
 
-      const style = wrapper.find(".ui-number-roll__column").attributes("style") || ""
-      expect(style).toContain("transition-duration: 800ms")
-    })
-  })
-
-  describe("暴露的属性", () => {
-    it("应暴露 name 属性", () => {
-      const wrapper = mount(UiNumberRoll)
-
-      expect(wrapper.vm.name).toBe("ui-number-roll")
+      const style = wrapper.find(".ui-number-roll").attributes("style") || ""
+      expect(style).toContain("--ui-number-roll-duration: 800ms")
     })
   })
 

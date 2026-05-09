@@ -1,7 +1,11 @@
 import { merge } from "../utils/utils"
 import { isObject } from "../utils/check"
 import { usePromise } from "./usePromise"
-import { ref, nextTick } from "vue"
+import { ref } from "vue"
+
+// 单帧时长 (60fps ≈ 16ms)。多次 await 串联后浏览器有机会 paint 中间状态，
+// 避免 Vue patch 把 enter / enter-to class 合并跳过 transition。
+const FRAME = 16
 
 export type TransitionName = "fade" | "zoom-in" | "fade-up" | "fade-down" | "fade-left" | "fade-right" | "slide-up" | "slide-down" | "slide-left" | "slide-right"
 
@@ -40,7 +44,6 @@ export function useTransition() {
   // Promise 管理（用于中断控制）
   const enterPromise = ref<ReturnType<typeof usePromise> | null>(null)
   const lifeCyclePromise = ref<ReturnType<typeof usePromise> | null>(null)
-  const fallbackTimer = ref<ReturnType<typeof setTimeout> | null>(null)
 
   /**
    * 注册事件监听器
@@ -91,17 +94,14 @@ export function useTransition() {
   }
 
   /**
-   * 请求下一帧渲染
-   * 使用 nextTick + setTimeout(0) 确保浏览器完成当前帧渲染
+   * 等待浏览器 paint 一帧，可被 abort
    */
-  const requestNextFrame = () => {
+  const pause = (ms: number = FRAME) => {
     return usePromise<void>((resolve) => {
-      nextTick(() => {
-        const timer = setTimeout(() => {
-          clearTimeout(timer)
-          resolve()
-        }, 0)
-      })
+      const timer = setTimeout(() => {
+        clearTimeout(timer)
+        resolve()
+      }, ms)
     })
   }
 
@@ -118,7 +118,7 @@ export function useTransition() {
   }
 
   /**
-   * 中止所有进行中的 Promise 和定时器
+   * 中止所有进行中的 Promise
    */
   const abortPromise = () => {
     try {
@@ -126,12 +126,6 @@ export function useTransition() {
       lifeCyclePromise.value?.abort()
       enterPromise.value = null
       lifeCyclePromise.value = null
-
-      // 清除降级定时器
-      if (fallbackTimer.value) {
-        clearTimeout(fallbackTimer.value)
-        fallbackTimer.value = null
-      }
     } catch (error) {
       // 忽略中止错误
     }
@@ -152,30 +146,38 @@ export function useTransition() {
       try {
         const names = classNames(options.value.name!)
         status.value = "enter"
-
         emit("before-enter")
 
+        // 多帧间隔确保浏览器分别 paint：起始 class → 元素插入 → enter-to
+        lifeCyclePromise.value = pause()
+        await lifeCyclePromise.value
+
+        classs.value = names.enter
         styles.value = {
           transitionDuration: `${options.value.duration}ms`,
           transitionTimingFunction: options.value.enterTimingFunction!,
         }
+        emit("enter")
 
-        classs.value = names.enter
+        lifeCyclePromise.value = pause()
+        await lifeCyclePromise.value
 
-        // 标记已初始化并显示
         inited.value = true
         visible.value = true
 
-        emit("enter")
-
-        lifeCyclePromise.value = requestNextFrame()
+        lifeCyclePromise.value = pause()
         await lifeCyclePromise.value
 
-        // 切换到结束状态类名，触发 CSS transition
         classs.value = names["enter-to"]
-
         lifeCyclePromise.value = null
         resolve()
+
+        // 异步等 CSS transition 完成，再触发 after-enter；status 校验避免 leave 抢占后误触发
+        const duration = Number(options.value.duration) || 300
+        lifeCyclePromise.value = pause(duration)
+        await lifeCyclePromise.value
+        lifeCyclePromise.value = null
+        if (status.value === "enter") end()
       } catch (error) {
         // 被 abort 时忽略
       }
@@ -183,49 +185,47 @@ export function useTransition() {
   }
 
   /**
-   * 离开过渡
+   * 离开过渡。等待 enter 完成后再启动，避免半途中断引发跳变
    */
   const leave = async () => {
-    // 中止之前的过渡
-    abortPromise()
-
-    // 重置过渡结束标志
-    transitionEnded.value = false
-
-    // 如果尚未显示，直接结束
-    if (!visible.value) {
+    if (!enterPromise.value) {
+      transitionEnded.value = false
       return end()
     }
-
     try {
+      // 等 enter 完整结束（含三段 pause + class 切换），再启动 leave
+      await enterPromise.value
+      if (!visible.value) return end()
+
       const names = classNames(options.value.name!)
       status.value = "leave"
-
       emit("before-leave")
+
+      lifeCyclePromise.value = pause()
+      await lifeCyclePromise.value
 
       // 设置离开时的过渡函数
       styles.value = {
         ...styles.value,
         transitionTimingFunction: options.value.leaveTimingFunction!,
       }
-
+      classs.value = names.leave
       emit("leave")
 
-      classs.value = names.leave
-
-      lifeCyclePromise.value = requestNextFrame()
+      lifeCyclePromise.value = pause()
       await lifeCyclePromise.value
 
+      transitionEnded.value = false
       classs.value = names["leave-to"]
 
-      // 设置降级定时器：如果 transitionend 事件未触发，使用超时兜底
+      // 等 transition CSS 完成时长，再触发 end，避免提前 display:none 中断动画
       const duration = Number(options.value.duration) || 300
-      fallbackTimer.value = setTimeout(() => {
-        fallbackTimer.value = null
-        end()
-      }, duration + 50)
+      lifeCyclePromise.value = pause(duration)
+      await lifeCyclePromise.value
 
       lifeCyclePromise.value = null
+      end()
+      enterPromise.value = null
     } catch (error) {
       // 被 abort 时忽略
     }
@@ -233,19 +233,15 @@ export function useTransition() {
 
   /**
    * 过渡结束处理
-   * 由 transitionend 事件或降级定时器触发
+   * 由 transitionend 事件或 hook 内部超时触发；
+   * 模板里 `@transitionend` 直接绑此函数时，事件会冒泡——子节点（如 ui-button hover/active）的 transition 也会触发，
+   * 必须过滤 target===currentTarget，否则 leave 中途被子组件 transitionend 提前 end()，元素立刻 display:none。
    */
-  const end = () => {
-    // 防止重复处理
+  const end = (e?: Event) => {
+    if (e && e.target !== e.currentTarget) return
     if (transitionEnded.value) return
 
     transitionEnded.value = true
-
-    // 清除降级定时器（如果是由 transitionend 触发）
-    if (fallbackTimer.value) {
-      clearTimeout(fallbackTimer.value)
-      fallbackTimer.value = null
-    }
 
     if (status.value === "leave") {
       emit("after-leave")

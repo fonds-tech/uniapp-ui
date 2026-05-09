@@ -11,8 +11,9 @@ const defaultProps = buildDefaultProps("overlay", {
   lazyRender: true,
   enterTimingFunction: "ease-out",
   leaveTimingFunction: "ease-in",
-  customClass: undefined,
-  customStyle: undefined,
+  background: undefined,
+  customClass: "",
+  customStyle: "",
 })
 
 export const overlayProps = {
@@ -22,14 +23,16 @@ export const overlayProps = {
   zIndex: defaultProps("zIndex", { type: [Number, String] }),
   /** 透明度 */
   opacity: defaultProps("opacity", { type: Number }),
-  /** 过渡时间 */
+  /** 过渡时长 (ms) */
   duration: defaultProps("duration", { type: [Number, String] }),
-  /** 是否在显示时才渲染节点 */
+  /** 显示时才渲染节点 */
   lazyRender: defaultProps("lazyRender", { type: Boolean }),
   /** 进入动画函数 */
   enterTimingFunction: defaultProps("enterTimingFunction", { type: String }),
   /** 离开动画函数 */
   leaveTimingFunction: defaultProps("leaveTimingFunction", { type: String }),
+  /** 背景色 (覆盖默认半透明黑) */
+  background: defaultProps("background", { type: String }),
   /** 自定义类名 */
   customClass: defaultProps("customClass", { type: String }),
   /** 自定义样式 */
@@ -37,15 +40,15 @@ export const overlayProps = {
 }
 
 export const overlayEmits = {
-  /** 更新显示状态事件 */
+  /** show 双向绑定 */
   "update:show": (show: boolean) => isBoolean(show),
-  /** 打开弹出层事件 */
+  /** 弹层打开 */
   open: () => true,
-  /** 打开动画结束事件 */
+  /** 打开动画结束 */
   opened: () => true,
-  /** 关闭弹出层事件 */
+  /** 弹层关闭 */
   close: () => true,
-  /** 关闭动画结束事件 */
+  /** 关闭动画结束 */
   closed: () => true,
   /** 点击事件 */
   click: () => true,

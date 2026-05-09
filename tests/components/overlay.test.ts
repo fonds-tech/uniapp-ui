@@ -105,7 +105,7 @@ describe("ui-overlay 遮罩层组件", () => {
       expect(wrapper.props("opacity")).toBe(1)
     })
 
-    it("透明度应正确应用到样式中", async () => {
+    it("透明度应正确应用到 CSS 变量", async () => {
       const wrapper = mount(UiOverlay, {
         props: { show: true, opacity: 0.5 },
       })
@@ -113,9 +113,8 @@ describe("ui-overlay 遮罩层组件", () => {
       await waitForTransition()
       const overlay = wrapper.find(".ui-overlay")
       expect(overlay.exists()).toBe(true)
-      // 检查背景色包含正确的透明度
       const style = overlay.attributes("style")
-      expect(style).toContain("rgba(0, 0, 0, 0.5)")
+      expect(style).toContain("--ui-overlay-opacity: 0.5")
     })
   })
 
@@ -145,7 +144,7 @@ describe("ui-overlay 遮罩层组件", () => {
       const overlay = wrapper.find(".ui-overlay")
       expect(overlay.exists()).toBe(true)
       const style = overlay.attributes("style")
-      expect(style).toContain("z-index: 1000")
+      expect(style).toContain("--ui-overlay-z-index: 1000")
     })
   })
 

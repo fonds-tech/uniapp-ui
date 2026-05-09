@@ -67,6 +67,7 @@ function initTransition() {
 
 // 进入过渡
 function enter() {
+  if (transition.visible.value) return
   initTransition()
   zIndex.value = isNumber(props.zIndex) ? +props.zIndex : useGlobalZIndex()
   transition.enter()
@@ -75,6 +76,7 @@ function enter() {
 
 // 离开过渡
 function leave() {
+  if (!transition.visible.value) return
   transition.leave()
   emits("update:show", false)
 }

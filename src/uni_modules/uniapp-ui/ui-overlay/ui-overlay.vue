@@ -2,60 +2,55 @@
   <view
     v-if="inited"
     class="ui-overlay"
-    :class="[transition.classs.value, customClass]"
-    :style="[style]"
+    :class="[transition.classs.value, props.customClass]"
+    :style="[rootStyle]"
     @click="onClick"
     @transitionend="transition.end"
-    @touchmove.prevent.stop="noop"
+    @touchmove.prevent.stop="() => {}"
   >
     <slot />
   </view>
 </template>
 
 <script setup lang="ts">
-import type { CSSProperties } from "vue"
-import { noop } from "../utils/utils"
 import { isNumber } from "../utils/check"
 import { ref, watch, computed } from "vue"
 import { overlayEmits, overlayProps } from "./index"
-import { useStyle, useTransition, useGlobalZIndex } from "../hooks"
+import { useColor, useStyle, useTransition, useGlobalZIndex } from "../hooks"
 
 defineOptions({ name: "ui-overlay" })
 
 const props = defineProps(overlayProps)
 const emits = defineEmits(overlayEmits)
 
-// 过渡动画 hook
 const transition = useTransition()
-// z-index 值
 const zIndex = ref<number>()
 
-// 是否已初始化
 const inited = computed(() => !props.lazyRender || transition.inited.value)
-// 根节点样式
-const style = computed(() => {
-  const style: CSSProperties = {}
-  style.zIndex = zIndex.value
-  style.display = transition.visible.value ? "block" : "none"
-  style.background = `rgba(0, 0, 0, ${props.opacity})`
-  return useStyle({ ...style, ...useStyle(props.customStyle), ...transition.styles.value })
+// 根节点样式：CSS var 注入 + 动态显隐
+const rootStyle = computed(() => {
+  const vars: Record<string, string | number | undefined> = {}
+  vars["--ui-overlay-opacity"] = String(props.opacity)
+  if (props.background) vars["--ui-overlay-background"] = useColor(props.background)
+  if (zIndex.value !== undefined) vars["--ui-overlay-z-index"] = String(zIndex.value)
+  return useStyle({
+    ...vars,
+    display: transition.visible.value ? "block" : "none",
+    ...useStyle(props.customStyle),
+    ...transition.styles.value,
+  })
 })
 
-// 过渡事件绑定
 transition.on("before-enter", () => emits("open"))
 transition.on("after-enter", () => emits("opened"))
 transition.on("before-leave", () => emits("close"))
 transition.on("after-leave", () => emits("closed"))
 
-// 监听 show 变化
 watch(
   () => props.show,
-  (val) => {
-    val ? open() : close()
-  },
+  (val) => (val ? open() : close()),
   { immediate: true },
 )
-// 监听动画相关属性变化
 watch(() => [props.duration, props.enterTimingFunction, props.leaveTimingFunction], initTransition, { immediate: true })
 
 // 初始化过渡动画
@@ -68,7 +63,7 @@ function initTransition() {
   })
 }
 
-// 打开遮罩层
+// 打开
 function open() {
   if (transition.visible.value) return
   initTransition()
@@ -77,7 +72,7 @@ function open() {
   emits("update:show", true)
 }
 
-// 关闭遮罩层
+// 关闭
 function close() {
   if (transition.visible.value) {
     transition.leave()
@@ -85,7 +80,6 @@ function close() {
   }
 }
 
-// 点击事件
 function onClick() {
   emits("click")
 }
@@ -96,7 +90,13 @@ defineExpose({ open, close })
 <script lang="ts">
 export default {
   name: "ui-overlay",
-  options: { virtualHost: true, multipleSlots: true, styleIsolation: "shared" },
+  options: {
+    // #ifndef MP-TOUTIAO
+    virtualHost: true,
+    // #endif
+    multipleSlots: true,
+    styleIsolation: "shared",
+  },
 }
 </script>
 
@@ -104,10 +104,15 @@ export default {
 @use "../styles/animation.scss";
 
 .ui-overlay {
+  --ui-overlay-opacity: 0.7;
+  --ui-overlay-background: rgba(0, 0, 0, var(--ui-overlay-opacity));
+
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
+  z-index: var(--ui-overlay-z-index);
   position: fixed;
+  background: var(--ui-overlay-background);
 }
 </style>

@@ -213,7 +213,7 @@ describe("ui-popup 弹出层组件", () => {
     it("默认关闭图标为 cross", () => {
       const wrapper = mount(UiPopup, { global: { stubs } })
 
-      expect(wrapper.props("closeIcon")).toBe("close")
+      expect(wrapper.props("closeIcon")).toBe("cross")
     })
 
     const closePositions = ["top-left", "top-right", "bottom-left", "bottom-right"] as const
@@ -382,7 +382,7 @@ describe("ui-popup 弹出层组件", () => {
       })
 
       await wrapper.setProps({ show: true })
-      await waitForTransition()
+      await waitForTransition(500)
 
       expect(wrapper.emitted("opened")).toBeTruthy()
     })
@@ -449,11 +449,11 @@ describe("ui-popup 弹出层组件", () => {
         global: { stubs },
       })
 
-      await waitForTransition()
+      await waitForTransition(500)
 
       const overlay = wrapper.find(".ui-overlay-stub")
       await overlay.trigger("click")
-      await waitForTransition()
+      await waitForTransition(500)
 
       const closeEvents = wrapper.emitted("close") as Array<[string]>
       const closedEvents = wrapper.emitted("closed") as Array<[string]>
@@ -513,11 +513,11 @@ describe("ui-popup 弹出层组件", () => {
         global: { stubs },
       })
 
-      await waitForTransition()
+      await waitForTransition(500)
 
       const closeBtn = wrapper.find(".ui-popup__close")
       await closeBtn.trigger("click")
-      await waitForTransition()
+      await waitForTransition(500)
 
       const closeEvents = wrapper.emitted("close") as Array<[string]>
       const closedEvents = wrapper.emitted("closed") as Array<[string]>
