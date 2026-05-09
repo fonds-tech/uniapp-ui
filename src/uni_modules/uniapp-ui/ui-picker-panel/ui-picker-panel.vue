@@ -1,6 +1,6 @@
 <template>
-  <view class="ui-picker-panel" :class="[customClass]" :style="[style]">
-    <view v-if="loading" class="ui-picker-panel__loading">
+  <view class="ui-picker-panel" :class="[props.customClass]" :style="[props.customStyle]">
+    <view v-if="props.loading" class="ui-picker-panel__loading">
       <ui-loading size="40rpx" />
     </view>
     <picker-view
@@ -23,8 +23,8 @@
         <view
           v-for="(item, index) in column"
           :key="index"
-          class="ui-picker-panel__columns__column"
-          :class="{ 'is-active': isActiveColumn(columnIndex, index) }"
+          class="ui-picker-panel__column"
+          :class="{ 'ui-picker-panel__column--active': isActiveColumn(columnIndex, index) }"
           :style="[optionBaseStyle, columnStyle(columnIndex, index)]"
         >
           {{ item[resolvedFields.text] }}
@@ -46,110 +46,67 @@ defineOptions({ name: "ui-picker-panel" })
 
 const props = defineProps(pickerPanelProps)
 const emits = defineEmits(pickerPanelEmits)
-// 当前选中的值列表，与列索引一一对应
+
 const selectedValues = ref<(string | number)[]>([])
-// 当前选中索引，用于驱动 picker-view
 const selectedIndexes = ref<number[]>([])
-// 记录上一次索引，用于计算变更列
 const prevSelectedIndexes = ref<number[]>([])
 
-// visible 改为计算属性，避免无数据时渲染
+// 无数据时不渲染 picker-view
 const visible = computed(() => selectedIndexes.value.length > 0 && columns.value.length > 0)
-
-// 列类型：单列 / 多列 / 级联
-const columnsType = computed<PickerColumnsType>(() => getColumnsType(props.columns, resolvedFields.value))
-// 统一字段映射，兼容自定义字段名
+// 字段映射
 const resolvedFields = computed(() => mergeFields(props.columnFields))
+// 列类型 (单/多/级联)
+const columnsType = computed<PickerColumnsType>(() => getColumnsType(props.columns, resolvedFields.value))
+// 标准化列数据
 const columns = computed<PickerColumn[]>(() => {
-  const { columns } = props
-  if (columns.length) {
-    switch (columnsType.value) {
-      case "multiple":
-        return columns
-      case "cascade":
-        // 级联模式下，需要根据已选值动态计算每一列
-        return formatCascadeColumns(columns, resolvedFields.value, selectedValues.value)
-      default:
-        return [columns]
-    }
+  const list = props.columns
+  if (!list.length) return []
+  switch (columnsType.value) {
+    case "multiple":
+      return list
+    case "cascade":
+      return formatCascadeColumns(list, resolvedFields.value, selectedValues.value)
+    default:
+      return [list]
   }
-  return []
 })
-
-const style = computed(() => useStyle(props.customStyle))
-
-// 单项高度（px），全组件用同一单位避免 rpx/px 转换误差导致行不对齐
-const itemHeightPx = computed(() => useUnitToPx(props.columnHeight))
-
-const viewStyle = computed(() => {
-  return useStyle({ height: `${itemHeightPx.value * +props.visibleColumnNum}px` }, "string")
+// 单项高度像素 (统一 px 避免 rpx 转换误差;未传时回落到 88rpx)
+const itemHeightPx = computed(() => {
+  const h = props.columnHeight
+  if (h === undefined || h === "") return useUnitToPx("88rpx") ?? 0
+  return useUnitToPx(h) ?? 0
 })
-
-const indicatorStyle = computed(() => {
-  return useStyle({ height: `${itemHeightPx.value}px` }, "string")
-})
-
-// 选项基础样式：高度 + 行高与 indicator 保持像素级一致
-const optionBaseStyle = computed(() => {
+// picker-view 总高
+const viewStyle = computed(() => useStyle({ height: `${itemHeightPx.value * +props.visibleColumnNum}px` }, "string"))
+// indicator 高度
+const indicatorStyle = computed(() => useStyle({ height: `${itemHeightPx.value}px` }, "string"))
+// 行高与 indicator 像素对齐
+const optionBaseStyle = computed(() => useStyle({ height: `${itemHeightPx.value}px`, lineHeight: `${itemHeightPx.value}px` }))
+// 单项动态样式 (active 与否)
+const columnStyle = computed(() => (columnIndex: string | number, index: string | number) => {
+  const active = isActiveColumn.value(columnIndex, index)
   return useStyle({
-    height: `${itemHeightPx.value}px`,
-    lineHeight: `${itemHeightPx.value}px`,
+    fontSize: useUnit(active ? props.activeColumnSize : props.columnSize),
+    color: active ? useColor(props.activeColumnColor) : useColor(props.columnColor),
+    fontWeight: active ? props.activeColumnWeight : props.columnWeight,
   })
 })
+// 是否激活列
+const isActiveColumn = computed(() => (columnIndex: string | number, index: string | number) => selectedIndexes.value[Number(columnIndex)] === Number(index))
 
-// 复用 isActiveColumn 判断逻辑，减少重复计算
-const columnStyle = computed(() => {
-  return (columnIndex: string | number, index: string | number) => {
-    const isActive = isActiveColumn.value(columnIndex, index)
-    return useStyle({
-      fontSize: useUnit(isActive ? props.activeColumnSize : props.columnSize),
-      color: isActive ? useColor(props.activeColumnColor) : useColor(props.columnColor),
-      fontWeight: isActive ? props.activeColumnWeight : props.columnWeight,
-    })
-  }
-})
+watch(() => props.modelValue, (val) => (selectedValues.value = val), { immediate: true })
+watch(() => columns.value, () => syncSelectedIndexes(), { immediate: true })
 
-const isActiveColumn = computed(() => {
-  return (columnIndex: string | number, index: string | number) => {
-    // 通过列索引对比判定是否高亮
-    return selectedIndexes.value[Number(columnIndex)] === Number(index)
-  }
-})
-
-watch(
-  () => props.modelValue,
-  (val) => {
-    selectedValues.value = val
-  },
-  { immediate: true },
-)
-
-watch(
-  () => columns.value,
-  () => syncSelectedIndexes(),
-  { immediate: true },
-)
-
-/**
- * 处理选择变更事件
- * @param data - 选择器变更事件
- */
 function onChange(data: PickerChangeEvent) {
   const { value } = data.detail
-  // 找到第一个变更的列索引，用于后续联动处理
-  const index = Math.max(
-    value.findIndex((val: number, idx: number) => val !== prevSelectedIndexes.value[idx]),
-    0,
-  )
+  // 第一个变更列索引
+  const index = Math.max(value.findIndex((v: number, i: number) => v !== prevSelectedIndexes.value[i]), 0)
 
-  // 边界检查：确保访问安全
-  const selectedValue = columns.value[index]?.[value[index]]?.[resolvedFields.value.value]
-  if (selectedValue !== undefined) {
-    setSelectedValue(index, selectedValue)
-  }
+  const selected = columns.value[index]?.[value[index]]?.[resolvedFields.value.value]
+  if (selected !== undefined) setSelectedValue(index, selected)
 
   if (columnsType.value === "cascade") {
-    // 级联模式下：修正后续列的值，保证每列都有有效选中项
+    // 级联:修正后续列保证有效
     const len = selectedValues.value.length
     for (let i = 0; i < len; i++) {
       const column = columns.value[i] as PickerColumn[]
@@ -179,118 +136,66 @@ function onPickend() {
   emits("pickend")
 }
 
-/**
- * 设置指定列的选中值
- * @param index - 列索引
- * @param value - 需要设置的值
- */
-// 只在值发生变化时更新，避免多余触发
+// 仅在值变化时更新
 function setSelectedValue(index: number, value: string | number) {
   if (selectedValues.value[index] !== value) {
-    const newValues = selectedValues.value.slice(0)
-    newValues[index] = value
-    selectedValues.value = newValues
+    const next = selectedValues.value.slice(0)
+    next[index] = value
+    selectedValues.value = next
   }
 }
 
-/**
- * 获取当前选中的值数组
- * @returns 选中的值列表
- */
-// 获取选中的值数组，包含边界兜底
 function getSelectedValues(): (string | number)[] {
-  return selectedIndexes.value.map((selectedIdx: number, colIndex: number) => columns.value[colIndex]?.[selectedIdx]?.[resolvedFields.value.value] ?? "")
+  return selectedIndexes.value.map((idx, col) => columns.value[col]?.[idx]?.[resolvedFields.value.value] ?? "")
 }
 
-/**
- * 获取当前选中的列项
- * @returns 选中的列数据
- */
-// 获取选中的列数据，过滤空项
 function getSelectedColumns(): PickerColumn[] {
-  return selectedIndexes.value.map((selectedIdx: number, index: number) => columns.value[index]?.[selectedIdx]).filter((col): col is PickerColumn => col !== undefined)
+  return selectedIndexes.value.map((idx, i) => columns.value[i]?.[idx]).filter((c): c is PickerColumn => c !== undefined)
 }
 
-/**
- * 根据 selectedValues 同步索引，保证 UI 与值一致
- */
+// 由 selectedValues 反推 indexes
 function syncSelectedIndexes() {
-  // 根据 selectedValues 反推出索引，保证 UI 与值同步
-  selectedIndexes.value = columns.value.map((column, index) => {
-    const findIndex = column.findIndex((item: PickerColumn) => item[resolvedFields.value.value] === selectedValues.value[index])
-    return Math.max(findIndex, 0)
+  selectedIndexes.value = columns.value.map((column, i) => {
+    const idx = column.findIndex((item: PickerColumn) => item[resolvedFields.value.value] === selectedValues.value[i])
+    return Math.max(idx, 0)
   })
   prevSelectedIndexes.value = selectedIndexes.value.slice()
 }
 
-/**
- * 合并字段映射，生成统一字段结构
- * @param fields - 外部传入的字段映射
- * @returns 统一字段映射
- */
 function mergeFields(fields: PickerColumnFields) {
-  // 默认字段映射，允许用户覆盖
   return merge({ text: "text", value: "value", children: "children" }, fields)
 }
 
-/**
- * 判断列数据类型（单列 / 多列 / 级联）
- * @param columns - 列数据
- * @param fields - 字段映射
- * @returns 列数据类型
- */
 function getColumnsType(columns: PickerColumn[], fields: PickerColumnFields): PickerColumnsType {
-  const firstColumn = columns[0]
-  if (firstColumn) {
-    // 二维数组 => 多列；存在 children => 级联
-    if (Array.isArray(firstColumn)) return "multiple"
-    if (fields.children in firstColumn) return "cascade"
+  const first = columns[0]
+  if (first) {
+    if (Array.isArray(first)) return "multiple"
+    if (fields.children in first) return "cascade"
   }
   return "default"
 }
 
-/**
- * 在列中按值查找项
- * @param columns - 列数据
- * @param value - 目标值
- * @param fields - 字段映射
- * @returns 匹配的列项
- */
-// 添加类型标注，消除 any
 function findColumnByValue(columns: PickerColumn[] | undefined, value: string | number, fields: Required<PickerColumnFields>): PickerColumn | undefined {
-  return columns?.find((column: PickerColumn) => column[fields.value] === value)
+  return columns?.find((c) => c[fields.value] === value)
 }
 
-/**
- * 生成级联列结构（按选中值逐级展开）
- * @param columns - 级联原始数据
- * @param fields - 字段映射
- * @param selectedValues - 当前选中值
- * @returns 级联列数组
- */
+// 按选中值逐级展开级联列
 function formatCascadeColumns(columns: PickerColumn[], fields: Required<PickerColumnFields>, selectedValues: (string | number)[]) {
-  const formatted: PickerColumn[] = []
-
-  let index = 0
+  const list: PickerColumn[] = []
+  let i = 0
   let column = { [fields.children]: columns }
   while (column && column[fields.children]) {
-    const value = selectedValues[index]
+    const value = selectedValues[i]
     const children = column[fields.children]
-    // 优先按选中值定位当前级，找不到则降级到第一项
     column = isNoEmpty(value) ? findColumnByValue(children, value, fields) : undefined
-    if (!column && children.length) {
-      column = findColumnByValue(children, children[0]?.[fields.value], fields)
-    }
-
-    index++
-    formatted.push(children)
+    if (!column && children.length) column = findColumnByValue(children, children[0]?.[fields.value], fields)
+    i++
+    list.push(children)
   }
-
-  return formatted
+  return list
 }
 
 defineExpose({
-  name: "ui-picker-panel",
   getSelectedValues,
   getSelectedIndexs: () => selectedIndexes.value,
   getSelectedColumns,
@@ -302,12 +207,21 @@ defineExpose({
 <script lang="ts">
 export default {
   name: "ui-picker-panel",
-  options: { virtualHost: true, multipleSlots: true, styleIsolation: "shared" },
+  options: {
+    // #ifndef MP-TOUTIAO
+    virtualHost: true,
+    // #endif
+    multipleSlots: true,
+    styleIsolation: "shared",
+  },
 }
 </script>
 
 <style lang="scss">
 .ui-picker-panel {
+  --ui-picker-panel-loading-bg: rgba(255, 255, 255, 0.6);
+  --ui-picker-panel-transition-duration: 0.15s;
+
   display: flex;
   position: relative;
   flex-direction: column;
@@ -320,23 +234,21 @@ export default {
     display: flex;
     z-index: 1;
     position: absolute;
+    background: var(--ui-picker-panel-loading-bg);
     align-items: center;
     justify-content: center;
-    background-color: rgb(255 255 255 / 60%);
   }
 
-  &__columns {
-    &__column {
-      display: flex;
-      overflow: hidden;
-      transition:
-        font-size 0.15s ease,
-        color 0.15s ease,
-        font-weight 0.15s ease;
-      align-items: center;
-      white-space: nowrap;
-      justify-content: center;
-    }
+  &__column {
+    display: flex;
+    overflow: hidden;
+    transition:
+      font-size var(--ui-picker-panel-transition-duration) ease,
+      color var(--ui-picker-panel-transition-duration) ease,
+      font-weight var(--ui-picker-panel-transition-duration) ease;
+    align-items: center;
+    white-space: nowrap;
+    justify-content: center;
   }
 }
 </style>

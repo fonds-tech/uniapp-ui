@@ -20,7 +20,7 @@ UiPickerPanel 纯面板选择器组件,不包含头部交互控制,适合嵌入�
 | columns            | 列数据                    | Array as PropType<PickerColumn[]>               | () => []                                                       | -      |
 | loading            | 是否显示加载中            | boolean                                         | false                                                          | -      |
 | columnFields       | 自定义columns结构中的字段 | Object as PropType<Partial<PickerColumnFields>> | () => ({ text: "text", value: "value", children: "children" }) | -      |
-| columnHeight       | 选项高度                  | string \| number                                | "88rpx"                                                        | -      |
+| columnHeight       | 选项高度                  | string \| number                                | -                                                              | -      |
 | visibleColumnNum   | 可见的选项个数            | string \| number                                | 5                                                              | -      |
 | columnSize         | 选项文字大小              | string \| number                                | -                                                              | -      |
 | columnColor        | 选项文字颜色              | string                                          | -                                                              | -      |
@@ -44,6 +44,19 @@ UiPickerPanel 纯面板选择器组件,不包含头部交互控制,适合嵌入�
 
 ## Methods
 
-| 方法名 | 说明     | 参数 |
-| ------ | -------- | ---- |
-| name   | 组件名称 | -    |
+通过 ref 调用:
+
+| 方法名             | 说明             | 参数                                   |
+| ------------------ | ---------------- | -------------------------------------- |
+| getSelectedValues  | 获取当前选中值   | -                                      |
+| getSelectedIndexs  | 获取当前选中索引 | -                                      |
+| getSelectedColumns | 获取选中列项     | -                                      |
+| getColumns         | 获取标准化列     | -                                      |
+| setColumnValue     | 设置某列值       | index: number, value: string \| number |
+
+## CSS 变量
+
+| 变量名                                | 默认值                  | 说明         |
+| ------------------------------------- | ----------------------- | ------------ |
+| --ui-picker-panel-loading-bg          | rgba(255, 255, 255, .6) | 加载遮罩背景 |
+| --ui-picker-panel-transition-duration | 0.15s                   | 选项过渡时长 |

@@ -331,15 +331,6 @@ describe("ui-picker-panel 选择器面板组件", () => {
 
       expect(typeof wrapper.vm.setColumnValue).toBe("function")
     })
-
-    it("应暴露 name 属性", () => {
-      const wrapper = mount(UiPickerPanel, {
-        props: { columns: singleColumns },
-        global: { stubs },
-      })
-
-      expect(wrapper.vm.name).toBe("ui-picker-panel")
-    })
   })
 
   describe("边界情况", () => {

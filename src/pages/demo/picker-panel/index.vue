@@ -1,109 +1,100 @@
 <template>
   <demo-page>
-    <demo-section title="基础用法">
-      <demo-block direction="column">
-        <view class="picker-panel-demo">
-          <ui-picker-panel v-model="value1" :columns="columns1" @change="onChange" />
-        </view>
-        <ui-text size="small" color="secondary">当前选中：{{ value1.join(", ") }}</ui-text>
+    <demo-section title="基础用法" desc="纯面板,无头部按钮,适合嵌入业务页面">
+      <view class="picker-box">
+        <ui-picker-panel v-model="state.basic" :columns="cityColumns" @change="onChange" />
+      </view>
+      <demo-block direction="column" align="start">
+        <text class="demo-text">当前选中:{{ state.basic.join(", ") }}</text>
       </demo-block>
     </demo-section>
 
-    <demo-section title="多列选择">
-      <demo-block direction="column">
-        <view class="picker-panel-demo">
-          <ui-picker-panel v-model="value2" :columns="columns2" />
-        </view>
-        <ui-text size="small" color="secondary">选中：{{ value2.join(" - ") }}</ui-text>
+    <demo-section title="多列选择" desc="二维数组组成多列,modelValue 与列一一对应">
+      <view class="picker-box">
+        <ui-picker-panel v-model="state.multi" :columns="dateColumns" />
+      </view>
+      <demo-block direction="column" align="start">
+        <text class="demo-text">日期:{{ state.multi.join(" - ") }}</text>
       </demo-block>
     </demo-section>
 
-    <demo-section title="级联选择">
-      <demo-block direction="column">
-        <view class="picker-panel-demo">
-          <ui-picker-panel v-model="value3" :columns="cascadeColumns" />
-        </view>
-        <ui-text size="small" color="secondary">选中：{{ value3.join(" / ") }}</ui-text>
+    <demo-section title="级联选择" desc="单列对象带 children,逐级展开">
+      <view class="picker-box">
+        <ui-picker-panel v-model="state.cascade" :columns="areaColumns" />
+      </view>
+      <demo-block direction="column" align="start">
+        <text class="demo-text">地区:{{ state.cascade.join(" / ") }}</text>
       </demo-block>
     </demo-section>
 
-    <demo-section title="自定义选项高度">
-      <demo-block direction="column">
-        <ui-text size="small" color="secondary">column-height: 60rpx（较小）</ui-text>
-        <view class="picker-panel-demo-small">
-          <ui-picker-panel v-model="value4a" :columns="columns1" column-height="60rpx" :visible-column-num="5" />
-        </view>
+    <demo-section title="选项高度切换" desc="columnHeight 控制单项高度">
+      <demo-block :cols="3" :gap="12">
+        <ui-button v-for="h in heights" :key="h" size="small" :type="state.height === h ? 'primary' : 'default'" @click="state.height = h">{{ h }}</ui-button>
       </demo-block>
-      <demo-block direction="column">
-        <ui-text size="small" color="secondary">column-height: 100rpx（较大）</ui-text>
-        <view class="picker-panel-demo">
-          <ui-picker-panel v-model="value4b" :columns="columns1" column-height="100rpx" />
-        </view>
+      <view class="picker-box">
+        <ui-picker-panel v-model="state.heightPick" :columns="cityColumns" :column-height="state.height" />
+      </view>
+    </demo-section>
+
+    <demo-section title="可见选项数" desc="visibleColumnNum 控制可视行数">
+      <demo-block :cols="3" :gap="12">
+        <ui-button v-for="n in visibleNums" :key="n" size="small" :type="state.visibleNum === n ? 'primary' : 'default'" @click="state.visibleNum = n">{{ n }} 行</ui-button>
+      </demo-block>
+      <view class="picker-box" :style="{ height: `${state.visibleNum * 88}rpx` }">
+        <ui-picker-panel v-model="state.visiblePick" :columns="cityColumns" :visible-column-num="state.visibleNum" />
+      </view>
+    </demo-section>
+
+    <demo-section title="自定义字段映射" desc="columns 字段名非默认时,通过 columnFields 映射">
+      <view class="picker-box">
+        <ui-picker-panel v-model="state.fields" :columns="customColumns" :column-fields="{ text: 'name', value: 'id' }" />
+      </view>
+      <demo-block direction="column" align="start">
+        <text class="demo-text">选中 id:{{ state.fields.join(", ") }}</text>
       </demo-block>
     </demo-section>
 
-    <demo-section title="可见选项数量">
-      <demo-block direction="column">
-        <ui-text size="small" color="secondary">visible-column-num: 3</ui-text>
-        <view class="picker-panel-demo-small">
-          <ui-picker-panel v-model="value5a" :columns="columns1" :visible-column-num="3" />
-        </view>
-      </demo-block>
-      <demo-block direction="column">
-        <ui-text size="small" color="secondary">visible-column-num: 7</ui-text>
-        <view class="picker-panel-demo-large">
-          <ui-picker-panel v-model="value5b" :columns="columns1" :visible-column-num="7" />
-        </view>
+    <demo-section title="文字样式" desc="column-* 普通项,active-column-* 激活项">
+      <view class="picker-box">
+        <ui-picker-panel
+          v-model="state.styled"
+          :columns="cityColumns"
+          column-size="26rpx"
+          column-color="text-tertiary"
+          active-column-size="32rpx"
+          active-column-color="primary"
+          active-column-weight="bold"
+        />
+      </view>
+    </demo-section>
+
+    <demo-section title="加载状态" desc="loading=true 显示加载遮罩">
+      <view class="picker-box">
+        <ui-picker-panel v-model="state.loading" :columns="cityColumns" loading />
+      </view>
+    </demo-section>
+
+    <demo-section title="业务场景:时间选择" desc="时:分 双列">
+      <view class="picker-box">
+        <ui-picker-panel v-model="state.time" :columns="timeColumns" />
+      </view>
+      <demo-block direction="column" align="start">
+        <text class="demo-text">时间:{{ state.time.join(":") }}</text>
       </demo-block>
     </demo-section>
 
-    <demo-section title="自定义字段名">
-      <demo-block direction="column">
-        <ui-text size="small" color="secondary">使用 id 和 name 作为字段</ui-text>
-        <view class="picker-panel-demo">
-          <ui-picker-panel v-model="value6" :columns="customColumns" :column-fields="{ text: 'name', value: 'id' }" />
-        </view>
-        <ui-text size="small" color="secondary">选中 ID：{{ value6.join(", ") }}</ui-text>
+    <demo-section title="业务场景:商品规格" desc="多列规格联动">
+      <view class="picker-box">
+        <ui-picker-panel v-model="state.spec" :columns="specColumns" />
+      </view>
+      <demo-block direction="column" align="start">
+        <text class="demo-text">规格:{{ state.spec.join(" / ") }}</text>
       </demo-block>
     </demo-section>
 
-    <demo-section title="自定义文字样式">
-      <demo-block direction="column">
-        <ui-text size="small" color="secondary">自定义颜色和大小</ui-text>
-        <view class="picker-panel-demo">
-          <ui-picker-panel
-            v-model="value7a"
-            :columns="columns1"
-            column-size="26rpx"
-            column-color="#999"
-            active-column-size="32rpx"
-            active-column-color="#1989fa"
-            active-column-weight="600"
-          />
-        </view>
-      </demo-block>
-      <demo-block direction="column">
-        <ui-text size="small" color="secondary">自定义字重</ui-text>
-        <view class="picker-panel-demo">
-          <ui-picker-panel v-model="value7b" :columns="columns1" column-weight="300" column-color="#666" active-column-weight="700" active-column-color="#ee0a24" />
-        </view>
-      </demo-block>
-    </demo-section>
-
-    <demo-section title="加载状态">
-      <demo-block direction="column">
-        <view class="picker-panel-demo">
-          <ui-picker-panel v-model="value8" :columns="columns1" loading />
-        </view>
-      </demo-block>
-    </demo-section>
-
-    <demo-section title="时间选择器">
-      <demo-block direction="column">
-        <view class="picker-panel-demo">
-          <ui-picker-panel v-model="timeValue" :columns="timeColumns" />
-        </view>
-        <ui-text size="small" color="secondary">选中时间：{{ timeValue.join(":") }}</ui-text>
+    <demo-section title="事件回显">
+      <demo-block direction="column" align="start" :gap="8">
+        <text class="demo-text">{{ eventLog }}</text>
       </demo-block>
     </demo-section>
   </demo-page>
@@ -114,63 +105,51 @@ definePage({
   style: { navigationBarTitleText: "PickerPanel 选择器面板" },
 })
 
-const value1 = ref(["hangzhou"])
-const value2 = ref(["2024", "06", "15"])
-const value3 = ref(["zhejiang", "hangzhou", "xihu"])
-const value4a = ref(["beijing"])
-const value4b = ref(["shanghai"])
-const value5a = ref(["hangzhou"])
-const value5b = ref(["shenzhen"])
-const value6 = ref(["1"])
-const value7a = ref(["hangzhou"])
-const value7b = ref(["guangzhou"])
-const value8 = ref(["hangzhou"])
-const timeValue = ref(["12", "30"])
+const heights = ["60rpx", "88rpx", "120rpx"]
+const visibleNums = [3, 5, 7]
 
-// 单列数据
-const columns1 = [
-  [
-    { text: "北京", value: "beijing" },
-    { text: "上海", value: "shanghai" },
-    { text: "杭州", value: "hangzhou" },
-    { text: "深圳", value: "shenzhen" },
-    { text: "广州", value: "guangzhou" },
-    { text: "成都", value: "chengdu" },
-    { text: "武汉", value: "wuhan" },
-  ],
+const state = reactive({
+  basic: ["hangzhou"],
+  multi: ["2024", "06", "15"],
+  cascade: ["zhejiang", "hangzhou", "xihu"],
+  height: "88rpx",
+  heightPick: ["beijing"],
+  visibleNum: 5,
+  visiblePick: ["shenzhen"],
+  fields: ["1"],
+  styled: ["hangzhou"],
+  loading: ["hangzhou"],
+  time: ["12", "30"],
+  spec: ["black", "M"],
+})
+const eventLog = ref("滚动选择触发事件")
+
+const cityColumns = [
+  { text: "北京", value: "beijing" },
+  { text: "上海", value: "shanghai" },
+  { text: "杭州", value: "hangzhou" },
+  { text: "深圳", value: "shenzhen" },
+  { text: "广州", value: "guangzhou" },
+  { text: "成都", value: "chengdu" },
+  { text: "武汉", value: "wuhan" },
 ]
 
-// 多列数据 - 日期选择
-const columns2 = [
+const dateColumns = [
   [
     { text: "2023", value: "2023" },
     { text: "2024", value: "2024" },
     { text: "2025", value: "2025" },
   ],
-  Array.from({ length: 12 }, (_, i) => ({
-    text: String(i + 1).padStart(2, "0"),
-    value: String(i + 1).padStart(2, "0"),
-  })),
-  Array.from({ length: 31 }, (_, i) => ({
-    text: String(i + 1).padStart(2, "0"),
-    value: String(i + 1).padStart(2, "0"),
-  })),
+  Array.from({ length: 12 }, (_, i) => ({ text: String(i + 1).padStart(2, "0"), value: String(i + 1).padStart(2, "0") })),
+  Array.from({ length: 31 }, (_, i) => ({ text: String(i + 1).padStart(2, "0"), value: String(i + 1).padStart(2, "0") })),
 ]
 
-// 时间选择数据
 const timeColumns = [
-  Array.from({ length: 24 }, (_, i) => ({
-    text: String(i).padStart(2, "0"),
-    value: String(i).padStart(2, "0"),
-  })),
-  Array.from({ length: 60 }, (_, i) => ({
-    text: String(i).padStart(2, "0"),
-    value: String(i).padStart(2, "0"),
-  })),
+  Array.from({ length: 24 }, (_, i) => ({ text: String(i).padStart(2, "0"), value: String(i).padStart(2, "0") })),
+  Array.from({ length: 60 }, (_, i) => ({ text: String(i).padStart(2, "0"), value: String(i).padStart(2, "0") })),
 ]
 
-// 级联数据
-const cascadeColumns = [
+const areaColumns = [
   {
     text: "浙江",
     value: "zhejiang",
@@ -190,28 +169,6 @@ const cascadeColumns = [
         children: [
           { text: "海曙区", value: "haishu" },
           { text: "江北区", value: "jiangbei" },
-        ],
-      },
-    ],
-  },
-  {
-    text: "江苏",
-    value: "jiangsu",
-    children: [
-      {
-        text: "南京",
-        value: "nanjing",
-        children: [
-          { text: "玄武区", value: "xuanwu" },
-          { text: "秦淮区", value: "qinhuai" },
-        ],
-      },
-      {
-        text: "苏州",
-        value: "suzhou",
-        children: [
-          { text: "姑苏区", value: "gusu" },
-          { text: "工业园区", value: "gongyeyuan" },
         ],
       },
     ],
@@ -240,44 +197,45 @@ const cascadeColumns = [
   },
 ]
 
-// 自定义字段名
 const customColumns = [
+  { id: "1", name: "选项一" },
+  { id: "2", name: "选项二" },
+  { id: "3", name: "选项三" },
+  { id: "4", name: "选项四" },
+  { id: "5", name: "选项五" },
+]
+
+const specColumns = [
   [
-    { id: "1", name: "选项一" },
-    { id: "2", name: "选项二" },
-    { id: "3", name: "选项三" },
-    { id: "4", name: "选项四" },
-    { id: "5", name: "选项五" },
+    { text: "黑色", value: "black" },
+    { text: "白色", value: "white" },
+    { text: "红色", value: "red" },
+  ],
+  [
+    { text: "S", value: "S" },
+    { text: "M", value: "M" },
+    { text: "L", value: "L" },
+    { text: "XL", value: "XL" },
   ],
 ]
 
 function onChange(data: any) {
-  console.log("change", data)
+  eventLog.value = `change → ${JSON.stringify(data.values)}`
 }
 </script>
 
 <style scoped lang="scss">
-.picker-panel-demo {
-  width: 100%;
-  border: 1px solid #eee;
-  height: 400rpx;
-  overflow: hidden;
-  border-radius: 12px;
+.demo-text {
+  color: var(--ui-color-text-secondary);
+  font-size: 24rpx;
 }
 
-.picker-panel-demo-small {
+.picker-box {
   width: 100%;
-  border: 1px solid #eee;
-  height: 280rpx;
+  border: 2rpx solid var(--ui-color-border-light);
+  height: 440rpx;
   overflow: hidden;
-  border-radius: 12px;
-}
-
-.picker-panel-demo-large {
-  width: 100%;
-  border: 1px solid #eee;
-  height: 520rpx;
-  overflow: hidden;
-  border-radius: 12px;
+  background: var(--ui-color-background);
+  border-radius: 16rpx;
 }
 </style>
