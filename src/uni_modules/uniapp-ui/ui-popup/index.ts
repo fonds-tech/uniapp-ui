@@ -16,9 +16,10 @@ const defaultProps = buildDefaultProps("popup", {
   closeable: false,
   closeIcon: "cross",
   closeIconPosition: "",
-  borderRadius: "16rpx",
+  borderRadius: undefined,
   closeOnClickOverlay: true,
   lazyRender: true,
+  // 顶部安全区默认 false（top 模式少见）；底部默认 true（bottom 模式高频，避免 iOS 全面屏小条遮挡）
   safeAreaInsetTop: false,
   safeAreaInsetBottom: true,
   overlayStyle: undefined,
@@ -29,7 +30,7 @@ const defaultProps = buildDefaultProps("popup", {
 export const popupProps = {
   /** 是否显示 */
   show: defaultProps("show", { type: Boolean }),
-  /** 显示模式，可选值 top, bottom, left, right, center */
+  /** 显示模式 */
   mode: defaultProps("mode", { type: String as PropType<PopupMode> }),
   /** 宽度 */
   width: defaultProps("width", { type: [Number, String] }),
@@ -41,29 +42,29 @@ export const popupProps = {
   maxHeight: defaultProps("maxHeight", { type: [Number, String] }),
   /** 是否显示遮罩层 */
   overlay: defaultProps("overlay", { type: Boolean }),
-  /** 动画时长，单位毫秒 */
+  /** 动画时长 (ms) */
   duration: defaultProps("duration", { type: Number }),
   /** 元素层级 */
   zIndex: defaultProps("zIndex", { type: [Number, String] }),
-  /** 背景颜色 */
+  /** 背景色 */
   background: defaultProps("background", { type: String }),
-  /** 是否显示关闭按钮 */
+  /** 显示关闭按钮 */
   closeable: defaultProps("closeable", { type: Boolean }),
-  /** 关闭按钮的图标 */
+  /** 关闭按钮图标名 */
   closeIcon: defaultProps("closeIcon", { type: String }),
-  /** 关闭按钮的位置，可选值 top-left, top-right, bottom-left, bottom-right */
+  /** 关闭按钮位置 */
   closeIconPosition: defaultProps("closeIconPosition", { type: String as PropType<PopupCloseIconPosition> }),
   /** 圆角大小 */
   borderRadius: defaultProps("borderRadius", { type: [Number, String] }),
-  /** 点击遮罩层时是否关闭弹窗 */
+  /** 点击遮罩自动关闭 */
   closeOnClickOverlay: defaultProps("closeOnClickOverlay", { type: Boolean }),
-  /** 是否在显示时才渲染节点 */
+  /** 显示时才挂载节点 */
   lazyRender: defaultProps("lazyRender", { type: Boolean }),
-  /** 是否开启顶部安全距离 */
+  /** 顶部安全区填充 */
   safeAreaInsetTop: defaultProps("safeAreaInsetTop", { type: Boolean }),
-  /** 是否开启底部安全距离 */
+  /** 底部安全区填充 */
   safeAreaInsetBottom: defaultProps("safeAreaInsetBottom", { type: Boolean }),
-  /** 自定义覆盖层的样式 */
+  /** 遮罩自定义样式 */
   overlayStyle: defaultProps("overlayStyle", { type: [Object, String] as PropType<string | CSSProperties> }),
   /** 自定义类名 */
   customClass: defaultProps("customClass", { type: String }),
@@ -72,26 +73,27 @@ export const popupProps = {
 }
 
 export const popupEmits = {
-  /** 更新显示状态事件 */
-  "update:show": (show: boolean) => true,
-  /** 打开弹出层事件 */
+  /** show 双向绑定 */
+  "update:show": (show: boolean) => typeof show === "boolean",
+  /** 弹出 */
   open: () => true,
-  /** 打开动画结束事件 */
+  /** 弹出动画结束 */
   opened: () => true,
-  /** 关闭弹出层事件 */
-  close: (action: string) => true,
-  /** 关闭动画结束事件 */
-  closed: (action: string) => true,
-  /** 点击事件 */
+  /** 关闭 (action 来源: external|close|overlay) */
+  close: (action: PopupCloseAction) => typeof action === "string",
+  /** 关闭动画结束 */
+  closed: (action: PopupCloseAction) => typeof action === "string",
+  /** 点击 popup 主体 */
   click: () => true,
-  /** 点击关闭按钮事件 */
+  /** 点击关闭按钮 */
   clickClose: () => true,
-  /** 点击遮罩层事件 */
+  /** 点击遮罩 */
   clickOverlay: () => true,
 }
 
 export type PopupMode = "top" | "bottom" | "left" | "right" | "center"
 export type PopupCloseIconPosition = "" | "top-left" | "top-right" | "bottom-left" | "bottom-right"
+export type PopupCloseAction = "external" | "close" | "overlay"
 export type PopupEmits = typeof popupEmits
 export type PopupProps = ExtractPropTypes<typeof popupProps>
 export type PopupInstance = InstanceType<typeof Popup>

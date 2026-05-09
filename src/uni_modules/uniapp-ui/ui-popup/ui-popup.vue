@@ -6,13 +6,13 @@
       :duration="props.duration"
       :z-index="zIndex"
       :lazy-render="props.lazyRender"
-      :custom-style="overlayStyle"
+      :custom-style="props.overlayStyle"
       @click="onClickOverlay"
     />
     <view v-if="inited" class="ui-popup" :style="[style]" :class="[classs, props.customClass]" @transitionend="transition.end" @touchmove.prevent.stop="noop">
       <view v-if="props.closeable" class="ui-popup__close" :class="[closeClass]" @click.stop="onClickClose">
         <slot name="close">
-          <ui-icon :name="props.closeIcon" size="36rpx" color="#333333" hover-class="active-opacity" />
+          <ui-icon :name="props.closeIcon" />
         </slot>
       </view>
       <ui-safe-area-top v-if="props.safeAreaInsetTop" />
@@ -29,11 +29,12 @@
 
 <script setup lang="ts">
 import type { CSSProperties } from "vue"
+import type { PopupCloseAction } from "./index"
 import type { TransitionName } from "../hooks"
 import { noop } from "../utils/utils"
 import { isNumber } from "../utils/check"
 import { popupEmits, popupProps } from "./index"
-import { ref, watch, computed, onMounted } from "vue"
+import { ref, watch, computed } from "vue"
 import { useUnit, useColor, useStyle, useTransition, useGlobalZIndex } from "../hooks"
 
 defineOptions({ name: "ui-popup" })
@@ -41,83 +42,59 @@ defineOptions({ name: "ui-popup" })
 const props = defineProps(popupProps)
 const emits = defineEmits(popupEmits)
 
-// 过渡动画 hook
 const transition = useTransition()
 
-// 弹出层 z-index
 const zIndex = ref<number>()
-// 当前动作（用于关闭时事件传递）
-const action = ref("show")
-// 控制弹出层可见性
+// 关闭来源 (用于事件传递)
+const action = ref<PopupCloseAction>("external")
 const visible = ref(false)
-// 窗口底部安全区域高度
-const windowBottom = ref(0)
 
-// 是否已初始化
 const inited = computed(() => !props.lazyRender || transition.inited.value)
-// 根节点样式
 const style = computed(() => {
   const style: CSSProperties = {}
   style.zIndex = zIndex.value
-  style.background = useColor(props.background)
-  style["--ui-popup-border-radius"] = useUnit(props.borderRadius)
-  // 离开动画结束后 panel 仍 inited=true 留 DOM；center 模式 fade 动画 opacity:0 不出屏，必须 display:none 否则拦截点击
+  if (props.background) style.background = useColor(props.background)
+  if (props.borderRadius !== undefined) style["--ui-popup-border-radius"] = useUnit(props.borderRadius)
+  // 离开动画结束后 panel 仍 inited=true 留 DOM；center 模式 fade opacity:0 不出屏，必须 display:none 否则拦截点击
   if (!transition.visible.value) style.display = "none"
   return useStyle({ ...style, ...useStyle(props.customStyle), ...transition.styles.value })
 })
-// 类名数组
-const classs = computed(() => {
-  const list: string[] = [`ui-popup--${props.mode}`, transition.classs.value]
-  return list
-})
-// 关闭按钮类名
+const classs = computed(() => [`ui-popup--${props.mode}`, transition.classs.value])
 const closeClass = computed(() => {
-  const list: string[] = []
-  const positions = { top: "top-right", right: "top-left", bottom: "top-right", left: "top-right" }
-  if (props.closeIconPosition) list.push(`ui-popup__close--${props.closeIconPosition}`)
-  else list.push(`ui-popup__close--${positions[props.mode]}`)
-  return list
+  // mode → 默认关闭按钮位置 (right 改右侧不直观，故 left 上的 popup 关闭键放右上)
+  const positions = { top: "top-right", right: "top-left", bottom: "top-right", left: "top-right", center: "top-right" }
+  if (props.closeIconPosition) return [`ui-popup__close--${props.closeIconPosition}`]
+  return [`ui-popup__close--${positions[props.mode]}`]
 })
-// 滚动区域样式
 const scrollViewStyle = computed(() => {
   const style: CSSProperties = {}
-  style.width = useUnit(props.width)
-  style.height = useUnit(props.height)
-  style.maxWidth = useUnit(props.maxWidth)
-  style.maxHeight = useUnit(props.maxHeight)
+  if (props.width !== undefined) style.width = useUnit(props.width)
+  if (props.height !== undefined) style.height = useUnit(props.height)
+  if (props.maxWidth !== undefined) style.maxWidth = useUnit(props.maxWidth)
+  if (props.maxHeight !== undefined) style.maxHeight = useUnit(props.maxHeight)
   return useStyle(style)
 })
 
-// 过渡事件绑定
 transition.on("before-enter", () => emits("open"))
 transition.on("after-enter", () => emits("opened"))
 transition.on("before-leave", () => emits("close", action.value))
 transition.on("after-leave", () => emits("closed", action.value))
 
-// 监听 show 变化
 watch(
   () => props.show,
   (val) => {
     if (val) open()
-    else close("show")
+    else close("external")
   },
   { immediate: true },
 )
-// 监听 mode 和 duration 变化
 watch(() => [props.mode, props.duration], initTransition, { immediate: true })
 
-// 组件挂载时获取窗口底部安全区域高度
-onMounted(() => {
-  getWindowBottom()
-})
-
-// 初始化过渡动画
 function initTransition() {
   const modes = { top: "slide-down", left: "slide-left", right: "slide-right", bottom: "slide-up", center: "fade" }
   transition.init({ name: modes[props.mode] as TransitionName, duration: props.duration })
 }
 
-// 打开弹出层
 function open() {
   if (transition.visible.value) return
   initTransition()
@@ -127,56 +104,26 @@ function open() {
   emits("update:show", true)
 }
 
-// 关闭弹出层
-function close(a = "show") {
-  if (transition.visible.value) {
-    action.value = a
-    visible.value = false
-    transition.leave()
-    emits("update:show", false)
-  }
+function close(a: PopupCloseAction = "external") {
+  if (!transition.visible.value) return
+  action.value = a
+  visible.value = false
+  transition.leave()
+  emits("update:show", false)
 }
 
-// 点击关闭图标
 function onClickClose() {
-  close("close")
   emits("clickClose")
+  close("close")
 }
 
-// 点击弹出层主体
 function onClickBody() {
   emits("click")
 }
 
-// 点击遮罩层
 function onClickOverlay() {
-  if (props.closeOnClickOverlay) {
-    close("overlay")
-  }
   emits("clickOverlay")
-}
-
-// 获取窗口底部安全区域高度
-function getWindowBottom() {
-  if (props.mode !== "bottom") return
-  // #ifdef MP-WEIXIN
-  try {
-    const windowInfo = uni.getWindowInfo()
-    windowBottom.value = windowInfo.windowBottom || 0
-  } catch (e) {
-    windowBottom.value = 0
-  }
-  // #endif
-  // #ifndef MP-WEIXIN
-  uni.getSystemInfo({
-    success: (res) => {
-      windowBottom.value = res.windowBottom || 0
-    },
-    fail: () => {
-      windowBottom.value = 0
-    },
-  })
-  // #endif
+  if (props.closeOnClickOverlay) close("overlay")
 }
 
 defineExpose({ open, close })
@@ -185,7 +132,13 @@ defineExpose({ open, close })
 <script lang="ts">
 export default {
   name: "ui-popup",
-  options: { virtualHost: true, multipleSlots: true, styleIsolation: "shared" },
+  options: {
+    // #ifndef MP-TOUTIAO
+    virtualHost: true,
+    // #endif
+    multipleSlots: true,
+    styleIsolation: "shared",
+  },
 }
 </script>
 
@@ -193,11 +146,15 @@ export default {
 @use "../styles/animation.scss";
 
 .ui-popup {
-  --ui-popup-border-radius: var(--ui-radius-xl);
+  --ui-popup-border-radius: var(--ui-radius-lg);
+  --ui-popup-close-color: var(--ui-color-text-secondary);
+  --ui-popup-close-size: var(--ui-icon-size-sm);
+  --ui-popup-side-width: 60vw;
+
   overflow: hidden;
-  position: fixed;
   max-width: 100vw;
   max-height: 100vh;
+  position: fixed;
   background-color: var(--ui-color-background);
   transition-duration: var(--ui-transition-duration);
 
@@ -208,6 +165,9 @@ export default {
   &__close {
     z-index: var(--ui-z-index-content);
     position: absolute;
+    color: var(--ui-popup-close-color);
+    font-size: var(--ui-popup-close-size);
+    line-height: 1;
 
     &--top-left {
       top: var(--ui-spacing-lg);
@@ -244,6 +204,7 @@ export default {
     top: 0;
     left: 0;
     bottom: 0;
+    width: var(--ui-popup-side-width);
     display: flex;
     flex-direction: column;
     border-top-right-radius: var(--ui-popup-border-radius);
@@ -254,6 +215,7 @@ export default {
     top: 0;
     right: 0;
     bottom: 0;
+    width: var(--ui-popup-side-width);
     display: flex;
     flex-direction: column;
     border-top-left-radius: var(--ui-popup-border-radius);

@@ -286,10 +286,10 @@ describe("ui-popup 弹出层组件", () => {
       expect(wrapper.props("borderRadius")).toBe(20)
     })
 
-    it("默认圆角为 16rpx", () => {
+    it("默认 borderRadius 为 undefined (由 SCSS token 兜底)", () => {
       const wrapper = mount(UiPopup, { global: { stubs } })
 
-      expect(wrapper.props("borderRadius")).toBe("16rpx")
+      expect(wrapper.props("borderRadius")).toBeUndefined()
     })
 
     it("应支持自定义 z-index", () => {
