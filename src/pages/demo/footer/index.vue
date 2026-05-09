@@ -16,9 +16,9 @@
         <ui-button size="small" :type="background === '' ? 'primary' : 'default'" @click="background = ''">默认</ui-button>
         <ui-button size="small" :type="background === '#f5f7fa' ? 'primary' : 'default'" @click="background = '#f5f7fa'">浅灰</ui-button>
         <ui-button size="small" :type="background === '#1989fa' ? 'primary' : 'default'" @click="background = '#1989fa'">蓝色</ui-button>
-        <ui-button size="small" :type="background.startsWith('linear') ? 'primary' : 'default'" @click="background = 'linear-gradient(135deg, #ff6b6b 0%, #ee0a24 100%)'"
-          >渐变</ui-button
-        >
+        <ui-button size="small" :type="background.startsWith('linear') ? 'primary' : 'default'" @click="background = 'linear-gradient(135deg, #ff6b6b 0%, #ee0a24 100%)'">
+          渐变
+        </ui-button>
       </demo-block>
     </demo-section>
 
@@ -49,9 +49,9 @@
     <demo-section title="自定义样式 (customStyle)" desc="常见用法：顶部阴影、顶部分割线">
       <demo-block :cols="3" :gap="12">
         <ui-button size="small" :type="customStyle === '' ? 'primary' : 'default'" @click="customStyle = ''">无</ui-button>
-        <ui-button size="small" :type="customStyle.includes('shadow') ? 'primary' : 'default'" @click="customStyle = 'box-shadow: 0 -4rpx 16rpx rgba(0,0,0,0.08)'"
-          >顶部阴影</ui-button
-        >
+        <ui-button size="small" :type="customStyle.includes('shadow') ? 'primary' : 'default'" @click="customStyle = 'box-shadow: 0 -4rpx 16rpx rgba(0,0,0,0.08)'">
+          顶部阴影
+        </ui-button>
         <ui-button size="small" :type="customStyle.includes('border-top') ? 'primary' : 'default'" @click="customStyle = 'border-top: 1rpx solid #e5e7eb'">顶部分割线</ui-button>
       </demo-block>
     </demo-section>

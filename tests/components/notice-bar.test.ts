@@ -365,19 +365,6 @@ describe("uiNoticeBar 组件", () => {
     })
   })
 
-  describe("暴露属性测试", () => {
-    it("应该暴露 name 属性", async () => {
-      const wrapper = mount(UiNoticeBar, {
-        props: { text: "通知" },
-        global: {
-          stubs: { "ui-icon": true },
-        },
-      })
-      await waitForTransition()
-      expect(wrapper.vm.name).toBe("ui-notice-bar")
-    })
-  })
-
   describe("边界情况测试", () => {
     it("text 为空字符串时应该正常处理", async () => {
       const wrapper = mount(UiNoticeBar, {

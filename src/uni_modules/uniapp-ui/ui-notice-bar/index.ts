@@ -5,30 +5,31 @@ import { buildDefaultProps } from "../utils/props"
 const defaultProps = buildDefaultProps("notice-bar", {
   text: "",
   mode: "horizontal",
-  color: "",
+  color: undefined,
   speed: 60,
   interval: 3000,
   duration: 500,
   scrollable: true,
-  minHeight: "72rpx",
-  fontSize: "",
-  fontWeight: "",
+  radius: undefined,
+  minHeight: undefined,
+  fontSize: undefined,
+  fontWeight: undefined,
   icon: "sound",
-  iconSize: "",
-  iconColor: "warning",
-  iconWeight: "",
+  iconSize: undefined,
+  iconColor: undefined,
+  iconWeight: undefined,
   rightIcon: "",
-  rightIconSize: "",
-  rightIconColor: "warning",
-  rightIconWeight: "",
-  background: "",
+  rightIconSize: undefined,
+  rightIconColor: undefined,
+  rightIconWeight: undefined,
+  background: undefined,
   customClass: "",
   customStyle: "",
 })
 
 export const noticeBarProps = {
-  /** 显示内容，vertical 垂直模式时要求内容为数组 */
-  text: defaultProps("text", { type: [String, Array] }),
+  /** 显示内容，vertical 垂直模式接收数组 */
+  text: defaultProps("text", { type: [String, Array] as PropType<string | string[]> }),
   /** 滚动模式 */
   mode: defaultProps("mode", { type: String as PropType<NoticeBarMode>, validator: (v: string) => ["vertical", "horizontal"].includes(v) }),
   /** 内容文本颜色 */
@@ -41,6 +42,8 @@ export const noticeBarProps = {
   duration: defaultProps("duration", { type: Number }),
   /** 是否开启滚动 */
   scrollable: defaultProps("scrollable", { type: Boolean }),
+  /** 圆角 */
+  radius: defaultProps("radius", { type: [Number, String] }),
   /** 最小高度 */
   minHeight: defaultProps("minHeight", { type: [Number, String] }),
   /** 内容文本大小 */
@@ -72,15 +75,11 @@ export const noticeBarProps = {
 }
 
 export const noticeBarEmits = {
-  /** 点击事件 */
+  /** 点击通知 */
   click: (index: number) => true,
 }
 
 export type NoticeBarMode = "vertical" | "horizontal"
+export type NoticeBarEmits = typeof noticeBarEmits
 export type NoticeBarProps = ExtractPropTypes<typeof noticeBarProps>
-
-export interface NoticeBarExpose {
-  name: "ui-notice-bar"
-}
-
 export type NoticeBarInstance = InstanceType<typeof NoticeBar>
