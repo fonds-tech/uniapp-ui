@@ -8,7 +8,6 @@ const defaultProps = buildDefaultProps("pagination", {
   pageSize: 10,
   total: 0,
   loading: false,
-  pagination: () => ({}),
   emptyIcon: "",
   emptyText: "暂无数据～",
   customClass: "",
@@ -17,20 +16,18 @@ const defaultProps = buildDefaultProps("pagination", {
 
 export const paginationProps = {
   /** 列表数据 */
-  list: defaultProps("list", { type: Array }),
-  /** 当前分页 */
+  list: defaultProps("list", { type: Array as PropType<any[]> }),
+  /** 当前页 */
   page: defaultProps("page", { type: [Number, String] }),
-  /** 分页大小 */
+  /** 每页条数 */
   pageSize: defaultProps("pageSize", { type: [Number, String] }),
-  /** 列表总数 */
+  /** 总条数 */
   total: defaultProps("total", { type: [Number, String] }),
   /** 是否加载中 */
   loading: defaultProps("loading", { type: Boolean }),
-  /** 分页数据 */
-  pagination: defaultProps("pagination", { type: Object }),
-  /** 空数据提示图标 */
+  /** 空数据图标 */
   emptyIcon: defaultProps("emptyIcon", { type: String }),
-  /** 空数据提示文字 */
+  /** 空数据文案 */
   emptyText: defaultProps("emptyText", { type: String }),
   /** 自定义类名 */
   customClass: defaultProps("customClass", { type: String }),
@@ -39,10 +36,10 @@ export const paginationProps = {
 }
 
 export const paginationEmits = {
-  /** 加载事件 */
-  load: (page: number, pageSize: number) => true,
-  /** 刷新事件 */
-  refresh: (page: number, pageSize: number) => true,
+  /** 触底加载更多 */
+  load: (page: number, pageSize: number) => typeof page === "number" && typeof pageSize === "number",
+  /** 下拉刷新 */
+  refresh: (page: number, pageSize: number) => typeof page === "number" && typeof pageSize === "number",
 }
 
 export type PaginationEmits = typeof paginationEmits

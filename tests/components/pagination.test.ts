@@ -178,7 +178,7 @@ describe("uiPagination 组件", () => {
       })
       await waitForTransition()
       expect(wrapper.find(".ui-pagination__loading").exists()).toBe(true)
-      expect(wrapper.find(".loading-icon").exists()).toBe(true)
+      expect(wrapper.find(".ui-pagination__loading-icon").exists()).toBe(true)
     })
 
     it("loading 为 false 时不显示加载图标", async () => {
@@ -192,7 +192,7 @@ describe("uiPagination 组件", () => {
         },
       })
       await waitForTransition()
-      expect(wrapper.find(".loading-icon").exists()).toBe(false)
+      expect(wrapper.find(".ui-pagination__loading-icon").exists()).toBe(false)
     })
   })
 
@@ -277,7 +277,7 @@ describe("uiPagination 组件", () => {
         },
       })
       await waitForTransition()
-      expect(wrapper.find(".loading-text").text()).toBe("正在加载...")
+      expect(wrapper.find(".ui-pagination__loading-text").text()).toBe("正在加载...")
     })
 
     it("加载完成且到达最后一页应该显示 '没有更多了'", async () => {
@@ -297,30 +297,7 @@ describe("uiPagination 组件", () => {
       await waitForTransition()
       await wrapper.setProps({ loading: false })
       await waitForTransition()
-      expect(wrapper.find(".loading-text").text()).toBe("没有更多了")
-    })
-  })
-
-  describe("pagination 对象属性测试", () => {
-    it("应该支持 pagination 对象模式", async () => {
-      const pagination = {
-        data: { value: [1, 2, 3] },
-        page: { value: 1 },
-        total: { value: 10 },
-        loading: { value: false },
-        pageSize: { value: 10 },
-      }
-      const wrapper = mount(UiPagination, {
-        props: { pagination },
-        global: {
-          stubs: {
-            "ui-empty": true,
-            "ui-loading": true,
-          },
-        },
-      })
-      await waitForTransition()
-      expect(wrapper.props("pagination")).toEqual(pagination)
+      expect(wrapper.find(".ui-pagination__loading-text").text()).toBe("没有更多了")
     })
   })
 

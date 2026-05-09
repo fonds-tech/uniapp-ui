@@ -1,5 +1,5 @@
 <template>
-  <view class="ui-pagination" :style="[style]">
+  <view class="ui-pagination" :class="[props.customClass]" :style="[props.customStyle]">
     <slot />
     <view v-if="isShowEmpty" class="ui-pagination__empty">
       <slot name="empty">
@@ -7,125 +7,80 @@
       </slot>
     </view>
     <view v-else class="ui-pagination__loading">
-      <view v-if="loading" class="loading-icon">
-        <ui-loading type="spinner" size="32rpx" color="#999" />
+      <view v-if="props.loading" class="ui-pagination__loading-icon">
+        <ui-loading type="spinner" size="32rpx" color="text-tertiary" />
       </view>
-      <text class="loading-text">
-        {{ text }}
-      </text>
+      <text class="ui-pagination__loading-text">{{ text }}</text>
     </view>
   </view>
 </template>
 
 <script setup lang="ts">
-import type { CSSProperties } from "vue"
-import { useStyle } from "../hooks"
+import { isArray, isEmpty } from "../utils/check"
 import { ref, watch, computed } from "vue"
-import { isArray, isEmpty, isNoEmpty } from "../utils/check"
 import { paginationEmits, paginationProps } from "./index"
 
-// 定义组件名称
 defineOptions({ name: "ui-pagination" })
 
-// 定义 props 和 emits
 const props = defineProps(paginationProps)
 const emits = defineEmits(paginationEmits)
 
-// 是否已初始化
-const init = ref(false)
+const inited = ref(false)
 
-// 根节点样式
-const style = computed(() => {
-  const style: CSSProperties = {}
-  return useStyle({ ...style, ...useStyle(props.customStyle) })
-})
-
+// 是否最后一页
+const isLastPage = computed(() => isArray(props.list) && props.list.length >= +props.total)
+// 是否显示空状态
+const isShowEmpty = computed(() => inited.value && !props.loading && isEmpty(props.list))
 // 加载提示文本
 const text = computed(() => {
-  let text = ""
-  if (loading.value) text = "正在加载..."
-  else if (isArray(list.value) && list.value.length >= +total.value && init.value) text = "没有更多了"
-  return text
+  if (props.loading) return "正在加载..."
+  if (isLastPage.value && inited.value) return "没有更多了"
+  return ""
 })
 
-// 数据列表
-const list = computed(() => (isPagination.value ? props.pagination.data.value : props.list))
-// 当前页码
-const page = computed(() => (isPagination.value ? props.pagination.page.value : props.page))
-// 数据总数
-const total = computed(() => (isPagination.value ? props.pagination.total.value : props.total))
-// 是否加载中
-const loading = computed(() => (isPagination.value ? props.pagination.loading.value : props.loading))
-// 每页条数
-const pageSize = computed(() => (isPagination.value ? props.pagination.pageSize.value : props.pageSize))
-// 是否是最后一页
-const isLastPage = computed(() => {
-  if (isPagination.value) return list.value.length >= total.value
-  return isArray(list.value) && list.value.length >= +total.value
-})
-// 是否显示空状态
-const isShowEmpty = computed(() => init.value && isEmpty(loading.value) && isEmpty(list.value))
-// 是否使用分页对象
-const isPagination = computed(() => isNoEmpty(props.pagination))
-
-// 监听加载状态变化
 watch(
-  () => loading.value,
-  (value) => {
-    if (value) init.value = true
+  () => props.loading,
+  (val) => {
+    if (val) inited.value = true
     else uni.stopPullDownRefresh()
   },
   { immediate: true },
 )
 
-// 初始化事件监听
-function onEvent() {
-  const { onComplete } = props.pagination
-  if (onComplete) {
-    onComplete(() => {
-      init.value = true
-      uni.stopPullDownRefresh()
-    })
-  }
-}
-
-// 触底加载更多
 onReachBottom(() => {
-  if (isEmpty(isLastPage.value)) {
-    if (isPagination.value) {
-      const { page } = props.pagination
-      page.value++
-    }
-    emits("load", page.value, pageSize.value)
-  }
+  if (!isLastPage.value) emits("load", +props.page, +props.pageSize)
 })
 
-// 下拉刷新
 onPullDownRefresh(() => {
-  if (isPagination.value) {
-    const { reload } = props.pagination
-    if (reload) reload()
-  }
-  emits("refresh", 1, pageSize.value)
+  emits("refresh", 1, +props.pageSize)
 })
-
-onEvent()
 </script>
 
 <script lang="ts">
 export default {
   name: "ui-pagination",
-  options: { virtualHost: true, multipleSlots: true, styleIsolation: "shared" },
+  options: {
+    // #ifndef MP-TOUTIAO
+    virtualHost: true,
+    // #endif
+    multipleSlots: true,
+    styleIsolation: "shared",
+  },
 }
 </script>
 
 <style lang="scss" scoped>
 .ui-pagination {
+  --ui-pagination-loading-gap: 12rpx;
+  --ui-pagination-loading-color: var(--ui-color-text-tertiary);
+  --ui-pagination-loading-margin: var(--ui-spacing-md);
+
   flex: 1;
   display: flex;
   position: relative;
-  min-height: max-content;
+  min-height: 100%;
   flex-direction: column;
+
   &__empty {
     width: 100%;
     margin: auto 0;
@@ -133,19 +88,23 @@ export default {
     align-items: center;
     flex-direction: column;
   }
+
   &__loading {
+    gap: var(--ui-pagination-loading-gap);
     width: 100%;
-    margin: var(--ui-spacing-md) 0;
+    margin: var(--ui-pagination-loading-margin) 0;
     display: flex;
     align-items: center;
     justify-content: center;
-    .loading-icon {
-      display: flex;
-      margin-right: 12rpx;
-    }
-    .loading-text {
-      color: var(--ui-color-text-tertiary);
-    }
+  }
+
+  &__loading-icon {
+    display: flex;
+    align-items: center;
+  }
+
+  &__loading-text {
+    color: var(--ui-pagination-loading-color);
   }
 }
 </style>
