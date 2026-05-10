@@ -105,7 +105,8 @@ function open() {
 }
 
 function close(a: PopupCloseAction = "external") {
-  if (!transition.visible.value) return
+  // 不再 early return：transition.visible 为 false 时仍交给 transition.leave 处理 (内部已有 enterPromise / visible 守卫)，
+  // 否则 enter 动画进行中被关闭会让 popup 状态卡死，下次 open 失效
   action.value = a
   visible.value = false
   transition.leave()

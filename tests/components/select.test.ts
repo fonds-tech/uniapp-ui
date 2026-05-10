@@ -25,11 +25,12 @@ describe("uiSelect 组件", () => {
     props: ["show", "modelValue"],
     emits: ["update:show", "update:modelValue", "change", "cancel", "confirm", "open", "opened", "close", "closed"],
     methods: {
+      // ui-picker 的 defineExpose 公开 API
       confirm() {
         this.$emit("confirm", { values: ["1"], indexs: [0], columns: [] })
       },
       cancel() {
-        this.$emit("cancel", { values: [], indexs: [] })
+        this.$emit("cancel", { values: [], indexs: [], columns: [] })
       },
       getSelectedValues() {
         return ["1"]
@@ -624,7 +625,8 @@ describe("uiSelect 组件", () => {
       })
       await waitForTransition()
 
-      wrapper.findComponent({ name: "ui-picker" }).vm.$emit("update:model-value", ["1"])
+      // picker 内部已 format (single 模式 emit 单值)，select 直接透传
+      wrapper.findComponent({ name: "ui-picker" }).vm.$emit("update:model-value", "1")
       await nextTick()
 
       expect(wrapper.emitted("update:modelValue")?.at(-1)).toEqual(["1"])

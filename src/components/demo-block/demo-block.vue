@@ -32,9 +32,11 @@ const props = withDefaults(
   {
     direction: "row",
     gap: 16,
-    align: "center",
   },
 )
+
+// align 默认随 direction：column 用 stretch (子撑满父宽)，row 用 center (垂直居中)
+const effectiveAlign = computed(() => props.align ?? (props.direction === "column" ? "stretch" : "center"))
 
 const blockClass = computed(() => {
   const list: string[] = []
@@ -43,7 +45,7 @@ const blockClass = computed(() => {
   } else {
     list.push(`demo-block--${props.direction}`)
   }
-  if (props.align) list.push(`demo-block--align-${props.align}`)
+  list.push(`demo-block--align-${effectiveAlign.value}`)
   if (props.justify) list.push(`demo-block--justify-${props.justify}`)
   return list
 })

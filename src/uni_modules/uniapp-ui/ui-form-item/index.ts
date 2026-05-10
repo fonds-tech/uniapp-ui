@@ -115,6 +115,8 @@ export interface FormItemProvide {
   disabled: import("vue").ComputedRef<boolean>
   /** 有效只读态（form 与 form-item 自身合并） */
   readonly: import("vue").ComputedRef<boolean>
+  /** 校验状态：unvalidated | passed | failed */
+  validateStatus: import("vue").ComputedRef<string>
 }
 
 export const formItemKey: InjectionKey<FormItemProvide> = Symbol("ui-form-item")

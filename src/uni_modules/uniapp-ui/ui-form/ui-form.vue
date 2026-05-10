@@ -145,7 +145,11 @@ export default {
 </script>
 
 <style lang="scss">
-.ui-form:empty {
-  display: none;
+.ui-form {
+  width: 100%;
+
+  &:empty {
+    display: none;
+  }
 }
 </style>

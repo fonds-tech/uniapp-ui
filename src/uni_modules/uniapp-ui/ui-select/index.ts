@@ -21,7 +21,7 @@ export interface SelectDisplayPayload {
 const defaultProps = buildDefaultProps("select", {
   modelValue: undefined,
   multiple: false,
-  columns: () => [],
+  columns: () => [] as PickerColumn[],
   columnsFields: () => ({ text: "text", value: "value", children: "children" }),
   mode: "bottom",
   borderRadius: "16rpx",
@@ -47,6 +47,8 @@ const defaultProps = buildDefaultProps("select", {
   placeholder: "请选择",
   disabled: false,
   readonly: false,
+  clearable: false,
+  clearIcon: "close",
   displaySeparator: "/",
   displayFormatter: undefined,
   rightIcon: "arrow",
@@ -119,6 +121,10 @@ export const selectProps = {
   disabled: defaultProps("disabled", { type: Boolean }),
   /** 是否只读 */
   readonly: defaultProps("readonly", { type: Boolean }),
+  /** 是否显示清除按钮（有值且可交互时显示） */
+  clearable: defaultProps("clearable", { type: Boolean }),
+  /** 清除图标名 */
+  clearIcon: defaultProps("clearIcon", { type: String }),
   /** 展示文案分隔符 */
   displaySeparator: defaultProps("displaySeparator", { type: String }),
   /** 展示文案格式化 */
@@ -149,23 +155,25 @@ export const selectProps = {
 
 export const selectEmits = {
   /** 更新绑定值事件 */
-  "update:modelValue": (value: SelectValue) => value,
+  "update:modelValue": (value: SelectValue) => value !== undefined,
   /** 打开事件 */
   open: () => true,
   /** 打开动画结束事件 */
   opened: () => true,
   /** 关闭事件 */
-  close: (action: string) => action,
+  close: (action: string) => typeof action === "string",
   /** 关闭动画结束事件 */
-  closed: (action: string) => action,
+  closed: (action: string) => typeof action === "string",
   /** 值变化事件 */
-  change: (data: PickerChangeData) => data,
+  change: (data: PickerChangeData) => !!data,
   /** 取消事件 */
-  cancel: (data: PickerCancelData) => data,
+  cancel: (data: PickerCancelData) => !!data,
   /** 确认事件 */
-  confirm: (data: PickerConfirmData) => data,
+  confirm: (data: PickerConfirmData) => !!data,
   /** 点击事件 */
   click: () => true,
+  /** 清除事件 */
+  clear: () => true,
 }
 
 export type SelectEmits = typeof selectEmits

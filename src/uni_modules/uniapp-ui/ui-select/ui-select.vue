@@ -1,11 +1,14 @@
 <template>
-  <view class="ui-select" :class="[classs, props.customClass]" :style="[style]">
-    <view class="ui-select__trigger" :hover-class="hoverClass" :hover-stay-time="50" @click="handleClick">
-      <view class="ui-select__value" :style="[valueStyle]">
+  <view class="ui-select" :class="[classNames, props.customClass]" :style="rootStyle" role="combobox" :aria-disabled="effectiveDisabled" @click="handleClick">
+    <view class="ui-select__trigger" :hover-class="hoverClass" :hover-stay-time="50">
+      <view class="ui-select__value" :style="valueStyle">
         <slot name="display" :text="displayText" :payload="displayPayload" :placeholder="props.placeholder">
-          <text v-if="displayText" class="ui-select__text" :style="[textStyle]">{{ displayText }}</text>
-          <text v-else class="ui-select__placeholder" :style="[placeholderStyle]">{{ props.placeholder }}</text>
+          <text v-if="displayText" class="ui-select__text" :style="textStyle">{{ displayText }}</text>
+          <text v-else class="ui-select__placeholder" :style="placeholderStyle">{{ props.placeholder }}</text>
         </slot>
+      </view>
+      <view v-if="showClear" class="ui-select__clear" hover-class="ui-select__clear--active" @click.stop="handleClear">
+        <ui-icon :name="props.clearIcon" size="32rpx" color="text-tertiary" />
       </view>
       <view v-if="showRightIcon" class="ui-select__icon">
         <slot name="right-icon">
@@ -71,410 +74,262 @@
 </template>
 
 <script setup lang="ts">
+import type { CSSProperties } from "vue"
 import type { SelectValue, SelectDisplayPayload } from "./index"
 import type { PickerValue, PickerColumn, PickerInstance, PickerCancelData, PickerChangeData, PickerColumnsType, PickerConfirmData, PickerColumnFields } from "../ui-picker"
-import { merge } from "../utils/utils"
 import { formItemKey } from "../ui-form-item"
+import { ref, computed, nextTick } from "vue"
 import { selectEmits, selectProps } from "./index"
-import { ref, watch, computed, useSlots } from "vue"
-import { useUnit, useColor, useStyle, useParent } from "../hooks"
+import { useUnit, useColor, useStyle, useParent, useHasSlot } from "../hooks"
 
 defineOptions({ name: "ui-select" })
 
 const props = defineProps(selectProps)
 const emits = defineEmits(selectEmits)
-const slots = useSlots()
+const hasRightIconSlot = useHasSlot("right-icon")
 
 const { parent } = useParent(formItemKey)
 
-// 有效 disabled/readonly：合并 form/form-item 级
-const effectiveDisabled = computed(() => Boolean(props.disabled) || Boolean(parent?.disabled?.value))
-const effectiveReadonly = computed(() => Boolean(props.readonly) || Boolean(parent?.readonly?.value))
+// flex 对齐 lookup
+const FLEX_ALIGN_MAP: Record<string, string> = {
+  left: "flex-start",
+  center: "center",
+  right: "flex-end",
+}
+// 默认字段映射
+const DEFAULT_FIELDS: Required<PickerColumnFields> = { text: "text", value: "value", children: "children" }
 
-const pickerRef = ref<PickerInstance | null>(null)
-const currentValue = ref<PickerValue[]>([])
+const pickerRef = ref<PickerInstance>()
 const lastAction = ref<"confirm" | "cancel" | null>(null)
 const visible = ref(false)
 
-/**
- * 判断列数据类型（单列/多列/级联）
- */
-const columnsType = computed<PickerColumnsType>(() => {
-  return getColumnsType(props.columns, resolvedFields.value)
+// 单 source：内部值 ↔ 外部 modelValue 通过 computed 双向
+const currentValue = computed<PickerValue[]>({
+  get: () => parseValue(props.modelValue),
+  set: (val) => emits("update:modelValue", formatValue(val)),
 })
 
-/**
- * 是否为单值模式
- * 单值模式条件：单列选择器 + 非多选模式
- */
-const isSingleValueMode = computed(() => {
-  return columnsType.value === "default" && !props.multiple
-})
-
-const resolvedFields = computed(() => {
-  return merge({ text: "text", value: "value", children: "children" }, props.columnsFields) as Required<PickerColumnFields>
-})
-
+const resolvedFields = computed<Required<PickerColumnFields>>(() => ({ ...DEFAULT_FIELDS, ...(props.columnsFields ?? {}) }))
+const columnsType = computed<PickerColumnsType>(() => getColumnsType(props.columns, resolvedFields.value))
+const isSingleValueMode = computed(() => columnsType.value === "default" && !props.multiple)
+const effectiveDisabled = computed(() => !!props.disabled || !!parent?.disabled?.value)
+const effectiveReadonly = computed(() => !!props.readonly || !!parent?.readonly?.value)
 const isInteractive = computed(() => !effectiveDisabled.value && !effectiveReadonly.value)
+const isInvalid = computed(() => parent?.validateStatus?.value === "failed")
+const hoverClass = computed(() => (isInteractive.value ? "ui-select--active" : ""))
+const showRightIcon = computed(() => hasRightIconSlot.value || !!props.rightIcon)
+const showClear = computed(() => props.clearable && isInteractive.value && !!displayText.value)
 
-const classs = computed(() => {
+const classNames = computed(() => {
   const list: string[] = []
   if (effectiveDisabled.value) list.push("ui-select--disabled")
   if (effectiveReadonly.value) list.push("ui-select--readonly")
+  if (isInvalid.value) list.push("ui-select--error")
   return list
 })
 
-const hoverClass = computed(() => {
-  return isInteractive.value ? "ui-select--active" : ""
-})
-
-const style = computed(() => {
-  return useStyle(props.customStyle)
-})
+const rootStyle = computed(() => useStyle(props.customStyle))
 
 const valueStyle = computed(() => {
-  const style: Record<string, string> = {}
-  if (props.textAlign) {
-    style.justifyContent = props.textAlign === "left" ? "flex-start" : props.textAlign === "right" ? "flex-end" : "center"
-  }
-  return useStyle(style)
+  const s: CSSProperties = {}
+  if (props.textAlign) s.justifyContent = FLEX_ALIGN_MAP[props.textAlign] ?? "flex-start"
+  return useStyle(s)
 })
 
 const textStyle = computed(() => {
-  const style: Record<string, string | number> = {}
-  style.color = useColor(props.textColor)
-  style.fontSize = useUnit(props.textSize)
-  if (props.textWeight) style.fontWeight = props.textWeight
-  return useStyle(style)
+  const s: CSSProperties = {}
+  if (props.textColor) s.color = useColor(props.textColor)
+  if (props.textSize !== undefined) s.fontSize = useUnit(props.textSize)
+  if (props.textWeight !== undefined) s.fontWeight = props.textWeight as CSSProperties["fontWeight"]
+  return useStyle(s)
 })
 
 const placeholderStyle = computed(() => {
-  const style: Record<string, string | number> = {}
-  style.color = useColor(props.placeholderColor)
-  style.fontSize = useUnit(props.textSize)
-  if (props.textWeight) style.fontWeight = props.textWeight
-  return useStyle(style)
+  const s: CSSProperties = {}
+  if (props.placeholderColor) s.color = useColor(props.placeholderColor)
+  if (props.textSize !== undefined) s.fontSize = useUnit(props.textSize)
+  if (props.textWeight !== undefined) s.fontWeight = props.textWeight as CSSProperties["fontWeight"]
+  return useStyle(s, "string")
 })
 
-const showRightIcon = computed(() => {
-  return Boolean(slots["right-icon"] || props.rightIcon)
-})
+// 展示元数据 (复用 columnsType 不重复算)
+const displayMeta = computed(() => buildDisplayMeta(currentValue.value, props.columns, resolvedFields.value, columnsType.value))
 
-const displayMeta = computed(() => {
-  return buildDisplayMeta(currentValue.value, props.columns, resolvedFields.value)
-})
-
-const displayPayload = computed<SelectDisplayPayload>(() => {
-  return {
-    values: currentValue.value,
-    indexs: displayMeta.value.indexs,
-    columns: displayMeta.value.columns,
-    texts: displayMeta.value.texts,
-  }
-})
+const displayPayload = computed<SelectDisplayPayload>(() => ({
+  values: currentValue.value,
+  indexs: displayMeta.value.indexs,
+  columns: displayMeta.value.columns,
+  texts: displayMeta.value.texts,
+}))
 
 const displayText = computed(() => {
   if (props.displayFormatter) {
     const formatted = props.displayFormatter(displayPayload.value)
     return formatted !== undefined && formatted !== null ? String(formatted) : ""
   }
-  const texts = displayMeta.value.texts.filter((text) => text !== "" && text !== undefined && text !== null)
+  const texts = displayMeta.value.texts.filter((t) => t !== "" && t !== undefined && t !== null)
   return texts.length ? texts.join(props.displaySeparator) : ""
 })
 
-watch(
-  () => props.modelValue,
-  (val) => {
-    currentValue.value = parseValue(val)
-  },
-  { immediate: true, deep: true },
-)
-
-/**
- * 将外部传入的值解析为内部数组格式
- * @param value 外部值
- * @returns 内部数组格式
- */
+// 外部值 → 内部数组
 function parseValue(value: SelectValue | undefined): PickerValue[] {
-  // 空值处理
-  if (value === undefined || value === null || value === "") {
-    return []
-  }
-  // 已经是数组
-  if (Array.isArray(value)) {
-    return value
-  }
-  // 单值包装为数组
+  if (value === undefined || value === null || value === "") return []
+  if (Array.isArray(value)) return value
   return [value]
 }
 
-/**
- * 将内部数组格式转换为外部期望的格式
- * @param values 内部数组值
- * @returns 外部格式值
- */
+// 内部数组 → 外部值
 function formatValue(values: PickerValue[]): SelectValue {
-  // 单值模式时返回第一个值或空字符串
-  if (isSingleValueMode.value) {
-    return values[0] ?? ""
-  }
-  // 多选/多列/级联模式返回数组
+  if (isSingleValueMode.value) return values[0] ?? ""
   return values
 }
 
-/**
- * 判断列数据类型（单列/多列/级联）
- * @param columns 列数据
- * @param fields 字段映射
- * @returns 列类型
- */
+// 列数据形态识别 (单列/多列/级联)
 function getColumnsType(columns: PickerColumn[], fields: Required<PickerColumnFields>): PickerColumnsType {
-  const firstColumn = columns[0]
-  if (firstColumn) {
-    if (Array.isArray(firstColumn)) return "multiple"
-    if (fields.children in firstColumn) return "cascade"
+  const first = columns[0]
+  if (first) {
+    if (Array.isArray(first)) return "multiple"
+    if (fields.children in first) return "cascade"
   }
   return "default"
 }
 
-/**
- * 判断值是否为空
- * @param value 待判断值
- * @returns 是否为空
- */
 function isEmptyValue(value: PickerValue | undefined) {
   return value === undefined || value === null || value === ""
 }
 
-/**
- * 按值查找列项
- * @param columns 列数据
- * @param value 目标值
- * @param fields 字段映射
- * @returns 匹配列项
- */
-function findColumnByValue(columns: PickerColumn[] | undefined, value: PickerValue, fields: Required<PickerColumnFields>) {
-  return columns?.find((column: PickerColumn) => column[fields.value] === value)
+// 找索引：未匹配返回 -1，让上层决定如何处理
+function findIndexByValue(list: PickerColumn[], value: PickerValue, fields: Required<PickerColumnFields>) {
+  return list.findIndex((item) => item[fields.value] === value)
 }
 
-/**
- * 构建展示文案所需的元数据
- * @param values 当前值数组
- * @param columns 列数据
- * @param fields 字段映射
- * @returns 文案元数据
- */
-function buildDisplayMeta(values: PickerValue[], columns: PickerColumn[], fields: Required<PickerColumnFields>) {
-  if (!columns.length || !values.length) {
-    return { texts: [], columns: [], indexs: [] }
-  }
-
-  const type = getColumnsType(columns, fields)
-  if (type === "multiple") {
-    return resolveMultipleMeta(values, columns, fields)
-  }
-  if (type === "cascade") {
-    return resolveCascadeMeta(values, columns, fields)
-  }
+function buildDisplayMeta(values: PickerValue[], columns: PickerColumn[], fields: Required<PickerColumnFields>, type: PickerColumnsType) {
+  if (!columns.length || !values.length) return { texts: [], columns: [], indexs: [] }
+  if (type === "multiple") return resolveMultipleMeta(values, columns, fields)
+  if (type === "cascade") return resolveCascadeMeta(values, columns, fields)
   return resolveDefaultMeta(values, columns, fields)
 }
 
-/**
- * 解析单列展示数据
- * @param values 当前值数组
- * @param columns 列数据
- * @param fields 字段映射
- * @returns 展示元数据
- */
 function resolveDefaultMeta(values: PickerValue[], columns: PickerColumn[], fields: Required<PickerColumnFields>) {
-  if (isEmptyValue(values[0])) {
-    return { texts: [], columns: [], indexs: [] }
-  }
+  if (isEmptyValue(values[0])) return { texts: [], columns: [], indexs: [] }
   const list = columns as PickerColumn[]
-  const index = list.findIndex((item: PickerColumn) => item[fields.value] === values[0])
-  const safeIndex = Math.max(index, 0)
-  const selected = list[safeIndex]
+  const index = findIndexByValue(list, values[0], fields)
+  if (index < 0) return { texts: [], columns: [], indexs: [] }
+  const selected = list[index]
   return {
     texts: selected?.[fields.text] ? [selected[fields.text]] : [],
     columns: selected ? [selected] : [],
-    indexs: [safeIndex],
+    indexs: [index],
   }
 }
 
-/**
- * 解析多列展示数据
- * @param values 当前值数组
- * @param columns 列数据
- * @param fields 字段映射
- * @returns 展示元数据
- */
 function resolveMultipleMeta(values: PickerValue[], columns: PickerColumn[], fields: Required<PickerColumnFields>) {
   const texts: Array<string | number> = []
   const selectedColumns: PickerColumn[] = []
   const indexs: number[] = []
-
   const columnList = columns as PickerColumn[][]
-  columnList.forEach((column: PickerColumn[], colIndex: number) => {
+  columnList.forEach((column, colIndex) => {
     const value = values[colIndex]
     if (isEmptyValue(value)) return
-    const index = column.findIndex((item: PickerColumn) => item[fields.value] === value)
-    const safeIndex = Math.max(index, 0)
-    const selected = column[safeIndex]
-    if (selected) {
-      texts.push(selected[fields.text])
-      selectedColumns.push(selected)
-      indexs.push(safeIndex)
-    }
+    const index = findIndexByValue(column, value, fields)
+    if (index < 0) return
+    const selected = column[index]
+    texts.push(selected[fields.text])
+    selectedColumns.push(selected)
+    indexs.push(index)
   })
-
   return { texts, columns: selectedColumns, indexs }
 }
 
-/**
- * 解析级联展示数据
- * @param values 当前值数组
- * @param columns 列数据
- * @param fields 字段映射
- * @returns 展示元数据
- */
 function resolveCascadeMeta(values: PickerValue[], columns: PickerColumn[], fields: Required<PickerColumnFields>) {
   const texts: Array<string | number> = []
   const selectedColumns: PickerColumn[] = []
   const indexs: number[] = []
-
   let cursor: PickerColumn[] | undefined = columns
-  values.forEach((value) => {
-    if (!cursor?.length || isEmptyValue(value)) return
-    const matched = findColumnByValue(cursor, value, fields)
-    const selected = matched ?? cursor[0]
-    const index = cursor.findIndex((item: PickerColumn) => item[fields.value] === selected?.[fields.value])
-    const safeIndex = Math.max(index, 0)
-    if (selected) {
-      texts.push(selected[fields.text])
-      selectedColumns.push(selected)
-      indexs.push(safeIndex)
-      cursor = selected[fields.children] as PickerColumn[]
-    }
-  })
-
+  for (const value of values) {
+    if (!cursor?.length || isEmptyValue(value)) break
+    const index = findIndexByValue(cursor, value, fields)
+    if (index < 0) break
+    const selected = cursor[index]
+    texts.push(selected[fields.text])
+    selectedColumns.push(selected)
+    indexs.push(index)
+    cursor = selected[fields.children] as PickerColumn[]
+  }
   return { texts, columns: selectedColumns, indexs }
 }
 
-/**
- * 点击展示区
- */
-function handleClick() {
+async function handleClick() {
   if (!isInteractive.value) return
   emits("click")
+  // 规避 popup 内部 transition 状态机可能残留 visible，强制 false → nextTick → true 触发响应
+  if (visible.value) {
+    visible.value = false
+    await nextTick()
+  }
   visible.value = true
 }
 
-/**
- * 弹窗显示状态变化
- * @param show 是否显示
- */
+// 清除按钮：清空值并触发 form-item 校验
+function handleClear() {
+  if (!isInteractive.value) return
+  const empty = isSingleValueMode.value ? "" : []
+  emits("update:modelValue", empty)
+  emits("clear")
+  parent?.onChange(empty)
+}
+
 function handleUpdateShow(show: boolean) {
   visible.value = show
   if (!show) {
-    if (lastAction.value === "confirm") {
+    if (lastAction.value !== null) {
       lastAction.value = null
       return
     }
-    if (lastAction.value === "cancel") {
-      lastAction.value = null
-      return
-    }
-    // 使用格式化后的值触发表单验证
     parent?.onBlur(formatValue(currentValue.value))
-    lastAction.value = null
   }
 }
 
-/**
- * 同步内部值
- * @param value 选中值
- */
-function handleUpdateValue(value: PickerValue[]) {
-  currentValue.value = value
-  emits("update:modelValue", formatValue(value))
+function handleUpdateValue(value: SelectValue) {
+  // picker 已按单/多模式 format 过，select 直接透传，无需再 format
+  emits("update:modelValue", value)
 }
 
-/**
- * 透传 change 事件
- * @param data 变更数据
- */
 function handleChange(data: PickerChangeData) {
   emits("change", data)
 }
 
-/**
- * 取消选择
- * @param data 取消数据
- */
 function handleCancel(data: PickerCancelData) {
   lastAction.value = "cancel"
   emits("cancel", data)
-  // 使用格式化后的值触发表单验证
   parent?.onBlur(formatValue(currentValue.value))
 }
 
-/**
- * 确认选择
- * @param data 确认数据
- */
 function handleConfirm(data: PickerConfirmData) {
   lastAction.value = "confirm"
   emits("confirm", data)
-  // 使用格式化后的值触发表单验证
   parent?.onChange(formatValue(data.values))
 }
 
-/**
- * 打开弹窗
- */
 function open() {
   if (!isInteractive.value) return
   visible.value = true
 }
-
-/**
- * 关闭弹窗
- */
 function close() {
   visible.value = false
 }
-
-/**
- * 确认选择
- */
 function confirm() {
   pickerRef.value?.confirm()
 }
-
-/**
- * 取消选择
- */
 function cancel() {
   pickerRef.value?.cancel()
 }
-
-/**
- * 获取选中值
- */
 function getSelectedValues() {
   return pickerRef.value?.getSelectedValues() ?? []
 }
-
-/**
- * 获取选中索引
- */
 function getSelectedIndexs() {
   return pickerRef.value?.getSelectedIndexs() ?? []
 }
-
-/**
- * 获取选中列数据
- */
 function getSelectedColumns() {
   return pickerRef.value?.getSelectedColumns() ?? []
 }
@@ -494,13 +349,20 @@ defineExpose({
 <script lang="ts">
 export default {
   name: "ui-select",
-  options: { virtualHost: true, multipleSlots: true, styleIsolation: "shared" },
+  options: {
+    // #ifndef MP-TOUTIAO
+    virtualHost: true,
+    // #endif
+    multipleSlots: true,
+    styleIsolation: "shared",
+  },
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .ui-select {
   flex: 1;
+  width: 100%;
   display: flex;
   flex-direction: column;
 
@@ -508,13 +370,22 @@ export default {
     opacity: var(--ui-opacity-disabled);
   }
 
+  // 校验失败：仅已选值文字标红 (placeholder 保持灰，由 form-item 底部红字提示)
+  &--error {
+    .ui-select__text {
+      color: var(--ui-color-danger);
+    }
+  }
+
   &__trigger {
+    gap: var(--ui-spacing-sm);
     flex: 1;
+    cursor: pointer;
     display: flex;
     align-items: center;
 
     &.ui-select--active {
-      opacity: 0.85;
+      opacity: var(--ui-opacity-active);
     }
   }
 
@@ -528,20 +399,29 @@ export default {
   &__text {
     color: var(--ui-color-text);
     overflow: hidden;
-    font-size: var(--ui-font-size-md);
+    font-size: inherit;
     white-space: nowrap;
     text-overflow: ellipsis;
   }
 
   &__placeholder {
     color: var(--ui-color-text-secondary);
-    font-size: var(--ui-font-size-md);
+    font-size: inherit;
   }
 
   &__icon {
     display: flex;
     align-items: center;
-    margin-left: var(--ui-spacing-md);
+  }
+
+  &__clear {
+    display: flex;
+    transition: opacity var(--ui-transition-fast) var(--ui-transition-timing);
+    align-items: center;
+
+    &--active {
+      opacity: var(--ui-opacity-active);
+    }
   }
 }
 </style>

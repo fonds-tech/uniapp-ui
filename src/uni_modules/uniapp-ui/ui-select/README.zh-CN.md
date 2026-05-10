@@ -87,47 +87,47 @@ function formatDisplay({ texts }) {
 
 ### Props
 
-| 参数                 | 说明             | 类型                                                 | 默认值                                                   |
-| -------------------- | ---------------- | ---------------------------------------------------- | -------------------------------------------------------- |
-| modelValue (v-model) | 选中值           | `Array<string \| number>`                            | `[]`                                                     |
-| columns              | 列数据           | `PickerColumn[]`                                     | `[]`                                                     |
-| columnsFields        | 字段映射         | `PickerColumnFields`                                 | `{ text: 'text', value: 'value', children: 'children' }` |
-| show (v-model:show)  | 是否显示弹窗     | `boolean`                                            | `false`                                                  |
-| placeholder          | 占位文案         | `string`                                             | `"请选择"`                                               |
-| disabled             | 是否禁用         | `boolean`                                            | `false`                                                  |
-| readonly             | 是否只读         | `boolean`                                            | `false`                                                  |
-| displaySeparator     | 文案分隔符       | `string`                                             | `"/"`                                                    |
-| displayFormatter     | 展示文案格式化   | `(payload) => string`                                | -                                                        |
-| rightIcon            | 右侧图标         | `string`                                             | `"arrow"`                                                |
-| rightIconSize        | 右侧图标大小     | `string \| number`                                   | -                                                        |
-| rightIconColor       | 右侧图标颜色     | `string`                                             | -                                                        |
-| rightIconWeight      | 右侧图标粗细     | `string \| number`                                   | -                                                        |
-| textColor            | 文案颜色         | `string`                                             | -                                                        |
-| placeholderColor     | 占位颜色         | `string`                                             | -                                                        |
-| textSize             | 文案大小         | `string \| number`                                   | -                                                        |
-| title                | 标题             | `string`                                             | -                                                        |
-| showHeader           | 是否显示头部     | `boolean`                                            | `true`                                                   |
-| cancelText           | 取消按钮文字     | `string`                                             | `"取消"`                                                 |
-| confirmText          | 确认按钮文字     | `string`                                             | `"确认"`                                                 |
-| mode                 | 弹窗位置         | `'top' \| 'bottom' \| 'left' \| 'right' \| 'center'` | `"bottom"`                                               |
-| overlay              | 是否显示遮罩     | `boolean`                                            | `true`                                                   |
-| closeOnClickOverlay  | 点击遮罩是否关闭 | `boolean`                                            | `true`                                                   |
-| duration             | 动画时长(ms)     | `number`                                             | `300`                                                    |
-| zIndex               | 弹窗层级         | `number`                                             | -                                                        |
-| background           | 弹窗背景色       | `string`                                             | -                                                        |
-| borderRadius         | 弹窗圆角         | `string \| number`                                   | `"16rpx"`                                                |
-| safeAreaInsetBottom  | 底部安全区       | `boolean`                                            | `true`                                                   |
-| loading              | 是否加载中       | `boolean`                                            | `false`                                                  |
-| columnHeight         | 选项高度         | `string \| number`                                   | `"88rpx"`                                                |
-| visibleColumnNum     | 可见选项数       | `number`                                             | `5`                                                      |
-| columnSize           | 选项文字大小     | `string \| number`                                   | -                                                        |
-| columnColor          | 选项文字颜色     | `string`                                             | -                                                        |
-| columnWeight         | 选项文字字重     | `string \| number`                                   | -                                                        |
-| activeColumnSize     | 激活选项文字大小 | `string \| number`                                   | -                                                        |
-| activeColumnColor    | 激活选项文字颜色 | `string`                                             | -                                                        |
-| activeColumnWeight   | 激活选项文字字重 | `string \| number`                                   | -                                                        |
-| customClass          | 自定义类名       | `string`                                             | -                                                        |
-| customStyle          | 自定义样式       | `string \| object`                                   | -                                                        |
+| 参数                 | 说明                                         | 类型                                                 | 默认值                                                   |
+| -------------------- | -------------------------------------------- | ---------------------------------------------------- | -------------------------------------------------------- |
+| modelValue (v-model) | 选中值 (单列单值，多列/级联/multiple 为数组) | `string \| number \| Array<string \| number>`        | -                                                        |
+| columns              | 列数据                                       | `PickerColumn[]`                                     | `[]`                                                     |
+| columnsFields        | 字段映射                                     | `PickerColumnFields`                                 | `{ text: 'text', value: 'value', children: 'children' }` |
+| show (v-model:show)  | 是否显示弹窗                                 | `boolean`                                            | `false`                                                  |
+| placeholder          | 占位文案                                     | `string`                                             | `"请选择"`                                               |
+| disabled             | 是否禁用                                     | `boolean`                                            | `false`                                                  |
+| readonly             | 是否只读                                     | `boolean`                                            | `false`                                                  |
+| displaySeparator     | 文案分隔符                                   | `string`                                             | `"/"`                                                    |
+| displayFormatter     | 展示文案格式化                               | `(payload) => string`                                | -                                                        |
+| rightIcon            | 右侧图标                                     | `string`                                             | `"arrow"`                                                |
+| rightIconSize        | 右侧图标大小                                 | `string \| number`                                   | -                                                        |
+| rightIconColor       | 右侧图标颜色                                 | `string`                                             | -                                                        |
+| rightIconWeight      | 右侧图标粗细                                 | `string \| number`                                   | -                                                        |
+| textColor            | 文案颜色                                     | `string`                                             | -                                                        |
+| placeholderColor     | 占位颜色                                     | `string`                                             | -                                                        |
+| textSize             | 文案大小                                     | `string \| number`                                   | -                                                        |
+| title                | 标题                                         | `string`                                             | -                                                        |
+| showHeader           | 是否显示头部                                 | `boolean`                                            | `true`                                                   |
+| cancelText           | 取消按钮文字                                 | `string`                                             | `"取消"`                                                 |
+| confirmText          | 确认按钮文字                                 | `string`                                             | `"确认"`                                                 |
+| mode                 | 弹窗位置                                     | `'top' \| 'bottom' \| 'left' \| 'right' \| 'center'` | `"bottom"`                                               |
+| overlay              | 是否显示遮罩                                 | `boolean`                                            | `true`                                                   |
+| closeOnClickOverlay  | 点击遮罩是否关闭                             | `boolean`                                            | `true`                                                   |
+| duration             | 动画时长(ms)                                 | `number`                                             | `300`                                                    |
+| zIndex               | 弹窗层级                                     | `number`                                             | -                                                        |
+| background           | 弹窗背景色                                   | `string`                                             | -                                                        |
+| borderRadius         | 弹窗圆角                                     | `string \| number`                                   | `"16rpx"`                                                |
+| safeAreaInsetBottom  | 底部安全区                                   | `boolean`                                            | `true`                                                   |
+| loading              | 是否加载中                                   | `boolean`                                            | `false`                                                  |
+| columnHeight         | 选项高度                                     | `string \| number`                                   | `"88rpx"`                                                |
+| visibleColumnNum     | 可见选项数                                   | `number`                                             | `5`                                                      |
+| columnSize           | 选项文字大小                                 | `string \| number`                                   | -                                                        |
+| columnColor          | 选项文字颜色                                 | `string`                                             | -                                                        |
+| columnWeight         | 选项文字字重                                 | `string \| number`                                   | -                                                        |
+| activeColumnSize     | 激活选项文字大小                             | `string \| number`                                   | -                                                        |
+| activeColumnColor    | 激活选项文字颜色                             | `string`                                             | -                                                        |
+| activeColumnWeight   | 激活选项文字字重                             | `string \| number`                                   | -                                                        |
+| customClass          | 自定义类名                                   | `string`                                             | -                                                        |
+| customStyle          | 自定义样式                                   | `string \| object`                                   | -                                                        |
 
 ### Events
 
@@ -171,5 +171,5 @@ selectRef.value.getSelectedColumns()
 
 ## 注意事项
 
-1. `ui-select` 仅在确认时更新值，取消不修改外部数据。
-2. 组件内部使用 `ui-picker`，其列结构与字段映射规则保持一致。
+1. 内部值跟 picker 滚动同步：每次滚动 `change` 都会触发 `update:modelValue`。如需仅在确认后才更新外部状态，需在父组件配合 `confirm` 事件手动覆写。
+2. 组件内部使用 `ui-picker`，列结构与字段映射规则保持一致。

@@ -271,7 +271,9 @@ onUnmounted(() => {
   form?.unregisterLabelWidth?.(instance?.uid ?? 0)
 })
 
-linkChildren({ props, prop: props.prop, onBlur, onChange, disabled: formItemDisabled, readonly: formItemReadonly })
+const validateStatus = computed(() => state.status)
+
+linkChildren({ props, prop: props.prop, onBlur, onChange, disabled: formItemDisabled, readonly: formItemReadonly, validateStatus })
 defineExpose({ props, validate, resetField, resetValidate, getValidationStatus: () => state.status })
 </script>
 
