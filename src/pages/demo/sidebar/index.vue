@@ -2,7 +2,7 @@
   <demo-page>
     <demo-section title="基础用法">
       <demo-block class="sidebar-wrap">
-        <ui-sidebar v-model="active1">
+        <ui-sidebar v-model="value.basic">
           <ui-sidebar-item title="标签一" />
           <ui-sidebar-item title="标签二" />
           <ui-sidebar-item title="标签三" />
@@ -12,9 +12,9 @@
 
     <demo-section title="使用 name 标识符">
       <demo-block direction="column" align="start" :gap="16">
-        <text class="demo-text">当前选中: {{ activeByName }}</text>
+        <text class="demo-text">当前选中: {{ value.byName }}</text>
         <view class="sidebar-wrap">
-          <ui-sidebar v-model="activeByName">
+          <ui-sidebar v-model="value.byName">
             <ui-sidebar-item title="首页" name="home" />
             <ui-sidebar-item title="分类" name="category" />
             <ui-sidebar-item title="购物车" name="cart" />
@@ -26,7 +26,7 @@
 
     <demo-section title="禁用选项">
       <demo-block class="sidebar-wrap">
-        <ui-sidebar v-model="active3">
+        <ui-sidebar v-model="value.disabled">
           <ui-sidebar-item title="标签一" />
           <ui-sidebar-item title="标签二" disabled />
           <ui-sidebar-item title="标签三" />
@@ -37,14 +37,14 @@
     <demo-section title="自定义尺寸">
       <demo-block :cols="2" :gap="24">
         <view class="sidebar-wrap sidebar-wrap--small">
-          <ui-sidebar v-model="activeSize1" width="200rpx">
+          <ui-sidebar v-model="value.size1" width="200rpx">
             <ui-sidebar-item title="窄侧栏" height="80rpx" />
             <ui-sidebar-item title="标签二" height="80rpx" />
             <ui-sidebar-item title="标签三" height="80rpx" />
           </ui-sidebar>
         </view>
         <view class="sidebar-wrap sidebar-wrap--small">
-          <ui-sidebar v-model="activeSize2" width="240rpx">
+          <ui-sidebar v-model="value.size2" width="240rpx">
             <ui-sidebar-item title="正常" height="120rpx" />
             <ui-sidebar-item title="标签二" height="120rpx" />
           </ui-sidebar>
@@ -57,7 +57,7 @@
         <view class="sidebar-row">
           <text class="sidebar-row__label">默认线条:</text>
           <view class="sidebar-wrap sidebar-wrap--mini">
-            <ui-sidebar v-model="activeLine1">
+            <ui-sidebar v-model="value.line1">
               <ui-sidebar-item title="标签一" />
               <ui-sidebar-item title="标签二" />
             </ui-sidebar>
@@ -66,7 +66,7 @@
         <view class="sidebar-row">
           <text class="sidebar-row__label">自定义颜色:</text>
           <view class="sidebar-wrap sidebar-wrap--mini">
-            <ui-sidebar v-model="activeLine2" line-color="#ee0a24" line-width="6rpx">
+            <ui-sidebar v-model="value.line2" line-color="danger" line-width="6rpx">
               <ui-sidebar-item title="标签一" />
               <ui-sidebar-item title="标签二" />
             </ui-sidebar>
@@ -75,7 +75,7 @@
         <view class="sidebar-row">
           <text class="sidebar-row__label">圆角线条:</text>
           <view class="sidebar-wrap sidebar-wrap--mini">
-            <ui-sidebar v-model="activeLine3" line-color="#07c160" line-height="60rpx" line-radius="16rpx">
+            <ui-sidebar v-model="value.line3" line-color="success" line-height="60rpx" line-radius="16rpx">
               <ui-sidebar-item title="标签一" />
               <ui-sidebar-item title="标签二" />
             </ui-sidebar>
@@ -84,7 +84,7 @@
         <view class="sidebar-row">
           <text class="sidebar-row__label">隐藏线条:</text>
           <view class="sidebar-wrap sidebar-wrap--mini">
-            <ui-sidebar v-model="activeLine4" :show-line="false">
+            <ui-sidebar v-model="value.line4" :show-line="false">
               <ui-sidebar-item title="标签一" />
               <ui-sidebar-item title="标签二" />
             </ui-sidebar>
@@ -96,13 +96,13 @@
     <demo-section title="动画时长">
       <demo-block direction="column" align="start" :gap="16">
         <demo-block :cols="3" :gap="16">
-          <ui-button size="small" @click="currentDuration = 0">无动画</ui-button>
-          <ui-button size="small" @click="currentDuration = 300">300ms</ui-button>
-          <ui-button size="small" @click="currentDuration = 600">600ms</ui-button>
+          <ui-button size="small" @click="value.duration = 0">无动画</ui-button>
+          <ui-button size="small" @click="value.duration = 300">300ms</ui-button>
+          <ui-button size="small" @click="value.duration = 600">600ms</ui-button>
         </demo-block>
-        <text class="demo-text">当前动画时长: {{ currentDuration }}ms</text>
+        <text class="demo-text">当前动画时长: {{ value.duration }}ms</text>
         <view class="sidebar-wrap">
-          <ui-sidebar v-model="activeDuration" :duration="currentDuration">
+          <ui-sidebar v-model="value.durationVal" :duration="value.duration">
             <ui-sidebar-item title="标签一" />
             <ui-sidebar-item title="标签二" />
             <ui-sidebar-item title="标签三" />
@@ -115,15 +115,15 @@
     <demo-section title="自定义背景">
       <demo-block :cols="2" :gap="24">
         <view class="sidebar-wrap sidebar-wrap--small">
-          <ui-sidebar v-model="activeBg1" background="#fff">
+          <ui-sidebar v-model="value.bg1" background="background">
             <ui-sidebar-item title="白底" />
             <ui-sidebar-item title="标签二" />
             <ui-sidebar-item title="标签三" />
           </ui-sidebar>
         </view>
         <view class="sidebar-wrap sidebar-wrap--small">
-          <ui-sidebar v-model="activeBg2" background="#e8f4ff">
-            <ui-sidebar-item title="浅蓝底" />
+          <ui-sidebar v-model="value.bg2" background="primary-light">
+            <ui-sidebar-item title="主色浅底" />
             <ui-sidebar-item title="标签二" />
             <ui-sidebar-item title="标签三" />
           </ui-sidebar>
@@ -134,13 +134,13 @@
     <demo-section title="标题样式">
       <demo-block :cols="2" :gap="24">
         <view class="sidebar-wrap sidebar-wrap--small">
-          <ui-sidebar v-model="activeTitle1">
-            <ui-sidebar-item title="自定义颜色" title-color="#666" active-title-color="#1989fa" />
-            <ui-sidebar-item title="标签二" title-color="#666" active-title-color="#1989fa" />
+          <ui-sidebar v-model="value.title1">
+            <ui-sidebar-item title="自定义颜色" title-color="text-secondary" active-title-color="primary" />
+            <ui-sidebar-item title="标签二" title-color="text-secondary" active-title-color="primary" />
           </ui-sidebar>
         </view>
         <view class="sidebar-wrap sidebar-wrap--small">
-          <ui-sidebar v-model="activeTitle2">
+          <ui-sidebar v-model="value.title2">
             <ui-sidebar-item title="大号粗体" title-size="32rpx" title-weight="600" active-title-size="36rpx" />
             <ui-sidebar-item title="标签二" title-size="32rpx" title-weight="600" active-title-size="36rpx" />
           </ui-sidebar>
@@ -151,17 +151,17 @@
     <demo-section title="激活背景">
       <demo-block :cols="2" :gap="24">
         <view class="sidebar-wrap sidebar-wrap--small">
-          <ui-sidebar v-model="activeActiveBg1" background="#f7f8fa">
-            <ui-sidebar-item title="标签一" active-background="#fff" />
-            <ui-sidebar-item title="标签二" active-background="#fff" />
-            <ui-sidebar-item title="标签三" active-background="#fff" />
+          <ui-sidebar v-model="value.activeBg1" background="background-section">
+            <ui-sidebar-item title="标签一" active-background="background" />
+            <ui-sidebar-item title="标签二" active-background="background" />
+            <ui-sidebar-item title="标签三" active-background="background" />
           </ui-sidebar>
         </view>
         <view class="sidebar-wrap sidebar-wrap--small">
-          <ui-sidebar v-model="activeActiveBg2" background="#f0f0f0">
-            <ui-sidebar-item title="标签一" active-background="#e8f4ff" />
-            <ui-sidebar-item title="标签二" active-background="#e8f4ff" />
-            <ui-sidebar-item title="标签三" active-background="#e8f4ff" />
+          <ui-sidebar v-model="value.activeBg2" background="background-section">
+            <ui-sidebar-item title="标签一" active-background="primary-light" />
+            <ui-sidebar-item title="标签二" active-background="primary-light" />
+            <ui-sidebar-item title="标签三" active-background="primary-light" />
           </ui-sidebar>
         </view>
       </demo-block>
@@ -170,19 +170,19 @@
     <demo-section title="文字对齐">
       <demo-block :cols="3" :gap="16">
         <view class="sidebar-wrap sidebar-wrap--mini">
-          <ui-sidebar v-model="activeAlign1" width="180rpx">
+          <ui-sidebar v-model="value.align1" width="180rpx">
             <ui-sidebar-item title="左对齐" title-align="left" />
             <ui-sidebar-item title="标签二" title-align="left" />
           </ui-sidebar>
         </view>
         <view class="sidebar-wrap sidebar-wrap--mini">
-          <ui-sidebar v-model="activeAlign2" width="180rpx">
+          <ui-sidebar v-model="value.align2" width="180rpx">
             <ui-sidebar-item title="居中" title-align="center" />
             <ui-sidebar-item title="标签二" title-align="center" />
           </ui-sidebar>
         </view>
         <view class="sidebar-wrap sidebar-wrap--mini">
-          <ui-sidebar v-model="activeAlign3" width="180rpx">
+          <ui-sidebar v-model="value.align3" width="180rpx">
             <ui-sidebar-item title="右对齐" title-align="right" />
             <ui-sidebar-item title="标签二" title-align="right" />
           </ui-sidebar>
@@ -190,40 +190,25 @@
       </demo-block>
     </demo-section>
 
+    <demo-section title="徽标 / 圆点">
+      <demo-block class="sidebar-wrap">
+        <ui-sidebar v-model="value.badge">
+          <ui-sidebar-item title="徽标 9" badge="9" />
+          <ui-sidebar-item title="徽标 99+" badge="99+" />
+          <ui-sidebar-item title="圆点提示" dot />
+          <ui-sidebar-item title="无徽标" />
+        </ui-sidebar>
+      </demo-block>
+    </demo-section>
+
     <demo-section title="自定义内容">
       <demo-block class="sidebar-wrap">
-        <ui-sidebar v-model="activeSlot">
-          <ui-sidebar-item>
+        <ui-sidebar v-model="value.slot">
+          <ui-sidebar-item v-for="m in slotMenus" :key="m.name" :name="m.name">
             <template #default="{ active }">
               <view class="custom-item">
-                <ui-icon name="home" :color="active ? '#1989fa' : '#666'" />
-                <text class="custom-item__text" :class="[{ 'custom-item__text--active': active }]">首页</text>
-              </view>
-            </template>
-          </ui-sidebar-item>
-          <ui-sidebar-item>
-            <template #default="{ active }">
-              <view class="custom-item">
-                <ui-icon name="grid" :color="active ? '#1989fa' : '#666'" />
-                <text class="custom-item__text" :class="[{ 'custom-item__text--active': active }]">分类</text>
-                <view class="custom-item__badge">6</view>
-              </view>
-            </template>
-          </ui-sidebar-item>
-          <ui-sidebar-item>
-            <template #default="{ active }">
-              <view class="custom-item">
-                <ui-icon name="cart" :color="active ? '#1989fa' : '#666'" />
-                <text class="custom-item__text" :class="[{ 'custom-item__text--active': active }]">购物车</text>
-                <view class="custom-item__dot" />
-              </view>
-            </template>
-          </ui-sidebar-item>
-          <ui-sidebar-item>
-            <template #default="{ active }">
-              <view class="custom-item">
-                <ui-icon name="user" :color="active ? '#1989fa' : '#666'" />
-                <text class="custom-item__text" :class="[{ 'custom-item__text--active': active }]">我的</text>
+                <ui-icon :name="m.icon" :color="active ? 'primary' : 'text-secondary'" />
+                <text class="custom-item__text" :class="{ 'custom-item__text--active': active }">{{ m.label }}</text>
               </view>
             </template>
           </ui-sidebar-item>
@@ -235,7 +220,7 @@
       <demo-block direction="column" align="start" :gap="16">
         <text class="demo-text">{{ eventLog }}</text>
         <view class="sidebar-wrap">
-          <ui-sidebar v-model="activeEvent" @change="onSidebarChange" @click-item="onClickItem">
+          <ui-sidebar v-model="value.event" @change="onChange" @click-item="onClickItem">
             <ui-sidebar-item title="标签一" />
             <ui-sidebar-item title="标签二" />
             <ui-sidebar-item title="标签三" />
@@ -244,42 +229,23 @@
       </demo-block>
     </demo-section>
 
-    <demo-section title="自定义样式">
-      <demo-block :cols="2" :gap="24">
-        <view class="sidebar-wrap sidebar-wrap--small">
-          <ui-sidebar v-model="activeCustom1" custom-class="my-sidebar">
-            <ui-sidebar-item title="自定义类名" />
-            <ui-sidebar-item title="标签二" />
-            <ui-sidebar-item title="标签三" />
-          </ui-sidebar>
-        </view>
-        <view class="sidebar-wrap sidebar-wrap--small">
-          <ui-sidebar v-model="activeCustom2" :custom-style="{ borderRadius: '16rpx', overflow: 'hidden' }">
-            <ui-sidebar-item title="圆角样式" custom-class="my-sidebar-item" />
-            <ui-sidebar-item title="标签二" custom-class="my-sidebar-item" />
-            <ui-sidebar-item title="标签三" custom-class="my-sidebar-item" />
-          </ui-sidebar>
-        </view>
-      </demo-block>
-    </demo-section>
-
     <demo-section title="综合示例">
       <demo-block class="sidebar-wrap sidebar-wrap--large">
-        <ui-sidebar v-model="activeComplex" width="220rpx" background="#f7f8fa" line-color="#1989fa" line-width="8rpx" line-radius="4rpx" :duration="200">
+        <ui-sidebar v-model="value.complex" width="220rpx" background="background-section" line-color="primary" line-width="6rpx" line-radius="4rpx" :duration="200">
           <ui-sidebar-item
-            v-for="item in categories"
-            :key="item.name"
-            :name="item.name"
-            :title="item.title"
-            :disabled="item.disabled"
-            active-background="#fff"
-            active-title-color="#1989fa"
+            v-for="cate in categories"
+            :key="cate.name"
+            :name="cate.name"
+            :title="cate.title"
+            :disabled="cate.disabled"
+            active-background="background"
+            active-title-color="primary"
             active-title-weight="600"
           />
         </ui-sidebar>
         <view class="sidebar-content">
           <text class="sidebar-content__title">{{ currentCategory?.title }}</text>
-          <text class="sidebar-content__desc">当前分类: {{ activeComplex }}</text>
+          <text class="sidebar-content__desc">当前分类: {{ value.complex }}</text>
         </view>
       </demo-block>
     </demo-section>
@@ -287,64 +253,18 @@
 </template>
 
 <script setup lang="ts">
-import { useToast } from "@/uni_modules/uniapp-ui"
-
 definePage({
   style: { navigationBarTitleText: "Sidebar 侧边栏" },
 })
 
-const toast = useToast()
+const slotMenus = [
+  { name: "home", label: "首页", icon: "home" },
+  { name: "category", label: "分类", icon: "grid" },
+  { name: "cart", label: "购物车", icon: "cart" },
+  { name: "mine", label: "我的", icon: "user" },
+]
 
-// 基础示例
-const active1 = ref(0)
-const activeByName = ref("home")
-const active3 = ref(0)
-
-// 自定义尺寸
-const activeSize1 = ref(0)
-const activeSize2 = ref(0)
-
-// 线条样式
-const activeLine1 = ref(0)
-const activeLine2 = ref(0)
-const activeLine3 = ref(0)
-const activeLine4 = ref(0)
-
-// 动画时长
-const activeDuration = ref(0)
-const currentDuration = ref(300)
-
-// 背景颜色
-const activeBg1 = ref(0)
-const activeBg2 = ref(0)
-
-// 标题样式
-const activeTitle1 = ref(0)
-const activeTitle2 = ref(0)
-
-// 激活背景
-const activeActiveBg1 = ref(0)
-const activeActiveBg2 = ref(0)
-
-// 文字对齐
-const activeAlign1 = ref(0)
-const activeAlign2 = ref(0)
-const activeAlign3 = ref(0)
-
-// 自定义插槽
-const activeSlot = ref(0)
-
-// 事件处理
-const activeEvent = ref(0)
-const eventLog = ref("点击侧边栏触发事件")
-
-// 自定义样式
-const activeCustom1 = ref(0)
-const activeCustom2 = ref(0)
-
-// 综合示例
-const activeComplex = ref("fruits")
-const categories = ref<Array<{ name: string; title: string; disabled?: boolean }>>([
+const categories = [
   { name: "fruits", title: "水果" },
   { name: "vegetables", title: "蔬菜" },
   { name: "meat", title: "肉禽蛋" },
@@ -352,18 +272,44 @@ const categories = ref<Array<{ name: string; title: string; disabled?: boolean }
   { name: "snacks", title: "休闲零食", disabled: true },
   { name: "drinks", title: "酒水饮料" },
   { name: "dairy", title: "乳品烘焙" },
-])
+] as Array<{ name: string; title: string; disabled?: boolean }>
 
-const currentCategory = computed(() => categories.value.find((c) => c.name === activeComplex.value))
+const value = reactive({
+  basic: 0 as number | string,
+  byName: "home",
+  disabled: 0,
+  size1: 0,
+  size2: 0,
+  line1: 0,
+  line2: 0,
+  line3: 0,
+  line4: 0,
+  duration: 300,
+  durationVal: 0,
+  bg1: 0,
+  bg2: 0,
+  title1: 0,
+  title2: 0,
+  activeBg1: 0,
+  activeBg2: 0,
+  align1: 0,
+  align2: 0,
+  align3: 0,
+  badge: 0,
+  slot: "home",
+  event: 0,
+  complex: "fruits",
+})
 
-// 事件处理
-function onSidebarChange(name: number | string) {
-  eventLog.value = `触发 change 事件，切换到: ${name}`
-  toast.success(`切换到第 ${Number(name) + 1} 项`)
+const eventLog = ref("等待事件...")
+const currentCategory = computed(() => categories.find((c) => c.name === value.complex))
+
+function onChange(name: number | string) {
+  eventLog.value = `[change] ${name}`
 }
 
 function onClickItem(name: number | string, index: number) {
-  eventLog.value = `触发 click-item 事件，name: ${name}, index: ${index}`
+  eventLog.value = `[click-item] ${name}@${index}`
 }
 </script>
 
@@ -376,7 +322,8 @@ function onClickItem(name: number | string, index: number) {
 .sidebar-wrap {
   height: 300rpx;
   overflow: hidden;
-  border-radius: 12rpx;
+  border: 2rpx solid var(--ui-color-border-light);
+  border-radius: var(--ui-radius-md);
 
   &--small {
     height: 240rpx;
@@ -393,68 +340,42 @@ function onClickItem(name: number | string, index: number) {
 }
 
 .sidebar-row {
-  gap: 16rpx;
+  gap: var(--ui-spacing-md);
   display: flex;
   align-items: center;
 
   &__label {
     color: var(--ui-color-text);
     width: 160rpx;
-    font-size: 28rpx;
+    font-size: var(--ui-font-size-sm);
   }
 }
 
 .custom-item {
-  gap: 8rpx;
+  gap: var(--ui-spacing-xs);
   display: flex;
-  padding: 16rpx;
+  padding: var(--ui-spacing-md);
   position: relative;
   align-items: center;
   flex-direction: column;
   justify-content: center;
 
   &__text {
-    color: #666;
+    color: var(--ui-color-text-secondary);
     font-size: 24rpx;
 
     &--active {
-      color: #1989fa;
+      color: var(--ui-color-primary);
       font-weight: 600;
     }
-  }
-
-  &__badge {
-    top: 8rpx;
-    color: #fff;
-    right: 24rpx;
-    height: 32rpx;
-    display: flex;
-    padding: 0 8rpx;
-    position: absolute;
-    font-size: 20rpx;
-    min-width: 32rpx;
-    background: #ee0a24;
-    align-items: center;
-    border-radius: 32rpx;
-    justify-content: center;
-  }
-
-  &__dot {
-    top: 12rpx;
-    right: 32rpx;
-    width: 16rpx;
-    height: 16rpx;
-    position: absolute;
-    background: #ee0a24;
-    border-radius: 50%;
   }
 }
 
 .sidebar-content {
-  gap: 16rpx;
+  gap: var(--ui-spacing-md);
   flex: 1;
   display: flex;
-  background: #fff;
+  background: var(--ui-color-background);
   align-items: center;
   flex-direction: column;
   justify-content: center;
@@ -469,13 +390,5 @@ function onClickItem(name: number | string, index: number) {
     color: var(--ui-color-text-secondary);
     font-size: 24rpx;
   }
-}
-
-:deep(.my-sidebar) {
-  background: linear-gradient(180deg, #e8f4ff 0%, #f7f8fa 100%);
-}
-
-:deep(.my-sidebar-item) {
-  font-size: 26rpx;
 }
 </style>

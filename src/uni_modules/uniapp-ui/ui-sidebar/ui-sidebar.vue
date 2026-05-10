@@ -1,23 +1,20 @@
 <template>
   <view class="ui-sidebar" :class="[customClass]" :style="[style]">
-    <scroll-view class="ui-sidebar__scroll" scroll-y enable-flex :scroll-with-animation="inited" :scroll-top="scrollTop">
-      <ui-resize height="100%" @resize="onResize">
-        <view class="ui-sidebar__list" :style="[listStyle]">
-          <slot />
-          <view class="ui-sidebar__line" :style="[lineStyle]">
-            <slot name="line">
-              <view class="ui-sidebar__line-inner" :style="[lineInnerStyle]" />
-            </slot>
-          </view>
+    <scroll-view class="ui-sidebar__scroll" scroll-y :scroll-with-animation="inited" :scroll-top="scrollTop">
+      <view class="ui-sidebar__list" :style="[listStyle]">
+        <slot />
+        <view class="ui-sidebar__line" :style="[lineStyle]">
+          <slot name="line">
+            <view class="ui-sidebar__line-inner" :style="[lineInnerStyle]" />
+          </slot>
         </view>
-      </ui-resize>
+      </view>
     </scroll-view>
   </view>
 </template>
 
 <script setup lang="ts">
 import type { CSSProperties } from "vue"
-import { debounce } from "../utils/utils"
 import { sidebarKey, sidebarEmits, sidebarProps } from "./index"
 import { ref, toRef, watch, computed, nextTick, getCurrentInstance } from "vue"
 import { useRect, useUnit, useColor, useStyle, useChildren, useUnitToPx } from "../hooks"
@@ -160,12 +157,6 @@ function scrollIntoView(name: string | number) {
   }
 }
 
-// 尺寸变化事件处理
-function onResize(rect: any) {
-  debounce(resize, 100)
-  if (rect.height <= 1) console.error("ui-sidebar: 检测到高度可能不正常，请检查父容器高度是否正常")
-}
-
 // 关联子组件，提供上下文数据
 linkChildren({ props, currentName, setLine, scrollIntoView, clickItem, setCurrentName })
 
@@ -216,7 +207,7 @@ export default {
   }
 
   &__line-inner {
-    width: var(--ui-spacing-sm);
+    width: 6rpx;
     border-radius: var(--ui-radius-round);
     background-color: var(--ui-color-primary);
   }
