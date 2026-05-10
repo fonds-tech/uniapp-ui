@@ -75,10 +75,10 @@ describe("ui-safe-area-bottom 底部安全区域组件", () => {
   })
 
   describe("暴露的属性", () => {
-    it("应暴露 name 属性", () => {
+    it("应暴露 resize 方法", () => {
       const wrapper = mount(UiSafeAreaBottom)
 
-      expect(wrapper.vm.name).toBe("ui-safe-area-bottom")
+      expect(typeof wrapper.vm.resize).toBe("function")
     })
   })
 

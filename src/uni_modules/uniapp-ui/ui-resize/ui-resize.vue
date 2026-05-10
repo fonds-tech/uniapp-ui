@@ -1,6 +1,6 @@
 <template>
-  <view class="ui-resize" :style="rootStyle">
-    <view :id="resizeId" class="ui-resize__content" :style="contentStyle" :class="customClass">
+  <view class="ui-resize" :class="props.customClass" :style="rootStyle">
+    <view :id="resizeId" class="ui-resize__content" :class="props.customContainerClass" :style="contentStyle">
       <slot />
       <scroll-view
         v-for="type in ['expand', 'shrink']"
@@ -12,7 +12,7 @@
         :scroll-left="scrollPos[type].left"
         @scroll="handleScroll"
       >
-        <view :style="type === 'expand' ? 'height:100000px;width:100000px' : 'height:250%;width:250%'" />
+        <view class="ui-resize__placeholder" :style="type === 'expand' ? 'height:100000px;width:100000px' : 'height:250%;width:250%'" />
       </scroll-view>
     </view>
   </view>
@@ -28,7 +28,7 @@ import { computed, reactive, onMounted, onUnmounted, getCurrentInstance } from "
 defineOptions({ name: "ui-resize" })
 
 const props = defineProps(resizeProps)
-const emit = defineEmits(resizeEmits)
+const emits = defineEmits(resizeEmits)
 
 const resizeId = `resize-${uuid()}`
 const instance = getCurrentInstance()
@@ -66,7 +66,7 @@ function resetScrollPos(w: number, h: number) {
 }
 
 function emitResize(rect: UniApp.NodeInfo) {
-  emit("resize", pick(rect, ["top", "left", "right", "bottom", "width", "height"]))
+  emits("resize", pick(rect, ["top", "left", "right", "bottom", "width", "height"]))
 }
 
 async function handleScroll() {
@@ -133,11 +133,17 @@ defineExpose({ refresh })
 <script lang="ts">
 export default {
   name: "ui-resize",
-  options: { virtualHost: true, multipleSlots: true, styleIsolation: "shared" },
+  options: {
+    // #ifndef MP-TOUTIAO
+    virtualHost: true,
+    // #endif
+    multipleSlots: true,
+    styleIsolation: "shared",
+  },
 }
 </script>
 
-<style scoped lang="scss">
+<style lang="scss" scoped>
 .ui-resize {
   position: relative;
   &__content {
@@ -155,6 +161,11 @@ export default {
     position: absolute;
     visibility: hidden;
     pointer-events: none;
+  }
+  // 占位元素禁用过渡 / 动画 — 防止 transition 介入滚动测量时机
+  &__placeholder {
+    animation: none;
+    transition: 0s;
   }
 }
 </style>

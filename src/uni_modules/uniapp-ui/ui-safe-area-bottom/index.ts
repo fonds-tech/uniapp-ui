@@ -4,7 +4,7 @@ import { isNumber } from "../utils/check"
 import { buildDefaultProps } from "../utils/props"
 
 const defaultProps = buildDefaultProps("safe-area-bottom", {
-  background: "",
+  background: undefined,
   customClass: "",
   customStyle: "",
 })
@@ -19,15 +19,10 @@ export const safeAreaBottomProps = {
 }
 
 export const safeAreaBottomEmits = {
-  /** 高度变化事件 */
-  height: (htight: number) => isNumber(htight),
+  /** 安全区高度计算完成 */
+  height: (height: number) => isNumber(height),
 }
 
 export type SafeAreaBottomEmits = typeof safeAreaBottomEmits
 export type SafeAreaBottomProps = ExtractPropTypes<typeof safeAreaBottomProps>
-
-export interface SafeAreaBottomExpose {
-  name: "ui-safe-area-bottom"
-}
-
 export type SafeAreaBottomInstance = InstanceType<typeof SafeAreaBottom>

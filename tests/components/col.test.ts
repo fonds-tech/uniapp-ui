@@ -142,15 +142,6 @@ describe("ui-col 列布局组件", () => {
     })
   })
 
-  describe("暴露的方法", () => {
-    it("应暴露 name 属性", async () => {
-      const wrapper = mount(UiCol)
-      await waitForTransition()
-
-      expect(wrapper.vm.name).toBe("ui-col")
-    })
-  })
-
   describe("边界情况", () => {
     it("无内容时应正常渲染", async () => {
       const wrapper = mount(UiCol)

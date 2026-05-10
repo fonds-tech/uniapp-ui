@@ -186,15 +186,6 @@ describe("ui-row 行布局组件", () => {
     })
   })
 
-  describe("暴露的方法", () => {
-    it("应暴露 name 属性", async () => {
-      const wrapper = mount(UiRow)
-      await waitForTransition()
-
-      expect(wrapper.vm.name).toBe("ui-row")
-    })
-  })
-
   describe("边界情况", () => {
     it("gap 为 0 时应正常渲染", async () => {
       const wrapper = mount(UiRow, {

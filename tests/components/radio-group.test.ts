@@ -39,10 +39,10 @@ describe("ui-radio-group 单选框组组件", () => {
   })
 
   describe("绑定值", () => {
-    it("默认 modelValue 应为空字符串", () => {
+    it("默认 modelValue 应为 undefined", () => {
       const wrapper = mount(UiRadioGroup)
 
-      expect(wrapper.props("modelValue")).toBe("")
+      expect(wrapper.props("modelValue")).toBeUndefined()
     })
 
     it("应支持字符串类型初始值", () => {
@@ -180,14 +180,6 @@ describe("ui-radio-group 单选框组组件", () => {
       expect(wrapper.props("iconColor")).toBe("#999")
     })
 
-    it("应支持设置图标粗细", () => {
-      const wrapper = mount(UiRadioGroup, {
-        props: { iconWeight: 600 },
-      })
-
-      expect(wrapper.props("iconWeight")).toBe(600)
-    })
-
     it("应支持设置图标圆角", () => {
       const wrapper = mount(UiRadioGroup, {
         props: { iconRadius: "8rpx" },
@@ -196,12 +188,12 @@ describe("ui-radio-group 单选框组组件", () => {
       expect(wrapper.props("iconRadius")).toBe("8rpx")
     })
 
-    it("应支持设置选中图标颜色", () => {
+    it("应支持设置尺寸快捷别名", () => {
       const wrapper = mount(UiRadioGroup, {
-        props: { checkedIconColor: "#1989fa" },
+        props: { size: "40rpx" },
       })
 
-      expect(wrapper.props("checkedIconColor")).toBe("#1989fa")
+      expect(wrapper.props("size")).toBe("40rpx")
     })
   })
 
@@ -240,10 +232,10 @@ describe("ui-radio-group 单选框组组件", () => {
 
     it("应支持标签在左侧", () => {
       const wrapper = mount(UiRadioGroup, {
-        props: { labelLeft: true },
+        props: { labelPosition: "left" },
       })
 
-      expect(wrapper.props("labelLeft")).toBe(true)
+      expect(wrapper.props("labelPosition")).toBe("left")
     })
 
     it("应支持禁用标签点击", () => {
@@ -266,10 +258,10 @@ describe("ui-radio-group 单选框组组件", () => {
   describe("选中颜色", () => {
     it("应支持设置选中颜色", () => {
       const wrapper = mount(UiRadioGroup, {
-        props: { checkedColor: "#ff6600" },
+        props: { color: "#ff6600" },
       })
 
-      expect(wrapper.props("checkedColor")).toBe("#ff6600")
+      expect(wrapper.props("color")).toBe("#ff6600")
     })
   })
 

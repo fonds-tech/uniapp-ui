@@ -393,14 +393,14 @@ describe("uiRate 组件", () => {
   })
 
   describe("暴露属性测试", () => {
-    it("应该暴露 name 属性", async () => {
+    it("应该暴露 resize 方法", async () => {
       const wrapper = mount(UiRate, {
         global: {
           stubs: { "ui-icon": true },
         },
       })
       await waitForTransition()
-      expect(wrapper.vm.name).toBe("ui-rate")
+      expect(typeof wrapper.vm.resize).toBe("function")
     })
   })
 

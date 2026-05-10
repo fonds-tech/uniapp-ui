@@ -2,7 +2,7 @@
   <view
     class="ui-pull-refresh"
     :class="[props.customClass]"
-    :style="[useStyle(props.customStyle)]"
+    :style="[rootStyle]"
     @touchstart="onTouchStart"
     @touchmove="onTouchMove"
     @touchend="onTouchEnd"
@@ -45,230 +45,122 @@ import { ref, watch, computed, onBeforeUnmount } from "vue"
 defineOptions({ name: "ui-pull-refresh" })
 
 const props = defineProps(pullRefreshProps)
-const emit = defineEmits(pullRefreshEmits)
-// 状态管理
+const emits = defineEmits(pullRefreshEmits)
+
 const status = ref<PullRefreshStatus>("normal")
 const distance = ref(0)
 
-// 触摸相关变量
+// 触摸状态闭包变量 (无需响应式)
 let startY = 0
-let deltaY = 0
 let touchable = true
 let ceiling = false
-
-// 定时器
 let successTimer: ReturnType<typeof setTimeout> | null = null
 
-/**
- * 获取触发刷新的阈值距离
- * 默认使用 headHeight
- */
-const pullDistanceValue = computed(() => {
-  const pd = props.pullDistance
-  if (pd !== undefined && pd !== null && pd !== "") {
-    return Number(pd)
-  }
-  return Number(props.headHeight)
+// 头部默认高度兜底 (未传 props.headHeight 时与 SCSS 默认保持一致)
+const DEFAULT_HEAD_HEIGHT = 50
+
+const headHeightPx = computed(() => (props.headHeight !== undefined ? Number(props.headHeight) : DEFAULT_HEAD_HEIGHT))
+const triggerDistance = computed(() => (props.pullDistance !== undefined && props.pullDistance !== "" ? Number(props.pullDistance) : headHeightPx.value))
+
+const rootStyle = computed(() => useStyle(props.customStyle))
+const trackStyle = computed<CSSProperties>(() => ({
+  transform: distance.value > 0 ? `translateY(${distance.value}px)` : "translateY(0)",
+  // pulling/loosing 跟手动 → 关动画；其他状态有过渡
+  transition: status.value === "pulling" || status.value === "loosing" ? "none" : `transform ${props.animationDuration}ms`,
+}))
+const headStyle = computed(() => {
+  const style: CSSProperties = {}
+  // headHeight 单位约定 px (与原实现一致：用户传数值或带单位字符串都按 px 处理)
+  if (props.headHeight !== undefined) style.height = `${headHeightPx.value}px`
+  return useStyle(style)
 })
 
-/**
- * 监听 modelValue 变化
- * 当父组件设置 modelValue 为 false 时，表示刷新完成
- */
 watch(
   () => props.modelValue,
   (newVal, oldVal) => {
-    if (oldVal && !newVal) {
-      // 从 true 变为 false，表示刷新完成
-      showSuccessTip()
-    } else if (newVal) {
-      // 从 false 变为 true，设置加载状态
-      distance.value = headHeightValue.value
+    if (oldVal && !newVal) showSuccessTip()
+    else if (newVal) {
+      distance.value = headHeightPx.value
       setStatus("loading")
     }
   },
 )
 
-/**
- * 组件卸载时清理
- */
 onBeforeUnmount(() => {
-  if (successTimer) {
-    clearTimeout(successTimer)
-    successTimer = null
-  }
+  if (successTimer) clearTimeout(successTimer)
 })
 
-/**
- * 头部高度（px）
- */
-const headHeightValue = computed(() => {
-  return Number(props.headHeight)
-})
-
-/**
- * 动画持续时间（ms）
- */
-const animationDurationValue = computed(() => {
-  return Number(props.animationDuration)
-})
-
-/**
- * 轨道样式
- */
-const trackStyle = computed(() => {
-  const style: CSSProperties = {}
-
-  // 只有在非正常状态时才应用位移
-  if (distance.value > 0) {
-    style.transform = `translateY(${distance.value}px)`
-  } else {
-    style.transform = "translateY(0)"
-  }
-
-  // 过渡动画（触摸结束后）
-  if (status.value !== "pulling" && status.value !== "loosing") {
-    style.transition = `transform ${animationDurationValue.value}ms`
-  } else {
-    style.transition = "none"
-  }
-
-  return useStyle(style)
-})
-
-/**
- * 头部样式
- */
-const headStyle = computed(() => {
-  const style: CSSProperties = {}
-  style.height = `${headHeightValue.value}px`
-  return useStyle(style)
-})
-
-/**
- * 更新状态
- */
 function setStatus(value: PullRefreshStatus, isCheck = true) {
   if (isCheck && status.value === value) return
   status.value = value
-  emit("change", value)
+  emits("change", value)
 }
 
-/**
- * 检测是否处于页面顶部
- * 用于判断是否可以触发下拉刷新
- */
+// 仅 page 级 scrollTop=0 时才允许触发下拉（嵌套 scroll-view 内部不可用）
 function checkPosition(): Promise<boolean> {
   return new Promise((resolve) => {
     // #ifdef H5
     const scrollTop = document.documentElement.scrollTop || document.body.scrollTop
     resolve(scrollTop <= 0)
     // #endif
-
     // #ifndef H5
     uni
       .createSelectorQuery()
       .selectViewport()
-      .scrollOffset((res: any) => {
-        resolve(res.scrollTop <= 0)
-      })
+      .scrollOffset((res: UniApp.NodeInfo) => resolve((res.scrollTop ?? 0) <= 0))
       .exec()
     // #endif
   })
 }
 
-/**
- * 处理触摸开始
- */
 async function onTouchStart(event: TouchEvent) {
   if (props.disabled || props.modelValue) return
-
-  // 检测是否在页面顶部
   ceiling = await checkPosition()
   if (!ceiling) return
-
   touchable = true
   startY = event.touches[0].clientY
-  deltaY = 0
 }
 
-/**
- * 处理触摸移动
- */
 function onTouchMove(event: TouchEvent) {
   if (props.disabled || !touchable || !ceiling) return
-
-  const touch = event.touches[0]
-  deltaY = touch.clientY - startY
-
-  // 只处理下拉
+  const deltaY = event.touches[0].clientY - startY
   if (deltaY <= 0) {
     setStatus("normal")
     distance.value = 0
     return
   }
-
-  // 阻止默认行为，防止页面滚动
   // #ifdef H5
-  if (deltaY > 0 && ceiling) {
-    event.preventDefault()
-  }
+  // 阻止页面跟手滚动
+  event.preventDefault()
   // #endif
-
-  // 计算下拉距离，使用阻尼效果
-  // 距离越大，阻力越大
-  const dampingRatio = 0.5
-  const actualDistance = deltaY * dampingRatio
-  distance.value = Math.min(actualDistance, headHeightValue.value * 2)
-
-  if (distance.value >= pullDistanceValue.value) {
-    setStatus("loosing")
-  } else {
-    setStatus("pulling")
-  }
+  // 阻尼系数 0.5：手指拉 100px 头部展开 50px，符合主流交互手感
+  distance.value = Math.min(deltaY * 0.5, headHeightPx.value * 2)
+  setStatus(distance.value >= triggerDistance.value ? "loosing" : "pulling")
 }
 
-/**
- * 处理触摸结束
- */
 function onTouchEnd() {
   if (props.disabled || !touchable) return
-
   touchable = false
-
-  // 如果达到刷新阈值
   if (status.value === "loosing") {
-    distance.value = headHeightValue.value
+    distance.value = headHeightPx.value
     setStatus("loading")
-    emit("update:modelValue", true)
-    emit("refresh")
+    emits("update:modelValue", true)
+    emits("refresh")
   } else {
-    // 未达到阈值，恢复原位
     distance.value = 0
     setStatus("normal")
   }
 }
 
-/**
- * 显示刷新成功状态
- */
 function showSuccessTip() {
-  const successDuration = Number(props.successDuration)
-
-  if (successDuration > 0 && props.successText) {
+  if (props.successDuration > 0 && props.successText) {
     setStatus("success")
-
-    // 清除之前的定时器
-    if (successTimer) {
-      clearTimeout(successTimer)
-      successTimer = null
-    }
-
+    if (successTimer) clearTimeout(successTimer)
     successTimer = setTimeout(() => {
       distance.value = 0
       setStatus("normal")
       successTimer = null
-    }, successDuration)
+    }, props.successDuration)
   } else {
     distance.value = 0
     setStatus("normal")
@@ -289,7 +181,7 @@ export default {
 }
 </script>
 
-<style scoped lang="scss">
+<style lang="scss" scoped>
 .ui-pull-refresh {
   width: 100%;
   overflow: hidden;
@@ -303,8 +195,9 @@ export default {
   &__head {
     top: 0;
     left: 0;
-    color: var(--ui-color-text-secondary, #999);
+    color: var(--ui-color-text-secondary);
     width: 100%;
+    height: 50px;
     display: flex;
     overflow: hidden;
     position: absolute;

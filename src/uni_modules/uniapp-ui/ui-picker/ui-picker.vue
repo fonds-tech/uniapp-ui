@@ -150,6 +150,19 @@ function onConfirm() {
   emits("update:modelValue", formatValue(values))
   emits("update:show", false)
 }
+
+defineExpose({
+  /** 触发确认 */
+  confirm: onConfirm,
+  /** 触发取消 */
+  cancel: onCancel,
+  /** 获取选中值数组 */
+  getSelectedValues: () => panelRef.value?.getSelectedValues() ?? [],
+  /** 获取选中索引数组 */
+  getSelectedIndexs: () => panelRef.value?.getSelectedIndexs() ?? [],
+  /** 获取选中列项数组 */
+  getSelectedColumns: () => panelRef.value?.getSelectedColumns() ?? [],
+})
 </script>
 
 <script lang="ts">

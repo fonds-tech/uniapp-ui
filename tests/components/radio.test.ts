@@ -243,11 +243,11 @@ describe("ui-radio 单选框组件", () => {
   })
 
   describe("标签配置", () => {
-    it("labelLeft 为 true 时标签应在左侧", async () => {
+    it("labelPosition 为 left 时标签应在左侧", async () => {
       const wrapper = mount(UiRadioGroup, {
         props: { modelValue: "" },
         slots: {
-          default: () => h(UiRadio, { name: "option1", label: "选项一", labelLeft: true }),
+          default: () => h(UiRadio, { name: "option1", label: "选项一", labelPosition: "left" }),
         },
       })
       await waitForTransition()

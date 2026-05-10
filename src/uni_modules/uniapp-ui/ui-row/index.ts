@@ -38,8 +38,5 @@ export const rowProps = {
   customStyle: defaultProps("customStyle", { type: [String, Object] as PropType<string | CSSProperties> }),
 }
 
-export const rowEmits = {}
-
-export type RowEmits = typeof rowEmits
 export type RowProps = ExtractPropTypes<typeof rowProps>
 export type RowInstance = InstanceType<typeof Row>

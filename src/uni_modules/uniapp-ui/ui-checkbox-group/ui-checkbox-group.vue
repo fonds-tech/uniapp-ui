@@ -104,7 +104,13 @@ defineExpose({
 <script lang="ts">
 export default {
   name: "ui-checkbox-group",
-  options: { virtualHost: true, multipleSlots: true, styleIsolation: "shared" },
+  options: {
+    // #ifndef MP-TOUTIAO
+    virtualHost: true,
+    // #endif
+    multipleSlots: true,
+    styleIsolation: "shared",
+  },
 }
 </script>
 

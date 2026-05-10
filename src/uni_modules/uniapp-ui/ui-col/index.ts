@@ -20,8 +20,5 @@ export const colProps = {
   customStyle: defaultProps("customStyle", { type: [String, Object] as PropType<string | CSSProperties> }),
 }
 
-export const colEmits = {}
-
-export type ColEmits = typeof colEmits
 export type ColProps = ExtractPropTypes<typeof colProps>
 export type ColInstance = InstanceType<typeof Col>

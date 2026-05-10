@@ -1,47 +1,50 @@
 <template>
-  <scroll-view
-    v-if="props.scrollable"
-    scroll-x
-    scroll-with-animation
-    class="ui-segmented ui-segmented--scrollable"
-    :class="[rootClasses, props.customClass]"
-    :style="[rootStyle]"
-    :show-scrollbar="false"
-    :scroll-left="scrollLeft"
-  >
-    <view class="ui-segmented__track">
-      <!-- 滑块背景 -->
-      <view v-if="props.type === 'filled' || props.type === 'block'" class="ui-segmented__indicator" :style="[indicatorStyle]" />
-      <!-- 选项 -->
+  <view class="ui-segmented" :class="[rootClasses, props.customClass]" :style="rootStyle" role="tablist">
+    <!-- 非 scrollable：indicator + 等宽 items -->
+    <template v-if="!props.scrollable">
+      <view v-if="showIndicator" class="ui-segmented__indicator" :style="indicatorStyle" />
       <view
         v-for="(option, index) in props.options"
-        :id="`segmented-${index}`"
         :key="option.value"
         class="ui-segmented__item"
-        :class="[itemClasses(option)]"
-        :style="[itemStyle(option)]"
+        :class="itemClassMap[index]"
+        :style="itemStyle(option)"
+        role="tab"
+        :aria-selected="option.value === props.modelValue"
+        :aria-disabled="!!(option.disabled || props.disabled)"
         @click="handleClick(option, index)"
       >
-        <ui-icon v-if="option.icon" :name="option.icon" class="ui-segmented__icon" :size="iconSize" />
+        <ui-icon v-if="option.icon" :name="option.icon" class="ui-segmented__icon" color="currentColor" :size="iconSize" />
         <text class="ui-segmented__text">{{ option.label }}</text>
       </view>
-    </view>
-  </scroll-view>
-  <view v-else class="ui-segmented" :class="[rootClasses, props.customClass]" :style="[rootStyle]">
-    <!-- 滑块背景 -->
-    <view v-if="props.type === 'filled' || props.type === 'block'" class="ui-segmented__indicator" :style="[indicatorStyle]" />
-    <!-- 选项 -->
-    <view
-      v-for="(option, index) in props.options"
-      :key="option.value"
-      class="ui-segmented__item"
-      :class="[itemClasses(option)]"
-      :style="[itemStyle(option)]"
-      @click="handleClick(option, index)"
+    </template>
+    <!-- scrollable：滚动容器内 items (无浮动 indicator，激活项靠 bg 样式呈现) -->
+    <scroll-view
+      v-else
+      scroll-x
+      scroll-with-animation
+      class="ui-segmented__scroll"
+      :show-scrollbar="false"
+      :scroll-left="scrollLeft"
     >
-      <ui-icon v-if="option.icon" :name="option.icon" class="ui-segmented__icon" :size="iconSize" />
-      <text class="ui-segmented__text">{{ option.label }}</text>
-    </view>
+      <view class="ui-segmented__track">
+        <view
+          v-for="(option, index) in props.options"
+          :id="`segmented-${index}`"
+          :key="option.value"
+          class="ui-segmented__item"
+          :class="itemClassMap[index]"
+          :style="itemStyle(option)"
+          role="tab"
+          :aria-selected="option.value === props.modelValue"
+          :aria-disabled="!!(option.disabled || props.disabled)"
+          @click="handleClick(option, index)"
+        >
+          <ui-icon v-if="option.icon" :name="option.icon" class="ui-segmented__icon" color="currentColor" :size="iconSize" />
+          <text class="ui-segmented__text">{{ option.label }}</text>
+        </view>
+      </view>
+    </scroll-view>
   </view>
 </template>
 
@@ -57,83 +60,18 @@ defineOptions({ name: "ui-segmented" })
 const props = defineProps(segmentedProps)
 const emits = defineEmits(segmentedEmits)
 
-// 当前选中索引
-const activeIndex = ref(0)
-// 每个选项的宽度（用于滑块动画）
-const itemWidth = ref(0)
-
-// 监听 modelValue 变化更新索引
-watch(
-  () => props.modelValue,
-  (val) => {
-    const index = props.options.findIndex((opt) => opt.value === val)
-    if (index !== -1) activeIndex.value = index
-  },
-  { immediate: true },
-)
-
-// 监听 options 变化计算宽度
-watch(
-  () => props.options,
-  () => {
-    nextTick(() => {
-      if (props.options.length > 0) {
-        itemWidth.value = 100 / props.options.length
-      }
-    })
-  },
-  { immediate: true },
-)
-
-// 组件实例
-const instance = getCurrentInstance()!
-// 滚动距离
 const scrollLeft = ref(0)
-// 是否已初始化
 const inited = ref(false)
+const instance = getCurrentInstance()!
 
-// 滚动到指定选项居中
-async function scrollToCenter(index: number) {
-  if (!props.scrollable) return
-  await nextTick()
+// 当前激活 index：直接从 modelValue 派生 (-1 表示无匹配)
+const activeIndex = computed(() => props.options.findIndex((o) => o.value === props.modelValue))
 
-  // 获取容器宽度
-  const containerRect = await useRect(".ui-segmented--scrollable", instance)
-  if (!containerRect) return
+// 是否渲染浮动 indicator (scrollable / outline / 无匹配项 时不渲染)
+const showIndicator = computed(() => !props.scrollable && activeIndex.value >= 0 && (props.type === "filled" || props.type === "block"))
 
-  // 获取所有选项的宽度
-  const itemRects = await useRects(".ui-segmented__item", instance)
-  if (!itemRects || !Array.isArray(itemRects) || itemRects.length === 0) return
-
-  // 计算目标选项的中心位置
-  let offset = 0
-  for (let i = 0; i < index; i++) {
-    offset += itemRects[i]?.width || 0
-  }
-  const itemCenter = offset + (itemRects[index]?.width || 0) / 2
-  const scrollCenter = (containerRect.width || 0) / 2
-
-  scrollLeft.value = Math.max(0, itemCenter - scrollCenter)
-}
-
-// 监听 modelValue 变化滚动到居中
-watch(
-  () => activeIndex.value,
-  (index) => {
-    if (inited.value) {
-      scrollToCenter(index)
-    }
-  },
-)
-
-// 初始化时滚动到当前选中项
-onMounted(async () => {
-  await nextTick()
-  if (props.scrollable) {
-    scrollToCenter(activeIndex.value)
-    setTimeout(() => (inited.value = true), 100)
-  }
-})
+// 图标尺寸跟随字号
+const iconSize = computed(() => useUnit(props.fontSize))
 
 // 根节点样式
 const rootStyle = computed(() => {
@@ -143,64 +81,50 @@ const rootStyle = computed(() => {
   return useStyle({ ...style, ...useStyle(props.customStyle) })
 })
 
-// 根节点类名
+// 根节点类名 (block prop 用 --full 避免跟 type="block" 碰撞)
 const rootClasses = computed(() => [
   `ui-segmented--${props.type}`,
   {
-    "ui-segmented--block": props.block,
+    "ui-segmented--scrollable": props.scrollable,
+    "ui-segmented--full": props.block,
     "ui-segmented--round": props.round,
     "ui-segmented--disabled": props.disabled,
   },
 ])
 
-// 滑块样式
+// 滑块样式 (等宽假设：仅 non-scrollable 走此路径)
 const indicatorStyle = computed<CSSProperties>(() => {
   const count = props.options.length
   if (count === 0) return {}
   const gap = useUnit(props.indicatorGap)
-  // 选项宽度 = (100% - 左右 gap) / 选项数量
   const itemWidth = `(100% - ${gap} * 2) / ${count}`
-  // 滑块宽度和位置与选项对齐
-  return {
+  const style: CSSProperties = {
     width: `calc(${itemWidth})`,
     height: `calc(100% - ${gap} * 2)`,
-    left: `calc(${gap} + ${activeIndex.value} * ${itemWidth})`,
-    backgroundColor: props.activeColor ? useColor(props.activeColor) : undefined,
-    borderRadius: props.radius ? useUnit(props.radius) : undefined,
+    left: `calc(${gap} + ${activeIndex.value} * (${itemWidth}))`,
   }
+  if (props.activeColor) style.backgroundColor = useColor(props.activeColor)
+  if (props.radius) style.borderRadius = useUnit(props.radius)
+  return useStyle(style)
 })
 
-// 图标尺寸
-const iconSize = computed(() => useUnit(props.fontSize))
-
-// 选项通用样式
-const itemBaseStyle = computed<CSSProperties>(() => {
-  return {
-    height: useUnit(props.height),
-    lineHeight: useUnit(props.height),
-    fontSize: useUnit(props.fontSize),
-    padding: `0 ${useUnit(props.itemPadding)}`,
-  }
-})
-
-// 滑块高度样式
-const indicatorHeightStyle = computed<CSSProperties>(() => {
-  if (props.height) {
-    return { height: `calc(${useUnit(props.height)} - 8rpx)` }
-  }
-  return {}
-})
-
-// 选项类名
-function itemClasses(option: SegmentedOption) {
-  const isActive = option.value === props.modelValue
-  return {
-    "ui-segmented__item--active": isActive,
+// 选项类名 map (按 index 缓存)
+const itemClassMap = computed(() =>
+  props.options.map((option) => ({
+    "ui-segmented__item--active": option.value === props.modelValue,
     "ui-segmented__item--disabled": option.disabled || props.disabled,
-  }
-}
+  })),
+)
 
-// 选项样式
+// 选项基础样式
+const itemBaseStyle = computed(() => ({
+  height: useUnit(props.height),
+  lineHeight: useUnit(props.height),
+  fontSize: useUnit(props.fontSize),
+  padding: `0 ${useUnit(props.itemPadding)}`,
+}))
+
+// 选项样式 (含激活态颜色覆盖)
 function itemStyle(option: SegmentedOption): CSSProperties {
   const isActive = option.value === props.modelValue
   const style: CSSProperties = { ...itemBaseStyle.value }
@@ -210,25 +134,64 @@ function itemStyle(option: SegmentedOption): CSSProperties {
     if (props.inactiveColor) style.backgroundColor = useColor(props.inactiveColor)
     if (props.inactiveTextColor) style.color = useColor(props.inactiveTextColor)
   }
-  return style
+  return useStyle(style)
 }
 
-// 处理点击
+// 滚动到指定选项居中 (仅 scrollable)
+async function scrollToCenter(index: number) {
+  if (!props.scrollable || index < 0) return
+  await nextTick()
+  // virtualHost 下根 class 不一定挂在自身节点，用 scroll-view 自身 selector 更稳
+  const containerRect = await useRect(".ui-segmented__scroll", instance)
+  if (!containerRect?.width) return
+  const itemRects = await useRects(".ui-segmented__item", instance)
+  if (!itemRects?.length) return
+  let offset = 0
+  for (let i = 0; i < index; i++) offset += itemRects[i]?.width || 0
+  const itemCenter = offset + (itemRects[index]?.width || 0) / 2
+  const scrollCenter = containerRect.width / 2
+  scrollLeft.value = Math.max(0, itemCenter - scrollCenter)
+}
+
+// 监听激活 index 变更：mounted 后才滚动 (避免初始重复)
+watch(activeIndex, (i) => {
+  if (inited.value) scrollToCenter(i)
+})
+
+// options 列表变化时重新测量 + 居中
+watch(
+  () => props.options.length,
+  () => {
+    if (inited.value) scrollToCenter(activeIndex.value)
+  },
+)
+
+onMounted(async () => {
+  await nextTick()
+  if (props.scrollable) await scrollToCenter(activeIndex.value)
+  inited.value = true
+})
+
+// 处理点击：disabled 项静默 (不 emit click 也不 emit change)
 function handleClick(option: SegmentedOption, index: number) {
   if (props.disabled || option.disabled) return
-  emits("click", option)
-  if (option.value !== props.modelValue) {
-    activeIndex.value = index
-    emits("update:modelValue", option.value)
-    emits("change", option.value)
-  }
+  emits("click", option, index)
+  if (option.value === props.modelValue) return
+  emits("update:modelValue", option.value)
+  emits("change", option.value)
 }
 </script>
 
 <script lang="ts">
 export default {
   name: "ui-segmented",
-  options: { virtualHost: true, multipleSlots: true, styleIsolation: "shared" },
+  options: {
+    // #ifndef MP-TOUTIAO
+    virtualHost: true,
+    // #endif
+    multipleSlots: true,
+    styleIsolation: "shared",
+  },
 }
 </script>
 
@@ -241,23 +204,33 @@ export default {
   border-radius: var(--ui-radius-sm);
   background-color: var(--ui-color-background-section);
 
-  // 滚动模式
+  // scrollable：必须 width 100% 才有可滚的边界 (flex 父 align center 下不会自动 stretch)
   &--scrollable {
+    width: 100%;
     display: block;
+    min-width: 0;
+    overflow: hidden;
+  }
 
-    .ui-segmented__track {
-      display: inline-flex;
-      position: relative;
-      align-items: stretch;
-      white-space: nowrap;
-    }
+  &__scroll {
+    width: 100%;
+    max-width: 100%;
+    white-space: nowrap;
+  }
+
+  &__track {
+    display: inline-flex;
+    position: relative;
+    align-items: stretch;
+    white-space: nowrap;
 
     .ui-segmented__item {
       flex: none;
     }
   }
 
-  &--block {
+  // block prop (撑满父容器)
+  &--full {
     width: 100%;
   }
 
@@ -275,9 +248,8 @@ export default {
     pointer-events: none;
   }
 
-  // ===== 样式变体 =====
-  // Filled 样式（默认）- 主题色滑块
-  &--filled:not(&--block) {
+  // filled (默认)：indicator 主色 + 激活反色文字
+  &--filled {
     .ui-segmented__indicator {
       background-color: var(--ui-color-primary);
     }
@@ -287,26 +259,40 @@ export default {
     }
   }
 
-  // Block 样式 + 默认 Block 模式 - 白色滑块带阴影
+  // block：indicator 白底 + 阴影；激活项文字提到默认色 (避免灰底卡片对比度差)
   &--block {
     .ui-segmented__indicator {
-      box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.08);
+      box-shadow: var(--ui-shadow-xs);
       background-color: var(--ui-color-background);
+    }
+
+    .ui-segmented__item--active {
+      color: var(--ui-color-text);
     }
   }
 
-  // Outline 样式
+  // outline：边框 + 激活 light 背景，无 indicator
   &--outline {
     border: var(--ui-border-width) solid var(--ui-color-primary);
     background-color: transparent;
 
-    .ui-segmented__indicator {
-      display: none;
-    }
-
     .ui-segmented__item--active {
       color: var(--ui-color-primary);
       background-color: var(--ui-color-primary-light);
+    }
+  }
+
+  // scrollable 模式：浮动 indicator 不渲染，激活项靠 bg 呈现
+  &--scrollable {
+    &.ui-segmented--filled .ui-segmented__item--active {
+      color: var(--ui-color-text-inverse);
+      background-color: var(--ui-color-primary);
+    }
+
+    &.ui-segmented--block .ui-segmented__item--active {
+      color: var(--ui-color-text);
+      box-shadow: var(--ui-shadow-xs);
+      background-color: var(--ui-color-background);
     }
   }
 
@@ -317,7 +303,10 @@ export default {
     transform: translateY(-50%);
     transition:
       left var(--ui-transition-duration) var(--ui-transition-timing),
-      width var(--ui-transition-duration) var(--ui-transition-timing);
+      width var(--ui-transition-duration) var(--ui-transition-timing),
+      height var(--ui-transition-duration) var(--ui-transition-timing),
+      border-radius var(--ui-transition-duration) var(--ui-transition-timing),
+      background-color var(--ui-transition-duration) var(--ui-transition-timing);
     border-radius: var(--ui-radius-sm);
   }
 
@@ -333,7 +322,7 @@ export default {
     text-align: center;
     transition:
       color var(--ui-transition-fast) var(--ui-transition-timing),
-      font-weight var(--ui-transition-fast) var(--ui-transition-timing);
+      background-color var(--ui-transition-fast) var(--ui-transition-timing);
     align-items: center;
     font-weight: var(--ui-font-weight-normal);
     white-space: nowrap;
@@ -341,7 +330,7 @@ export default {
     justify-content: center;
 
     &--active {
-      font-weight: 550;
+      font-weight: var(--ui-font-weight-medium);
     }
 
     &--disabled {

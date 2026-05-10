@@ -1,5 +1,5 @@
 <template>
-  <view class="ui-radio-group" :class="[rootClass, customClass]" :style="[rootStyle]">
+  <view class="ui-radio-group" :class="[classNames, props.customClass]" :style="[rootStyle]">
     <slot />
   </view>
 </template>
@@ -13,51 +13,53 @@ import { radioGroupKey, radioGroupEmits, radioGroupProps } from "./index"
 
 defineOptions({ name: "ui-radio-group" })
 
-// 组件 props 和 emits
 const props = defineProps(radioGroupProps)
 const emits = defineEmits(radioGroupEmits)
 
-// 收集子组件（ui-radio），建立父子通信关系
 const { linkChildren } = useChildren(radioGroupKey)
 
-// 根节点样式，设置间距和列布局
+// 根节点样式：gap / 网格 经由内联样式（独立于子级 CSS var）
 const rootStyle = computed(() => {
   const style: CSSProperties = {}
-  // 设置子元素间距
-  if (props.gap) style.gap = useUnit(props.gap)
-  // 设置列布局
-  if (props.columns) {
+  if (props.gap !== undefined) style.gap = useUnit(props.gap)
+  if (props.columns !== undefined) {
     style.display = "grid"
     style.gridTemplateColumns = `repeat(${props.columns}, 1fr)`
   }
-  return useStyle({ ...style, ...useStyle(props.customStyle) })
+  return useStyle({ ...style, ...(useStyle(props.customStyle) || {}) })
 })
-
 // 根节点类名
-const rootClass = computed(() => {
+const classNames = computed(() => {
   const list: string[] = []
+  if (props.vertical) list.push("ui-radio-group--vertical")
   return list
 })
 
-// 监听 modelValue 变化，触发 change 事件
+// 监听值变化向外抛 change
 watch(
   () => props.modelValue,
-  (value) => emits("change", value),
+  (value) => emits("change", value as RadioGroupValueType),
 )
 
-// 更新选中值
-async function updateValue(value: RadioGroupValueType) {
+// 更新值
+function updateValue(value: RadioGroupValueType) {
   emits("update:modelValue", toRaw(value))
 }
 
-// 建立父子组件关联
+// 建立父子关联
 linkChildren({ props, updateValue })
 </script>
 
 <script lang="ts">
 export default {
   name: "ui-radio-group",
-  options: { virtualHost: true, multipleSlots: true, styleIsolation: "shared" },
+  options: {
+    // #ifndef MP-TOUTIAO
+    virtualHost: true,
+    // #endif
+    multipleSlots: true,
+    styleIsolation: "shared",
+  },
 }
 </script>
 
@@ -65,5 +67,10 @@ export default {
 .ui-radio-group {
   display: flex;
   flex-wrap: wrap;
+
+  &--vertical {
+    flex-wrap: nowrap;
+    flex-direction: column;
+  }
 }
 </style>

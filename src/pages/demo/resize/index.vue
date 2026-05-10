@@ -107,13 +107,15 @@
 </template>
 
 <script setup lang="ts">
+import type { ResizeRect } from "@/uni_modules/uniapp-ui/ui-resize"
+
 definePage({
   style: { navigationBarTitleText: "Resize 尺寸监听" },
 })
 
 // 基础用法
 const basicSize = ref({ width: 0, height: 0 })
-function onBasicResize(data: Record<string, number>) {
+function onBasicResize(data: ResizeRect) {
   basicSize.value = { width: Math.round(data.width), height: Math.round(data.height) }
   lastData.value = data
 }
@@ -123,7 +125,7 @@ const dynamicWidth = ref(200)
 const dynamicHeight = ref(120)
 const dynamicSize = ref({ width: 0, height: 0 })
 
-function onDynamicResize(data: Record<string, number>) {
+function onDynamicResize(data: ResizeRect) {
   dynamicSize.value = { width: Math.round(data.width), height: Math.round(data.height) }
   lastData.value = data
 }
@@ -140,7 +142,7 @@ function onHeightChange(e: { detail: { value: number } }) {
 const lineCount = ref(3)
 const contentSize = ref({ width: 0, height: 0 })
 
-function onContentResize(data: Record<string, number>) {
+function onContentResize(data: ResizeRect) {
   contentSize.value = { width: Math.round(data.width), height: Math.round(data.height) }
   lastData.value = data
 }
@@ -152,13 +154,13 @@ function onDisabledResize() {
 }
 
 // 回调数据
-const lastData = ref<Record<string, number>>({})
+const lastData = ref<Partial<ResizeRect>>({})
 </script>
 
 <style lang="scss" scoped>
 .demo-box {
   padding: 32rpx;
-  background: var(--ui-color-bg);
+  background: var(--ui-color-background-section);
   border-radius: 16rpx;
 
   &--center {
@@ -200,7 +202,7 @@ const lastData = ref<Record<string, number>>({})
   width: 280px;
   display: flex;
   padding: 24rpx;
-  background: var(--ui-color-bg-2);
+  background: var(--ui-color-background-section);
   align-items: center;
   border-radius: 12rpx;
   flex-direction: column;
@@ -213,7 +215,7 @@ const lastData = ref<Record<string, number>>({})
   border: 2rpx dashed var(--ui-color-border);
   height: 100px;
   display: flex;
-  background: var(--ui-color-bg);
+  background: var(--ui-color-background-section);
   align-items: center;
   border-radius: 12rpx;
   flex-direction: column;
@@ -255,7 +257,7 @@ const lastData = ref<Record<string, number>>({})
   gap: 8rpx;
   display: flex;
   padding: 20rpx;
-  background: var(--ui-color-bg);
+  background: var(--ui-color-background-section);
   text-align: center;
   border-radius: 12rpx;
   flex-direction: column;

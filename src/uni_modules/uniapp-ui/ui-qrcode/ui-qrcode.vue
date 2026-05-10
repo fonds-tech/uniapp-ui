@@ -1,17 +1,18 @@
 <template>
-  <view class="ui-qrcode" :class="[props.customClass]" :style="[style]" @click="onClick">
-    <canvas class="ui-qrcode-canvas" :canvas-id="id" :style="{ width: `${canvasSize.width}px`, height: `${canvasSize.height}px` }" />
+  <view class="ui-qrcode" :class="[props.customClass]" :style="[rootStyle]" @click="onClick">
+    <!-- 离屏 canvas: 真正绘制目标，移出可视区域 (双重 canvas 是 uni-app H5 与小程序 canvas-id / id 行为差异兼容) -->
+    <canvas class="ui-qrcode__canvas" :canvas-id="id" :style="hiddenCanvasStyle" />
+    <canvas :id="id" class="ui-qrcode__canvas" :width="canvasSize.width" :height="canvasSize.height" />
 
-    <canvas :id="id" class="ui-qrcode-canvas" :width="canvasSize.width" :height="canvasSize.height" />
-
-    <text v-if="show && isError" class="ui-qrcode__fail" @click="makeCode">{{ type === "qrcode" ? "二维码" : "条形码" }}生成失败,点击重试</text>
-    <text v-else-if="show && isLoading" class="ui-qrcode__loading">{{ loadingText }}</text>
-    <image v-else-if="show && isSuccess" :src="result" :style="{ width: `${canvasSize.width}px`, height: `${canvasSize.height}px` }" />
-    <text v-if="type === 'barcode'" class="code-text">{{ value }}</text>
+    <text v-if="show && isError" class="ui-qrcode__fail" @click="makeCode">{{ props.type === "qrcode" ? "二维码" : "条形码" }}生成失败,点击重试</text>
+    <text v-else-if="show && isLoading" class="ui-qrcode__loading">{{ props.loadingText }}</text>
+    <image v-else-if="show && isSuccess" :src="result" :style="hiddenCanvasStyle" />
+    <text v-if="props.type === 'barcode'" class="ui-qrcode__code-text">{{ props.value }}</text>
   </view>
 </template>
 
 <script setup lang="ts">
+import type { CSSProperties } from "vue"
 import QRCode from "./qrcode"
 import { uuid } from "../utils/utils"
 import { CODE128AUTO } from "./code128/index"
@@ -23,38 +24,29 @@ defineOptions({ name: "ui-qrcode" })
 
 const props = defineProps(qrcodeProps)
 const emits = defineEmits(qrcodeEmits)
+
+const instance = getCurrentInstance()
+
 const id = ref(uuid())
-const result = ref()
+const result = ref("")
 const isError = ref(false)
 const isSuccess = ref(false)
 const isLoading = ref(false)
-const instance = getCurrentInstance()
 
-const size = computed(() => {
-  return useUnitToPx(props.size)
-})
+// 物理像素尺寸 (canvas 必须 px)
+const sizePx = computed(() => useUnitToPx(props.size) || 0)
+const barcodeWidthPx = computed(() => useUnitToPx(props.barcodeWidth) || 0)
+const barcodeHeightPx = computed(() => useUnitToPx(props.barcodeHeight) || 0)
+const canvasSize = computed(() => (props.type === "barcode" ? { width: barcodeWidthPx.value, height: barcodeHeightPx.value } : { width: sizePx.value, height: sizePx.value }))
 
-const style = computed(() => {
-  const style: any = {}
+const hiddenCanvasStyle = computed<CSSProperties>(() => ({ width: `${canvasSize.value.width}px`, height: `${canvasSize.value.height}px` }))
+const rootStyle = computed(() => {
+  const style: CSSProperties = {}
   style.width = props.type === "qrcode" ? useUnit(props.size) : useUnit(props.barcodeWidth)
   style.height = props.type === "qrcode" ? useUnit(props.size) : useUnit(props.barcodeHeight)
   return useStyle({ ...style, ...useStyle(props.customStyle) })
 })
 
-// 条形码高度计算
-const barcodeHeight = computed(() => {
-  return useUnitToPx(props.barcodeHeight)
-})
-
-// 条形码宽度
-const barcodeWidth = computed(() => {
-  return useUnitToPx(props.barcodeWidth)
-})
-
-// 动态画布尺寸（根据类型切换）
-const canvasSize = computed(() => {
-  return props.type === "barcode" ? { width: barcodeWidth.value, height: barcodeHeight.value } : { width: size.value, height: size.value }
-})
 watch(
   () => props,
   () => {
@@ -67,112 +59,114 @@ async function makeCode() {
   isError.value = false
   isLoading.value = true
   await nextTick()
+  // 200ms 留时间给 canvas 元素上屏 + uni 内部 createCanvasContext 跨端 ready
   setTimeout(() => {
-    if (props.type === "barcode") {
-      try {
-        const barcode = new CODE128AUTO(String(props.value), {})
-        const barcodeResult = barcode.encode()
-        const pattern = barcodeResult.data
-        if (!pattern) throw new Error("Invalid barcode content")
-
-        // 获取Canvas上下文
-        const ctx = uni.createCanvasContext(id.value, instance)
-        const width = barcodeWidth.value
-        const height = barcodeHeight.value
-        const moduleWidth = width / pattern.length
-
-        // 绘制背景
-        ctx.setFillStyle(props.background)
-        ctx.fillRect(0, 0, width, height)
-
-        // 绘制条形码
-        ctx.setFillStyle(props.foreground)
-
-        for (let i = 0; i < pattern.length; i++) {
-          if (pattern[i] === "1") {
-            ctx.fillRect(i * moduleWidth, 0, moduleWidth, height)
-          }
-        }
-
-        // 绘制完成保存为图片
-        ctx.draw(false, () => {
-          uni.canvasToTempFilePath(
-            {
-              canvasId: id.value,
-              success: (res) => {
-                result.value = res.tempFilePath
-                isSuccess.value = true
-                emits("success", res.tempFilePath)
-              },
-              fail: (err) => {
-                isError.value = true
-                emits("error", err)
-              },
-              complete: () => {
-                isLoading.value = false
-              },
-            },
-            instance,
-          )
-        })
-      } catch (err) {
-        isError.value = true
-        emits("error", err)
-        isLoading.value = false
-      }
-    } else if (props.type === "qrcode") {
-      // @ts-expect-error 注释错误
-      const qrcode = new QRCode({
-        context: instance, // 上下文环境
-        canvasId: id.value, // canvas-id
-        usingComponents: true, // 是否是自定义组件
-        showLoading: false, // 是否显示loading
-        text: props.value, // 生成内容
-        size: useUnitToPx(props.size), // 二维码大小
-        background: props.background, // 背景色
-        foreground: props.foreground, // 前景色
-        pdground: props.pdground, // 定位角点颜色
-        correctLevel: props.lv, // 容错级别
-        image: props.icon, // 二维码图标
-        imageSize: useUnitToPx(props.iconSize), // 二维码图标大小
-        success: (res: any) => {
-          result.value = res
-          isSuccess.value = true
-          emits("success", res)
-        },
-        fail: (err: any) => {
-          isError.value = true
-          emits("error", err)
-        },
-        complete: () => {
-          isLoading.value = false
-        },
-      })
-    }
+    if (props.type === "barcode") drawBarcode()
+    else drawQrcode()
   }, 200)
 }
 
-function saveCode() {
-  if (result.value) {
-    uni.saveImageToPhotosAlbum({
-      filePath: result.value,
-      success: () => {
-        uni.showToast({ title: "二维码保存成功", icon: "success", duration: 2000 })
-      },
+function drawBarcode() {
+  try {
+    const barcode = new CODE128AUTO(String(props.value), {})
+    const pattern = barcode.encode().data
+    if (!pattern) throw new Error("Invalid barcode content")
+
+    const ctx = uni.createCanvasContext(id.value, instance as never)
+    const width = barcodeWidthPx.value
+    const height = barcodeHeightPx.value
+    const moduleWidth = width / pattern.length
+
+    ctx.setFillStyle(props.background)
+    ctx.fillRect(0, 0, width, height)
+    ctx.setFillStyle(props.foreground)
+    for (let i = 0; i < pattern.length; i++) {
+      if (pattern[i] === "1") ctx.fillRect(i * moduleWidth, 0, moduleWidth, height)
+    }
+    ctx.draw(false, () => {
+      uni.canvasToTempFilePath(
+        {
+          canvasId: id.value,
+          success: (res) => {
+            result.value = res.tempFilePath
+            isSuccess.value = true
+            emits("success", res.tempFilePath)
+          },
+          fail: (err) => {
+            isError.value = true
+            emits("error", err)
+          },
+          complete: () => {
+            isLoading.value = false
+          },
+        },
+        instance as never,
+      )
     })
+  } catch (err) {
+    isError.value = true
+    emits("error", err)
+    isLoading.value = false
   }
+}
+
+function drawQrcode() {
+  // QRCode 类无 TS 类型，构造参数动态校验
+  // eslint-disable-next-line @typescript-eslint/no-new
+  new (QRCode as unknown as new (opts: Record<string, unknown>) => unknown)({
+    context: instance,
+    canvasId: id.value,
+    usingComponents: true,
+    showLoading: false,
+    text: props.value,
+    size: sizePx.value,
+    background: props.background,
+    foreground: props.foreground,
+    pdground: props.pdground,
+    correctLevel: props.lv,
+    image: props.icon,
+    imageSize: useUnitToPx(props.iconSize),
+    success: (res: string) => {
+      result.value = res
+      isSuccess.value = true
+      emits("success", res)
+    },
+    fail: (err: unknown) => {
+      isError.value = true
+      emits("error", err)
+    },
+    complete: () => {
+      isLoading.value = false
+    },
+  })
+}
+
+function saveCode() {
+  if (!result.value) return
+  uni.saveImageToPhotosAlbum({
+    filePath: result.value,
+    success: () => uni.showToast({ title: "保存成功", icon: "success", duration: 2000 }),
+    fail: () => uni.showModal({ title: "提示", content: "保存失败，请检查相册权限", showCancel: false }),
+  })
 }
 
 function onClick() {
   emits("click")
 }
 
-defineExpose({ name: "ui-qrcode", makeCode, saveCode })
+defineExpose({ makeCode, saveCode })
 </script>
 
 <script lang="ts">
 export default {
-  options: { virtualHost: true, multipleSlots: true, styleIsolation: "shared" },
+  name: "ui-qrcode",
+  options: {
+    // #ifndef MP-TOUTIAO
+    virtualHost: true,
+    // #endif
+    multipleSlots: true,
+    styleIsolation: "shared",
+  },
 }
 </script>
 
@@ -184,31 +178,33 @@ export default {
   flex-direction: column;
   justify-content: center;
 
-  .ui-qrcode-canvas {
+  &__canvas {
     top: -99999rpx;
     left: -99999rpx;
     z-index: -99999;
     position: fixed !important;
   }
 
-  &__fail {
+  &__fail,
+  &__loading {
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
+    color: var(--ui-color-text-secondary);
     display: flex;
     position: absolute;
+    font-size: var(--ui-font-size-sm);
     text-align: center;
     align-items: center;
     justify-content: center;
   }
-  &__barcode {
-    object-fit: contain;
-  }
-  .code-text {
+
+  &__code-text {
+    color: var(--ui-color-text);
+    padding-top: 10rpx;
     font-size: var(--ui-font-size-lg);
     box-sizing: border-box;
-    padding-top: 10rpx;
     letter-spacing: 8rpx;
   }
 }

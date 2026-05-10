@@ -70,14 +70,6 @@ describe("ui-safe-area-top 顶部安全区域组件", () => {
     })
   })
 
-  describe("暴露的属性", () => {
-    it("应暴露 name 属性", () => {
-      const wrapper = mount(UiSafeAreaTop)
-
-      expect(wrapper.vm.name).toBe("ui-safe-area-top")
-    })
-  })
-
   describe("边界情况", () => {
     it("无安全区域时应正常渲染", async () => {
       const wrapper = mount(UiSafeAreaTop)

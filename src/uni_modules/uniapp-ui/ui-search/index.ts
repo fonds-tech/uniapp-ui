@@ -2,6 +2,10 @@ import type Search from "./ui-search.vue"
 import type { PropType, CSSProperties, ExtractPropTypes } from "vue"
 import { buildDefaultProps } from "../utils/props"
 
+export const SEARCH_INPUT_ALIGN = ["left", "center", "right"] as const
+
+export type SearchInputAlign = (typeof SEARCH_INPUT_ALIGN)[number]
+
 const defaultProps = buildDefaultProps("search", {
   modelValue: "",
   placeholder: "请输入搜索关键词",
@@ -9,33 +13,32 @@ const defaultProps = buildDefaultProps("search", {
   disabled: false,
   focus: false,
   clearable: true,
-  clearabled: undefined,
   height: "72rpx",
-  margin: "",
+  margin: undefined,
   round: false,
-  radius: "",
-  color: "",
-  fontSize: "",
-  placeholderColor: "#969799",
-  inputAlign: "left",
-  background: "",
-  border: "",
+  radius: undefined,
+  color: undefined,
+  fontSize: undefined,
+  placeholderColor: undefined,
+  inputAlign: "left" as SearchInputAlign,
+  background: undefined,
+  border: undefined,
   icon: "search",
-  iconSize: "40",
-  iconColor: "",
-  iconWeight: "",
+  iconSize: "40rpx",
+  iconColor: undefined,
+  iconWeight: undefined,
   clearIcon: "close",
-  clearIconSize: "32",
-  clearIconColor: "",
-  clearIconWeight: "",
+  clearIconSize: "32rpx",
+  clearIconColor: undefined,
+  clearIconWeight: undefined,
   action: true,
   actionText: "搜索",
-  actionSize: "",
-  actionColor: "",
-  actionWeight: "",
-  inputStyle: "",
-  customClass: "",
-  customStyle: "",
+  actionSize: undefined,
+  actionColor: undefined,
+  actionWeight: undefined,
+  inputStyle: undefined,
+  customClass: undefined,
+  customStyle: undefined,
 })
 
 export const searchProps = {
@@ -43,7 +46,7 @@ export const searchProps = {
   modelValue: defaultProps("modelValue", { type: String }),
   /** 占位文字 */
   placeholder: defaultProps("placeholder", { type: String }),
-  /** 输入框最大输入长度，-1 表示不限制 */
+  /** 输入框最大长度，-1 表示不限制 */
   maxlength: defaultProps("maxlength", { type: Number }),
   /** 是否禁用输入框 */
   disabled: defaultProps("disabled", { type: Boolean }),
@@ -51,9 +54,7 @@ export const searchProps = {
   focus: defaultProps("focus", { type: Boolean }),
   /** 是否显示清除按钮（有内容时显示） */
   clearable: defaultProps("clearable", { type: Boolean }),
-  /** 是否显示清除按钮（兼容历史 clearabled） */
-  clearabled: defaultProps("clearabled", { type: Boolean }),
-  /** 输入框高度，支持 rpx/px 单位 */
+  /** 输入框高度 */
   height: defaultProps("height", { type: [Number, String] }),
   /** 外边距 */
   margin: defaultProps("margin", { type: [Number, String] }),
@@ -67,11 +68,14 @@ export const searchProps = {
   fontSize: defaultProps("fontSize", { type: [Number, String] }),
   /** 占位文字颜色 */
   placeholderColor: defaultProps("placeholderColor", { type: String }),
-  /** 输入框内容水平对齐方式 */
-  inputAlign: defaultProps("inputAlign", { type: String, validator: (v: string) => ["left", "center", "right"].includes(v) }),
+  /** 输入内容水平对齐 */
+  inputAlign: defaultProps("inputAlign", {
+    type: String as PropType<SearchInputAlign>,
+    validator: (v: string) => SEARCH_INPUT_ALIGN.includes(v as SearchInputAlign),
+  }),
   /** 背景颜色 */
   background: defaultProps("background", { type: String }),
-  /** 边框样式，如 "1px solid #eee" */
+  /** 边框 (CSS 简写，如 "1px solid #eee") */
   border: defaultProps("border", { type: String }),
   /** 搜索图标名称 */
   icon: defaultProps("icon", { type: String }),
@@ -80,7 +84,7 @@ export const searchProps = {
   /** 搜索图标颜色 */
   iconColor: defaultProps("iconColor", { type: String }),
   /** 搜索图标粗细 */
-  iconWeight: defaultProps("iconWeight", { type: String }),
+  iconWeight: defaultProps("iconWeight", { type: [String, Number] }),
   /** 清除图标名称 */
   clearIcon: defaultProps("clearIcon", { type: String }),
   /** 清除图标大小 */
@@ -88,7 +92,7 @@ export const searchProps = {
   /** 清除图标颜色 */
   clearIconColor: defaultProps("clearIconColor", { type: String }),
   /** 清除图标粗细 */
-  clearIconWeight: defaultProps("clearIconWeight", { type: String }),
+  clearIconWeight: defaultProps("clearIconWeight", { type: [String, Number] }),
   /** 是否显示右侧操作按钮 */
   action: defaultProps("action", { type: Boolean }),
   /** 右侧操作按钮文字 */
@@ -98,7 +102,7 @@ export const searchProps = {
   /** 右侧操作按钮文字颜色 */
   actionColor: defaultProps("actionColor", { type: String }),
   /** 右侧操作按钮文字粗细 */
-  actionWeight: defaultProps("actionWeight", { type: String }),
+  actionWeight: defaultProps("actionWeight", { type: [String, Number] }),
   /** 自定义输入框样式 */
   inputStyle: defaultProps("inputStyle", { type: [String, Object] as PropType<string | CSSProperties> }),
   /** 自定义类名 */
@@ -109,27 +113,23 @@ export const searchProps = {
 
 export const searchEmits = {
   /** 失焦事件 */
-  blur: (event: any) => true,
+  blur: (event: FocusEvent) => !!event,
   /** 聚焦事件 */
-  focus: (event: any) => true,
+  focus: (event: FocusEvent) => !!event,
   /** 点击事件 */
-  click: (event: any) => true,
+  click: (event: Event) => !!event,
   /** 清除事件 */
-  clear: (event: any) => true,
+  clear: (event: Event) => !!event,
   /** 操作按钮点击事件 */
-  action: (event: any) => true,
-  /** 搜索事件 */
-  search: (value: any) => true,
+  action: (event: Event) => !!event,
+  /** 搜索事件 (键盘 confirm 触发) */
+  search: (value: string) => typeof value === "string",
   /** 值变化事件 */
-  change: (value: any) => true,
+  change: (value: string) => typeof value === "string",
   /** 更新绑定值事件 */
-  "update:modelValue": (value: string) => true,
+  "update:modelValue": (value: string) => typeof value === "string",
 }
 
-export const searchInputAlign = ["left", "center", "right"]
-
-export type SearchShape = "round" | "square"
-export type SearchInputAlign = "left" | "center" | "right"
 export type SearchEmits = typeof searchEmits
 export type SearchProps = ExtractPropTypes<typeof searchProps>
 export type SearchInstance = InstanceType<typeof Search>

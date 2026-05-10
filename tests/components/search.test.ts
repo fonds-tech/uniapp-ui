@@ -151,10 +151,10 @@ describe("uiSearch 组件", () => {
     })
   })
 
-  describe("clearabled 清除按钮测试", () => {
+  describe("clearable 清除按钮测试", () => {
     it("有值时应该显示清除按钮", async () => {
       const wrapper = mount(UiSearch, {
-        props: { modelValue: "测试", clearabled: true },
+        props: { modelValue: "测试", clearable: true },
         global: {
           stubs: { "ui-icon": true },
         },
@@ -165,7 +165,7 @@ describe("uiSearch 组件", () => {
 
     it("无值时不应该显示清除按钮", async () => {
       const wrapper = mount(UiSearch, {
-        props: { modelValue: "", clearabled: true },
+        props: { modelValue: "", clearable: true },
         global: {
           stubs: { "ui-icon": true },
         },
@@ -188,9 +188,9 @@ describe("uiSearch 组件", () => {
       expect(wrapper.emitted("update:modelValue")![0]).toEqual([""])
     })
 
-    it("clearabled 为 false 时不显示清除按钮", async () => {
+    it("clearable 为 false 时不显示清除按钮", async () => {
       const wrapper = mount(UiSearch, {
-        props: { modelValue: "测试", clearabled: false },
+        props: { modelValue: "测试", clearable: false },
         global: {
           stubs: { "ui-icon": true },
         },
@@ -494,18 +494,6 @@ describe("uiSearch 组件", () => {
       await waitForTransition()
       const actionBtn = wrapper.find(".ui-search__action__button")
       expect(actionBtn.attributes("style")).toContain("color")
-    })
-  })
-
-  describe("暴露属性测试", () => {
-    it("应该暴露 name 属性", async () => {
-      const wrapper = mount(UiSearch, {
-        global: {
-          stubs: { "ui-icon": true },
-        },
-      })
-      await waitForTransition()
-      expect(wrapper.vm.name).toBe("ui-search")
     })
   })
 

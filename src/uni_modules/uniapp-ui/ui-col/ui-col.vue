@@ -1,5 +1,5 @@
 <template>
-  <view class="ui-col" :class="[props.customClass]" :style="[rootStyle]">
+  <view class="ui-col" :class="props.customClass" :style="rootStyle">
     <slot />
   </view>
 </template>
@@ -14,25 +14,35 @@ defineOptions({ name: "ui-col" })
 
 const props = defineProps(colProps)
 
+// 安全转数：非数值兜底为 0，clamp 到 [min, max]
+function clamp(v: number | string | undefined, min: number, max: number) {
+  const n = Number(v)
+  return Math.min(max, Math.max(min, Number.isFinite(n) ? n : 0))
+}
+
 // 根节点样式：宽度 + 可选偏移；间距由 row 注入的 CSS var 自动继承（见 SCSS）
-const rootStyle = computed<CSSProperties>(() => {
+const rootStyle = computed(() => {
   const s: CSSProperties = {}
   // 24 栅格转百分比；span ≤ 0 → 0%（不渲染但保持布局占位语义）
-  const span = Math.min(24, Math.max(0, +props.span || 0))
+  const span = clamp(props.span, 0, 24)
   s.width = `${(100 / 24) * span}%`
   // 偏移 clamp 到 [0, 24-span]
-  const offset = Math.min(24 - span, Math.max(0, +props.offset || 0))
+  const offset = clamp(props.offset, 0, 24 - span)
   if (offset > 0) s.marginLeft = `${(100 / 24) * offset}%`
-  return useStyle({ ...s, ...(useStyle(props.customStyle) || {}) }) as CSSProperties
+  return useStyle({ ...s, ...(useStyle(props.customStyle) || {}) })
 })
-
-defineExpose({ name: "ui-col" })
 </script>
 
 <script lang="ts">
 export default {
   name: "ui-col",
-  options: { virtualHost: true, multipleSlots: true, styleIsolation: "shared" },
+  options: {
+    // #ifndef MP-TOUTIAO
+    virtualHost: true,
+    // #endif
+    multipleSlots: true,
+    styleIsolation: "shared",
+  },
 }
 </script>
 

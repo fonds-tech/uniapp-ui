@@ -1,138 +1,88 @@
 <template>
-  <view class="ui-rate" :class="[classes, customClass]" :style="[style]" @click="onClick" @touchstart="onTouchstart" @touchmove="onTouchmove">
+  <view class="ui-rate" :class="[classNames, props.customClass]" :style="[rootStyle]" @click="onClick" @touchstart="onTouchstart" @touchmove="onTouchmove">
     <view v-for="(item, index) in list" :key="index" class="ui-rate__item" :style="[itemStyle(index)]">
       <view class="ui-rate__item__icon">
-        <ui-icon :name="icon(item)" :size="size" :weight="iconWeight" :color="iconColor(item)" />
+        <ui-icon :name="iconName(item)" :size="props.size" :weight="props.iconWeight" :color="iconColor(item)" />
       </view>
-      <view v-if="isShowHalf(item)" class="ui-rate__item__icon ui-rate__item__icon--half" :style="[iconHalfStyle(item)]">
-        <ui-icon :name="props.icon" :size="size" :weight="iconWeight" :color="color" />
+      <view v-if="isShowHalf(item)" class="ui-rate__item__icon ui-rate__item__icon--half" :style="[halfStyle(item)]">
+        <ui-icon :name="props.icon" :size="props.size" :weight="props.iconWeight" :color="props.color" />
       </view>
     </view>
   </view>
 </template>
 
 <script setup lang="ts">
+import type { CSSProperties } from "vue"
+import type { RateItem, RateRangeItem } from "./index"
 import { formItemKey } from "../ui-form-item"
 import { rateEmits, rateProps } from "./index"
 import { useRect, useRects, useStyle, useParent, useUnitToPx } from "../hooks"
-import { ref, watch, computed, nextTick, onMounted, getCurrentInstance } from "vue"
+import { ref, computed, nextTick, onMounted, getCurrentInstance } from "vue"
 
 defineOptions({ name: "ui-rate" })
 
 const props = defineProps(rateProps)
 const emits = defineEmits(rateEmits)
 
-// 组件实例
 const instance = getCurrentInstance()
 
-// 有效 disabled/readonly：合并 form/form-item 级
+// form/form-item 级 disabled/readonly 合并
 const { parent: formItem } = useParent(formItemKey)
 const effectiveDisabled = computed(() => Boolean(props.disabled) || Boolean(formItem?.disabled?.value))
 const effectiveReadonly = computed(() => Boolean(props.readonly) || Boolean(formItem?.readonly?.value))
 
-// 当前分数
-const score = ref<number | null>(props.modelValue)
-// 评分区域范围
-const ranges = ref([])
-// 组件容器位置信息
-const rect = ref<UniApp.NodeInfo>({})
-// 各评分项位置信息
-const rects = ref<UniApp.NodeInfo[]>([])
+const ranges = ref<RateRangeItem[]>([])
 
-// 评分列表
-const list = computed(() =>
-  Array.from({ length: props.count })
-    .fill("")
-    .map((_, i) => getRateStatus(props.modelValue, i + 1)),
-)
-// 根节点样式
-const style = computed(() => {
-  const style: any = {}
-  return useStyle({ ...style, ...useStyle(props.customStyle) })
-})
-// 类名数组
-const classes = computed(() => {
+const list = computed<RateItem[]>(() => Array.from({ length: props.count }, (_, i) => getRateStatus(props.modelValue, i + 1)))
+const rootStyle = computed(() => useStyle(props.customStyle))
+const classNames = computed(() => {
   const list: string[] = []
   if (effectiveDisabled.value) list.push("ui-rate--disabled")
   if (effectiveReadonly.value) list.push("ui-rate--readonly")
   return list
 })
-// 评分项样式
-const itemStyle = computed(() => {
-  return (index: number) => {
-    const style: any = {}
-    if (index < list.value.length - 1) {
-      style.marginRight = `${useUnitToPx(props.gutter)}px`
-    }
-    return useStyle(style)
-  }
-})
-// 半星样式
-const iconHalfStyle = computed(() => {
-  return (item: any) => {
-    const style: any = {}
-    if (item.status === "full") style.width = "100%"
-    if (item.status === "half") style.width = `${item.value * 100}%`
-    return useStyle(style)
-  }
-})
-// 图标名称
-const icon = computed(() => {
-  return (item: any) => {
-    return item.status === "full" ? props.icon : props.voidIcon
-  }
-})
-// 图标颜色
-const iconColor = computed(() => {
-  return (item: any) => {
-    return item.value && item.status === "full" ? props.color : props.voidColor
-  }
-})
-// 是否显示半星
-const isShowHalf = computed(() => {
-  return (item: any) => {
-    return item.value && item.status === "half"
-  }
-})
 
-watch(
-  () => props.modelValue,
-  (value) => {
-    score.value = value
-  },
-)
+function itemStyle(index: number): CSSProperties {
+  return index < list.value.length - 1 ? { marginRight: `${useUnitToPx(props.gutter)}px` } : {}
+}
 
-// 获取评分状态
-function getRateStatus(value: number, index: number) {
+function halfStyle(item: RateItem): CSSProperties {
+  if (item.status === "full") return { width: "100%" }
+  if (item.status === "half") return { width: `${item.value * 100}%` }
+  return {}
+}
+
+function iconName(item: RateItem) {
+  return item.status === "full" ? props.icon : props.voidIcon
+}
+
+function iconColor(item: RateItem) {
+  if (effectiveDisabled.value) return props.disabledColor
+  return item.value && item.status === "full" ? props.color : props.voidColor
+}
+
+function isShowHalf(item: RateItem) {
+  return item.value > 0 && item.status === "half"
+}
+
+// 状态划分: full=已选 / half=半选 / void=未选
+function getRateStatus(value: number, index: number): RateItem {
   if (value >= index) return { status: "full", value: 1 }
-
   if (value + 0.5 >= index && props.allowHalf && !effectiveReadonly.value) return { status: "half", value: 0.5 }
-
   if (value + 1 >= index && props.allowHalf && effectiveReadonly.value) {
+    // 只读 + 半星: 精确显示小数比例 (避免 0.7 被强制显示成 0.5)
     const cardinal = 10 ** 10
     return { status: "half", value: Math.round((value - index + 1) * cardinal) / cardinal }
   }
-
   return { status: "void", value: 0 }
 }
 
-// 重新计算尺寸
-async function resize() {
-  await nextTick()
-  rect.value = await useRect(".ui-rate", instance)
-  rects.value = await useRects(".ui-rate__item", instance)
-  await nextTick()
-
-  updateRanges()
-}
-
-// 更新评分区域范围
+// 测量每个 item 的位置，划分点击/滑动可命中区间
 async function updateRanges() {
   const gutter = useUnitToPx(props.gutter)
-  rect.value = await useRect(".ui-rate", instance)
-  rects.value = await useRects(".ui-rate__item", instance)
+  const rects = await useRects(".ui-rate__item", instance)
   ranges.value = []
-  rects.value?.forEach((rect, index) => {
+  rects?.forEach((rect, index) => {
     if (props.allowHalf) {
       const left = index === 0 ? rect.left : rect.left - gutter / 2
       const right = index === 0 ? rect.left + rect.width / 2 : rect.right - rect.width / 2
@@ -145,67 +95,72 @@ async function updateRanges() {
   })
 }
 
-// 根据位置获取分数
 function getScoreByPosition(x: number) {
-  const minLeft = Math.min(...ranges.value.map((item) => item.left))
-  const maxRight = Math.max(...ranges.value.map((item) => item.right))
-  for (let i = 0; i < ranges.value.length; i++) {
-    if (x >= ranges.value[i].left && x < ranges.value[i].right) {
-      return ranges.value[i].score
-    }
-  }
+  if (!ranges.value.length) return props.modelValue
+  const minLeft = Math.min(...ranges.value.map((r) => r.left))
+  const maxRight = Math.max(...ranges.value.map((r) => r.right))
+  const hit = ranges.value.find((r) => x >= r.left && x < r.right)
+  if (hit) return hit.score
   if (x <= minLeft) return 0
   if (x >= maxRight) return props.count
   return props.modelValue
 }
 
-// 更新值
 async function updateValue(value: number) {
-  if (effectiveDisabled.value) return
-  if (effectiveReadonly.value) return
+  if (effectiveDisabled.value || effectiveReadonly.value) return
   if (value === props.modelValue) return
-  if (value === score.value) return
   emits("change", value)
   await nextTick()
   emits("update:modelValue", value)
-  score.value = value
 }
 
-// 点击事件
-async function onClick(event: any) {
+async function onClick(event: { detail: { x: number } }) {
   await updateRanges()
-  const value = getScoreByPosition(event.detail.x)
-  updateValue(value)
+  updateValue(getScoreByPosition(event.detail.x))
 }
 
-// 触摸开始
 async function onTouchstart() {
   await updateRanges()
 }
 
-// 触摸移动
-function onTouchmove(event: any) {
+function onTouchmove(event: TouchEvent) {
   if (!props.touchable) return
-  const value = getScoreByPosition(event.touches[0].clientX)
-  updateValue(value)
+  updateValue(getScoreByPosition(event.touches[0].clientX))
+}
+
+async function resize() {
+  await nextTick()
+  await updateRanges()
 }
 
 onMounted(() => resize())
 
-defineExpose({ name: "ui-rate" })
+defineExpose({ resize })
 </script>
 
 <script lang="ts">
 export default {
-  options: { virtualHost: true, multipleSlots: true, styleIsolation: "shared" },
+  name: "ui-rate",
+  options: {
+    // #ifndef MP-TOUTIAO
+    virtualHost: true,
+    // #endif
+    multipleSlots: true,
+    styleIsolation: "shared",
+  },
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .ui-rate {
   width: max-content;
   display: inline-flex;
   align-items: center;
+
+  &--disabled {
+    opacity: var(--ui-opacity-disabled);
+    cursor: not-allowed;
+  }
 
   &__item {
     display: flex;
@@ -221,8 +176,8 @@ export default {
         top: 0;
         left: 0;
         width: 0;
-        display: flex;
         z-index: 1;
+        display: flex;
         overflow: hidden;
         position: absolute;
         pointer-events: none;

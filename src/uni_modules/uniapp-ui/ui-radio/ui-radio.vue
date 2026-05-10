@@ -1,21 +1,21 @@
 <template>
-  <view class="ui-radio" :class="[rootClass, props.customClass]" :style="[rootStyle]" @click.stop="onClick">
-    <view class="ui-radio__icon" :class="[iconClass]" :style="[iconContainerStyle]" @click.stop="onClickIcon">
-      <slot name="icon" :checked="checked" :disabled="disabled">
-        <view v-if="actualShape === 'dot'" class="ui-radio__dot" :style="[dotStyle]" />
+  <view class="ui-radio" :class="[classNames, props.customClass]" :style="[rootStyle]" @click.stop="onClick">
+    <view class="ui-radio__icon" :class="[iconClassList]">
+      <slot name="icon" :checked="isChecked" :disabled="isDisabled">
+        <ui-icon v-if="isChecked && actualShape === 'icon'" name="check" class="ui-radio__symbol" color="text-inverse" :size="symbolSize" />
+        <view v-else-if="isChecked && actualShape === 'dot'" class="ui-radio__dot" :class="{ 'ui-radio__dot--round': isRound }" />
       </slot>
     </view>
-    <view v-if="hasLabel" class="ui-radio__content" :class="[contentClass]">
-      <view class="ui-radio__label" :class="[labelClass]" :style="[labelStyle]" @click.stop="onClickLabel">
-        <slot>{{ label }}</slot>
+    <view v-if="hasLabel" class="ui-radio__content">
+      <view class="ui-radio__label" :class="labelClassList" @click.stop="onClickLabel">
+        <slot>{{ props.label }}</slot>
       </view>
     </view>
   </view>
 </template>
 
 <script setup lang="ts">
-import type { CSSProperties } from "vue"
-import type { RadioValueType } from "./index"
+import type { RadioProps } from "./index"
 import { isDef } from "../utils/check"
 import { formItemKey } from "../ui-form-item"
 import { radioGroupKey } from "../ui-radio-group"
@@ -29,193 +29,143 @@ const props = defineProps(radioProps)
 const emits = defineEmits(radioEmits)
 const slots = useSlots()
 
-// 父组件（RadioGroup） + form-item（form-item 已合并 form 级 disabled/readonly）
+// 父级 radio-group + form-item（form-item 已合并 form 级 disabled/readonly）
 const { index, parent } = useParent(radioGroupKey)
 const { parent: formItem } = useParent(formItemKey)
 
-// 实际形状
-const actualShape = computed(() => prop("shape") || "dot")
-// 标签是否在左侧
-const isLabelLeft = computed(() => prop("labelLeft"))
-// 主色
-const primaryColor = computed(() => {
-  const color = prop("checkedColor")
-  if (color) return useColor(color)
-  const checkedIconColor = prop("checkedIconColor")
-  if (checkedIconColor) return useColor(checkedIconColor)
-  return ""
-})
-// 根节点样式
+// 内部图标字号：默认占容器 70%（基于 --ui-radio-icon-size 计算）
+const symbolSize = "calc(var(--ui-radio-icon-size) * 0.7)"
+
+// 单行 computed：派生状态（短→长排序）
+const name = computed(() => (isDef(props.name) ? props.name : index.value))
+const isRound = computed(() => !!prop("round"))
+const hasLabel = computed(() => !!slots.default || isDef(props.label))
+const isChecked = computed(() => (props.bindGroup && parent ? parent.props.modelValue === name.value : !!props.modelValue))
+const isDisabled = computed(() => !!prop("disabled") || !!formItem?.disabled?.value)
+const isReadonly = computed(() => !!prop("readonly") || !!formItem?.readonly?.value)
+const actualShape = computed(() => prop("shape") ?? "dot")
+const isLabelLeft = computed(() => prop("labelPosition") === "left")
+
+// 根节点样式：所有 prop 通过 CSS var 注入；SCSS 选择器顶部声明默认值
 const rootStyle = computed(() => {
-  const style: CSSProperties = {}
-  return useStyle({ ...style, ...useStyle(props.customStyle) })
+  const s: Record<string, string | number | undefined> = {}
+  // 图标尺寸：iconSize > size
+  const iconSize = prop("iconSize") ?? prop("size")
+  if (iconSize !== undefined) s["--ui-radio-icon-size"] = useUnit(iconSize)
+  const iconColor = prop("iconColor")
+  if (iconColor) s["--ui-radio-icon-color"] = useColor(iconColor)
+  const iconRadius = prop("iconRadius")
+  if (iconRadius !== undefined) s["--ui-radio-icon-radius"] = useUnit(iconRadius)
+  const checkedColor = prop("color")
+  if (checkedColor) s["--ui-radio-checked-color"] = useColor(checkedColor)
+  // 标签
+  const labelSize = prop("labelSize")
+  if (labelSize !== undefined) s["--ui-radio-label-size"] = useUnit(labelSize)
+  const labelColor = prop("labelColor")
+  if (labelColor) s["--ui-radio-label-color"] = useColor(labelColor)
+  const labelWeight = prop("labelWeight")
+  if (labelWeight !== undefined) s["--ui-radio-label-weight"] = String(labelWeight)
+  const labelGap = prop("labelGap")
+  if (labelGap !== undefined) s["--ui-radio-gap"] = useUnit(labelGap)
+  const checkedLabelColor = prop("checkedLabelColor")
+  if (checkedLabelColor) s["--ui-radio-label-checked-color"] = useColor(checkedLabelColor)
+  return useStyle({ ...s, ...(useStyle(props.customStyle) || {}) })
 })
 // 根节点类名
-const rootClass = computed(() => {
+const classNames = computed(() => {
   const list: string[] = []
-  if (checked.value) list.push("ui-radio--checked")
-  if (disabled.value) list.push("ui-radio--disabled")
-  if (readonly.value) list.push("ui-radio--readonly")
+  if (isChecked.value) list.push("ui-radio--checked")
+  if (isDisabled.value) list.push("ui-radio--disabled")
+  if (isReadonly.value) list.push("ui-radio--readonly")
   if (isLabelLeft.value) list.push("ui-radio--left")
   return list
 })
-// 图标容器样式
-const iconContainerStyle = computed(() => {
-  const style: CSSProperties = {}
-  style.width = useUnit(prop("iconSize")) || undefined
-  style.height = useUnit(prop("iconSize")) || undefined
-  style.borderColor = useColor(prop("iconColor")) || undefined
-  style.borderRadius = useUnit(prop("iconRadius")) || undefined
-
-  if (actualShape.value === "dot") {
-    // dot 模式：两个状态都使用粗边框（占尺寸1/3），激活时边框变为主色
-    const size = useUnit(prop("iconSize")) || "36rpx"
-    style.borderWidth = `calc(${size} / 3)`
-    style.backgroundColor = "transparent"
-    if (checked.value) {
-      const color = primaryColor.value || "var(--ui-color-primary)"
-      style.borderColor = color
-    }
-  } else if (checked.value) {
-    const color = primaryColor.value || "var(--ui-color-primary)"
-    style.borderColor = color
-    style.backgroundColor = color
-  }
-
-  return useStyle(style)
-})
-// 图标类名
-const iconClass = computed(() => {
+// 图标节点类名：filled = 实心填充（icon 选中），dot-checked = dot 模式选中态粗环
+const iconClassList = computed(() => {
   const list: string[] = []
-  if (prop("round")) list.push("ui-radio__icon--round")
-  if (checked.value && actualShape.value === "icon") list.push("ui-radio__icon--check")
-  if (disabled.value) list.push("ui-radio__icon--disabled")
-  return list
-})
-// 圆点样式
-const dotStyle = computed(() => {
-  const style: CSSProperties = {}
-  style.borderRadius = prop("round") ? "9999px" : useUnit(prop("iconRadius")) || "2rpx"
-  return useStyle(style)
-})
-// 是否有标签
-const hasLabel = computed(() => slots.default || props.label)
-// 内容类名
-const contentClass = computed(() => {
-  const list: string[] = []
-  if (isLabelLeft.value) list.push("ui-radio__content--left")
-  return list
-})
-// 标签样式
-const labelStyle = computed(() => {
-  const style: CSSProperties = {}
-  style.color = useColor(prop("labelColor")) || undefined
-  style.fontSize = useUnit(prop("labelSize")) || undefined
-  style.fontWeight = prop("labelWeight") || undefined
-  if (prop("checkedLabelColor") && checked.value) {
-    style.color = useColor(prop("checkedLabelColor"))
+  if (isRound.value) list.push("ui-radio__icon--round")
+  if (isChecked.value && actualShape.value === "icon") {
+    list.push("ui-radio__icon--filled", "ui-radio__icon--check")
+  } else if (isChecked.value && actualShape.value === "dot") {
+    list.push("ui-radio__icon--dot-checked")
+  } else if (isDisabled.value) {
+    list.push("ui-radio__icon--disabled")
   }
-  if (prop("labelGap")) {
-    if (isLabelLeft.value) {
-      style.marginRight = useUnit(prop("labelGap"))
-    } else {
-      style.marginLeft = useUnit(prop("labelGap"))
-    }
-  }
-  return useStyle(style)
+  return list
 })
 // 标签类名
-const labelClass = computed(() => {
+const labelClassList = computed(() => {
   const list: string[] = []
-  if (checked.value) list.push("ui-radio__label--checked")
-  if (disabled.value) list.push("ui-radio__label--disabled")
+  if (isChecked.value) list.push("ui-radio__label--checked")
+  if (isDisabled.value) list.push("ui-radio__label--disabled")
   if (isLabelLeft.value) list.push("ui-radio__label--left")
   return list
 })
-// 名称
-const name = computed(() => (isDef(props.name) ? props.name : index.value))
-// 是否选中
-const checked = computed(() => {
-  if (props.bindGroup && parent) {
-    return parent.props.modelValue === name.value
-  }
-  return !!props.modelValue
-})
-// 是否禁用
-const disabled = computed(() => Boolean(prop("disabled")) || Boolean(formItem?.disabled?.value))
-const readonly = computed(() => Boolean(prop("readonly")) || Boolean(formItem?.readonly?.value))
-// 标签文本
-const label = computed(() => props.label)
 
-// 监听 modelValue 变化
-watch(
-  () => props.modelValue,
-  (value) => emits("change", value),
-)
+// 监听选中态向外抛 change（兼容 bindGroup 模式：值由父级管理，无法靠 modelValue 触发）
+watch(isChecked, (value) => emits("change", value))
 
-// 获取属性值（优先使用自身，否则使用父组件）
-function prop(name: string) {
+// 取值优先级：自身 prop → 父 group 同名 prop（仅当 bindGroup 且存在父级）
+function prop<K extends keyof RadioProps>(key: K): RadioProps[K] | undefined {
   if (props.bindGroup && parent) {
-    if (isDef(props[name]) && props[name] !== "") return props[name]
-    if (isDef(parent.props[name])) return parent.props[name]
+    if (isDef(props[key])) return props[key]
+    const parentProps = parent.props as any
+    if (isDef(parentProps[key])) return parentProps[key]
   }
-  return props[name]
+  return props[key]
 }
 
-// 更新值
-async function updateValue(value: RadioValueType) {
-  emits("update:modelValue", toRaw(value))
-}
-
-// 切换选中状态
+// 切换选中状态：在 group 内通过父更新值；独立使用直接 emit
 function toggle(check?: boolean) {
-  if (disabled.value || readonly.value) return
-
+  if (isDisabled.value || isReadonly.value) return
   if (parent && props.bindGroup) {
-    if (!checked.value) {
-      parent.updateValue(name.value)
-    }
+    if (!isChecked.value) parent.updateValue(name.value)
   } else {
-    const newValue = check ?? !props.modelValue
-    updateValue(newValue)
+    emits("update:modelValue", toRaw(check ?? !props.modelValue))
   }
 }
 
-// 点击事件
-function onClick(event: any) {
+// 根节点点击：先 toggle 再 emit click（toggle 内部已自处理 disabled/readonly）
+function onClick(event: Event) {
   toggle()
-  emits("click")
+  emits("click", event)
+}
+// 标签点击：labelDisabled 时仅屏蔽切换，仍 emit click 让外部能监听拦截尝试
+function onClickLabel(event: Event) {
+  if (!prop("labelDisabled")) toggle()
+  emits("click", event)
 }
 
-// 点击图标事件
-function onClickIcon(event: any) {
-  toggle()
-  emits("click")
-}
-
-// 点击标签事件
-function onClickLabel(event: any) {
-  if (prop("labelDisabled")) return
-  toggle()
-  emits("click")
-}
-
-defineExpose({ props, checked, toggle, name })
+defineExpose({ name, toggle, props, checked: isChecked })
 </script>
 
 <script lang="ts">
 export default {
   name: "ui-radio",
-  options: { virtualHost: true, multipleSlots: true, styleIsolation: "shared" },
+  options: {
+    // #ifndef MP-TOUTIAO
+    virtualHost: true,
+    // #endif
+    multipleSlots: true,
+    styleIsolation: "shared",
+  },
 }
 </script>
 
 <style lang="scss" scoped>
-$check-icon: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none'%3E%3Cpolyline points='4,12 9,17 20,6' stroke='white' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E";
-
 .ui-radio {
-  gap: 12rpx;
+  --ui-radio-gap: var(--ui-spacing-sm);
+  --ui-radio-icon-size: var(--ui-font-size-lg);
+  --ui-radio-icon-color: var(--ui-color-border-dark);
+  --ui-radio-label-size: var(--ui-font-size-sm);
+  --ui-radio-icon-radius: var(--ui-radius-sm);
+  --ui-radio-label-color: var(--ui-color-text);
+  --ui-radio-label-weight: normal;
+  --ui-radio-checked-color: var(--ui-color-primary);
+  --ui-radio-label-disabled-color: var(--ui-color-text-disabled);
+  gap: var(--ui-radio-gap);
   cursor: pointer;
+
   display: flex;
   align-items: center;
   user-select: none;
@@ -234,40 +184,57 @@ $check-icon: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewB
   }
 
   &__icon {
-    width: 36rpx;
-    border: var(--ui-border-width-thick) solid var(--ui-color-border-dark);
-    height: 36rpx;
+    width: var(--ui-radio-icon-size);
+    border: var(--ui-border-width-thick) solid var(--ui-radio-icon-color);
+    height: var(--ui-radio-icon-size);
     display: flex;
+    box-sizing: border-box;
     align-items: center;
     flex-shrink: 0;
-    border-radius: var(--ui-radius-round);
-    background-size: 65% 65%;
+    border-radius: var(--ui-radio-icon-radius);
     justify-content: center;
     background-color: transparent;
-    background-repeat: no-repeat;
-    background-position: center;
     transition-duration: var(--ui-transition-fast);
-    transition-property: border-color, background-color;
+    transition-property: border-color, background-color, border-width;
 
+    // 圆形（独立修饰，不与状态互斥）
     &--round {
       border-radius: var(--ui-radius-round);
     }
 
-    &--check {
-      background-image: url($check-icon);
+    // 实心填充：icon 选中态
+    &--filled {
+      border-color: var(--ui-radio-checked-color);
+      background-color: var(--ui-radio-checked-color);
     }
 
+    // dot 选中态：粗环（占容器 1/3）+ 主色
+    &--dot-checked {
+      border-color: var(--ui-radio-checked-color);
+      border-width: calc(var(--ui-radio-icon-size) / 3);
+    }
+
+    // 未选 + 禁用：灰底（已选 + 禁用走根节点 opacity 削弱）
     &--disabled {
-      border-color: var(--ui-color-border-dark);
       background-color: var(--ui-color-background-disabled);
     }
   }
 
+  // 内部 iconfont 符号（勾）
+  &__symbol {
+    line-height: 1;
+  }
+
+  // dot 中心点：仅在 dot 模式选中时显示
   &__dot {
     width: 50%;
     height: 50%;
-    border-radius: 9999px;
+    border-radius: var(--ui-radius-xs);
     background-color: var(--ui-color-text-inverse);
+
+    &--round {
+      border-radius: var(--ui-radius-round);
+    }
   }
 
   &__content {
@@ -275,21 +242,22 @@ $check-icon: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewB
     display: flex;
     min-width: 0;
     flex-direction: column;
-
-    &--left {
-      align-items: flex-end;
-    }
   }
 
   &__label {
     flex: 1;
-    color: var(--ui-color-text);
-    font-size: var(--ui-font-size-sm);
+    color: var(--ui-radio-label-color);
+    font-size: var(--ui-radio-label-size);
     word-break: break-word;
+    font-weight: var(--ui-radio-label-weight);
     line-height: 1.4;
 
+    &--checked {
+      color: var(--ui-radio-label-checked-color, var(--ui-radio-label-color));
+    }
+
     &--disabled {
-      color: var(--ui-color-text-disabled);
+      color: var(--ui-radio-label-disabled-color);
     }
   }
 }

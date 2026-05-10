@@ -44,7 +44,7 @@ const hasLabel = computed(() => !!slots.default || isDef(props.label))
 const isChecked = computed(() => (props.bindGroup && parent ? parent.props.modelValue.includes(name.value) : !!props.modelValue))
 const isDisabled = computed(() => !!prop("disabled") || !!formItem?.disabled?.value)
 const isReadonly = computed(() => !!prop("readonly") || !!formItem?.readonly?.value)
-const actualShape = computed(() => prop("shape"))
+const actualShape = computed(() => prop("shape") ?? "dot")
 const isLabelLeft = computed(() => prop("labelPosition") === "left")
 const isIndeterminate = computed(() => !!prop("indeterminate"))
 
@@ -170,7 +170,13 @@ defineExpose({ name, toggle, props, checked: isChecked })
 <script lang="ts">
 export default {
   name: "ui-checkbox",
-  options: { virtualHost: true, multipleSlots: true, styleIsolation: "shared" },
+  options: {
+    // #ifndef MP-TOUTIAO
+    virtualHost: true,
+    // #endif
+    multipleSlots: true,
+    styleIsolation: "shared",
+  },
 }
 </script>
 

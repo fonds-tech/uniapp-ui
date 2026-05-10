@@ -1,177 +1,100 @@
 <template>
   <demo-page>
-    <demo-section title="基础用法">
-      <demo-block>
-        <ui-rate v-model="value1" />
+    <demo-section title="基础用法" desc="点击或滑动改分">
+      <demo-block direction="column" align="start" :gap="12">
+        <ui-rate v-model="state.basic" />
+        <text class="demo-text">分数: {{ state.basic }}</text>
       </demo-block>
     </demo-section>
 
-    <demo-section title="自定义图标">
-      <demo-block :cols="2" :gap="32">
-        <view class="rate-item">
-          <ui-rate v-model="value2" icon="like" void-icon="like-o" color="#ee0a24" />
-          <text class="rate-label">爱心</text>
-        </view>
-        <view class="rate-item">
-          <ui-rate v-model="value2b" icon="star" void-icon="star-o" color="#ffca28" />
-          <text class="rate-label">星星</text>
-        </view>
+    <demo-section title="半星" desc="allow-half 开启">
+      <demo-block direction="column" align="start" :gap="12">
+        <ui-rate v-model="state.half" allow-half />
+        <text class="demo-text">分数: {{ state.half }}</text>
       </demo-block>
     </demo-section>
 
-    <demo-section title="半星">
-      <demo-block>
-        <ui-rate v-model="value3" allow-half />
-      </demo-block>
-    </demo-section>
-
-    <demo-section title="自定义数量">
-      <demo-block :cols="2" :gap="32">
-        <view class="rate-item">
-          <ui-rate v-model="value4a" :count="4" />
-          <text class="rate-label">4 个</text>
+    <demo-section title="自定义图标" desc="icon / voidIcon">
+      <demo-block direction="column" align="start" :gap="20">
+        <view class="row">
+          <text class="row__label">爱心</text>
+          <ui-rate v-model="state.icon1" icon="like" void-icon="like-o" color="#ef4444" />
         </view>
-        <view class="rate-item">
-          <ui-rate v-model="value4" :count="6" />
-          <text class="rate-label">6 个</text>
+        <view class="row">
+          <text class="row__label">笑脸</text>
+          <ui-rate v-model="state.icon2" icon="smile" void-icon="smile-o" color="#f59e0b" />
+        </view>
+        <view class="row">
+          <text class="row__label">圆星</text>
+          <ui-rate v-model="state.icon3" icon="star-circle" void-icon="star-circle-o" color="#10b981" />
         </view>
       </demo-block>
     </demo-section>
 
-    <demo-section title="自定义颜色">
-      <demo-block :cols="2" :gap="24">
-        <view class="rate-item">
-          <ui-rate v-model="value5a" color="primary" />
-          <text class="rate-label">主题色</text>
-        </view>
-        <view class="rate-item">
-          <ui-rate v-model="value5" color="success" />
-          <text class="rate-label">成功色</text>
-        </view>
-        <view class="rate-item">
-          <ui-rate v-model="value5b" color="danger" />
-          <text class="rate-label">危险色</text>
+    <demo-section title="数量" desc="count 控制总数">
+      <demo-block direction="column" align="start" :gap="20">
+        <view v-for="c in [3, 5, 7, 10]" :key="c" class="row">
+          <text class="row__label">{{ c }} 个</text>
+          <ui-rate v-model="state.count" :count="c" />
         </view>
       </demo-block>
     </demo-section>
 
-    <demo-section title="未选中颜色">
-      <demo-block :cols="2" :gap="32">
-        <view class="rate-item">
-          <ui-rate v-model="valueVoidColor1" void-color="#c8c9cc" />
-          <text class="rate-label">默认灰色</text>
-        </view>
-        <view class="rate-item">
-          <ui-rate v-model="valueVoidColor2" void-color="#ffe9c5" color="#ff9500" />
-          <text class="rate-label">浅橙色</text>
-        </view>
-      </demo-block>
-    </demo-section>
-
-    <demo-section title="自定义大小">
-      <demo-block :cols="2" :gap="24">
-        <view class="rate-item">
-          <ui-rate v-model="value6" size="32rpx" />
-          <text class="rate-label">32rpx</text>
-        </view>
-        <view class="rate-item">
-          <ui-rate v-model="value6" size="40rpx" />
-          <text class="rate-label">40rpx</text>
-        </view>
-        <view class="rate-item">
-          <ui-rate v-model="value6" size="48rpx" />
-          <text class="rate-label">48rpx</text>
-        </view>
-      </demo-block>
-    </demo-section>
-
-    <demo-section title="图标间距">
-      <demo-block :cols="2" :gap="24">
-        <view class="rate-item">
-          <ui-rate v-model="valueGutter1" gutter="4rpx" />
-          <text class="rate-label">4rpx</text>
-        </view>
-        <view class="rate-item">
-          <ui-rate v-model="valueGutter2" gutter="16rpx" />
-          <text class="rate-label">16rpx</text>
-        </view>
-        <view class="rate-item">
-          <ui-rate v-model="valueGutter3" gutter="24rpx" />
-          <text class="rate-label">24rpx</text>
-        </view>
-      </demo-block>
-    </demo-section>
-
-    <demo-section title="图标粗细">
-      <demo-block :cols="2" :gap="32">
-        <view class="rate-item">
-          <ui-rate v-model="valueWeight1" icon-weight="400" />
-          <text class="rate-label">细体</text>
-        </view>
-        <view class="rate-item">
-          <ui-rate v-model="valueWeight2" icon-weight="600" />
-          <text class="rate-label">粗体</text>
-        </view>
-      </demo-block>
-    </demo-section>
-
-    <demo-section title="禁用与只读">
-      <demo-block :cols="2" :gap="32">
-        <view class="rate-item">
-          <ui-rate v-model="value7" disabled />
-          <text class="rate-label">禁用状态</text>
-        </view>
-        <view class="rate-item">
-          <ui-rate v-model="value8" readonly allow-half />
-          <text class="rate-label">只读状态</text>
-        </view>
-      </demo-block>
-    </demo-section>
-
-    <demo-section title="禁用颜色">
-      <demo-block :cols="2" :gap="32">
-        <view class="rate-item">
-          <ui-rate v-model="valueDisabledColor1" disabled disabled-color="#c8c9cc" />
-          <text class="rate-label">默认禁用色</text>
-        </view>
-        <view class="rate-item">
-          <ui-rate v-model="valueDisabledColor2" disabled disabled-color="#1989fa" />
-          <text class="rate-label">蓝色禁用</text>
-        </view>
-      </demo-block>
-    </demo-section>
-
-    <demo-section title="可滑动选择">
+    <demo-section title="尺寸" desc="size 控制图标大小">
       <demo-block direction="column" align="start" :gap="16">
-        <ui-rate v-model="value9" touchable />
-        <text class="demo-text">滑动手指选择评分</text>
+        <ui-rate v-for="s in [28, 40, 56]" :key="s" v-model="state.size" :size="`${s}rpx`" />
       </demo-block>
     </demo-section>
 
-    <demo-section title="事件处理">
+    <demo-section title="颜色" desc="color 接受语义色 / hex">
+      <demo-block direction="column" align="start" :gap="12">
+        <ui-rate v-for="c in colors" :key="c.value" v-model="state.color" :color="c.value" />
+      </demo-block>
+    </demo-section>
+
+    <demo-section title="间距" desc="gutter 调整图标间距">
       <demo-block direction="column" align="start" :gap="16">
-        <ui-rate v-model="valueEvent" @change="onRateChange" />
+        <view v-for="g in ['4rpx', '12rpx', '24rpx']" :key="g" class="row">
+          <text class="row__label">{{ g }}</text>
+          <ui-rate v-model="state.gutter" :gutter="g" />
+        </view>
+      </demo-block>
+    </demo-section>
+
+    <demo-section title="禁用 / 只读" desc="disabled 完全锁死 / readonly 仅展示">
+      <demo-block direction="column" align="start" :gap="16">
+        <ui-rate :model-value="3" disabled />
+        <ui-rate :model-value="3.7" readonly allow-half />
+      </demo-block>
+    </demo-section>
+
+    <demo-section title="业务场景:订单评价" desc="多维度评分">
+      <demo-block direction="column" align="start" :gap="20">
+        <view v-for="r in reviewItems" :key="r.label" class="review-row">
+          <text class="review-row__label">{{ r.label }}</text>
+          <ui-rate v-model="reviewScores[r.key]" :color="r.color" allow-half size="44rpx" />
+          <text class="review-row__value">{{ reviewScores[r.key] }}</text>
+        </view>
+        <ui-button type="primary" @click="submitReview">提交评价</ui-button>
+      </demo-block>
+    </demo-section>
+
+    <demo-section title="业务场景:商品口碑" desc="只读半星展示精确分">
+      <demo-block direction="column" align="start" :gap="12">
+        <view class="praise">
+          <text class="praise__score">{{ praiseScore.toFixed(1) }}</text>
+          <view class="praise__rate">
+            <ui-rate :model-value="praiseScore" allow-half readonly color="#f59e0b" size="36rpx" />
+            <text class="praise__count">{{ praiseCount }} 人评价</text>
+          </view>
+        </view>
+      </demo-block>
+    </demo-section>
+
+    <demo-section title="事件回显">
+      <demo-block direction="column" align="start" :gap="12">
         <text class="demo-text">{{ eventLog }}</text>
-      </demo-block>
-    </demo-section>
-
-    <demo-section title="综合示例">
-      <demo-block direction="column" align="start" :gap="24">
-        <view class="rate-demo">
-          <text class="rate-demo__label">商品评分:</text>
-          <ui-rate v-model="valueDemo" allow-half color="#ff9500" size="44rpx" gutter="12rpx" @change="onDemoChange" />
-          <text class="rate-demo__value">{{ valueDemo }} 分</text>
-        </view>
-        <view class="rate-demo">
-          <text class="rate-demo__label">服务态度:</text>
-          <ui-rate v-model="valueDemo2" icon="like" void-icon="like-o" color="#ee0a24" />
-          <text class="rate-demo__value">{{ valueDemo2 }} 分</text>
-        </view>
-        <view class="rate-demo">
-          <text class="rate-demo__label">物流速度:</text>
-          <ui-rate v-model="valueDemo3" allow-half icon="star-circle" void-icon="star-circle-o" color="#ffca28" />
-          <text class="rate-demo__value">{{ valueDemo3 }} 分</text>
-        </view>
+        <ui-rate v-model="state.event" allow-half @change="onChange" />
       </demo-block>
     </demo-section>
   </demo-page>
@@ -186,83 +109,109 @@ definePage({
 
 const toast = useToast()
 
-// 基础示例
-const value1 = ref(3)
-const value2 = ref(3)
-const value2b = ref(4)
-const value3 = ref(2.5)
-const value4 = ref(4)
-const value4a = ref(3)
-const value5 = ref(3)
-const value5a = ref(3)
-const value5b = ref(3)
-const value6 = ref(3)
-const value7 = ref(3)
-const value8 = ref(3.5)
-const value9 = ref(3)
+const colors = [
+  { label: "primary", value: "primary" },
+  { label: "success", value: "success" },
+  { label: "danger", value: "danger" },
+  { label: "暖橙", value: "#f59e0b" },
+]
 
-// 新增示例
-const valueVoidColor1 = ref(2)
-const valueVoidColor2 = ref(3)
-const valueGutter1 = ref(3)
-const valueGutter2 = ref(3)
-const valueGutter3 = ref(3)
-const valueWeight1 = ref(3)
-const valueWeight2 = ref(3)
-const valueDisabledColor1 = ref(3)
-const valueDisabledColor2 = ref(4)
-const valueEvent = ref(3)
-const valueDemo = ref(4.5)
-const valueDemo2 = ref(4)
-const valueDemo3 = ref(3.5)
+const reviewItems = [
+  { key: "quality", label: "商品质量", color: "#f59e0b" },
+  { key: "speed", label: "物流速度", color: "#10b981" },
+  { key: "service", label: "客服态度", color: "#ef4444" },
+] as const
 
-// 事件日志
-const eventLog = ref("点击评分触发 change 事件")
+const state = reactive({
+  basic: 3,
+  half: 3.5,
+  icon1: 4,
+  icon2: 3,
+  icon3: 5,
+  count: 4,
+  size: 4,
+  color: 4,
+  gutter: 3,
+  event: 3.5,
+})
+const reviewScores = reactive<Record<string, number>>({ quality: 5, speed: 4, service: 4.5 })
+const praiseScore = ref(4.7)
+const praiseCount = ref(2358)
+const eventLog = ref("等待事件...")
 
-// 事件处理
-function onRateChange(value: number) {
-  eventLog.value = `触发 change 事件，当前评分: ${value} 分`
-  toast.success(`评分: ${value} 分`)
+function onChange(value: number) {
+  eventLog.value = `[change] ${value}`
 }
 
-function onDemoChange(value: number) {
-  toast.text(`商品评分: ${value} 分`)
+function submitReview() {
+  const total = Object.values(reviewScores).reduce((a, b) => a + b, 0)
+  const avg = (total / Object.keys(reviewScores).length).toFixed(2)
+  toast.success(`已提交 平均 ${avg} 分`)
 }
 </script>
 
 <style lang="scss" scoped>
-.rate-item {
-  gap: 12rpx;
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-}
-
-.rate-label {
-  color: var(--ui-color-text-secondary);
-  font-size: 24rpx;
-}
-
 .demo-text {
   color: var(--ui-color-text-secondary);
   font-size: 24rpx;
 }
 
-.rate-demo {
+.row {
   gap: 16rpx;
+  display: flex;
+  align-items: center;
+
+  &__label {
+    color: var(--ui-color-text-secondary);
+    width: 100rpx;
+    font-size: 22rpx;
+    flex-shrink: 0;
+  }
+}
+
+.review-row {
+  gap: 16rpx;
+  width: 100%;
   display: flex;
   align-items: center;
 
   &__label {
     color: var(--ui-color-text);
     width: 140rpx;
-    font-size: 28rpx;
+    font-size: 26rpx;
   }
 
   &__value {
     color: var(--ui-color-text-secondary);
-    font-size: 28rpx;
-    margin-left: 16rpx;
+    font-size: 24rpx;
+  }
+}
+
+.praise {
+  gap: 24rpx;
+  width: 100%;
+  display: flex;
+  padding: 32rpx;
+  background: var(--ui-color-background-section);
+  align-items: center;
+  border-radius: var(--ui-radius-md);
+
+  &__score {
+    color: var(--ui-color-danger);
+    font-size: 72rpx;
+    font-weight: bold;
+  }
+
+  &__rate {
+    gap: 8rpx;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__count {
+    color: var(--ui-color-text-tertiary);
+    font-size: 22rpx;
   }
 }
 </style>

@@ -117,18 +117,14 @@ describe("ui-segmented 分段控制器组件", () => {
     })
   })
 
-  describe("尺寸变体", () => {
-    const sizes = ["small", "medium", "large"] as const
-
-    sizes.forEach((size) => {
-      it(`应支持 ${size} 尺寸`, async () => {
-        const wrapper = mount(UiSegmented, {
-          props: { options: defaultOptions, size },
-        })
-        await waitForTransition()
-
-        expect(wrapper.classes()).toContain(`ui-segmented--${size}`)
+  describe("尺寸自定义", () => {
+    it("不再支持 size 关键字，改用 height/fontSize/itemPadding 自定义", async () => {
+      const wrapper = mount(UiSegmented, {
+        props: { options: defaultOptions, height: "48rpx" },
       })
+      await waitForTransition()
+      // 仅断言组件可正常挂载，具体样式注入由 :style 处理
+      expect(wrapper.find(".ui-segmented").exists()).toBe(true)
     })
   })
 
@@ -184,13 +180,13 @@ describe("ui-segmented 分段控制器组件", () => {
   })
 
   describe("block 模式", () => {
-    it("block 为 true 时应添加 block 类名", async () => {
+    it("block 为 true 时应添加 full 类名 (撑满父容器)", async () => {
       const wrapper = mount(UiSegmented, {
         props: { options: defaultOptions, block: true },
       })
       await waitForTransition()
 
-      expect(wrapper.classes()).toContain("ui-segmented--block")
+      expect(wrapper.classes()).toContain("ui-segmented--full")
     })
   })
 
@@ -215,7 +211,7 @@ describe("ui-segmented 分段控制器组件", () => {
       await wrapper.findAll(".ui-segmented__item")[1].trigger("click")
 
       expect(wrapper.emitted("click")).toBeTruthy()
-      expect(wrapper.emitted("click")?.[0]).toEqual([{ label: "选项 B", value: "b" }])
+      expect(wrapper.emitted("click")?.[0]).toEqual([{ label: "选项 B", value: "b" }, 1])
     })
   })
 

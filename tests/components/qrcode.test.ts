@@ -33,7 +33,7 @@ describe("ui-qrcode 二维码组件", () => {
 
       await waitForTransition()
 
-      expect(wrapper.find(".ui-qrcode-canvas").exists()).toBe(true)
+      expect(wrapper.find(".ui-qrcode__canvas").exists()).toBe(true)
     })
   })
 
@@ -234,11 +234,6 @@ describe("ui-qrcode 二维码组件", () => {
       expect(typeof wrapper.vm.saveCode).toBe("function")
     })
 
-    it("应暴露 name 属性", () => {
-      const wrapper = mount(UiQrcode)
-
-      expect(wrapper.vm.name).toBe("ui-qrcode")
-    })
   })
 
   describe("方法与事件", () => {

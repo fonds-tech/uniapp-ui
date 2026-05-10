@@ -2,7 +2,7 @@ import type PullRefresh from "./ui-pull-refresh.vue"
 import type { PropType, CSSProperties, ExtractPropTypes } from "vue"
 import { buildDefaultProps } from "../utils/props"
 
-/** 下拉刷新状态类型：normal/pulling/loosing/loading/success */
+/** 下拉刷新状态 */
 export type PullRefreshStatus = "normal" | "pulling" | "loosing" | "loading" | "success"
 
 const defaultProps = buildDefaultProps("pull-refresh", {
@@ -12,7 +12,7 @@ const defaultProps = buildDefaultProps("pull-refresh", {
   loadingText: "加载中...",
   successText: "刷新成功",
   successDuration: 500,
-  headHeight: 50,
+  headHeight: undefined,
   disabled: false,
   pullDistance: undefined,
   animationDuration: 300,
@@ -21,25 +21,25 @@ const defaultProps = buildDefaultProps("pull-refresh", {
 })
 
 export const pullRefreshProps = {
-  /** 是否处于加载中状态（v-model） */
+  /** 加载中状态 (v-model) */
   modelValue: defaultProps("modelValue", { type: Boolean }),
-  /** 下拉过程中的提示文案 */
+  /** 下拉中提示文案 */
   pullingText: defaultProps("pullingText", { type: String }),
-  /** 释放过程中的提示文案 */
+  /** 释放可刷新提示文案 */
   loosingText: defaultProps("loosingText", { type: String }),
-  /** 加载过程中的提示文案 */
+  /** 加载中提示文案 */
   loadingText: defaultProps("loadingText", { type: String }),
-  /** 刷新成功的提示文案 */
+  /** 刷新成功提示文案 (空字符串关闭成功提示) */
   successText: defaultProps("successText", { type: String }),
-  /** 刷新成功提示展示时长（毫秒） */
+  /** 成功提示展示时长 (ms) */
   successDuration: defaultProps("successDuration", { type: Number }),
-  /** 顶部内容高度，单位 px */
-  headHeight: defaultProps("headHeight", { type: Number }),
-  /** 是否禁用下拉刷新 */
+  /** 头部高度 (px)，未传走 SCSS 默认 50px */
+  headHeight: defaultProps("headHeight", { type: [Number, String] }),
+  /** 禁用下拉刷新 */
   disabled: defaultProps("disabled", { type: Boolean }),
-  /** 触发刷新的下拉距离阈值，单位 px */
+  /** 触发刷新阈值 (px)，未传等于 headHeight */
   pullDistance: defaultProps("pullDistance", { type: [Number, String] as PropType<number | string> }),
-  /** 动画持续时间（毫秒） */
+  /** 头部展开/收起动画时长 (ms) */
   animationDuration: defaultProps("animationDuration", { type: Number }),
   /** 自定义类名 */
   customClass: defaultProps("customClass", { type: String }),
@@ -48,12 +48,12 @@ export const pullRefreshProps = {
 }
 
 export const pullRefreshEmits = {
-  /** 更新 modelValue */
+  /** modelValue 双向绑定 */
   "update:modelValue": (value: boolean) => typeof value === "boolean",
-  /** 下拉刷新触发时 */
+  /** 触发刷新 (达到阈值释放后) */
   refresh: () => true,
-  /** 状态变化时触发 */
-  change: (status: PullRefreshStatus) => true,
+  /** 状态变化 (normal | pulling | loosing | loading | success) */
+  change: (status: PullRefreshStatus) => typeof status === "string",
 }
 
 export type PullRefreshEmits = typeof pullRefreshEmits
