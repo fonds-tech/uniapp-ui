@@ -1,63 +1,48 @@
-# UiText 组件
+# Text 文本
 
-## 介绍
+文字渲染基础组件。封装 uniapp `<text>`，提供颜色 / 字号 / 对齐 / 单/多行省略 / 可点击 / 可选中。
 
-UiText 组件，属性与事件以源码注释为准。
-
-## 代码演示
+## 基础用法
 
 ```vue
-<template>
-  <ui-text />
-</template>
+<ui-text text="一段普通文本" />
+<ui-text color="primary" size="32rpx" weight="600">加粗主色</ui-text>
 ```
 
-## Props
+## 多行省略
 
-| 参数             | 说明                                         | 类型             | 默认值     | 可选值 |
-| ---------------- | -------------------------------------------- | ---------------- | ---------- | ------ |
-| text             | 文本内容                                     | string \| number | ""         | -      |
-| size             | 文本大小                                     | string \| number | ""         | -      |
-| color            | 文本颜色                                     | string           | ""         | -      |
-| weight           | 文本粗细                                     | string \| number | ""         | -      |
-| align            | 文本对齐方式，可选值 left、center、right     | string \| number | "left"     | -      |
-| rows             | 展示的行数                                   | string \| number | Infinity   | -      |
-| overflow         | 文本超出显示方式                             | string           | "ellipsis" | -      |
-| decoration       | 文本修饰，可选值 underline、line-through     | string           | ""         | -      |
-| lineHeight       | 文本行高                                     | string \| number | ""         | -      |
-| cell             | 是否点击拨打电话                             | boolean          | false      | -      |
-| decode           | 是否解码                                     | boolean          | false      | -      |
-| clickable        | 是否可点击的，点击会有状态变化               | boolean          | false      | -      |
-| selectable       | 文本是否可选                                 | boolean          | false      | -      |
-| prefix           | 文本前缀                                     | string \| number | ""         | -      |
-| prefixSize       | 文本前缀大小                                 | string \| number | ""         | -      |
-| prefixColor      | 文本前缀颜色                                 | string           | ""         | -      |
-| prefixWeight     | 文本前缀粗细                                 | string \| number | ""         | -      |
-| prefixGutter     | 文本前缀与文本的间隔                         | string \| number | ""         | -      |
-| prefixDecoration | 文本前缀修饰，可选值 underline、line-through | string           | ""         | -      |
-| suffix           | 文本后缀                                     | string \| number | ""         | -      |
-| suffixSize       | 文本后缀大小                                 | string \| number | ""         | -      |
-| suffixColor      | 文本后缀颜色                                 | string           | ""         | -      |
-| suffixWeight     | 文本后缀粗细                                 | string \| number | ""         | -      |
-| suffixGutter     | 文本后缀与文本的间隔                         | string \| number | ""         | -      |
-| suffixDecoration | 文本后缀修饰，可选值 underline、line-through | string           | ""         | -      |
-| customClass      | 自定义类名                                   | string           | ""         | -      |
-| customStyle      | 自定义样式                                   | string \| object | ""         | -      |
+```vue
+<ui-text :rows="2" text="超过两行会被省略号截断..." />
+```
 
-## Events
+## 可点击
 
-| 事件名 | 说明 | 回调参数 |
-| ------ | ---- | -------- |
-| click  | -    | -        |
+```vue
+<ui-text clickable @click="onClick">点击我</ui-text>
+```
 
-## Slots
+## API
 
-| 名称    | 说明 |
-| ------- | ---- |
-| default | -    |
+### Props
 
-## Methods
+| 参数         | 说明                                  | 类型                                      | 默认值  |
+| ------------ | ------------------------------------- | ----------------------------------------- | ------- |
+| text         | 文本内容（也可走 default slot）       | `number \| string`                        | -       |
+| size         | 字号                                  | `number \| string`                        | -       |
+| color        | 颜色                                  | `string`                                  | -       |
+| weight       | 字重                                  | `number \| string`                        | -       |
+| align        | 对齐                                  | `'left' \| 'center' \| 'right'`           | -       |
+| rows         | 行数（0=不限 / 1=单行省略 / >1=多行） | `number \| string`                        | `0`     |
+| decoration   | 文本修饰                              | `'none' \| 'underline' \| 'line-through'` | -       |
+| line-height  | 行高                                  | `number \| string`                        | -       |
+| decode       | uniapp text 组件 decode               | `boolean`                                 | `false` |
+| clickable    | 可点击（active 反馈）                 | `boolean`                                 | `false` |
+| selectable   | 可选中                                | `boolean`                                 | `false` |
+| custom-class | 自定义类名                            | `string`                                  | -       |
+| custom-style | 自定义样式                            | `string \| CSSProperties`                 | -       |
 
-| 方法名 | 说明 | 参数 |
+### Events
+
+| 事件名 | 说明 | 参数 |
 | ------ | ---- | ---- |
-| name   | -    | -    |
+| click  | 点击 | -    |

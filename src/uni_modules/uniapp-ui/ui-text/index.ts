@@ -2,20 +2,23 @@ import type Text from "./ui-text.vue"
 import type { PropType, CSSProperties, ExtractPropTypes } from "vue"
 import { buildDefaultProps } from "../utils/props"
 
+export type TextAlign = "left" | "center" | "right"
+export type TextDecoration = "none" | "underline" | "line-through"
+
 const defaultProps = buildDefaultProps("text", {
-  text: "",
-  size: "",
-  color: "",
-  weight: "",
-  align: "left",
+  text: undefined,
+  size: undefined,
+  color: undefined,
+  weight: undefined,
+  align: undefined,
   rows: 0,
-  decoration: "",
-  lineHeight: "",
+  decoration: undefined,
+  lineHeight: undefined,
   decode: false,
   clickable: false,
   selectable: false,
-  customClass: "",
-  customStyle: "",
+  customClass: undefined,
+  customStyle: undefined,
 })
 
 export const textProps = {
@@ -27,19 +30,19 @@ export const textProps = {
   color: defaultProps("color", { type: String }),
   /** 文本粗细 */
   weight: defaultProps("weight", { type: [Number, String] }),
-  /** 文本对齐方式，可选值 left、center、right */
-  align: defaultProps("align", { type: String }),
-  /** 展示的行数，0 表示不限制 */
+  /** 对齐方式 */
+  align: defaultProps("align", { type: String as PropType<TextAlign> }),
+  /** 展示行数（0=不限；1=单行省略；>1=多行省略） */
   rows: defaultProps("rows", { type: [Number, String] }),
-  /** 文本修饰，可选值 underline、line-through */
-  decoration: defaultProps("decoration", { type: String }),
-  /** 文本行高 */
+  /** 文本修饰 */
+  decoration: defaultProps("decoration", { type: String as PropType<TextDecoration> }),
+  /** 行高 */
   lineHeight: defaultProps("lineHeight", { type: [Number, String] }),
-  /** 是否解码 */
+  /** uniapp text 组件 decode */
   decode: defaultProps("decode", { type: Boolean }),
-  /** 是否可点击的，点击会有状态变化 */
+  /** 可点击（点击 active 反馈） */
   clickable: defaultProps("clickable", { type: Boolean }),
-  /** 文本是否可选 */
+  /** 可选中 */
   selectable: defaultProps("selectable", { type: Boolean }),
   /** 自定义类名 */
   customClass: defaultProps("customClass", { type: String }),
@@ -48,7 +51,6 @@ export const textProps = {
 }
 
 export const textEmits = {
-  /** 点击事件 */
   click: () => true,
 }
 

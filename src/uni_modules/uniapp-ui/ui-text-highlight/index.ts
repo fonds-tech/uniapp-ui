@@ -3,34 +3,34 @@ import type { PropType, CSSProperties, ExtractPropTypes } from "vue"
 import { buildDefaultProps } from "../utils/props"
 
 const defaultProps = buildDefaultProps("text-highlight", {
-  text: "",
-  match: "",
-  color: "",
-  textRow: "2",
-  fontSize: "",
-  fontWeight: "",
-  lineHeight: "",
-  highlightColor: "",
-  customClass: "",
-  customStyle: "",
+  text: undefined,
+  match: undefined,
+  color: undefined,
+  textRow: 2,
+  fontSize: undefined,
+  fontWeight: undefined,
+  lineHeight: undefined,
+  highlightColor: undefined,
+  customClass: undefined,
+  customStyle: undefined,
 })
 
 export const textHighlightProps = {
-  /** 文本内容 */
+  /** 完整文本 */
   text: defaultProps("text", { type: String }),
-  /** 匹配文本内容 */
+  /** 需匹配高亮的子串 */
   match: defaultProps("match", { type: String }),
   /** 文本颜色 */
   color: defaultProps("color", { type: String }),
-  /** 文本行数 */
+  /** 行数（line-clamp） */
   textRow: defaultProps("textRow", { type: [Number, String] }),
-  /** 文本大小 */
+  /** 字号 */
   fontSize: defaultProps("fontSize", { type: [Number, String] }),
-  /** 文本粗细 */
+  /** 粗细 */
   fontWeight: defaultProps("fontWeight", { type: [Number, String] }),
-  /** 文本行高 */
+  /** 行高 */
   lineHeight: defaultProps("lineHeight", { type: [Number, String] }),
-  /** 文本高亮颜色 */
+  /** 高亮文字颜色 */
   highlightColor: defaultProps("highlightColor", { type: String }),
   /** 自定义类名 */
   customClass: defaultProps("customClass", { type: String }),
@@ -39,18 +39,10 @@ export const textHighlightProps = {
 }
 
 export const textHighlightEmits = {
-  /** 点击事件 */
-  click: (value: string | number) => true,
-  /** 点击匹配文本事件 */
-  clickMatch: (value: string | number) => true,
+  click: (_value: string | number) => true,
+  clickMatch: (_value: string | number) => true,
 }
 
 export type TextHighlightEmits = typeof textHighlightEmits
 export type TextHighlightProps = ExtractPropTypes<typeof textHighlightProps>
-
-export interface TextHighlightExpose {
-  name: "ui-text-highlight"
-  match: () => void
-}
-
 export type TextHighlightInstance = InstanceType<typeof TextHighlight>

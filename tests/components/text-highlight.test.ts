@@ -107,7 +107,7 @@ describe("ui-text-highlight 文本高亮组件", () => {
 
       await waitForTransition()
 
-      expect(wrapper.find(".is-matched").exists()).toBe(true)
+      expect(wrapper.find(".ui-text-highlight__text--matched").exists()).toBe(true)
     })
 
     it("应支持高亮颜色", () => {
@@ -127,7 +127,7 @@ describe("ui-text-highlight 文本高亮组件", () => {
 
       await waitForTransition()
 
-      await wrapper.find(".is-matched").trigger("click")
+      await wrapper.find(".ui-text-highlight__text--matched").trigger("click")
 
       expect(wrapper.emitted("clickMatch")).toBeTruthy()
       expect(wrapper.emitted("clickMatch")![0]).toEqual(["测试"])
@@ -140,7 +140,7 @@ describe("ui-text-highlight 文本高亮组件", () => {
 
       await waitForTransition()
 
-      const nonMatchedText = wrapper.findAll(".ui-text-highlight__text").find((el) => !el.classes().includes("is-matched"))
+      const nonMatchedText = wrapper.findAll(".ui-text-highlight__text").find((el) => !el.classes().includes("ui-text-highlight__text--matched"))
       if (nonMatchedText) {
         await nonMatchedText.trigger("click")
         expect(wrapper.emitted("click")).toBeTruthy()
@@ -183,12 +183,10 @@ describe("ui-text-highlight 文本高亮组件", () => {
       expect(typeof wrapper.vm.match).toBe("function")
     })
 
-    it("应暴露 name 属性", async () => {
-      const wrapper = mount(UiTextHighlight)
-
+    it("应暴露 match 方法（重新触发匹配）", async () => {
+      const wrapper = mount(UiTextHighlight, { props: { text: "测试" } })
       await waitForTransition()
-
-      expect(wrapper.vm.name).toBe("ui-text-highlight")
+      expect(typeof wrapper.vm.match).toBe("function")
     })
   })
 
@@ -211,7 +209,7 @@ describe("ui-text-highlight 文本高亮组件", () => {
       await waitForTransition()
 
       expect(wrapper.find(".ui-text-highlight").exists()).toBe(true)
-      expect(wrapper.find(".is-matched").exists()).toBe(false)
+      expect(wrapper.find(".ui-text-highlight__text--matched").exists()).toBe(false)
     })
 
     it("匹配文本不存在于文本中时应正常渲染", async () => {
@@ -222,7 +220,7 @@ describe("ui-text-highlight 文本高亮组件", () => {
       await waitForTransition()
 
       expect(wrapper.find(".ui-text-highlight").exists()).toBe(true)
-      expect(wrapper.find(".is-matched").exists()).toBe(false)
+      expect(wrapper.find(".ui-text-highlight__text--matched").exists()).toBe(false)
     })
 
     it("特殊字符匹配时应正常处理", async () => {
