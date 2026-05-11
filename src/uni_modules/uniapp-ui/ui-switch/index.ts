@@ -2,38 +2,41 @@ import type Switch from "./ui-switch.vue"
 import type { PropType, CSSProperties, ExtractPropTypes } from "vue"
 import { buildDefaultProps } from "../utils/props"
 
+export type SwitchValue = number | string | boolean
+export type SwitchBeforeChange = (value: SwitchValue, next: (val?: SwitchValue) => void) => void
+
 const defaultProps = buildDefaultProps("switch", {
   modelValue: false,
-  size: "",
-  gutter: "",
+  size: undefined,
+  gutter: undefined,
   loading: false,
   disabled: false,
   activeValue: true,
   inactiveValue: false,
-  activeColor: "",
-  inactiveColor: "",
-  activeText: "",
-  inactiveText: "",
-  textSize: "",
-  textColor: "",
-  textWeight: "",
-  loadingIconSize: "",
-  loadingIconColor: "",
+  activeColor: undefined,
+  inactiveColor: undefined,
+  activeText: undefined,
+  inactiveText: undefined,
+  textSize: undefined,
+  textColor: undefined,
+  textWeight: undefined,
+  loadingIconSize: undefined,
+  loadingIconColor: undefined,
   beforeChange: undefined,
-  customClass: "",
-  customStyle: "",
+  customClass: undefined,
+  customStyle: undefined,
 })
 
 export const switchProps = {
   /** 开关选中状态 */
   modelValue: defaultProps("modelValue", { type: [Number, String, Boolean] }),
-  /** 开关按钮的尺寸 */
+  /** 开关高度（width = 2 × size） */
   size: defaultProps("size", { type: [Number, String] }),
   /** 圆点与背景的间距 */
   gutter: defaultProps("gutter", { type: [Number, String] }),
-  /** 是否为加载状态 */
+  /** 加载状态 */
   loading: defaultProps("loading", { type: Boolean }),
-  /** 是否为禁用状态 */
+  /** 禁用状态 */
   disabled: defaultProps("disabled", { type: Boolean }),
   /** 打开时对应的值 */
   activeValue: defaultProps("activeValue", { type: [Number, String, Boolean] }),
@@ -53,12 +56,12 @@ export const switchProps = {
   textColor: defaultProps("textColor", { type: String }),
   /** 文字粗细 */
   textWeight: defaultProps("textWeight", { type: [Number, String] }),
-  /** 加载中图标大小 */
+  /** 加载图标大小 */
   loadingIconSize: defaultProps("loadingIconSize", { type: [Number, String] }),
-  /** 加载中图标颜色 */
+  /** 加载图标颜色 */
   loadingIconColor: defaultProps("loadingIconColor", { type: String }),
-  /** 状态变化前的回调函数 */
-  beforeChange: defaultProps("beforeChange", { type: Function }),
+  /** 状态变化前的回调：beforeChange(value, next) ⇒ next(可选改写值) 触发实际切换 */
+  beforeChange: defaultProps("beforeChange", { type: Function as PropType<SwitchBeforeChange> }),
   /** 自定义类名 */
   customClass: defaultProps("customClass", { type: String }),
   /** 自定义样式 */
@@ -66,10 +69,8 @@ export const switchProps = {
 }
 
 export const switchEmits = {
-  /** 值变化事件 */
-  change: (value: number | string | boolean) => true,
-  /** 更新绑定值事件 */
-  "update:modelValue": (value: number | string | boolean) => true,
+  change: (_value: SwitchValue) => true,
+  "update:modelValue": (_value: SwitchValue) => true,
 }
 
 export type SwitchEmits = typeof switchEmits

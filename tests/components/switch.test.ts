@@ -214,7 +214,7 @@ describe("ui-switch 开关组件", () => {
       await waitForTransition()
 
       const style = wrapper.find(".ui-switch").attributes("style") || ""
-      expect(style).toContain("background")
+      expect(style).toContain("--ui-switch-color")
     })
 
     it("应支持自定义未激活颜色", async () => {
@@ -224,7 +224,7 @@ describe("ui-switch 开关组件", () => {
       await waitForTransition()
 
       const style = wrapper.find(".ui-switch").attributes("style") || ""
-      expect(style).toContain("background")
+      expect(style).toContain("--ui-switch-color")
     })
   })
 
