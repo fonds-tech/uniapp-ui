@@ -12,13 +12,13 @@ const defaultProps = buildDefaultProps("sticky", {
 })
 
 export const stickyProps = {
-  /** 元素层级 */
+  /** 吸顶层级 */
   zIndex: defaultProps("zIndex", { type: [Number, String] }),
-  /** 吸顶时距离顶部距离 */
+  /** 吸顶时距顶部偏移（系统 navbar 高度自动加，无需手动） */
   offsetTop: defaultProps("offsetTop", { type: [Number, String] }),
-  /** 是否禁用粘性效果 */
+  /** 是否禁用 */
   disabled: defaultProps("disabled", { type: Boolean }),
-  /** 背景色 */
+  /** 吸顶时背景色 */
   background: defaultProps("background", { type: String }),
   /** 自定义类名 */
   customClass: defaultProps("customClass", { type: String }),
@@ -27,10 +27,8 @@ export const stickyProps = {
 }
 
 export const stickyEmits = {
-  /** 吸顶状态变化事件 */
-  change: (sticky: boolean) => true,
-  /** 滚动事件 */
-  scroll: (data: { scrollTop: number; isFixed: boolean }) => true,
+  change: (_sticky: boolean) => true,
+  scroll: (_data: { scrollTop: number; isFixed: boolean }) => true,
 }
 
 export type StickyEmits = typeof stickyEmits

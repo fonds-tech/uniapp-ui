@@ -1,258 +1,281 @@
 <template>
   <demo-page>
-    <demo-section title="基础用法" desc="向下滚动页面，按钮会吸顶" />
-    <view class="demo-item">
-      <ui-sticky @change="onStickyChange1" @scroll="onStickyScroll">
-        <ui-button type="primary" block>基础吸顶</ui-button>
+    <demo-section title="基础用法" desc="滚动到顶部时元素自动吸附">
+      <ui-sticky>
+        <view class="bar bar--primary">基础吸顶</view>
       </ui-sticky>
-    </view>
+    </demo-section>
 
-    <demo-section title="吸顶距离" desc="通过 offset-top 属性可以设置吸顶距离" />
-    <view class="demo-item">
-      <ui-sticky :offset-top="100" @change="onStickyChange2">
-        <ui-button type="success" block>吸顶距离 100rpx</ui-button>
+    <demo-section title="设置偏移 offset-top" desc="距顶部预留间距，常用于躲过自定义 navbar">
+      <ui-sticky offset-top="120rpx">
+        <view class="bar bar--success">offset-top: 120rpx</view>
       </ui-sticky>
-    </view>
+    </demo-section>
 
-    <demo-section title="多级吸顶" desc="为不同的元素设置不同的 offset-top 实现多级吸顶" />
-    <view class="demo-item">
-      <ui-sticky :offset-top="180">
-        <view class="sticky-box sticky-box--warning">
-          <text>二级吸顶 (180rpx)</text>
-        </view>
+    <demo-section title="设置层级 z-index" desc="多个 sticky 重叠时控制覆盖关系">
+      <ui-sticky offset-top="240rpx" :z-index="100">
+        <view class="bar bar--warning">z-index: 100</view>
       </ui-sticky>
-    </view>
+    </demo-section>
 
-    <demo-section title="层级设置" desc="通过 z-index 属性设置吸顶时的层级" />
-    <view class="demo-item">
-      <ui-sticky :offset-top="260" :z-index="100">
-        <view class="sticky-box sticky-box--info">
-          <text>自定义层级 z-index: 100</text>
-        </view>
+    <demo-section title="吸顶背景色 background" desc="吸顶后背景填充，避免透出页面内容">
+      <ui-sticky offset-top="360rpx" background="background">
+        <view class="bar bar--info">background: background（吸顶后白底）</view>
       </ui-sticky>
-    </view>
+    </demo-section>
 
-    <demo-section title="背景颜色" desc="通过 background 属性可以设置吸顶时的背景色" />
-    <view class="demo-item">
-      <ui-sticky :offset-top="340" background="#fff">
-        <view class="sticky-content">
-          <ui-button type="warning" size="small">带背景吸顶</ui-button>
-          <text class="sticky-content__text">吸顶时显示白色背景</text>
-        </view>
-      </ui-sticky>
-    </view>
-
-    <demo-section title="禁用状态" desc="通过 disabled 属性可以控制是否开启吸顶" />
-    <view class="demo-item">
-      <demo-block direction="column" align="stretch" :gap="20">
-        <ui-button size="small" @click="stickyDisabled = !stickyDisabled">
-          {{ stickyDisabled ? "点击启用吸顶" : "点击禁用吸顶" }}
-        </ui-button>
-        <ui-sticky :offset-top="420" :disabled="stickyDisabled">
-          <view class="sticky-box" :class="stickyDisabled ? 'sticky-box--disabled' : 'sticky-box--danger'">
-            <text>{{ stickyDisabled ? "吸顶已禁用" : "正常吸顶效果" }}</text>
-          </view>
+    <demo-section title="禁用 disabled" desc="切换开关控制是否吸顶">
+      <demo-block direction="column" :gap="16">
+        <demo-block :cols="2" :gap="12">
+          <ui-button size="small" :type="!disabled ? 'primary' : 'default'" @click="disabled = false">启用</ui-button>
+          <ui-button size="small" :type="disabled ? 'primary' : 'default'" @click="disabled = true">禁用</ui-button>
+        </demo-block>
+        <ui-sticky offset-top="480rpx" :disabled="disabled">
+          <view class="bar bar--danger">{{ disabled ? "已禁用（不吸顶）" : "正常吸顶" }}</view>
         </ui-sticky>
       </demo-block>
-    </view>
+    </demo-section>
 
-    <demo-section title="事件日志" desc="监听 change 和 scroll 事件进行业务逻辑处理" />
-    <view class="demo-item">
-      <view class="log-card">
-        <view class="log-item">
-          <text class="log-label">状态：</text>
-          <text class="log-value" :class="{ 'is-active': isStickyFixed }">{{ stickyLog }}</text>
+    <demo-section title="事件回显" desc="change / scroll 实时记录吸顶状态">
+      <demo-block direction="column" :gap="12">
+        <view class="log-card">
+          <text class="log-row"><text class="log-label">change：</text>{{ changeLog }}</text>
+          <text class="log-row"><text class="log-label">scroll：</text>{{ scrollLog }}</text>
         </view>
-        <view class="log-item">
-          <text class="log-label">位置：</text>
-          <text class="log-value">{{ scrollLog }}</text>
+        <ui-sticky offset-top="600rpx" @change="onChange" @scroll="onScroll">
+          <view class="bar bar--primary">监听我吸顶</view>
+        </ui-sticky>
+      </demo-block>
+    </demo-section>
+
+    <demo-section title="实例方法 resize" desc="内部尺寸变化后调用重新测量">
+      <demo-block direction="column" :gap="12">
+        <ui-button size="small" @click="onResize">手动 resize()</ui-button>
+        <ui-sticky ref="manualRef" offset-top="720rpx">
+          <view class="bar bar--success">resize 演示</view>
+        </ui-sticky>
+      </demo-block>
+    </demo-section>
+
+    <demo-section title="综合 · 章节标题吸顶" desc="文章长列表，标题滚动到顶时吸附">
+      <view v-for="section in sections" :key="section.id" class="article-section">
+        <ui-sticky offset-top="0">
+          <view class="article-title">{{ section.title }}</view>
+        </ui-sticky>
+        <view v-for="(p, i) in section.paragraphs" :key="i" class="article-paragraph">
+          {{ p }}
         </view>
       </view>
-    </view>
+    </demo-section>
 
-    <demo-section title="自定义样式" desc="通过 custom-style 等属性深度定制吸顶样式" />
-    <view class="demo-item">
-      <ui-sticky :offset-top="500" custom-class="my-sticky" :custom-style="{ padding: '16rpx', background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' }">
-        <view class="sticky-custom">
-          <text>渐变背景吸顶</text>
+    <demo-section title="综合 · 表头吸顶" desc="数据列表常用">
+      <view class="table">
+        <ui-sticky offset-top="0" background="background-section">
+          <view class="table__head">
+            <text class="table__cell table__cell--name">名称</text>
+            <text class="table__cell">销量</text>
+            <text class="table__cell">单价</text>
+          </view>
+        </ui-sticky>
+        <view v-for="row in tableData" :key="row.name" class="table__row">
+          <text class="table__cell table__cell--name">{{ row.name }}</text>
+          <text class="table__cell">{{ row.sold }}</text>
+          <text class="table__cell">¥{{ row.price }}</text>
         </view>
-      </ui-sticky>
-    </view>
-
-    <demo-section title="内容滚动演示" desc="向下滚动以查看上方元素的吸顶效果" />
-    <view class="content-list">
-      <view v-for="i in 10" :key="i" class="content-card">
-        <view class="card-header">
-          <view class="card-dot" :style="{ background: colors[i % colors.length] }"></view>
-          <text class="card-title">演示卡片 {{ i }}</text>
-        </view>
-        <view class="card-body"> 这是一段模拟内容，旨在增加页面高度以便演示粘性布局（Sticky）的各种吸顶效果。 </view>
       </view>
-    </view>
+    </demo-section>
+
+    <demo-section title="尾部填充" desc="增加页面高度便于滚动测试">
+      <view class="filler">
+        <view v-for="i in 8" :key="i" class="filler__card">
+          <text class="filler__title">填充卡片 {{ i }}</text>
+          <text class="filler__body">滚动这里看吸顶生效</text>
+        </view>
+      </view>
+    </demo-section>
   </demo-page>
 </template>
 
 <script setup lang="ts">
+import type { StickyInstance } from "@/uni_modules/uniapp-ui/ui-sticky"
+import { ref } from "vue"
 import { useToast } from "@/uni_modules/uniapp-ui"
 
 definePage({
-  style: { navigationBarTitleText: "Sticky 粘性布局" },
+  style: { navigationBarTitleText: "Sticky 吸顶" },
 })
 
 const toast = useToast()
 
-// 禁用状态
-const stickyDisabled = ref(false)
+const disabled = ref(false)
 
-// 事件日志
-const stickyLog = ref("等待吸顶...")
-const scrollLog = ref("等待滚动...")
-const isStickyFixed = ref(false)
-
-const colors = ["#1989fa", "#07c160", "#ff976a", "#ee0a24", "#7232dd"]
-
-// 事件处理
-function onStickyChange1(isFixed: boolean) {
-  isStickyFixed.value = isFixed
-  stickyLog.value = isFixed ? "已吸顶" : "未吸顶"
+const changeLog = ref("等待 change...")
+const scrollLog = ref("等待 scroll...")
+function onChange(sticky: boolean) {
+  changeLog.value = sticky ? "吸顶中" : "已脱离"
+}
+function onScroll(data: { scrollTop: number; isFixed: boolean }) {
+  scrollLog.value = `isFixed=${data.isFixed}, scrollTop=${data.scrollTop}`
 }
 
-function onStickyChange2(isFixed: boolean) {
-  if (isFixed) {
-    toast.success("偏移吸顶生效")
-  }
+const manualRef = ref<StickyInstance>()
+function onResize() {
+  manualRef.value?.resize()
+  toast.success("已 resize")
 }
 
-function onStickyScroll(data: { scrollTop: number; isFixed: boolean }) {
-  scrollLog.value = `scrollTop=${data.scrollTop.toFixed(0)}`
-}
+const sections = [
+  {
+    id: 1,
+    title: "第一章 起步",
+    paragraphs: ["这是第一段示例文字，模拟较长的文章内容。", "继续填充，让滚动看到吸顶切换效果。", "段落 3，再加点高度。"],
+  },
+  {
+    id: 2,
+    title: "第二章 进阶",
+    paragraphs: ["第二章开始，标题随之吸顶。", "上一章的标题被推出顶部，新标题接管。", "段落 3。"],
+  },
+  {
+    id: 3,
+    title: "第三章 实战",
+    paragraphs: ["实战示例。", "再加内容。", "结尾。"],
+  },
+]
+
+const tableData = [
+  { name: "拿铁咖啡", sold: 320, price: 28 },
+  { name: "提拉米苏", sold: 188, price: 38 },
+  { name: "气泡水", sold: 642, price: 12 },
+  { name: "焦糖布丁", sold: 95, price: 22 },
+  { name: "抹茶蛋糕", sold: 268, price: 42 },
+  { name: "美式咖啡", sold: 412, price: 22 },
+]
 </script>
 
 <style lang="scss" scoped>
-.demo-item {
-  margin-bottom: 30rpx;
-}
-
-.sticky-box {
-  color: #fff;
-  padding: 24rpx;
-  font-size: 28rpx;
-  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.1);
+.bar {
+  color: var(--ui-color-text-inverse);
+  padding: var(--ui-spacing-md) var(--ui-spacing-lg);
+  font-size: var(--ui-font-size-sm);
+  box-shadow: var(--ui-shadow-sm);
   text-align: center;
-  border-radius: 12rpx;
+  border-radius: var(--ui-radius-md);
+
+  &--primary {
+    background: var(--ui-color-primary);
+  }
+
+  &--success {
+    background: var(--ui-color-success);
+  }
 
   &--warning {
     background: var(--ui-color-warning);
-  }
-
-  &--info {
-    background: var(--ui-color-info);
   }
 
   &--danger {
     background: var(--ui-color-danger);
   }
 
-  &--disabled {
-    background: #c8c9cc;
-    box-shadow: none;
-  }
-}
-
-.sticky-content {
-  gap: 16rpx;
-  display: flex;
-  padding: 16rpx 24rpx;
-  background: #fff;
-  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.05);
-  align-items: center;
-  border-radius: 12rpx;
-
-  &__text {
-    color: var(--ui-color-text-secondary);
-    font-size: 24rpx;
+  &--info {
+    color: var(--ui-color-text);
+    background: var(--ui-color-background);
   }
 }
 
 .log-card {
-  border: 1rpx solid var(--ui-color-border-light);
-  padding: 24rpx;
-  background: #fff;
-  border-radius: 12rpx;
+  gap: var(--ui-spacing-xs);
+  display: flex;
+  padding: var(--ui-spacing-md);
+  background: var(--ui-color-background-section);
+  border-radius: var(--ui-radius-md);
+  flex-direction: column;
 }
 
-.log-item {
-  display: flex;
-  align-items: center;
-  margin-bottom: 8rpx;
-  &:last-child {
-    margin-bottom: 0;
-  }
+.log-row {
+  color: var(--ui-color-text);
+  font-size: var(--ui-font-size-xs);
 }
 
 .log-label {
   color: var(--ui-color-text-secondary);
-  width: 80rpx;
-  font-size: 24rpx;
 }
 
-.log-value {
+.article-section {
+  margin-bottom: var(--ui-spacing-lg);
+}
+
+.article-title {
+  color: var(--ui-color-text-inverse);
+  padding: var(--ui-spacing-md) var(--ui-spacing-lg);
+  background: var(--ui-color-primary);
+  font-weight: var(--ui-font-weight-bold);
+}
+
+.article-paragraph {
   color: var(--ui-color-text);
-  font-size: 24rpx;
-  font-family: monospace;
-
-  &.is-active {
-    color: var(--ui-color-primary);
-    font-weight: bold;
-  }
+  padding: var(--ui-spacing-md) var(--ui-spacing-lg);
+  font-size: var(--ui-font-size-sm);
+  background: var(--ui-color-background);
+  line-height: 1.6;
+  border-bottom: var(--ui-border-width-thin) solid var(--ui-color-border-light);
 }
 
-.sticky-custom {
-  color: #fff;
-  padding: 12rpx;
-  font-size: 28rpx;
-  text-align: center;
-}
+.table {
+  background: var(--ui-color-background);
+  border-radius: var(--ui-radius-md);
 
-:deep(.my-sticky) {
-  overflow: hidden;
-  border-radius: 16rpx;
-}
-
-.content-list {
-  padding-bottom: 100rpx;
-}
-
-.content-card {
-  border: 1rpx solid var(--ui-color-border-light);
-  padding: 24rpx;
-  background: #fff;
-  border-radius: 16rpx;
-  margin-bottom: 24rpx;
-
-  .card-header {
-    display: flex;
-    align-items: center;
-    margin-bottom: 16rpx;
-  }
-
-  .card-dot {
-    width: 12rpx;
-    height: 12rpx;
-    margin-right: 16rpx;
-    border-radius: 50%;
-  }
-
-  .card-title {
+  &__head {
     color: var(--ui-color-text);
-    font-size: 28rpx;
-    font-weight: bold;
+    display: flex;
+    padding: var(--ui-spacing-md);
+    background: var(--ui-color-background-section);
+    font-weight: var(--ui-font-weight-bold);
   }
 
-  .card-body {
+  &__row {
+    display: flex;
+    padding: var(--ui-spacing-md);
+    border-bottom: var(--ui-border-width-thin) solid var(--ui-color-border-light);
+  }
+
+  &__cell {
+    flex: 1;
+    color: var(--ui-color-text);
+    font-size: var(--ui-font-size-sm);
+    text-align: center;
+
+    &--name {
+      flex: 2;
+      text-align: left;
+    }
+  }
+}
+
+.filler {
+  gap: var(--ui-spacing-md);
+  display: flex;
+  flex-direction: column;
+  padding-bottom: var(--ui-spacing-xxl);
+
+  &__card {
+    gap: var(--ui-spacing-xs);
+    display: flex;
+    padding: var(--ui-spacing-lg);
+    background: var(--ui-color-background-section);
+    border-radius: var(--ui-radius-md);
+    flex-direction: column;
+  }
+
+  &__title {
+    color: var(--ui-color-text);
+    font-size: var(--ui-font-size-md);
+    font-weight: var(--ui-font-weight-medium);
+  }
+
+  &__body {
     color: var(--ui-color-text-secondary);
-    font-size: 26rpx;
-    line-height: 1.6;
+    font-size: var(--ui-font-size-xs);
   }
 }
 </style>

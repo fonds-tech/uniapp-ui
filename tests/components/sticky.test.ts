@@ -266,25 +266,19 @@ describe("uiSticky 组件", () => {
   })
 
   describe("吸顶事件", () => {
-    it("触发 resize 后应产生 change 与 scroll 事件", async () => {
-      const wrapper = mount(UiSticky, {
-        global: {
-          stubs: {
-            "ui-resize": {
-              name: "ui-resize",
-              template: "<div class=\"ui-resize-stub\"><slot /></div>",
-              emits: ["resize"],
-              mounted() {
-                this.$emit("resize", { width: 100, height: 40 })
-              },
-            },
-          },
-        },
-      })
+    it("元素 top 低于 offsetTop 时应触发 change + scroll", async () => {
+      // mock useRect 默认 top=0；offsetTop=10 ⇒ 0 < 10 ⇒ 切换到 sticky
+      const wrapper = mount(UiSticky, { props: { offsetTop: 10 } })
       await waitForTransition()
 
-      expect(wrapper.emitted("change")).toBeTruthy()
-      expect(wrapper.emitted("scroll")).toBeTruthy()
+      expect(wrapper.emitted("change")?.at(-1)).toEqual([true])
+      expect(wrapper.emitted("scroll")?.at(-1)).toEqual([{ scrollTop: 0, isFixed: true }])
+    })
+
+    it("禁用时不触发事件", async () => {
+      const wrapper = mount(UiSticky, { props: { offsetTop: 10, disabled: true } })
+      await waitForTransition()
+      expect(wrapper.emitted("change")).toBeUndefined()
     })
   })
 })

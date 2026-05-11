@@ -1,281 +1,365 @@
 <template>
   <demo-page>
     <demo-section title="基础用法" desc="左滑显示操作按钮">
-      <ui-swipe-cell @open="onOpen" @close="onClose">
-        <ui-cell title="单元格" value="内容" :border="false" />
+      <ui-swipe-cell>
+        <ui-cell title="收件箱" value="左滑试试" :border="false" />
         <template #right>
-          <view class="action-btn action-btn--danger" @click="onDelete">删除</view>
+          <view class="action action--danger">删除</view>
         </template>
       </ui-swipe-cell>
     </demo-section>
 
-    <demo-section title="左右滑动" desc="同时设置左右操作按钮">
+    <demo-section title="双向操作" desc="左右两侧均可显示操作">
       <ui-swipe-cell>
-        <ui-cell title="单元格" value="左右滑动试试" :border="false" />
+        <ui-cell title="文章标题" value="左右都可滑" :border="false" />
         <template #left>
-          <view class="action-btn action-btn--primary">选择</view>
+          <view class="action action--primary">置顶</view>
         </template>
         <template #right>
-          <view class="action-btn action-btn--warning">收藏</view>
-          <view class="action-btn action-btn--danger">删除</view>
+          <view class="action action--warning">收藏</view>
+          <view class="action action--danger">删除</view>
         </template>
       </ui-swipe-cell>
     </demo-section>
 
-    <demo-section title="自定义内容" desc="自定义单元格和操作按钮样式">
-      <ui-swipe-cell>
-        <view class="custom-cell">
-          <ui-image src="https://img.yzcdn.cn/vant/cat.jpeg" width="80rpx" height="80rpx" radius="8rpx" />
-          <view class="custom-cell__content">
-            <text class="custom-cell__title">商品名称</text>
-            <text class="custom-cell__desc">描述信息</text>
-          </view>
-          <text class="custom-cell__price">¥99.00</text>
-        </view>
-        <template #right>
-          <view class="action-btn action-btn--danger action-btn--large">删除</view>
-        </template>
-      </ui-swipe-cell>
-    </demo-section>
-
-    <demo-section title="异步关闭" desc="通过 beforeClose 控制关闭行为">
-      <ui-swipe-cell :before-close="beforeClose">
-        <ui-cell title="异步关闭" value="点击删除按钮" :border="false" />
-        <template #right>
-          <view class="action-btn action-btn--danger">删除</view>
-        </template>
-      </ui-swipe-cell>
-    </demo-section>
-
-    <demo-section title="禁用滑动" desc="设置 disabled 禁用滑动">
-      <ui-swipe-cell disabled>
-        <ui-cell title="禁用滑动" value="无法滑动" :border="false" />
-        <template #right>
-          <view class="action-btn action-btn--danger">删除</view>
-        </template>
-      </ui-swipe-cell>
-    </demo-section>
-
-    <demo-section title="列表场景" desc="在列表中使用滑动单元格">
-      <view class="list-container">
-        <ui-swipe-cell v-for="(item, index) in listData" :key="item.id" :name="item.id" @click="onItemClick">
-          <ui-cell :title="item.title" :value="item.value" :border="index !== listData.length - 1" />
+    <demo-section title="阈值 threshold" desc="切换打开触发比例（0-1）">
+      <demo-block direction="column" :gap="16">
+        <ui-swipe-cell :threshold="threshold">
+          <ui-cell title="阈值演示" :value="`当前 ${threshold}`" :border="false" />
           <template #right>
-            <view class="action-btn action-btn--primary" @click.stop="onEdit(item)">编辑</view>
-            <view class="action-btn action-btn--danger" @click.stop="onDeleteItem(item)">删除</view>
+            <view class="action action--danger">删除</view>
+          </template>
+        </ui-swipe-cell>
+        <demo-block :cols="4" :gap="12">
+          <ui-button v-for="t in thresholdPresets" :key="t" size="small" :type="threshold === t ? 'primary' : 'default'" @click="threshold = t">
+            {{ t }}
+          </ui-button>
+        </demo-block>
+      </demo-block>
+    </demo-section>
+
+    <demo-section title="禁用 disabled" desc="切换开关控制能否滑动">
+      <demo-block direction="column" :gap="16">
+        <demo-block :cols="2" :gap="12">
+          <ui-button size="small" :type="!disabled ? 'primary' : 'default'" @click="disabled = false">启用</ui-button>
+          <ui-button size="small" :type="disabled ? 'primary' : 'default'" @click="disabled = true">禁用</ui-button>
+        </demo-block>
+        <ui-swipe-cell :disabled="disabled">
+          <ui-cell title="禁用滑动" :value="disabled ? '当前禁用' : '可滑动'" :border="false" />
+          <template #right>
+            <view class="action action--danger">删除</view>
+          </template>
+        </ui-swipe-cell>
+      </demo-block>
+    </demo-section>
+
+    <demo-section title="自定义宽度" desc="left-width / right-width 显式指定">
+      <ui-swipe-cell left-width="200rpx" right-width="300rpx">
+        <ui-cell title="精确宽度" value="左 200 右 300" :border="false" />
+        <template #left>
+          <view class="action action--primary">收藏</view>
+        </template>
+        <template #right>
+          <view class="action action--warning">编辑</view>
+          <view class="action action--danger">删除</view>
+        </template>
+      </ui-swipe-cell>
+    </demo-section>
+
+    <demo-section title="异步关闭 before-close" desc="返回 false / Promise<false> 阻止关闭">
+      <ui-swipe-cell :before-close="beforeClose">
+        <ui-cell title="异步确认" value="点击删除按钮确认" :border="false" />
+        <template #right>
+          <view class="action action--danger" @click="onAsyncDelete">删除</view>
+        </template>
+      </ui-swipe-cell>
+    </demo-section>
+
+    <demo-section title="实例方法" desc="open / close / isOpen 编程式控制">
+      <demo-block direction="column" :gap="16">
+        <demo-block :cols="3" :gap="12">
+          <ui-button size="small" @click="cellRef?.open('left')">open(left)</ui-button>
+          <ui-button size="small" @click="cellRef?.open('right')">open(right)</ui-button>
+          <ui-button size="small" @click="cellRef?.close()">close()</ui-button>
+        </demo-block>
+        <ui-swipe-cell ref="cellRef">
+          <ui-cell title="编程式控制" value="试试按钮" :border="false" />
+          <template #left>
+            <view class="action action--primary">收藏</view>
+          </template>
+          <template #right>
+            <view class="action action--danger">删除</view>
+          </template>
+        </ui-swipe-cell>
+      </demo-block>
+    </demo-section>
+
+    <demo-section title="事件回显" desc="open / close / click 实时日志">
+      <demo-block direction="column" :gap="12">
+        <view class="event-log">{{ eventLog }}</view>
+        <ui-swipe-cell name="event-demo" @open="onOpen" @close="onClose" @click="onClick">
+          <ui-cell title="事件演示" value="滑/点都试试" :border="false" />
+          <template #right>
+            <view class="action action--danger">操作</view>
+          </template>
+        </ui-swipe-cell>
+      </demo-block>
+    </demo-section>
+
+    <demo-section title="综合 · 消息列表" desc="互斥展开 + 多操作按钮">
+      <view class="list-card">
+        <ui-swipe-cell v-for="(msg, idx) in messages" :key="msg.id" :ref="(el) => (msgRefs[idx] = el as SwipeCellInstance)" :name="msg.id" @open="onMsgOpen(idx)" @click="(p) => onMsgClick(msg, p)">
+          <view class="msg">
+            <view class="msg__avatar" :style="{ background: msg.color }">
+              <text>{{ msg.name[0] }}</text>
+            </view>
+            <view class="msg__body">
+              <text class="msg__name">{{ msg.name }}</text>
+              <text class="msg__last">{{ msg.last }}</text>
+            </view>
+            <text class="msg__time">{{ msg.time }}</text>
+          </view>
+          <template #right>
+            <view class="action action--info" @click.stop="toggleRead(msg)">{{ msg.unread ? "已读" : "未读" }}</view>
+            <view class="action action--danger" @click.stop="deleteMsg(idx)">删除</view>
           </template>
         </ui-swipe-cell>
       </view>
     </demo-section>
 
-    <demo-section title="事件回调" desc="展示各种事件的触发情况">
-      <ui-swipe-cell name="event-demo" @open="onEventOpen" @close="onEventClose" @click="onEventClick">
-        <ui-cell title="事件演示" :value="eventStatus" :border="false" />
-        <template #right>
-          <view class="action-btn action-btn--danger">操作</view>
-        </template>
-      </ui-swipe-cell>
-      <view v-if="eventLog.length > 0" class="event-log">
-        <text class="event-log__title">事件日志：</text>
-        <text v-for="(log, index) in eventLog" :key="index" class="event-log__item">{{ log }}</text>
+    <demo-section title="综合 · 收藏夹" desc="左滑取消收藏 + 双滑确认">
+      <view class="list-card">
+        <ui-swipe-cell v-for="(fav, idx) in favorites" :key="fav.id" :before-close="favBeforeClose">
+          <view class="fav">
+            <ui-image :src="fav.cover" width="96rpx" height="96rpx" radius="12rpx" />
+            <view class="fav__body">
+              <text class="fav__title">{{ fav.title }}</text>
+              <text class="fav__desc">{{ fav.desc }}</text>
+            </view>
+          </view>
+          <template #right>
+            <view class="action action--danger" @click.stop="removeFavorite(idx)">取消收藏</view>
+          </template>
+        </ui-swipe-cell>
       </view>
     </demo-section>
   </demo-page>
 </template>
 
 <script setup lang="ts">
-import type { SwipeCellBeforeCloseParams } from "@/uni_modules/uniapp-ui/ui-swipe-cell"
+import type { SwipeCellInstance, SwipeCellBeforeCloseParams } from "@/uni_modules/uniapp-ui/ui-swipe-cell"
 import { ref } from "vue"
+import { useToast, useDialog } from "@/uni_modules/uniapp-ui"
 
 definePage({
   style: { navigationBarTitleText: "SwipeCell 滑动单元格" },
 })
 
-// 列表数据
-const listData = ref([
-  { id: 1, title: "列表项 1", value: "内容" },
-  { id: 2, title: "列表项 2", value: "内容" },
-  { id: 3, title: "列表项 3", value: "内容" },
-])
+const toast = useToast()
+const dialog = useDialog()
 
-// 事件状态
-const eventStatus = ref("等待操作...")
-const eventLog = ref<string[]>([])
+// 阈值切换
+const thresholdPresets = [0.1, 0.3, 0.5, 0.8]
+const threshold = ref(0.3)
 
-// 基础事件
-function onOpen(params: { name: string | number; position: string }) {
-  uni.showToast({ title: `打开: ${params.position}`, icon: "none" })
-}
-
-function onClose(params: { name: string | number; position: string }) {
-  uni.showToast({ title: `关闭: ${params.position}`, icon: "none" })
-}
-
-function onDelete() {
-  uni.showModal({
-    title: "提示",
-    content: "确定删除吗？",
-    success: (res) => {
-      if (res.confirm) {
-        uni.showToast({ title: "删除成功", icon: "success" })
-      }
-    },
-  })
-}
+// 禁用
+const disabled = ref(false)
 
 // 异步关闭
 function beforeClose(params: SwipeCellBeforeCloseParams): Promise<boolean> {
   return new Promise((resolve) => {
-    uni.showModal({
-      title: "提示",
-      content: "确定删除吗？",
-      success: (res) => {
-        if (res.confirm) {
-          uni.showToast({ title: "删除成功", icon: "success" })
-          resolve(true)
-        } else {
-          resolve(false)
-        }
-      },
+    if (params.position !== "right") {
+      resolve(true)
+      return
+    }
+    dialog.confirm({
+      title: "确认删除",
+      content: "删除后不可恢复，是否继续？",
+      onConfirm: () => resolve(true),
+      onCancel: () => resolve(false),
     })
   })
 }
 
-// 列表操作
-function onItemClick(position: string) {
-  console.log("点击位置:", position)
+function onAsyncDelete() {
+  toast.success("已删除")
 }
 
-function onEdit(item: { id: number; title: string }) {
-  uni.showToast({ title: `编辑: ${item.title}`, icon: "none" })
+// 实例方法
+const cellRef = ref<SwipeCellInstance>()
+
+// 事件回显
+const eventLog = ref("等待事件...")
+function onOpen(p: { name: string | number; position: string }) {
+  eventLog.value = `[open] name=${p.name}, position=${p.position}`
+}
+function onClose(p: { name: string | number; position: string }) {
+  eventLog.value = `[close] name=${p.name}, position=${p.position}`
+}
+function onClick(position: string) {
+  eventLog.value = `[click] ${position}`
 }
 
-function onDeleteItem(item: { id: number; title: string }) {
-  uni.showModal({
-    title: "提示",
-    content: `确定删除 ${item.title} 吗？`,
-    success: (res) => {
-      if (res.confirm) {
-        const index = listData.value.findIndex((i) => i.id === item.id)
-        if (index > -1) {
-          listData.value.splice(index, 1)
-          uni.showToast({ title: "删除成功", icon: "success" })
-        }
-      }
-    },
+// 综合：消息列表
+const msgRefs: SwipeCellInstance[] = []
+const messages = ref([
+  { id: 1, name: "张三", last: "明天几点见？", time: "12:30", unread: true, color: "var(--ui-color-primary)" },
+  { id: 2, name: "李四", last: "[图片]", time: "11:08", unread: false, color: "var(--ui-color-success)" },
+  { id: 3, name: "王五", last: "周报已发送，请查收", time: "09:45", unread: true, color: "var(--ui-color-warning)" },
+  { id: 4, name: "赵六", last: "晚上加班吗", time: "昨天", unread: false, color: "var(--ui-color-danger)" },
+])
+
+function onMsgOpen(activeIdx: number) {
+  // 互斥：打开新的时关闭其他
+  msgRefs.forEach((ref, idx) => {
+    if (idx !== activeIdx) ref?.close?.()
   })
 }
-
-// 事件演示
-function onEventOpen(params: { name: string | number; position: string }) {
-  eventStatus.value = `已打开 (${params.position})`
-  addEventLog(`open: position=${params.position}`)
+function onMsgClick(msg: (typeof messages.value)[number], position: string) {
+  if (position === "cell") toast.info(`进入 ${msg.name} 会话`)
+}
+function toggleRead(msg: (typeof messages.value)[number]) {
+  msg.unread = !msg.unread
+  toast.success(msg.unread ? "标记未读" : "标记已读")
+}
+function deleteMsg(idx: number) {
+  messages.value.splice(idx, 1)
+  toast.success("已删除")
 }
 
-function onEventClose(params: { name: string | number; position: string }) {
-  eventStatus.value = "已关闭"
-  addEventLog(`close: position=${params.position}`)
-}
+// 综合：收藏夹
+const favorites = ref([
+  { id: 1, title: "Vue 3 设计与实现", desc: "前端框架开发", cover: "https://img.yzcdn.cn/vant/cat.jpeg" },
+  { id: 2, title: "深入 TypeScript", desc: "类型系统进阶", cover: "https://img.yzcdn.cn/vant/cat.jpeg" },
+])
 
-function onEventClick(position: string) {
-  addEventLog(`click: position=${position}`)
+function favBeforeClose(params: SwipeCellBeforeCloseParams): Promise<boolean> {
+  return new Promise((resolve) => {
+    if (params.position !== "right") return resolve(true)
+    dialog.confirm({
+      title: "取消收藏",
+      content: "确定要从收藏夹移除吗？",
+      onConfirm: () => resolve(true),
+      onCancel: () => resolve(false),
+    })
+  })
 }
-
-function addEventLog(log: string) {
-  const now = new Date()
-  const time = `${now.getHours()}:${now.getMinutes()}:${now.getSeconds()}`
-  eventLog.value.unshift(`[${time}] ${log}`)
-  // 只保留最近 5 条记录
-  if (eventLog.value.length > 5) {
-    eventLog.value.pop()
-  }
+function removeFavorite(idx: number) {
+  favorites.value.splice(idx, 1)
+  toast.success("已取消收藏")
 }
 </script>
 
 <style lang="scss" scoped>
-.action-btn {
-  color: #fff;
+.action {
+  color: var(--ui-color-text-inverse);
   height: 100%;
   display: flex;
-  padding: 0 32rpx;
-  font-size: 28rpx;
+  padding: 0 var(--ui-spacing-lg);
+  font-size: var(--ui-font-size-sm);
   align-items: center;
   white-space: nowrap;
   justify-content: center;
 
   &--primary {
-    background: #1989fa;
+    background: var(--ui-color-primary);
   }
 
   &--warning {
-    background: #ff976a;
+    background: var(--ui-color-warning);
   }
 
   &--danger {
-    background: #ee0a24;
+    background: var(--ui-color-danger);
   }
 
-  &--large {
-    padding: 0 48rpx;
+  &--info {
+    background: var(--ui-color-info);
   }
 }
 
-.custom-cell {
-  display: flex;
-  padding: 24rpx 32rpx;
-  background: #fff;
-  align-items: center;
+.event-log {
+  color: var(--ui-color-text-secondary);
+  padding: var(--ui-spacing-md);
+  font-size: var(--ui-font-size-xs);
+  background: var(--ui-color-background-section);
+  font-family: var(--ui-font-family-mono);
+  border-radius: var(--ui-radius-md);
+}
 
-  &__content {
+.list-card {
+  overflow: hidden;
+  background: var(--ui-color-background);
+  border-radius: var(--ui-radius-md);
+}
+
+.msg {
+  gap: var(--ui-spacing-md);
+  display: flex;
+  padding: var(--ui-spacing-md) var(--ui-spacing-lg);
+  background: var(--ui-color-background);
+  align-items: center;
+  border-bottom: var(--ui-border-width-thin) solid var(--ui-color-border-light);
+
+  &__avatar {
+    color: var(--ui-color-text-inverse);
+    width: 80rpx;
+    height: 80rpx;
+    display: flex;
+    align-items: center;
+    font-weight: var(--ui-font-weight-bold);
+    border-radius: 50%;
+    justify-content: center;
+  }
+
+  &__body {
     flex: 1;
     display: flex;
-    margin-left: 24rpx;
+    flex-direction: column;
+  }
+
+  &__name {
+    color: var(--ui-color-text);
+    font-size: var(--ui-font-size-md);
+    font-weight: var(--ui-font-weight-medium);
+  }
+
+  &__last {
+    color: var(--ui-color-text-secondary);
+    font-size: var(--ui-font-size-xs);
+    margin-top: var(--ui-spacing-xxs);
+  }
+
+  &__time {
+    color: var(--ui-color-text-tertiary);
+    font-size: var(--ui-font-size-xs);
+  }
+}
+
+.fav {
+  gap: var(--ui-spacing-md);
+  display: flex;
+  padding: var(--ui-spacing-md) var(--ui-spacing-lg);
+  background: var(--ui-color-background);
+  align-items: center;
+  border-bottom: var(--ui-border-width-thin) solid var(--ui-color-border-light);
+
+  &__body {
+    flex: 1;
+    display: flex;
     flex-direction: column;
   }
 
   &__title {
-    color: #323233;
-    font-size: 28rpx;
-    font-weight: 500;
+    color: var(--ui-color-text);
+    font-size: var(--ui-font-size-md);
+    font-weight: var(--ui-font-weight-medium);
   }
 
   &__desc {
-    color: #969799;
-    font-size: 24rpx;
-    margin-top: 8rpx;
-  }
-
-  &__price {
-    color: #ee0a24;
-    font-size: 32rpx;
-    font-weight: 600;
-  }
-}
-
-.list-container {
-  overflow: hidden;
-  border-radius: 16rpx;
-}
-
-.event-log {
-  padding: 24rpx;
-  background: #f7f8fa;
-  margin-top: 24rpx;
-  border-radius: 12rpx;
-
-  &__title {
-    color: #323233;
-    display: block;
-    font-size: 26rpx;
-    font-weight: 500;
-    margin-bottom: 16rpx;
-  }
-
-  &__item {
-    color: #969799;
-    display: block;
-    font-size: 24rpx;
-    line-height: 1.8;
+    color: var(--ui-color-text-secondary);
+    font-size: var(--ui-font-size-xs);
+    margin-top: var(--ui-spacing-xxs);
   }
 }
 </style>

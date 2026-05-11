@@ -1,6 +1,14 @@
 <template>
-  <view class="ui-swipe-cell" :class="[customClass]" :style="[rootStyle]" @touchstart="onTouchStart" @touchmove="onTouchMove" @touchend="onTouchEnd" @touchcancel="onTouchEnd">
-    <view ref="leftRef" class="ui-swipe-cell__left" @click="onLeftClick">
+  <view
+    class="ui-swipe-cell"
+    :class="[{ 'ui-swipe-cell--disabled': props.disabled }, customClass]"
+    :style="[rootStyle]"
+    @touchstart="onTouchStart"
+    @touchmove="onTouchMove"
+    @touchend="onTouchEnd"
+    @touchcancel="onTouchEnd"
+  >
+    <view class="ui-swipe-cell__left" @click="onSideClick('left')">
       <slot name="left" />
     </view>
 
@@ -8,7 +16,7 @@
       <slot />
     </view>
 
-    <view ref="rightRef" class="ui-swipe-cell__right" @click="onRightClick">
+    <view class="ui-swipe-cell__right" @click="onSideClick('right')">
       <slot name="right" />
     </view>
   </view>
@@ -18,74 +26,54 @@
 import type { CSSProperties } from "vue"
 import type { SwipeCellPosition } from "./index"
 import { isDef } from "../utils/check"
-import { useRect, useStyle } from "../hooks"
-import { swipeCellEmits, swipeCellProps } from "./index"
-import { ref, computed, onMounted, getCurrentInstance } from "vue"
+import { useRect, useStyle, useUnitToPx } from "../hooks"
+import { ref, computed, nextTick, onMounted, getCurrentInstance } from "vue"
+import { swipeCellEmits, swipeCellProps, SWIPE_CELL_DIRECTION_THRESHOLD } from "./index"
 
 defineOptions({ name: "ui-swipe-cell" })
 
-// 定义 props 和 emits
 const props = defineProps(swipeCellProps)
 const emits = defineEmits(swipeCellEmits)
-// 获取组件实例
 const instance = getCurrentInstance()
 
-// 状态管理
-const offset = ref(0) // 当前偏移量
-const dragging = ref(false) // 是否正在拖动
-const opened = ref(false) // 是否已打开
-const position = ref<SwipeCellPosition>("") // 当前打开位置
-const lockClick = ref(false) // 防止点击事件
+// 当前 transform 偏移（px）
+const offset = ref(0)
+// 拖动中
+const dragging = ref(false)
+// 当前打开位置（"" = 关闭）
+const position = ref<SwipeCellPosition>("")
+// 锁定 click 避免拖动后误触
+const lockClick = ref(false)
 
-const touchStartX = ref(0)
-const touchStartY = ref(0)
-const touchDeltaX = ref(0)
-const touchDeltaY = ref(0)
-const touchStartOffset = ref(0)
-const isVerticalScroll = ref(false)
+// 触摸起点 + 当前偏移基线
+const startX = ref(0)
+const startY = ref(0)
+const startOffset = ref(0)
+// 已判定为垂直滚动，本次手势跳过
+const verticalScroll = ref(false)
 
-// 左右侧区域宽度
+// 左右侧实际宽度（px）
 const leftWidth = ref(0)
 const rightWidth = ref(0)
 
-const rootStyle = computed(() => {
-  const style: CSSProperties = {}
-  return useStyle({ ...style, ...useStyle(props.customStyle) })
-})
+const rootStyle = computed(() => useStyle(props.customStyle))
 
-const wrapperStyle = computed(() => {
-  const style: CSSProperties = {
-    transform: `translateX(${offset.value}px)`,
-    transitionDuration: dragging.value ? "0s" : "0.3s",
-  }
-  return style
-})
+const wrapperStyle = computed<CSSProperties>(() => ({
+  transform: `translateX(${offset.value}px)`,
+  transitionDuration: dragging.value ? "0s" : "0.3s",
+}))
 
-// 获取左右区域宽度
-async function getLeftWidth(): Promise<number> {
-  // 优先使用用户设置的宽度
-  if (props.leftWidth && Number(props.leftWidth) > 0) {
-    return Number(props.leftWidth)
-  }
-  // 自动计算插槽宽度
-  if (!instance) return 0
-  try {
-    const rect = await useRect(".ui-swipe-cell__left", instance)
-    return rect?.width || 0
-  } catch {
-    return 0
-  }
+// 解析用户传入的宽度（支持 number / px / rpx）；未传或 0 时返回 0 走 useRect 兜底
+function resolveWidth(v: unknown): number {
+  if (!isDef(v)) return 0
+  const px = useUnitToPx(v as number | string)
+  return px && px > 0 ? px : 0
 }
 
-async function getRightWidth(): Promise<number> {
-  // 优先使用用户设置的宽度
-  if (props.rightWidth && Number(props.rightWidth) > 0) {
-    return Number(props.rightWidth)
-  }
-  // 自动计算插槽宽度
+async function measureSlot(selector: string): Promise<number> {
   if (!instance) return 0
   try {
-    const rect = await useRect(".ui-swipe-cell__right", instance)
+    const rect = await useRect(selector, instance)
     return rect?.width || 0
   } catch {
     return 0
@@ -93,198 +81,146 @@ async function getRightWidth(): Promise<number> {
 }
 
 async function initWidths() {
-  leftWidth.value = await getLeftWidth()
-  rightWidth.value = await getRightWidth()
+  leftWidth.value = resolveWidth(props.leftWidth) || (await measureSlot(".ui-swipe-cell__left"))
+  rightWidth.value = resolveWidth(props.rightWidth) || (await measureSlot(".ui-swipe-cell__right"))
 }
 
-// 触摸开始
+function getTouch(event: TouchEvent) {
+  return event.touches?.[0] || event.changedTouches?.[0] || { clientX: 0, clientY: 0 }
+}
+
 function onTouchStart(event: TouchEvent) {
   if (props.disabled) return
-
-  isVerticalScroll.value = false
+  const t = getTouch(event)
+  verticalScroll.value = false
   dragging.value = true
   lockClick.value = false
-  touchStartOffset.value = offset.value
-
-  const touch = event.touches[0]
-  touchStartX.value = touch.clientX
-  touchStartY.value = touch.clientY
-  touchDeltaX.value = 0
-  touchDeltaY.value = 0
-
-  initWidths()
+  startX.value = t.clientX
+  startY.value = t.clientY
+  startOffset.value = offset.value
 }
 
-// 触摸移动
 function onTouchMove(event: TouchEvent) {
-  if (props.disabled || isVerticalScroll.value) return
+  if (props.disabled || verticalScroll.value || !dragging.value) return
+  const t = getTouch(event)
+  const dx = t.clientX - startX.value
+  const dy = t.clientY - startY.value
+  const absX = Math.abs(dx)
+  const absY = Math.abs(dy)
 
-  const touch = event.touches[0]
-  touchDeltaX.value = touch.clientX - touchStartX.value
-  touchDeltaY.value = touch.clientY - touchStartY.value
-
-  // 判断是否为垂直滚动
-  const absX = Math.abs(touchDeltaX.value)
-  const absY = Math.abs(touchDeltaY.value)
-
-  // 首次移动时判断方向
-  if (!dragging.value) return
-
-  if (absY > absX && absY > 10) {
-    isVerticalScroll.value = true
+  // 优先判定垂直滚动，丢弃本次手势
+  if (absY > absX && absY > SWIPE_CELL_DIRECTION_THRESHOLD) {
+    verticalScroll.value = true
     dragging.value = false
     return
   }
 
-  // 阻止事件冒泡
-  if (props.stopPropagation && absX > 10) {
-    event.stopPropagation()
+  // 阻止冒泡（仅 H5 生效）
+  if (props.stopPropagation && absX > SWIPE_CELL_DIRECTION_THRESHOLD) {
+    event.stopPropagation?.()
   }
 
-  // 计算偏移量
-  const newOffset = touchStartOffset.value + touchDeltaX.value
+  // 计算并夹紧偏移范围
+  const next = startOffset.value + dx
+  if (next > 0) offset.value = Math.min(next, leftWidth.value)
+  else offset.value = Math.max(next, -rightWidth.value)
 
-  // 限制偏移范围
-  if (newOffset > 0) {
-    // 向右滑动，显示左侧内容
-    offset.value = Math.min(newOffset, leftWidth.value)
-  } else {
-    // 向左滑动，显示右侧内容
-    offset.value = Math.max(newOffset, -rightWidth.value)
-  }
-
-  // 标记发生了滑动，需要锁定点击
-  if (absX > 10) {
-    lockClick.value = true
-  }
+  if (absX > SWIPE_CELL_DIRECTION_THRESHOLD) lockClick.value = true
 }
 
-// 触摸结束
 function onTouchEnd() {
-  if (props.disabled) return
-
+  if (props.disabled || !dragging.value) {
+    dragging.value = false
+    return
+  }
   dragging.value = false
 
-  const threshold = Number(props.threshold)
-  const absOffset = Math.abs(offset.value)
+  const threshold = Number(props.threshold) || 0
+  const absOff = Math.abs(offset.value)
 
-  // 根据偏移量和阈值判断是否打开
-  if (offset.value > 0) {
-    // 向右滑动
-    if (absOffset > leftWidth.value * threshold) {
-      open("left")
-    } else {
-      close()
-    }
-  } else if (offset.value < 0) {
-    // 向左滑动
-    if (absOffset > rightWidth.value * threshold) {
-      open("right")
-    } else {
-      close()
-    }
-  }
+  if (offset.value > 0 && absOff > leftWidth.value * threshold) open("left")
+  else if (offset.value < 0 && absOff > rightWidth.value * threshold) open("right")
+  else close()
 
-  // 延迟解除点击锁定
-  setTimeout(() => {
+  // 拖动结束后下一帧解锁 click，避免触发 cellClick 自动关闭
+  nextTick(() => {
     lockClick.value = false
-  }, 0)
+  })
 }
 
-// 打开指定位置
 async function open(pos: SwipeCellPosition) {
   if (!pos) return
-
-  const targetOffset = pos === "left" ? leftWidth.value : -rightWidth.value
-
-  offset.value = targetOffset
+  const target = pos === "left" ? leftWidth.value : -rightWidth.value
+  offset.value = target
+  if (position.value === pos) return
   position.value = pos
-
-  if (!opened.value || position.value !== pos) {
-    opened.value = true
-    emits("open", {
-      name: isDef(props.name) ? props.name : "",
-      position: pos,
-    })
-  }
+  emits("open", { name: isDef(props.name) ? props.name : "", position: pos })
 }
 
-// 关闭
-async function close(callBeforeClose = true) {
-  // 如果当前已关闭，直接返回
-  if (!opened.value && offset.value === 0) return
-
-  const currentPosition = position.value
-
-  // 调用关闭前回调
-  if (callBeforeClose && props.beforeClose) {
+async function close(callBefore = true) {
+  if (!position.value && offset.value === 0) return
+  const cur = position.value
+  if (callBefore && props.beforeClose) {
     const result = await props.beforeClose({
-      position: currentPosition,
+      position: cur,
       close: () => close(false),
     })
-
-    // 如果返回 false，阻止关闭
     if (result === false) return
   }
-
-  // 执行关闭
   offset.value = 0
-
-  if (opened.value) {
-    opened.value = false
-    emits("close", {
-      name: isDef(props.name) ? props.name : "",
-      position: currentPosition,
-    })
+  if (position.value) {
+    const prev = position.value
     position.value = ""
+    emits("close", { name: isDef(props.name) ? props.name : "", position: prev })
   }
 }
 
-// 点击事件处理
 function onCellClick() {
   if (lockClick.value) return
   emits("click", "cell")
-
-  // 如果已打开，点击内容区域关闭
-  if (opened.value) {
-    close()
-  }
+  if (position.value) close()
 }
 
-function onLeftClick() {
+function onSideClick(side: "left" | "right") {
   if (lockClick.value) return
-  emits("click", "left")
+  emits("click", side)
 }
 
-function onRightClick() {
-  if (lockClick.value) return
-  emits("click", "right")
-}
+onMounted(initWidths)
 
 defineExpose({
-  /** 打开滑动单元格 */
+  /** 打开指定方向 */
   open,
-  /** 关闭滑动单元格 */
+  /** 关闭（走 beforeClose 拦截链） */
   close,
-})
-
-onMounted(() => {
-  initWidths()
+  /** 当前是否打开 */
+  isOpen: () => !!position.value,
 })
 </script>
 
 <script lang="ts">
 export default {
   name: "ui-swipe-cell",
-  options: { virtualHost: true, multipleSlots: true, styleIsolation: "shared" },
+  options: {
+    // #ifndef MP-TOUTIAO
+    virtualHost: true,
+    // #endif
+    multipleSlots: true,
+    styleIsolation: "shared",
+  },
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .ui-swipe-cell {
   overflow: hidden;
   position: relative;
-  background: var(--ui-color-background, #fff);
+  background: var(--ui-color-background);
+
+  &--disabled {
+    opacity: var(--ui-opacity-disabled);
+    pointer-events: none;
+  }
 
   &__wrapper {
     z-index: 1;
@@ -294,23 +230,23 @@ export default {
     transition-timing-function: cubic-bezier(0.18, 0.89, 0.32, 1);
   }
 
+  // 左右 panels 静态贴在 cell 边内侧；wrapper z-index 盖住，平移露出
   &__left,
   &__right {
     top: 0;
     height: 100%;
     display: flex;
+    z-index: 0;
     position: absolute;
     align-items: center;
   }
 
   &__left {
     left: 0;
-    transform: translateX(-100%);
   }
 
   &__right {
     right: 0;
-    transform: translateX(100%);
   }
 }
 </style>

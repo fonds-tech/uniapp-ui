@@ -1,193 +1,150 @@
 <template>
   <demo-page>
-    <demo-section title="基础用法">
-      <demo-block direction="column">
-        <ui-swiper :list="images" height="300rpx" />
-      </demo-block>
+    <demo-section title="基础用法" desc="字符串数组直接渲染">
+      <ui-swiper :list="images" height="300rpx" />
     </demo-section>
 
-    <demo-section title="双向绑定">
-      <demo-block direction="column" align="start" :gap="16">
-        <text class="demo-text">当前索引: {{ currentIndex }}</text>
-        <demo-block :cols="4" :gap="16">
-          <ui-button v-for="i in 4" :key="i" size="small" :type="currentIndex === i - 1 ? 'primary' : 'default'" @click="currentIndex = i - 1">
+    <demo-section title="双向绑定 v-model:current" desc="按钮组切换索引">
+      <demo-block direction="column" :gap="16">
+        <ui-swiper v-model:current="currentIndex" :list="images" height="300rpx" />
+        <demo-block :cols="4" :gap="12">
+          <ui-button v-for="i in images.length" :key="i" size="small" :type="currentIndex === i - 1 ? 'primary' : 'default'" @click="currentIndex = i - 1">
             {{ i }}
           </ui-button>
         </demo-block>
-        <ui-swiper v-model:current="currentIndex" :list="images" height="300rpx" />
       </demo-block>
     </demo-section>
 
-    <demo-section title="数字指示器">
-      <demo-block direction="column">
-        <ui-swiper :list="images" height="300rpx" indicator-type="number" />
-      </demo-block>
-    </demo-section>
-
-    <demo-section title="隐藏指示器">
-      <demo-block direction="column">
-        <ui-swiper :list="images" height="300rpx" :indicator="false" />
-      </demo-block>
-    </demo-section>
-
-    <demo-section title="指示器位置">
-      <demo-block direction="column" align="start" :gap="16">
-        <text class="demo-text">当前位置: {{ currentPosition }}</text>
-        <demo-block :cols="4" :gap="16">
-          <ui-button size="small" @click="currentPosition = 'bottom-left'">左下</ui-button>
-          <ui-button size="small" @click="currentPosition = 'bottom'">底部</ui-button>
-          <ui-button size="small" @click="currentPosition = 'bottom-right'">右下</ui-button>
-          <ui-button size="small" @click="currentPosition = 'top'">顶部</ui-button>
-        </demo-block>
-        <ui-swiper :list="images" height="300rpx" :indicator-position="currentPosition" />
-      </demo-block>
-    </demo-section>
-
-    <demo-section title="垂直滚动">
-      <demo-block direction="column" align="start" :gap="16">
-        <text class="demo-text">当前位置: {{ verticalPosition }}</text>
-        <demo-block :cols="4" :gap="16">
-          <ui-button size="small" @click="verticalPosition = 'left'">左侧</ui-button>
-          <ui-button size="small" @click="verticalPosition = 'right'">右侧</ui-button>
-          <ui-button size="small" @click="verticalPosition = 'top'">顶部</ui-button>
-          <ui-button size="small" @click="verticalPosition = 'bottom'">底部</ui-button>
-        </demo-block>
-        <ui-swiper :list="images" height="300rpx" vertical :indicator-position="verticalPosition" />
-      </demo-block>
-    </demo-section>
-
-    <demo-section title="关闭自动播放">
-      <demo-block direction="column">
-        <ui-swiper :list="images" height="300rpx" :autoplay="false" />
-      </demo-block>
-    </demo-section>
-
-    <demo-section title="自定义间隔">
-      <demo-block direction="column" align="start" :gap="16">
-        <text class="demo-text">当前间隔: {{ currentInterval }}ms</text>
-        <demo-block :cols="3" :gap="16">
-          <ui-button size="small" @click="currentInterval = 2000">2s</ui-button>
-          <ui-button size="small" @click="currentInterval = 3000">3s</ui-button>
-          <ui-button size="small" @click="currentInterval = 5000">5s</ui-button>
-        </demo-block>
-        <ui-swiper :list="images" height="300rpx" :interval="currentInterval" />
-      </demo-block>
-    </demo-section>
-
-    <demo-section title="动画时长">
-      <demo-block direction="column" align="start" :gap="16">
-        <text class="demo-text">通过 duration 设置滑动动画时长</text>
-        <demo-block :cols="3" :gap="16">
-          <ui-button size="small" @click="currentDuration = 300">300ms</ui-button>
-          <ui-button size="small" @click="currentDuration = 500">500ms</ui-button>
-          <ui-button size="small" @click="currentDuration = 1000">1000ms</ui-button>
-        </demo-block>
-        <ui-swiper :list="images" height="300rpx" :duration="currentDuration" :autoplay="false" />
-      </demo-block>
-    </demo-section>
-
-    <demo-section title="缓动函数">
-      <demo-block direction="column" align="start" :gap="16">
-        <text class="demo-text">easing-function: 指定切换缓动动画类型</text>
-        <demo-block :cols="3" :gap="16">
-          <ui-button size="small" @click="currentEasing = 'default'">default</ui-button>
-          <ui-button size="small" @click="currentEasing = 'linear'">linear</ui-button>
-          <ui-button size="small" @click="currentEasing = 'easeInOutCubic'">easeInOut</ui-button>
-        </demo-block>
-        <ui-swiper :list="images" height="300rpx" :easing-function="currentEasing" :autoplay="false" />
-      </demo-block>
-    </demo-section>
-
-    <demo-section title="循环播放">
-      <demo-block direction="column" align="start" :gap="16">
-        <demo-block align="center" :gap="16">
-          <ui-switch v-model="isCircular" />
-          <text class="switch-label">{{ isCircular ? "循环播放" : "不循环" }}</text>
-        </demo-block>
-        <ui-swiper :list="images" height="300rpx" :circular="isCircular" :autoplay="false" />
-      </demo-block>
-    </demo-section>
-
-    <demo-section title="禁止触摸">
-      <demo-block direction="column" align="start" :gap="16">
-        <demo-block align="center" :gap="16">
-          <ui-switch v-model="isDisableTouch" />
-          <text class="switch-label">{{ isDisableTouch ? "禁止触摸" : "允许触摸" }}</text>
-        </demo-block>
-        <ui-swiper :list="images" height="300rpx" :disable-touch="isDisableTouch" />
-      </demo-block>
-    </demo-section>
-
-    <demo-section title="圆角设置">
-      <demo-block direction="column" align="start" :gap="16">
-        <text class="demo-text">通过 radius 设置圆角大小</text>
-        <demo-block :cols="3" :gap="16">
-          <ui-button size="small" @click="currentRadius = 0">无圆角</ui-button>
-          <ui-button size="small" @click="currentRadius = 16">16rpx</ui-button>
-          <ui-button size="small" @click="currentRadius = 32">32rpx</ui-button>
-        </demo-block>
-        <ui-swiper :list="images" height="300rpx" :radius="currentRadius" />
-      </demo-block>
-    </demo-section>
-
-    <demo-section title="前后露出">
-      <demo-block direction="column" align="start" :gap="16">
-        <text class="demo-text">通过 prev-gap/next-gap 露出前后项</text>
-        <ui-swiper :list="images" height="300rpx" prev-gap="40rpx" next-gap="40rpx" :circular="false" />
-      </demo-block>
-    </demo-section>
-
-    <demo-section title="图片模式">
-      <demo-block direction="column" align="start" :gap="16">
-        <text class="demo-text">image-mode 设置图片裁剪、缩放模式</text>
-        <demo-block :cols="3" :gap="16">
-          <ui-button size="small" @click="currentImageMode = 'scaleToFill'">scaleToFill</ui-button>
-          <ui-button size="small" @click="currentImageMode = 'aspectFit'">aspectFit</ui-button>
-          <ui-button size="small" @click="currentImageMode = 'aspectFill'">aspectFill</ui-button>
-        </demo-block>
-        <ui-swiper :list="images" height="300rpx" :image-mode="currentImageMode" />
-      </demo-block>
-    </demo-section>
-
-    <demo-section title="事件处理">
-      <demo-block direction="column" align="start" :gap="16">
-        <text class="demo-text">{{ eventLog }}</text>
-        <ui-swiper :list="images" height="300rpx" :autoplay="false" @click="onSwiperClick" @change="onSwiperChange" @animationfinish="onSwiperAnimationfinish" />
-      </demo-block>
-    </demo-section>
-
-    <demo-section title="自定义样式">
+    <demo-section title="指示器类型" desc="dot / number / 隐藏 切换">
       <demo-block direction="column" :gap="16">
-        <ui-swiper :list="images" height="300rpx" custom-class="my-swiper" :custom-style="{ boxShadow: '0 8rpx 32rpx rgba(0,0,0,0.15)' }" />
+        <ui-swiper :list="images" height="300rpx" :indicator="indicator.show" :indicator-type="indicator.type" />
+        <demo-block :cols="3" :gap="12">
+          <ui-button size="small" :type="indicator.show && indicator.type === 'dot' ? 'primary' : 'default'" @click="setIndicator(true, 'dot')">圆点</ui-button>
+          <ui-button size="small" :type="indicator.show && indicator.type === 'number' ? 'primary' : 'default'" @click="setIndicator(true, 'number')">数字</ui-button>
+          <ui-button size="small" :type="!indicator.show ? 'primary' : 'default'" @click="setIndicator(false, indicator.type)">隐藏</ui-button>
+        </demo-block>
       </demo-block>
     </demo-section>
 
-    <demo-section title="综合示例 - 商品轮播">
-      <demo-block direction="column">
-        <ui-swiper
-          v-model:current="productIndex"
-          :list="images"
-          height="400rpx"
-          radius="24rpx"
-          indicator-type="number"
-          indicator-position="bottom-right"
-          :duration="300"
-          easing-function="easeInOutCubic"
-          image-mode="aspectFill"
-          @click="onProductClick"
-        />
-        <view class="product-info">
-          <text class="product-name">商品名称 {{ productIndex + 1 }}</text>
-          <text class="product-price">¥{{ (productIndex + 1) * 99 }}.00</text>
+    <demo-section title="指示器位置" desc="8 个方位切换">
+      <demo-block direction="column" :gap="16">
+        <ui-swiper :list="images" height="300rpx" :indicator-position="position" />
+        <demo-block :cols="4" :gap="12">
+          <ui-button v-for="p in positions" :key="p" size="small" :type="position === p ? 'primary' : 'default'" @click="position = p">
+            {{ p }}
+          </ui-button>
+        </demo-block>
+      </demo-block>
+    </demo-section>
+
+    <demo-section title="垂直滚动" desc="vertical + 适用于纵向 banner">
+      <ui-swiper :list="images" height="300rpx" vertical indicator-position="right" />
+    </demo-section>
+
+    <demo-section title="自动播放 / 循环 / 触摸" desc="3 个布尔开关组合">
+      <demo-block direction="column" :gap="16">
+        <ui-swiper :list="images" height="300rpx" :autoplay="ap.autoplay" :circular="ap.circular" :disable-touch="ap.disableTouch" />
+        <demo-block :cols="3" :gap="12">
+          <ui-button size="small" :type="ap.autoplay ? 'primary' : 'default'" @click="ap.autoplay = !ap.autoplay">{{ ap.autoplay ? "自动开" : "自动关" }}</ui-button>
+          <ui-button size="small" :type="ap.circular ? 'primary' : 'default'" @click="ap.circular = !ap.circular">{{ ap.circular ? "循环" : "不循环" }}</ui-button>
+          <ui-button size="small" :type="ap.disableTouch ? 'primary' : 'default'" @click="ap.disableTouch = !ap.disableTouch">{{ ap.disableTouch ? "禁触摸" : "允触摸" }}</ui-button>
+        </demo-block>
+      </demo-block>
+    </demo-section>
+
+    <demo-section title="间隔 / 时长 / 缓动" desc="动画参数切换">
+      <demo-block direction="column" :gap="16">
+        <ui-swiper :list="images" height="300rpx" :interval="anim.interval" :duration="anim.duration" :easing-function="anim.easing" />
+        <text class="demo-label">interval {{ anim.interval }} / duration {{ anim.duration }} / {{ anim.easing }}</text>
+        <demo-block :cols="3" :gap="12">
+          <ui-button v-for="t in intervalPresets" :key="t" size="small" :type="anim.interval === t ? 'primary' : 'default'" @click="anim.interval = t">{{ t }}ms</ui-button>
+        </demo-block>
+        <demo-block :cols="3" :gap="12">
+          <ui-button v-for="d in durationPresets" :key="d" size="small" :type="anim.duration === d ? 'primary' : 'default'" @click="anim.duration = d">{{ d }}ms</ui-button>
+        </demo-block>
+        <demo-block :cols="3" :gap="12">
+          <ui-button v-for="e in easingPresets" :key="e" size="small" :type="anim.easing === e ? 'primary' : 'default'" @click="anim.easing = e">{{ e }}</ui-button>
+        </demo-block>
+      </demo-block>
+    </demo-section>
+
+    <demo-section title="圆角 / 前后露出" desc="radius + prev-gap + next-gap 组合">
+      <demo-block direction="column" :gap="16">
+        <ui-swiper :list="images" height="300rpx" :radius="shape.radius" :prev-gap="shape.gap" :next-gap="shape.gap" :circular="false" />
+        <demo-block :cols="3" :gap="12">
+          <ui-button v-for="r in radiusPresets" :key="r" size="small" :type="shape.radius === r ? 'primary' : 'default'" @click="shape.radius = r">圆角 {{ r }}</ui-button>
+        </demo-block>
+        <demo-block :cols="3" :gap="12">
+          <ui-button v-for="g in gapPresets" :key="g" size="small" :type="shape.gap === g ? 'primary' : 'default'" @click="shape.gap = g">露出 {{ g }}</ui-button>
+        </demo-block>
+      </demo-block>
+    </demo-section>
+
+    <demo-section title="图片模式 image-mode" desc="scaleToFill / aspectFit / aspectFill 切换">
+      <demo-block direction="column" :gap="16">
+        <ui-swiper :list="images" height="300rpx" :image-mode="imageMode" />
+        <demo-block :cols="3" :gap="12">
+          <ui-button v-for="m in imageModes" :key="m" size="small" :type="imageMode === m ? 'primary' : 'default'" @click="imageMode = m">{{ m }}</ui-button>
+        </demo-block>
+      </demo-block>
+    </demo-section>
+
+    <demo-section title="对象数组 + fieldKeys" desc="非标准字段映射">
+      <ui-swiper :list="customList" :field-keys="{ url: 'src', type: 'kind' }" height="300rpx" />
+    </demo-section>
+
+    <demo-section title="视频类型" desc="自动识别 .mp4 扩展名渲染 video 标签">
+      <ui-swiper :list="mediaList" height="400rpx" :autoplay="false" :circular="false" />
+    </demo-section>
+
+    <demo-section title="自定义 indicator slot" desc="slot 完全替代默认指示器">
+      <ui-swiper :list="images" height="300rpx">
+        <template #indicator="{ index, total }">
+          <view class="custom-indicator">
+            <text>{{ index + 1 }} · {{ total }}</text>
+          </view>
+        </template>
+      </ui-swiper>
+    </demo-section>
+
+    <demo-section title="实例方法 prev / next / swiperTo" desc="编程式控制">
+      <demo-block direction="column" :gap="16">
+        <ui-swiper ref="ctrlRef" :list="images" height="300rpx" :autoplay="false" />
+        <demo-block :cols="3" :gap="12">
+          <ui-button size="small" @click="ctrlRef?.prev()">上一张</ui-button>
+          <ui-button size="small" @click="ctrlRef?.next()">下一张</ui-button>
+          <ui-button size="small" @click="ctrlRef?.swiperTo(2)">第 3 张</ui-button>
+        </demo-block>
+      </demo-block>
+    </demo-section>
+
+    <demo-section title="事件回显" desc="change / click / animationfinish 实时日志">
+      <demo-block direction="column" :gap="12">
+        <ui-swiper :list="images" height="300rpx" :autoplay="false" @click="onClick" @change="onChange" @animationfinish="onAnimationFinish" />
+        <text class="event-log">{{ eventLog }}</text>
+      </demo-block>
+    </demo-section>
+
+    <demo-section title="综合 · 商品轮播" desc="数字指示器 + 商品信息卡">
+      <demo-block direction="column" :gap="16">
+        <ui-swiper v-model:current="productIndex" :list="images" height="400rpx" radius="24rpx" indicator-type="number" image-mode="aspectFill" />
+        <view class="product">
+          <text class="product__name">商品 {{ productIndex + 1 }}</text>
+          <text class="product__price">¥{{ (productIndex + 1) * 99 }}.00</text>
         </view>
       </demo-block>
+    </demo-section>
+
+    <demo-section title="综合 · Banner 多类型" desc="混合图片 + 视频，点击跳转">
+      <ui-swiper :list="bannerList" height="320rpx" radius="16rpx" indicator-position="bottom" :duration="600" @click="onBannerClick" />
     </demo-section>
   </demo-page>
 </template>
 
 <script setup lang="ts">
-import type { SwiperEasingFunction, SwiperIndicatorPosition } from "@/uni_modules/uniapp-ui/ui-swiper"
+import type { SwiperInstance, SwiperIndicatorType, SwiperEasingFunction, SwiperIndicatorPosition } from "@/uni_modules/uniapp-ui/ui-swiper"
 import { useToast } from "@/uni_modules/uniapp-ui"
+import { ref, reactive } from "vue"
 
 definePage({
   style: { navigationBarTitleText: "Swiper 轮播" },
@@ -195,7 +152,6 @@ definePage({
 
 const toast = useToast()
 
-// 基础数据 - 使用稳定的图片源
 const images = [
   "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=750&h=300&fit=crop",
   "https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=750&h=300&fit=crop",
@@ -203,92 +159,113 @@ const images = [
   "https://images.unsplash.com/photo-1433086966358-54859d0ed716?w=750&h=300&fit=crop",
 ]
 
-// 双向绑定
 const currentIndex = ref(0)
 
-// 指示器位置
-const currentPosition = ref<SwiperIndicatorPosition>("bottom-right")
-
-// 垂直滚动指示器位置
-const verticalPosition = ref<SwiperIndicatorPosition>("right")
-
-// 自定义间隔
-const currentInterval = ref(3000)
-
-// 动画时长
-const currentDuration = ref(500)
-
-// 缓动函数
-const currentEasing = ref<SwiperEasingFunction>("default")
-
-// 循环播放
-const isCircular = ref(true)
-
-// 禁止触摸
-const isDisableTouch = ref(false)
-
-// 圆角
-const currentRadius = ref(0)
-
-// 图片模式
-const currentImageMode = ref<UniHelper.ImageProps["mode"]>("scaleToFill")
-
-// 事件处理
-const eventLog = ref("滑动轮播图触发事件")
-
-function onSwiperClick(index: number) {
-  eventLog.value = `触发 click 事件，索引: ${index}`
-  toast.text(`点击了第 ${index + 1} 张图片`)
+const indicator = reactive<{ show: boolean; type: SwiperIndicatorType }>({ show: true, type: "dot" })
+function setIndicator(show: boolean, type: SwiperIndicatorType) {
+  indicator.show = show
+  indicator.type = type
 }
 
-function onSwiperChange(index: number) {
-  eventLog.value = `触发 change 事件，切换到: ${index}`
+const positions: SwiperIndicatorPosition[] = ["top-left", "top", "top-right", "left", "right", "bottom-left", "bottom", "bottom-right"]
+const position = ref<SwiperIndicatorPosition>("bottom-right")
+
+const ap = reactive({ autoplay: true, circular: true, disableTouch: false })
+
+const intervalPresets = [2000, 3000, 5000]
+const durationPresets = [300, 500, 1000]
+const easingPresets: SwiperEasingFunction[] = ["default", "linear", "easeInOutCubic"]
+const anim = reactive<{ interval: number; duration: number; easing: SwiperEasingFunction }>({ interval: 3000, duration: 500, easing: "default" })
+
+const radiusPresets = [0, 16, 32]
+const gapPresets = [0, 40, 80]
+const shape = reactive({ radius: 16, gap: 40 })
+
+const imageModes: UniHelper.ImageProps["mode"][] = ["scaleToFill", "aspectFit", "aspectFill"]
+const imageMode = ref<UniHelper.ImageProps["mode"]>("scaleToFill")
+
+// fieldKeys 演示
+const customList = [
+  { src: images[0], kind: "image", title: "图一" },
+  { src: images[1], kind: "image", title: "图二" },
+  { src: images[2], kind: "image", title: "图三" },
+]
+
+// 视频类型演示
+const mediaList = [
+  { url: images[0] },
+  { url: "https://media.w3.org/2010/05/sintel/trailer.mp4", poster: images[1] },
+  { url: images[2] },
+]
+
+const ctrlRef = ref<SwiperInstance>()
+
+const eventLog = ref("等待事件...")
+function onClick(idx: number) {
+  eventLog.value = `[click] index=${idx}`
+}
+function onChange(idx: number) {
+  eventLog.value = `[change] index=${idx}`
+}
+function onAnimationFinish(idx: number) {
+  eventLog.value = `[animationfinish] index=${idx}`
 }
 
-function onSwiperAnimationfinish(index: number) {
-  eventLog.value = `触发 animationfinish 事件，索引: ${index}`
-}
-
-// 商品轮播
 const productIndex = ref(0)
 
-function onProductClick(index: number) {
-  toast.success(`查看商品 ${index + 1} 详情`)
+// banner mixed
+const bannerList = [
+  { url: images[0], title: "新品上市" },
+  { url: "https://media.w3.org/2010/05/sintel/trailer.mp4", poster: images[1], title: "视频" },
+  { url: images[2], title: "活动" },
+]
+function onBannerClick(idx: number) {
+  toast.text(`点击 banner ${idx + 1}`)
 }
 </script>
 
 <style lang="scss" scoped>
-.demo-text {
+.demo-label {
   color: var(--ui-color-text-secondary);
-  font-size: 24rpx;
+  font-size: var(--ui-font-size-xs);
 }
 
-.switch-label {
-  color: var(--ui-color-text);
-  font-size: 28rpx;
+.event-log {
+  color: var(--ui-color-text-secondary);
+  padding: var(--ui-spacing-md);
+  font-size: var(--ui-font-size-xs);
+  background: var(--ui-color-background-section);
+  font-family: var(--ui-font-family-mono);
+  border-radius: var(--ui-radius-md);
 }
 
-.product-info {
+.custom-indicator {
+  top: var(--ui-spacing-md);
+  color: var(--ui-color-text-inverse);
+  right: var(--ui-spacing-md);
+  padding: var(--ui-spacing-xxs) var(--ui-spacing-sm);
+  position: absolute;
+  font-size: var(--ui-font-size-xs);
+  background: var(--ui-color-primary);
+  border-radius: var(--ui-radius-round);
+}
+
+.product {
   display: flex;
-  padding: 24rpx 0;
+  padding: var(--ui-spacing-md) 0;
   align-items: center;
   justify-content: space-between;
-}
 
-.product-name {
-  color: var(--ui-color-text);
-  font-size: 30rpx;
-  font-weight: 600;
-}
+  &__name {
+    color: var(--ui-color-text);
+    font-size: var(--ui-font-size-md);
+    font-weight: var(--ui-font-weight-bold);
+  }
 
-.product-price {
-  color: #ee0a24;
-  font-size: 32rpx;
-  font-weight: 600;
-}
-
-:deep(.my-swiper) {
-  border: 4rpx solid #1989fa;
-  border-radius: 24rpx;
+  &__price {
+    color: var(--ui-color-danger);
+    font-size: var(--ui-font-size-lg);
+    font-weight: var(--ui-font-weight-bold);
+  }
 }
 </style>
