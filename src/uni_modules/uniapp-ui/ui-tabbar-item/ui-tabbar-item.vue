@@ -1,6 +1,6 @@
 <template>
-  <view class="ui-tabbar-item" :style="[style, props.customStyle]" :class="[classs, props.customClass]" @click="onClick">
-    <view class="ui-tabbar-item__icon" :style="[iconStyle]">
+  <view class="ui-tabbar-item" :class="[classNames, customClass]" :style="[rootStyle]" @click="onClick">
+    <view class="ui-tabbar-item__icon">
       <ui-badge :dot="props.dot" :value="props.badge">
         <slot name="icon">
           <image v-if="isImageIcon" :src="currentIcon" class="ui-tabbar-item__image" mode="aspectFit" />
@@ -8,7 +8,7 @@
         </slot>
       </ui-badge>
     </view>
-    <view v-if="props.text || $slots.default" class="ui-tabbar-item__text" :style="[textStyle]">
+    <view v-if="props.text || $slots.default" class="ui-tabbar-item__text">
       <slot>{{ props.text }}</slot>
     </view>
     <slot name="extra" />
@@ -16,13 +16,15 @@
 </template>
 
 <script setup lang="ts">
+import type { TabbarProps } from "../ui-tabbar"
 import type { CSSProperties } from "vue"
+import type { TabbarRouteType } from "./index"
 import { isDef } from "../utils/check"
-import { computed } from "vue"
 import { tabbarKey } from "../ui-tabbar"
+import { ref, computed } from "vue"
 import { createUrlParams } from "../utils/utils"
+import { useColor, useStyle, useParent } from "../hooks"
 import { tabbarItemEmits, tabbarItemProps } from "./index"
-import { useUnit, useColor, useStyle, useParent } from "../hooks"
 
 defineOptions({ name: "ui-tabbar-item" })
 
@@ -30,106 +32,92 @@ const props = defineProps(tabbarItemProps)
 const emits = defineEmits(tabbarItemEmits)
 const { parent, index } = useParent(tabbarKey)
 
-// 导航状态锁，防止重复跳转
-let navigating = false
+// 导航锁，防止路由切换期间重复点击
+const navigating = ref(false)
 
-// 组件根元素样式
-const style = computed(() => {
-  const style: CSSProperties = {}
-  return useStyle(style)
-})
+const name = computed(() => (isDef(props.name) ? props.name : index.value))
+const active = computed(() => parent?.props.modelValue === name.value)
 
-// 组件根元素类名
-const classs = computed(() => {
+const classNames = computed(() => {
   const list: string[] = []
   if (active.value) list.push("ui-tabbar-item--active")
   if (props.disabled) list.push("ui-tabbar-item--disabled")
   return list
 })
 
-// 图标容器样式
-const iconStyle = computed(() => {
-  const style: CSSProperties = {}
-  style.fontSize = useUnit(props.iconSize)
-  style.color = active.value ? useColor(prop("activeColor")) : useColor(prop("inactiveColor"))
-  return useStyle(style)
+// 根节点 CSS var 注入：颜色由 active/inactive 通过 SCSS class 单路径切换
+const rootStyle = computed(() => {
+  const vars: Record<string, string | undefined> = {}
+  const activeColor = inherit("activeColor")
+  const inactiveColor = inherit("inactiveColor")
+  if (isDef(activeColor)) vars["--ui-tabbar-item-color-active"] = useColor(activeColor as string)
+  if (isDef(inactiveColor)) vars["--ui-tabbar-item-color-inactive"] = useColor(inactiveColor as string)
+  return useStyle({ ...vars, ...useStyle(props.customStyle) } as CSSProperties)
 })
 
-// 文本样式
-const textStyle = computed(() => {
-  const style: CSSProperties = {}
-  style.color = active.value ? useColor(prop("activeColor")) : useColor(prop("inactiveColor"))
-  return useStyle(style)
-})
-
-// 当前项标识，优先使用 name，否则使用索引
-const name = computed(() => (isDef(props.name) ? props.name : index.value))
-
-// 是否为激活状态
-const active = computed(() => parent?.props.modelValue === name.value)
-
-// 当前显示的图标（激活时优先使用 activeIcon）
 const currentIcon = computed(() => {
   if (active.value && props.activeIcon) return props.activeIcon
-  return props.icon
+  return props.icon ?? ""
 })
 
-// 是否为图片图标（URL 地址或图片文件路径）
+// URL / data: / 绝对路径 / 相对路径 / 已知图片后缀 → 图片
 const isImageIcon = computed(() => {
   const icon = currentIcon.value
   if (!icon) return false
   if (/^(?:https?:|data:|\/|\.\.?\/)/.test(icon)) return true
-  return /\.(?:png|jpe?g|gif|svg|webp|ico|bmp)$/i.test(icon)
+  const clean = icon.split(/[?#]/)[0]
+  return /\.(?:png|jpe?g|gif|svg|webp|ico|bmp)$/i.test(clean)
 })
 
-// 获取配置属性，优先从当前组件获取，其次从父组件获取
-function prop(name: string) {
-  if (isDef(props[name])) return props[name]
-  if (isDef(parent?.props[name])) return parent.props[name]
-  return ""
+// 自身 prop 优先，缺省回退到父 ui-tabbar 同名 prop
+function inherit<K extends keyof TabbarProps>(key: K): unknown {
+  const self = (props as Record<string, unknown>)[key as string]
+  if (isDef(self)) return self
+  return parent?.props?.[key]
 }
 
-// 规范化路由路径，去除开头的斜杠
 function normalizeRoute(route: string) {
   return route.replace(/^\//, "")
 }
 
-// 点击事件处理
 async function onClick() {
   if (props.disabled) return
   emits("click", name.value)
   if (!parent) return
 
-  if (parent.props.route) {
-    if (!props.route) {
-      console.error("ui-tabbar-item: route is required")
-      return
-    }
-    if (parent.props.beforeChange) {
-      try {
-        const result = await parent.props.beforeChange(name.value)
-        if (result === false) return
-      } catch {
-        return
-      }
-    }
-    const pages = getCurrentPages()
-    const page = pages[pages.length - 1]
-    if (normalizeRoute(props.route) === normalizeRoute(page.route || "")) {
-      return
-    }
-    if (navigating) return
-    navigating = true
+  if (!parent.props.route) {
     parent.updateValue(name.value)
-    uni[props.routeType]({
-      url: props.routeType === "switchTab" ? props.route : `${props.route}${createUrlParams(props.routeParams)}`,
-      complete: () => {
-        navigating = false
-      },
-    })
-  } else {
-    parent.updateValue(name.value)
+    return
   }
+
+  // 路由模式
+  if (!props.route) {
+    console.warn("[ui-tabbar-item] route 模式下 item.route 必填")
+    return
+  }
+  if (parent.props.beforeChange) {
+    try {
+      const result = await parent.props.beforeChange(name.value)
+      if (result === false) return
+    } catch (err) {
+      console.warn("[ui-tabbar-item] beforeChange rejected", err)
+      return
+    }
+  }
+  const pages = getCurrentPages()
+  const page = pages[pages.length - 1]
+  if (normalizeRoute(props.route) === normalizeRoute(page?.route || "")) return
+  if (navigating.value) return
+  navigating.value = true
+  parent.updateValue(name.value)
+  const routeType = (props.routeType as TabbarRouteType) || "switchTab"
+  const url = routeType === "switchTab" ? props.route : `${props.route}${createUrlParams(props.routeParams)}`
+  uni[routeType]({
+    url,
+    complete: () => {
+      navigating.value = false
+    },
+  })
 }
 
 defineExpose({ name, index })
@@ -138,14 +126,23 @@ defineExpose({ name, index })
 <script lang="ts">
 export default {
   name: "ui-tabbar-item",
-  options: { virtualHost: true, multipleSlots: true, styleIsolation: "shared" },
+  options: {
+    // #ifndef MP-TOUTIAO
+    virtualHost: true,
+    // #endif
+    multipleSlots: true,
+    styleIsolation: "shared",
+  },
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .ui-tabbar-item {
+  --ui-tabbar-item-color-active: var(--ui-color-primary);
+  --ui-tabbar-item-color-inactive: var(--ui-color-text-secondary);
+
   flex: 1;
-  color: var(--ui-color-text-secondary);
+  color: var(--ui-tabbar-item-color-inactive);
   display: flex;
   position: relative;
   align-items: center;
@@ -154,7 +151,7 @@ export default {
   justify-content: center;
 
   &--active {
-    color: var(--ui-color-primary);
+    color: var(--ui-tabbar-item-color-active);
   }
 
   &--disabled {
@@ -164,6 +161,7 @@ export default {
   }
 
   &__icon {
+    color: inherit;
     height: var(--ui-icon-size-md);
     display: flex;
     position: relative;
@@ -178,6 +176,7 @@ export default {
   }
 
   &__text {
+    color: inherit;
     display: -webkit-box;
     overflow: hidden;
     line-clamp: 1;

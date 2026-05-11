@@ -1,11 +1,11 @@
 <template>
-  <view v-if="visible" class="ui-tag" :class="[classes, props.customClass]" :style="[style]" @click="onClick">
+  <view v-if="visible" class="ui-tag" :class="[classNames, customClass]" :style="[rootStyle]" @click="onClick">
     <view v-if="props.icon || slots.icon" class="ui-tag__icon">
       <slot name="icon">
         <ui-icon :name="props.icon" :color="props.iconColor" :size="props.iconSize" :weight="props.iconWeight" />
       </slot>
     </view>
-    <view class="ui-tag__text" :style="[textStyle]">
+    <view class="ui-tag__text">
       <slot>{{ props.text }}</slot>
     </view>
     <view v-if="props.closeable || slots.close" class="ui-tag__close" @click.stop="onClose">
@@ -17,6 +17,7 @@
 </template>
 
 <script setup lang="ts">
+import type { CSSProperties } from "vue"
 import { tagEmits, tagProps } from "./index"
 import { useUnit, useColor, useStyle } from "../hooks"
 import { ref, watch, computed, useSlots } from "vue"
@@ -27,67 +28,48 @@ const props = defineProps(tagProps)
 const emits = defineEmits(tagEmits)
 const slots = useSlots()
 
-// 是否可见
-const visible = ref(true)
+const visible = ref(props.show)
 
-// 根节点样式
-const style = computed(() => {
-  const style: any = {}
-  style.padding = props.padding
-  style.color = useColor(props.textColor)
-  style.height = useUnit(props.height)
-  style.background = useColor(props.background)
-  style.borderRadius = useUnit(props.borderRadius)
-
-  if (props.borderColor) {
-    style.borderColor = useColor(props.borderColor)
-    style.borderStyle = "solid"
-    style.borderWidth = useUnit(props.borderWidth) || "1rpx"
-  } else if (props.borderWidth) {
-    style.borderWidth = useUnit(props.borderWidth)
-  }
-
-  return useStyle({ ...style, ...useStyle(props.customStyle) })
-})
-// 类名数组
-const classes = computed(() => {
-  const list: string[] = []
-  list.push(`ui-tag--${props.type}`)
+const classNames = computed(() => {
+  const list: string[] = [`ui-tag--${props.type}`]
   if (props.round) list.push("ui-tag--round")
   if (props.plain) list.push("ui-tag--plain")
   if (props.closeable) list.push("ui-tag--closeable")
   return list
 })
-// 文字样式
-const textStyle = computed(() => {
-  const style: any = {}
-  style.fontSize = useUnit(props.textSize)
-  style.fontWeight = props.textWeight
-  return useStyle(style)
+
+// 根节点 CSS var 注入：颜色 / 尺寸 / 边框走 var 单路径
+const rootStyle = computed(() => {
+  const vars: Record<string, string | number | undefined> = {}
+  if (props.height) vars["--ui-tag-height"] = useUnit(props.height)
+  if (props.padding) vars["--ui-tag-padding"] = props.padding
+  if (props.background) vars["--ui-tag-bg"] = useColor(props.background)
+  if (props.textColor) vars["--ui-tag-text-color"] = useColor(props.textColor)
+  if (props.textSize) vars["--ui-tag-text-size"] = useUnit(props.textSize)
+  if (props.textWeight) vars["--ui-tag-text-weight"] = String(props.textWeight)
+  if (props.borderColor) vars["--ui-tag-border-color"] = useColor(props.borderColor)
+  if (props.borderWidth) vars["--ui-tag-border-width"] = useUnit(props.borderWidth)
+  if (props.borderRadius) vars["--ui-tag-radius"] = useUnit(props.borderRadius)
+  return useStyle({ ...vars, ...useStyle(props.customStyle) } as CSSProperties)
 })
 
-// 监听 show 属性
+// 外部 show 变化同步内部
 watch(
   () => props.show,
   (val) => {
-    visible.value = val
-  },
-  { immediate: true },
-)
-// 监听可见性变化
-watch(
-  () => visible.value,
-  (val) => {
-    emits("update:show", val)
+    if (val !== visible.value) visible.value = val
   },
 )
 
-// 点击事件
+// 内部 visible 改变向外 emit（不 immediate，避免挂载时干扰父级）
+watch(visible, (val) => {
+  emits("update:show", val)
+})
+
 function onClick() {
   emits("click")
 }
 
-// 关闭事件
 function onClose() {
   visible.value = false
   emits("close")
@@ -97,23 +79,41 @@ function onClose() {
 <script lang="ts">
 export default {
   name: "ui-tag",
-  options: { virtualHost: true, multipleSlots: true, styleIsolation: "shared" },
+  options: {
+    // #ifndef MP-TOUTIAO
+    virtualHost: true,
+    // #endif
+    multipleSlots: true,
+    styleIsolation: "shared",
+  },
 }
 </script>
 
 <style lang="scss">
 .ui-tag {
+  --ui-tag-bg: var(--ui-color-primary);
+  --ui-tag-text-color: var(--ui-color-text-inverse);
+  --ui-tag-text-size: var(--ui-font-size-xs);
+  --ui-tag-text-weight: var(--ui-font-weight-normal);
+  --ui-tag-padding: var(--ui-spacing-xxs) var(--ui-spacing-xs);
+  --ui-tag-radius: var(--ui-radius-xs);
+  --ui-tag-border-color: transparent;
+  --ui-tag-border-width: var(--ui-border-width-thin);
+
   width: fit-content;
+  color: var(--ui-tag-text-color);
+  height: var(--ui-tag-height, auto);
   display: inline-flex;
-  padding: var(--ui-spacing-xxs) var(--ui-spacing-xs);
+  padding: var(--ui-tag-padding);
   overflow: hidden;
   position: relative;
-  box-sizing: border-box;
+  font-size: var(--ui-tag-text-size);
+  background: var(--ui-tag-bg);
   align-items: center;
   flex-shrink: 0;
-  border-radius: var(--ui-radius-xs);
+  font-weight: var(--ui-tag-text-weight);
+  border-radius: var(--ui-tag-radius);
   justify-content: center;
-  background-color: var(--ui-color-primary);
 
   &__icon {
     display: flex;
@@ -122,7 +122,8 @@ export default {
   }
 
   &__text {
-    font-size: 20rpx;
+    color: inherit;
+    font-size: inherit;
     white-space: nowrap;
   }
 
@@ -133,24 +134,25 @@ export default {
   }
 
   &--round {
-    border-radius: 9999px;
+    border-radius: var(--ui-radius-round);
   }
 
+  // 镂空：白底 + 主题色边框/文字
   &--plain {
     border-style: solid;
-    border-width: var(--ui-border-width-thin);
-    background-color: var(--ui-color-background);
+    border-color: var(--ui-tag-border-color);
+    border-width: var(--ui-tag-border-width);
+    background: var(--ui-color-background);
   }
 
+  // 主题色 type
   @each $type in (primary, success, warning, danger, info) {
     &--#{$type} {
-      color: var(--ui-color-background);
-      background-color: var(--ui-color-#{$type});
+      --ui-tag-bg: var(--ui-color-#{$type});
+      --ui-tag-border-color: var(--ui-color-#{$type});
 
       &.ui-tag--plain {
-        color: var(--ui-color-#{$type});
-        border-color: var(--ui-color-#{$type});
-        background-color: var(--ui-color-background);
+        --ui-tag-text-color: var(--ui-color-#{$type});
       }
     }
   }

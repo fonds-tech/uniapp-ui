@@ -31,17 +31,17 @@ const defaultProps = buildDefaultProps("tabs", {
 })
 
 export const tabsProps = {
-  /** 绑定值 */
+  /** 当前激活的 name */
   modelValue: defaultProps("modelValue", { type: [Number, String] }),
-  /** 高度 */
+  /** 整体高度 */
   height: defaultProps("height", { type: [Number, String] }),
-  /** 是否可以滚动 */
+  /** 横向滚动（tab 多时） */
   scrollable: defaultProps("scrollable", { type: Boolean }),
-  /** 激活文字大小 */
+  /** 激活态文字大小（向 ui-tab 继承） */
   activeSize: defaultProps("activeSize", { type: [Number, String] }),
-  /** 激活文字颜色 */
+  /** 激活态文字颜色 */
   activeColor: defaultProps("activeColor", { type: String }),
-  /** 激活文字粗细 */
+  /** 激活态文字粗细 */
   activeWeight: defaultProps("activeWeight", { type: [Number, String] }),
   /** 未激活文字大小 */
   inactiveSize: defaultProps("inactiveSize", { type: [Number, String] }),
@@ -51,25 +51,25 @@ export const tabsProps = {
   inactiveWeight: defaultProps("inactiveWeight", { type: [Number, String] }),
   /** 指示器颜色 */
   indicatorColor: defaultProps("indicatorColor", { type: String }),
-  /** 指示器宽度 */
+  /** 指示器宽度（autoIndicatorWidth=true 时跟随文字宽度） */
   indicatorWidth: defaultProps("indicatorWidth", { type: [Number, String] }),
   /** 指示器高度 */
   indicatorHeight: defaultProps("indicatorHeight", { type: [Number, String] }),
   /** 指示器圆角 */
   indicatorRadius: defaultProps("indicatorRadius", { type: [Number, String] }),
-  /** 是否显示指示器 */
+  /** 显示指示器 */
   showIndicator: defaultProps("showIndicator", { type: Boolean }),
-  /** 指示器宽度是否自动匹配文字宽度 */
+  /** 指示器宽度跟随激活 tab 文字宽度 */
   autoIndicatorWidth: defaultProps("autoIndicatorWidth", { type: Boolean }),
-  /** 单项宽度 */
+  /** 单 tab 固定宽度 */
   itemWidth: defaultProps("itemWidth", { type: [Number, String] }),
-  /** 单项最大宽度 */
+  /** 单 tab 最大宽度 */
   itemMaxWidth: defaultProps("itemMaxWidth", { type: [Number, String] }),
-  /** 背景颜色 */
+  /** 背景色 */
   background: defaultProps("background", { type: String }),
-  /** 指示器动画过渡时间，单位ms */
+  /** 指示器/滚动动画时长 (ms) */
   duration: defaultProps("duration", { type: Number }),
-  /** 是否显示底部边框线 */
+  /** 显示底部分隔线 */
   borderBottom: defaultProps("borderBottom", { type: Boolean }),
   /** 元素层级 */
   zIndex: defaultProps("zIndex", { type: [Number, String] }),
@@ -80,12 +80,9 @@ export const tabsProps = {
 }
 
 export const tabsEmits = {
-  /** 值变化事件 */
-  change: (name: string | number) => true,
-  /** 点击选项卡事件 */
-  tabClick: (name: string | number) => true,
-  /** 更新绑定值事件 */
-  "update:modelValue": (name: string | number) => true,
+  change: (_name: string | number) => true,
+  tabClick: (_name: string | number) => true,
+  "update:modelValue": (_name: string | number) => true,
 }
 
 export type TabsEmits = typeof tabsEmits
