@@ -1,8 +1,8 @@
 <template>
   <view
     class="ui-stepper"
-    :class="[classes, customClass]"
-    :style="[style]"
+    :class="[classNames, customClass]"
+    :style="[rootStyle]"
     role="spinbutton"
     :aria-valuenow="+current"
     :aria-valuemin="+props.min"
@@ -10,7 +10,7 @@
     :aria-disabled="effectiveDisabled"
   >
     <button
-      v-if="showMinus"
+      v-if="props.showMinus"
       class="ui-stepper__button"
       :class="{ 'ui-stepper__button--loading': loading }"
       hover-class="ui-stepper__button--active"
@@ -21,15 +21,15 @@
       @touchstart="onMinusTouchstart"
     >
       <slot name="minus" :disabled="minusDisabled">
-        <view class="ui-stepper__minus" :style="[minusStyle]" :class="[minusClasses]" />
+        <view class="ui-stepper__minus" :class="minusClasses" />
       </slot>
     </button>
-    <view v-if="showInput" class="ui-stepper__value" @click="onClick">
+
+    <view v-if="props.showInput" class="ui-stepper__value" @click="onClick">
       <input
         v-model="current"
-        :style="[inputStyle]"
         class="ui-stepper__input"
-        :class="[inputClasses]"
+        :class="inputClasses"
         :type="inputType"
         :disabled="inputDisabled"
         placeholder=""
@@ -38,8 +38,9 @@
         @input="onInput"
       />
     </view>
+
     <button
-      v-if="showPlus"
+      v-if="props.showPlus"
       class="ui-stepper__button"
       :class="{ 'ui-stepper__button--loading': loading }"
       hover-class="ui-stepper__button--active"
@@ -50,7 +51,7 @@
       @touchend.stop="onTouchend"
     >
       <slot name="plus" :disabled="plusDisabled">
-        <view class="ui-stepper__plus" :style="[plusStyle]" :class="[plusClasses]" />
+        <view class="ui-stepper__plus" :class="plusClasses" />
       </slot>
     </button>
   </view>
@@ -62,127 +63,81 @@ import { addNumber } from "../utils/utils"
 import { formItemKey } from "../ui-form-item"
 import { formatNumber } from "../utils/format"
 import { callInterceptor } from "../utils/interceptor"
-import { stepperEmits, stepperProps } from "./index"
 import { ref, watch, computed, nextTick } from "vue"
 import { useUnit, useColor, useStyle, useParent } from "../hooks"
 import { isEmpty, isEqual, isNumber, isFunction } from "../utils/check"
+import { stepperEmits, stepperProps, STEPPER_LONG_PRESS_START, STEPPER_LONG_PRESS_INTERVAL } from "./index"
 
 defineOptions({ name: "ui-stepper" })
 
 const props = defineProps(stepperProps)
 const emits = defineEmits(stepperEmits)
 
-// 定时器
-const timer = ref(null)
-// 加载状态
-const loading = ref(false)
-// 原始值
-const origin = ref(initialValue())
-// 当前值
-const current = ref(initialValue())
-// 是否长按中
-const isLongPress = ref(false)
-
-// 有效 disabled / readonly：合并 form/form-item 级
 const { parent: formItem } = useParent(formItemKey)
+
+const timer = ref<ReturnType<typeof setTimeout> | null>(null)
+const loading = ref(false)
+const origin = ref(initialValue())
+const current = ref(initialValue())
+
 const effectiveDisabled = computed(() => Boolean(props.disabled) || Boolean(formItem?.disabled?.value))
 const effectiveReadonly = computed(() => Boolean(formItem?.readonly?.value))
 
-// 输入类型
 const inputType = computed(() => (props.integer ? "number" : "digit"))
-// 加号是否禁用
 const plusDisabled = computed(() => effectiveDisabled.value || effectiveReadonly.value || props.disablePlus || +current.value >= +props.max)
-// 减号是否禁用
 const minusDisabled = computed(() => effectiveDisabled.value || effectiveReadonly.value || props.disableMinus || +current.value <= +props.min)
-// 输入框是否禁用
 const inputDisabled = computed(() => effectiveDisabled.value || effectiveReadonly.value || props.disabledInput)
-// 是否显示减号
-const showMinus = computed(() => props.showMinus)
-// 是否显示加号
-const showPlus = computed(() => props.showPlus)
-// 是否显示输入框
-const showInput = computed(() => props.showInput)
-// 自定义类名
-const customClass = computed(() => props.customClass)
-// 根节点样式
-const style = computed(() => {
-  const style: CSSProperties = {}
-  if (props.height) {
-    style.height = useUnit(props.height)
-  }
-  return useStyle({ ...style, ...useStyle(props.customStyle) })
-})
-// 类名数组
-const classes = computed(() => {
-  const list: string[] = []
-  list.push(`ui-stepper--${props.size}`)
-  list.push(`ui-stepper--${props.theme}`)
+
+const classNames = computed(() => {
+  const list: string[] = [`ui-stepper--${props.size}`, `ui-stepper--${props.theme}`]
   if (effectiveDisabled.value) list.push("ui-stepper--disabled")
+  if (effectiveReadonly.value) list.push("ui-stepper--readonly")
   if (loading.value) list.push("ui-stepper--loading")
   return list
 })
-// 减号样式
-const minusStyle = computed(() => {
-  const style: CSSProperties = {}
-  style.width = useUnit(props.minusWidth)
-  style.height = useUnit(props.height)
-  style.background = useColor(props.minusColor)
-  style.borderColor = useColor(props.minusBorderColor)
-  style["--stepper-minus-text-size"] = useUnit(props.minusTextSize)
-  return useStyle(style)
+
+// 根节点 CSS var 注入：把所有 prop 转成 var，SCSS 单路径消费
+const rootStyle = computed(() => {
+  const vars: Record<string, string | number | undefined> = {}
+  if (props.height) vars["--ui-stepper-height"] = useUnit(props.height)
+  if (props.inputGap) vars["--ui-stepper-input-gap"] = useUnit(props.inputGap)
+  if (props.inputWidth) vars["--ui-stepper-input-width"] = useUnit(props.inputWidth)
+  if (props.inputColor) vars["--ui-stepper-input-bg"] = useColor(props.inputColor)
+  if (props.inputTextSize) vars["--ui-stepper-input-font-size"] = useUnit(props.inputTextSize)
+  if (props.inputTextWeight) vars["--ui-stepper-input-font-weight"] = String(props.inputTextWeight)
+  if (props.inputTextColor) vars["--ui-stepper-input-text-color"] = useColor(props.inputTextColor)
+  if (props.minusWidth) vars["--ui-stepper-minus-width"] = useUnit(props.minusWidth)
+  if (props.minusColor) vars["--ui-stepper-minus-bg"] = useColor(props.minusColor)
+  if (props.minusBorderColor) vars["--ui-stepper-minus-border-color"] = useColor(props.minusBorderColor)
+  if (props.plusWidth) vars["--ui-stepper-plus-width"] = useUnit(props.plusWidth)
+  if (props.plusColor) vars["--ui-stepper-plus-bg"] = useColor(props.plusColor)
+  if (props.plusBorderColor) vars["--ui-stepper-plus-border-color"] = useColor(props.plusBorderColor)
+  if (props.borderColor) vars["--ui-stepper-border-color"] = useColor(props.borderColor)
+  if (props.borderWidth) vars["--ui-stepper-border-width"] = useUnit(props.borderWidth)
+  return useStyle({ ...vars, ...useStyle(props.customStyle) } as CSSProperties)
 })
-// 加号样式
-const plusStyle = computed(() => {
-  const style: CSSProperties = {}
-  style.width = useUnit(props.plusWidth)
-  style.height = useUnit(props.height)
-  style.background = useColor(props.plusColor)
-  style.borderColor = useColor(props.plusBorderColor)
-  style["--stepper-plus-text-size"] = useUnit(props.plusTextSize)
-  return useStyle(style)
-})
-// 输入框样式
-const inputStyle = computed(() => {
-  const style: CSSProperties = {}
-  style.color = useColor(props.inputTextColor)
-  style.width = useUnit(props.inputWidth)
-  style.fontSize = useUnit(props.inputTextSize)
-  style.fontWeight = props.inputTextWeight
-  style.marginLeft = useUnit(props.inputGap)
-  style.marginRight = useUnit(props.inputGap)
-  style.background = useColor(props.inputColor)
-  if (props.disabledInput) {
-    style.pointerEvents = "none"
-  }
-  return useStyle(style)
-})
-// 输入框类名
+
 const inputClasses = computed(() => {
-  const list: string[] = []
-  list.push(`ui-stepper__input--${props.theme}`)
+  const list: string[] = [`ui-stepper__input--${props.theme}`]
   if (inputDisabled.value) list.push("ui-stepper__input--disabled")
   return list
 })
-// 减号类名
+
 const minusClasses = computed(() => {
-  const list: string[] = []
-  list.push(`ui-stepper__minus--${props.theme}`)
+  const list: string[] = [`ui-stepper__minus--${props.theme}`]
   if (loading.value) list.push("ui-stepper__minus--loading")
   if (minusDisabled.value) list.push("ui-stepper__minus--disabled")
   return list
 })
-// 加号类名
+
 const plusClasses = computed(() => {
-  const list: string[] = []
-  list.push(`ui-stepper__plus--${props.theme}`)
+  const list: string[] = [`ui-stepper__plus--${props.theme}`]
   if (loading.value) list.push("ui-stepper__plus--loading")
   if (plusDisabled.value) list.push("ui-stepper__plus--disabled")
   return list
 })
 
-// 监听边界值变化
 watch(() => [props.max, props.min, props.integer, props.decimalLength], checkValue)
-// 监听 modelValue 变化
 watch(
   () => props.modelValue,
   (value) => {
@@ -193,172 +148,136 @@ watch(
   },
 )
 
-// 点击加号
 function onPlus() {
   if (loading.value) return
-  if (plusDisabled.value) {
-    emits("overlimit", "plus")
-    return
-  }
+  if (plusDisabled.value) return emits("overlimit", "plus")
   updateValue(format(addNumber(+current.value, +props.step)))
   emits("plus")
 }
 
-// 点击减号
 function onMinus() {
   if (loading.value) return
-  if (minusDisabled.value) {
-    emits("overlimit", "minus")
-    return
-  }
-  updateValue(format(addNumber(+current.value, -props.step)))
+  if (minusDisabled.value) return emits("overlimit", "minus")
+  updateValue(format(addNumber(+current.value, -+props.step)))
   emits("minus")
 }
 
-// 输入框失焦
 function onBlur(event: any) {
   current.value = format(event.detail.value)
-  if (+current.value !== +origin.value) {
-    updateValue(current.value)
-  }
+  if (+current.value !== +origin.value) updateValue(current.value)
   emits("blur", event)
 }
 
-// 输入框聚焦
 function onFocus() {
   emits("focus")
 }
 
-// 点击输入框区域
 function onClick() {
-  if (props.disabledInput) {
-    emits("click")
-  }
+  if (props.disabledInput) emits("click")
 }
 
-// 输入事件
 function onInput(event: any) {
   const { value } = event.detail
   if (isEmpty(value)) return
 
   let formatted = formatNumber(value, !props.integer)
-
   if (isNumber(props.decimalLength) && formatted.includes(".")) {
-    const pair = formatted.split(".")
-    formatted = `${pair[0]}.${pair[1].slice(0, +props.decimalLength)}`
+    const [int, dec] = formatted.split(".")
+    formatted = `${int}.${dec.slice(0, +props.decimalLength)}`
   }
-
   formatted = format(formatted)
 
   if (+origin.value === +formatted) return
 
   nextTick(() => {
-    if (props.beforeChange) {
-      current.value = String(current.value)
-    } else if (!isEqual(value, formatted)) {
+    if (!props.beforeChange && !isEqual(value, formatted)) {
       current.value = formatted
     }
-
     updateValue(formatted)
   })
 }
 
-// 减号长按开始
 function onMinusTouchstart() {
-  if (props.longPress) {
-    isLongPress.value = false
-    clearTimeout(timer.value)
-    timer.value = setTimeout(() => {
-      isLongPress.value = true
-      longPressStep("minus")
-    }, 500)
-  }
+  startLongPress("minus")
 }
 
-// 加号长按开始
-function onPlusTouchstart(event: any) {
-  if (props.longPress) {
-    clearTimeout(timer.value)
-    timer.value = setTimeout(() => {
-      isLongPress.value = true
-      longPressStep("plus")
-    }, 500)
-  }
+function onPlusTouchstart() {
+  startLongPress("plus")
 }
 
-// 触摸结束
-function onTouchend(event: TouchEvent) {
+function onTouchend() {
   if (!props.longPress) return
-  clearInterval(timer.value)
+  clearLongPressTimer()
 }
 
-// 长按步进
-function longPressStep(type = "plus") {
+function startLongPress(type: "plus" | "minus") {
+  if (!props.longPress) return
+  clearLongPressTimer()
+  timer.value = setTimeout(() => {
+    longPressStep(type)
+  }, STEPPER_LONG_PRESS_START)
+}
+
+function longPressStep(type: "plus" | "minus") {
   timer.value = setTimeout(() => {
     type === "plus" ? onPlus() : onMinus()
     longPressStep(type)
-  }, 200)
+  }, STEPPER_LONG_PRESS_INTERVAL)
 }
 
-// 检查并校正值
+function clearLongPressTimer() {
+  if (timer.value) {
+    clearTimeout(timer.value)
+    timer.value = null
+  }
+}
+
 function checkValue() {
   const value = format(current.value)
-  if (!isEqual(value, current.value)) {
+  if (!isEqual(value, current.value)) current.value = value
+}
+
+function updateValue(value: number | string) {
+  if (!isNumber(value)) return
+  const next = () => {
+    loading.value = false
+    if (+origin.value === +value) return
+    origin.value = value
     current.value = value
-  }
-}
-
-// 更新值
-function updateValue(value: any) {
-  if (isNumber(value)) {
-    const next = () => {
-      loading.value = false
-      if (+origin.value !== +value) {
-        origin.value = value
-        current.value = value
-        emits("update:modelValue", value)
-        emits("change", value, props.name)
-      }
-    }
-    if (isFunction(props.beforeChange)) {
-      loading.value = true
-      callInterceptor(props.beforeChange, {
-        args: [value, props.name],
-        done() {
-          next()
-        },
-        error() {
-          loading.value = false
-          current.value = origin.value
-        },
-        canceled() {
-          loading.value = false
-          current.value = origin.value
-        },
-      })
-    } else {
-      next()
-    }
-  }
-}
-
-// 格式化值
-function format(value: number | string, fixed = true) {
-  value = formatNumber(String(value), !props.integer)
-  value = value === "" ? 0 : +value
-  value = Number.isNaN(value) ? +props.min : value
-  value = fixed ? Math.max(Math.min(+props.max, value), +props.min) : value
-  if (isNumber(props.decimalLength)) value = value.toFixed(+props.decimalLength)
-  return String(value)
-}
-
-// 初始化值
-function initialValue() {
-  const defaultValue = props.modelValue
-  const value = format(defaultValue)
-  if (!isEqual(value, props.modelValue)) {
     emits("update:modelValue", value)
+    emits("change", value, props.name)
   }
+  if (isFunction(props.beforeChange)) {
+    loading.value = true
+    callInterceptor(props.beforeChange, {
+      args: [value, props.name],
+      done: next,
+      error() {
+        loading.value = false
+        current.value = origin.value
+      },
+      canceled() {
+        loading.value = false
+        current.value = origin.value
+      },
+    })
+  } else {
+    next()
+  }
+}
+
+function format(value: number | string, fixed = true): string {
+  let v: number | string = formatNumber(String(value), !props.integer)
+  v = v === "" ? 0 : +v
+  v = Number.isNaN(v) ? +props.min : v
+  v = fixed ? Math.max(Math.min(+props.max, v), +props.min) : v
+  if (isNumber(props.decimalLength)) return (+v).toFixed(+props.decimalLength)
+  return String(v)
+}
+
+function initialValue() {
+  const value = format(props.modelValue)
+  if (!isEqual(value, props.modelValue)) emits("update:modelValue", value)
   return value
 }
 </script>
@@ -366,47 +285,86 @@ function initialValue() {
 <script lang="ts">
 export default {
   name: "ui-stepper",
-  options: { virtualHost: true, multipleSlots: true, styleIsolation: "shared" },
+  options: {
+    // #ifndef MP-TOUTIAO
+    virtualHost: true,
+    // #endif
+    multipleSlots: true,
+    styleIsolation: "shared",
+  },
 }
 </script>
 
 <style lang="scss">
 .ui-stepper {
+  --ui-stepper-height: 72rpx;
+  --ui-stepper-plus-bg: var(--ui-color-primary);
+  --ui-stepper-input-bg: transparent;
+  --ui-stepper-minus-bg: var(--ui-color-background-section);
+  --ui-stepper-icon-size: 24rpx;
+  --ui-stepper-input-gap: var(--ui-spacing-xs);
+  --ui-stepper-icon-color: var(--ui-color-text);
+  --ui-stepper-plus-width: var(--ui-stepper-button-size);
+  --ui-stepper-button-size: 72rpx;
+  --ui-stepper-input-width: 80rpx;
+  --ui-stepper-minus-width: var(--ui-stepper-button-size);
+  --ui-stepper-border-color: var(--ui-color-border-light);
+  --ui-stepper-border-width: var(--ui-border-width-thick);
+  --ui-stepper-icon-thickness: 3rpx;
+  --ui-stepper-input-font-size: var(--ui-font-size-sm);
+  --ui-stepper-plus-icon-color: var(--ui-color-text-inverse);
+  --ui-stepper-input-text-color: var(--ui-color-text);
+  --ui-stepper-input-font-weight: var(--ui-font-weight-normal);
+  --ui-stepper-plus-border-color: var(--ui-color-primary);
+  --ui-stepper-minus-border-color: var(--ui-color-border-light);
+
   width: max-content;
-  height: var(--stepper-height);
+  height: var(--ui-stepper-height);
   display: inline-flex;
   align-items: center;
   flex-shrink: 0;
   user-select: none;
   justify-content: center;
 
-  // 尺寸
+  // size 预设
   &--small {
-    --stepper-height: 56rpx;
-    --stepper-font-size: var(--ui-font-size-xs);
-    --stepper-icon-size: 20rpx;
-    --stepper-button-size: 56rpx;
-    --stepper-input-width: 64rpx;
+    --ui-stepper-height: 56rpx;
+    --ui-stepper-icon-size: 20rpx;
+    --ui-stepper-button-size: 56rpx;
+    --ui-stepper-input-width: 64rpx;
+    --ui-stepper-input-font-size: var(--ui-font-size-xs);
   }
 
   &--medium {
-    --stepper-height: 72rpx;
-    --stepper-font-size: var(--ui-font-size-sm);
-    --stepper-icon-size: 24rpx;
-    --stepper-button-size: 72rpx;
-    --stepper-input-width: 80rpx;
+    --ui-stepper-height: 72rpx;
+    --ui-stepper-icon-size: 24rpx;
+    --ui-stepper-button-size: 72rpx;
+    --ui-stepper-input-width: 80rpx;
+    --ui-stepper-input-font-size: var(--ui-font-size-sm);
   }
 
   &--large {
-    --stepper-height: 88rpx;
-    --stepper-font-size: var(--ui-font-size-md);
-    --stepper-icon-size: 28rpx;
-    --stepper-button-size: 88rpx;
-    --stepper-input-width: 96rpx;
+    --ui-stepper-height: 88rpx;
+    --ui-stepper-icon-size: 28rpx;
+    --ui-stepper-button-size: 88rpx;
+    --ui-stepper-input-width: 96rpx;
+    --ui-stepper-input-font-size: var(--ui-font-size-md);
+  }
+
+  // theme 预设
+  &--border {
+    border: var(--ui-stepper-border-width) solid var(--ui-stepper-border-color);
+    overflow: hidden;
+    border-radius: var(--ui-radius-round);
   }
 
   &--disabled {
     opacity: var(--ui-opacity-disabled);
+    pointer-events: none;
+  }
+
+  &--readonly .ui-stepper__button,
+  &--readonly .ui-stepper__input {
     pointer-events: none;
   }
 
@@ -415,7 +373,7 @@ export default {
   }
 
   &__button {
-    width: var(--stepper-button-size);
+    width: var(--ui-stepper-button-size);
     height: 100%;
     margin: 0;
     display: flex;
@@ -435,109 +393,99 @@ export default {
       opacity: var(--ui-opacity-active);
     }
 
-    &--loading {
-      opacity: var(--ui-opacity-disabled);
-    }
-
+    &--loading,
     &[disabled] {
       opacity: var(--ui-opacity-disabled);
     }
   }
 
-  &__minus {
-    width: var(--stepper-button-size);
+  &__minus,
+  &__plus {
+    width: var(--ui-stepper-button-size);
     height: 100%;
     position: relative;
 
-    &::before {
-      top: 50%;
-      left: 50%;
-      width: var(--stepper-icon-size);
-      height: 3rpx;
-      content: "";
-      position: absolute;
-      transform: translate(-50%, -50%);
-      background-color: var(--ui-color-text);
-    }
-
+    &--loading,
     &--disabled {
       opacity: var(--ui-opacity-disabled);
-    }
-
-    &--loading {
-      opacity: var(--ui-opacity-disabled);
-    }
-
-    &--button {
-      border-radius: var(--ui-radius-md) 0 0 var(--ui-radius-md);
-      background-color: var(--ui-color-background-section);
-    }
-
-    &--round {
-      border: var(--ui-border-width) solid currentColor;
-      border-radius: var(--ui-radius-round);
-      background-color: var(--ui-color-background);
-    }
-
-    &--border {
-      color: currentColor;
-      border-right: var(--ui-border-width-thick) solid var(--ui-color-border-light);
-      background-color: var(--ui-color-background);
     }
   }
 
-  &__plus {
-    width: var(--stepper-button-size);
-    height: 100%;
-    position: relative;
+  // 减号横线
+  &__minus::before {
+    top: 50%;
+    left: 50%;
+    width: var(--ui-stepper-icon-size);
+    height: var(--ui-stepper-icon-thickness);
+    content: "";
+    position: absolute;
+    transform: translate(-50%, -50%);
+    background: var(--ui-stepper-icon-color);
+  }
 
-    &::before {
-      top: 50%;
-      left: 50%;
-      width: var(--stepper-icon-size);
-      height: 3rpx;
-      content: "";
-      position: absolute;
-      transform: translate(-50%, -50%);
-      background-color: currentColor;
-    }
+  // 加号横竖两条
+  &__plus::before,
+  &__plus::after {
+    top: 50%;
+    left: 50%;
+    content: "";
+    position: absolute;
+    transform: translate(-50%, -50%);
+    background: currentColor;
+  }
 
-    &::after {
-      top: 50%;
-      left: 50%;
-      width: 3rpx;
-      height: var(--stepper-icon-size);
-      content: "";
-      position: absolute;
-      transform: translate(-50%, -50%);
-      background-color: currentColor;
-    }
+  &__plus::before {
+    width: var(--ui-stepper-icon-size);
+    height: var(--ui-stepper-icon-thickness);
+  }
 
-    &--disabled {
-      opacity: var(--ui-opacity-disabled);
-    }
+  &__plus::after {
+    width: var(--ui-stepper-icon-thickness);
+    height: var(--ui-stepper-icon-size);
+  }
 
-    &--loading {
-      opacity: var(--ui-opacity-disabled);
-    }
+  // theme: button（块状）
+  &__minus--button {
+    width: var(--ui-stepper-minus-width);
+    background: var(--ui-stepper-minus-bg);
+    border-radius: var(--ui-radius-md) 0 0 var(--ui-radius-md);
+  }
 
-    &--button {
-      border-radius: 0 var(--ui-radius-md) var(--ui-radius-md) 0;
-      background-color: var(--ui-color-background-section);
-    }
+  &__plus--button {
+    color: var(--ui-stepper-plus-icon-color);
+    width: var(--ui-stepper-plus-width);
+    background: var(--ui-stepper-plus-bg);
+    border-radius: 0 var(--ui-radius-md) var(--ui-radius-md) 0;
+  }
 
-    &--round {
-      color: var(--ui-color-background);
-      border: var(--ui-border-width) solid var(--ui-color-primary);
-      border-radius: var(--ui-radius-round);
-      background-color: var(--ui-color-primary);
-    }
+  // theme: round
+  &__minus--round {
+    color: var(--ui-stepper-icon-color);
+    width: var(--ui-stepper-minus-width);
+    border: var(--ui-border-width) solid currentColor;
+    background: var(--ui-color-background);
+    border-radius: var(--ui-radius-round);
+  }
 
-    &--border {
-      color: currentColor;
-      border-left: var(--ui-border-width-thick) solid var(--ui-color-border-light);
-      background-color: var(--ui-color-background);
-    }
+  &__plus--round {
+    color: var(--ui-stepper-plus-icon-color);
+    width: var(--ui-stepper-plus-width);
+    border: var(--ui-border-width) solid var(--ui-stepper-plus-bg);
+    background: var(--ui-stepper-plus-bg);
+    border-radius: var(--ui-radius-round);
+  }
+
+  // theme: border
+  &__minus--border {
+    color: var(--ui-stepper-icon-color);
+    background: var(--ui-color-background);
+    border-right: var(--ui-stepper-border-width) solid var(--ui-stepper-minus-border-color);
+  }
+
+  &__plus--border {
+    color: var(--ui-stepper-icon-color);
+    background: var(--ui-color-background);
+    border-left: var(--ui-stepper-border-width) solid var(--ui-stepper-plus-border-color);
   }
 
   &__value {
@@ -547,28 +495,25 @@ export default {
   }
 
   &__input {
-    width: var(--stepper-input-width);
+    color: var(--ui-stepper-input-text-color);
+    width: var(--ui-stepper-input-width);
     height: 100%;
-    margin: 0 var(--ui-spacing-xs);
+    margin: 0 var(--ui-stepper-input-gap);
     display: flex;
-    font-size: var(--stepper-font-size);
+    font-size: var(--ui-stepper-input-font-size);
+    background: var(--ui-stepper-input-bg);
     text-align: center;
     align-items: center;
+    font-weight: var(--ui-stepper-input-font-weight);
     font-variant-numeric: tabular-nums;
 
     &--button {
-      background-color: var(--ui-color-background-input);
+      background: var(--ui-color-background-input);
     }
 
     &--disabled {
       opacity: var(--ui-opacity-disabled);
     }
-  }
-
-  &--border {
-    border: var(--ui-border-width-thick) solid var(--ui-color-border-light);
-    overflow: hidden;
-    border-radius: var(--ui-radius-round);
   }
 }
 </style>

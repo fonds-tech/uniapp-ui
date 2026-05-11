@@ -1,41 +1,37 @@
 <template>
-  <view class="ui-step" :class="[classes, customClass]" :style="[style]" @click="onClick">
+  <view class="ui-step" :class="[classNames, customClass]" :style="[rootStyle]" @click="onClick">
     <view class="ui-step__head">
-      <view class="ui-step__line ui-step__line--before" :style="[lineBeforeStyle]" />
-
+      <view class="ui-step__line ui-step__line--before" />
       <view class="ui-step__icon-wrapper">
-        <slot name="icon" :status="currentStatus" :index="safeIndex" :active="isActive">
-          <ui-icon v-if="currentIcon" :name="currentIcon" :size="currentIconSize" :color="currentColor" />
-
-          <view v-else class="ui-step__circle" :style="[circleStyle]">
-            <ui-icon v-if="!isDot && isFinish" name="checked" :size="circleIconSize" color="text-inverse" />
-            <ui-icon v-else-if="!isDot && isError" name="cross" :size="circleIconSize" color="text-inverse" />
-            <text v-else-if="!isDot" class="ui-step__index" :style="[indexStyle]">{{ safeIndex + 1 }}</text>
+        <slot name="icon" :status="status" :index="safeIndex" :active="status === 'process'">
+          <ui-icon v-if="currentIcon" :name="currentIcon" :size="currentIconSize" />
+          <view v-else class="ui-step__circle">
+            <ui-icon v-if="!isDot && status === 'finish'" name="checked" :size="circleInnerSize" />
+            <ui-icon v-else-if="!isDot && status === 'error'" name="cross" :size="circleInnerSize" />
+            <text v-else-if="!isDot" class="ui-step__index">{{ safeIndex + 1 }}</text>
           </view>
         </slot>
       </view>
-
-      <view class="ui-step__line ui-step__line--after" :style="[lineAfterStyle]" />
+      <view class="ui-step__line ui-step__line--after" />
     </view>
 
     <view class="ui-step__content">
-      <slot :status="currentStatus" :index="safeIndex" :active="isActive">
-        <view v-if="title" class="ui-step__title" :style="[titleStyle]">{{ title }}</view>
-        <view v-if="description" class="ui-step__description" :style="[descStyle]">{{ description }}</view>
+      <slot :status="status" :index="safeIndex" :active="status === 'process'">
+        <view v-if="title" class="ui-step__title">{{ title }}</view>
+        <view v-if="description" class="ui-step__description">{{ description }}</view>
       </slot>
     </view>
   </view>
 </template>
 
 <script setup lang="ts">
-import type { StepStatus } from "../ui-steps"
 import type { CSSProperties } from "vue"
-import type { InheritableStepPropKeys } from "./index"
+import type { StepStatus, StepInheritKey } from "../ui-steps"
 import { isDef } from "../utils/check"
 import { stepsKey } from "../ui-steps"
 import { computed } from "vue"
 import { stepEmits, stepProps } from "./index"
-import { useColor, useStyle, useParent } from "../hooks"
+import { useUnit, useStyle, useParent } from "../hooks"
 
 defineOptions({ name: "ui-step" })
 
@@ -43,308 +39,93 @@ const props = defineProps(stepProps)
 const emits = defineEmits(stepEmits)
 const { parent, index } = useParent(stepsKey)
 
-/** 安全的索引值（处理父组件不存在时返回 0） */
 const safeIndex = computed(() => Math.max(0, index.value))
+const isFirst = computed(() => index.value === 0)
+const isLast = computed(() => !parent || index.value === parent.count.value - 1)
+const isDot = computed(() => parent?.props.dot ?? false)
+const isSimple = computed(() => parent?.props.simple ?? false)
 
-/**
- * 获取可继承的属性值（优先使用子组件的，否则使用父组件的）
- */
-function getInheritProp(name: InheritableStepPropKeys): string | number | undefined {
-  const selfVal = props[name as keyof typeof props]
-  if (isDef(selfVal)) return selfVal as string | number | undefined
-  if (parent) {
-    const parentVal = parent.props[name as keyof typeof parent.props]
-    if (isDef(parentVal)) return parentVal as string | number | undefined
-  }
-  return undefined
-}
-
-/**
- * 是否为第一个步骤
- */
-const isFirst = computed(() => {
-  return index.value === 0
-})
-
-/**
- * 是否为最后一个步骤
- */
-const isLast = computed(() => {
-  if (!parent) return true
-  return index.value === parent.count.value - 1
-})
-
-/**
- * 是否为激活状态
- */
-const isActive = computed(() => {
-  if (!parent) return false
-  return index.value === parent.active.value
-})
-
-/**
- * 是否为完成状态
- */
-const isFinish = computed(() => {
-  if (!parent) return false
-  if (props.status === "finish") return true
-  if (props.status) return false
-  return index.value < parent.active.value
-})
-
-/**
- * 是否为错误状态
- */
-const isError = computed(() => {
-  return props.status === "error"
-})
-
-/**
- * 是否为等待状态
- */
-const isWait = computed(() => {
-  if (!parent) return true
-  if (props.status === "wait") return true
-  if (props.status) return false
-  return index.value > parent.active.value
-})
-
-/**
- * 当前步骤状态
- */
-const currentStatus = computed<StepStatus>(() => {
+// 派生 status：props.status 优先；否则按父 active 判定
+const status = computed<StepStatus>(() => {
   if (props.status) return props.status
-  if (isFinish.value) return "finish"
-  if (isActive.value) return "process"
+  if (!parent) return "wait"
+  const a = parent.active.value
+  if (index.value < a) return "finish"
+  if (index.value === a) return "process"
   return "wait"
 })
 
-/**
- * 是否为点状模式
- */
-const isDot = computed(() => parent?.props.dot ?? false)
+// 取属性值：自身 props 优先，缺省回退到父 ui-steps 同名 prop
+function inherit<K extends StepInheritKey>(key: K) {
+  const self = (props as Record<string, unknown>)[key]
+  if (isDef(self)) return self
+  return parent?.props?.[key]
+}
 
-/**
- * 是否为简洁模式
- */
-const isSimple = computed(() => parent?.props.simple ?? false)
-
-/**
- * 当前图标
- */
+// 当前 status 对应的图标（props.icon 显式优先）
 const currentIcon = computed<string>(() => {
   if (isDot.value) return ""
   if (props.icon) return props.icon
-  const finishIcon = getInheritProp("finishIcon")
-  if (isFinish.value && finishIcon) return String(finishIcon)
-  const activeIcon = getInheritProp("activeIcon")
-  if (isActive.value && activeIcon) return String(activeIcon)
-  const errorIcon = getInheritProp("errorIcon")
-  if (isError.value && errorIcon) return String(errorIcon)
-  const inactiveIcon = getInheritProp("inactiveIcon")
-  if (isWait.value && inactiveIcon) return String(inactiveIcon)
-  return ""
+  switch (status.value) {
+    case "finish":
+      return String(inherit("finishIcon") ?? "")
+    case "process":
+      return String(inherit("activeIcon") ?? "")
+    case "error":
+      return String(inherit("errorIcon") ?? "")
+    case "wait":
+      return String(inherit("inactiveIcon") ?? "")
+    default:
+      return ""
+  }
 })
 
-/**
- * 图标大小
- */
 const currentIconSize = computed(() => {
-  return props.iconSize || getInheritProp("iconSize") || "40rpx"
+  const size = props.iconSize ?? inherit("iconSize")
+  return isDef(size) ? useUnit(size as string | number) : undefined
 })
 
-/** 默认圆圈尺寸 */
-const defaultCircleSize = 48
+// 圆圈内置图标用 CSS var 决定的圆圈尺寸 0.5 比例（CSS calc 替代 JS 计算）
+const circleInnerSize = computed(() => "calc(var(--ui-step-circle-size, 48rpx) * 0.5)")
 
-/**
- * 圆圈内图标大小（根据图标尺寸动态计算，约为圆圈尺寸的 58%）
- */
-const circleIconSize = computed(() => {
-  const iconSize = currentIconSize.value
-  if (typeof iconSize === "number") {
-    return `${Math.round(iconSize * 0.58)}rpx`
-  }
-  if (typeof iconSize === "string") {
-    const match = iconSize.match(/^(\d+(?:\.\d+)?)(rpx|px|rem|em)?$/)
-    if (match) {
-      const num = Number.parseFloat(match[1])
-      const unit = match[2] || "rpx"
-      return `${Math.round(num * 0.58)}${unit}`
-    }
-  }
-  return `${Math.round(defaultCircleSize * 0.58)}rpx`
-})
-
-/**
- * 当前状态颜色
- */
-const currentColor = computed(() => {
-  if (isError.value) {
-    const errColor = getInheritProp("errorColor")
-    return useColor(errColor ? String(errColor) : undefined) || "var(--ui-color-danger)"
-  }
-  if (isFinish.value || isActive.value) {
-    const actColor = getInheritProp("activeColor")
-    return useColor(actColor ? String(actColor) : undefined) || "var(--ui-color-primary)"
-  }
-  const inactColor = getInheritProp("inactiveColor")
-  return useColor(inactColor ? String(inactColor) : undefined) || "var(--ui-color-text-placeholder)"
-})
-
-/**
- * 非激活颜色
- */
-const inactiveColor = computed(() => {
-  const inactColor = getInheritProp("inactiveColor")
-  return useColor(inactColor ? String(inactColor) : undefined) || "var(--ui-color-text-placeholder)"
-})
-
-/**
- * 连接线颜色（用于垂直模式连续线条）
- */
-const lineBeforeColor = computed(() => {
-  if (isFirst.value) return "transparent"
-  const prevFinish = parent && index.value <= parent.active.value
-  const actColor = getInheritProp("activeColor")
-  if (prevFinish) {
-    return useColor(actColor ? String(actColor) : undefined) || "var(--ui-color-primary)"
-  }
-  return inactiveColor.value
-})
-
-const lineAfterColor = computed(() => {
-  if (isLast.value) return "transparent"
-  if (isFinish.value) return currentColor.value
-  return inactiveColor.value
-})
-
-/**
- * 组件容器样式
- */
-const style = computed(() => {
-  const style: CSSProperties = {}
-  return useStyle({ ...style, ...useStyle(props.customStyle) })
-})
-
-/**
- * 组件容器类名
- */
-const classes = computed(() => {
-  const list: string[] = []
-  list.push(`ui-step--${currentStatus.value}`)
-  if (parent?.props.direction === "vertical") {
-    list.push("ui-step--vertical")
-  }
-  if (isFirst.value) {
-    list.push("ui-step--first")
-  }
-  if (isLast.value) {
-    list.push("ui-step--last")
-  }
-  if (isDot.value) {
-    list.push("ui-step--dot")
-  }
-  if (isSimple.value) {
-    list.push("ui-step--simple")
-  }
+const classNames = computed(() => {
+  const list: string[] = [`ui-step--${status.value}`]
+  if (parent?.props.direction === "vertical") list.push("ui-step--vertical")
+  if (isFirst.value) list.push("ui-step--first")
+  if (isLast.value) list.push("ui-step--last")
+  if (isDot.value) list.push("ui-step--dot")
+  if (isSimple.value) list.push("ui-step--simple")
   return list
 })
 
-/**
- * 圆圈样式
- */
-const circleStyle = computed(() => {
-  const style: CSSProperties = {}
-  style.backgroundColor = currentColor.value
-  style.borderColor = currentColor.value
-  if (isWait.value) {
-    style.backgroundColor = isDot.value ? inactiveColor.value : "transparent"
-    style.color = inactiveColor.value
-  }
-  return useStyle(style)
+const rootStyle = computed(() => {
+  const vars: Record<string, string | undefined> = {}
+  if (props.iconSize) vars["--ui-step-icon-display-size"] = useUnit(props.iconSize)
+  return useStyle({ ...vars, ...useStyle(props.customStyle) } as CSSProperties)
 })
 
-/**
- * 前连接线样式（第一个步骤隐藏）
- */
-const lineBeforeStyle = computed(() => {
-  const style: CSSProperties = {}
-  if (isFirst.value) {
-    style.visibility = "hidden"
-  }
-  style.backgroundColor = lineBeforeColor.value
-  return useStyle(style)
-})
-
-/**
- * 后连接线样式（最后一个步骤隐藏）
- */
-const lineAfterStyle = computed(() => {
-  const style: CSSProperties = {}
-  if (isLast.value) {
-    style.visibility = "hidden"
-  }
-  style.backgroundColor = lineAfterColor.value
-  return useStyle(style)
-})
-
-/**
- * 标题样式
- */
-const titleStyle = computed(() => {
-  const style: CSSProperties = {}
-  style.color = currentColor.value
-  return useStyle(style)
-})
-
-/**
- * 描述样式
- */
-const descStyle = computed(() => {
-  const style: CSSProperties = {}
-  style.color = inactiveColor.value
-  return useStyle(style)
-})
-
-/**
- * 步骤序号文字样式（统一管理颜色）
- */
-const indexStyle = computed(() => {
-  const style: CSSProperties = {}
-  if (isWait.value) {
-    style.color = inactiveColor.value
-  } else {
-    style.color = "var(--ui-color-text-inverse)"
-  }
-  return useStyle(style)
-})
-
-/**
- * 点击事件处理
- */
 function onClick() {
   emits("click", safeIndex.value)
   parent?.onClickStep(safeIndex.value)
 }
 
-defineExpose({ props, index: safeIndex, currentStatus })
+defineExpose({ index: safeIndex, status, currentStatus: status })
 </script>
 
 <script lang="ts">
 export default {
   name: "ui-step",
-  options: { virtualHost: true, multipleSlots: true, styleIsolation: "shared" },
+  options: {
+    // #ifndef MP-TOUTIAO
+    virtualHost: true,
+    // #endif
+    multipleSlots: true,
+    styleIsolation: "shared",
+  },
 }
 </script>
 
-<style lang="scss" scoped>
-// CSS 变量
-$step-dot-size: 16rpx;
-$step-icon-size: 48rpx;
-$step-content-gap: 16rpx;
-$step-line-height: 2rpx;
-$step-transition-duration: var(--ui-transition-duration);
-
+<style lang="scss">
 .ui-step {
   flex: 1;
   color: var(--ui-color-text-secondary);
@@ -352,7 +133,6 @@ $step-transition-duration: var(--ui-transition-duration);
   font-size: var(--ui-font-size-sm);
   flex-direction: column;
 
-  // 头部区域：前线条 + 图标 + 后线条
   &__head {
     display: flex;
     align-items: center;
@@ -360,12 +140,11 @@ $step-transition-duration: var(--ui-transition-duration);
 
   &__line {
     flex: 1;
-    height: $step-line-height;
-    transition: background-color $step-transition-duration ease;
-    background-color: var(--ui-color-border);
+    height: var(--ui-step-line-thickness, 2rpx);
+    background: var(--ui-step-color-inactive, var(--ui-color-text-placeholder));
+    transition: background var(--ui-step-transition, 0.2s);
   }
 
-  // 图标容器
   &__icon-wrapper {
     display: flex;
     padding: 0 var(--ui-spacing-xs);
@@ -374,18 +153,18 @@ $step-transition-duration: var(--ui-transition-duration);
     justify-content: center;
   }
 
-  // 默认圆圈
   &__circle {
-    width: $step-icon-size;
-    border: var(--ui-border-width) solid var(--ui-color-primary);
-    height: $step-icon-size;
+    color: var(--ui-step-icon-text-color, var(--ui-color-text-inverse));
+    width: var(--ui-step-circle-size, 48rpx);
+    border: var(--ui-border-width) solid var(--ui-step-color-inactive, var(--ui-color-text-placeholder));
+    height: var(--ui-step-circle-size, 48rpx);
     display: flex;
     font-size: var(--ui-font-size-xs);
+    background: transparent;
     transition:
-      background-color $step-transition-duration ease,
-      border-color $step-transition-duration ease,
-      box-shadow $step-transition-duration ease,
-      transform $step-transition-duration ease;
+      background var(--ui-step-transition, 0.2s),
+      border-color var(--ui-step-transition, 0.2s),
+      transform var(--ui-step-transition, 0.2s);
     align-items: center;
     flex-shrink: 0;
     font-weight: var(--ui-font-weight-medium);
@@ -393,10 +172,9 @@ $step-transition-duration: var(--ui-transition-duration);
     justify-content: center;
   }
 
-  // 步骤序号
   &__index {
+    color: inherit;
     font-size: var(--ui-font-size-xs);
-    transition: color $step-transition-duration ease;
     font-weight: var(--ui-font-weight-medium);
     line-height: 1;
   }
@@ -404,36 +182,116 @@ $step-transition-duration: var(--ui-transition-duration);
   &__content {
     display: flex;
     text-align: center;
-    padding-top: $step-content-gap;
+    padding-top: var(--ui-step-content-gap, var(--ui-spacing-sm));
     flex-direction: column;
   }
 
   &__title {
     color: var(--ui-color-text);
     font-size: var(--ui-font-size-sm);
-    transition: color $step-transition-duration ease;
+    transition: color var(--ui-step-transition, 0.2s);
     word-break: break-word;
     font-weight: var(--ui-font-weight-medium);
     line-height: 1.4;
   }
 
-  // 描述
   &__description {
     color: var(--ui-color-text-secondary);
     font-size: var(--ui-font-size-xs);
     margin-top: var(--ui-spacing-xs);
-    transition: color $step-transition-duration ease;
+    transition: color var(--ui-step-transition, 0.2s);
     word-break: break-word;
     line-height: 1.4;
   }
 
+  // 首尾隐藏连接线
+  &--first .ui-step__line--before {
+    visibility: hidden;
+  }
+
+  &--last .ui-step__line--after {
+    visibility: hidden;
+  }
+
+  // 状态切换（CSS 单路径）
+  &--process,
+  &--finish,
+  &--error {
+    .ui-step__line--before {
+      background: var(--ui-step-color-active, var(--ui-color-primary));
+    }
+  }
+
+  &--finish .ui-step__line--after {
+    background: var(--ui-step-color-active, var(--ui-color-primary));
+  }
+
+  &--process {
+    .ui-step__circle {
+      transform: scale(1.05);
+      background: var(--ui-step-color-active, var(--ui-color-primary));
+      box-shadow: var(--ui-shadow-sm);
+      border-color: var(--ui-step-color-active, var(--ui-color-primary));
+    }
+
+    .ui-step__title {
+      color: var(--ui-step-color-active, var(--ui-color-primary));
+    }
+  }
+
+  &--finish {
+    .ui-step__circle {
+      background: var(--ui-step-color-active, var(--ui-color-primary));
+      border-color: var(--ui-step-color-active, var(--ui-color-primary));
+    }
+  }
+
+  &--error {
+    .ui-step__circle {
+      background: var(--ui-step-color-error, var(--ui-color-danger));
+      border-color: var(--ui-step-color-error, var(--ui-color-danger));
+    }
+
+    .ui-step__title {
+      color: var(--ui-step-color-error, var(--ui-color-danger));
+    }
+  }
+
+  &--wait {
+    .ui-step__index {
+      color: var(--ui-step-color-inactive, var(--ui-color-text-placeholder));
+    }
+  }
+
+  &--dot {
+    .ui-step__circle {
+      width: var(--ui-step-dot-size, 16rpx);
+      border: none;
+      height: var(--ui-step-dot-size, 16rpx);
+    }
+
+    .ui-step__index {
+      display: none;
+    }
+
+    &.ui-step--wait .ui-step__circle {
+      background: var(--ui-step-color-inactive, var(--ui-color-text-placeholder));
+    }
+  }
+
+  &--simple {
+    .ui-step__content {
+      display: none;
+    }
+  }
+
   &--vertical {
     padding: 0;
-    min-height: 100rpx;
+    min-height: var(--ui-size-md);
     flex-direction: row;
 
     .ui-step__head {
-      width: $step-icon-size;
+      width: var(--ui-step-circle-size, 48rpx);
       flex-shrink: 0;
       margin-right: var(--ui-spacing-md);
       flex-direction: column;
@@ -441,9 +299,9 @@ $step-transition-duration: var(--ui-transition-duration);
 
     .ui-step__line {
       flex: 1;
-      width: $step-line-height;
+      width: var(--ui-step-line-thickness, 2rpx);
       height: auto;
-      min-height: 24rpx;
+      min-height: var(--ui-spacing-md);
     }
 
     .ui-step__icon-wrapper {
@@ -455,59 +313,6 @@ $step-transition-duration: var(--ui-transition-duration);
       text-align: left;
       padding-top: 0;
       justify-content: center;
-    }
-
-    // 最后一个垂直步骤也左对齐
-    &.ui-step--last .ui-step__content {
-      text-align: left;
-    }
-  }
-
-  &--wait {
-    .ui-step__circle {
-      border-color: var(--ui-color-border);
-      background-color: transparent;
-    }
-  }
-
-  &--process {
-    .ui-step__circle {
-      transform: scale(1.05);
-      box-shadow: 0 4rpx 16rpx rgba(var(--ui-color-primary-rgb), 0.3);
-      border-color: var(--ui-color-primary);
-      background-color: var(--ui-color-primary);
-    }
-  }
-
-  &--finish {
-    .ui-step__circle {
-      border-color: var(--ui-color-primary);
-      background-color: var(--ui-color-primary);
-    }
-  }
-
-  &--error {
-    .ui-step__circle {
-      border-color: var(--ui-color-danger);
-      background-color: var(--ui-color-danger);
-    }
-  }
-
-  &--dot {
-    .ui-step__circle {
-      width: $step-dot-size;
-      border: none;
-      height: $step-dot-size;
-    }
-
-    .ui-step__index {
-      display: none;
-    }
-  }
-
-  &--simple {
-    .ui-step__content {
-      display: none;
     }
   }
 }

@@ -3,8 +3,7 @@ import type { StepStatus } from "../ui-steps"
 import type { PropType, CSSProperties, ExtractPropTypes } from "vue"
 import { buildDefaultProps } from "../utils/props"
 
-/** 可从父组件继承的属性键 */
-export type InheritableStepPropKeys = "activeColor" | "inactiveColor" | "errorColor" | "activeIcon" | "inactiveIcon" | "finishIcon" | "errorIcon" | "iconSize"
+export type { StepStatus }
 
 const defaultProps = buildDefaultProps("step", {
   title: undefined,
@@ -17,15 +16,15 @@ const defaultProps = buildDefaultProps("step", {
 })
 
 export const stepProps = {
-  /** 步骤标题 */
+  /** 标题 */
   title: defaultProps("title", { type: String }),
-  /** 步骤描述 */
+  /** 描述 */
   description: defaultProps("description", { type: String }),
-  /** 自定义图标 */
+  /** 自定义图标，覆盖父级 active/inactive/finish/errorIcon */
   icon: defaultProps("icon", { type: String }),
-  /** 步骤状态（如果不设置则根据 active 自动判断）：wait/process/finish/error */
+  /** 显式状态，覆盖按 active 派生的状态 */
   status: defaultProps("status", { type: String as PropType<StepStatus> }),
-  /** 图标大小 */
+  /** 图标大小，覆盖父级 iconSize */
   iconSize: defaultProps("iconSize", { type: [Number, String] }),
   /** 自定义类名 */
   customClass: defaultProps("customClass", { type: String }),
@@ -34,8 +33,7 @@ export const stepProps = {
 }
 
 export const stepEmits = {
-  /** 点击步骤时触发 */
-  click: (index: number) => true,
+  click: (_index: number) => true,
 }
 
 export type StepEmits = typeof stepEmits
