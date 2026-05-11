@@ -75,8 +75,25 @@ const templates: Array<{ label: string; build: () => PosterDrawItem[] }> = [
       { type: "text", text: "立减 ¥100", style: { left: 570, top: 150, fontSize: 26, color: "#ffffff", textAlign: "center", baseLine: "middle", fontWeight: "bold" } },
 
       // 产品图占位 (大圆角 + 渐变模拟茶汤色)
-      { type: "rect", style: { left: 80, top: 140, width: 380, height: 380, backgroundColor: "#a16207", gradientColor: "#fbbf24", gradientType: 2, borderRadius: 24, shadow: { offsetX: 0, offsetY: 8, blur: 20, color: "rgba(161,98,7,0.25)" } } },
-      { type: "text", text: "夏限·茶礼", style: { left: 270, top: 320, fontSize: 56, color: "rgba(255,255,255,0.95)", textAlign: "center", baseLine: "middle", fontWeight: "bold" } },
+      {
+        type: "rect",
+        style: {
+          left: 80,
+          top: 140,
+          width: 380,
+          height: 380,
+          backgroundColor: "#a16207",
+          gradientColor: "#fbbf24",
+          gradientType: 2,
+          borderRadius: 24,
+          shadow: { offsetX: 0, offsetY: 8, blur: 20, color: "rgba(161,98,7,0.25)" },
+        },
+      },
+      {
+        type: "text",
+        text: "夏限·茶礼",
+        style: { left: 270, top: 320, fontSize: 56, color: "rgba(255,255,255,0.95)", textAlign: "center", baseLine: "middle", fontWeight: "bold" },
+      },
       { type: "text", text: "S U M M E R   2 0 2 6", style: { left: 270, top: 380, fontSize: 22, color: "rgba(255,255,255,0.7)", textAlign: "center" } },
 
       // 商品名 + 副标题
@@ -135,7 +152,18 @@ const templates: Array<{ label: string; build: () => PosterDrawItem[] }> = [
       { type: "text", text: "天天领", style: { left: 480, top: 690, fontSize: 48, color: "#fbbf24", fontWeight: "bold" } },
 
       // CTA 按钮
-      { type: "rect", style: { left: 60, top: 800, width: 580, height: 80, backgroundColor: "#fbbf24", borderRadius: 40, shadow: { offsetX: 0, offsetY: 8, blur: 24, color: "rgba(251,191,36,0.4)" } } },
+      {
+        type: "rect",
+        style: {
+          left: 60,
+          top: 800,
+          width: 580,
+          height: 80,
+          backgroundColor: "#fbbf24",
+          borderRadius: 40,
+          shadow: { offsetX: 0, offsetY: 8, blur: 24, color: "rgba(251,191,36,0.4)" },
+        },
+      },
       { type: "text", text: "立即参与 →", style: { left: 350, top: 840, fontSize: 32, color: "#0f172a", textAlign: "center", baseLine: "middle", fontWeight: "bold" } },
     ],
   },
@@ -146,7 +174,18 @@ const templates: Array<{ label: string; build: () => PosterDrawItem[] }> = [
       { type: "rect", style: { left: 0, top: 0, width: 700, height: 900, backgroundColor: "#f1f5f9" } },
 
       // 主卡片 + 阴影
-      { type: "rect", style: { left: 40, top: 60, width: 620, height: 780, backgroundColor: "#ffffff", borderRadius: 32, shadow: { offsetX: 0, offsetY: 12, blur: 32, color: "rgba(15,23,42,0.08)" } } },
+      {
+        type: "rect",
+        style: {
+          left: 40,
+          top: 60,
+          width: 620,
+          height: 780,
+          backgroundColor: "#ffffff",
+          borderRadius: 32,
+          shadow: { offsetX: 0, offsetY: 12, blur: 32, color: "rgba(15,23,42,0.08)" },
+        },
+      },
 
       // 顶部 hero 区 (紫蓝渐变 + 圆形装饰)
       { type: "rect", style: { left: 40, top: 60, width: 620, height: 360, backgroundColor: "#6366f1", gradientColor: "#8b5cf6", gradientType: 1, borderRadius: [32, 32, 0, 0] } },
@@ -248,8 +287,8 @@ async function save() {
 
 .preview-area {
   display: flex;
-  min-height: 600rpx;
   background: var(--ui-color-background-page);
+  min-height: 600rpx;
   align-items: center;
   border-radius: var(--ui-radius-md);
   justify-content: center;

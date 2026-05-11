@@ -233,7 +233,6 @@ describe("ui-qrcode 二维码组件", () => {
 
       expect(typeof wrapper.vm.saveCode).toBe("function")
     })
-
   })
 
   describe("方法与事件", () => {

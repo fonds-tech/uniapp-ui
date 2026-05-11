@@ -29,12 +29,12 @@
 
 <script setup lang="ts">
 import type { CSSProperties } from "vue"
-import type { PopupCloseAction } from "./index"
 import type { TransitionName } from "../hooks"
+import type { PopupCloseAction } from "./index"
 import { noop } from "../utils/utils"
 import { isNumber } from "../utils/check"
-import { popupEmits, popupProps } from "./index"
 import { ref, watch, computed } from "vue"
+import { popupEmits, popupProps } from "./index"
 import { useUnit, useColor, useStyle, useTransition, useGlobalZIndex } from "../hooks"
 
 defineOptions({ name: "ui-popup" })
@@ -147,15 +147,15 @@ export default {
 @use "../styles/animation.scss";
 
 .ui-popup {
-  --ui-popup-border-radius: var(--ui-radius-lg);
-  --ui-popup-close-color: var(--ui-color-text-secondary);
   --ui-popup-close-size: var(--ui-icon-size-sm);
   --ui-popup-side-width: 60vw;
+  --ui-popup-close-color: var(--ui-color-text-secondary);
+  --ui-popup-border-radius: var(--ui-radius-lg);
 
   overflow: hidden;
+  position: fixed;
   max-width: 100vw;
   max-height: 100vh;
-  position: fixed;
   background-color: var(--ui-color-background);
   transition-duration: var(--ui-transition-duration);
 
@@ -164,9 +164,9 @@ export default {
   }
 
   &__close {
+    color: var(--ui-popup-close-color);
     z-index: var(--ui-z-index-content);
     position: absolute;
-    color: var(--ui-popup-close-color);
     font-size: var(--ui-popup-close-size);
     line-height: 1;
 
@@ -204,8 +204,8 @@ export default {
   &--left {
     top: 0;
     left: 0;
-    bottom: 0;
     width: var(--ui-popup-side-width);
+    bottom: 0;
     display: flex;
     flex-direction: column;
     border-top-right-radius: var(--ui-popup-border-radius);
@@ -215,8 +215,8 @@ export default {
   &--right {
     top: 0;
     right: 0;
-    bottom: 0;
     width: var(--ui-popup-side-width);
+    bottom: 0;
     display: flex;
     flex-direction: column;
     border-top-left-radius: var(--ui-popup-border-radius);

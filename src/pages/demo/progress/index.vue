@@ -97,7 +97,7 @@
         </view>
         <ui-progress :percentage="download.percentage" text-position="outside" color="success" />
         <demo-block :cols="3" :gap="12">
-          <ui-button size="small" @click="downloadAction('start')">{{ download.timer ? '暂停' : '开始' }}</ui-button>
+          <ui-button size="small" @click="downloadAction('start')">{{ download.timer ? "暂停" : "开始" }}</ui-button>
           <ui-button size="small" type="warning" @click="downloadAction('reset')">重置</ui-button>
           <ui-button size="small" type="success" @click="downloadAction('complete')">完成</ui-button>
         </demo-block>
@@ -110,7 +110,7 @@
           <view class="task-row__head">
             <text class="task-row__label">{{ t.label }}</text>
             <text class="task-row__status" :class="{ 'task-row__status--done': t.percentage === 100 }">
-              {{ t.percentage === 100 ? '已完成' : `${t.percentage}%` }}
+              {{ t.percentage === 100 ? "已完成" : `${t.percentage}%` }}
             </text>
           </view>
           <ui-progress :percentage="t.percentage" :color="t.percentage === 100 ? 'success' : 'primary'" :show-text="false" :height="10" />
@@ -146,11 +146,7 @@ const customColors = [
   { label: "粉色", value: "#ec4899" },
   { label: "青色", value: "#14b8a6" },
 ]
-const gradients = [
-  "linear-gradient(90deg, #3b82f6 0%, #8b5cf6 100%)",
-  "linear-gradient(90deg, #10b981 0%, #06b6d4 100%)",
-  "linear-gradient(90deg, #f59e0b 0%, #ef4444 100%)",
-]
+const gradients = ["linear-gradient(90deg, #3b82f6 0%, #8b5cf6 100%)", "linear-gradient(90deg, #10b981 0%, #06b6d4 100%)", "linear-gradient(90deg, #f59e0b 0%, #ef4444 100%)"]
 const trackPairs = [
   { label: "浅蓝", track: "#e0f2fe", color: "#0ea5e9" },
   { label: "浅黄", track: "#fef3c7", color: "#f59e0b" },
@@ -267,8 +263,8 @@ function onFinish() {
   display: flex;
   padding: 20rpx;
   background: var(--ui-color-background-section);
-  flex-direction: column;
   border-radius: var(--ui-radius-md);
+  flex-direction: column;
 
   &__head {
     display: flex;

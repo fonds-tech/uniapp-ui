@@ -88,13 +88,7 @@
     <demo-section title="事件回显">
       <demo-block direction="column" align="start" :gap="8">
         <text class="demo-text">{{ eventLog }}</text>
-        <ui-segmented
-          v-model="value.event"
-          :options="basicOptions"
-          block
-          @change="(v) => onEvent('change', v)"
-          @click="(o, i) => onEvent('click', `${o.label}@${i}`)"
-        />
+        <ui-segmented v-model="value.event" :options="basicOptions" block @change="(v) => onEvent('change', v)" @click="(o, i) => onEvent('click', `${o.label}@${i}`)" />
       </demo-block>
     </demo-section>
   </demo-page>

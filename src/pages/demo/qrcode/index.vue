@@ -147,10 +147,10 @@ function onClickQr() {
   display: flex;
   padding: 40rpx;
   background: var(--ui-color-background);
+  box-shadow: 0 4rpx 24rpx rgba(0, 0, 0, 0.08);
   align-items: center;
   border-radius: var(--ui-radius-lg);
   flex-direction: column;
-  box-shadow: 0 4rpx 24rpx rgba(0, 0, 0, 0.08);
 
   &__title {
     color: var(--ui-color-text-secondary);

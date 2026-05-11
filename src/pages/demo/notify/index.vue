@@ -24,9 +24,9 @@
 
     <demo-section title="顶部偏移 / 层级" desc="offsetTop 让出状态栏，zIndex 控制堆叠层级">
       <demo-block :cols="3" :gap="12">
-        <ui-button v-for="o in offsetOptions" :key="o.value" size="small" :type="currentOffset === o.value ? 'primary' : 'default'" @click="currentOffset = o.value">{{
-          o.label
-        }}</ui-button>
+        <ui-button v-for="o in offsetOptions" :key="o.value" size="small" :type="currentOffset === o.value ? 'primary' : 'default'" @click="currentOffset = o.value">
+          {{ o.label }}
+        </ui-button>
       </demo-block>
       <demo-block :cols="3" :gap="12">
         <ui-button v-for="z in [1000, 2000, 9999]" :key="z" size="small" :type="currentZIndex === z ? 'primary' : 'default'" @click="currentZIndex = z">z {{ z }}</ui-button>

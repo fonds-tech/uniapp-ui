@@ -1,11 +1,11 @@
 <template>
-  <view class="ui-sidebar" :class="[customClass]" :style="[style]">
+  <view class="ui-sidebar" :class="[showLine && 'ui-sidebar--show-line', customClass]" :style="[rootStyle]">
     <scroll-view class="ui-sidebar__scroll" scroll-y :scroll-with-animation="inited" :scroll-top="scrollTop">
-      <view class="ui-sidebar__list" :style="[listStyle]">
+      <view class="ui-sidebar__list">
         <slot />
         <view class="ui-sidebar__line" :style="[lineStyle]">
           <slot name="line">
-            <view class="ui-sidebar__line-inner" :style="[lineInnerStyle]" />
+            <view class="ui-sidebar__line-inner" />
           </slot>
         </view>
       </view>
@@ -15,6 +15,7 @@
 
 <script setup lang="ts">
 import type { CSSProperties } from "vue"
+import { isDef } from "../utils/check"
 import { sidebarKey, sidebarEmits, sidebarProps } from "./index"
 import { ref, toRef, watch, computed, nextTick, getCurrentInstance } from "vue"
 import { useRect, useUnit, useColor, useStyle, useChildren, useUnitToPx } from "../hooks"
@@ -25,161 +26,167 @@ const props = defineProps(sidebarProps)
 const emits = defineEmits(sidebarEmits)
 const { childrens, linkChildren } = useChildren(sidebarKey)
 
-// 是否已初始化，用于控制滚动动画
-const inited = ref(false)
-// 组件实例
 const instance = getCurrentInstance()
-// 外层容器布局信息
-const wrapRect = ref<UniApp.NodeInfo>({})
+// 是否完成首次定位，开启 scroll/line 动画
+const inited = ref(false)
 // 列表容器布局信息
 const listRect = ref<UniApp.NodeInfo>({})
-// 指示线布局信息
-const lineRect = ref<UniApp.NodeInfo>({})
-// 指示线垂直偏移位置
+// 指示线垂直偏移
 const lineTop = ref(0)
-// 指示线高度
-const lineHeight = ref(0)
-// 滚动视图滚动位置
+// 指示线滚动位置
 const scrollTop = ref(0)
-// 当前选中的项名称
-const currentName = ref(null)
+// 当前选中项名称
+const currentName = ref<string | number | null>(null)
+// 暴露的 showLine 提取给模板使用
+const showLine = computed(() => props.showLine)
 
-// 侧边栏容器样式
-const style = computed(() => {
-  const style: CSSProperties = {}
-  style.zIndex = props.zIndex
-  style.width = useUnit(props.width)
-  style.height = useUnit(props.height)
-  style.background = useColor(props.background)
-  return useStyle({ ...style, ...useStyle(props.customStyle) })
+// 根节点样式：宽高 / 背景 / line var 注入
+const rootStyle = computed(() => {
+  const vars: Record<string, string | number | undefined> = {}
+  if (isDef(props.width)) vars["--ui-sidebar-width"] = useUnit(props.width)
+  if (isDef(props.height)) vars["--ui-sidebar-height"] = useUnit(props.height)
+  if (props.background) vars["--ui-sidebar-background"] = useColor(props.background)
+  if (props.lineColor) vars["--ui-sidebar-line-color"] = useColor(props.lineColor)
+  if (isDef(props.lineWidth)) vars["--ui-sidebar-line-width"] = useUnit(props.lineWidth)
+  if (isDef(props.lineRadius)) vars["--ui-sidebar-line-radius"] = useUnit(props.lineRadius)
+  if (isDef(props.zIndex)) vars.zIndex = props.zIndex as string | number
+  return useStyle({ ...vars, ...useStyle(props.customStyle) })
 })
 
-// 侧边栏列表样式
-const listStyle = computed(() => {
-  const style: CSSProperties = {}
-  style.width = useUnit(props.width)
-  style.height = useUnit(props.height)
-  return useStyle(style)
-})
-
-// 指示线外层样式
+// 指示线外层动态样式（位置/动画/高度）
 const lineStyle = computed(() => {
   const style: CSSProperties = {}
   style.transform = `translateY(${lineTop.value}px)`
-  style.transitionDuration = inited.value ? `${props.duration}ms` : "0"
-  style.visibility = props.showLine ? "visible" : "hidden"
+  style.transitionDuration = inited.value ? `${props.duration}ms` : "0s"
   return useStyle(style)
 })
 
-// 指示线内层样式
-const lineInnerStyle = computed(() => {
-  const style: CSSProperties = {}
-  style.width = useUnit(props.lineWidth)
-  style.height = `${useUnitToPx(props.lineHeight)}px`
-  style.background = useColor(props.lineColor)
-  style.borderRadius = useUnit(props.lineRadius)
-  return useStyle(style)
-})
-
-// 监听 modelValue 变化，更新当前选中项
 watch(() => props.modelValue, setCurrentName)
 
-// 监听子组件数量变化，重新设置当前选中项
+// 子项挂载/卸载触发；同长度的整体替换由 modelValue 不变下保持现状（用户应换 modelValue 同步）
 watch(
   () => childrens.length,
   () => setCurrentName(props.modelValue),
 )
 
-// 重新计算布局信息
+// 重算布局
 async function resize(isChildrensResize = true) {
   await nextTick()
-  wrapRect.value = await useRect(".ui-sidebar", instance)
-  lineRect.value = await useRect(".ui-sidebar__line", instance)
   listRect.value = await useRect(".ui-sidebar__list", instance)
   if (isChildrensResize) {
-    await Promise.all(childrens.map((item) => item.exposed.resize()))
+    await Promise.all(childrens.map((item: any) => item.exposed.resize()))
   }
 }
 
-// 点击子项事件处理
 function clickItem(name: string | number, index: number) {
   emits("clickItem", name, index)
 }
 
-// 根据名称查找对应的子项
-function findItemByName(name: string | number) {
-  return childrens.find((item) => toRef(item.exposed.name).value === name) || childrens.find((item) => !item.exposed.props.disabled)
-}
-
-// 设置当前选中的项
-async function setCurrentName(name: string | number) {
-  const item = findItemByName(name)
-  if (item) {
-    const name = toRef(item.exposed.name).value
-    if (name !== currentName.value) {
-      await resize(false)
-      setLine(name)
-      scrollIntoView(name)
-      currentName.value = name
-      emits("update:modelValue", name)
-      emits("change", name)
-    }
+// 按 name 查 item；未传或没匹配时返回首个非禁用项作为回退候选
+function findItemByName(name: string | number | null | undefined) {
+  if (isDef(name)) {
+    const found = childrens.find((item: any) => toRef(item.exposed.name).value === name)
+    if (found) return { item: found, matched: true }
   }
+  const fallback = childrens.find((item: any) => !item.exposed.props.disabled)
+  return fallback ? { item: fallback, matched: false } : null
 }
 
-// 设置指示线位置
+// 设置当前选中项；传入值未匹配时不强占 modelValue
+async function setCurrentName(name: string | number | null | undefined) {
+  const result = findItemByName(name)
+  if (!result) return
+  const { item, matched } = result
+  const itemName = toRef(item.exposed.name).value
+  // 外部传了具体值但未命中 → 静默警告，不修改 modelValue
+  if (isDef(name) && !matched) {
+    if (process.env.NODE_ENV !== "production") {
+      console.warn(`[ui-sidebar] modelValue "${name}" 未匹配任何子项，已忽略`)
+    }
+    return
+  }
+  if (itemName === currentName.value) return
+  await resize(false)
+  setLine(itemName)
+  if (props.autoScroll) scrollIntoView(itemName)
+  currentName.value = itemName
+  emits("update:modelValue", itemName)
+  emits("change", itemName)
+}
+
 function setLine(name: string | number) {
-  const item = findItemByName(name)
-  if (item) {
-    const rect = toRef(item.exposed.rect)
-    const index = toRef(item.exposed.index)
-    const height = childrens.slice(0, index.value).reduce((prev: any, curr: any) => prev + toRef(curr.exposed.rect).value.height, 0)
-    if (props.lineHeight === "100%") {
-      lineTop.value = height
-      lineHeight.value = rect.value.height
-    } else {
-      lineHeight.value = props.lineHeight ? useUnitToPx(props.lineHeight) : lineRect.value.height
-      lineTop.value = height + (rect.value.height - lineHeight.value) / 2
-    }
-    setTimeout(() => (inited.value = true), 30)
+  const result = findItemByName(name)
+  if (!result) return
+  const { item } = result
+  const idx = toRef(item.exposed.index).value
+  const rectH = toRef(item.exposed.rect).value?.height || 0
+  const offset = childrens.slice(0, idx).reduce((sum: number, curr: any) => sum + (toRef(curr.exposed.rect).value?.height || 0), 0)
+  // "100%": line 拉满当前项高度
+  if (props.lineHeight === "100%") {
+    lineTop.value = offset
+    setLineHeight(rectH)
+  } else {
+    const h = props.lineHeight ? useUnitToPx(props.lineHeight) || 0 : 0
+    lineTop.value = offset + (rectH - h) / 2
+    setLineHeight(h)
   }
+  // 首次定位后再开启动画，避免初始位置即触发 transition
+  setTimeout(() => (inited.value = true), 30)
 }
 
-// 滚动到指定项使其可见
+function setLineHeight(h: number) {
+  const root = instance?.proxy?.$el as HTMLElement | undefined
+  root?.style?.setProperty?.("--ui-sidebar-line-height", `${h}px`)
+}
+
 function scrollIntoView(name: string | number) {
-  const item = findItemByName(name)
-  if (item) {
-    const rect = toRef(item.exposed.rect)
-    const index = toRef(item.exposed.index)
-    const height = childrens.slice(0, index.value).reduce((prev: any, curr: any) => prev + toRef(curr.exposed.rect).value.height, 0)
-    const top = height - listRect.value.height / 2 + rect.value.height / 2
-    scrollTop.value = scrollTop.value === top ? top + Math.random() / 10000 : top
-  }
+  const result = findItemByName(name)
+  if (!result) return
+  const { item } = result
+  const idx = toRef(item.exposed.index).value
+  const rectH = toRef(item.exposed.rect).value?.height || 0
+  const offset = childrens.slice(0, idx).reduce((sum: number, curr: any) => sum + (toRef(curr.exposed.rect).value?.height || 0), 0)
+  const listH = listRect.value.height || 0
+  const top = offset - listH / 2 + rectH / 2
+  // 小程序 scroll-view 同值不会重滚，加微扰强制响应
+  scrollTop.value = scrollTop.value === top ? top + Math.random() / 10000 : top
 }
 
-// 关联子组件，提供上下文数据
 linkChildren({ props, currentName, setLine, scrollIntoView, clickItem, setCurrentName })
 
-// 暴露方法供外部调用
 defineExpose({ resize })
 </script>
 
 <script lang="ts">
 export default {
   name: "ui-sidebar",
-  options: { virtualHost: true, multipleSlots: true, styleIsolation: "shared" },
+  options: {
+    // #ifndef MP-TOUTIAO
+    virtualHost: true,
+    // #endif
+    multipleSlots: true,
+    styleIsolation: "shared",
+  },
 }
 </script>
 
 <style lang="scss">
 .ui-sidebar {
-  width: 300rpx;
-  height: 100%;
+  --ui-sidebar-width: 300rpx;
+  --ui-sidebar-height: 100%;
+  --ui-sidebar-background: var(--ui-color-background-page);
+  --ui-sidebar-line-color: var(--ui-color-primary);
+  --ui-sidebar-line-width: 6rpx;
+  --ui-sidebar-line-height: 40rpx;
+  --ui-sidebar-line-radius: var(--ui-radius-round);
+
+  width: var(--ui-sidebar-width);
+  height: var(--ui-sidebar-height);
   display: flex;
   position: relative;
+  background: var(--ui-sidebar-background);
   flex-direction: column;
   justify-content: space-between;
-  background-color: var(--ui-color-background-page);
 
   &__scroll {
     top: 0;
@@ -206,10 +213,15 @@ export default {
     visibility: hidden;
   }
 
+  &--show-line &__line {
+    visibility: visible;
+  }
+
   &__line-inner {
-    width: 6rpx;
-    border-radius: var(--ui-radius-round);
-    background-color: var(--ui-color-primary);
+    width: var(--ui-sidebar-line-width);
+    height: var(--ui-sidebar-line-height);
+    background: var(--ui-sidebar-line-color);
+    border-radius: var(--ui-sidebar-line-radius);
   }
 }
 </style>

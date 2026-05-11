@@ -53,16 +53,16 @@ async function save() {
 
 ## Events
 
-| 事件名 | 说明                       | 回调参数 |
-| ------ | -------------------------- | -------- |
-| ready  | canvas 上下文初始化完成    | -        |
+| 事件名 | 说明                    | 回调参数 |
+| ------ | ----------------------- | -------- |
+| ready  | canvas 上下文初始化完成 | -        |
 
 ## 实例方法
 
-| 方法名 | 说明                      | 参数                       | 返回值              |
-| ------ | ------------------------- | -------------------------- | ------------------- |
-| draw   | 绘制并导出 tempFilePath   | items: PosterDrawItem[]    | Promise\<string\>   |
-| save   | 保存图片到相册 (H5 预览)  | file: string               | Promise\<void\>     |
+| 方法名 | 说明                     | 参数                    | 返回值            |
+| ------ | ------------------------ | ----------------------- | ----------------- |
+| draw   | 绘制并导出 tempFilePath  | items: PosterDrawItem[] | Promise\<string\> |
+| save   | 保存图片到相册 (H5 预览) | file: string            | Promise\<void\>   |
 
 ## DrawItem 类型
 
@@ -72,23 +72,23 @@ async function save() {
 { type: "text", text: "文字内容", frontText?: "前缀", style: PosterTextStyle }
 ```
 
-| 字段        | 说明                                   | 默认值      |
-| ----------- | -------------------------------------- | ----------- |
-| left, top   | 起点坐标 (rpx)                         | -           |
-| fontSize    | 字号 (rpx)                             | -           |
-| color       | 文字颜色                               | -           |
-| baseLine    | 基线: normal / top / middle / bottom   | normal      |
-| textAlign   | 对齐: left / center / right            | left        |
-| width       | 文本框宽度，超出换行 (rpx)             | 600         |
-| rows        | 最大行数，-1 不限                      | 1           |
-| lineHeight  | 行高 (rpx)，0 走 fontSize              | 0           |
-| fontWeight  | 字重                                   | normal      |
-| fontStyle   | 字形                                   | normal      |
-| fontFamily  | 字体                                   | sans-serif  |
-| opacity     | 透明度                                 | 1           |
-| lineThrough | 删除线                                 | false       |
-| frontSize   | 前缀字号 (与 frontText 配合)           | -           |
-| spacing     | 前缀与正文间距                         | 0           |
+| 字段        | 说明                                 | 默认值     |
+| ----------- | ------------------------------------ | ---------- |
+| left, top   | 起点坐标 (rpx)                       | -          |
+| fontSize    | 字号 (rpx)                           | -          |
+| color       | 文字颜色                             | -          |
+| baseLine    | 基线: normal / top / middle / bottom | normal     |
+| textAlign   | 对齐: left / center / right          | left       |
+| width       | 文本框宽度，超出换行 (rpx)           | 600        |
+| rows        | 最大行数，-1 不限                    | 1          |
+| lineHeight  | 行高 (rpx)，0 走 fontSize            | 0          |
+| fontWeight  | 字重                                 | normal     |
+| fontStyle   | 字形                                 | normal     |
+| fontFamily  | 字体                                 | sans-serif |
+| opacity     | 透明度                               | 1          |
+| lineThrough | 删除线                               | false      |
+| frontSize   | 前缀字号 (与 frontText 配合)         | -          |
+| spacing     | 前缀与正文间距                       | 0          |
 
 ### image 图片
 
@@ -98,12 +98,12 @@ async function save() {
 
 `imgType`: `1` 本地路径 / `2` 网络图片 / `3` base64 (App / 微信小程序 / H5)
 
-| 字段                          | 说明                                  |
-| ----------------------------- | ------------------------------------- |
-| left, top                     | 起点坐标 (rpx)                        |
-| width, height                 | 尺寸 (rpx)                            |
-| borderRadius                  | 圆角，单值或 `[tl, tr, br, bl]`       |
-| borderWidth, borderColor      | 描边                                  |
+| 字段                     | 说明                            |
+| ------------------------ | ------------------------------- |
+| left, top                | 起点坐标 (rpx)                  |
+| width, height            | 尺寸 (rpx)                      |
+| borderRadius             | 圆角，单值或 `[tl, tr, br, bl]` |
+| borderWidth, borderColor | 描边                            |
 
 ### rect 矩形
 
@@ -111,16 +111,16 @@ async function save() {
 { type: "rect", style: PosterRectStyle }
 ```
 
-| 字段                         | 说明                                                |
-| ---------------------------- | --------------------------------------------------- |
-| left, top, width, height     | 位置和尺寸 (rpx)                                    |
-| backgroundColor              | 填充色                                              |
-| gradientColor, gradientType  | 渐变终止色 + 方向 (1 横 / 2 纵)，与 bg 配合        |
-| borderRadius                 | 圆角                                                |
-| borderWidth, borderColor     | 描边                                                |
-| opacity                      | 透明度                                              |
-| globalCompositeOperation     | canvas 合成模式                                     |
-| shadow                       | { offsetX, offsetY, blur, color }                  |
+| 字段                        | 说明                                        |
+| --------------------------- | ------------------------------------------- |
+| left, top, width, height    | 位置和尺寸 (rpx)                            |
+| backgroundColor             | 填充色                                      |
+| gradientColor, gradientType | 渐变终止色 + 方向 (1 横 / 2 纵)，与 bg 配合 |
+| borderRadius                | 圆角                                        |
+| borderWidth, borderColor    | 描边                                        |
+| opacity                     | 透明度                                      |
+| globalCompositeOperation    | canvas 合成模式                             |
+| shadow                      | { offsetX, offsetY, blur, color }           |
 
 ### line 线条
 
@@ -128,22 +128,22 @@ async function save() {
 { type: "line", style: PosterLineStyle }
 ```
 
-| 字段                                      | 说明              |
-| ----------------------------------------- | ----------------- |
-| left, top, endLeft, endTop                | 起止坐标 (rpx)    |
-| color                                     | 颜色              |
-| width                                     | 线宽 (rpx)，默认 1 |
-| lineDash                                  | 虚线段长度数组    |
+| 字段                       | 说明               |
+| -------------------------- | ------------------ |
+| left, top, endLeft, endTop | 起止坐标 (rpx)     |
+| color                      | 颜色               |
+| width                      | 线宽 (rpx)，默认 1 |
+| lineDash                   | 虚线段长度数组     |
 
 ## 平台差异
 
-| 平台         | 图片来源       | 保存方式               |
-| ------------ | -------------- | ---------------------- |
-| H5           | 网络 / base64  | previewImage (长按保存) |
-| 微信小程序   | 本地 / 网络 / base64 | saveImageToPhotosAlbum |
-| 支付宝小程序 | 本地 / 网络    | toTempFilePath          |
-| App          | 本地 / 网络 / base64 | 系统相册 (需权限)     |
-| 抖音 / 百度  | 本地 / 网络    | -                       |
+| 平台         | 图片来源             | 保存方式                |
+| ------------ | -------------------- | ----------------------- |
+| H5           | 网络 / base64        | previewImage (长按保存) |
+| 微信小程序   | 本地 / 网络 / base64 | saveImageToPhotosAlbum  |
+| 支付宝小程序 | 本地 / 网络          | toTempFilePath          |
+| App          | 本地 / 网络 / base64 | 系统相册 (需权限)       |
+| 抖音 / 百度  | 本地 / 网络          | -                       |
 
 ## 注意事项
 

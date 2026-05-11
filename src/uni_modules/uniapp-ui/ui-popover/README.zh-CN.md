@@ -24,23 +24,23 @@ function onSelect(action) {
 
 ## Props
 
-| 参数                | 说明                               | 类型             | 默认值   | 可选值                                                                        |
-| ------------------- | ---------------------------------- | ---------------- | -------- | ----------------------------------------------------------------------------- |
-| show                | 是否显示                           | boolean          | false    | -                                                                             |
-| actions             | 操作选项数组                       | PopoverAction[]  | []       | -                                                                             |
-| placement           | 弹出位置                           | PopoverPlacement | "bottom" | top / top-start / top-end / bottom / bottom-start / bottom-end / left / right |
-| theme               | 主题风格                           | PopoverTheme     | "light"  | light / dark                                                                  |
-| trigger             | 触发方式                           | PopoverTrigger   | "click"  | click / manual                                                                |
-| offset              | 偏移量 [x, y]                      | [number, number] | [0, 8]   | -                                                                             |
-| showArrow           | 显示箭头                           | boolean          | true     | -                                                                             |
-| closeOnClickAction  | 点击选项后自动关闭                 | boolean          | true     | -                                                                             |
+| 参数                | 说明                                  | 类型             | 默认值   | 可选值                                                                        |
+| ------------------- | ------------------------------------- | ---------------- | -------- | ----------------------------------------------------------------------------- |
+| show                | 是否显示                              | boolean          | false    | -                                                                             |
+| actions             | 操作选项数组                          | PopoverAction[]  | []       | -                                                                             |
+| placement           | 弹出位置                              | PopoverPlacement | "bottom" | top / top-start / top-end / bottom / bottom-start / bottom-end / left / right |
+| theme               | 主题风格                              | PopoverTheme     | "light"  | light / dark                                                                  |
+| trigger             | 触发方式                              | PopoverTrigger   | "click"  | click / manual                                                                |
+| offset              | 偏移量 [x, y]                         | [number, number] | [0, 8]   | -                                                                             |
+| showArrow           | 显示箭头                              | boolean          | true     | -                                                                             |
+| closeOnClickAction  | 点击选项后自动关闭                    | boolean          | true     | -                                                                             |
 | closeOnClickOutside | 点击外部区域自动关闭 (见下方平台差异) | boolean          | true     | -                                                                             |
-| duration            | 动画时长 (ms)                      | number           | 200      | -                                                                             |
-| zIndex              | 元素层级                           | string \| number | -        | -                                                                             |
-| overlay             | 显示遮罩层                         | boolean          | false    | -                                                                             |
-| overlayStyle        | 遮罩层样式                         | string \| object | -        | -                                                                             |
-| customClass         | 自定义类名                         | string           | ""       | -                                                                             |
-| customStyle         | 自定义样式                         | string \| object | ""       | -                                                                             |
+| duration            | 动画时长 (ms)                         | number           | 200      | -                                                                             |
+| zIndex              | 元素层级                              | string \| number | -        | -                                                                             |
+| overlay             | 显示遮罩层                            | boolean          | false    | -                                                                             |
+| overlayStyle        | 遮罩层样式                            | string \| object | -        | -                                                                             |
+| customClass         | 自定义类名                            | string           | ""       | -                                                                             |
+| customStyle         | 自定义样式                            | string \| object | ""       | -                                                                             |
 
 ## Events
 

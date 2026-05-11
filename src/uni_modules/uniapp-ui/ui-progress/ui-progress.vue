@@ -102,8 +102,8 @@ export default {
 
   &__pivot {
     top: 50%;
-    z-index: calc(var(--ui-z-index-base) + 1);
     display: flex;
+    z-index: calc(var(--ui-z-index-base) + 1);
     position: absolute;
     transform: translate(-100%, -50%);
     box-sizing: border-box;

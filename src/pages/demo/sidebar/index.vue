@@ -320,9 +320,9 @@ function onClickItem(name: number | string, index: number) {
 }
 
 .sidebar-wrap {
+  border: 2rpx solid var(--ui-color-border-light);
   height: 300rpx;
   overflow: hidden;
-  border: 2rpx solid var(--ui-color-border-light);
   border-radius: var(--ui-radius-md);
 
   &--small {

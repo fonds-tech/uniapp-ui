@@ -16,7 +16,7 @@ import type { CSSProperties } from "vue"
 import type { RateItem, RateRangeItem } from "./index"
 import { formItemKey } from "../ui-form-item"
 import { rateEmits, rateProps } from "./index"
-import { useRect, useRects, useStyle, useParent, useUnitToPx } from "../hooks"
+import { useRects, useStyle, useParent, useUnitToPx } from "../hooks"
 import { ref, computed, nextTick, onMounted, getCurrentInstance } from "vue"
 
 defineOptions({ name: "ui-rate" })
@@ -158,8 +158,8 @@ export default {
   align-items: center;
 
   &--disabled {
-    opacity: var(--ui-opacity-disabled);
     cursor: not-allowed;
+    opacity: var(--ui-opacity-disabled);
   }
 
   &__item {
@@ -176,8 +176,8 @@ export default {
         top: 0;
         left: 0;
         width: 0;
-        z-index: 1;
         display: flex;
+        z-index: 1;
         overflow: hidden;
         position: absolute;
         pointer-events: none;

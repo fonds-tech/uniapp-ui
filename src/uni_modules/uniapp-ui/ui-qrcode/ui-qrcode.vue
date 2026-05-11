@@ -189,9 +189,9 @@ export default {
   &__loading {
     top: 0;
     left: 0;
+    color: var(--ui-color-text-secondary);
     width: 100%;
     height: 100%;
-    color: var(--ui-color-text-secondary);
     display: flex;
     position: absolute;
     font-size: var(--ui-font-size-sm);
@@ -202,9 +202,9 @@ export default {
 
   &__code-text {
     color: var(--ui-color-text);
-    padding-top: 10rpx;
     font-size: var(--ui-font-size-lg);
     box-sizing: border-box;
+    padding-top: 10rpx;
     letter-spacing: 8rpx;
   }
 }

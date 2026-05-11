@@ -182,7 +182,12 @@
       </view>
     </ui-popup>
 
-    <ui-popup v-model:show="state.custom" mode="center" :custom-style="{ border: '4rpx solid var(--ui-color-primary)', boxShadow: '0 8rpx 32rpx rgba(0,0,0,0.2)' }" :border-radius="32">
+    <ui-popup
+      v-model:show="state.custom"
+      mode="center"
+      :custom-style="{ border: '4rpx solid var(--ui-color-primary)', boxShadow: '0 8rpx 32rpx rgba(0,0,0,0.2)' }"
+      :border-radius="32"
+    >
       <view class="popup-card">
         <text class="popup-card__title">自定义样式</text>
         <text class="popup-card__body">边框 + 阴影 + 大圆角</text>
@@ -304,7 +309,7 @@ definePage({
 const toast = useToast()
 
 const modes: PopupMode[] = ["top", "bottom", "left", "right", "center"]
-const modeLabel = (m: PopupMode) => ({ top: "顶部", bottom: "底部", left: "左侧", right: "右侧", center: "居中" }[m])
+const modeLabel = (m: PopupMode) => ({ top: "顶部", bottom: "底部", left: "左侧", right: "右侧", center: "居中" })[m]
 
 const durations = [100, 300, 600]
 
@@ -403,8 +408,8 @@ function onEvent(name: string) {
   display: flex;
   padding: 32rpx;
   background: var(--ui-color-background);
-  flex-direction: column;
   align-items: center;
+  flex-direction: column;
 
   &--top,
   &--bottom {
@@ -436,8 +441,8 @@ function onEvent(name: string) {
   &__body {
     color: var(--ui-color-text-secondary);
     font-size: 26rpx;
-    line-height: 1.5;
     text-align: center;
+    line-height: 1.5;
   }
 
   &__row {
@@ -546,8 +551,8 @@ function onEvent(name: string) {
   gap: 16rpx;
   display: flex;
   padding: 24rpx 32rpx;
-  border-bottom: 2rpx solid var(--ui-color-border-light);
   align-items: center;
+  border-bottom: 2rpx solid var(--ui-color-border-light);
 
   &:last-child {
     border-bottom: none;

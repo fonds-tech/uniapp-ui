@@ -16,31 +16,31 @@ UiProgress 进度条组件，展示任务完成度。支持文字位置切换、
 
 ## Props
 
-| 参数         | 说明                                                | 类型             | 默认值   | 可选值                       |
-| ------------ | --------------------------------------------------- | ---------------- | -------- | ---------------------------- |
-| percentage   | 百分比 (0-100，超出自动夹紧)                        | number \| string | 0        | -                            |
-| color        | 进度填充色（语义色名 / hex / rgba / linear-gradient） | string           | -        | -                            |
-| trackColor   | 轨道背景色                                          | string           | -        | -                            |
-| text         | 进度文本（不填则显示 `${percentage}%`）             | string           | -        | -                            |
-| showText     | 显示进度文本                                        | boolean          | true     | -                            |
-| textPosition | 文本位置                                            | string           | "inside" | inside / outside / none      |
-| textColor    | 文本颜色                                            | string           | -        | -                            |
-| textSize     | 文本字号                                            | string \| number | -        | -                            |
-| textWeight   | 文本字重                                            | string \| number | -        | -                            |
-| height       | 进度条高度                                          | string \| number | -        | -                            |
-| customClass  | 自定义类名                                          | string           | -        | -                            |
-| customStyle  | 自定义样式                                          | string \| object | -        | -                            |
+| 参数         | 说明                                                  | 类型             | 默认值   | 可选值                  |
+| ------------ | ----------------------------------------------------- | ---------------- | -------- | ----------------------- |
+| percentage   | 百分比 (0-100，超出自动夹紧)                          | number \| string | 0        | -                       |
+| color        | 进度填充色（语义色名 / hex / rgba / linear-gradient） | string           | -        | -                       |
+| trackColor   | 轨道背景色                                            | string           | -        | -                       |
+| text         | 进度文本（不填则显示 `${percentage}%`）               | string           | -        | -                       |
+| showText     | 显示进度文本                                          | boolean          | true     | -                       |
+| textPosition | 文本位置                                              | string           | "inside" | inside / outside / none |
+| textColor    | 文本颜色                                              | string           | -        | -                       |
+| textSize     | 文本字号                                              | string \| number | -        | -                       |
+| textWeight   | 文本字重                                              | string \| number | -        | -                       |
+| height       | 进度条高度                                            | string \| number | -        | -                       |
+| customClass  | 自定义类名                                            | string           | -        | -                       |
+| customStyle  | 自定义样式                                            | string \| object | -        | -                       |
 
 ## Events
 
-| 事件名 | 说明                            | 回调参数 |
-| ------ | ------------------------------- | -------- |
+| 事件名 | 说明                             | 回调参数 |
+| ------ | -------------------------------- | -------- |
 | finish | 百分比从非 100 跨入 100 触发一次 | -        |
 
 ## Slots
 
-| 名称 | 说明                              | 作用域参数             |
-| ---- | --------------------------------- | ---------------------- |
+| 名称 | 说明                               | 作用域参数             |
+| ---- | ---------------------------------- | ---------------------- |
 | text | 自定义进度文本（覆盖默认文字渲染） | { percentage: number } |
 
 ## CSS 变量

@@ -1,7 +1,7 @@
+import { ref } from "vue"
 import { merge } from "../utils/utils"
 import { isObject } from "../utils/check"
 import { usePromise } from "./usePromise"
-import { ref } from "vue"
 
 // 单帧时长 (60fps ≈ 16ms)。多次 await 串联后浏览器有机会 paint 中间状态，
 // 避免 Vue patch 把 enter / enter-to class 合并跳过 transition。

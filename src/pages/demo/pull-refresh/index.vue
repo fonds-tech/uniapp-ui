@@ -59,7 +59,7 @@
 
           <!-- 列表内容 -->
           <view class="list">
-            <view v-if="sceneIndex === 4" v-for="msg in messages" :key="msg.id" class="msg-item">
+            <view v-for="msg in messages" v-if="sceneIndex === 4" :key="msg.id" class="msg-item">
               <view class="msg-item__avatar" :style="{ background: msg.color }">
                 <text class="msg-item__initial">{{ msg.name[0] }}</text>
               </view>
@@ -75,7 +75,7 @@
               </view>
             </view>
 
-            <view v-else-if="sceneIndex === 5" v-for="g in goods" :key="g.id" class="goods-item">
+            <view v-for="g in goods" v-else-if="sceneIndex === 5" :key="g.id" class="goods-item">
               <view class="goods-item__cover" :style="{ background: g.color }" />
               <view class="goods-item__main">
                 <text class="goods-item__name">{{ g.name }}</text>
@@ -84,7 +84,7 @@
               </view>
             </view>
 
-            <view v-else v-for="item in list" :key="item" class="list-item">
+            <view v-for="item in list" v-else :key="item" class="list-item">
               <text class="list-item__text">{{ item }}</text>
             </view>
           </view>
@@ -180,9 +180,9 @@ function onChange(status: PullRefreshStatus) {
 }
 
 .list {
+  overflow: hidden;
   background: var(--ui-color-background);
   border-radius: var(--ui-radius-md);
-  overflow: hidden;
 }
 
 .list-item {
@@ -218,8 +218,8 @@ function onChange(status: PullRefreshStatus) {
     width: 80rpx;
     height: 80rpx;
     display: flex;
-    border-radius: var(--ui-radius-round);
     align-items: center;
+    border-radius: var(--ui-radius-round);
     justify-content: center;
   }
 
@@ -258,10 +258,10 @@ function onChange(status: PullRefreshStatus) {
   }
 
   &__badge {
-    min-width: 36rpx;
-    padding: 0 8rpx;
     height: 36rpx;
     display: flex;
+    padding: 0 8rpx;
+    min-width: 36rpx;
     background: var(--ui-color-danger);
     align-items: center;
     border-radius: 18rpx;
@@ -289,8 +289,8 @@ function onChange(status: PullRefreshStatus) {
   &__cover {
     width: 140rpx;
     height: 140rpx;
-    border-radius: var(--ui-radius-md);
     flex-shrink: 0;
+    border-radius: var(--ui-radius-md);
   }
 
   &__main {

@@ -33,17 +33,17 @@
 
     <demo-section title="字重" desc="fontWeight 控制粗细">
       <demo-block :cols="4" :gap="12">
-        <ui-button v-for="w in fontWeights" :key="w.value" size="small" :type="currentFontWeight === w.value ? 'primary' : 'default'" @click="currentFontWeight = w.value">{{
-          w.label
-        }}</ui-button>
+        <ui-button v-for="w in fontWeights" :key="w.value" size="small" :type="currentFontWeight === w.value ? 'primary' : 'default'" @click="currentFontWeight = w.value">
+          {{ w.label }}
+        </ui-button>
       </demo-block>
     </demo-section>
 
     <demo-section title="颜色" desc="color 接受语义 token 或十六进制">
       <demo-block :cols="4" :gap="12">
-        <ui-button v-for="c in colors" :key="c.value" size="small" :type="currentColor === c.value ? 'primary' : 'default'" @click="currentColor = c.value">{{
-          c.label
-        }}</ui-button>
+        <ui-button v-for="c in colors" :key="c.value" size="small" :type="currentColor === c.value ? 'primary' : 'default'" @click="currentColor = c.value">
+          {{ c.label }}
+        </ui-button>
       </demo-block>
     </demo-section>
 

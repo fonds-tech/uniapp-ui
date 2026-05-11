@@ -55,7 +55,7 @@
 
     <demo-section title="禁用" desc="disabled 单项 / 整组">
       <demo-block direction="column" :gap="16">
-        <ui-radio-group :model-value="'a'" :gap="20">
+        <ui-radio-group model-value="a" :gap="20">
           <ui-radio name="a" disabled>已选禁用</ui-radio>
           <ui-radio name="b" disabled>未选禁用</ui-radio>
         </ui-radio-group>
@@ -68,7 +68,7 @@
 
     <demo-section title="只读" desc="readonly 不可点击但视觉无禁用样式">
       <demo-block>
-        <ui-radio-group :model-value="'a'" :gap="20">
+        <ui-radio-group model-value="a" :gap="20">
           <ui-radio name="a" readonly>已选只读</ui-radio>
           <ui-radio name="b" readonly>未选只读</ui-radio>
         </ui-radio-group>
@@ -173,7 +173,7 @@
     <demo-section title="业务场景:套餐选择" desc="自定义内容 + 选中态样式">
       <demo-block>
         <ui-radio-group v-model="value.plan" vertical :gap="16">
-          <ui-radio v-for="p in plans" :key="p.id" :name="p.id" :class="['plan', { 'plan--active': value.plan === p.id }]">
+          <ui-radio v-for="p in plans" :key="p.id" :name="p.id" class="plan" :class="[{ 'plan--active': value.plan === p.id }]">
             <view class="plan__main">
               <text class="plan__name">{{ p.name }}</text>
               <text class="plan__desc">{{ p.desc }}</text>
@@ -270,14 +270,14 @@ function onChange(v: string | number) {
 
 .plan {
   width: 100%;
+  border: 2rpx solid transparent;
   padding: 20rpx 24rpx;
   background: var(--ui-color-background-section);
-  border: 2rpx solid transparent;
   border-radius: var(--ui-radius-md);
 
   &--active {
-    border-color: var(--ui-color-primary);
     background: var(--ui-color-background);
+    border-color: var(--ui-color-primary);
   }
 
   &__main {

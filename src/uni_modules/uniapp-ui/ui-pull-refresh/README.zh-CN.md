@@ -30,39 +30,39 @@ function onRefresh() {
 
 ## Props
 
-| 参数               | 说明                                          | 类型             | 默认值          |
-| ------------------ | --------------------------------------------- | ---------------- | --------------- |
-| modelValue         | 加载中状态 (v-model)                          | boolean          | false           |
-| pullingText        | 下拉中提示文案                                | string           | "下拉即可刷新..." |
-| loosingText        | 释放可刷新提示文案                            | string           | "释放即可刷新..." |
-| loadingText        | 加载中提示文案                                | string           | "加载中..."     |
-| successText        | 刷新成功提示文案 (空字符串关闭成功提示)       | string           | "刷新成功"      |
-| successDuration    | 成功提示展示时长 (ms)                         | number           | 500             |
-| headHeight         | 头部高度 (px)，未传走 SCSS 默认 50            | string \| number | -               |
-| disabled           | 禁用下拉刷新                                  | boolean          | false           |
-| pullDistance       | 触发刷新阈值 (px)，未传等于 headHeight        | string \| number | -               |
-| animationDuration  | 头部展开/收起动画时长 (ms)                    | number           | 300             |
-| customClass        | 自定义类名                                    | string           | -               |
-| customStyle        | 自定义样式                                    | string \| object | -               |
+| 参数              | 说明                                    | 类型             | 默认值            |
+| ----------------- | --------------------------------------- | ---------------- | ----------------- |
+| modelValue        | 加载中状态 (v-model)                    | boolean          | false             |
+| pullingText       | 下拉中提示文案                          | string           | "下拉即可刷新..." |
+| loosingText       | 释放可刷新提示文案                      | string           | "释放即可刷新..." |
+| loadingText       | 加载中提示文案                          | string           | "加载中..."       |
+| successText       | 刷新成功提示文案 (空字符串关闭成功提示) | string           | "刷新成功"        |
+| successDuration   | 成功提示展示时长 (ms)                   | number           | 500               |
+| headHeight        | 头部高度 (px)，未传走 SCSS 默认 50      | string \| number | -                 |
+| disabled          | 禁用下拉刷新                            | boolean          | false             |
+| pullDistance      | 触发刷新阈值 (px)，未传等于 headHeight  | string \| number | -                 |
+| animationDuration | 头部展开/收起动画时长 (ms)              | number           | 300               |
+| customClass       | 自定义类名                              | string           | -                 |
+| customStyle       | 自定义样式                              | string \| object | -                 |
 
 ## Events
 
-| 事件名             | 说明                       | 回调参数                         |
-| ------------------ | -------------------------- | -------------------------------- |
-| update:modelValue  | modelValue 双向绑定         | value: boolean                   |
-| refresh            | 达到阈值释放后触发         | -                                |
-| change             | 状态变化                   | status: PullRefreshStatus        |
+| 事件名            | 说明                | 回调参数                  |
+| ----------------- | ------------------- | ------------------------- |
+| update:modelValue | modelValue 双向绑定 | value: boolean            |
+| refresh           | 达到阈值释放后触发  | -                         |
+| change            | 状态变化            | status: PullRefreshStatus |
 
 ## Slots
 
-| 名称    | 说明           | 作用域参数              |
-| ------- | -------------- | ----------------------- |
-| default | 列表内容       | -                       |
-| normal  | 静止态头部     | -                       |
-| pulling | 下拉中头部     | { distance: number }    |
-| loosing | 释放可刷新头部 | { distance: number }    |
-| loading | 加载中头部     | -                       |
-| success | 刷新成功头部   | -                       |
+| 名称    | 说明           | 作用域参数           |
+| ------- | -------------- | -------------------- |
+| default | 列表内容       | -                    |
+| normal  | 静止态头部     | -                    |
+| pulling | 下拉中头部     | { distance: number } |
+| loosing | 释放可刷新头部 | { distance: number } |
+| loading | 加载中头部     | -                    |
+| success | 刷新成功头部   | -                    |
 
 ## 类型定义
 

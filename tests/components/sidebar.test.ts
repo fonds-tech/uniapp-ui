@@ -5,7 +5,7 @@
 
 import UiSidebar from "@/uni_modules/uniapp-ui/ui-sidebar/ui-sidebar.vue"
 import UiSidebarItem from "@/uni_modules/uniapp-ui/ui-sidebar-item/ui-sidebar-item.vue"
-import { h } from "vue"
+import { h, nextTick } from "vue"
 import { mount } from "@vue/test-utils"
 import { it, vi, expect, describe, afterEach, beforeEach } from "vitest"
 
@@ -225,6 +225,9 @@ describe("ui-sidebar 侧边栏组件", () => {
       })
 
       await wrapper.findAllComponents(UiSidebarItem)[1].trigger("click")
+      // setCurrentName 内部 await resize 异步链，需多推几次 tick
+      await nextTick()
+      await nextTick()
 
       expect(wrapper.emitted("update:modelValue")?.at(-1)).toEqual([1])
       expect(wrapper.emitted("change")?.at(-1)).toEqual([1])

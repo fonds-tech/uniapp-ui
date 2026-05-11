@@ -62,9 +62,9 @@
     <demo-section title="偏移量" desc="offset=[x, y] 调整气泡距离触发元素">
       <demo-block direction="column" :gap="12">
         <demo-block :cols="4" :gap="12">
-          <ui-button v-for="(o, i) in offsetPresets" :key="o.label" size="small" :type="offsetIndex === i ? 'primary' : 'default'" @click="offsetIndex = i">{{
-            o.label
-          }}</ui-button>
+          <ui-button v-for="(o, i) in offsetPresets" :key="o.label" size="small" :type="offsetIndex === i ? 'primary' : 'default'" @click="offsetIndex = i">
+            {{ o.label }}
+          </ui-button>
         </demo-block>
         <ui-popover :show="state.offset" :actions="baseActions" :offset="currentOffset" @update:show="state.offset = $event">
           <ui-button>当前 offset: [{{ currentOffset[0] }}, {{ currentOffset[1] }}]</ui-button>
@@ -237,8 +237,9 @@ definePage({
 const toast = useToast()
 
 const placements: PopoverPlacement[] = ["top", "bottom", "left", "right", "top-start", "top-end", "bottom-start", "bottom-end"]
-const placementLabel = (p: PopoverPlacement) =>
-  ({ top: "上方", bottom: "下方", left: "左侧", right: "右侧", "top-start": "上左", "top-end": "上右", "bottom-start": "下左", "bottom-end": "下右" })[p]
+function placementLabel(p: PopoverPlacement) {
+  return { top: "上方", bottom: "下方", left: "左侧", right: "右侧", "top-start": "上左", "top-end": "上右", "bottom-start": "下左", "bottom-end": "下右" }[p]
+}
 
 const offsetPresets: Array<{ label: string; value: [number, number] }> = [
   { label: "默认", value: [0, 8] },

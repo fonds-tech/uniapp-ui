@@ -16,17 +16,17 @@ UiPagination 列表分页加载外壳。封装触底加载、下拉刷新、加�
 
 ## Props
 
-| 参数        | 说明                          | 类型             | 默认值       | 可选值 |
-| ----------- | ----------------------------- | ---------------- | ------------ | ------ |
-| list        | 列表数据                      | array            | []           | -      |
-| page        | 当前页                        | string \| number | 1            | -      |
-| pageSize    | 每页条数                      | string \| number | 10           | -      |
-| total       | 数据总条数                    | string \| number | 0            | -      |
-| loading     | 是否加载中                    | boolean          | false        | -      |
-| emptyIcon   | 空数据图标                    | string           | ""           | -      |
-| emptyText   | 空数据文案                    | string           | "暂无数据～" | -      |
-| customClass | 自定义类名                    | string           | ""           | -      |
-| customStyle | 自定义样式                    | string \| object | ""           | -      |
+| 参数        | 说明       | 类型             | 默认值       | 可选值 |
+| ----------- | ---------- | ---------------- | ------------ | ------ |
+| list        | 列表数据   | array            | []           | -      |
+| page        | 当前页     | string \| number | 1            | -      |
+| pageSize    | 每页条数   | string \| number | 10           | -      |
+| total       | 数据总条数 | string \| number | 0            | -      |
+| loading     | 是否加载中 | boolean          | false        | -      |
+| emptyIcon   | 空数据图标 | string           | ""           | -      |
+| emptyText   | 空数据文案 | string           | "暂无数据～" | -      |
+| customClass | 自定义类名 | string           | ""           | -      |
+| customStyle | 自定义样式 | string \| object | ""           | -      |
 
 ## Events
 

@@ -78,8 +78,9 @@ const headStyle = computed(() => {
 watch(
   () => props.modelValue,
   (newVal, oldVal) => {
-    if (oldVal && !newVal) showSuccessTip()
-    else if (newVal) {
+    if (oldVal && !newVal) {
+      showSuccessTip()
+    } else if (newVal) {
       distance.value = headHeightPx.value
       setStatus("loading")
     }

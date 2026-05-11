@@ -19,14 +19,7 @@
       </view>
     </template>
     <!-- scrollable：滚动容器内 items (无浮动 indicator，激活项靠 bg 样式呈现) -->
-    <scroll-view
-      v-else
-      scroll-x
-      scroll-with-animation
-      class="ui-segmented__scroll"
-      :show-scrollbar="false"
-      :scroll-left="scrollLeft"
-    >
+    <scroll-view v-else scroll-x scroll-with-animation class="ui-segmented__scroll" :show-scrollbar="false" :scroll-left="scrollLeft">
       <view class="ui-segmented__track">
         <view
           v-for="(option, index) in props.options"
@@ -208,8 +201,8 @@ export default {
   &--scrollable {
     width: 100%;
     display: block;
-    min-width: 0;
     overflow: hidden;
+    min-width: 0;
   }
 
   &__scroll {

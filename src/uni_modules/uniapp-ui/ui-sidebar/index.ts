@@ -16,6 +16,14 @@ const defaultProps = buildDefaultProps("sidebar", {
   lineRadius: undefined,
   showLine: true,
   autoScroll: true,
+  titleColor: undefined,
+  titleSize: undefined,
+  titleWeight: undefined,
+  titleAlign: undefined,
+  activeTitleColor: undefined,
+  activeTitleSize: undefined,
+  activeTitleWeight: undefined,
+  activeBackground: undefined,
   zIndex: undefined,
   customClass: undefined,
   customStyle: undefined,
@@ -36,14 +44,30 @@ export const sidebarProps = {
   lineColor: defaultProps("lineColor", { type: String }),
   /** 激活线条宽度 */
   lineWidth: defaultProps("lineWidth", { type: [Number, String] }),
-  /** 激活线条高度 */
+  /** 激活线条高度，传 "100%" 时拉满当前项高度 */
   lineHeight: defaultProps("lineHeight", { type: [Number, String] }),
   /** 激活线条圆角 */
   lineRadius: defaultProps("lineRadius", { type: [Number, String] }),
   /** 是否显示线条 */
   showLine: defaultProps("showLine", { type: Boolean }),
-  /** 是否自动滚动 */
+  /** 是否自动滚动选中项到可见区域 */
   autoScroll: defaultProps("autoScroll", { type: Boolean }),
+  /** 子项标题颜色（被 item 同名 prop 覆盖） */
+  titleColor: defaultProps("titleColor", { type: String }),
+  /** 子项标题大小 */
+  titleSize: defaultProps("titleSize", { type: [Number, String] }),
+  /** 子项标题粗细 */
+  titleWeight: defaultProps("titleWeight", { type: [Number, String] }),
+  /** 子项标题对齐方式 */
+  titleAlign: defaultProps("titleAlign", { type: String }),
+  /** 子项激活标题颜色 */
+  activeTitleColor: defaultProps("activeTitleColor", { type: String }),
+  /** 子项激活标题大小 */
+  activeTitleSize: defaultProps("activeTitleSize", { type: [Number, String] }),
+  /** 子项激活标题粗细 */
+  activeTitleWeight: defaultProps("activeTitleWeight", { type: [Number, String] }),
+  /** 子项激活背景颜色 */
+  activeBackground: defaultProps("activeBackground", { type: String }),
   /** 元素层级 */
   zIndex: defaultProps("zIndex", { type: [Number, String] }),
   /** 自定义类名 */
@@ -54,11 +78,11 @@ export const sidebarProps = {
 
 export const sidebarEmits = {
   /** 值变化事件 */
-  change: (name: number | string) => true,
+  change: (_name: number | string) => true,
   /** 点击选项事件 */
-  clickItem: (name: number | string, index: number) => true,
+  clickItem: (_name: number | string, _index: number) => true,
   /** 更新绑定值事件 */
-  "update:modelValue": (name: number | string) => true,
+  "update:modelValue": (_name: number | string) => true,
 }
 
 export type SidebarEmits = typeof sidebarEmits
