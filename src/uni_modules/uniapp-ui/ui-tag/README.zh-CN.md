@@ -1,61 +1,92 @@
-# UiTag 组件
+# Tag 标签
 
-## 介绍
+文字标签。5 种主题色 / 镂空 / 圆角 / 图标 / 可关闭。
 
-UiTag 组件，属性与事件以源码注释为准。
-
-## 代码演示
+## 基础用法
 
 ```vue
-<template>
-  <ui-tag />
-</template>
+<ui-tag text="标签" />
+<ui-tag type="success" text="成功" />
+<ui-tag type="danger" text="危险" />
 ```
 
-## Props
+## 镂空 / 圆角
 
-| 参数         | 说明             | 类型             | 默认值    | 可选值                                  |
-| ------------ | ---------------- | ---------------- | --------- | --------------------------------------- |
-| show         | 是否显示         | boolean          | true      | -                                       |
-| type         | 主题类型         | string           | "primary" | primary, success, warning, danger, info |
-| text         | 标签的文字内容   | string           | ""        | -                                       |
-| textSize     | 标签的文字大小   | string \| number | ""        | -                                       |
-| textColor    | 标签的文字颜色   | string           | ""        | -                                       |
-| textWeight   | 标签的文字粗细   | string \| number | ""        | -                                       |
-| icon         | 图标名称         | string           | ""        | -                                       |
-| iconSize     | 图标大小         | string \| number | ""        | -                                       |
-| iconColor    | 图标颜色         | string           | ""        | -                                       |
-| iconWeight   | 图标粗细         | string \| number | ""        | -                                       |
-| round        | 是否圆形的       | boolean          | false     | -                                       |
-| plain        | 是否镂空的       | boolean          | false     | -                                       |
-| closeable    | 是否为可关闭标签 | boolean          | false     | -                                       |
-| height       | 高度             | string \| number | ""        | -                                       |
-| padding      | 内边距           | string           | ""        | -                                       |
-| background   | 背景颜色         | string           | ""        | -                                       |
-| borderColor  | 边框颜色         | string           | ""        | -                                       |
-| borderWidth  | 边框大小         | string \| number | ""        | -                                       |
-| borderRadius | 圆角大小         | string \| number | ""        | -                                       |
-| customClass  | 自定义类名       | string           | ""        | -                                       |
-| customStyle  | 自定义样式       | string \| object | ""        | -                                       |
+```vue
+<ui-tag type="primary" plain text="镂空" />
+<ui-tag type="success" round text="圆角" />
+```
 
-## Events
+## 带图标
 
-| 事件名 | 说明 | 回调参数      |
-| ------ | ---- | ------------- |
-| click  | -    | -             |
-| close  | -    | -             |
-| update | -    | show: boolean |
+```vue
+<ui-tag type="primary" icon="star-o" text="收藏" />
+```
 
-## Slots
+## 可关闭
 
-| 名称    | 说明 |
-| ------- | ---- |
-| close   | -    |
-| default | -    |
-| icon    | -    |
+```vue
+<ui-tag v-model:show="visible" closeable text="可关闭" />
+```
 
-## Methods
+## 自定义颜色
 
-| 方法名 | 说明 | 参数 |
-| ------ | ---- | ---- |
-| name   | -    | -    |
+```vue
+<ui-tag background="#7232dd" text-color="text-inverse" text="自定义" />
+```
+
+## API
+
+### Props
+
+| 参数          | 说明                     | 类型                                                        | 默认值      |
+| ------------- | ------------------------ | ----------------------------------------------------------- | ----------- |
+| show          | 显示控制（v-model:show） | `boolean`                                                   | `true`      |
+| type          | 主题类型                 | `'primary' \| 'success' \| 'warning' \| 'danger' \| 'info'` | `'primary'` |
+| text          | 文字                     | `string`                                                    | -           |
+| text-size     | 文字大小                 | `number \| string`                                          | -           |
+| text-color    | 文字颜色                 | `string`                                                    | -           |
+| text-weight   | 文字粗细                 | `number \| string`                                          | -           |
+| icon          | 图标名                   | `string`                                                    | -           |
+| icon-size     | 图标大小                 | `number \| string`                                          | -           |
+| icon-color    | 图标颜色                 | `string`                                                    | -           |
+| icon-weight   | 图标粗细                 | `number \| string`                                          | -           |
+| round         | 胶囊圆角                 | `boolean`                                                   | `false`     |
+| plain         | 镂空（白底彩边）         | `boolean`                                                   | `false`     |
+| closeable     | 显示关闭图标             | `boolean`                                                   | `false`     |
+| height        | 高度                     | `number \| string`                                          | -           |
+| padding       | 内边距（CSS shorthand）  | `string`                                                    | -           |
+| background    | 背景色                   | `string`                                                    | -           |
+| border-color  | 边框色                   | `string`                                                    | -           |
+| border-width  | 边框宽度                 | `number \| string`                                          | -           |
+| border-radius | 圆角大小                 | `number \| string`                                          | -           |
+| custom-class  | 自定义类名               | `string`                                                    | -           |
+| custom-style  | 自定义样式               | `string \| CSSProperties`                                   | -           |
+
+### Events
+
+| 事件名      | 说明              | 回调参数        |
+| ----------- | ----------------- | --------------- |
+| click       | 点击              | -               |
+| close       | 关闭              | -               |
+| update:show | v-model:show 同步 | `show: boolean` |
+
+### Slots
+
+| 名称    | 说明           |
+| ------- | -------------- |
+| default | 自定义文字内容 |
+| icon    | 自定义图标     |
+| close   | 自定义关闭图标 |
+
+### CSS 变量
+
+| 名称                  | 说明     |
+| --------------------- | -------- |
+| --ui-tag-bg           | 背景色   |
+| --ui-tag-text-color   | 文字色   |
+| --ui-tag-text-size    | 文字大小 |
+| --ui-tag-padding      | 内边距   |
+| --ui-tag-radius       | 圆角     |
+| --ui-tag-border-color | 边框色   |
+| --ui-tag-border-width | 边框宽度 |

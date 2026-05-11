@@ -92,16 +92,16 @@ export default {
 <style lang="scss">
 .ui-tag {
   --ui-tag-bg: var(--ui-color-primary);
-  --ui-tag-text-color: var(--ui-color-text-inverse);
-  --ui-tag-text-size: var(--ui-font-size-xs);
-  --ui-tag-text-weight: var(--ui-font-weight-normal);
-  --ui-tag-padding: var(--ui-spacing-xxs) var(--ui-spacing-xs);
   --ui-tag-radius: var(--ui-radius-xs);
+  --ui-tag-padding: var(--ui-spacing-xxs) var(--ui-spacing-xs);
+  --ui-tag-text-size: var(--ui-font-size-xs);
+  --ui-tag-text-color: var(--ui-color-text-inverse);
+  --ui-tag-text-weight: var(--ui-font-weight-normal);
   --ui-tag-border-color: transparent;
   --ui-tag-border-width: var(--ui-border-width-thin);
+  color: var(--ui-tag-text-color);
 
   width: fit-content;
-  color: var(--ui-tag-text-color);
   height: var(--ui-tag-height, auto);
   display: inline-flex;
   padding: var(--ui-tag-padding);
@@ -139,10 +139,10 @@ export default {
 
   // 镂空：白底 + 主题色边框/文字
   &--plain {
-    border-style: solid;
-    border-color: var(--ui-tag-border-color);
-    border-width: var(--ui-tag-border-width);
     background: var(--ui-color-background);
+    border-color: var(--ui-tag-border-color);
+    border-style: solid;
+    border-width: var(--ui-tag-border-width);
   }
 
   // 主题色 type

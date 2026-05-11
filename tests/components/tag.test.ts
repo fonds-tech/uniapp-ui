@@ -193,7 +193,7 @@ describe("ui-tag 标签组件", () => {
       })
 
       const style = wrapper.find(".ui-tag").attributes("style") || ""
-      expect(style).toContain("background")
+      expect(style).toContain("--ui-tag-bg")
     })
 
     it("应支持自定义边框颜色", () => {
