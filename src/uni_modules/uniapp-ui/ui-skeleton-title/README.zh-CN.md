@@ -2,22 +2,24 @@
 
 ## 介绍
 
-UiSkeletonTitle 组件，属性与事件以源码注释为准。
+标题占位骨架。须放在 `ui-skeleton` 内。父级 `animate` 控制闪烁动画。
 
 ## 代码演示
 
 ```vue
 <template>
-  <ui-skeleton-title />
+  <ui-skeleton>
+    <ui-skeleton-title width="60%" />
+  </ui-skeleton>
 </template>
 ```
 
 ## Props
 
-| 参数        | 说明           | 类型                                                  | 默认值 | 可选值 |
-| ----------- | -------------- | ----------------------------------------------------- | ------ | ------ |
-| width       | 标题占位图宽度 | [Number, String]                                      | -      | -      |
-| height      | 标题占位图高度 | [Number, String]                                      | -      | -      |
-| radius      | 标题占位图圆角 | [Number, String]                                      | -      | -      |
-| customClass | 自定义类名     | string                                                | -      | -      |
-| customStyle | 自定义样式     | [String, Object] as PropType<string \| CSSProperties> | -      | -      |
+| 参数        | 说明       | 类型                                                  | 默认值  |
+| ----------- | ---------- | ----------------------------------------------------- | ------- |
+| width       | 宽度       | [Number, String]                                      | `100%`  |
+| height      | 高度       | [Number, String]                                      | `32rpx` |
+| radius      | 圆角       | [Number, String]                                      | `8rpx`  |
+| customClass | 自定义类名 | String                                                | -       |
+| customStyle | 自定义样式 | [String, Object] as PropType<string \| CSSProperties> | -       |

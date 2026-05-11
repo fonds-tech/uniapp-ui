@@ -7,14 +7,15 @@ export const skeletonKey: InjectionKey<SkeletonProvide> = Symbol("ui-skeleton")
 const defaultProps = buildDefaultProps("skeleton", {
   loading: true,
   animate: true,
-  background: "#ffffff",
+  background: undefined,
   gap: undefined,
+  duration: undefined,
   customClass: undefined,
   customStyle: undefined,
 })
 
 export const skeletonProps = {
-  /** 是否显示骨架屏，false 时显示插槽内容 */
+  /** 是否显示骨架屏，false 时显示 content 插槽 */
   loading: defaultProps("loading", { type: Boolean }),
   /** 是否开启动画 */
   animate: defaultProps("animate", { type: Boolean }),
@@ -22,6 +23,8 @@ export const skeletonProps = {
   background: defaultProps("background", { type: String }),
   /** 子元素间距 */
   gap: defaultProps("gap", { type: [Number, String] }),
+  /** 动画时长，如 "1.5s" / "1500ms" */
+  duration: defaultProps("duration", { type: String }),
   /** 自定义类名 */
   customClass: defaultProps("customClass", { type: String }),
   /** 自定义样式 */

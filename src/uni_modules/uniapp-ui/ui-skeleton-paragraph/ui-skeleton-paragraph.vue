@@ -1,58 +1,42 @@
 <template>
-  <view class="ui-skeleton-paragraph" :class="[customClass]" :style="[style]">
-    <view v-for="(_, index) in row" :key="index" class="ui-skeleton-paragraph__row" :style="[rowStyle(index)]" :class="[rowClass]" />
+  <view class="ui-skeleton-paragraph" :class="[customClass]" :style="[rootStyle]">
+    <view v-for="index in row" :key="`row-${index}`" class="ui-skeleton-paragraph__row" :class="[rowClass]" :style="[rowStyle(index - 1)]" />
   </view>
 </template>
 
 <script setup lang="ts">
-import type { CSSProperties } from "vue"
 import { isArray } from "../utils/check"
 import { computed } from "vue"
 import { skeletonKey } from "../ui-skeleton"
 import { skeletonParagraphProps } from "./index"
 import { useUnit, useStyle, useParent } from "../hooks"
 
-// 定义组件名称
 defineOptions({ name: "ui-skeleton-paragraph" })
 
-// 定义 props
 const props = defineProps(skeletonParagraphProps)
-
-// 获取父组件（ui-skeleton）
 const { parent } = useParent(skeletonKey)
 
-// 行数
-const row = computed(() => +props.row)
+// 安全的行数（非负整数）
+const row = computed(() => Math.max(0, Math.floor(Number(props.row) || 0)))
 
-// 根节点样式，设置行间距和行高
-const style = computed(() => {
-  const styles: CSSProperties = {}
-  // 设置行间距
-  styles["--ui-skeleton-paragraph-gap"] = useUnit(props.rowGap)
-  // 设置行高
-  styles["--ui-skeleton-paragraph-height"] = useUnit(props.rowHeight)
-  return useStyle({ ...styles, ...useStyle(props.customStyle) })
+// 根节点 CSS var 注入（行高/行距）
+const rootStyle = computed(() => {
+  const vars: Record<string, string | number | undefined> = {}
+  if (props.rowHeight) vars["--ui-skeleton-paragraph-height"] = useUnit(props.rowHeight)
+  if (props.rowGap) vars["--ui-skeleton-paragraph-gap"] = useUnit(props.rowGap)
+  return useStyle({ ...vars, ...useStyle(props.customStyle) })
 })
 
-// 行样式（根据索引返回不同宽度）
-const rowStyle = computed(() => {
-  return (index: number) => {
-    const style: CSSProperties = {}
-    // 如果是数组，使用对应索引的宽度
-    if (isArray(props.rowWidth)) {
-      style.width = useUnit(props.rowWidth[index])
-    } else {
-      // 否则使用统一宽度
-      style.width = useUnit(props.rowWidth)
-    }
-    return useStyle(style)
-  }
-})
+// 每行 inline 宽度（数组短于行数时循环取模）
+function rowStyle(index: number) {
+  const w = isArray(props.rowWidth)
+    ? props.rowWidth[index % props.rowWidth.length]
+    : props.rowWidth
+  return useStyle({ width: useUnit(w) })
+}
 
-// 行类名，根据父组件动画状态设置
 const rowClass = computed(() => {
   const list: string[] = []
-  // 根据父组件设置是否添加动画类名
   if (parent?.props?.animate) list.push("ui-skeleton-paragraph__row--animate")
   return list
 })
@@ -61,32 +45,42 @@ const rowClass = computed(() => {
 <script lang="ts">
 export default {
   name: "ui-skeleton-paragraph",
-  options: { virtualHost: true, multipleSlots: true, styleIsolation: "shared" },
+  options: {
+    // #ifndef MP-TOUTIAO
+    virtualHost: true,
+    // #endif
+    multipleSlots: true,
+    styleIsolation: "shared",
+  },
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .ui-skeleton-paragraph {
-  display: grid;
-  row-gap: var(--ui-skeleton-paragraph-gap);
+  --ui-skeleton-paragraph-gap: var(--ui-spacing-md);
+  --ui-skeleton-paragraph-height: 32rpx;
+
+  gap: var(--ui-skeleton-paragraph-gap);
+  display: flex;
   overflow: hidden;
   position: relative;
-  grid-template-columns: repeat(1, 1fr);
+  flex-direction: column;
 
   &__row {
     height: var(--ui-skeleton-paragraph-height);
+    background: var(--ui-skeleton-block, var(--ui-color-background-section));
     border-radius: var(--ui-radius-sm);
-    background-color: var(--ui-color-background-section);
 
     &--animate {
-      animation: ui-skeleton-blink 1.5s ease-in-out infinite;
+      animation: ui-skeleton-shimmer var(--ui-skeleton-animation-duration, 1.5s) ease-in-out infinite;
+      background: linear-gradient(
+        90deg,
+        var(--ui-skeleton-block, var(--ui-gray-3)) 25%,
+        var(--ui-skeleton-highlight, var(--ui-gray-2)) 50%,
+        var(--ui-skeleton-block, var(--ui-gray-3)) 75%
+      );
+      background-size: 400% 100%;
     }
-  }
-}
-
-@keyframes ui-skeleton-blink {
-  50% {
-    opacity: 0.4;
   }
 }
 </style>

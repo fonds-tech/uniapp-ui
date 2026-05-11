@@ -1,36 +1,28 @@
 <template>
-  <view class="ui-skeleton-title" :class="[classes, customClass]" :style="[style]" />
+  <view class="ui-skeleton-title" :class="[classNames, customClass]" :style="[rootStyle]" />
 </template>
 
 <script setup lang="ts">
-import type { CSSProperties } from "vue"
 import { computed } from "vue"
 import { skeletonKey } from "../ui-skeleton"
 import { skeletonTitleProps } from "./index"
 import { useUnit, useStyle, useParent } from "../hooks"
 
-// 定义组件名称
 defineOptions({ name: "ui-skeleton-title" })
 
-// 定义 props
 const props = defineProps(skeletonTitleProps)
-
-// 获取父组件（ui-skeleton）
 const { parent } = useParent(skeletonKey)
 
-// 根节点样式，设置宽度、高度和圆角
-const style = computed(() => {
-  const style: CSSProperties = {}
-  if (props.width) style.width = useUnit(props.width)
-  if (props.height) style.height = useUnit(props.height)
-  if (props.radius) style.borderRadius = useUnit(props.radius)
-  return useStyle({ ...style, ...useStyle(props.customStyle) })
+const rootStyle = computed(() => {
+  const vars: Record<string, string | number | undefined> = {}
+  if (props.width) vars["--ui-skeleton-title-width"] = useUnit(props.width)
+  if (props.height) vars["--ui-skeleton-title-height"] = useUnit(props.height)
+  if (props.radius) vars["--ui-skeleton-title-radius"] = useUnit(props.radius)
+  return useStyle({ ...vars, ...useStyle(props.customStyle) })
 })
 
-// 类名数组，根据父组件动画状态设置
-const classes = computed(() => {
+const classNames = computed(() => {
   const list: string[] = []
-  // 根据父组件设置是否添加动画类名
   if (parent?.props?.animate) list.push("ui-skeleton-title--animate")
   return list
 })
@@ -39,26 +31,37 @@ const classes = computed(() => {
 <script lang="ts">
 export default {
   name: "ui-skeleton-title",
-  options: { virtualHost: true, multipleSlots: true, styleIsolation: "shared" },
+  options: {
+    // #ifndef MP-TOUTIAO
+    virtualHost: true,
+    // #endif
+    multipleSlots: true,
+    styleIsolation: "shared",
+  },
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .ui-skeleton-title {
-  width: 100%;
-  height: 35rpx;
+  --ui-skeleton-title-width: 100%;
+  --ui-skeleton-title-height: 32rpx;
+  --ui-skeleton-title-radius: var(--ui-radius-sm);
+
+  width: var(--ui-skeleton-title-width);
+  height: var(--ui-skeleton-title-height);
   position: relative;
-  border-radius: var(--ui-radius-sm);
-  background-color: var(--ui-color-background-section);
+  background: var(--ui-skeleton-block, var(--ui-color-background-section));
+  border-radius: var(--ui-skeleton-title-radius);
 
   &--animate {
-    animation: ui-skeleton-blink 1.5s ease-in-out infinite;
-  }
-}
-
-@keyframes ui-skeleton-blink {
-  50% {
-    opacity: 0.4;
+    animation: ui-skeleton-shimmer var(--ui-skeleton-animation-duration, 1.5s) ease-in-out infinite;
+    background: linear-gradient(
+      90deg,
+      var(--ui-skeleton-block, var(--ui-gray-3)) 25%,
+      var(--ui-skeleton-highlight, var(--ui-gray-2)) 50%,
+      var(--ui-skeleton-block, var(--ui-gray-3)) 75%
+    );
+    background-size: 400% 100%;
   }
 }
 </style>

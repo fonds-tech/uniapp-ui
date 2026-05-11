@@ -5,8 +5,8 @@
 
 import UiSidebar from "@/uni_modules/uniapp-ui/ui-sidebar/ui-sidebar.vue"
 import UiSidebarItem from "@/uni_modules/uniapp-ui/ui-sidebar-item/ui-sidebar-item.vue"
-import { h, nextTick } from "vue"
 import { mount } from "@vue/test-utils"
+import { h, nextTick } from "vue"
 import { it, vi, expect, describe, afterEach, beforeEach } from "vitest"
 
 // 创建挂载辅助函数

@@ -5,20 +5,20 @@ import { buildDefaultProps } from "../utils/props"
 const defaultProps = buildDefaultProps("skeleton-paragraph", {
   row: 3,
   rowWidth: "100%",
-  rowHeight: "32rpx",
-  rowGap: "24rpx",
+  rowHeight: undefined,
+  rowGap: undefined,
   customClass: undefined,
   customStyle: undefined,
 })
 
 export const skeletonParagraphProps = {
-  /** 段落占位图行数 */
+  /** 段落行数 */
   row: defaultProps("row", { type: [Number, String] }),
-  /** 段落占位图宽度，可传数组来设置每一行的宽度 */
+  /** 行宽度，传数组则按索引取宽度；数组长度不足时循环取模 */
   rowWidth: defaultProps("rowWidth", { type: [Number, String, Array] as PropType<SkeletonParagraphRowWidth> }),
-  /** 段落占位图行高 */
+  /** 行高 */
   rowHeight: defaultProps("rowHeight", { type: [Number, String] }),
-  /** 段落占位图行间距 */
+  /** 行间距 */
   rowGap: defaultProps("rowGap", { type: [Number, String] }),
   /** 自定义类名 */
   customClass: defaultProps("customClass", { type: String }),

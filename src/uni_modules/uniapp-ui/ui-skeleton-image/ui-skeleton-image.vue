@@ -1,43 +1,32 @@
 <template>
-  <view class="ui-skeleton-image" :class="[classes, customClass]" :style="[style]" />
+  <view class="ui-skeleton-image" :class="[classNames, customClass]" :style="[rootStyle]" />
 </template>
 
 <script setup lang="ts">
-import type { CSSProperties } from "vue"
 import { computed } from "vue"
 import { skeletonKey } from "../ui-skeleton"
 import { skeletonImageProps } from "./index"
 import { useUnit, useStyle, useParent } from "../hooks"
 
-// 定义组件名称
 defineOptions({ name: "ui-skeleton-image" })
 
-// 定义 props
 const props = defineProps(skeletonImageProps)
-
-// 获取父组件（ui-skeleton）
 const { parent } = useParent(skeletonKey)
 
-// 根节点样式，设置宽度、高度和圆角
-const style = computed(() => {
-  const style: CSSProperties = {}
-  // 使用 width 或 size 作为宽度
+const rootStyle = computed(() => {
+  const vars: Record<string, string | number | undefined> = {}
   const width = props.width ?? props.size
-  // 使用 height 或 size 作为高度
   const height = props.height ?? props.size
-  if (width) style.width = useUnit(width)
-  // 正方形模式不设置高度，使用 CSS aspect-ratio
-  if (!props.square && height) style.height = useUnit(height)
-  if (props.radius) style.borderRadius = useUnit(props.radius)
-  return useStyle({ ...style, ...useStyle(props.customStyle) })
+  if (width) vars["--ui-skeleton-image-width"] = useUnit(width)
+  // square 模式默认走 aspect-ratio；用户显式传 height 仍优先
+  if (height) vars["--ui-skeleton-image-height"] = useUnit(height)
+  if (props.radius) vars["--ui-skeleton-image-radius"] = useUnit(props.radius)
+  return useStyle({ ...vars, ...useStyle(props.customStyle) })
 })
 
-// 类名数组，根据正方形模式和动画状态设置
-const classes = computed(() => {
+const classNames = computed(() => {
   const list: string[] = []
-  // 正方形模式
   if (props.square) list.push("ui-skeleton-image--square")
-  // 根据父组件设置是否添加动画类名
   if (parent?.props?.animate) list.push("ui-skeleton-image--animate")
   return list
 })
@@ -46,32 +35,44 @@ const classes = computed(() => {
 <script lang="ts">
 export default {
   name: "ui-skeleton-image",
-  options: { virtualHost: true, multipleSlots: true, styleIsolation: "shared" },
+  options: {
+    // #ifndef MP-TOUTIAO
+    virtualHost: true,
+    // #endif
+    multipleSlots: true,
+    styleIsolation: "shared",
+  },
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .ui-skeleton-image {
-  width: 100rpx;
-  height: 100rpx;
-  position: relative;
-  flex-shrink: 0;
-  border-radius: var(--ui-radius-md);
-  background-color: var(--ui-color-background-section);
+  --ui-skeleton-image-width: var(--ui-size-lg);
+  --ui-skeleton-image-height: var(--ui-size-lg);
+  --ui-skeleton-image-radius: var(--ui-radius-md);
 
+  width: var(--ui-skeleton-image-width);
+  height: var(--ui-skeleton-image-height);
+  position: relative;
+  background: var(--ui-skeleton-block, var(--ui-color-background-section));
+  flex-shrink: 0;
+  border-radius: var(--ui-skeleton-image-radius);
+
+  // square: 用户未显式传 height 时由 aspect-ratio 撑出正方形
   &--square {
     height: auto;
     aspect-ratio: 1;
   }
 
   &--animate {
-    animation: ui-skeleton-blink 1.5s ease-in-out infinite;
-  }
-}
-
-@keyframes ui-skeleton-blink {
-  50% {
-    opacity: 0.4;
+    animation: ui-skeleton-shimmer var(--ui-skeleton-animation-duration, 1.5s) ease-in-out infinite;
+    background: linear-gradient(
+      90deg,
+      var(--ui-skeleton-block, var(--ui-gray-3)) 25%,
+      var(--ui-skeleton-highlight, var(--ui-gray-2)) 50%,
+      var(--ui-skeleton-block, var(--ui-gray-3)) 75%
+    );
+    background-size: 400% 100%;
   }
 }
 </style>
