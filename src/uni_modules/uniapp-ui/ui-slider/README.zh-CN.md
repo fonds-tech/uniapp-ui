@@ -1,6 +1,6 @@
 # Slider 滑块
 
-用于在一定范围内进行数值选择，支持单滑块和双滑块（范围选择）模式。
+数值选择，支持单滑块、范围（双滑块）、垂直方向、刻度标记、自定义把手。
 
 ## 基础用法
 
@@ -15,198 +15,141 @@ const value = ref(50)
 </script>
 ```
 
-## 设置范围
-
-通过 `min` 和 `max` 属性设置取值范围。
+## 设置范围 / 步长
 
 ```vue
-<template>
-  <ui-slider v-model="value" :min="0" :max="200" />
-</template>
-```
-
-## 设置步长
-
-通过 `step` 属性设置步长，步长值必须大于 0。
-
-```vue
-<template>
-  <ui-slider v-model="value" :step="10" />
-</template>
+<ui-slider v-model="value" :min="0" :max="200" :step="10" />
 ```
 
 ## 范围选择
 
-设置 `range` 属性为 `true` 开启双滑块模式，支持范围选择。
-
 ```vue
-<template>
-  <ui-slider v-model="rangeValue" range />
-</template>
-
-<script setup>
-import { ref } from 'vue'
-const rangeValue = ref([20, 80])
-</script>
+<ui-slider v-model="rangeValue" range />
 ```
+
+`range=true` 时 `modelValue` 为 `[number, number]`。拖动越过另一 handle 时自动**交换** draggingIndex（继续拖动会拖另一个）。
 
 ## 显示当前值
 
-通过 `show-value` 属性显示当前值提示。
-
 ```vue
-<template>
-  <!-- 拖动时显示 -->
-  <ui-slider v-model="value" show-value />
-
-  <!-- 始终显示 -->
-  <ui-slider v-model="value" show-value show-value-mode="always" />
-</template>
+<!-- 拖动时显示 -->
+<ui-slider v-model="value" show-value />
+<!-- 始终显示 -->
+<ui-slider v-model="value" show-value show-value-mode="always" />
 ```
 
 ## 自定义颜色
 
-通过 `active-color` 和 `inactive-color` 属性设置轨道颜色。
-
 ```vue
-<template>
-  <ui-slider
-    v-model="value"
-    active-color="#ee0a24"
-    inactive-color="#ebedf0"
-  />
-</template>
+<ui-slider v-model="value" active-color="primary" inactive-color="#ebedf0" handle-color="#fff" />
 ```
 
-## 自定义按钮
-
-通过插槽自定义滑块按钮。
+## 自定义把手
 
 ```vue
-<template>
-  <ui-slider v-model="value">
-    <template #button="{ value, dragging }">
-      <view class="custom-button">{{ value }}</view>
-    </template>
-  </ui-slider>
-</template>
+<ui-slider v-model="value">
+  <template #handle="{ value, dragging }">
+    <view class="custom-handle">{{ value }}</view>
+  </template>
+</ui-slider>
 ```
+
+`range` 模式用 `#left-handle` / `#right-handle`。
 
 ## 刻度标记
 
-通过 `marks` 属性设置刻度标记。
-
 ```vue
-<template>
-  <ui-slider
-    v-model="value"
-    :marks="{
-      0: '0%',
-      25: '25%',
-      50: '50%',
-      75: '75%',
-      100: '100%'
-    }"
-  />
-</template>
+<ui-slider
+  v-model="value"
+  :marks="{ 0: '0%', 50: '50%', 100: '100%' }"
+/>
 ```
+
+`marks` 值支持 `string` 或 `{ label, style }` 自定义标签样式。
 
 ## 垂直方向
 
-设置 `vertical` 属性为 `true` 可垂直展示滑块。
-
 ```vue
-<template>
-  <ui-slider v-model="value" vertical />
-</template>
+<ui-slider v-model="value" vertical />
 ```
 
-## 禁用状态
+垂直模式父容器需给高度，组件自带 `min-height: 200rpx`。
 
-设置 `disabled` 属性禁用滑块。
-
-```vue
-<template>
-  <ui-slider v-model="value" disabled />
-</template>
-```
-
-## 格式化显示值
-
-通过 `format-value` 属性格式化显示的值。
+## 格式化
 
 ```vue
-<template>
-  <ui-slider
-    v-model="value"
-    show-value
-    show-value-mode="always"
-    :format-value="(val) => `${val}%`"
-  />
-</template>
+<ui-slider v-model="value" :format-value="v => `${v}%`" />
 ```
 
 ## API
 
 ### Props
 
-| 参数            | 说明                                    | 类型                                                          | 默认值       |
-| --------------- | --------------------------------------- | ------------------------------------------------------------- | ------------ |
-| v-model         | 绑定值，范围模式时为 `[number, number]` | `number \| [number, number]`                                  | `0`          |
-| min             | 最小值                                  | `number`                                                      | `0`          |
-| max             | 最大值                                  | `number`                                                      | `100`        |
-| step            | 步长                                    | `number`                                                      | `1`          |
-| range           | 是否为范围选择（双滑块模式）            | `boolean`                                                     | `false`      |
-| vertical        | 是否垂直展示                            | `boolean`                                                     | `false`      |
-| disabled        | 是否禁用                                | `boolean`                                                     | `false`      |
-| readonly        | 是否只读                                | `boolean`                                                     | `false`      |
-| show-value      | 是否显示值提示                          | `boolean`                                                     | `false`      |
-| show-value-mode | 值提示显示模式                          | `'always' \| 'dragging' \| 'never'`                           | `'dragging'` |
-| marks           | 刻度标记                                | `Record<number, string \| { label: string; style?: object }>` | -            |
-| bar-height      | 轨道高度                                | `number \| string`                                            | `4`          |
-| button-size     | 滑块按钮尺寸                            | `number \| string`                                            | `24`         |
-| active-color    | 激活轨道颜色                            | `string`                                                      | -            |
-| inactive-color  | 非激活轨道颜色                          | `string`                                                      | -            |
-| button-color    | 滑块按钮颜色                            | `string`                                                      | -            |
-| format-value    | 格式化显示值函数                        | `(value: number) => string`                                   | -            |
-| custom-class    | 自定义类名                              | `string`                                                      | -            |
-| custom-style    | 自定义样式                              | `string \| CSSProperties`                                     | -            |
+| 参数            | 说明                                  | 类型                                                          | 默认值       |
+| --------------- | ------------------------------------- | ------------------------------------------------------------- | ------------ |
+| v-model         | 绑定值，范围模式为 `[number, number]` | `number \| [number, number]`                                  | `0`          |
+| min             | 最小值                                | `number`                                                      | `0`          |
+| max             | 最大值                                | `number`                                                      | `100`        |
+| step            | 步长（>0；非法值回退到 1）            | `number`                                                      | `1`          |
+| range           | 范围选择（双滑块）                    | `boolean`                                                     | `false`      |
+| vertical        | 垂直方向                              | `boolean`                                                     | `false`      |
+| disabled        | 禁用                                  | `boolean`                                                     | `false`      |
+| readonly        | 只读（不可修改但保留视觉反馈）        | `boolean`                                                     | `false`      |
+| show-value      | 是否显示值提示                        | `boolean`                                                     | `true`       |
+| show-value-mode | 提示显示模式                          | `'always' \| 'dragging' \| 'never'`                           | `'dragging'` |
+| size            | 尺寸预设（复合 track + handle）       | `'small' \| 'medium' \| 'large'`                              | `'medium'`   |
+| marks           | 刻度标记                              | `Record<number, string \| { label: string; style?: object }>` | -            |
+| bar-height      | 自定义轨道高度（覆盖 size 预设）      | `number \| string`                                            | -            |
+| handle-size     | 自定义把手尺寸（覆盖 size 预设）      | `number \| string`                                            | -            |
+| active-color    | 激活轨道颜色                          | `string`                                                      | -            |
+| inactive-color  | 非激活轨道颜色                        | `string`                                                      | -            |
+| handle-color    | 把手颜色                              | `string`                                                      | -            |
+| format-value    | 格式化显示值                          | `(value: number) => string`                                   | -            |
+| custom-class    | 自定义类名                            | `string`                                                      | -            |
+| custom-style    | 自定义样式                            | `string \| CSSProperties`                                     | -            |
 
 ### Events
 
-| 事件名            | 说明                   | 回调参数                                           |
-| ----------------- | ---------------------- | -------------------------------------------------- |
-| update:modelValue | 值变化完成时触发       | `value: number \| [number, number]`                |
-| change            | 拖动过程中值变化时触发 | `value: number \| [number, number]`                |
-| drag-start        | 开始拖动时触发         | `value: number \| [number, number], index: number` |
-| drag-end          | 拖动结束时触发         | `value: number \| [number, number], index: number` |
+| 事件名            | 说明                      | 回调参数                            |
+| ----------------- | ------------------------- | ----------------------------------- |
+| update:modelValue | 拖动结束 / 点击轨道后触发 | `value: number \| [number, number]` |
+| change            | 拖动过程中值变化触发      | `value: number \| [number, number]` |
+| drag-start        | 开始拖动                  | `value, index: number`              |
+| drag-end          | 拖动结束                  | `value, index: number`              |
 
 ### Slots
 
-| 名称         | 说明                           | 参数                                   |
-| ------------ | ------------------------------ | -------------------------------------- |
-| button       | 自定义单滑块按钮（非范围模式） | `{ value: number, dragging: boolean }` |
-| left-button  | 自定义左侧滑块按钮（范围模式） | `{ value: number, dragging: boolean }` |
-| right-button | 自定义右侧滑块按钮（范围模式） | `{ value: number, dragging: boolean }` |
+| 名称         | 说明                       | 参数                                   |
+| ------------ | -------------------------- | -------------------------------------- |
+| handle       | 自定义单滑块把手（非范围） | `{ value: number, dragging: boolean }` |
+| left-handle  | 自定义左侧把手（范围）     | `{ value: number, dragging: boolean }` |
+| right-handle | 自定义右侧把手（范围）     | `{ value: number, dragging: boolean }` |
 
-## 主题定制
+### 暴露方法
+
+| 方法  | 说明                          |
+| ----- | ----------------------------- |
+| reset | 重置内部值到当前 `modelValue` |
 
 ### CSS 变量
 
-组件提供了以下 CSS 变量，可用于自定义样式：
-
-| 名称                       | 默认值 | 说明           |
-| -------------------------- | ------ | -------------- |
-| --ui-color-primary         | -      | 激活轨道颜色   |
-| --ui-color-background      | -      | 滑块按钮颜色   |
-| --ui-color-background-dark | -      | 非激活轨道颜色 |
-| --ui-color-text            | -      | 值提示背景颜色 |
-| --ui-font-size-xs          | -      | 值提示文字大小 |
-| --ui-radius-round          | -      | 圆角大小       |
+| 名称                             | 说明           |
+| -------------------------------- | -------------- |
+| --ui-slider-track-height         | 轨道高度       |
+| --ui-slider-handle-size          | 把手尺寸       |
+| --ui-slider-color-active         | 激活轨道色     |
+| --ui-slider-color-inactive       | 非激活轨道色   |
+| --ui-slider-color-handle         | 把手色         |
+| --ui-slider-color-tick           | 刻度点色       |
+| --ui-slider-color-tick-active    | 激活刻度点色   |
+| --ui-slider-color-label          | 标签色         |
+| --ui-slider-color-indicator      | 值指示器背景色 |
+| --ui-slider-color-indicator-text | 值指示器文字色 |
+| --ui-slider-shadow               | 把手阴影       |
+| --ui-slider-shadow-active        | 拖动时把手阴影 |
 
 ## 注意事项
 
-1. `step` 步长值必须大于 0
-2. 范围模式下，左值始终小于等于右值
-3. 垂直模式下，需要设置容器高度或使用默认高度（300rpx）
-4. 在小程序中，建议使用 `touch` 事件而非 `click` 事件以获得更好的体验
+- 拖动期间外部 `v-model` 修改不会同步到内部值（避免视觉抖动）；拖动结束后回流
+- 垂直模式父容器需给高度
+- MP 端事件名内部使用 camelCase；模板触发请用 kebab-case (`@drag-start` / `@drag-end`)
