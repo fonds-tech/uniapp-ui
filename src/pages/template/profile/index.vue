@@ -1,22 +1,21 @@
 <template>
   <view class="page">
     <!-- 顶部背景层（含状态栏） -->
-    <view class="hero" :style="{ paddingTop: `${statusBarHeight + 40}px` }">
+    <view class="hero">
       <view class="hero__bg" />
 
-      <view class="hero__top">
-        <view class="hero__icon-btn" @click="onBack">
-          <ui-icon name="arrow-left" size="44rpx" color="text-inverse" />
-        </view>
-        <view class="hero__top-actions">
-          <view class="hero__icon-btn" @click="onQrcode">
-            <ui-icon name="qrcode" size="40rpx" color="text-inverse" />
+      <ui-navbar show-back fixed placeholder background="primary" title-color="text-inverse" back-icon-color="#fff" :custom-back="onBack">
+        <template #right>
+          <view class="hero__top-actions">
+            <view class="hero__icon-btn" @click="onQrcode">
+              <ui-icon name="qrcode" size="40rpx" color="text-inverse" />
+            </view>
+            <view class="hero__icon-btn" @click="onSettings">
+              <ui-icon name="setting" size="40rpx" color="text-inverse" />
+            </view>
           </view>
-          <view class="hero__icon-btn" @click="onSettings">
-            <ui-icon name="setting" size="40rpx" color="text-inverse" />
-          </view>
-        </view>
-      </view>
+        </template>
+      </ui-navbar>
 
       <view class="hero__profile">
         <view class="hero__avatar-wrap">
@@ -45,16 +44,18 @@
           </view>
         </view>
 
-        <ui-button size="small" :custom-style="{ background: 'rgba(255,255,255,0.18)', color: '#fff', border: 'none' }" radius="32rpx" @click="onEdit">
-          编辑资料
-        </ui-button>
+        <ui-button size="small" :custom-style="{ background: 'rgba(255,255,255,0.18)', color: '#fff', border: 'none' }" radius="32rpx" @click="onEdit"> 编辑资料 </ui-button>
       </view>
 
       <view class="hero__stats">
         <view v-for="(s, idx) in stats" :key="s.label" class="stat" @click="onStatClick(s)">
           <ui-number-roll :value="s.value" font-size="40rpx" font-weight="bold" color="text-inverse" />
           <text class="stat__label">{{ s.label }}</text>
-          <ui-divider v-if="idx < stats.length - 1" direction="vertical" :custom-style="{ height: '56rpx', background: 'rgba(255,255,255,0.18)', position: 'absolute', right: '0', top: '50%', transform: 'translateY(-50%)' }" />
+          <ui-divider
+            v-if="idx < stats.length - 1"
+            direction="vertical"
+            :custom-style="{ height: '56rpx', background: 'rgba(255,255,255,0.18)', position: 'absolute', right: '0', top: '50%', transform: 'translateY(-50%)' }"
+          />
         </view>
       </view>
     </view>
@@ -107,7 +108,7 @@
           </view>
           <view class="assets__info">
             <text class="assets__label">钱包余额</text>
-            <text class="assets__value">¥ {{ formatMoney(8942.50) }}</text>
+            <text class="assets__value">¥ {{ formatMoney(8942.5) }}</text>
           </view>
         </view>
         <view class="assets__item" @click="onAsset('coupon')">
@@ -164,16 +165,12 @@
 
 <script setup lang="ts">
 import { useToast } from "@/uni_modules/uniapp-ui"
-import { computed } from "vue"
-import { useSystemInfo } from "@/uni_modules/uniapp-ui/hooks"
 
 definePage({
   style: { navigationBarTitleText: "用户资料页", navigationStyle: "custom" },
 })
 
 const toast = useToast()
-const systemInfo = useSystemInfo()
-const statusBarHeight = computed(() => systemInfo.statusBarHeight || 0)
 
 const user = {
   name: "Alex Chen",
@@ -293,14 +290,6 @@ function onTool(t: { title: string }) {
     background: linear-gradient(160deg, var(--ui-color-primary) 0%, var(--ui-color-primary-active) 100%);
   }
 
-  &__top {
-    display: flex;
-    z-index: 1;
-    position: relative;
-    align-items: center;
-    justify-content: space-between;
-  }
-
   &__top-actions {
     gap: var(--ui-spacing-xs);
     display: flex;
@@ -320,7 +309,6 @@ function onTool(t: { title: string }) {
     display: flex;
     z-index: 1;
     position: relative;
-    margin-top: var(--ui-spacing-xl);
     align-items: center;
   }
 
@@ -338,19 +326,22 @@ function onTool(t: { title: string }) {
     transform: translateX(-50%);
     background: linear-gradient(90deg, var(--ui-color-warning), var(--ui-color-danger));
     align-items: center;
+    white-space: nowrap;
     border-radius: var(--ui-radius-sm);
   }
 
   &__level-text {
     color: var(--ui-color-text-inverse);
-    font-size: 18rpx;
+    font-size: var(--ui-font-size-xs);
     font-weight: var(--ui-font-weight-bold);
+    white-space: nowrap;
   }
 
   &__info {
     gap: var(--ui-spacing-xs);
     flex: 1;
     display: flex;
+    min-width: 0;
     flex-direction: column;
   }
 
@@ -367,7 +358,10 @@ function onTool(t: { title: string }) {
 
   &__bio {
     color: rgba(255, 255, 255, 0.85);
+    overflow: hidden;
     font-size: var(--ui-font-size-xs);
+    white-space: nowrap;
+    text-overflow: ellipsis;
   }
 
   &__meta {
@@ -538,15 +532,16 @@ function onTool(t: { title: string }) {
 
 /* 资产区 */
 .assets {
-  gap: var(--ui-spacing-sm);
+  gap: var(--ui-spacing-xs);
   display: flex;
   margin-bottom: var(--ui-spacing-md);
 
   &__item {
-    gap: var(--ui-spacing-sm);
+    gap: var(--ui-spacing-xs);
     flex: 1;
     display: flex;
-    padding: var(--ui-spacing-md);
+    padding: var(--ui-spacing-md) var(--ui-spacing-sm);
+    min-width: 0;
     background: var(--ui-color-background);
     box-shadow: var(--ui-shadow-xs);
     align-items: center;
@@ -576,7 +571,9 @@ function onTool(t: { title: string }) {
 
   &__info {
     gap: var(--ui-spacing-xxs);
+    flex: 1;
     display: flex;
+    min-width: 0;
     flex-direction: column;
   }
 
@@ -587,8 +584,11 @@ function onTool(t: { title: string }) {
 
   &__value {
     color: var(--ui-color-text);
+    overflow: hidden;
     font-size: var(--ui-font-size-sm);
     font-weight: var(--ui-font-weight-bold);
+    white-space: nowrap;
+    text-overflow: ellipsis;
   }
 }
 
