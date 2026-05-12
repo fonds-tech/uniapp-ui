@@ -19,7 +19,7 @@ export default defineConfig({
 
   // 主题配置
   themeConfig: {
-    logo: "/logo.svg",
+    logo: { light: "/logo.svg", dark: "/logo-dark.svg" },
     // 顶部导航
     nav: [
       { text: "指南", link: "/guide/" },
