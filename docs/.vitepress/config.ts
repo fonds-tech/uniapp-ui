@@ -38,7 +38,6 @@ export default defineConfig({
           items: [
             { text: "介绍", link: "/guide/" },
             { text: "快速开始", link: "/guide/quickstart" },
-            { text: "主题定制", link: "/guide/theme" },
           ],
         },
       ],
@@ -166,7 +165,7 @@ export default defineConfig({
     },
 
     // 社交链接
-    socialLinks: [{ icon: "github", link: "https://github.com/your-org/uniapp-ui" }],
+    socialLinks: [{ icon: "github", link: "https://github.com/fonds-tech/uniapp-ui" }],
 
     // 页脚
     footer: {
@@ -181,7 +180,7 @@ export default defineConfig({
 
     // 编辑链接
     editLink: {
-      pattern: "https://github.com/your-org/uniapp-ui/edit/main/docs/:path",
+      pattern: "https://github.com/fonds-tech/uniapp-ui/edit/main/docs/:path",
       text: "在 GitHub 上编辑此页",
     },
 
