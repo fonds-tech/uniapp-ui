@@ -13,8 +13,8 @@ export type WatermarkContent = string | string[]
 export type WatermarkFontWeight = "normal" | "light" | "bold" | number
 
 const defaultProps = buildDefaultProps("watermark", {
-  content: "",
-  image: "",
+  content: undefined,
+  image: undefined,
   width: 120,
   height: 64,
   rotate: -22,
@@ -27,8 +27,8 @@ const defaultProps = buildDefaultProps("watermark", {
   fontFamily: "PingFang SC, Microsoft YaHei, sans-serif",
   fontWeight: "normal",
   opacity: 1,
-  customClass: "",
-  customStyle: "",
+  customClass: undefined,
+  customStyle: undefined,
 })
 
 export const watermarkProps = {

@@ -1,185 +1,197 @@
 <template>
   <demo-page>
-    <!-- 基础用法 -->
-    <demo-section title="基础用法">
-      <demo-block title="文字水印">
-        <ui-watermark content="Uniapp UI" :full-page="false">
-          <view class="watermark-content">
-            <text class="watermark-content__text">这是一段需要水印保护的内容区域</text>
-            <text class="watermark-content__text">水印可以有效防止内容被盗用</text>
-          </view>
-        </ui-watermark>
-      </demo-block>
-    </demo-section>
-
-    <!-- 多行文字 -->
-    <demo-section title="多行文字">
-      <demo-block title="content 传入数组">
-        <ui-watermark :content="['公司名称', '2024-01-01']" :full-page="false">
-          <view class="watermark-content">
-            <text class="watermark-content__text">多行水印适合展示更多信息</text>
-            <text class="watermark-content__text">例如公司名称和日期</text>
-          </view>
-        </ui-watermark>
-      </demo-block>
-    </demo-section>
-
-    <!-- 图片水印 -->
-    <demo-section title="图片水印">
-      <demo-block title="使用 image 属性">
-        <ui-watermark image="https://fastly.jsdelivr.net/npm/@AuroraUI/assets@1.0.0/logo/logo.png" :width="60" :height="60" :full-page="false">
-          <view class="watermark-content">
-            <text class="watermark-content__text">使用图片作为水印</text>
-            <text class="watermark-content__text">image 优先级高于 content</text>
-          </view>
-        </ui-watermark>
-      </demo-block>
-    </demo-section>
-
-    <!-- 自定义间隔 -->
-    <demo-section title="自定义间隔">
-      <demo-block title="gapX: 100, gapY: 100">
-        <ui-watermark content="大间隔" :gap-x="100" :gap-y="100" :full-page="false">
-          <view class="watermark-content">
-            <text class="watermark-content__text">水印之间的间隔更大</text>
-            <text class="watermark-content__text">gapX 控制水平间距，gapY 控制垂直间距</text>
-          </view>
-        </ui-watermark>
-      </demo-block>
-      <demo-block title="gapX: 10, gapY: 10">
-        <ui-watermark content="小间隔" :gap-x="10" :gap-y="10" :full-page="false">
-          <view class="watermark-content">
-            <text class="watermark-content__text">水印之间的间隔更小</text>
-            <text class="watermark-content__text">水印更加密集</text>
-          </view>
-        </ui-watermark>
-      </demo-block>
-    </demo-section>
-
-    <!-- 旋转角度 -->
-    <demo-section title="旋转角度">
-      <demo-block title="rotate: -45">
-        <ui-watermark content="倾斜45度" :rotate="-45" :full-page="false">
-          <view class="watermark-content">
-            <text class="watermark-content__text">水印旋转角度为 -45 度</text>
-          </view>
-        </ui-watermark>
-      </demo-block>
-      <demo-block title="rotate: 0">
-        <ui-watermark content="水平水印" :rotate="0" :full-page="false">
-          <view class="watermark-content">
-            <text class="watermark-content__text">水印旋转角度为 0 度（水平）</text>
-          </view>
-        </ui-watermark>
-      </demo-block>
-      <demo-block title="rotate: 45">
-        <ui-watermark content="倾斜45度" :rotate="45" :full-page="false">
-          <view class="watermark-content">
-            <text class="watermark-content__text">水印旋转角度为 45 度</text>
-          </view>
-        </ui-watermark>
-      </demo-block>
-    </demo-section>
-
-    <!-- 透明度 -->
-    <demo-section title="透明度">
-      <demo-block title="opacity: 0.3">
-        <ui-watermark content="较浅" :opacity="0.3" :full-page="false">
-          <view class="watermark-content">
-            <text class="watermark-content__text">透明度 0.3，水印较浅</text>
-          </view>
-        </ui-watermark>
-      </demo-block>
-      <demo-block title="opacity: 0.6">
-        <ui-watermark content="适中" :opacity="0.6" :full-page="false">
-          <view class="watermark-content">
-            <text class="watermark-content__text">透明度 0.6，水印适中</text>
-          </view>
-        </ui-watermark>
-      </demo-block>
-      <demo-block title="opacity: 1">
-        <ui-watermark content="较深" :opacity="1" :full-page="false">
-          <view class="watermark-content">
-            <text class="watermark-content__text">透明度 1，水印较深</text>
-          </view>
-        </ui-watermark>
-      </demo-block>
-    </demo-section>
-
-    <!-- 字体样式 -->
-    <demo-section title="字体样式">
-      <demo-block title="fontSize: 20">
-        <ui-watermark content="大字体" :font-size="20" :full-page="false">
-          <view class="watermark-content">
-            <text class="watermark-content__text">字体大小为 20px</text>
-          </view>
-        </ui-watermark>
-      </demo-block>
-      <demo-block title="fontColor: rgba(255, 0, 0, 0.15)">
-        <ui-watermark content="红色水印" font-color="rgba(255, 0, 0, 0.15)" :full-page="false">
-          <view class="watermark-content">
-            <text class="watermark-content__text">自定义字体颜色为红色</text>
-          </view>
-        </ui-watermark>
-      </demo-block>
-      <demo-block title="fontWeight: bold">
-        <ui-watermark content="粗体水印" font-weight="bold" :full-page="false">
-          <view class="watermark-content">
-            <text class="watermark-content__text">字体粗细为粗体</text>
-          </view>
-        </ui-watermark>
-      </demo-block>
-      <demo-block title="组合样式">
-        <ui-watermark content="组合样式" :font-size="18" font-color="rgba(0, 128, 0, 0.2)" font-weight="bold" :full-page="false">
-          <view class="watermark-content">
-            <text class="watermark-content__text">大字体 + 绿色 + 粗体</text>
-          </view>
-        </ui-watermark>
-      </demo-block>
-    </demo-section>
-
-    <!-- 局部水印 -->
-    <demo-section title="局部水印">
-      <demo-block title="fullPage: false">
-        <view class="local-wrapper">
-          <ui-watermark content="局部水印" :full-page="false">
-            <view class="watermark-content watermark-content--large">
-              <text class="watermark-content__text">局部水印只覆盖组件内容区域</text>
-              <text class="watermark-content__text">而不是整个页面</text>
-              <text class="watermark-content__text">适合需要局部保护的场景</text>
-            </view>
-          </ui-watermark>
+    <demo-section title="基础用法" desc="文字水印">
+      <ui-watermark content="Uniapp UI" :full-page="false">
+        <view class="wm-content">
+          <text class="wm-content__text">这是一段需要水印保护的内容</text>
+          <text class="wm-content__text">水印防止内容被盗用截图</text>
         </view>
+      </ui-watermark>
+    </demo-section>
+
+    <demo-section title="多行文字" desc="content 传数组">
+      <ui-watermark :content="['公司名称', '2026-05-12']" :full-page="false">
+        <view class="wm-content">
+          <text class="wm-content__text">多行水印展示更多信息</text>
+        </view>
+      </ui-watermark>
+    </demo-section>
+
+    <demo-section title="间距 gap" desc="切换水平 / 垂直间距">
+      <demo-block direction="column" :gap="16">
+        <ui-watermark content="间距" :gap-x="gapDemo" :gap-y="gapDemo" :full-page="false">
+          <view class="wm-content">
+            <text class="wm-content__text">gapX/gapY = {{ gapDemo }}px</text>
+          </view>
+        </ui-watermark>
+        <demo-block :cols="3" :gap="12">
+          <ui-button v-for="g in gapPresets" :key="g" size="small" :type="gapDemo === g ? 'primary' : 'default'" @click="gapDemo = g">
+            {{ g }}px
+          </ui-button>
+        </demo-block>
       </demo-block>
     </demo-section>
 
-    <!-- 全屏水印 -->
-    <demo-section title="全屏水印">
-      <demo-block title="fullPage: true（默认）">
-        <ui-button type="primary" @click="showFullPage = !showFullPage">
-          {{ showFullPage ? "关闭全屏水印" : "开启全屏水印" }}
-        </ui-button>
-        <ui-watermark v-if="showFullPage" content="全屏水印" :full-page="true" />
+    <demo-section title="旋转 rotate" desc="切换 -45/0/45 度">
+      <demo-block direction="column" :gap="16">
+        <ui-watermark content="旋转" :rotate="rotateDemo" :full-page="false">
+          <view class="wm-content">
+            <text class="wm-content__text">rotate = {{ rotateDemo }}°</text>
+          </view>
+        </ui-watermark>
+        <demo-block :cols="3" :gap="12">
+          <ui-button v-for="r in rotatePresets" :key="r" size="small" :type="rotateDemo === r ? 'primary' : 'default'" @click="rotateDemo = r">
+            {{ r }}°
+          </ui-button>
+        </demo-block>
       </demo-block>
+    </demo-section>
+
+    <demo-section title="透明度 opacity" desc="切换 0.3 / 0.6 / 1">
+      <demo-block direction="column" :gap="16">
+        <ui-watermark content="透明" :opacity="opacityDemo" :full-page="false">
+          <view class="wm-content">
+            <text class="wm-content__text">opacity = {{ opacityDemo }}</text>
+          </view>
+        </ui-watermark>
+        <demo-block :cols="3" :gap="12">
+          <ui-button v-for="o in opacityPresets" :key="o" size="small" :type="opacityDemo === o ? 'primary' : 'default'" @click="opacityDemo = o">
+            {{ o }}
+          </ui-button>
+        </demo-block>
+      </demo-block>
+    </demo-section>
+
+    <demo-section title="字号 fontSize">
+      <demo-block direction="column" :gap="16">
+        <ui-watermark content="字号" :font-size="fontSizeDemo" :full-page="false">
+          <view class="wm-content">
+            <text class="wm-content__text">fontSize = {{ fontSizeDemo }}px</text>
+          </view>
+        </ui-watermark>
+        <demo-block :cols="3" :gap="12">
+          <ui-button v-for="f in fontSizePresets" :key="f" size="small" :type="fontSizeDemo === f ? 'primary' : 'default'" @click="fontSizeDemo = f">
+            {{ f }}px
+          </ui-button>
+        </demo-block>
+      </demo-block>
+    </demo-section>
+
+    <demo-section title="字色 fontColor" desc="canvas API 仅接具体色值">
+      <demo-block direction="column" :gap="16">
+        <ui-watermark content="颜色" :font-color="colorDemo" :full-page="false">
+          <view class="wm-content">
+            <text class="wm-content__text">{{ colorDemo }}</text>
+          </view>
+        </ui-watermark>
+        <demo-block :cols="3" :gap="12">
+          <ui-button v-for="c in colorPresets" :key="c.label" size="small" :type="colorDemo === c.value ? 'primary' : 'default'" @click="colorDemo = c.value">
+            {{ c.label }}
+          </ui-button>
+        </demo-block>
+      </demo-block>
+    </demo-section>
+
+    <demo-section title="字重 fontWeight">
+      <demo-block direction="column" :gap="16">
+        <ui-watermark content="字重" :font-weight="weightDemo" :full-page="false">
+          <view class="wm-content">
+            <text class="wm-content__text">{{ weightDemo }}</text>
+          </view>
+        </ui-watermark>
+        <demo-block :cols="3" :gap="12">
+          <ui-button v-for="w in weightPresets" :key="w" size="small" :type="weightDemo === w ? 'primary' : 'default'" @click="weightDemo = w">
+            {{ w }}
+          </ui-button>
+        </demo-block>
+      </demo-block>
+    </demo-section>
+
+    <demo-section title="实例方法 regenerate">
+      <demo-block direction="column" :gap="12">
+        <ui-watermark ref="wmRef" :content="randomContent" :full-page="false">
+          <view class="wm-content">
+            <text class="wm-content__text">内容: {{ randomContent }}</text>
+          </view>
+        </ui-watermark>
+        <demo-block :cols="2" :gap="12">
+          <ui-button size="small" @click="changeContent">改内容</ui-button>
+          <ui-button size="small" type="primary" @click="wmRef?.regenerate()">手动重生成</ui-button>
+        </demo-block>
+      </demo-block>
+    </demo-section>
+
+    <demo-section title="局部 vs 全屏 fullPage">
+      <demo-block direction="column" :gap="12">
+        <ui-button type="primary" @click="fullPageOn = !fullPageOn">
+          {{ fullPageOn ? "关闭全屏水印" : "开启全屏水印" }}
+        </ui-button>
+        <ui-watermark v-if="fullPageOn" content="全屏机密" full-page />
+        <text class="wm-tip">全屏水印覆盖整个页面（含 demo 容器外）</text>
+      </demo-block>
+    </demo-section>
+
+    <demo-section title="综合 · 文档预览保护">
+      <ui-watermark :content="['UniappUI', userId]" :font-size="16" :rotate="-30" :full-page="false">
+        <view class="doc">
+          <text class="doc__title">机密文件 - 2026Q2 计划</text>
+          <text class="doc__paragraph">本文件涉及敏感商业信息，仅限内部传阅。任何截图、复印、转发行为均需经审批。</text>
+          <text class="doc__paragraph">第一章：业务目标</text>
+          <text class="doc__paragraph">2026 年第二季度核心 KPI...</text>
+          <text class="doc__paragraph">第二章：执行计划</text>
+          <text class="doc__paragraph">每月里程碑：4 月底完成 X、5 月底完成 Y、6 月底完成 Z...</text>
+        </view>
+      </ui-watermark>
     </demo-section>
   </demo-page>
 </template>
 
 <script setup lang="ts">
+import type { WatermarkInstance, WatermarkFontWeight } from "@/uni_modules/uniapp-ui/ui-watermark"
 import { ref } from "vue"
 
 definePage({
   style: { navigationBarTitleText: "Watermark 水印" },
 })
 
-const showFullPage = ref(false)
+const gapPresets = [10, 24, 80]
+const gapDemo = ref(24)
+
+const rotatePresets = [-45, 0, 45]
+const rotateDemo = ref(-22)
+
+const opacityPresets = [0.3, 0.6, 1]
+const opacityDemo = ref(1)
+
+const fontSizePresets = [12, 14, 20]
+const fontSizeDemo = ref(14)
+
+const colorPresets = [
+  { label: "灰", value: "rgba(0, 0, 0, 0.15)" },
+  { label: "红", value: "rgba(255, 0, 0, 0.2)" },
+  { label: "绿", value: "rgba(0, 128, 0, 0.2)" },
+]
+const colorDemo = ref("rgba(0, 0, 0, 0.15)")
+
+const weightPresets: WatermarkFontWeight[] = ["normal", "light", "bold"]
+const weightDemo = ref<WatermarkFontWeight>("normal")
+
+const wmRef = ref<WatermarkInstance>()
+const randomContent = ref("初始内容")
+function changeContent() {
+  randomContent.value = `更新-${Math.floor(Math.random() * 1000)}`
+}
+
+const fullPageOn = ref(false)
+
+const userId = "user-9527"
 </script>
 
 <style lang="scss" scoped>
-.watermark-content {
-  gap: 16rpx;
+.wm-content {
+  gap: var(--ui-spacing-sm);
   display: flex;
-  padding: 40rpx;
+  padding: var(--ui-spacing-xl);
   background: var(--ui-color-background);
   min-height: 200rpx;
   align-items: center;
@@ -189,18 +201,35 @@ const showFullPage = ref(false)
 
   &__text {
     color: var(--ui-color-text-secondary);
-    font-size: 28rpx;
+    font-size: var(--ui-font-size-sm);
     text-align: center;
-  }
-
-  &--large {
-    min-height: 400rpx;
   }
 }
 
-.local-wrapper {
-  padding: 20rpx;
-  background: var(--ui-color-background-dark);
-  border-radius: var(--ui-radius-lg);
+.wm-tip {
+  color: var(--ui-color-text-tertiary);
+  font-size: var(--ui-font-size-xs);
+}
+
+.doc {
+  gap: var(--ui-spacing-md);
+  display: flex;
+  padding: var(--ui-spacing-xl);
+  background: var(--ui-color-background);
+  min-height: 400rpx;
+  border-radius: var(--ui-radius-md);
+  flex-direction: column;
+
+  &__title {
+    color: var(--ui-color-text);
+    font-size: var(--ui-font-size-md);
+    font-weight: var(--ui-font-weight-bold);
+  }
+
+  &__paragraph {
+    color: var(--ui-color-text-secondary);
+    font-size: var(--ui-font-size-sm);
+    line-height: var(--ui-line-height-normal);
+  }
 }
 </style>
