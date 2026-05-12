@@ -37,21 +37,13 @@ export const transitionProps = {
 }
 
 export const transitionEmits = {
-  /** 点击事件 */
   click: () => true,
-  /** 进入过渡开始事件 */
   enter: () => true,
-  /** 离开过渡开始事件 */
   leave: () => true,
-  /** 进入过渡之前事件 */
   beforeEnter: () => true,
-  /** 进入过渡结束事件 */
   afterEnter: () => true,
-  /** 离开过渡结束事件 */
   afterLeave: () => true,
-  /** 离开过渡之前事件 */
   beforeLeave: () => true,
-  /** 更新显示状态事件 */
   "update:show": (show: boolean) => isBoolean(show),
 }
 

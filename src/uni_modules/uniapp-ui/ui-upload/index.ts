@@ -2,115 +2,7 @@ import type Upload from "./ui-upload.vue"
 import type { PropType, CSSProperties, ExtractPropTypes } from "vue"
 import { buildDefaultProps } from "../utils/props"
 
-const defaultProps = buildDefaultProps("upload", {
-  modelValue: "",
-  show: true,
-  width: "160rpx",
-  height: "160rpx",
-  accept: "",
-  capture: () => ["album", "camera"],
-  camera: "",
-  preview: false,
-  multiple: false,
-  deletable: true,
-  disabled: false,
-  compressed: true,
-  background: "",
-  maxSize: Infinity,
-  maxCount: Infinity,
-  maxDuration: 60,
-  sizeType: () => ["original", "compressed"],
-  previewGap: "20rpx",
-  imageMode: "aspectFill",
-  previewIconSize: "60rpx",
-  previewIconColor: "#cccccc",
-  previewIconWeight: "",
-  icon: "photograph",
-  iconSize: "56rpx",
-  iconColor: "#cccccc",
-  iconWeight: "",
-  beforeRemove: undefined,
-  afterRead: undefined,
-  beforeRead: undefined,
-  customClass: "",
-  customStyle: "",
-})
-
-export const uploadProps = {
-  /** 绑定值 */
-  modelValue: defaultProps("modelValue", { type: [String, Array] }),
-  /** 是否显示组件 */
-  show: defaultProps("show", { type: Boolean }),
-  /** 宽度 */
-  width: defaultProps("width", { type: [Number, String] }),
-  /** 高度 */
-  height: defaultProps("height", { type: [Number, String] }),
-  /** 允许上传的文件类型 */
-  accept: defaultProps("accept", { type: String as PropType<UniApp.ChooseMessageFileOption["type"] | "media" | ""> }),
-  /** 图片或视频拾取模式 */
-  capture: defaultProps("capture", { type: Array as PropType<string[]> }),
-  /** 当accept为video时生效，可选值为back或front */
-  camera: defaultProps("camera", { type: String as PropType<"back" | "front"> }),
-  /** 是否点击预览，仅支持图片格式 */
-  preview: defaultProps("preview", { type: Boolean }),
-  /** 是否多选 */
-  multiple: defaultProps("multiple", { type: Boolean }),
-  /** 是否展示删除按钮 */
-  deletable: defaultProps("deletable", { type: Boolean }),
-  /** 是否禁用 */
-  disabled: defaultProps("disabled", { type: Boolean }),
-  /** 当accept为video时生效，是否压缩视频 */
-  compressed: defaultProps("compressed", { type: Boolean }),
-  /** 背景颜色 */
-  background: defaultProps("background", { type: String }),
-  /** 选择单个文件的最大大小 */
-  maxSize: defaultProps("maxSize", { type: [Number, String, Function] }),
-  /** 文件上传数量限制 */
-  maxCount: defaultProps("maxCount", { type: Number }),
-  /** 当accept为video时生效，拍摄视频最长拍摄时间，单位秒 */
-  maxDuration: defaultProps("maxDuration", { type: Number }),
-  /** original 原图，compressed 压缩图，默认二者都有 */
-  sizeType: defaultProps("sizeType", { type: Array as PropType<string[]> }),
-  /** 预览上传图之间的间隔 */
-  previewGap: defaultProps("previewGap", { type: [Number, String] }),
-  /** 图片显示模式，和image组件mode属性一致 */
-  imageMode: defaultProps("imageMode", { type: String as PropType<UniHelper.ImageProps["mode"]> }),
-  /** 预览区图标大小 */
-  previewIconSize: defaultProps("previewIconSize", { type: [Number, String] }),
-  /** 预览区图标颜色 */
-  previewIconColor: defaultProps("previewIconColor", { type: String }),
-  /** 预览区图标粗细 */
-  previewIconWeight: defaultProps("previewIconWeight", { type: [Number, String] }),
-  /** 上传区域图标 */
-  icon: defaultProps("icon", { type: String }),
-  /** 上传区域图标大小 */
-  iconSize: defaultProps("iconSize", { type: [Number, String] }),
-  /** 上传区域图标颜色 */
-  iconColor: defaultProps("iconColor", { type: String }),
-  /** 上传区域图标粗细 */
-  iconWeight: defaultProps("iconWeight", { type: [Number, String] }),
-  /** 文件删除前的回调函数 */
-  beforeRemove: defaultProps("beforeRemove", { type: Function }),
-  /** 文件读取完成后的回调函数 */
-  afterRead: defaultProps("afterRead", { type: Function }),
-  /** 文件读取前的回调函数 */
-  beforeRead: defaultProps("beforeRead", { type: Function }),
-  /** 自定义类名 */
-  customClass: defaultProps("customClass", { type: String }),
-  /** 自定义样式 */
-  customStyle: defaultProps("customStyle", { type: [String, Object] as PropType<string | CSSProperties> }),
-}
-
-export const uploadEmits = {
-  /** 上传事件 */
-  upload: (event: { files: any }) => true,
-  /** 删除事件 */
-  delete: (event: { index: number; file: any }) => true,
-  /** 超出大小限制事件 */
-  oversize: (files: UploadFile[]) => true,
-  /** 更新绑定值事件 */
-  "update:modelValue": (value: string | string[]) => true,
-}
+export type UploadAccept = UniApp.ChooseMessageFileOption["type"] | "media" | ""
 
 export interface UploadFile {
   file?: File
@@ -121,6 +13,111 @@ export interface UploadFile {
   message?: string
   status?: "success" | "fail" | "uploading"
   [key: string]: any
+}
+
+const defaultProps = buildDefaultProps("upload", {
+  modelValue: "",
+  show: true,
+  width: undefined,
+  height: undefined,
+  accept: "",
+  capture: () => ["album", "camera"],
+  camera: undefined,
+  preview: false,
+  multiple: false,
+  deletable: true,
+  disabled: false,
+  compressed: true,
+  background: undefined,
+  maxSize: 0,
+  maxCount: 0,
+  maxDuration: 60,
+  sizeType: () => ["original", "compressed"],
+  previewGap: undefined,
+  imageMode: "aspectFill",
+  previewIconSize: undefined,
+  previewIconColor: undefined,
+  previewIconWeight: undefined,
+  icon: "photograph",
+  iconSize: undefined,
+  iconColor: undefined,
+  iconWeight: undefined,
+  beforeRemove: undefined,
+  afterRead: undefined,
+  beforeRead: undefined,
+  customClass: undefined,
+  customStyle: undefined,
+})
+
+export const uploadProps = {
+  /** 绑定值 */
+  modelValue: defaultProps("modelValue", { type: [String, Array] }),
+  /** 显示组件 */
+  show: defaultProps("show", { type: Boolean }),
+  /** 宽度 */
+  width: defaultProps("width", { type: [Number, String] }),
+  /** 高度 */
+  height: defaultProps("height", { type: [Number, String] }),
+  /** 允许上传的文件类型 */
+  accept: defaultProps("accept", { type: String as PropType<UploadAccept> }),
+  /** 拾取模式 */
+  capture: defaultProps("capture", { type: Array as PropType<string[]> }),
+  /** accept=video 时摄像头方向 */
+  camera: defaultProps("camera", { type: String as PropType<"back" | "front"> }),
+  /** 点击预览（仅图片） */
+  preview: defaultProps("preview", { type: Boolean }),
+  /** 多选 */
+  multiple: defaultProps("multiple", { type: Boolean }),
+  /** 显示删除按钮 */
+  deletable: defaultProps("deletable", { type: Boolean }),
+  /** 禁用 */
+  disabled: defaultProps("disabled", { type: Boolean }),
+  /** accept=video 时是否压缩 */
+  compressed: defaultProps("compressed", { type: Boolean }),
+  /** 背景色 */
+  background: defaultProps("background", { type: String }),
+  /** 单文件最大字节；`0` 无上限；函数自定义判断 */
+  maxSize: defaultProps("maxSize", { type: [Number, String, Function] }),
+  /** 数量上限；`0` 无上限 */
+  maxCount: defaultProps("maxCount", { type: Number }),
+  /** accept=video 时最长拍摄秒数 */
+  maxDuration: defaultProps("maxDuration", { type: Number }),
+  /** 图片尺寸类型（H5 无效） */
+  sizeType: defaultProps("sizeType", { type: Array as PropType<string[]> }),
+  /** 预览图间距 */
+  previewGap: defaultProps("previewGap", { type: [Number, String] }),
+  /** 图片显示模式 */
+  imageMode: defaultProps("imageMode", { type: String as PropType<UniHelper.ImageProps["mode"]> }),
+  /** 预览区图标尺寸 */
+  previewIconSize: defaultProps("previewIconSize", { type: [Number, String] }),
+  /** 预览区图标颜色 */
+  previewIconColor: defaultProps("previewIconColor", { type: String }),
+  /** 预览区图标字重 */
+  previewIconWeight: defaultProps("previewIconWeight", { type: [Number, String] }),
+  /** 上传区图标 */
+  icon: defaultProps("icon", { type: String }),
+  /** 上传区图标尺寸 */
+  iconSize: defaultProps("iconSize", { type: [Number, String] }),
+  /** 上传区图标颜色 */
+  iconColor: defaultProps("iconColor", { type: String }),
+  /** 上传区图标字重 */
+  iconWeight: defaultProps("iconWeight", { type: [Number, String] }),
+  /** 删除前拦截 `(file, index) => boolean | Promise<boolean>` */
+  beforeRemove: defaultProps("beforeRemove", { type: Function }),
+  /** 上传后处理 `(files, next) => void` */
+  afterRead: defaultProps("afterRead", { type: Function }),
+  /** 上传前拦截 `(files) => boolean | Promise<boolean> | UploadFile[]` */
+  beforeRead: defaultProps("beforeRead", { type: Function }),
+  /** 自定义类名 */
+  customClass: defaultProps("customClass", { type: String }),
+  /** 自定义样式 */
+  customStyle: defaultProps("customStyle", { type: [String, Object] as PropType<string | CSSProperties> }),
+}
+
+export const uploadEmits = {
+  delete: (_event: { index: number; file: UploadFile }) => true,
+  oversize: (_files: UploadFile[]) => true,
+  "update:modelValue": (_value: string | string[]) => true,
 }
 
 export type UploadEmits = typeof uploadEmits

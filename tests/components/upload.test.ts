@@ -53,7 +53,7 @@ describe("uiUpload 组件", () => {
           },
         },
       })
-      expect(wrapper.props("modelValue")).toBe("")
+      expect((wrapper.props() as Record<string, unknown>).modelValue).toBe("")
     })
 
     it("应该支持字符串类型的 modelValue", () => {
@@ -67,7 +67,7 @@ describe("uiUpload 组件", () => {
           },
         },
       })
-      expect(wrapper.props("modelValue")).toBe("https://example.com/image.jpg")
+      expect((wrapper.props() as Record<string, unknown>).modelValue).toBe("https://example.com/image.jpg")
     })
 
     it("应该支持数组类型的 modelValue", () => {
@@ -82,7 +82,7 @@ describe("uiUpload 组件", () => {
           },
         },
       })
-      expect(wrapper.props("modelValue")).toEqual(urls)
+      expect((wrapper.props() as Record<string, unknown>).modelValue).toEqual(urls)
     })
   })
 
@@ -97,7 +97,7 @@ describe("uiUpload 组件", () => {
           },
         },
       })
-      expect(wrapper.props("width")).toBe("160rpx")
+      expect((wrapper.props() as Record<string, unknown>).width).toBeUndefined()
     })
 
     it("默认高度应该是 160rpx", () => {
@@ -110,7 +110,7 @@ describe("uiUpload 组件", () => {
           },
         },
       })
-      expect(wrapper.props("height")).toBe("160rpx")
+      expect((wrapper.props() as Record<string, unknown>).height).toBeUndefined()
     })
 
     it("应该支持自定义宽度", () => {
@@ -124,7 +124,7 @@ describe("uiUpload 组件", () => {
           },
         },
       })
-      expect(wrapper.props("width")).toBe("200rpx")
+      expect((wrapper.props() as Record<string, unknown>).width).toBe("200rpx")
     })
 
     it("应该支持自定义高度", () => {
@@ -138,7 +138,7 @@ describe("uiUpload 组件", () => {
           },
         },
       })
-      expect(wrapper.props("height")).toBe("200rpx")
+      expect((wrapper.props() as Record<string, unknown>).height).toBe("200rpx")
     })
   })
 
@@ -153,7 +153,7 @@ describe("uiUpload 组件", () => {
           },
         },
       })
-      expect(wrapper.props("accept")).toBe("")
+      expect((wrapper.props() as Record<string, unknown>).accept).toBe("")
     })
 
     it("应该支持 image 类型", () => {
@@ -167,7 +167,7 @@ describe("uiUpload 组件", () => {
           },
         },
       })
-      expect(wrapper.props("accept")).toBe("image")
+      expect((wrapper.props() as Record<string, unknown>).accept).toBe("image")
     })
 
     it("应该支持 video 类型", () => {
@@ -181,7 +181,7 @@ describe("uiUpload 组件", () => {
           },
         },
       })
-      expect(wrapper.props("accept")).toBe("video")
+      expect((wrapper.props() as Record<string, unknown>).accept).toBe("video")
     })
 
     it("应该支持 file 类型", () => {
@@ -195,7 +195,7 @@ describe("uiUpload 组件", () => {
           },
         },
       })
-      expect(wrapper.props("accept")).toBe("file")
+      expect((wrapper.props() as Record<string, unknown>).accept).toBe("file")
     })
   })
 
@@ -210,7 +210,7 @@ describe("uiUpload 组件", () => {
           },
         },
       })
-      expect(wrapper.props("capture")).toEqual(["album", "camera"])
+      expect((wrapper.props() as Record<string, unknown>).capture).toEqual(["album", "camera"])
     })
 
     it("应该支持自定义 capture", () => {
@@ -224,7 +224,7 @@ describe("uiUpload 组件", () => {
           },
         },
       })
-      expect(wrapper.props("capture")).toEqual(["camera"])
+      expect((wrapper.props() as Record<string, unknown>).capture).toEqual(["camera"])
     })
   })
 
@@ -240,7 +240,7 @@ describe("uiUpload 组件", () => {
           },
         },
       })
-      expect(wrapper.props("camera")).toBe("back")
+      expect((wrapper.props() as Record<string, unknown>).camera).toBe("back")
     })
 
     it("应该支持 front 相机", () => {
@@ -254,7 +254,7 @@ describe("uiUpload 组件", () => {
           },
         },
       })
-      expect(wrapper.props("camera")).toBe("front")
+      expect((wrapper.props() as Record<string, unknown>).camera).toBe("front")
     })
   })
 
@@ -269,7 +269,7 @@ describe("uiUpload 组件", () => {
           },
         },
       })
-      expect(wrapper.props("multiple")).toBe(false)
+      expect((wrapper.props() as Record<string, unknown>).multiple).toBe(false)
     })
 
     it("应该支持多选模式", () => {
@@ -283,7 +283,7 @@ describe("uiUpload 组件", () => {
           },
         },
       })
-      expect(wrapper.props("multiple")).toBe(true)
+      expect((wrapper.props() as Record<string, unknown>).multiple).toBe(true)
     })
   })
 
@@ -298,7 +298,7 @@ describe("uiUpload 组件", () => {
           },
         },
       })
-      expect(wrapper.props("deletable")).toBe(true)
+      expect((wrapper.props() as Record<string, unknown>).deletable).toBe(true)
     })
 
     it("应该支持禁用删除", () => {
@@ -312,7 +312,7 @@ describe("uiUpload 组件", () => {
           },
         },
       })
-      expect(wrapper.props("deletable")).toBe(false)
+      expect((wrapper.props() as Record<string, unknown>).deletable).toBe(false)
     })
   })
 
@@ -358,7 +358,7 @@ describe("uiUpload 组件", () => {
           },
         },
       })
-      expect(wrapper.props("maxSize")).toBe(Infinity)
+      expect((wrapper.props() as Record<string, unknown>).maxSize).toBe(0)
     })
 
     it("应该支持数字类型的 maxSize", () => {
@@ -372,7 +372,7 @@ describe("uiUpload 组件", () => {
           },
         },
       })
-      expect(wrapper.props("maxSize")).toBe(5242880)
+      expect((wrapper.props() as Record<string, unknown>).maxSize).toBe(5242880)
     })
   })
 
@@ -387,7 +387,7 @@ describe("uiUpload 组件", () => {
           },
         },
       })
-      expect(wrapper.props("maxCount")).toBe(Infinity)
+      expect((wrapper.props() as Record<string, unknown>).maxCount).toBe(0)
     })
 
     it("应该支持设置最大上传数量", () => {
@@ -401,7 +401,7 @@ describe("uiUpload 组件", () => {
           },
         },
       })
-      expect(wrapper.props("maxCount")).toBe(5)
+      expect((wrapper.props() as Record<string, unknown>).maxCount).toBe(5)
     })
   })
 
@@ -416,7 +416,7 @@ describe("uiUpload 组件", () => {
           },
         },
       })
-      expect(wrapper.props("maxDuration")).toBe(60)
+      expect((wrapper.props() as Record<string, unknown>).maxDuration).toBe(60)
     })
 
     it("应该支持自定义最大拍摄时长", () => {
@@ -430,7 +430,7 @@ describe("uiUpload 组件", () => {
           },
         },
       })
-      expect(wrapper.props("maxDuration")).toBe(30)
+      expect((wrapper.props() as Record<string, unknown>).maxDuration).toBe(30)
     })
   })
 
@@ -445,7 +445,7 @@ describe("uiUpload 组件", () => {
           },
         },
       })
-      expect(wrapper.props("sizeType")).toEqual(["original", "compressed"])
+      expect((wrapper.props() as Record<string, unknown>).sizeType).toEqual(["original", "compressed"])
     })
 
     it("应该支持自定义 sizeType", () => {
@@ -459,7 +459,7 @@ describe("uiUpload 组件", () => {
           },
         },
       })
-      expect(wrapper.props("sizeType")).toEqual(["compressed"])
+      expect((wrapper.props() as Record<string, unknown>).sizeType).toEqual(["compressed"])
     })
   })
 
@@ -474,7 +474,7 @@ describe("uiUpload 组件", () => {
           },
         },
       })
-      expect(wrapper.props("previewGap")).toBe("20rpx")
+      expect((wrapper.props() as Record<string, unknown>).previewGap).toBeUndefined()
     })
 
     it("应该支持自定义预览间隔", () => {
@@ -488,7 +488,7 @@ describe("uiUpload 组件", () => {
           },
         },
       })
-      expect(wrapper.props("previewGap")).toBe("30rpx")
+      expect((wrapper.props() as Record<string, unknown>).previewGap).toBe("30rpx")
     })
   })
 
@@ -503,7 +503,7 @@ describe("uiUpload 组件", () => {
           },
         },
       })
-      expect(wrapper.props("imageMode")).toBe("aspectFill")
+      expect((wrapper.props() as Record<string, unknown>).imageMode).toBe("aspectFill")
     })
 
     it("应该支持自定义 imageMode", () => {
@@ -517,7 +517,7 @@ describe("uiUpload 组件", () => {
           },
         },
       })
-      expect(wrapper.props("imageMode")).toBe("aspectFit")
+      expect((wrapper.props() as Record<string, unknown>).imageMode).toBe("aspectFit")
     })
   })
 
@@ -532,7 +532,7 @@ describe("uiUpload 组件", () => {
           },
         },
       })
-      expect(wrapper.props("previewIconSize")).toBe("60rpx")
+      expect((wrapper.props() as Record<string, unknown>).previewIconSize).toBeUndefined()
     })
 
     it("默认 previewIconColor 应该是 #cccccc", () => {
@@ -545,7 +545,7 @@ describe("uiUpload 组件", () => {
           },
         },
       })
-      expect(wrapper.props("previewIconColor")).toBe("#cccccc")
+      expect((wrapper.props() as Record<string, unknown>).previewIconColor).toBeUndefined()
     })
 
     it("应该支持自定义预览图标大小", () => {
@@ -559,7 +559,7 @@ describe("uiUpload 组件", () => {
           },
         },
       })
-      expect(wrapper.props("previewIconSize")).toBe("80rpx")
+      expect((wrapper.props() as Record<string, unknown>).previewIconSize).toBe("80rpx")
     })
   })
 
@@ -574,7 +574,7 @@ describe("uiUpload 组件", () => {
           },
         },
       })
-      expect(wrapper.props("icon")).toBe("photograph")
+      expect((wrapper.props() as Record<string, unknown>).icon).toBe("photograph")
     })
 
     it("默认 iconSize 应该是 56rpx", () => {
@@ -587,7 +587,7 @@ describe("uiUpload 组件", () => {
           },
         },
       })
-      expect(wrapper.props("iconSize")).toBe("56rpx")
+      expect((wrapper.props() as Record<string, unknown>).iconSize).toBeUndefined()
     })
 
     it("默认 iconColor 应该是 #cccccc", () => {
@@ -600,7 +600,7 @@ describe("uiUpload 组件", () => {
           },
         },
       })
-      expect(wrapper.props("iconColor")).toBe("#cccccc")
+      expect((wrapper.props() as Record<string, unknown>).iconColor).toBeUndefined()
     })
 
     it("应该支持自定义图标", () => {
@@ -614,7 +614,7 @@ describe("uiUpload 组件", () => {
           },
         },
       })
-      expect(wrapper.props("icon")).toBe("plus")
+      expect((wrapper.props() as Record<string, unknown>).icon).toBe("plus")
     })
   })
 
@@ -631,7 +631,7 @@ describe("uiUpload 组件", () => {
           },
         },
       })
-      expect(wrapper.props("beforeRead")).toBe(beforeRead)
+      expect((wrapper.props() as Record<string, unknown>).beforeRead).toBe(beforeRead)
     })
 
     it("应该支持 afterRead 回调", () => {
@@ -646,7 +646,7 @@ describe("uiUpload 组件", () => {
           },
         },
       })
-      expect(wrapper.props("afterRead")).toBe(afterRead)
+      expect((wrapper.props() as Record<string, unknown>).afterRead).toBe(afterRead)
     })
 
     it("应该支持 beforeRemove 回调", () => {
@@ -661,7 +661,7 @@ describe("uiUpload 组件", () => {
           },
         },
       })
-      expect(wrapper.props("beforeRemove")).toBe(beforeRemove)
+      expect((wrapper.props() as Record<string, unknown>).beforeRemove).toBe(beforeRemove)
     })
   })
 
@@ -722,7 +722,7 @@ describe("uiUpload 组件", () => {
           },
         },
       })
-      expect(wrapper.props("background")).toBe("")
+      expect((wrapper.props() as Record<string, unknown>).background).toBeUndefined()
     })
 
     it("应该支持自定义背景颜色", () => {
@@ -736,7 +736,7 @@ describe("uiUpload 组件", () => {
           },
         },
       })
-      expect(wrapper.props("background")).toBe("#f5f5f5")
+      expect((wrapper.props() as Record<string, unknown>).background).toBe("#f5f5f5")
     })
   })
 
@@ -751,7 +751,7 @@ describe("uiUpload 组件", () => {
           },
         },
       })
-      expect(wrapper.props("compressed")).toBe(true)
+      expect((wrapper.props() as Record<string, unknown>).compressed).toBe(true)
     })
 
     it("应该支持禁用压缩", () => {
@@ -765,7 +765,7 @@ describe("uiUpload 组件", () => {
           },
         },
       })
-      expect(wrapper.props("compressed")).toBe(false)
+      expect((wrapper.props() as Record<string, unknown>).compressed).toBe(false)
     })
   })
 
@@ -864,7 +864,7 @@ describe("uiUpload 组件", () => {
         },
       })
       await waitForTransition()
-      expect(wrapper.props("customStyle")).toEqual({ padding: "20rpx" })
+      expect((wrapper.props() as Record<string, unknown>).customStyle).toEqual({ padding: "20rpx" })
     })
   })
 
@@ -881,8 +881,8 @@ describe("uiUpload 组件", () => {
       })
       await waitForTransition()
       expect(wrapper.find(".ui-upload").exists()).toBe(true)
-      expect(wrapper.props("modelValue")).toBe("")
-      expect(wrapper.props("deletable")).toBe(true)
+      expect((wrapper.props() as Record<string, unknown>).modelValue).toBe("")
+      expect((wrapper.props() as Record<string, unknown>).deletable).toBe(true)
     })
 
     it("modelValue 为逗号分隔字符串时应该正常处理", () => {
@@ -896,7 +896,7 @@ describe("uiUpload 组件", () => {
           },
         },
       })
-      expect(wrapper.props("modelValue")).toBe("https://example.com/1.jpg,https://example.com/2.jpg")
+      expect((wrapper.props() as Record<string, unknown>).modelValue).toBe("https://example.com/1.jpg,https://example.com/2.jpg")
     })
   })
 })

@@ -1,65 +1,144 @@
-# UiUpload 组件
+# Upload 上传
 
-## 介绍
+文件上传组件。支持图片 / 视频 / 文件 / 媒体，多选 / 数量限制 / 大小限制 / 预览 / 删除拦截。
 
-UiUpload 组件，属性与事件以源码注释为准。
-
-## 代码演示
+## 基础用法
 
 ```vue
-<template>
-  <ui-upload />
-</template>
+<ui-upload v-model="fileList" />
 ```
 
-## Props
+```ts
+const fileList = ref<string[]>([])  // 数组 → 多文件 URL
+// 或单字符串：
+const fileList = ref("")  // 逗号分隔 URL
+```
 
-| 参数              | 说明                                                                                                        | 类型                                                                  | 默认值                           | 可选值 |
-| ----------------- | ----------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------- | -------------------------------- | ------ |
-| modelValue        | 绑定值                                                                                                      | string \| array                                                       | ""                               | -      |
-| show              | 是否显示组件                                                                                                | boolean                                                               | true                             | -      |
-| width             | 宽度                                                                                                        | string \| number                                                      | "160rpx"                         | -      |
-| height            | 高度                                                                                                        | string \| number                                                      | "160rpx"                         | -      |
-| accept            | 允许上传的文件类型, https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/Input/file                    | String as PropType<UniApp.ChooseMessageFileOption["type"] \| "media"> | ""                               | -      |
-| capture           | 图片或视频拾取模式，当accept为image类型时，设置capture为camera可以直接调起摄像头，默认值["album", "camera"] | Array as PropType<string[]>                                           | () => ["album", "camera"]        | -      |
-| camera            | 当accept为video时生效，可选值为back或front                                                                  | String as PropType<"back" \| "front">                                 | ""                               | -      |
-| preview           | 是否点击预览，仅支持图片格式                                                                                | boolean                                                               | false                            | -      |
-| multiple          | 是否多选                                                                                                    | boolean                                                               | false                            | -      |
-| deletable         | 是否展示删除按钮                                                                                            | boolean                                                               | true                             | -      |
-| disabled          | 是否禁用                                                                                                    | boolean                                                               | false                            | -      |
-| compressed        | 当accept为video时生效，是否压缩视频，默认为true                                                             | boolean                                                               | true                             | -      |
-| background        | 背景颜色                                                                                                    | string                                                                | ""                               | -      |
-| maxSize           | 选择单个文件的最大大小                                                                                      | number \| string \| Function                                          | Infinity                         | -      |
-| maxCount          | 文件上传数量限制                                                                                            | number                                                                | Infinity                         | -      |
-| maxDuration       | 当accept为video时生效，拍摄视频最长拍摄时间，单位秒                                                         | number                                                                | 60                               | -      |
-| sizeType          | original 原图，compressed 压缩图，默认二者都有，H5无效                                                      | Array as PropType<string[]>                                           | () => ["original", "compressed"] | -      |
-| previewGap        | 预览上传图之间的间隔                                                                                        | string \| number                                                      | "20rpx"                          | -      |
-| imageMode         | 图片显示模式，和image组件mode属性一致                                                                       | string                                                                | "aspectFill"                     | -      |
-| previewIconSize   | 预览区图标大小                                                                                              | string \| number                                                      | "60rpx"                          | -      |
-| previewIconColor  | 预览区图标颜色                                                                                              | string                                                                | "#cccccc"                        | -      |
-| previewIconWeight | 预览区图标粗细                                                                                              | string \| number                                                      | ""                               | -      |
-| icon              | 上传区域图标                                                                                                | string                                                                | "photograph"                     | -      |
-| iconSize          | 上传区域图标大小                                                                                            | string \| number                                                      | "56rpx"                          | -      |
-| iconColor         | 上传区域图标颜色                                                                                            | string                                                                | "#cccccc"                        | -      |
-| iconWeight        | 上传区域图标粗细                                                                                            | string \| number                                                      | ""                               | -      |
-| beforeRemove      | 文件删除前的回调函数                                                                                        | Function                                                              | -                                | -      |
-| afterRead         | 文件读取完成后的回调函数                                                                                    | Function                                                              | -                                | -      |
-| beforeRead        | 文件读取前的回调函数                                                                                        | Function                                                              | -                                | -      |
-| customClass       | 自定义类名                                                                                                  | string                                                                | ""                               | -      |
-| customStyle       | 自定义样式                                                                                                  | string \| object                                                      | ""                               | -      |
+## 多选 + 数量上限
 
-## Events
+```vue
+<ui-upload v-model="fileList" multiple :max-count="5" />
+```
 
-| 事件名   | 说明 | 回调参数                            |
-| -------- | ---- | ----------------------------------- |
-| upload   | -    | event: { files: any }               |
-| delete   | -    | event: { index: number; file: any } |
-| oversize | -    | files: UploadFile[]                 |
-| update   | -    | value: string \| string[]           |
+## 大小限制
 
-## Slots
+```vue
+<ui-upload v-model="fileList" :max-size="1024 * 1024" @oversize="onOversize" />
+```
 
-| 名称   | 说明 |
-| ------ | ---- |
-| delete | -    |
-| icon   | -    |
+函数形式自定义判断：
+
+```vue
+<ui-upload :max-size="file => file.size > 5 * 1024 * 1024" />
+```
+
+## 文件类型 accept
+
+| accept  | 选择对象               |
+| ------- | ---------------------- |
+| `""`    | 文件（默认）           |
+| `image` | 图片                   |
+| `video` | 视频                   |
+| `media` | 媒体（仅 MP-WEIXIN）   |
+| `file`  | 文件（MP-WEIXIN / H5） |
+
+## 拦截器
+
+```vue
+<ui-upload :before-read="onBeforeRead" :after-read="onAfterRead" :before-remove="onBeforeRemove" />
+```
+
+```ts
+// 上传前：返回 false 拦截；返回 UploadFile[] 替换
+function onBeforeRead(files: UploadFile[]) {
+  return files.filter(f => /* 校验 */)
+}
+
+// 上传后：调 next(files) 把状态写回（处理 uploading → success / fail）
+async function onAfterRead(files: UploadFile[], next: (files: UploadFile[]) => void) {
+  for (const f of files) f.status = "uploading"
+  const uploaded = await uploadToServer(files)
+  uploaded.forEach(f => (f.status = "success"))
+  next(uploaded)
+}
+
+// 删除前：返回 false 拦截
+function onBeforeRemove(file: UploadFile, index: number) {
+  return new Promise((resolve) => uni.showModal({ title: "确认删除", success: r => resolve(r.confirm) }))
+}
+```
+
+## API
+
+### Props
+
+| 参数             | 说明                                            | 类型                                    | 默认值                      |
+| ---------------- | ----------------------------------------------- | --------------------------------------- | --------------------------- |
+| modelValue       | 绑定值（数组开启多 URL；字符串逗号分隔）        | `string \| string[]`                    | `""`                        |
+| show             | 显示组件                                        | `boolean`                               | `true`                      |
+| width            | 宽度                                            | `number \| string`                      | -                           |
+| height           | 高度                                            | `number \| string`                      | -                           |
+| accept           | 允许文件类型                                    | `UploadAccept`                          | `""`                        |
+| capture          | 拾取模式                                        | `string[]`                              | `["album","camera"]`        |
+| camera           | accept=video 时摄像头方向                       | `"back" \| "front"`                     | -                           |
+| preview          | 点击预览（仅图片）                              | `boolean`                               | `false`                     |
+| multiple         | 多选                                            | `boolean`                               | `false`                     |
+| deletable        | 显示删除按钮                                    | `boolean`                               | `true`                      |
+| disabled         | 禁用                                            | `boolean`                               | `false`                     |
+| compressed       | accept=video 时压缩                             | `boolean`                               | `true`                      |
+| background       | 背景色                                          | `string`                                | -                           |
+| maxSize          | 单文件最大字节；`0` 无上限；函数自定义判断      | `number \| string \| (file) => boolean` | `0`                         |
+| maxCount         | 数量上限；`0` 无上限                            | `number`                                | `0`                         |
+| maxDuration      | accept=video 时最长拍摄秒数                     | `number`                                | `60`                        |
+| sizeType         | 图片尺寸类型（H5 无效）                         | `string[]`                              | `["original","compressed"]` |
+| previewGap       | 预览图间距                                      | `number \| string`                      | -                           |
+| imageMode        | 图片显示模式                                    | `ImageProps["mode"]`                    | `"aspectFill"`              |
+| previewIconSize  | 预览区图标尺寸                                  | `number \| string`                      | -                           |
+| previewIconColor | 预览区图标颜色                                  | `string`                                | -                           |
+| icon             | 上传区图标                                      | `string`                                | `"photograph"`              |
+| iconSize         | 上传区图标尺寸                                  | `number \| string`                      | -                           |
+| iconColor        | 上传区图标颜色                                  | `string`                                | -                           |
+| beforeRead       | 上传前拦截 `(files) => boolean \| UploadFile[]` | `Function`                              | -                           |
+| afterRead        | 上传后处理 `(files, next) => void`              | `Function`                              | -                           |
+| beforeRemove     | 删除前拦截 `(file, index) => boolean`           | `Function`                              | -                           |
+| customClass      | 自定义类名                                      | `string`                                | -                           |
+| customStyle      | 自定义样式                                      | `string \| CSSProperties`               | -                           |
+
+### Events
+
+| 事件名            | 说明         | 回调参数                              |
+| ----------------- | ------------ | ------------------------------------- |
+| update:modelValue | v-model 更新 | `value: string \| string[]`           |
+| delete            | 删除文件     | `{ index: number, file: UploadFile }` |
+| oversize          | 文件超大     | `files: UploadFile[]`                 |
+
+### Slots
+
+| 名称    | 说明                             |
+| ------- | -------------------------------- |
+| trigger | 自定义触发器（覆盖默认上传图标） |
+| icon    | 自定义上传图标                   |
+| delete  | 自定义删除按钮                   |
+
+### CSS Variables
+
+| 变量名                           | 默认值                             | 说明         |
+| -------------------------------- | ---------------------------------- | ------------ |
+| `--ui-upload-width`              | `160rpx`                           | 宽度         |
+| `--ui-upload-height`             | `160rpx`                           | 高度         |
+| `--ui-upload-bg`                 | `var(--ui-color-background-page)`  | 背景         |
+| `--ui-upload-radius`             | `0`                                | 圆角         |
+| `--ui-upload-preview-gap`        | `20rpx`                            | 预览图间距   |
+| `--ui-upload-icon-size`          | `56rpx`                            | 上传图标尺寸 |
+| `--ui-upload-icon-color`         | `var(--ui-color-text-placeholder)` | 上传图标颜色 |
+| `--ui-upload-preview-icon-size`  | `60rpx`                            | 预览图标尺寸 |
+| `--ui-upload-preview-icon-color` | `var(--ui-color-text-placeholder)` | 预览图标颜色 |
+| `--ui-upload-status-bg`          | `rgba(50, 50, 51, 0.88)`           | 状态遮罩背景 |
+| `--ui-upload-delete-bg`          | `rgba(0, 0, 0, 0.7)`               | 删除按钮背景 |
+
+## 注意事项
+
+- `accept="media"` 与 `accept="file"` 跨端差异：`media` 仅 MP-WEIXIN；`file` 仅 MP-WEIXIN / H5
+- `wx.chooseMessageFile` 仅 MP-WEIXIN，组件内已条件编译
+- 上传状态机：选择 → `beforeRead` → push 列表（status=""）→ `afterRead(files, next)` 调用方设置 `status: "uploading" → "success" / "fail"`，通过 `next(files)` 回填
+- `v-model` 数据类型决定结构（数组 / 字符串），保持一致

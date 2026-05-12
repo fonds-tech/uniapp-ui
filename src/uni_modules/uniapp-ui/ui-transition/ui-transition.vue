@@ -1,10 +1,11 @@
 <template>
-  <view v-if="inited" class="ui-transition" :class="[transition.classs.value, props.customClass]" :style="[style]" @transitionend="onTransitionEnd" @click="onClick">
+  <view v-if="inited" class="ui-transition" :class="[transition.classs.value, props.customClass]" :style="[rootStyle]" @transitionend="onTransitionEnd" @click="onClick">
     <slot />
   </view>
 </template>
 
 <script setup lang="ts">
+import type { CSSProperties } from "vue"
 import { isNumber } from "../utils/check"
 import { ref, watch, computed } from "vue"
 import { transitionEmits, transitionProps } from "./index"
@@ -15,28 +16,26 @@ defineOptions({ name: "ui-transition" })
 const props = defineProps(transitionProps)
 const emits = defineEmits(transitionEmits)
 
-// 过渡动画 hook
 const transition = useTransition()
-// z-index 值
+// z-index
 const zIndex = ref<number>()
 
-// 是否已初始化
+// 是否已初始化挂载
 const inited = computed(() => !props.lazyRender || transition.inited.value)
 // 根节点样式
-const style = computed(() => {
-  const baseStyle: Record<string, any> = {
+const rootStyle = computed(() => {
+  const base: CSSProperties = {
     zIndex: zIndex.value,
     display: transition.visible.value ? "block" : "none",
   }
-
   return useStyle({
-    ...baseStyle,
+    ...base,
     ...useStyle(props.customStyle),
     ...transition.styles.value,
   })
 })
 
-// 过渡事件绑定
+// 过渡事件转发
 transition.on("enter", () => emits("enter"))
 transition.on("leave", () => emits("leave"))
 transition.on("before-enter", () => emits("beforeEnter"))
@@ -44,7 +43,6 @@ transition.on("after-enter", () => emits("afterEnter"))
 transition.on("before-leave", () => emits("beforeLeave"))
 transition.on("after-leave", () => emits("afterLeave"))
 
-// 监听 show 变化
 watch(
   () => props.show,
   (val) => {
@@ -52,10 +50,8 @@ watch(
   },
   { immediate: true },
 )
-// 监听动画相关属性变化
 watch(() => [props.name, props.duration, props.enterTimingFunction, props.leaveTimingFunction], initTransition, { immediate: true })
 
-// 初始化过渡动画
 function initTransition() {
   transition.init({
     name: props.name,
@@ -65,7 +61,7 @@ function initTransition() {
   })
 }
 
-// 进入过渡
+// 进入
 function enter() {
   if (transition.visible.value) return
   initTransition()
@@ -74,21 +70,19 @@ function enter() {
   emits("update:show", true)
 }
 
-// 离开过渡
+// 离开
 function leave() {
   if (!transition.visible.value) return
   transition.leave()
   emits("update:show", false)
 }
 
-// transitionend 事件处理
+// transitionend 兜底
 function onTransitionEnd(event: Event) {
-  if (event.target === event.currentTarget) {
-    transition.end()
-  }
+  if (event.target === event.currentTarget) transition.end()
 }
 
-// 点击事件
+// 点击
 function onClick() {
   emits("click")
 }
@@ -99,12 +93,19 @@ defineExpose({ enter, leave })
 <script lang="ts">
 export default {
   name: "ui-transition",
-  options: { virtualHost: true, multipleSlots: true, styleIsolation: "shared" },
+  options: {
+    // #ifndef MP-TOUTIAO
+    virtualHost: true,
+    // #endif
+    multipleSlots: true,
+    styleIsolation: "shared",
+  },
 }
 </script>
 
 <style lang="scss">
 @use "../styles/animation.scss";
+
 .ui-transition {
   position: relative;
 }
