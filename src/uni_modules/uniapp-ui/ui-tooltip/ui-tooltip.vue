@@ -1,7 +1,7 @@
 <template>
-  <view class="ui-tooltip" :class="[props.customClass]" :style="[rootStyle]" @click.stop="noop">
-    <!-- 用于测量尺寸的隐藏元素（结构镜像显示分支，靠 Vue 原生 slot fallback 处理空 slot） -->
-    <view id="measure" class="ui-tooltip__measure">
+  <view class="ui-tooltip" :class="[customClass]" :style="[rootStyle]" @click.stop="noop">
+    <!-- 隐藏测量节点（结构镜像显示分支） -->
+    <view class="ui-tooltip__measure">
       <view class="ui-tooltip__popup">
         <view class="ui-tooltip__inner">
           <slot name="content">
@@ -11,24 +11,23 @@
       </view>
     </view>
 
+    <!-- 点击外部关闭遮罩（透明全屏 view） -->
+    <view v-if="showTooltip && props.closeOnClickOutside" class="ui-tooltip__overlay" :style="[overlayStyle]" @click="close" />
+
     <!-- 提示框 -->
     <ui-transition :show="showTooltip" name="fade" :duration="props.duration" custom-class="ui-tooltip__pos" :custom-style="popupStyle">
       <view class="ui-tooltip__popup">
-        <!-- 箭头 -->
-        <view v-if="props.showArrow" class="ui-tooltip__arrow" :class="[arrowClass]" :style="[arrowStyle]" />
-        <!-- 内容 -->
+        <view v-if="props.showArrow" class="ui-tooltip__arrow" :class="[arrowClass]" />
         <view class="ui-tooltip__inner">
           <slot name="content">
             <text class="ui-tooltip__text">{{ props.content }}</text>
           </slot>
         </view>
-        <!-- 关闭按钮 -->
-        <ui-icon v-if="props.showClose" name="cross" class="ui-tooltip__close" size="24rpx" @click="close" />
       </view>
     </ui-transition>
 
-    <!-- 触发元素 -->
-    <view id="target" class="ui-tooltip__target" @click="onClickTarget">
+    <!-- 触发元素：v-on 对象动态绑定（hover 仅 H5 / App，MP 忽略 mouseenter/mouseleave） -->
+    <view class="ui-tooltip__target" v-on="targetListeners">
       <slot />
     </view>
   </view>
@@ -37,114 +36,80 @@
 <script setup lang="ts">
 import type { CSSProperties } from "vue"
 import type { TooltipPlacement } from "./index"
+import { noop } from "../utils/utils"
 import { isNumber } from "../utils/check"
-import { tooltipEmits, tooltipProps } from "./index"
 import { ref, watch, computed, onMounted, getCurrentInstance } from "vue"
 import { useRect, useUnit, useColor, useStyle, useGlobalZIndex } from "../hooks"
+import { tooltipEmits, tooltipProps, TOOLTIP_ARROW_SIZE, TOOLTIP_ARROW_CLASS_MAP } from "./index"
 
 defineOptions({ name: "ui-tooltip" })
 
 const props = defineProps(tooltipProps)
 const emits = defineEmits(tooltipEmits)
 
-// 组件实例
 const instance = getCurrentInstance()
 
-// 控制显示
+// 显示状态
 const showTooltip = ref(false)
-
 // 触发元素尺寸
 const targetWidth = ref(0)
 const targetHeight = ref(0)
-
 // 弹出框尺寸
 const popupWidth = ref(0)
 const popupHeight = ref(0)
-
-// 弹出框位置样式
+// 弹出框位置 inline
 const popupPositionStyle = ref<CSSProperties>({})
-
 // 层级
 const zIndex = ref<number>()
 
-// 箭头大小
-const ARROW_SIZE = 5
-
 // 根节点样式
-const rootStyle = computed(() => {
-  return useStyle(props.customStyle)
-})
-
-// 弹出框样式
+const rootStyle = computed(() => useStyle(props.customStyle))
+// 遮罩样式（透明，z-index 比 popup 低 1）
+const overlayStyle = computed<CSSProperties>(() => ({ zIndex: (zIndex.value ?? 0) - 1 }))
+// 弹出框样式（用 CSS var 注入，popup 与箭头通过 cascade 同步色值）
 const popupStyle = computed(() => {
-  const style: CSSProperties = {
-    zIndex: zIndex.value,
-    position: "absolute",
-    minWidth: "10px",
-  }
-  if (props.bgColor) {
-    style.backgroundColor = useColor(props.bgColor)
-  }
-  if (props.textColor) {
-    style.color = useColor(props.textColor)
-  }
-  if (props.maxWidth) {
-    style.maxWidth = useUnit(props.maxWidth)
-  }
+  const style: CSSProperties = { zIndex: zIndex.value, position: "absolute", minWidth: "10px" }
+  if (props.bgColor) style["--ui-tooltip-bg" as keyof CSSProperties] = useColor(props.bgColor) as never
+  if (props.textColor) style["--ui-tooltip-color" as keyof CSSProperties] = useColor(props.textColor) as never
+  if (props.maxWidth !== undefined) style["--ui-tooltip-max-width" as keyof CSSProperties] = useUnit(props.maxWidth) as never
   Object.assign(style, popupPositionStyle.value)
   return useStyle(style)
 })
-
 // 箭头类名
-const arrowClass = computed(() => {
-  const placement = props.placement as TooltipPlacement
-  const map: Record<string, string> = {
-    top: "ui-tooltip__arrow--down",
-    "top-start": "ui-tooltip__arrow--down",
-    "top-end": "ui-tooltip__arrow--down",
-    bottom: "ui-tooltip__arrow--up",
-    "bottom-start": "ui-tooltip__arrow--up",
-    "bottom-end": "ui-tooltip__arrow--up",
-    left: "ui-tooltip__arrow--right",
-    "left-start": "ui-tooltip__arrow--right",
-    "left-end": "ui-tooltip__arrow--right",
-    right: "ui-tooltip__arrow--left",
-    "right-start": "ui-tooltip__arrow--left",
-    "right-end": "ui-tooltip__arrow--left",
-  }
-  return map[placement] || "ui-tooltip__arrow--down"
+const arrowClass = computed(() => TOOLTIP_ARROW_CLASS_MAP[props.placement as TooltipPlacement] || "ui-tooltip__arrow--down")
+// target 事件监听（hover 触发条件编译排除 MP）
+const targetListeners = computed(() => {
+  const list: Record<string, () => void> = { click: onClickTarget }
+  // #ifndef MP
+  list.mouseenter = onMouseEnter
+  list.mouseleave = onMouseLeave
+  // #endif
+  return list
 })
 
-// 箭头样式
-const arrowStyle = computed<CSSProperties>(() => {
-  const style: CSSProperties = {}
-  if (!props.bgColor) return style
+watch(
+  () => props.visible,
+  (val) => {
+    val ? open() : close()
+  },
+  { immediate: true },
+)
 
-  const placement = props.placement as TooltipPlacement
-  const color = useColor(props.bgColor)
+watch(
+  () => props.placement,
+  () => {
+    if (showTooltip.value) calculatePosition()
+  },
+)
 
-  if (placement.startsWith("top")) {
-    style.borderTopColor = color
-  } else if (placement.startsWith("bottom")) {
-    style.borderBottomColor = color
-  } else if (placement.startsWith("left")) {
-    style.borderRightColor = color
-  } else if (placement.startsWith("right")) {
-    style.borderLeftColor = color
-  }
-
-  return style
+onMounted(() => {
+  initRect()
 })
 
-// 空操作
-function noop() {}
-
-// 初始化尺寸
+// 测量触发元素与测量节点尺寸
 async function initRect() {
   if (!instance) return
-
-  const [targetRect, popupRect] = await Promise.all([useRect("#target", instance), useRect("#measure", instance)])
-
+  const [targetRect, popupRect] = await Promise.all([useRect(".ui-tooltip__target", instance), useRect(".ui-tooltip__measure", instance)])
   if (targetRect) {
     targetWidth.value = targetRect.width || 0
     targetHeight.value = targetRect.height || 0
@@ -155,11 +120,11 @@ async function initRect() {
   }
 }
 
-// 计算位置
+// 计算 popup 位置
 function calculatePosition() {
   const placement = props.placement as TooltipPlacement
-  const offset = typeof props.offset === "number" ? props.offset : 0
-  const arrowOffset = props.showArrow ? ARROW_SIZE + 4 : 4
+  const offset = isNumber(props.offset) ? +props.offset : 0
+  const arrowOffset = props.showArrow ? TOOLTIP_ARROW_SIZE + 4 : 4
 
   const tw = targetWidth.value
   const th = targetHeight.value
@@ -168,9 +133,7 @@ function calculatePosition() {
 
   const style: CSSProperties = {}
 
-  // 基于 placement 计算位置
   switch (placement) {
-    // 上方
     case "top":
       style.bottom = `${th + arrowOffset + offset}px`
       style.left = `${(tw - pw) / 2}px`
@@ -183,8 +146,6 @@ function calculatePosition() {
       style.bottom = `${th + arrowOffset + offset}px`
       style.right = "0"
       break
-
-    // 下方
     case "bottom":
       style.top = `${th + arrowOffset + offset}px`
       style.left = `${(tw - pw) / 2}px`
@@ -197,8 +158,6 @@ function calculatePosition() {
       style.top = `${th + arrowOffset + offset}px`
       style.right = "0"
       break
-
-    // 左侧
     case "left":
       style.right = `${tw + arrowOffset + offset}px`
       style.top = `${(th - ph) / 2}px`
@@ -211,8 +170,6 @@ function calculatePosition() {
       style.right = `${tw + arrowOffset + offset}px`
       style.bottom = "0"
       break
-
-    // 右侧
     case "right":
       style.left = `${tw + arrowOffset + offset}px`
       style.top = `${(th - ph) / 2}px`
@@ -225,7 +182,6 @@ function calculatePosition() {
       style.left = `${tw + arrowOffset + offset}px`
       style.bottom = "0"
       break
-
     default:
       style.bottom = `${th + arrowOffset + offset}px`
       style.left = `${(tw - pw) / 2}px`
@@ -238,7 +194,6 @@ function calculatePosition() {
 async function open() {
   if (props.disabled) return
   if (showTooltip.value) return
-
   await initRect()
   calculatePosition()
   zIndex.value = isNumber(props.zIndex) ? +props.zIndex : useGlobalZIndex()
@@ -257,44 +212,25 @@ function close() {
 
 // 切换
 function toggle() {
-  if (showTooltip.value) {
-    close()
-  } else {
-    open()
-  }
+  showTooltip.value ? close() : open()
 }
 
 // 点击触发元素
 function onClickTarget() {
   if (props.disabled) return
-  if (props.trigger === "click") {
-    toggle()
-  }
+  if (props.trigger === "click") toggle()
 }
 
-// 监听 visible
-watch(
-  () => props.visible,
-  (val) => {
-    if (val) open()
-    else close()
-  },
-  { immediate: true },
-)
+// H5 hover 触发
+function onMouseEnter() {
+  if (props.disabled) return
+  if (props.trigger === "hover") open()
+}
 
-// 监听 placement 变化
-watch(
-  () => props.placement,
-  () => {
-    if (showTooltip.value) {
-      calculatePosition()
-    }
-  },
-)
-
-onMounted(() => {
-  initRect()
-})
+function onMouseLeave() {
+  if (props.disabled) return
+  if (props.trigger === "hover") close()
+}
 
 defineExpose({ open, close, toggle })
 </script>
@@ -302,16 +238,31 @@ defineExpose({ open, close, toggle })
 <script lang="ts">
 export default {
   name: "ui-tooltip",
-  options: { virtualHost: true, multipleSlots: true, styleIsolation: "shared" },
+  options: {
+    // #ifndef MP-TOUTIAO
+    virtualHost: true,
+    // #endif
+    multipleSlots: true,
+    styleIsolation: "shared",
+  },
 }
 </script>
 
 <style lang="scss" scoped>
 .ui-tooltip {
+  --ui-tooltip-bg: rgba(38, 39, 40, 0.85);
+  --ui-tooltip-color: var(--ui-color-text-inverse);
+  --ui-tooltip-radius: var(--ui-radius-sm);
+  --ui-tooltip-shadow: 0 2px 12px rgba(0, 0, 0, 0.15);
+  --ui-tooltip-padding: var(--ui-spacing-sm) var(--ui-spacing-md);
+  --ui-tooltip-font-size: var(--ui-font-size-sm);
+  --ui-tooltip-max-width: 400rpx;
+  --ui-tooltip-arrow-size: 5px;
+  --ui-tooltip-arrow-offset: 4px;
+
   display: inline-block;
   position: relative;
 
-  // 隐藏的测量元素
   &__measure {
     top: 0;
     left: -9999px;
@@ -322,86 +273,79 @@ export default {
     pointer-events: none;
   }
 
-  // 弹出框
-  &__popup {
-    color: var(--ui-color-text-inverse);
-    padding: 8px 12px;
-    position: relative;
-    font-size: var(--ui-font-size-sm);
-    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15);
-    line-height: var(--ui-line-height-normal);
-    white-space: nowrap;
-    border-radius: 4px;
-    backdrop-filter: blur(10px);
-    background-color: rgba(38, 39, 40, 0.85);
+  &__overlay {
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    background: transparent;
   }
 
-  // 箭头基础样式
+  &__popup {
+    color: var(--ui-tooltip-color);
+    padding: var(--ui-tooltip-padding);
+    position: relative;
+    // max-content 让 popup 撑到内容自然宽度，max-width 兜上限；脱离父级 inline-block 的宽度约束
+    width: max-content;
+    font-size: var(--ui-tooltip-font-size);
+    max-width: var(--ui-tooltip-max-width);
+    background: var(--ui-tooltip-bg);
+    box-shadow: var(--ui-tooltip-shadow);
+    line-height: var(--ui-line-height-normal);
+    border-radius: var(--ui-tooltip-radius);
+    overflow-wrap: break-word;
+  }
+
   &__arrow {
     width: 0;
     height: 0;
     position: absolute;
     border-color: transparent;
     border-style: solid;
-    border-width: 5px;
+    border-width: var(--ui-tooltip-arrow-size);
 
-    // 箭头朝上（弹出框在下方）
     &--up {
-      top: -5px;
+      top: calc(var(--ui-tooltip-arrow-size) * -1);
       left: 50%;
       transform: translateX(-50%);
       border-top-width: 0;
-      border-bottom-color: rgba(38, 39, 40, 0.85);
+      border-bottom-color: var(--ui-tooltip-bg);
     }
 
-    // 箭头朝下（弹出框在上方）
     &--down {
       left: 50%;
-      bottom: -5px;
+      bottom: calc(var(--ui-tooltip-arrow-size) * -1);
       transform: translateX(-50%);
-      border-top-color: rgba(38, 39, 40, 0.85);
+      border-top-color: var(--ui-tooltip-bg);
       border-bottom-width: 0;
     }
 
-    // 箭头朝左（弹出框在右侧）
     &--left {
       top: 50%;
-      left: -5px;
+      left: calc(var(--ui-tooltip-arrow-size) * -1);
       transform: translateY(-50%);
       border-left-width: 0;
-      border-right-color: rgba(38, 39, 40, 0.85);
+      border-right-color: var(--ui-tooltip-bg);
     }
 
-    // 箭头朝右（弹出框在左侧）
     &--right {
       top: 50%;
-      right: -5px;
+      right: calc(var(--ui-tooltip-arrow-size) * -1);
       transform: translateY(-50%);
-      border-left-color: rgba(38, 39, 40, 0.85);
+      border-left-color: var(--ui-tooltip-bg);
       border-right-width: 0;
     }
   }
 
   &__inner {
-    overflow: hidden;
+    display: block;
   }
 
   &__text {
     color: inherit;
     font-size: inherit;
     line-height: inherit;
-  }
-
-  &__close {
-    top: 4px;
-    color: rgba(255, 255, 255, 0.6);
-    right: 4px;
-    cursor: pointer;
-    position: absolute;
-
-    &:active {
-      opacity: var(--ui-opacity-heavy);
-    }
   }
 
   &__target {

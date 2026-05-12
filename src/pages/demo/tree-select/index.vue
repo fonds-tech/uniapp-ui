@@ -1,86 +1,122 @@
 <template>
   <demo-page>
-    <demo-section title="基础用法" desc="单选模式，点击右侧选项时会触发 click-item 事件">
-      <demo-block direction="column" align="start" :gap="16">
-        <text class="demo-text">当前选中: {{ activeId1 ?? "无" }}</text>
-        <view class="tree-select-wrap">
-          <ui-tree-select v-model:main-active-index="mainActiveIndex1" v-model:active-id="activeId1" :items="items" />
+    <demo-section title="基础用法 · 单选" desc="activeId 传单值开启单选">
+      <demo-block direction="column" :gap="12">
+        <text class="event-log">当前: {{ activeId1 ?? "无" }}</text>
+        <view class="ts-wrap">
+          <ui-tree-select v-model:main-active-index="navIndex1" v-model:active-id="activeId1" :items="items" />
         </view>
       </demo-block>
     </demo-section>
 
-    <demo-section title="多选模式" desc="activeId 传入数组时开启多选">
-      <demo-block direction="column" align="start" :gap="16">
-        <text class="demo-text">当前选中: {{ activeIds2.length > 0 ? activeIds2.join(", ") : "无" }}</text>
-        <view class="tree-select-wrap">
-          <ui-tree-select v-model:main-active-index="mainActiveIndex2" v-model:active-id="activeIds2" :items="items" />
+    <demo-section title="多选模式" desc="activeId 传数组开启多选">
+      <demo-block direction="column" :gap="12">
+        <text class="event-log">当前: {{ activeIds2.length ? activeIds2.join(", ") : "无" }}</text>
+        <view class="ts-wrap">
+          <ui-tree-select v-model:main-active-index="navIndex2" v-model:active-id="activeIds2" :items="items" />
         </view>
       </demo-block>
     </demo-section>
 
-    <demo-section title="自定义高度" desc="通过 height 属性设置组件高度">
-      <demo-block :cols="2" :gap="24">
-        <view class="tree-select-wrap tree-select-wrap--small">
-          <ui-tree-select v-model:main-active-index="mainActiveIndex3a" v-model:active-id="activeId3a" :items="items" height="400rpx" />
-        </view>
-        <view class="tree-select-wrap tree-select-wrap--large">
-          <ui-tree-select v-model:main-active-index="mainActiveIndex3b" v-model:active-id="activeId3b" :items="items" height="500rpx" />
+    <demo-section title="最大数量 max" desc="多选上限达到再点触发 maxReached">
+      <demo-block direction="column" :gap="12">
+        <text class="event-log">已选 {{ activeIds3.length }} / 2 · {{ maxLog }}</text>
+        <view class="ts-wrap">
+          <ui-tree-select v-model:main-active-index="navIndex3" v-model:active-id="activeIds3" :items="items" :max="2" @max-reached="onMaxReached" />
         </view>
       </demo-block>
     </demo-section>
 
-    <demo-section title="禁用选项" desc="通过 disabled 属性禁用分类或选项">
-      <demo-block direction="column" align="start" :gap="16">
-        <text class="demo-text">禁用了 "宁波" 和 "广东" 分类</text>
-        <view class="tree-select-wrap">
-          <ui-tree-select v-model:main-active-index="mainActiveIndex4" v-model:active-id="activeId4" :items="itemsWithDisabled" />
+    <demo-section title="禁用" desc="分类层 / 子项层均可 disabled">
+      <view class="ts-wrap">
+        <ui-tree-select v-model:main-active-index="navIndex4" v-model:active-id="activeId4" :items="itemsWithDisabled" />
+      </view>
+    </demo-section>
+
+    <demo-section title="组件高度 height">
+      <demo-block direction="column" :gap="16">
+        <view class="ts-wrap">
+          <ui-tree-select v-model:main-active-index="navIndex5" v-model:active-id="activeId5" :items="items" :height="heightDemo" />
         </view>
+        <demo-block :cols="3" :gap="12">
+          <ui-button v-for="h in heightPresets" :key="h" size="small" :type="heightDemo === h ? 'primary' : 'default'" @click="heightDemo = h">
+            {{ h }}
+          </ui-button>
+        </demo-block>
       </demo-block>
     </demo-section>
 
-    <demo-section title="最大选择数" desc="通过 max 属性限制多选数量">
-      <demo-block direction="column" align="start" :gap="16">
-        <text class="demo-text">最多选择 2 项，当前: {{ activeIds5.join(", ") || "无" }}</text>
-        <view class="tree-select-wrap">
-          <ui-tree-select v-model:main-active-index="mainActiveIndex5" v-model:active-id="activeIds5" :items="items" :max="2" />
+    <demo-section title="nav 宽度 navWidth">
+      <demo-block direction="column" :gap="16">
+        <view class="ts-wrap">
+          <ui-tree-select v-model:main-active-index="navIndex6" v-model:active-id="activeId6" :items="items" :nav-width="navWidthDemo" />
         </view>
+        <demo-block :cols="3" :gap="12">
+          <ui-button v-for="w in navWidthPresets" :key="w" size="small" :type="navWidthDemo === w ? 'primary' : 'default'" @click="navWidthDemo = w">
+            {{ w }}
+          </ui-button>
+        </demo-block>
       </demo-block>
     </demo-section>
 
-    <demo-section title="自定义内容" desc="通过 content 插槽自定义右侧内容区域">
-      <demo-block direction="column" align="start" :gap="16">
-        <view class="tree-select-wrap">
-          <ui-tree-select v-model:main-active-index="mainActiveIndex6" :items="items">
-            <template #content>
-              <view class="custom-content">
-                <text class="custom-content__title">{{ currentNavItem?.text }}</text>
-                <view class="custom-content__list">
-                  <view v-for="child in currentNavItem?.children || []" :key="child.id" class="custom-content__item">
-                    <ui-icon name="location" size="32rpx" />
-                    <text>{{ child.text }}</text>
-                  </view>
+    <demo-section title="主题色 activeColor">
+      <demo-block direction="column" :gap="16">
+        <view class="ts-wrap">
+          <ui-tree-select v-model:main-active-index="navIndex7" v-model:active-id="activeId7" :items="items" :active-color="colorDemo" />
+        </view>
+        <demo-block :cols="4" :gap="12">
+          <ui-button v-for="c in colorPresets" :key="c" size="small" :type="colorDemo === c ? 'primary' : 'default'" @click="colorDemo = c">
+            {{ c }}
+          </ui-button>
+        </demo-block>
+      </demo-block>
+    </demo-section>
+
+    <demo-section title="选中图标 selectedIcon">
+      <demo-block direction="column" :gap="16">
+        <view class="ts-wrap">
+          <ui-tree-select v-model:main-active-index="navIndex8" v-model:active-id="activeIds8" :items="items" :selected-icon="iconDemo" />
+        </view>
+        <demo-block :cols="3" :gap="12">
+          <ui-button v-for="i in iconPresets" :key="i" size="small" :type="iconDemo === i ? 'primary' : 'default'" @click="iconDemo = i">
+            {{ i }}
+          </ui-button>
+        </demo-block>
+      </demo-block>
+    </demo-section>
+
+    <demo-section title="自定义内容 slot" desc="content 完全自定义右侧">
+      <view class="ts-wrap">
+        <ui-tree-select v-model:main-active-index="navIndex9" :items="items">
+          <template #content>
+            <view class="custom-content">
+              <text class="custom-content__title">{{ items[navIndex9]?.text }}</text>
+              <view class="custom-content__list">
+                <view v-for="c in items[navIndex9]?.children || []" :key="c.id" class="custom-content__item">
+                  <ui-icon name="location" size="32rpx" color="text-secondary" />
+                  <text>{{ c.text }}</text>
                 </view>
               </view>
-            </template>
-          </ui-tree-select>
+            </view>
+          </template>
+        </ui-tree-select>
+      </view>
+    </demo-section>
+
+    <demo-section title="事件回显">
+      <demo-block direction="column" :gap="12">
+        <view class="ts-wrap">
+          <ui-tree-select v-model:main-active-index="navIndex10" v-model:active-id="activeId10" :items="items" @click-nav="onClickNav" @click-item="onClickItem" />
         </view>
+        <text class="event-log">{{ eventLog }}</text>
       </demo-block>
     </demo-section>
 
-    <demo-section title="事件处理" desc="监听 click-nav 和 click-item 事件">
-      <demo-block direction="column" align="start" :gap="16">
-        <text class="demo-text">{{ eventLog }}</text>
-        <view class="tree-select-wrap">
-          <ui-tree-select v-model:main-active-index="mainActiveIndex7" v-model:active-id="activeId7" :items="items" @click-nav="onClickNav" @click-item="onClickItem" />
-        </view>
-      </demo-block>
-    </demo-section>
-
-    <demo-section title="综合示例" desc="多分类商品选择">
-      <demo-block direction="column" align="start" :gap="16">
-        <text class="demo-text">已选商品: {{ selectedProducts.join(", ") || "请选择" }}</text>
-        <view class="tree-select-wrap tree-select-wrap--large">
-          <ui-tree-select v-model:main-active-index="mainActiveIndex8" v-model:active-id="activeIds8" :items="productItems" :max="5" height="500rpx" />
+    <demo-section title="综合 · 商品多分类选择">
+      <demo-block direction="column" :gap="12">
+        <text class="event-log">已选: {{ selectedProducts.length ? selectedProducts.join("、") : "请选择" }}</text>
+        <view class="ts-wrap ts-wrap--large">
+          <ui-tree-select v-model:main-active-index="navIndex11" v-model:active-id="activeIds11" :items="productItems" :max="5" height="500rpx" />
         </view>
       </demo-block>
     </demo-section>
@@ -89,167 +125,102 @@
 
 <script setup lang="ts">
 import type { TreeSelectItem, TreeSelectChild } from "@/uni_modules/uniapp-ui/ui-tree-select"
-import { useToast } from "@/uni_modules/uniapp-ui"
+import { ref, computed } from "vue"
 
 definePage({
   style: { navigationBarTitleText: "TreeSelect 分类选择" },
 })
 
-const toast = useToast()
+const items: TreeSelectItem[] = [
+  { text: "浙江", children: [{ id: 1, text: "杭州" }, { id: 2, text: "温州" }, { id: 3, text: "宁波", disabled: true }] },
+  { text: "江苏", children: [{ id: 4, text: "南京" }, { id: 5, text: "苏州" }] },
+  { text: "上海", children: [{ id: 6, text: "黄浦" }, { id: 7, text: "浦东" }] },
+]
 
-// 基础数据
-const items = ref<TreeSelectItem[]>([
-  {
-    text: "浙江",
-    children: [
-      { id: 1, text: "杭州" },
-      { id: 2, text: "温州" },
-      { id: 3, text: "宁波", disabled: true },
-    ],
-  },
-  {
-    text: "江苏",
-    children: [
-      { id: 4, text: "南京" },
-      { id: 5, text: "苏州" },
-    ],
-  },
-])
+const itemsWithDisabled: TreeSelectItem[] = [
+  { text: "浙江", children: [{ id: 1, text: "杭州" }, { id: 2, text: "温州" }, { id: 3, text: "宁波", disabled: true }] },
+  { text: "江苏", children: [{ id: 4, text: "南京" }, { id: 5, text: "苏州" }] },
+  { text: "广东", disabled: true, children: [{ id: 6, text: "广州" }, { id: 7, text: "深圳" }] },
+]
 
-// 带禁用分类的数据
-const itemsWithDisabled = ref<TreeSelectItem[]>([
-  {
-    text: "浙江",
-    children: [
-      { id: 1, text: "杭州" },
-      { id: 2, text: "温州" },
-      { id: 3, text: "宁波", disabled: true },
-    ],
-  },
-  {
-    text: "江苏",
-    children: [
-      { id: 4, text: "南京" },
-      { id: 5, text: "苏州" },
-    ],
-  },
-  {
-    text: "广东",
-    disabled: true,
-    children: [
-      { id: 6, text: "广州" },
-      { id: 7, text: "深圳" },
-    ],
-  },
-])
+const productItems: TreeSelectItem[] = [
+  { text: "水果", children: [{ id: "apple", text: "苹果" }, { id: "banana", text: "香蕉" }, { id: "orange", text: "橙子" }, { id: "grape", text: "葡萄" }] },
+  { text: "蔬菜", children: [{ id: "tomato", text: "番茄" }, { id: "potato", text: "土豆" }, { id: "carrot", text: "胡萝卜" }] },
+  { text: "肉类", children: [{ id: "pork", text: "猪肉" }, { id: "beef", text: "牛肉" }, { id: "chicken", text: "鸡肉" }] },
+  { text: "海鲜", children: [{ id: "fish", text: "鱼" }, { id: "shrimp", text: "虾" }, { id: "crab", text: "蟹", disabled: true }] },
+]
 
-// 商品分类数据
-const productItems = ref<TreeSelectItem[]>([
-  {
-    text: "水果",
-    children: [
-      { id: "apple", text: "苹果" },
-      { id: "banana", text: "香蕉" },
-      { id: "orange", text: "橙子" },
-      { id: "grape", text: "葡萄" },
-    ],
-  },
-  {
-    text: "蔬菜",
-    children: [
-      { id: "tomato", text: "番茄" },
-      { id: "potato", text: "土豆" },
-      { id: "carrot", text: "胡萝卜" },
-    ],
-  },
-  {
-    text: "肉类",
-    children: [
-      { id: "pork", text: "猪肉" },
-      { id: "beef", text: "牛肉" },
-      { id: "chicken", text: "鸡肉" },
-    ],
-  },
-  {
-    text: "海鲜",
-    children: [
-      { id: "fish", text: "鱼" },
-      { id: "shrimp", text: "虾" },
-      { id: "crab", text: "蟹", disabled: true },
-    ],
-  },
-])
+const navIndex1 = ref(0)
+const activeId1 = ref<number>(1)
 
-// 基础用法 - 单选模式
-const mainActiveIndex1 = ref(0)
-const activeId1 = ref<number | string>(1)
+const navIndex2 = ref(0)
+const activeIds2 = ref<number[]>([1, 2])
 
-// 多选模式
-const mainActiveIndex2 = ref(0)
-const activeIds2 = ref<(number | string)[]>([1, 2])
+const navIndex3 = ref(0)
+const activeIds3 = ref<number[]>([])
+const maxLog = ref("")
+function onMaxReached(max: number) {
+  maxLog.value = `已达上限 ${max}`
+  setTimeout(() => (maxLog.value = ""), 1500)
+}
 
-// 自定义高度
-const mainActiveIndex3a = ref(0)
-const activeId3a = ref<number | string>(1)
-const mainActiveIndex3b = ref(0)
-const activeId3b = ref<number | string>(1)
+const navIndex4 = ref(0)
+const activeId4 = ref<number>(1)
 
-// 禁用选项
-const mainActiveIndex4 = ref(0)
-const activeId4 = ref<number | string>(1)
+const heightPresets = ["400rpx", "600rpx", "800rpx"]
+const heightDemo = ref("600rpx")
+const navIndex5 = ref(0)
+const activeId5 = ref<number>(1)
 
-// 最大选择数
-const mainActiveIndex5 = ref(0)
-const activeIds5 = ref<(number | string)[]>([1])
+const navWidthPresets = ["160rpx", "200rpx", "280rpx"]
+const navWidthDemo = ref("200rpx")
+const navIndex6 = ref(0)
+const activeId6 = ref<number>(1)
 
-// 自定义内容
-const mainActiveIndex6 = ref(0)
-const currentNavItem = computed(() => items.value[mainActiveIndex6.value])
+const colorPresets = ["primary", "success", "warning", "danger"]
+const colorDemo = ref("primary")
+const navIndex7 = ref(0)
+const activeId7 = ref<number>(1)
 
-// 事件处理
-const mainActiveIndex7 = ref(0)
-const activeId7 = ref<number | string>(1)
-const eventLog = ref("点击左侧导航或右侧选项查看事件")
+const iconPresets = ["check", "checked", "success"]
+const iconDemo = ref("check")
+const navIndex8 = ref(0)
+const activeIds8 = ref<number[]>([1, 2])
 
+const navIndex9 = ref(0)
+
+const navIndex10 = ref(0)
+const activeId10 = ref<number>(1)
+const eventLog = ref("等待事件...")
 function onClickNav(index: number) {
-  eventLog.value = `点击导航，index: ${index}`
-  toast.text(`切换到 ${items.value[index]?.text}`)
+  eventLog.value = `[click-nav] index=${index}`
 }
-
 function onClickItem(item: TreeSelectChild) {
-  eventLog.value = `点击选项，id: ${item.id}, text: ${item.text}`
-  toast.text(`选择了 ${item.text}`)
+  eventLog.value = `[click-item] id=${item.id} text=${item.text}`
 }
 
-// 综合示例
-const mainActiveIndex8 = ref(0)
-const activeIds8 = ref<(number | string)[]>(["apple", "banana"])
-
+const navIndex11 = ref(0)
+const activeIds11 = ref<(number | string)[]>(["apple", "banana"])
 const selectedProducts = computed(() => {
-  const allChildren = productItems.value.flatMap((item) => item.children)
-  return activeIds8.value
-    .map((id) => {
-      const child = allChildren.find((c) => c.id === id)
-      return child?.text || ""
-    })
-    .filter(Boolean)
+  const all = productItems.flatMap((g) => g.children)
+  return activeIds11.value.map((id) => all.find((c) => c.id === id)?.text).filter(Boolean) as string[]
 })
 </script>
 
 <style lang="scss" scoped>
-.demo-text {
+.event-log {
   color: var(--ui-color-text-secondary);
-  font-size: 24rpx;
+  padding: var(--ui-spacing-md);
+  font-size: var(--ui-font-size-xs);
+  background: var(--ui-color-background-section);
+  font-family: var(--ui-font-family-mono);
+  border-radius: var(--ui-radius-md);
 }
 
-.tree-select-wrap {
+.ts-wrap {
   width: 100%;
   overflow: hidden;
-  border-radius: 12rpx;
-
-  &--small {
-    height: 400rpx;
-  }
+  border-radius: var(--ui-radius-md);
 
   &--large {
     height: 500rpx;
@@ -262,8 +233,8 @@ const selectedProducts = computed(() => {
   &__title {
     color: var(--ui-color-text);
     display: block;
-    font-size: 32rpx;
-    font-weight: 600;
+    font-size: var(--ui-font-size-md);
+    font-weight: var(--ui-font-weight-bold);
     margin-bottom: var(--ui-spacing-md);
   }
 
@@ -278,7 +249,7 @@ const selectedProducts = computed(() => {
     color: var(--ui-color-text-secondary);
     display: flex;
     padding: var(--ui-spacing-sm) 0;
-    font-size: 28rpx;
+    font-size: var(--ui-font-size-sm);
     align-items: center;
   }
 }

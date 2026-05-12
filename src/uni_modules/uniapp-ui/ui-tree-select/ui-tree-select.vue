@@ -1,5 +1,5 @@
 <template>
-  <view class="ui-tree-select" :class="[customClass]" :style="[style]">
+  <view class="ui-tree-select" :class="[customClass]" :style="[rootStyle]">
     <!-- 左侧分类导航 -->
     <scroll-view class="ui-tree-select__nav" scroll-y :scroll-into-view="scrollIntoView">
       <view v-for="(item, index) in items" :id="`nav-item-${index}`" :key="index" class="ui-tree-select__nav-item" :class="[navItemClass(index)]" @click="onClickNav(index)">
@@ -15,7 +15,7 @@
         <view v-for="child in currentChildren" :key="child.id" class="ui-tree-select__item" :class="[itemClass(child)]" @click="onClickItem(child)">
           <slot name="item" :item="child" :active="isItemActive(child)">
             <text class="ui-tree-select__item-text">{{ child.text }}</text>
-            <ui-icon v-if="isItemActive(child)" class="ui-tree-select__item-icon" :name="selectedIcon" size="32rpx" />
+            <ui-icon v-if="isItemActive(child)" class="ui-tree-select__item-icon" :name="selectedIcon" size="32rpx" :color="activeColor || 'var(--ui-tree-select-active-color)'" />
           </slot>
         </view>
       </slot>
@@ -26,127 +26,52 @@
 <script setup lang="ts">
 import type { CSSProperties } from "vue"
 import type { ActiveIdType, TreeSelectChild } from "./index"
-import { useUnit, useStyle } from "../hooks"
 import { ref, watch, computed } from "vue"
+import { useUnit, useColor, useStyle } from "../hooks"
 import { treeSelectEmits, treeSelectProps } from "./index"
 
-// 定义组件名称
 defineOptions({ name: "ui-tree-select" })
 
-// 定义 props 和 emits
 const props = defineProps(treeSelectProps)
 const emits = defineEmits(treeSelectEmits)
 
-// 滚动到指定导航项
+// 滚动定位 id
 const scrollIntoView = ref("")
 
-// 当前选中的主索引
+// 当前主索引（容错 NaN）
 const currentMainIndex = computed(() => {
   const index = Number(props.mainActiveIndex)
   return Number.isNaN(index) ? 0 : index
 })
-
-// 当前分类下的子项列表
-const currentChildren = computed(() => {
-  const item = props.items[currentMainIndex.value]
-  return item?.children || []
-})
-
-// 将 activeId 转换为数组格式（统一处理单选和多选）
+// 当前分类下的子项
+const currentChildren = computed(() => props.items[currentMainIndex.value]?.children || [])
+// activeId 归一化为数组
 const activeIds = computed<(number | string)[]>(() => {
   const id = props.activeId
   if (id === undefined || id === null) return []
-  if (Array.isArray(id)) return id
-  return [id]
+  return Array.isArray(id) ? id : [id]
 })
-
-// 是否为多选模式
+// 多选模式：activeId 为数组
 const isMultiple = computed(() => Array.isArray(props.activeId))
-
-// 最大选择数量
+// 多选上限（0 表示无上限）
 const maxCount = computed(() => {
   const max = Number(props.max)
   return Number.isNaN(max) || max <= 0 ? Infinity : max
 })
 
-// 根节点样式
-const style = computed(() => {
-  const style: CSSProperties = {}
-  style.height = useUnit(props.height)
-  return useStyle({ ...style, ...useStyle(props.customStyle) })
+// 根节点样式（CSS var 注入）
+const rootStyle = computed(() => {
+  const vars: CSSProperties = {}
+  if (props.height !== undefined) vars.height = useUnit(props.height)
+  if (props.navWidth !== undefined) vars["--ui-tree-select-nav-width" as keyof CSSProperties] = useUnit(props.navWidth) as never
+  if (props.navBg) vars["--ui-tree-select-nav-bg" as keyof CSSProperties] = useColor(props.navBg) as never
+  if (props.activeColor) vars["--ui-tree-select-active-color" as keyof CSSProperties] = useColor(props.activeColor) as never
+  if (props.indicatorWidth !== undefined) vars["--ui-tree-select-indicator-width" as keyof CSSProperties] = useUnit(props.indicatorWidth) as never
+  if (props.indicatorHeight !== undefined) vars["--ui-tree-select-indicator-height" as keyof CSSProperties] = useUnit(props.indicatorHeight) as never
+  if (props.itemFontSize !== undefined) vars["--ui-tree-select-item-font-size" as keyof CSSProperties] = useUnit(props.itemFontSize) as never
+  return useStyle({ ...vars, ...useStyle(props.customStyle) } as CSSProperties)
 })
 
-// 判断导航项是否激活
-function isNavActive(index: number): boolean {
-  return currentMainIndex.value === index
-}
-
-// 导航项动态类名
-function navItemClass(index: number): string[] {
-  const classList: string[] = []
-  const item = props.items[index]
-  if (isNavActive(index)) classList.push("ui-tree-select__nav-item--active")
-  if (item?.disabled) classList.push("ui-tree-select__nav-item--disabled")
-  return classList
-}
-
-// 判断子项是否激活
-function isItemActive(child: TreeSelectChild): boolean {
-  return activeIds.value.includes(child.id)
-}
-
-// 子项动态类名
-function itemClass(child: TreeSelectChild): string[] {
-  const classList: string[] = []
-  if (isItemActive(child)) classList.push("ui-tree-select__item--active")
-  if (child.disabled) classList.push("ui-tree-select__item--disabled")
-  return classList
-}
-
-// 点击左侧导航
-function onClickNav(index: number) {
-  const item = props.items[index]
-  if (item?.disabled) return
-
-  emits("update:mainActiveIndex", index)
-  emits("clickNav", index)
-
-  // 滚动到选中项
-  scrollIntoView.value = `nav-item-${index}`
-}
-
-// 点击右侧选项
-function onClickItem(child: TreeSelectChild) {
-  if (child.disabled) return
-
-  emits("clickItem", child)
-
-  let newActiveId: ActiveIdType
-
-  if (isMultiple.value) {
-    // 多选模式
-    const ids = [...activeIds.value]
-    const index = ids.indexOf(child.id)
-
-    if (index > -1) {
-      // 已选中，取消选择
-      ids.splice(index, 1)
-    } else {
-      // 未选中，添加选择（检查最大数量限制）
-      if (ids.length < maxCount.value) {
-        ids.push(child.id)
-      }
-    }
-    newActiveId = ids
-  } else {
-    // 单选模式
-    newActiveId = child.id
-  }
-
-  emits("update:activeId", newActiveId)
-}
-
-// 监听 mainActiveIndex 变化，滚动到对应导航项
 watch(
   () => props.mainActiveIndex,
   (index) => {
@@ -154,59 +79,129 @@ watch(
   },
   { immediate: true },
 )
+
+// nav 项激活
+function isNavActive(index: number): boolean {
+  return currentMainIndex.value === index
+}
+
+// nav 项类名
+function navItemClass(index: number): string[] {
+  const list: string[] = []
+  const item = props.items[index]
+  if (isNavActive(index)) list.push("ui-tree-select__nav-item--active")
+  if (item?.disabled) list.push("ui-tree-select__nav-item--disabled")
+  return list
+}
+
+// 子项激活
+function isItemActive(child: TreeSelectChild): boolean {
+  return activeIds.value.includes(child.id)
+}
+
+// 子项类名
+function itemClass(child: TreeSelectChild): string[] {
+  const list: string[] = []
+  if (isItemActive(child)) list.push("ui-tree-select__item--active")
+  if (child.disabled) list.push("ui-tree-select__item--disabled")
+  return list
+}
+
+// 点击 nav
+function onClickNav(index: number) {
+  const item = props.items[index]
+  if (item?.disabled) return
+  emits("update:mainActiveIndex", index)
+  emits("clickNav", index)
+  scrollIntoView.value = `nav-item-${index}`
+}
+
+// 点击子项
+function onClickItem(child: TreeSelectChild) {
+  if (child.disabled) return
+  emits("clickItem", child)
+  let newActiveId: ActiveIdType
+  if (isMultiple.value) {
+    const ids = [...activeIds.value]
+    const idx = ids.indexOf(child.id)
+    if (idx > -1) {
+      ids.splice(idx, 1)
+    } else if (ids.length < maxCount.value) {
+      ids.push(child.id)
+    } else {
+      emits("maxReached", maxCount.value === Infinity ? 0 : maxCount.value)
+      return
+    }
+    newActiveId = ids
+  } else {
+    newActiveId = child.id
+  }
+  emits("update:activeId", newActiveId)
+}
 </script>
 
 <script lang="ts">
 export default {
   name: "ui-tree-select",
-  options: { virtualHost: true, multipleSlots: true, styleIsolation: "shared" },
+  options: {
+    // #ifndef MP-TOUTIAO
+    virtualHost: true,
+    // #endif
+    multipleSlots: true,
+    styleIsolation: "shared",
+  },
 }
 </script>
 
 <style lang="scss">
 .ui-tree-select {
+  --ui-tree-select-nav-bg: var(--ui-color-background-page);
+  --ui-tree-select-nav-width: 200rpx;
+  --ui-tree-select-content-bg: var(--ui-color-background);
+  --ui-tree-select-active-color: var(--ui-color-primary);
+  --ui-tree-select-nav-font-size: var(--ui-font-size-md);
+  --ui-tree-select-item-font-size: var(--ui-font-size-md);
+  --ui-tree-select-indicator-width: 6rpx;
+  --ui-tree-select-indicator-height: 40rpx;
+
   display: flex;
   position: relative;
+  background: var(--ui-tree-select-content-bg);
   flex-direction: row;
-  background-color: var(--ui-color-background);
 
-  // 左侧导航
   &__nav {
-    width: 200rpx;
+    width: var(--ui-tree-select-nav-width);
     height: 100%;
     overflow: hidden;
+    background: var(--ui-tree-select-nav-bg);
     flex-shrink: 0;
-    background-color: var(--ui-color-background-page);
   }
 
   &__nav-item {
     display: flex;
     padding: var(--ui-spacing-md) var(--ui-spacing-lg);
     position: relative;
+    background: var(--ui-tree-select-nav-bg);
     align-items: center;
     justify-content: flex-start;
-    background-color: var(--ui-color-background-page);
 
-    // 激活状态
     &--active {
+      background: var(--ui-tree-select-content-bg);
       font-weight: var(--ui-font-weight-bold);
-      background-color: var(--ui-color-background);
 
-      // 左侧激活指示条
       &::before {
         top: 50%;
         left: 0;
-        width: 6rpx;
-        height: 40rpx;
+        width: var(--ui-tree-select-indicator-width);
+        height: var(--ui-tree-select-indicator-height);
         content: "";
         position: absolute;
         transform: translateY(-50%);
+        background: var(--ui-tree-select-active-color);
         border-radius: var(--ui-radius-round);
-        background-color: var(--ui-color-primary);
       }
     }
 
-    // 禁用状态
     &--disabled {
       cursor: not-allowed;
       opacity: var(--ui-opacity-disabled);
@@ -217,17 +212,16 @@ export default {
   &__nav-item-text {
     flex: 1;
     overflow: hidden;
-    font-size: var(--ui-font-size-md);
+    font-size: var(--ui-tree-select-nav-font-size);
     white-space: nowrap;
     text-overflow: ellipsis;
   }
 
-  // 右侧内容区域
   &__content {
     flex: 1;
     height: 100%;
     overflow: hidden;
-    background-color: var(--ui-color-background);
+    background: var(--ui-tree-select-content-bg);
   }
 
   &__item {
@@ -236,12 +230,10 @@ export default {
     align-items: center;
     justify-content: space-between;
 
-    // 激活状态
     &--active {
-      color: var(--ui-color-primary);
+      color: var(--ui-tree-select-active-color);
     }
 
-    // 禁用状态
     &--disabled {
       cursor: not-allowed;
       opacity: var(--ui-opacity-disabled);
@@ -252,13 +244,13 @@ export default {
   &__item-text {
     flex: 1;
     overflow: hidden;
-    font-size: var(--ui-font-size-md);
+    font-size: var(--ui-tree-select-item-font-size);
     white-space: nowrap;
     text-overflow: ellipsis;
   }
 
   &__item-icon {
-    color: var(--ui-color-primary);
+    color: var(--ui-tree-select-active-color);
     flex-shrink: 0;
     margin-left: var(--ui-spacing-sm);
   }
