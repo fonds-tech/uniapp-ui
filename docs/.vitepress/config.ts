@@ -19,6 +19,7 @@ export default defineConfig({
 
   // 主题配置
   themeConfig: {
+    logo: "/logo.svg",
     // 顶部导航
     nav: [
       { text: "指南", link: "/guide/" },

@@ -1,11 +1,124 @@
+/* Brand palette aligned with hero gradient (#667eea → #764ba2 → #f093fb) */
+:root {
+  --vp-c-brand-1: #7c5ce0;
+  --vp-c-brand-2: #8b6cef;
+  --vp-c-brand-3: #9d7ffa;
+  --vp-c-brand-soft: rgba(124, 92, 224, 0.14);
+  --vp-c-brand-mute: rgba(124, 92, 224, 0.08);
+
+  --vp-button-brand-border: transparent;
+  --vp-button-brand-text: #ffffff;
+  --vp-button-brand-bg: var(--vp-c-brand-1);
+  --vp-button-brand-hover-border: transparent;
+  --vp-button-brand-hover-text: #ffffff;
+  --vp-button-brand-hover-bg: var(--vp-c-brand-2);
+  --vp-button-brand-active-border: transparent;
+  --vp-button-brand-active-text: #ffffff;
+  --vp-button-brand-active-bg: var(--vp-c-brand-3);
+}
+
+.dark {
+  --vp-c-brand-1: #a78bfa;
+  --vp-c-brand-2: #b8a0fb;
+  --vp-c-brand-3: #c084fc;
+  --vp-c-brand-soft: rgba(167, 139, 250, 0.18);
+  --vp-c-brand-mute: rgba(167, 139, 250, 0.1);
+}
+
+/* Doc layout */
 .VPDoc .aside {
   padding-left: 0;
 }
-
 .VPDoc .container > .content {
   padding: 0;
 }
-
 .VPDoc .content-container {
   margin: 0;
+}
+
+/* Component overview grid */
+.comp-group {
+  margin: 32px 0 48px;
+}
+.comp-group__head {
+  margin: 0 0 16px;
+}
+.comp-group__title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--vp-c-text-1);
+}
+.comp-group__title::before {
+  content: "";
+  width: 4px;
+  height: 18px;
+  border-radius: 2px;
+  background: linear-gradient(180deg, #667eea, #764ba2, #f093fb);
+}
+.comp-group__desc {
+  margin: 6px 0 0;
+  color: var(--vp-c-text-2);
+  font-size: 14px;
+}
+
+.comp-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 14px;
+}
+
+.comp-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px;
+  border-radius: 12px;
+  border: 1px solid var(--vp-c-divider);
+  background: var(--vp-c-bg-soft);
+  text-decoration: none !important;
+  transition: transform 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease;
+}
+.comp-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--vp-c-brand-1);
+  box-shadow: 0 8px 24px -12px var(--vp-c-brand-soft);
+}
+
+.comp-card__icon {
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: -0.5px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 60%, #f093fb 100%);
+}
+.comp-card__body {
+  flex: 1;
+  min-width: 0;
+}
+.comp-card__name {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--vp-c-text-1);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.comp-card__desc {
+  margin-top: 2px;
+  font-size: 12px;
+  color: var(--vp-c-text-2);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
