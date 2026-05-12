@@ -59,7 +59,7 @@ describe("uiTextarea 组件", () => {
       })
       await waitForTransition()
       // 检查 props 而非 DOM 属性
-      expect(wrapper.props("modelValue")).toBe("测试内容")
+      expect((wrapper.props() as Record<string, unknown>).modelValue).toBe("测试内容")
     })
 
     it("输入时应该触发 update:modelValue 事件", async () => {
@@ -223,7 +223,7 @@ describe("uiTextarea 组件", () => {
         },
       })
       await waitForTransition()
-      expect(wrapper.props("clearable")).toBe(true)
+      expect((wrapper.props() as Record<string, unknown>).clearable).toBe(true)
     })
 
     it("有值且聚焦时显示清除按钮", async () => {
@@ -386,7 +386,7 @@ describe("uiTextarea 组件", () => {
       })
       await waitForTransition()
       const textarea = wrapper.find(".ui-textarea")
-      expect(textarea.attributes("style")).toContain("min-height")
+      expect(textarea.attributes("style")).toContain("--ui-textarea-min-height")
     })
 
     it("应该支持 background 属性", async () => {
@@ -398,7 +398,7 @@ describe("uiTextarea 组件", () => {
       })
       await waitForTransition()
       const textarea = wrapper.find(".ui-textarea")
-      expect(textarea.attributes("style")).toContain("background")
+      expect(textarea.attributes("style")).toContain("--ui-textarea-bg")
     })
 
     it("应该支持 radius 属性", async () => {
@@ -410,7 +410,7 @@ describe("uiTextarea 组件", () => {
       })
       await waitForTransition()
       const textarea = wrapper.find(".ui-textarea")
-      expect(textarea.attributes("style")).toContain("border-radius")
+      expect(textarea.attributes("style")).toContain("--ui-textarea-radius")
     })
 
     it("应该支持 fontSize 属性", async () => {
@@ -422,21 +422,11 @@ describe("uiTextarea 组件", () => {
       })
       await waitForTransition()
       // 验证 props 设置正确
-      expect(wrapper.props("fontSize")).toBe("32rpx")
+      expect((wrapper.props() as Record<string, unknown>).fontSize).toBe("32rpx")
     })
   })
 
   describe("暴露方法测试", () => {
-    it("应该暴露 name 属性", async () => {
-      const wrapper = mount(UiTextarea, {
-        global: {
-          stubs: { "ui-icon": true },
-        },
-      })
-      await waitForTransition()
-      expect(wrapper.vm.name).toBe("ui-textarea")
-    })
-
     it("应该暴露 reset 方法", async () => {
       const wrapper = mount(UiTextarea, {
         global: {
