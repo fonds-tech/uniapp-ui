@@ -188,7 +188,7 @@ export default {
   --ui-collapse-item-border-color: var(--ui-color-border-light);
   --ui-collapse-item-border-width: var(--ui-border-width);
   --ui-collapse-item-label-weight: normal;
-  --ui-collapse-item-title-weight: var(--ui-font-weight-medium);
+  --ui-collapse-item-title-weight: var(--ui-font-weight-normal);
   --ui-collapse-item-value-weight: normal;
 
   position: relative;

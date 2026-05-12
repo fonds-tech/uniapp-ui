@@ -429,7 +429,7 @@ export default {
 
       .ui-date-range-picker__tab-text {
         color: var(--ui-color-primary);
-        font-weight: var(--ui-font-weight-medium);
+        font-weight: var(--ui-font-weight-normal);
       }
     }
 

@@ -1,59 +1,100 @@
 <template>
-  <view class="min-h-screen bg-[#F6F7F9] p-[32rpx]">
-    <view class="mb-[32rpx]">
-      <text class="text-[32rpx] font-bold text-slate-800 mb-[24rpx] block">问题类型</text>
-      <view class="flex flex-wrap gap-[24rpx]">
-        <view class="px-[32rpx] py-[16rpx] rounded-[32rpx] bg-indigo-50 border border-indigo-200 text-[26rpx] text-indigo-600 font-medium">功能异常</view>
-        <view class="px-[32rpx] py-[16rpx] rounded-[32rpx] bg-white border border-slate-200 text-[26rpx] text-slate-600">体验优化</view>
-        <view class="px-[32rpx] py-[16rpx] rounded-[32rpx] bg-white border border-slate-200 text-[26rpx] text-slate-600">新功能建议</view>
-        <view class="px-[32rpx] py-[16rpx] rounded-[32rpx] bg-white border border-slate-200 text-[26rpx] text-slate-600">其他</view>
-      </view>
-    </view>
+  <view class="page">
+    <ui-form ref="formRef" :model="form" :rules="rules" label-position="top">
+      <ui-form-item label="问题类型" prop="type">
+        <ui-radio-group v-model="form.type" direction="horizontal">
+          <ui-radio v-for="t in types" :key="t" :name="t" shape="button">{{ t }}</ui-radio>
+        </ui-radio-group>
+      </ui-form-item>
 
-    <view class="mb-[32rpx]">
-      <text class="text-[32rpx] font-bold text-slate-800 mb-[24rpx] block">问题描述</text>
-      <view class="bg-white rounded-[24rpx] p-[24rpx] shadow-sm">
-        <textarea
-          class="w-full h-[240rpx] text-[30rpx] text-slate-800 leading-relaxed"
-          placeholder="请详细描述您遇到的问题或建议，以便我们更好地为您解决..."
-          placeholder-style="color: var(--ui-color-text-placeholder)"
-          maxlength="500"
-        />
-        <view class="text-right text-[24rpx] text-slate-400 mt-[16rpx]">0/500</view>
-      </view>
-    </view>
+      <ui-form-item label="问题描述" prop="content">
+        <ui-textarea v-model="form.content" placeholder="请详细描述您遇到的问题或建议，以便我们更好地为您解决..." :maxlength="500" show-count :min-height="240" background="background-section" radius="16rpx" />
+      </ui-form-item>
 
-    <view class="mb-[48rpx]">
-      <text class="text-[32rpx] font-bold text-slate-800 mb-[24rpx] block">图片上传 <text class="text-[24rpx] font-normal text-slate-400">(选填，最多4张)</text></text>
-      <view class="flex flex-wrap gap-[24rpx]">
-        <view class="h-[160rpx] w-[160rpx] bg-slate-100 rounded-[16rpx] flex flex-col items-center justify-center text-slate-400 active:bg-slate-200">
-          <view class="i-lucide-camera text-[48rpx] mb-[8rpx]" />
-          <text class="text-[24rpx]">上传图片</text>
+      <ui-form-item label="图片上传">
+        <ui-upload v-model="form.images" multiple :max-count="4" />
+      </ui-form-item>
+
+      <ui-form-item label="联系方式" prop="contact">
+        <ui-input v-model="form.contact" placeholder="手机号 / 邮箱 / 微信号 (选填)" prefix-icon="phone" background="background-section" radius="16rpx" clearable />
+      </ui-form-item>
+
+      <ui-form-item label="紧急程度">
+        <view class="urgency">
+          <text class="urgency__label">不紧急</text>
+          <ui-slider v-model="form.urgency" :min="0" :max="100" :step="25" :custom-style="{ flex: 1 }" />
+          <text class="urgency__label">非常紧急</text>
         </view>
-      </view>
-    </view>
+      </ui-form-item>
+    </ui-form>
 
-    <view class="mb-[32rpx]">
-      <text class="text-[32rpx] font-bold text-slate-800 mb-[24rpx] block">联系方式 <text class="text-[24rpx] font-normal text-slate-400">(选填)</text></text>
-      <view class="bg-white rounded-[24rpx] px-[32rpx] py-[28rpx] shadow-sm">
-        <input class="h-[48rpx] w-full text-[30rpx] text-slate-900" placeholder="请输入手机号/邮箱/微信号" placeholder-style="color: var(--ui-color-text-placeholder)" />
-      </view>
-    </view>
-
-    <view class="mt-[64rpx]">
-      <button
-        class="h-[96rpx] w-full rounded-[48rpx] bg-indigo-600 text-[32rpx] font-bold text-white flex items-center justify-center active:opacity-90 shadow-lg shadow-indigo-200"
-      >
-        提交反馈
-      </button>
+    <view class="actions">
+      <ui-button block type="primary" size="large" radius="48rpx" :loading="submitting" @click="onSubmit">提交反馈</ui-button>
     </view>
   </view>
 </template>
 
-<route lang="json5">
-{
-  style: {
-    navigationBarTitleText: "意见反馈",
-  },
+<script setup lang="ts">
+import type { FormInstance } from "@/uni_modules/uniapp-ui/ui-form"
+import { useToast } from "@/uni_modules/uniapp-ui"
+import { ref, reactive } from "vue"
+
+definePage({
+  style: { navigationBarTitleText: "意见反馈" },
+})
+
+const toast = useToast()
+const formRef = ref<FormInstance>()
+const submitting = ref(false)
+
+const types = ["功能异常", "体验优化", "新功能建议", "其他"]
+
+const form = reactive({
+  type: "功能异常",
+  content: "",
+  images: [] as string[],
+  contact: "",
+  urgency: 25,
+})
+
+const rules = {
+  type: [{ required: true, message: "请选择问题类型" }],
+  content: [{ required: true, message: "请描述问题" }],
 }
-</route>
+
+function onSubmit() {
+  formRef.value?.validate((valid) => {
+    if (!valid) return
+    submitting.value = true
+    setTimeout(() => {
+      submitting.value = false
+      toast.success("已提交，感谢反馈")
+    }, 600)
+  })
+}
+</script>
+
+<style lang="scss" scoped>
+.page {
+  padding: var(--ui-spacing-lg);
+  background: var(--ui-color-background-page);
+  min-height: 100vh;
+}
+
+.urgency {
+  gap: var(--ui-spacing-md);
+  flex: 1;
+  display: flex;
+  align-items: center;
+
+  &__label {
+    color: var(--ui-color-text-secondary);
+    font-size: var(--ui-font-size-xs);
+    white-space: nowrap;
+  }
+}
+
+.actions {
+  margin-top: var(--ui-spacing-xl);
+}
+</style>

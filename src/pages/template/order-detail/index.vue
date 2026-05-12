@@ -1,90 +1,245 @@
 <template>
-  <view class="min-h-screen bg-[#F6F7F9] pb-[160rpx]">
-    <!-- 状态栏 -->
-    <view class="bg-indigo-600 px-[40rpx] pt-[40rpx] pb-[80rpx] flex items-center justify-between">
-      <view class="text-white">
-        <text class="block text-[36rpx] font-bold">商家已发货</text>
-        <text class="mt-[8rpx] block text-[26rpx] opacity-80">还剩6天12小时自动确认收货</text>
+  <view class="page">
+    <view class="status">
+      <view>
+        <text class="status__title">商家已发货</text>
+        <text class="status__hint">还剩 <ui-count-down :time="hours6 * 3600 * 1000" format="DD 天 HH 时 mm 分 ss 秒" color="rgba(255,255,255,0.9)" inline /> 自动确认收货</text>
       </view>
-      <view class="i-lucide-truck text-[64rpx]" style="color: rgba(255, 255, 255, 0.8)" />
+      <ui-icon name="cart" size="64rpx" color="rgba(255, 255, 255, 0.8)" />
     </view>
 
-    <view class="px-[24rpx] -mt-[40rpx] space-y-[24rpx]">
-      <!-- 物流 -->
-      <view class="bg-white rounded-[24rpx] p-[32rpx] flex items-start shadow-sm active:bg-slate-50">
-        <view class="h-[64rpx] w-[64rpx] rounded-full bg-indigo-50 flex items-center justify-center mr-[24rpx] flex-none">
-          <view class="i-lucide-map-pin text-[32rpx] text-indigo-500" />
-        </view>
-        <view class="flex-1">
-          <text class="text-[28rpx] text-indigo-500 font-bold leading-relaxed mb-[8rpx] block">已到达 深圳市南山区集散中心，正在分拣中</text>
-          <text class="text-[24rpx] text-slate-400">2024-05-20 14:30:25</text>
-        </view>
-        <view class="i-lucide-chevron-right text-[32rpx] text-slate-300 ml-[16rpx] mt-[8rpx]" />
-      </view>
-
-      <!-- 地址 -->
-      <view class="bg-white rounded-[24rpx] p-[32rpx] flex items-center shadow-sm">
-        <view class="h-[64rpx] w-[64rpx] rounded-full bg-orange-50 flex items-center justify-center mr-[24rpx] flex-none">
-          <view class="i-lucide-user text-[32rpx] text-orange-500" />
-        </view>
-        <view class="flex-1">
-          <view class="flex items-baseline mb-[8rpx]">
-            <text class="text-[30rpx] font-bold text-slate-800 mr-[16rpx]">张三丰</text>
-            <text class="text-[26rpx] text-slate-500">138****8888</text>
-          </view>
-          <text class="text-[26rpx] text-slate-600 leading-snug">广东省深圳市南山区粤海街道科技园南区虚拟大学园R3-A栋</text>
-        </view>
-      </view>
-
-      <!-- 商品 -->
-      <view class="bg-white rounded-[24rpx] p-[24rpx] shadow-sm">
-        <view class="flex items-center mb-[24rpx]">
-          <view class="i-lucide-store text-[32rpx] text-slate-700 mr-[12rpx]" />
-          <text class="text-[28rpx] font-bold text-slate-800">官方旗舰店</text>
-        </view>
-        <view class="flex mb-[24rpx]">
-          <view class="h-[160rpx] w-[160rpx] bg-slate-100 rounded-[12rpx] mr-[24rpx]" />
-          <view class="flex-1 flex flex-col justify-between py-[4rpx]">
-            <view>
-              <text class="line-clamp-2 text-[28rpx] text-slate-800 leading-snug">2024新款智能手表运动手环监测心率血氧防水长续航</text>
+    <view class="content">
+      <view class="card">
+        <ui-cell title="已到达 深圳市南山区集散中心" label="2024-05-20 14:30:25" is-link>
+          <template #icon>
+            <view class="card__icon card__icon--primary">
+              <ui-icon name="location" color="primary" size="32rpx" />
             </view>
-            <view class="flex items-center justify-between">
-              <text class="text-[32rpx] font-bold text-slate-900">¥299.00</text>
-              <text class="text-[26rpx] text-slate-400">x1</text>
+          </template>
+        </ui-cell>
+      </view>
+
+      <view class="card">
+        <ui-cell title="张三丰  138****8888" label="广东省深圳市南山区粤海街道科技园南区虚拟大学园R3-A栋">
+          <template #icon>
+            <view class="card__icon card__icon--warning">
+              <ui-icon name="user-o" color="warning" size="32rpx" />
+            </view>
+          </template>
+        </ui-cell>
+      </view>
+
+      <view class="card card--goods">
+        <view class="card__store">
+          <ui-icon name="shop" size="32rpx" color="text" />
+          <text class="card__store-name">官方旗舰店</text>
+        </view>
+        <view class="card__goods">
+          <ui-image src="https://picsum.photos/200?random=41" width="160rpx" height="160rpx" mode="aspectFill" radius="12rpx" />
+          <view class="card__detail">
+            <ui-text-ellipsis content="2024 新款智能手表运动手环监测心率血氧防水长续航" :rows="2" />
+            <view class="card__price-row">
+              <text class="card__price">¥299.00</text>
+              <text class="card__qty">x1</text>
             </view>
           </view>
         </view>
-        <view class="border-t border-slate-50 pt-[24rpx] space-y-[16rpx]">
-          <view class="flex justify-between">
-            <text class="text-[26rpx] text-slate-500">商品总价</text>
-            <text class="text-[26rpx] text-slate-800">¥299.00</text>
-          </view>
-          <view class="flex justify-between">
-            <text class="text-[26rpx] text-slate-500">运费</text>
-            <text class="text-[26rpx] text-slate-800">¥0.00</text>
-          </view>
-          <view class="flex justify-between items-center pt-[16rpx]">
-            <text class="text-[28rpx] font-bold text-slate-800">实付款</text>
-            <text class="text-[36rpx] font-bold text-rose-500">¥299.00</text>
-          </view>
-        </view>
+        <ui-divider />
+        <view class="card__row"><text class="card__label">商品总价</text><text class="card__value">¥299.00</text></view>
+        <view class="card__row"><text class="card__label">运费</text><text class="card__value">¥0.00</text></view>
+        <view class="card__row card__row--total"><text class="card__pay-label">实付款</text><text class="card__pay">¥299.00</text></view>
+      </view>
+
+      <view class="card">
+        <ui-cell title="物流时间线">
+          <template #value>
+            <ui-icon name="arrow" size="28rpx" color="text-tertiary" />
+          </template>
+        </ui-cell>
+        <ui-timeline>
+          <ui-timeline-item type="success" icon="check" time="2024-05-20 14:32" title="已到达派送站" description="本人签收" />
+          <ui-timeline-item type="primary" time="2024-05-20 09:10" title="派送中" description="快递员配送" />
+          <ui-timeline-item time="2024-05-19 18:45" title="到达集散中心" description="上海闸北区站" />
+          <ui-timeline-item hollow time="2024-05-18 10:00" title="商家已发货" description="顺丰快递" />
+        </ui-timeline>
       </view>
     </view>
 
-    <!-- 底部操作栏 -->
-    <view
-      class="fixed bottom-0 left-0 w-full bg-white px-[32rpx] py-[20rpx] flex items-center justify-end space-x-[24rpx] pb-[calc(20rpx+env(safe-area-inset-bottom))] border-t border-slate-100"
-    >
-      <button class="m-0 h-[72rpx] px-[40rpx] rounded-[36rpx] border border-slate-200 bg-white text-[28rpx] text-slate-600 flex items-center">查看物流</button>
-      <button class="m-0 h-[72rpx] px-[40rpx] rounded-[36rpx] bg-indigo-600 text-[28rpx] text-white flex items-center font-bold shadow-lg shadow-indigo-200">确认收货</button>
+    <view class="footer">
+      <ui-button size="large" plain radius="36rpx" @click="onClickAction('物流')">查看物流</ui-button>
+      <ui-button size="large" type="primary" radius="36rpx" @click="onClickAction('确认')">确认收货</ui-button>
     </view>
   </view>
 </template>
 
-<route lang="json5">
-{
-  style: {
-    navigationBarTitleText: "订单详情",
-  },
+<script setup lang="ts">
+import { useToast } from "@/uni_modules/uniapp-ui"
+
+definePage({
+  style: { navigationBarTitleText: "订单详情" },
+})
+
+const toast = useToast()
+const hours6 = 6 * 24 + 12 // 6 天 12 小时
+
+function onClickAction(name: string) {
+  toast.text(name)
 }
-</route>
+</script>
+
+<style lang="scss" scoped>
+.page {
+  background: var(--ui-color-background-page);
+  min-height: 100vh;
+  padding-bottom: 160rpx;
+}
+
+.status {
+  display: flex;
+  padding: var(--ui-spacing-xl) var(--ui-spacing-lg) var(--ui-spacing-xxl);
+  background: var(--ui-color-primary);
+  align-items: center;
+  justify-content: space-between;
+
+  &__title {
+    color: var(--ui-color-text-inverse);
+    display: block;
+    font-size: var(--ui-font-size-lg);
+    font-weight: var(--ui-font-weight-bold);
+  }
+
+  &__hint {
+    color: rgba(255, 255, 255, 0.8);
+    display: block;
+    font-size: var(--ui-font-size-xs);
+    margin-top: var(--ui-spacing-xs);
+  }
+}
+
+.content {
+  gap: var(--ui-spacing-md);
+  display: flex;
+  padding: 0 var(--ui-spacing-md);
+  position: relative;
+  margin-top: -40rpx;
+  flex-direction: column;
+}
+
+.card {
+  padding: var(--ui-spacing-md) 0;
+  background: var(--ui-color-background);
+  border-radius: var(--ui-radius-lg);
+
+  &--goods {
+    padding: var(--ui-spacing-md);
+  }
+
+  &__icon {
+    width: 64rpx;
+    height: 64rpx;
+    display: flex;
+    align-items: center;
+    margin-right: var(--ui-spacing-md);
+    border-radius: 50%;
+    justify-content: center;
+
+    &--primary {
+      background: var(--ui-color-primary-light);
+    }
+
+    &--warning {
+      background: var(--ui-color-warning-light);
+    }
+  }
+
+  &__store {
+    gap: var(--ui-spacing-xs);
+    display: flex;
+    align-items: center;
+    margin-bottom: var(--ui-spacing-md);
+  }
+
+  &__store-name {
+    color: var(--ui-color-text);
+    font-size: var(--ui-font-size-sm);
+    font-weight: var(--ui-font-weight-bold);
+  }
+
+  &__goods {
+    gap: var(--ui-spacing-md);
+    display: flex;
+    margin-bottom: var(--ui-spacing-md);
+  }
+
+  &__detail {
+    flex: 1;
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  &__price-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  &__price {
+    color: var(--ui-color-text);
+    font-size: var(--ui-font-size-md);
+    font-weight: var(--ui-font-weight-bold);
+  }
+
+  &__qty {
+    color: var(--ui-color-text-tertiary);
+    font-size: var(--ui-font-size-xs);
+  }
+
+  &__row {
+    display: flex;
+    margin-top: var(--ui-spacing-xs);
+    justify-content: space-between;
+
+    &--total {
+      align-items: center;
+      padding-top: var(--ui-spacing-sm);
+    }
+  }
+
+  &__label {
+    color: var(--ui-color-text-secondary);
+    font-size: var(--ui-font-size-xs);
+  }
+
+  &__value {
+    color: var(--ui-color-text);
+    font-size: var(--ui-font-size-xs);
+  }
+
+  &__pay-label {
+    color: var(--ui-color-text);
+    font-size: var(--ui-font-size-sm);
+    font-weight: var(--ui-font-weight-bold);
+  }
+
+  &__pay {
+    color: var(--ui-color-danger);
+    font-size: var(--ui-font-size-lg);
+    font-weight: var(--ui-font-weight-bold);
+  }
+}
+
+.footer {
+  gap: var(--ui-spacing-md);
+  left: 0;
+  width: 100%;
+  bottom: 0;
+  display: flex;
+  padding: var(--ui-spacing-md) var(--ui-spacing-md) calc(var(--ui-spacing-md) + env(safe-area-inset-bottom));
+  position: fixed;
+  background: var(--ui-color-background);
+  border-top: 1rpx solid var(--ui-color-border-light);
+  justify-content: flex-end;
+}
+</style>

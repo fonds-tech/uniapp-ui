@@ -117,7 +117,7 @@ export default {
   &__excess-text {
     color: inherit;
     font-size: var(--ui-font-size-xs);
-    font-weight: var(--ui-font-weight-medium);
+    font-weight: var(--ui-font-weight-normal);
   }
 }
 </style>

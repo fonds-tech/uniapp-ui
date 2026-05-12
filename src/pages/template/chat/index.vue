@@ -1,59 +1,219 @@
 <template>
-  <view class="flex h-screen flex-col bg-[#F6F7F9]">
-    <scroll-view scroll-y class="flex-1 px-[24rpx] py-[32rpx]">
-      <view class="space-y-[40rpx] pb-[40rpx]">
-        <view class="flex justify-center">
-          <text class="rounded-[8rpx] bg-slate-200 px-[16rpx] py-[4rpx] text-[22rpx] text-slate-500">昨天 14:30</text>
-        </view>
-
-        <!-- 对方消息 -->
-        <view class="flex items-start">
-          <view class="h-[80rpx] w-[80rpx] rounded-[12rpx] bg-indigo-100 flex-none mr-[20rpx]" />
-          <view class="bg-white p-[24rpx] rounded-[20rpx] rounded-tl-[4rpx] max-w-[70%] shadow-sm">
-            <text class="text-[30rpx] text-slate-800 leading-relaxed">你好，请问这个商品什么时候发货呢？</text>
+  <view class="page">
+    <scroll-view scroll-y class="scroll" :scroll-into-view="scrollAnchor">
+      <view class="messages">
+        <view v-for="(m, idx) in messages" :id="`msg-${idx}`" :key="idx">
+          <view v-if="m.type === 'time'" class="time">
+            <text class="time__text">{{ m.text }}</text>
           </view>
-        </view>
-
-        <!-- 我方消息 -->
-        <view class="flex items-start justify-end">
-          <view class="bg-indigo-500 p-[24rpx] rounded-[20rpx] rounded-tr-[4rpx] max-w-[70%] shadow-sm shadow-indigo-200 mr-[20rpx]">
-            <text class="text-[30rpx] text-white leading-relaxed">您好，我们一般在24小时内发货，请您耐心等待。</text>
-          </view>
-          <view class="h-[80rpx] w-[80rpx] rounded-[12rpx] bg-slate-200 flex-none" />
-        </view>
-
-        <view class="flex justify-center">
-          <text class="rounded-[8rpx] bg-slate-200 px-[16rpx] py-[4rpx] text-[22rpx] text-slate-500">10:24</text>
-        </view>
-
-        <!-- 对方消息 -->
-        <view class="flex items-start">
-          <view class="h-[80rpx] w-[80rpx] rounded-[12rpx] bg-indigo-100 flex-none mr-[20rpx]" />
-          <view class="bg-white p-[24rpx] rounded-[20rpx] rounded-tl-[4rpx] max-w-[70%] shadow-sm">
-            <text class="text-[30rpx] text-slate-800 leading-relaxed">好的，谢谢！</text>
+          <view v-else class="bubble" :class="[m.from === 'me' ? 'bubble--me' : 'bubble--other']">
+            <ui-avatar v-if="m.from !== 'me'" size="80rpx" :background="m.bg || 'primary'" :custom-style="{ marginRight: 'var(--ui-spacing-sm)' }" />
+            <view class="bubble__body" :class="[m.from === 'me' ? 'bubble__body--me' : 'bubble__body--other']">
+              <text class="bubble__text" :class="m.from === 'me' ? 'bubble__text--me' : ''">{{ m.text }}</text>
+            </view>
+            <ui-avatar v-if="m.from === 'me'" size="80rpx" background="info" :custom-style="{ marginLeft: 'var(--ui-spacing-sm)' }" />
           </view>
         </view>
       </view>
     </scroll-view>
 
-    <!-- 底部输入栏 -->
-    <view class="bg-white px-[24rpx] py-[16rpx] pb-[calc(16rpx+env(safe-area-inset-bottom))] border-t border-slate-100 flex items-end">
-      <view class="i-lucide-mic text-[56rpx] text-slate-500 mb-[12rpx] mr-[24rpx]" />
-      <view class="flex-1 min-h-[80rpx] bg-slate-100 rounded-[40rpx] px-[32rpx] py-[20rpx] mr-[24rpx]">
-        <textarea auto-height class="w-full text-[30rpx] text-slate-900 leading-relaxed max-h-[200rpx]" cursor-spacing="20" placeholder="发消息..." />
+    <view class="composer">
+      <view class="composer__icon-btn" @click="onVoice">
+        <ui-icon name="phone-o" size="56rpx" color="text-secondary" />
       </view>
-      <view class="i-lucide-plus-circle text-[56rpx] text-slate-500 mb-[12rpx] mr-[24rpx]" />
-      <view class="h-[64rpx] px-[32rpx] bg-indigo-500 rounded-[32rpx] flex items-center justify-center mb-[8rpx] active:bg-indigo-600 transition-colors">
-        <text class="text-[28rpx] text-white font-bold">发送</text>
+      <view class="composer__input">
+        <textarea
+          v-model="draft"
+          auto-height
+          cursor-spacing="20"
+          placeholder="发消息..."
+          class="composer__textarea"
+          placeholder-style="color: var(--ui-color-text-placeholder)"
+        />
       </view>
+      <ui-popover v-model:show="showActions" placement="top-end">
+        <view class="composer__icon-btn">
+          <ui-icon name="plus" size="56rpx" color="text-secondary" />
+        </view>
+        <template #content>
+          <view class="popover">
+            <view v-for="a in actions" :key="a.icon" class="popover__item" @click="onAction(a)">
+              <ui-icon :name="a.icon" size="40rpx" color="text" />
+              <text class="popover__label">{{ a.label }}</text>
+            </view>
+          </view>
+        </template>
+      </ui-popover>
+      <ui-button v-if="draft" type="primary" size="small" radius="32rpx" @click="onSend">发送</ui-button>
     </view>
   </view>
 </template>
 
-<route lang="json5">
-{
-  style: {
-    navigationBarTitleText: "联系客服",
-  },
+<script setup lang="ts">
+import { useToast } from "@/uni_modules/uniapp-ui"
+import { ref, nextTick } from "vue"
+
+definePage({
+  style: { navigationBarTitleText: "联系客服" },
+})
+
+const toast = useToast()
+
+const draft = ref("")
+const showActions = ref(false)
+const scrollAnchor = ref("")
+
+const messages = ref<{ type: "time" | "msg"; from?: "me" | "other"; text: string; bg?: string }[]>([
+  { type: "time", text: "昨天 14:30" },
+  { type: "msg", from: "other", text: "你好，请问这个商品什么时候发货呢？", bg: "primary" },
+  { type: "msg", from: "me", text: "您好，我们一般在 24 小时内发货，请您耐心等待。" },
+  { type: "time", text: "10:24" },
+  { type: "msg", from: "other", text: "好的，谢谢！", bg: "primary" },
+])
+
+const actions = [
+  { icon: "photo", label: "图片" },
+  { icon: "photo", label: "拍照" },
+  { icon: "location", label: "位置" },
+  { icon: "bookmark-o", label: "文件" },
+]
+
+function onVoice() {
+  toast.text("语音输入")
 }
-</route>
+
+function onAction(a: { label: string }) {
+  toast.text(`选择: ${a.label}`)
+  showActions.value = false
+}
+
+function onSend() {
+  messages.value.push({ type: "msg", from: "me", text: draft.value })
+  draft.value = ""
+  nextTick(() => (scrollAnchor.value = `msg-${messages.value.length - 1}`))
+}
+</script>
+
+<style lang="scss" scoped>
+.page {
+  height: 100vh;
+  display: flex;
+  background: var(--ui-color-background-page);
+  flex-direction: column;
+}
+
+.scroll {
+  flex: 1;
+  overflow: hidden;
+}
+
+.messages {
+  gap: var(--ui-spacing-xl);
+  display: flex;
+  padding: var(--ui-spacing-lg);
+  flex-direction: column;
+}
+
+.time {
+  display: flex;
+  justify-content: center;
+
+  &__text {
+    color: var(--ui-color-text-tertiary);
+    padding: var(--ui-spacing-xxs) var(--ui-spacing-sm);
+    font-size: var(--ui-font-size-xs);
+    background: var(--ui-color-border-light);
+    border-radius: var(--ui-radius-sm);
+  }
+}
+
+.bubble {
+  display: flex;
+  align-items: flex-start;
+
+  &--me {
+    justify-content: flex-end;
+  }
+
+  &__body {
+    padding: var(--ui-spacing-md);
+    max-width: 70%;
+    background: var(--ui-color-background);
+    box-shadow: var(--ui-shadow-xs);
+    border-radius: var(--ui-radius-md);
+
+    &--other {
+      border-top-left-radius: var(--ui-radius-xs);
+    }
+
+    &--me {
+      background: var(--ui-color-primary);
+      border-top-right-radius: var(--ui-radius-xs);
+    }
+  }
+
+  &__text {
+    color: var(--ui-color-text);
+    font-size: var(--ui-font-size-sm);
+    line-height: 1.6;
+
+    &--me {
+      color: var(--ui-color-text-inverse);
+    }
+  }
+}
+
+.composer {
+  gap: var(--ui-spacing-md);
+  display: flex;
+  padding: var(--ui-spacing-sm) var(--ui-spacing-md) calc(var(--ui-spacing-sm) + env(safe-area-inset-bottom));
+  background: var(--ui-color-background);
+  border-top: 1rpx solid var(--ui-color-border-light);
+  align-items: flex-end;
+
+  &__input {
+    flex: 1;
+    padding: var(--ui-spacing-sm) var(--ui-spacing-lg);
+    background: var(--ui-color-background-section);
+    min-height: 72rpx;
+    border-radius: var(--ui-radius-round);
+  }
+
+  &__icon-btn {
+    width: 80rpx;
+    height: 80rpx;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &__textarea {
+    color: var(--ui-color-text);
+    width: 100%;
+    font-size: var(--ui-font-size-sm);
+    max-height: 200rpx;
+    line-height: 1.5;
+  }
+}
+
+.popover {
+  gap: var(--ui-spacing-md);
+  width: 360rpx;
+  display: flex;
+  padding: var(--ui-spacing-md);
+  flex-wrap: wrap;
+
+  &__item {
+    gap: var(--ui-spacing-xs);
+    width: 33%;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+  }
+
+  &__label {
+    color: var(--ui-color-text);
+    font-size: var(--ui-font-size-xs);
+  }
+}
+</style>

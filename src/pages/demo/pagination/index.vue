@@ -149,7 +149,7 @@ onMounted(() => fetchPage(1))
   &__title {
     color: var(--ui-color-text);
     font-size: 30rpx;
-    font-weight: 500;
+    font-weight: var(--ui-font-weight-normal);
   }
 
   &__desc {

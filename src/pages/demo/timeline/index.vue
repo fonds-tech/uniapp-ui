@@ -307,7 +307,7 @@ function onClickItem(index: number) {
 .custom-title {
   color: var(--ui-color-primary);
   font-size: var(--ui-font-size-sm);
-  font-weight: var(--ui-font-weight-medium);
+  font-weight: var(--ui-font-weight-normal);
 }
 
 .custom-desc {
@@ -326,7 +326,7 @@ function onClickItem(index: number) {
   &__title {
     color: var(--ui-color-text);
     font-size: var(--ui-font-size-sm);
-    font-weight: var(--ui-font-weight-medium);
+    font-weight: var(--ui-font-weight-normal);
   }
 
   &__desc {

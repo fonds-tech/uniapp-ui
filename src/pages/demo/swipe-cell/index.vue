@@ -321,7 +321,7 @@ function removeFavorite(idx: number) {
   &__name {
     color: var(--ui-color-text);
     font-size: var(--ui-font-size-md);
-    font-weight: var(--ui-font-weight-medium);
+    font-weight: var(--ui-font-weight-normal);
   }
 
   &__last {
@@ -353,7 +353,7 @@ function removeFavorite(idx: number) {
   &__title {
     color: var(--ui-color-text);
     font-size: var(--ui-font-size-md);
-    font-weight: var(--ui-font-weight-medium);
+    font-weight: var(--ui-font-weight-normal);
   }
 
   &__desc {

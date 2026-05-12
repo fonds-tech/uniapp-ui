@@ -454,7 +454,7 @@ function formatTargetDate(timestamp: number): string {
     font-size: 30rpx;
     min-width: 120rpx;
     text-align: right;
-    font-weight: 500;
+    font-weight: var(--ui-font-weight-normal);
   }
 }
 

@@ -229,7 +229,7 @@ function onTap(text: string) {
   &__highlight {
     color: var(--ui-color-danger);
     font-size: var(--ui-font-size-sm);
-    font-weight: 500;
+    font-weight: var(--ui-font-weight-normal);
   }
 }
 

@@ -188,7 +188,7 @@ function onSubmit() {
   &__label {
     color: var(--ui-color-text);
     font-size: var(--ui-font-size-sm);
-    font-weight: var(--ui-font-weight-medium);
+    font-weight: var(--ui-font-weight-normal);
   }
 
   &__footer {

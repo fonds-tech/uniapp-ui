@@ -139,188 +139,63 @@ interface TemplateCategory {
   templates: Template[]
 }
 
-// 调整配色为柔和的背景色，而非原来的白色背景
 const templateCategories: TemplateCategory[] = [
   {
     name: "登录注册",
     templates: [
-      {
-        name: "账号登录",
-        desc: "极简风格的登录页面，包含账号密码输入与验证逻辑。",
-        icon: "i-lucide-log-in",
-        bgClass: "bg-[#EEF2FF]", // 浅蓝
-        textClass: "text-indigo-600",
-        path: "login-form",
-        tags: ["表单", "验证"],
-      },
-      {
-        name: "验证码登录",
-        desc: "手机号 + 验证码组合，支持倒计时与重发功能。",
-        icon: "i-lucide-smartphone",
-        bgClass: "bg-[#F0FDF4]", // 浅绿
-        textClass: "text-emerald-600",
-        path: "login-sms",
-        tags: ["倒计时", "安全"],
-        isNew: true,
-      },
-      {
-        name: "注册新号",
-        desc: "新用户注册流程，包含协议勾选与步骤引导。",
-        icon: "i-lucide-user-plus",
-        bgClass: "bg-[#FAF5FF]", // 浅紫
-        textClass: "text-purple-600",
-        path: "register",
-        tags: ["步骤", "协议"],
-      },
-      {
-        name: "找回密码",
-        desc: "安全验证流程，帮助用户快速重置账户密码。",
-        icon: "i-lucide-key-round",
-        bgClass: "bg-[#FFF7ED]", // 浅橙
-        textClass: "text-orange-600",
-        path: "forget-pwd",
-        tags: ["重置", "安全"],
-      },
+      { name: "账号登录", desc: "ui-form + ui-input + ui-button，含校验规则", icon: "i-lucide-log-in", bgClass: "bg-[#EEF2FF]", textClass: "text-indigo-600", path: "login-form", tags: ["表单", "验证"] },
+      { name: "验证码登录", desc: "手机号 + 验证码组合，倒计时重发", icon: "i-lucide-smartphone", bgClass: "bg-[#F0FDF4]", textClass: "text-emerald-600", path: "login-sms", tags: ["倒计时", "安全"] },
+      { name: "注册新号", desc: "ui-form 多字段校验 + 协议勾选", icon: "i-lucide-user-plus", bgClass: "bg-[#FAF5FF]", textClass: "text-purple-600", path: "register", tags: ["表单", "协议"] },
+      { name: "找回密码", desc: "三段式重置流程，密码校验", icon: "i-lucide-key-round", bgClass: "bg-[#FFF7ED]", textClass: "text-orange-600", path: "forget-pwd", tags: ["重置", "安全"] },
     ],
   },
   {
     name: "个人中心",
     templates: [
-      {
-        name: "用户资料",
-        desc: "展示个人信息、数据统计及常用功能入口。",
-        icon: "i-lucide-user-circle",
-        bgClass: "bg-[#F0F9FF]", // 浅青
-        textClass: "text-cyan-600",
-        path: "profile",
-        tags: ["卡片", "统计"],
-      },
-      {
-        name: "我的钱包",
-        desc: "资产卡片设计，包含余额展示与账单明细。",
-        icon: "i-lucide-wallet",
-        bgClass: "bg-[#FEF2F2]", // 浅红
-        textClass: "text-rose-600",
-        path: "wallet",
-        tags: ["资产", "图表"],
-        isNew: true,
-      },
-      {
-        name: "地址管理",
-        desc: "收货地址列表，支持新增、编辑与设为默认。",
-        icon: "i-lucide-map-pin",
-        bgClass: "bg-[#FFFBEB]", // 浅黄
-        textClass: "text-amber-600",
-        path: "address-list",
-        tags: ["CRUD", "列表"],
-      },
-      {
-        name: "系统设置",
-        desc: "标准的设置选项列表，包含开关与跳转操作。",
-        icon: "i-lucide-settings",
-        bgClass: "bg-[#F8FAFC]", // 浅灰
-        textClass: "text-slate-600",
-        path: "settings",
-        tags: ["选项", "开关"],
-      },
+      { name: "用户资料", desc: "ui-cell + ui-avatar + ui-number-roll 统计", icon: "i-lucide-user-circle", bgClass: "bg-[#F0F9FF]", textClass: "text-cyan-600", path: "profile", tags: ["卡片", "统计"] },
+      { name: "我的钱包", desc: "余额卡 + ui-grid + ui-segmented 账单", icon: "i-lucide-wallet", bgClass: "bg-[#FEF2F2]", textClass: "text-rose-600", path: "wallet", tags: ["资产", "图表"] },
+      { name: "地址管理", desc: "ui-swipe-cell 滑删 + ui-empty 空态", icon: "i-lucide-map-pin", bgClass: "bg-[#FFFBEB]", textClass: "text-amber-600", path: "address-list", tags: ["CRUD", "列表"] },
+      { name: "系统设置", desc: "ui-cell-group + ui-switch + ui-dialog 确认", icon: "i-lucide-settings", bgClass: "bg-[#F8FAFC]", textClass: "text-slate-600", path: "settings", tags: ["选项", "开关"] },
     ],
   },
   {
-    name: "列表展示",
+    name: "电商交易",
     templates: [
-      {
-        name: "订单列表",
-        desc: "多状态 Tabs 切换，清晰展示订单流转状态。",
-        icon: "i-lucide-clipboard-list",
-        bgClass: "bg-[#EFF6FF]", // 浅蓝
-        textClass: "text-blue-600",
-        path: "order-list",
-        tags: ["Tabs", "状态"],
-        isNew: true,
-      },
-      {
-        name: "商品列表",
-        desc: "电商瀑布流布局，支持筛选与价格排序。",
-        icon: "i-lucide-shopping-bag",
-        bgClass: "bg-[#FDF2F8]", // 浅粉
-        textClass: "text-pink-600",
-        path: "goods-list",
-        tags: ["瀑布流", "筛选"],
-      },
-      {
-        name: "文章资讯",
-        desc: "左图右文或大图模式，适合内容类应用。",
-        icon: "i-lucide-newspaper",
-        bgClass: "bg-[#FAFAFA]", // 浅灰白
-        textClass: "text-neutral-600",
-        path: "article-list",
-        tags: ["排版", "阅读"],
-      },
-      {
-        name: "消息通知",
-        desc: "仿微信消息列表，支持红点提醒与滑动操作。",
-        icon: "i-lucide-bell",
-        bgClass: "bg-[#F3E8FF]", // 浅紫
-        textClass: "text-violet-600",
-        path: "message-list",
-        tags: ["交互", "红点"],
-      },
+      { name: "商品列表", desc: "ui-search + ui-grid + ui-pull-refresh", icon: "i-lucide-shopping-bag", bgClass: "bg-[#FDF2F8]", textClass: "text-pink-600", path: "goods-list", tags: ["搜索", "瀑布流"] },
+      { name: "商品详情", desc: "ui-swiper + ui-rate + ui-action-sheet SKU", icon: "i-lucide-package", bgClass: "bg-[#FFF1F2]", textClass: "text-rose-600", path: "goods-detail", tags: ["轮播", "SKU"] },
+      { name: "购物车", desc: "ui-checkbox + ui-stepper + ui-swipe-cell", icon: "i-lucide-shopping-cart", bgClass: "bg-[#FEFCE8]", textClass: "text-yellow-600", path: "shopping-cart", tags: ["多选", "数量"], isNew: true },
+      { name: "结算支付", desc: "ui-radio-group 支付 + ui-popup 优惠券", icon: "i-lucide-credit-card", bgClass: "bg-[#FFF7ED]", textClass: "text-orange-600", path: "checkout", tags: ["支付", "弹窗"], isNew: true },
+      { name: "订单列表", desc: "ui-tabs 状态 + ui-tag + ui-empty", icon: "i-lucide-clipboard-list", bgClass: "bg-[#EFF6FF]", textClass: "text-blue-600", path: "order-list", tags: ["Tabs", "状态"] },
+      { name: "订单详情", desc: "ui-timeline 物流 + ui-count-down 倒计时", icon: "i-lucide-file-text", bgClass: "bg-[#ECFEFF]", textClass: "text-cyan-600", path: "order-detail", tags: ["时间轴", "倒计时"] },
     ],
   },
   {
-    name: "详情展示",
+    name: "内容资讯",
     templates: [
-      {
-        name: "订单详情",
-        desc: "物流进度时间轴与订单信息综合展示。",
-        icon: "i-lucide-file-text",
-        bgClass: "bg-[#ECFEFF]", // 浅青
-        textClass: "text-cyan-600",
-        path: "order-detail",
-        tags: ["时间轴", "信息"],
-      },
-      {
-        name: "商品详情",
-        desc: "电商详情页标配，轮播图+SKU选择+底部栏。",
-        icon: "i-lucide-package",
-        bgClass: "bg-[#FFF1F2]", // 浅红
-        textClass: "text-rose-600",
-        path: "goods-detail",
-        tags: ["电商", "交互"],
-      },
-      {
-        name: "文章详情",
-        desc: "沉浸式阅读体验，包含评论区与互动栏。",
-        icon: "i-lucide-book-open",
-        bgClass: "bg-[#F0FDF4]", // 浅绿
-        textClass: "text-green-600",
-        path: "article-detail",
-        tags: ["富文本", "评论"],
-      },
+      { name: "资讯列表", desc: "ui-notice-bar + ui-tabs + ui-text-ellipsis", icon: "i-lucide-newspaper", bgClass: "bg-[#FAFAFA]", textClass: "text-neutral-600", path: "article-list", tags: ["排版", "公告"] },
+      { name: "文章详情", desc: "评论 + ui-badge + ui-divider 长文阅读", icon: "i-lucide-book-open", bgClass: "bg-[#F0FDF4]", textClass: "text-green-600", path: "article-detail", tags: ["阅读", "评论"] },
+      { name: "消息通知", desc: "ui-search + ui-swipe-cell + ui-badge 红点", icon: "i-lucide-bell", bgClass: "bg-[#F3E8FF]", textClass: "text-violet-600", path: "message-list", tags: ["交互", "红点"] },
+      { name: "通讯录", desc: "ui-index-bar + ui-sticky + ui-back-top", icon: "i-lucide-contact", bgClass: "bg-[#FDF4FF]", textClass: "text-fuchsia-600", path: "contact-list", tags: ["索引", "搜索"], isNew: true },
     ],
   },
   {
-    name: "常用功能",
+    name: "数据工具",
     templates: [
-      {
-        name: "聊天窗口",
-        desc: "气泡式对话界面，处理了各种消息类型。",
-        icon: "i-lucide-message-circle",
-        bgClass: "bg-[#E0E7FF]", // 靛蓝
-        textClass: "text-indigo-600",
-        path: "chat",
-        tags: ["IM", "气泡"],
-        isNew: true,
-      },
-      {
-        name: "意见反馈",
-        desc: "包含多行文本输入与图片上传功能的表单。",
-        icon: "i-lucide-help-circle",
-        bgClass: "bg-[#FFEDD5]", // 橙色
-        textClass: "text-orange-600",
-        path: "feedback",
-        tags: ["上传", "表单"],
-      },
+      { name: "数据看板", desc: "ui-circle + ui-progress + ui-number-roll", icon: "i-lucide-bar-chart-3", bgClass: "bg-[#EFF6FF]", textClass: "text-blue-600", path: "dashboard", tags: ["可视化", "实时"], isNew: true },
+      { name: "项目看板", desc: "ui-collapse + ui-avatar-group + ui-pagination", icon: "i-lucide-kanban", bgClass: "bg-[#F0FDFA]", textClass: "text-teal-600", path: "task-board", tags: ["任务", "协作"], isNew: true },
+      { name: "多步表单", desc: "ui-steps + ui-cascader + ui-date-picker + ui-upload", icon: "i-lucide-list-checks", bgClass: "bg-[#FAF5FF]", textClass: "text-purple-600", path: "multistep-form", tags: ["步骤", "校验"], isNew: true },
+      { name: "日历日程", desc: "ui-calendar-panel + ui-timeline + ui-popup", icon: "i-lucide-calendar", bgClass: "bg-[#FFF7ED]", textClass: "text-orange-600", path: "calendar-schedule", tags: ["日历", "日程"], isNew: true },
+      { name: "主题定制", desc: "ui-color-picker + ui-sidebar + ui-config-provider", icon: "i-lucide-palette", bgClass: "bg-[#FDF2F8]", textClass: "text-pink-600", path: "theme-customizer", tags: ["主题", "Side Bar"], isNew: true },
+    ],
+  },
+  {
+    name: "互动场景",
+    templates: [
+      { name: "聊天窗口", desc: "ui-popover 表情 + ui-action-sheet 工具栏", icon: "i-lucide-message-circle", bgClass: "bg-[#E0E7FF]", textClass: "text-indigo-600", path: "chat", tags: ["IM", "气泡"] },
+      { name: "意见反馈", desc: "ui-radio-group + ui-textarea + ui-upload + ui-slider", icon: "i-lucide-help-circle", bgClass: "bg-[#FFEDD5]", textClass: "text-orange-600", path: "feedback", tags: ["表单", "上传"] },
+      { name: "相册管理", desc: "ui-upload + ui-grid + ui-watermark + ui-poster", icon: "i-lucide-image", bgClass: "bg-[#ECFDF5]", textClass: "text-emerald-600", path: "photo-gallery", tags: ["上传", "海报"], isNew: true },
+      { name: "二维码分享", desc: "ui-qrcode + ui-poster + ui-popup 海报", icon: "i-lucide-qr-code", bgClass: "bg-[#FEF3C7]", textClass: "text-amber-600", path: "qrcode-share", tags: ["二维码", "分享"], isNew: true },
+      { name: "迷你应用", desc: "ui-navbar + ui-tabbar + ui-header/footer 完整框架", icon: "i-lucide-layout-dashboard", bgClass: "bg-[#E0F2FE]", textClass: "text-sky-600", path: "mini-app", tags: ["框架", "navbar"], isNew: true },
     ],
   },
 ]

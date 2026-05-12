@@ -579,7 +579,7 @@ export default {
     transform: translateX(-50%);
     background: var(--ui-slider-color-indicator);
     text-align: center;
-    font-weight: var(--ui-font-weight-medium);
+    font-weight: var(--ui-font-weight-normal);
     line-height: 1.4;
     white-space: nowrap;
     border-radius: var(--ui-radius-sm);

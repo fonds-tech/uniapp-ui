@@ -423,7 +423,7 @@ export default {
     color: var(--ui-color-text);
     font-size: var(--ui-font-size-md);
     text-align: center;
-    font-weight: var(--ui-font-weight-medium);
+    font-weight: var(--ui-font-weight-normal);
   }
 
   &__subtitle {
@@ -439,7 +439,7 @@ export default {
     font-size: var(--ui-font-size-md);
     min-width: 200rpx;
     text-align: center;
-    font-weight: var(--ui-font-weight-medium);
+    font-weight: var(--ui-font-weight-normal);
   }
 
   &__nav {
@@ -498,7 +498,7 @@ export default {
     // today（未选中）：文字主题色 + medium
     &--today:not(&--selected):not(&--start):not(&--end):not(&--middle) {
       color: var(--ui-calendar-color);
-      font-weight: var(--ui-font-weight-medium);
+      font-weight: var(--ui-font-weight-normal);
     }
 
     // range middle：cell 用 ::after 浅底（currentColor + opacity 0.1，主题色继承）
@@ -526,7 +526,7 @@ export default {
     &--multiple-selected {
       color: var(--ui-color-text-inverse);
       background: var(--ui-calendar-color);
-      font-weight: var(--ui-font-weight-medium);
+      font-weight: var(--ui-font-weight-normal);
     }
     &--start {
       border-top-left-radius: var(--ui-radius-md);
@@ -552,7 +552,7 @@ export default {
     z-index: 1;
     position: relative;
     align-items: center;
-    font-weight: var(--ui-font-weight-medium);
+    font-weight: var(--ui-font-weight-normal);
     border-radius: var(--ui-radius-md);
     justify-content: center;
     background-color: var(--ui-calendar-color);

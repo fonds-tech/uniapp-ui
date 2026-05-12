@@ -270,7 +270,7 @@ export default {
   &__title {
     color: var(--ui-color-text);
     font-size: var(--ui-timeline-item-title-font-size, var(--ui-font-size-sm));
-    font-weight: var(--ui-font-weight-medium);
+    font-weight: var(--ui-font-weight-normal);
     line-height: 1.4;
   }
 

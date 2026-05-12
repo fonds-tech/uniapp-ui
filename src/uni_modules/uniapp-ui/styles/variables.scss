@@ -83,8 +83,8 @@ page {
   --ui-font-size-xl: 40rpx; // 标题
   --ui-font-size-xxl: 48rpx; // 大标题/数字展示
 
+  // 低端设备渲染 500 不稳，仅保留 400 / 700 两档
   --ui-font-weight-normal: 400; // 常规
-  --ui-font-weight-medium: 500; // 中等（按钮/标题）
   --ui-font-weight-bold: 700; // 粗体（强调）
 
   --ui-line-height-tight: 1.25; // 紧凑（标题/单行）

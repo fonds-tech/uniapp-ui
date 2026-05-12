@@ -355,7 +355,7 @@ export default {
   &__text {
     color: var(--ui-circle-text-color);
     font-size: var(--ui-circle-text-size);
-    font-weight: var(--ui-font-weight-medium);
+    font-weight: var(--ui-font-weight-normal);
   }
 }
 </style>

@@ -212,7 +212,7 @@ function onEvent(name: string) {
 .slot-text {
   color: var(--ui-color-text-inverse);
   font-size: 28rpx;
-  font-weight: 500;
+  font-weight: var(--ui-font-weight-normal);
 }
 
 .demo-notify-fancy {

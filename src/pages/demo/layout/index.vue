@@ -213,7 +213,7 @@ definePage({
   font-size: 24rpx;
   transition: all 0.3s;
   align-items: center;
-  font-weight: 500;
+  font-weight: var(--ui-font-weight-normal);
   border-radius: 8rpx;
   justify-content: center;
 

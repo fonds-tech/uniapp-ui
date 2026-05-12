@@ -292,7 +292,7 @@ function onResize() {
     color: var(--ui-color-text-inverse);
     padding: 16rpx 28rpx;
     font-size: 26rpx;
-    font-weight: 500;
+    font-weight: var(--ui-font-weight-normal);
     border-radius: 32rpx;
 
     &--warning {
@@ -345,7 +345,7 @@ function onResize() {
     padding: 16rpx 36rpx;
     font-size: 26rpx;
     background: linear-gradient(135deg, #ff6b6b 0%, #ee0a24 100%);
-    font-weight: 500;
+    font-weight: var(--ui-font-weight-normal);
     border-radius: 32rpx;
   }
 }
@@ -400,7 +400,7 @@ function onResize() {
     display: flex;
     font-size: 28rpx;
     align-items: center;
-    font-weight: 500;
+    font-weight: var(--ui-font-weight-normal);
     border-radius: 40rpx;
     justify-content: center;
 
@@ -464,7 +464,7 @@ function onResize() {
 
     &.active {
       color: var(--ui-color-primary);
-      font-weight: 500;
+      font-weight: var(--ui-font-weight-normal);
     }
   }
 }

@@ -170,7 +170,7 @@ function onImageError(event: any) {
     display: flex;
     font-size: var(--ui-avatar-text-size);
     align-items: center;
-    font-weight: var(--ui-font-weight-medium);
+    font-weight: var(--ui-font-weight-normal);
     white-space: nowrap;
     text-transform: uppercase;
     justify-content: center;

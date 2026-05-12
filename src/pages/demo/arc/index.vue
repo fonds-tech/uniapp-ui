@@ -137,7 +137,7 @@ definePage({
 .arc-title {
   color: var(--ui-color-text-inverse);
   font-size: var(--ui-font-size-lg);
-  font-weight: var(--ui-font-weight-medium);
+  font-weight: var(--ui-font-weight-normal);
 }
 
 .arc-desc {
@@ -162,7 +162,7 @@ definePage({
   font-size: var(--ui-font-size-lg);
   background: rgba(255, 255, 255, 0.2);
   align-items: center;
-  font-weight: var(--ui-font-weight-medium);
+  font-weight: var(--ui-font-weight-normal);
   border-radius: var(--ui-radius-round);
   justify-content: center;
 }
@@ -176,7 +176,7 @@ definePage({
 .header-name {
   color: var(--ui-color-text-inverse);
   font-size: var(--ui-font-size-md);
-  font-weight: var(--ui-font-weight-medium);
+  font-weight: var(--ui-font-weight-normal);
 }
 
 .header-bio {

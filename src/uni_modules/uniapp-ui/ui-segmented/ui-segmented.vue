@@ -323,7 +323,7 @@ export default {
     justify-content: center;
 
     &--active {
-      font-weight: var(--ui-font-weight-medium);
+      font-weight: var(--ui-font-weight-normal);
     }
 
     &--disabled {

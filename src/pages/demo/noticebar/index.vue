@@ -285,7 +285,7 @@ function onBizClick(label: string) {
 .weak-board__title {
   color: var(--ui-color-text-secondary);
   font-size: 24rpx;
-  font-weight: 500;
+  font-weight: var(--ui-font-weight-normal);
 }
 
 .slot-avatar {

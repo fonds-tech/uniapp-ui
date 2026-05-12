@@ -167,7 +167,7 @@ export default {
       transform var(--ui-step-transition, 0.2s);
     align-items: center;
     flex-shrink: 0;
-    font-weight: var(--ui-font-weight-medium);
+    font-weight: var(--ui-font-weight-normal);
     border-radius: 50%;
     justify-content: center;
   }
@@ -175,7 +175,7 @@ export default {
   &__index {
     color: inherit;
     font-size: var(--ui-font-size-xs);
-    font-weight: var(--ui-font-weight-medium);
+    font-weight: var(--ui-font-weight-normal);
     line-height: 1;
   }
 
@@ -191,7 +191,7 @@ export default {
     font-size: var(--ui-font-size-sm);
     transition: color var(--ui-step-transition, 0.2s);
     word-break: break-word;
-    font-weight: var(--ui-font-weight-medium);
+    font-weight: var(--ui-font-weight-normal);
     line-height: 1.4;
   }
 

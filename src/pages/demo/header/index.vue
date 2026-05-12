@@ -352,7 +352,7 @@ function onResize() {
     color: var(--ui-color-text);
     display: block;
     font-size: 26rpx;
-    font-weight: 500;
+    font-weight: var(--ui-font-weight-normal);
   }
 
   &__sub {

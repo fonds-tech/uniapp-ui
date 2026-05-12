@@ -188,7 +188,7 @@ const tempValue = ref(26.5)
 .temp-suffix {
   color: var(--ui-color-warning);
   font-size: 32rpx;
-  font-weight: 500;
+  font-weight: var(--ui-font-weight-normal);
 }
 
 .demo-roll-fancy {

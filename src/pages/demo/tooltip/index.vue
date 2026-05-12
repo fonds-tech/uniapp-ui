@@ -273,7 +273,7 @@ const invite = ref("")
     display: flex;
     font-size: var(--ui-font-size-sm);
     align-items: center;
-    font-weight: var(--ui-font-weight-medium);
+    font-weight: var(--ui-font-weight-normal);
   }
 }
 </style>

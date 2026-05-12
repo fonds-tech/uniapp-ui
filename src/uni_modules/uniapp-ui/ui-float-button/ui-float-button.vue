@@ -339,7 +339,7 @@ export default {
 
   &__text {
     font-size: var(--ui-font-size-sm);
-    font-weight: var(--ui-font-weight-medium);
+    font-weight: var(--ui-font-weight-normal);
     margin-left: var(--ui-spacing-xs);
   }
 }

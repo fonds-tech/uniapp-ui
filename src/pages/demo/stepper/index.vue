@@ -335,7 +335,7 @@ const gift = reactive({ price: 158, count: 1 })
   &__label {
     color: var(--ui-color-text);
     font-size: var(--ui-font-size-md);
-    font-weight: var(--ui-font-weight-medium);
+    font-weight: var(--ui-font-weight-normal);
   }
 
   &__price {

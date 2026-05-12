@@ -323,7 +323,7 @@ export default {
 
         .is-active {
           color: var(--ui-color-primary);
-          font-weight: var(--ui-font-weight-medium);
+          font-weight: var(--ui-font-weight-normal);
         }
       }
     }
@@ -336,7 +336,7 @@ export default {
       .ui-keyboard__keys__key {
         height: 96rpx;
         font-size: 56rpx;
-        font-weight: var(--ui-font-weight-medium);
+        font-weight: var(--ui-font-weight-normal);
       }
     }
 
@@ -360,7 +360,7 @@ export default {
       .ui-keyboard__keys__key {
         height: 96rpx;
         font-size: 56rpx;
-        font-weight: var(--ui-font-weight-medium);
+        font-weight: var(--ui-font-weight-normal);
       }
     }
   }
