@@ -8,11 +8,11 @@
     <view class="space-y-[32rpx]">
       <view class="rounded-[24rpx] bg-slate-50 px-[32rpx] py-[28rpx]">
         <text class="block text-[24rpx] text-slate-400 mb-[8rpx]">账号</text>
-        <input class="h-[48rpx] w-full text-[32rpx] text-slate-900" placeholder="请输入用户名/手机号" placeholder-style="color: #cbd5e1" />
+        <input class="h-[48rpx] w-full text-[32rpx] text-slate-900" placeholder="请输入用户名/手机号" placeholder-style="color: var(--ui-color-text-placeholder)" />
       </view>
       <view class="rounded-[24rpx] bg-slate-50 px-[32rpx] py-[28rpx]">
         <text class="block text-[24rpx] text-slate-400 mb-[8rpx]">密码</text>
-        <input class="h-[48rpx] w-full text-[32rpx] text-slate-900" password placeholder="请输入密码" placeholder-style="color: #cbd5e1" />
+        <input class="h-[48rpx] w-full text-[32rpx] text-slate-900" password placeholder="请输入密码" placeholder-style="color: var(--ui-color-text-placeholder)" />
       </view>
     </view>
 

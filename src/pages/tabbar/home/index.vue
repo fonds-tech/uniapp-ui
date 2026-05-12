@@ -1,12 +1,12 @@
 <template>
   <view class="min-h-screen bg-[#F6F7F9]">
-    <view class="fixed left-0 top-0 z-50 w-full bg-white/80 backdrop-blur-md transition-all duration-300" :style="{ paddingTop: `${safeAreaInsets?.top}px` }">
+    <view class="fixed left-0 top-0 z-50 w-full transition-all duration-300" :style="{ paddingTop: `${statusBarTop}px`, background: 'rgba(255, 255, 255, 0.8)', backdropFilter: 'blur(10px)', WebkitBackdropFilter: 'blur(10px)' }">
       <view class="flex h-[88rpx] items-center px-[32rpx]">
         <text class="text-[36rpx] font-bold text-slate-800">UNIAPP UI</text>
       </view>
     </view>
 
-    <view class="relative overflow-hidden bg-white pt-[calc(var(--status-bar-height)+100rpx)] pb-[64rpx]">
+    <view class="relative overflow-hidden bg-white pb-[64rpx]" :style="{ paddingTop: `${navbarHeight}px` }">
       <view class="absolute right-0 top-0 -mr-[100rpx] -mt-[100rpx] h-[400rpx] w-[400rpx] rounded-full bg-indigo-500/10 blur-[80rpx] opacity-60" />
       <view class="absolute left-0 top-[200rpx] -ml-[100rpx] h-[300rpx] w-[300rpx] rounded-full bg-fuchsia-500/10 blur-[60rpx] opacity-60" />
 
@@ -24,8 +24,8 @@
           </view>
         </view>
 
-        <view class="mt-[80rpx] relative overflow-hidden rounded-[40rpx] bg-gradient-to-r from-indigo-600 to-violet-600 p-[1rpx] shadow-xl shadow-indigo-500/25">
-          <view class="relative h-full w-full bg-gradient-to-br from-white/10 to-transparent p-[48rpx]">
+        <view class="mt-[80rpx] relative overflow-hidden rounded-[40rpx] shadow-xl shadow-indigo-500/25" style="background: linear-gradient(to right, #4f46e5, #7c3aed)">
+          <view class="relative h-full w-full p-[48rpx]">
             <view class="flex justify-between text-white relative z-10">
               <view class="flex flex-col items-center">
                 <text class="text-[52rpx] font-bold leading-none tracking-tight">100+</text>
@@ -136,6 +136,9 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from "vue"
+import { useUnitToPx, useSystemInfo } from "@/uni_modules/uniapp-ui/hooks"
+
 definePage({
   type: "home",
   style: {
@@ -144,7 +147,11 @@ definePage({
   },
 })
 
-const safeAreaInsets = uni.getSystemInfoSync().safeAreaInsets
+const systemInfo = useSystemInfo()
+// 状态栏 / 刘海高度
+const statusBarTop = computed(() => systemInfo.statusBarHeight || 0)
+// navbar 总高度 = 状态栏 + 88rpx 内容栏
+const navbarHeight = computed(() => statusBarTop.value + (useUnitToPx("88rpx") || 44))
 
 const categories = [
   {

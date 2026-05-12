@@ -6,7 +6,7 @@
         <text class="block text-[36rpx] font-bold">商家已发货</text>
         <text class="mt-[8rpx] block text-[26rpx] opacity-80">还剩6天12小时自动确认收货</text>
       </view>
-      <view class="i-lucide-truck text-[64rpx] text-white/80" />
+      <view class="i-lucide-truck text-[64rpx]" style="color: rgba(255, 255, 255, 0.8)" />
     </view>
 
     <view class="px-[24rpx] -mt-[40rpx] space-y-[24rpx]">

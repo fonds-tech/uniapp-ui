@@ -1,7 +1,7 @@
 <template>
   <view class="h-screen flex flex-col bg-[var(--ui-color-background-page)]">
-    <view class="bg-[var(--ui-color-background)] backdrop-blur-md z-50 flex-none sticky top-0" :style="{ paddingTop: `${safeAreaInsets?.top}px` }">
-      <view class="px-[32rpx] py-[20rpx] flex items-center">
+    <view class="z-50 flex-none sticky top-0" :style="{ paddingTop: `${safeAreaInsets?.top}px`, background: 'rgba(255, 255, 255, 0.85)', backdropFilter: 'blur(10px)', WebkitBackdropFilter: 'blur(10px)' }">
+      <view class="px-[32rpx] py-[20rpx] flex items-center" :style="{ paddingRight: `${menuPadding}px` }">
         <view
           class="flex-1 h-[80rpx] bg-[var(--ui-color-background-section)] rounded-[24rpx] flex items-center px-[28rpx] active:bg-[var(--ui-color-background-hover)] transition-all duration-200 border border-transparent focus-within:border-indigo-500/20 focus-within:bg-[var(--ui-color-background)] focus-within:shadow-sm"
           @click="showSearch = true"
@@ -147,6 +147,18 @@ definePage({
 })
 
 const safeAreaInsets = uni.getSystemInfoSync().safeAreaInsets
+// MP 端右侧让出胶囊宽度
+function getMenuPadding(): number {
+  // #ifdef MP
+  const sysInfo = uni.getSystemInfoSync()
+  const menuButtonInfo = uni.getMenuButtonBoundingClientRect()
+  return sysInfo.windowWidth - menuButtonInfo.left + 8
+  // #endif
+  // #ifndef MP
+  return 16
+  // #endif
+}
+const menuPadding = getMenuPadding()
 const showSearch = ref(false)
 const searchText = ref("")
 const activeCategoryIndex = ref(0)

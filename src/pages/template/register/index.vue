@@ -8,17 +8,17 @@
     <view class="space-y-[32rpx]">
       <view class="rounded-[24rpx] bg-slate-50 px-[32rpx] py-[28rpx]">
         <text class="block text-[24rpx] text-slate-400 mb-[8rpx]">手机号</text>
-        <input class="h-[48rpx] w-full text-[32rpx] text-slate-900" type="number" placeholder="请输入手机号码" placeholder-style="color: #cbd5e1" />
+        <input class="h-[48rpx] w-full text-[32rpx] text-slate-900" type="number" placeholder="请输入手机号码" placeholder-style="color: var(--ui-color-text-placeholder)" />
       </view>
 
       <view class="flex items-center justify-between rounded-[24rpx] bg-slate-50 px-[32rpx] py-[28rpx]">
-        <input class="flex-1 h-[48rpx] text-[32rpx] text-slate-900" type="number" placeholder="验证码" placeholder-style="color: #cbd5e1" />
+        <input class="flex-1 h-[48rpx] text-[32rpx] text-slate-900" type="number" placeholder="验证码" placeholder-style="color: var(--ui-color-text-placeholder)" />
         <text class="ml-[24rpx] text-[28rpx] font-bold text-indigo-500">获取验证码</text>
       </view>
 
       <view class="rounded-[24rpx] bg-slate-50 px-[32rpx] py-[28rpx]">
         <text class="block text-[24rpx] text-slate-400 mb-[8rpx]">密码</text>
-        <input class="h-[48rpx] w-full text-[32rpx] text-slate-900" password placeholder="设置6-20位登录密码" placeholder-style="color: #cbd5e1" />
+        <input class="h-[48rpx] w-full text-[32rpx] text-slate-900" password placeholder="设置6-20位登录密码" placeholder-style="color: var(--ui-color-text-placeholder)" />
       </view>
     </view>
 

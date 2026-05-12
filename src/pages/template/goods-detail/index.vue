@@ -2,7 +2,7 @@
   <view class="pb-[120rpx] bg-[#F6F7F9] min-h-screen">
     <!-- 商品图片 -->
     <view class="h-[750rpx] w-full bg-slate-300 relative">
-      <view class="absolute bottom-[24rpx] right-[24rpx] bg-black/40 px-[20rpx] py-[8rpx] rounded-full text-white text-[24rpx]">1/5</view>
+      <view class="absolute bottom-[24rpx] right-[24rpx] px-[20rpx] py-[8rpx] rounded-full text-white text-[24rpx]" style="background: rgba(0, 0, 0, 0.4)">1/5</view>
     </view>
 
     <!-- 信息卡片 -->

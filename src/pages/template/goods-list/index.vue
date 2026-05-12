@@ -4,7 +4,7 @@
     <view class="bg-white px-[32rpx] py-[16rpx]">
       <view class="flex h-[72rpx] items-center rounded-[36rpx] bg-slate-100 px-[24rpx]">
         <view class="i-lucide-search text-[32rpx] text-slate-400 mr-[16rpx]" />
-        <input class="flex-1 text-[28rpx] text-slate-900" placeholder="搜索商品" placeholder-style="color: #94a3b8" />
+        <input class="flex-1 text-[28rpx] text-slate-900" placeholder="搜索商品" placeholder-style="color: var(--ui-color-text-placeholder)" />
       </view>
     </view>
 

@@ -16,7 +16,7 @@
         <textarea
           class="w-full h-[240rpx] text-[30rpx] text-slate-800 leading-relaxed"
           placeholder="请详细描述您遇到的问题或建议，以便我们更好地为您解决..."
-          placeholder-style="color: #cbd5e1"
+          placeholder-style="color: var(--ui-color-text-placeholder)"
           maxlength="500"
         />
         <view class="text-right text-[24rpx] text-slate-400 mt-[16rpx]">0/500</view>
@@ -36,7 +36,7 @@
     <view class="mb-[32rpx]">
       <text class="text-[32rpx] font-bold text-slate-800 mb-[24rpx] block">联系方式 <text class="text-[24rpx] font-normal text-slate-400">(选填)</text></text>
       <view class="bg-white rounded-[24rpx] px-[32rpx] py-[28rpx] shadow-sm">
-        <input class="h-[48rpx] w-full text-[30rpx] text-slate-900" placeholder="请输入手机号/邮箱/微信号" placeholder-style="color: #cbd5e1" />
+        <input class="h-[48rpx] w-full text-[30rpx] text-slate-900" placeholder="请输入手机号/邮箱/微信号" placeholder-style="color: var(--ui-color-text-placeholder)" />
       </view>
     </view>
 

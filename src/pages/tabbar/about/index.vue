@@ -1,7 +1,7 @@
 <template>
   <view class="min-h-screen bg-[#F6F7F9]">
-    <view class="fixed left-0 top-0 z-50 w-full bg-white/95 backdrop-blur-md" :style="{ paddingTop: `${safeAreaInsets?.top}px` }">
-      <view class="flex h-[88rpx] items-center px-[32rpx]">
+    <view class="fixed left-0 top-0 z-50 w-full" :style="{ paddingTop: `${safeAreaInsets?.top}px`, background: 'rgba(255, 255, 255, 0.95)', backdropFilter: 'blur(10px)', WebkitBackdropFilter: 'blur(10px)' }">
+      <view class="flex h-[88rpx] items-center px-[32rpx]" :style="{ paddingRight: `${menuPadding}px` }">
         <text class="text-[36rpx] font-bold text-slate-800">关于</text>
       </view>
     </view>
@@ -11,7 +11,8 @@
     <view class="px-[32rpx] py-[32rpx] pb-[180rpx]">
       <view class="flex flex-col items-center py-[80rpx] bg-white rounded-[40rpx] mb-[32rpx] shadow-sm">
         <view
-          class="flex h-[180rpx] w-[180rpx] items-center justify-center rounded-[48rpx] bg-gradient-to-br from-indigo-500 to-purple-600 shadow-xl shadow-indigo-500/20 mb-[32rpx]"
+          class="flex h-[180rpx] w-[180rpx] items-center justify-center rounded-[48rpx] mb-[32rpx]"
+          style="background: linear-gradient(to bottom right, #6366f1, #9333ea); box-shadow: 0 20rpx 50rpx rgba(99, 102, 241, 0.2)"
         >
           <view class="i-lucide-layers text-[90rpx] text-white" />
         </view>
@@ -92,6 +93,19 @@ definePage({
 })
 
 const safeAreaInsets = uni.getSystemInfoSync().safeAreaInsets
+
+// MP 端右侧让出胶囊宽度
+function getMenuPadding(): number {
+  // #ifdef MP
+  const sysInfo = uni.getSystemInfoSync()
+  const menuButtonInfo = uni.getMenuButtonBoundingClientRect()
+  return sysInfo.windowWidth - menuButtonInfo.left + 8
+  // #endif
+  // #ifndef MP
+  return 16
+  // #endif
+}
+const menuPadding = getMenuPadding()
 
 const version = "1.0.0"
 

@@ -1,8 +1,8 @@
 <template>
   <view class="min-h-screen bg-white flex flex-col">
     <!-- 顶部 -->
-    <view class="fixed left-0 top-0 z-50 w-full bg-white/80 backdrop-blur-md" :style="{ paddingTop: `${safeAreaInsets?.top}px` }">
-      <view class="flex h-[100rpx] items-center justify-between px-[32rpx]">
+    <view class="fixed left-0 top-0 z-50 w-full" :style="{ paddingTop: `${safeAreaInsets?.top}px`, background: 'rgba(255, 255, 255, 0.8)', backdropFilter: 'blur(10px)', WebkitBackdropFilter: 'blur(10px)' }">
+      <view class="flex h-[100rpx] items-center justify-between px-[32rpx]" :style="{ paddingRight: `${menuPadding}px` }">
         <view>
           <text class="text-[40rpx] font-900 text-slate-900 leading-none">Templates</text>
           <view class="flex items-center mt-[6rpx]">
@@ -109,6 +109,18 @@ definePage({
 })
 
 const safeAreaInsets = uni.getSystemInfoSync().safeAreaInsets
+// MP 端右侧让出胶囊宽度
+function getMenuPadding(): number {
+  // #ifdef MP
+  const sysInfo = uni.getSystemInfoSync()
+  const menuButtonInfo = uni.getMenuButtonBoundingClientRect()
+  return sysInfo.windowWidth - menuButtonInfo.left + 8
+  // #endif
+  // #ifndef MP
+  return 16
+  // #endif
+}
+const menuPadding = getMenuPadding()
 const activeTab = ref("all")
 
 interface Template {

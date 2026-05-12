@@ -16,11 +16,11 @@
     <view class="mx-[32rpx] mb-[32rpx] overflow-hidden rounded-[24rpx] bg-white shadow-sm">
       <view class="flex items-center justify-between px-[32rpx] py-[32rpx] border-b border-slate-50">
         <text class="text-[30rpx] text-slate-700">消息通知</text>
-        <switch color="#4f46e5" style="transform: scale(0.8)" checked />
+        <switch color="var(--ui-color-primary)" style="transform: scale(0.8)" checked />
       </view>
       <view class="flex items-center justify-between px-[32rpx] py-[32rpx] border-b border-slate-50">
         <text class="text-[30rpx] text-slate-700">深色模式</text>
-        <switch color="#4f46e5" style="transform: scale(0.8)" />
+        <switch color="var(--ui-color-primary)" style="transform: scale(0.8)" />
       </view>
       <view class="flex items-center justify-between px-[32rpx] py-[32rpx] active:bg-slate-50">
         <text class="text-[30rpx] text-slate-700">清除缓存</text>

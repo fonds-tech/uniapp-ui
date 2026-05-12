@@ -26,8 +26,8 @@
       </view>
     </ui-transition>
 
-    <!-- 触发元素：v-on 对象动态绑定（hover 仅 H5 / App，MP 忽略 mouseenter/mouseleave） -->
-    <view class="ui-tooltip__target" v-on="targetListeners">
+    <!-- 触发元素（mouseenter/mouseleave 仅 H5 / App 响应，MP 端忽略） -->
+    <view class="ui-tooltip__target" @click="onClickTarget" @mouseenter="onMouseEnter" @mouseleave="onMouseLeave">
       <slot />
     </view>
   </view>
@@ -77,15 +77,6 @@ const popupStyle = computed(() => {
 })
 // 箭头类名
 const arrowClass = computed(() => TOOLTIP_ARROW_CLASS_MAP[props.placement as TooltipPlacement] || "ui-tooltip__arrow--down")
-// target 事件监听（hover 触发条件编译排除 MP）
-const targetListeners = computed(() => {
-  const list: Record<string, () => void> = { click: onClickTarget }
-  // #ifndef MP
-  list.mouseenter = onMouseEnter
-  list.mouseleave = onMouseLeave
-  // #endif
-  return list
-})
 
 watch(
   () => props.visible,

@@ -1,7 +1,7 @@
 <template>
   <view class="min-h-screen bg-[#F6F7F9]">
     <!-- 顶部背景 -->
-    <view class="h-[360rpx] bg-gradient-to-br from-indigo-500 to-purple-600 relative">
+    <view class="h-[360rpx] relative" style="background: linear-gradient(to bottom right, #6366f1, #9333ea)">
       <view class="absolute bottom-0 left-0 w-full h-[40rpx] bg-[#F6F7F9] rounded-t-[40rpx]" />
     </view>
 
