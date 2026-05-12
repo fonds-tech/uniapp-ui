@@ -1,12 +1,12 @@
 <template>
-  <view v-if="inited" class="ui-toast" :style="[style]" :class="[classs]">
+  <view v-if="inited" class="ui-toast" :class="[rootClass, customClass]" :style="[rootStyle]">
     <slot>
-      <view class="ui-toast__body" :style="[bodyStyle]" :class="[bodyClass]">
-        <view v-if="isShowIcon" class="ui-toast__icon" :style="[iconStyle]">
-          <image v-if="isImage(mergedOptions.icon)" class="image" :src="mergedOptions.icon" mode="aspectFit" />
-          <ui-icon v-else-if="mergedOptions.icon" :name="mergedOptions.icon" :size="mergedOptions.iconSize" color="text-inverse" />
-          <view v-else-if="mergedOptions.type === 'loading'" class="loading" />
-          <ui-icon v-else-if="['await', 'fail', 'success'].includes(mergedOptions.type)" :name="icons[mergedOptions.type]" :size="mergedOptions.iconSize" color="text-inverse" />
+      <view class="ui-toast__body" :class="[bodyClass]" :style="[bodyStyle]">
+        <view v-if="hasIcon" class="ui-toast__icon" :style="[iconStyle]">
+          <image v-if="isImage(mergedOptions.icon)" class="ui-toast__image" :src="mergedOptions.icon" mode="aspectFit" />
+          <ui-icon v-else-if="mergedOptions.icon" :name="mergedOptions.icon" :size="iconRenderSize" color="text-inverse" />
+          <view v-else-if="mergedOptions.type === 'loading'" class="ui-toast__loading" />
+          <ui-icon v-else-if="builtInIcon" :name="builtInIcon" :size="iconRenderSize" color="text-inverse" />
         </view>
         <view v-if="mergedOptions.content" class="ui-toast__text">{{ mergedOptions.content }}</view>
       </view>
@@ -19,32 +19,28 @@ import type { ToastOptions } from "./index"
 import type { CSSProperties } from "vue"
 import { isImage, isString } from "../utils/check"
 import { ref, watch, computed } from "vue"
-import { toastEmits, toastProps } from "./index"
-import { useUnit, useStyle, useTransition, useGlobalZIndex } from "../hooks"
+import { toastEmits, toastProps, TOAST_TYPE_ICON_MAP } from "./index"
+import { useUnit, useColor, useStyle, useTransition, useGlobalZIndex } from "../hooks"
 
-// 定义组件名称
 defineOptions({ name: "ui-toast" })
 
-// 定义props和emits
 const props = defineProps(toastProps)
 const emits = defineEmits(toastEmits)
-// 使用transition hook
+
 const transition = useTransition()
 
-// 定义响应式变量
-const timer = ref<ReturnType<typeof setTimeout> | null>(null) // 用于存储定时器
-const visible = ref(false) // 控制toast是否可见
-const zIndex = ref<number>() // 存储z-index值
-const icons: Record<string, string> = { await: "clock-o", fail: "clear", success: "success" } // 定义不同类型的图标
-const commandOptions = ref<ToastOptions>({}) // 命令式调用时传入的选项
+// 自动关闭定时器
+const timer = ref<ReturnType<typeof setTimeout> | null>(null)
+// 控制可见态（loading 状态机用）
+const visible = ref(false)
+// z-index 层级
+const zIndex = ref<number>()
+// 命令式调用入参（覆盖 props）
+const commandOptions = ref<ToastOptions>({})
 
-const inited = computed(() => transition.inited.value)
-
-/**
- * 合并后的配置选项
- * 优先级：commandOptions > props
- * 命令式调用时 commandOptions 会覆盖 props
- */
+// 是否已初始化挂载
+const inited = computed(() => (props.lazyRender ? transition.inited.value : true))
+// 合并 props + commandOptions（commandOptions 优先）
 const mergedOptions = computed(() => ({
   type: commandOptions.value.type ?? props.type,
   icon: commandOptions.value.icon ?? props.icon,
@@ -58,64 +54,70 @@ const mergedOptions = computed(() => ({
   position: commandOptions.value.position ?? props.position,
   background: commandOptions.value.background ?? props.background,
 }))
+// 是否需要图标区
+const hasIcon = computed(() => Boolean(mergedOptions.value.icon) || ["loading", "await", "success", "fail"].includes(mergedOptions.value.type as string))
+// 内置 type 对应图标名
+const builtInIcon = computed(() => {
+  const t = mergedOptions.value.type as string
+  return t in TOAST_TYPE_ICON_MAP ? TOAST_TYPE_ICON_MAP[t as keyof typeof TOAST_TYPE_ICON_MAP] : ""
+})
+// ui-icon 渲染尺寸（CSS var 兜底）
+const iconRenderSize = computed(() => (mergedOptions.value.iconSize !== undefined ? useUnit(mergedOptions.value.iconSize) : "var(--ui-toast-icon-size)"))
 
-const style = computed(() => {
+// 根节点样式
+const rootStyle = computed(() => {
   const style: CSSProperties = {}
   style.zIndex = zIndex.value
   style.display = transition.visible.value ? "flex" : "none"
   if (mergedOptions.value.position === "top") {
     style.alignItems = "flex-start"
-    style.paddingTop = useUnit(mergedOptions.value.offset)
+    if (mergedOptions.value.offset !== undefined) style.paddingTop = useUnit(mergedOptions.value.offset)
   }
   if (mergedOptions.value.position === "bottom") {
     style.alignItems = "flex-end"
-    style.paddingBottom = useUnit(mergedOptions.value.offset)
+    if (mergedOptions.value.offset !== undefined) style.paddingBottom = useUnit(mergedOptions.value.offset)
   }
   return useStyle({ ...style, ...transition.styles.value })
 })
-
-// 计算class
-const classs = computed(() => {
-  const list: string[] = [transition.classs.value]
+// 根节点类名
+const rootClass = computed(() => {
+  const list = [transition.classs.value]
   if (mergedOptions.value.mask) list.push("ui-toast--mask")
   return list
 })
-
+// 主体样式
 const bodyStyle = computed(() => {
   const style: CSSProperties = {}
-  style.maxWidth = useUnit(mergedOptions.value.width)
-  style.background = mergedOptions.value.background
+  if (mergedOptions.value.width !== undefined) style.maxWidth = useUnit(mergedOptions.value.width)
+  if (mergedOptions.value.background) style.background = useColor(mergedOptions.value.background)
   return useStyle({ ...style, ...useStyle(props.customStyle) })
 })
-
-// 计算body class
+// 主体类名（区分 type 与图标变体）
 const bodyClass = computed(() => {
   const list: string[] = []
   if (visible.value) {
     list.push(`ui-toast__body--${mergedOptions.value.type}`)
-    if (isShowIcon.value) {
-      list.push("ui-toast__body--icon")
-    }
+    if (hasIcon.value) list.push("ui-toast__body--icon")
   }
   return list
 })
-
+// 图标容器尺寸
 const iconStyle = computed(() => {
   const style: CSSProperties = {}
-  style.width = useUnit(mergedOptions.value.iconSize)
-  style.height = useUnit(mergedOptions.value.iconSize)
+  if (mergedOptions.value.iconSize !== undefined) {
+    const s = useUnit(mergedOptions.value.iconSize)
+    style.width = s
+    style.height = s
+  }
   return useStyle(style)
 })
-
-// 判断是否显示图标
-const isShowIcon = computed(() => mergedOptions.value.icon || ["loading", "await", "success", "fail"].includes(mergedOptions.value.type))
 
 transition.on("before-enter", () => emits("open"))
 transition.on("after-enter", () => emits("opened"))
 transition.on("before-leave", () => emits("close"))
 transition.on("after-leave", closed)
 
-// 监听 props.show 变化，支持声明式调用
+// props.show 双向绑定 → 内部 open/close
 watch(
   () => props.show,
   (val) => {
@@ -128,10 +130,28 @@ function initTransition() {
   transition.init({ name: "fade", duration: 300 })
 }
 
-/**
- * 打开 toast
- * 内部方法，被 show() 和 props.show 监听调用
- */
+// 启动自动关闭定时器
+// loading 类型仅当 commandOptions 显式设了 duration 才启动；其他类型走 mergedOptions.duration
+function startTimer() {
+  clearTimer()
+  const isLoading = mergedOptions.value.type === "loading"
+  const explicitDuration = commandOptions.value.duration
+  const useDuration = isLoading ? explicitDuration : mergedOptions.value.duration
+  const duration = Number(useDuration) || 0
+  if (duration > 0) {
+    timer.value = setTimeout(() => close(), duration)
+  }
+}
+
+// 清除定时器
+function clearTimer() {
+  if (timer.value) {
+    clearTimeout(timer.value)
+    timer.value = null
+  }
+}
+
+// 打开
 function open() {
   if (transition.visible.value) {
     startTimer()
@@ -142,14 +162,10 @@ function open() {
   visible.value = true
   transition.enter()
   emits("update:show", true)
-  // 设置自动关闭定时器
   startTimer()
 }
 
-/**
- * 关闭 toast
- * 内部方法，被 hide() 和 props.show 监听调用
- */
+// 关闭
 function close() {
   if (transition.visible.value) {
     clearTimer()
@@ -158,111 +174,47 @@ function close() {
   }
 }
 
-/**
- * 启动自动关闭定时器
- */
-function startTimer() {
-  clearTimer()
-  const duration = +mergedOptions.value.duration
-  // loading 类型默认不自动关闭（除非显式设置了 duration）
-  const isLoadingWithoutDuration = mergedOptions.value.type === "loading" && !commandOptions.value.duration && !props.duration
-  if (duration > 0 && !isLoadingWithoutDuration) {
-    timer.value = setTimeout(() => {
-      close()
-    }, duration)
-  }
-}
-
-/**
- * 清除定时器
- */
-function clearTimer() {
-  if (timer.value) {
-    clearTimeout(timer.value)
-    timer.value = null
-  }
-}
-
-/**
- * toast 关闭动画结束后的回调
- */
+// 关闭动画结束
 function closed() {
   visible.value = false
   commandOptions.value = {}
   emits("closed")
 }
 
-/**
- * 显示 toast（命令式调用）
- * @param options 显示选项，可以是字符串（作为 content）或配置对象
- *
- * @example
- * // 传入字符串
- * toast.show("操作成功")
- *
- * @example
- * // 传入配置对象
- * toast.show({ type: "success", content: "操作成功" })
- */
+// 命令式 show（字符串作 content，对象作完整选项）
 function show(options: string | ToastOptions = {}) {
-  // 合并命令式调用的选项
-  if (isString(options)) {
-    commandOptions.value = { content: options }
-  } else {
-    commandOptions.value = { ...options }
-  }
+  commandOptions.value = isString(options) ? { content: options } : { ...options }
   open()
 }
 
-/**
- * 隐藏 toast（命令式调用）
- */
+// 命令式 hide
 function hide() {
   close()
 }
 
-/**
- * 显示成功提示
- * @param options 提示内容或配置对象
- */
+// 便捷方法
 function success(options?: string | ToastOptions) {
-  const opts = typeof options === "string" ? { content: options } : options
+  const opts = isString(options) ? { content: options } : options
   show({ ...opts, type: "success" })
 }
 
-/**
- * 显示失败提示
- * @param options 提示内容或配置对象
- */
 function fail(options?: string | ToastOptions) {
-  const opts = typeof options === "string" ? { content: options } : options
+  const opts = isString(options) ? { content: options } : options
   show({ ...opts, type: "fail" })
 }
 
-/**
- * 显示加载中提示
- * @param options 提示内容或配置对象，默认内容为"加载中..."
- */
 function loading(options?: string | ToastOptions) {
-  const opts = typeof options === "string" ? { content: options } : options
+  const opts = isString(options) ? { content: options } : options
   show({ content: "加载中...", ...opts, type: "loading" })
 }
 
-/**
- * 显示等待提示
- * @param options 提示内容或配置对象
- */
 function awaitFn(options?: string | ToastOptions) {
-  const opts = typeof options === "string" ? { content: options } : options
+  const opts = isString(options) ? { content: options } : options
   show({ ...opts, type: "await" })
 }
 
-/**
- * 显示默认提示（纯文本）
- * @param options 提示内容或配置对象
- */
 function text(options?: string | ToastOptions) {
-  const opts = typeof options === "string" ? { content: options } : options
+  const opts = isString(options) ? { content: options } : options
   show({ ...opts, type: "default" })
 }
 
@@ -272,7 +224,13 @@ defineExpose({ show, hide, open, close, success, fail, loading, await: awaitFn, 
 <script lang="ts">
 export default {
   name: "ui-toast",
-  options: { virtualHost: true, multipleSlots: true, styleIsolation: "shared" },
+  options: {
+    // #ifndef MP-TOUTIAO
+    virtualHost: true,
+    // #endif
+    multipleSlots: true,
+    styleIsolation: "shared",
+  },
 }
 </script>
 
@@ -280,6 +238,17 @@ export default {
 @use "../styles/animation.scss";
 
 .ui-toast {
+  --ui-toast-bg: rgba(0, 0, 0, 0.7);
+  --ui-toast-color: var(--ui-color-text-inverse);
+  --ui-toast-radius: var(--ui-radius-md);
+  --ui-toast-padding: var(--ui-spacing-md) var(--ui-spacing-lg);
+  --ui-toast-icon-size: 60rpx;
+  --ui-toast-max-width: calc(100% - 160rpx);
+  --ui-toast-icon-bg-size: 240rpx;
+  --ui-toast-loading-color: var(--ui-color-text-inverse);
+  --ui-toast-loading-track: var(--ui-color-mask-light);
+  --ui-toast-icon-bg-padding: var(--ui-spacing-lg);
+
   top: 0;
   left: 0;
   width: 100%;
@@ -287,7 +256,7 @@ export default {
   display: flex;
   position: fixed;
   align-items: center;
-  // pointer-events: none;
+  pointer-events: none;
   justify-content: center;
 
   &--mask {
@@ -296,57 +265,58 @@ export default {
 
   &__body {
     display: flex;
-    padding: var(--ui-spacing-md) var(--ui-spacing-lg);
-    max-width: calc(100% - 160rpx);
+    padding: var(--ui-toast-padding);
+    max-width: var(--ui-toast-max-width);
+    background: var(--ui-toast-bg);
     align-items: center;
-    border-radius: var(--ui-radius-md);
+    border-radius: var(--ui-toast-radius);
     flex-direction: row;
+    pointer-events: auto;
     justify-content: center;
 
     &--icon {
-      width: 240rpx;
-      padding: var(--ui-spacing-lg);
-      min-height: 240rpx;
+      width: var(--ui-toast-icon-bg-size);
+      padding: var(--ui-toast-icon-bg-padding);
+      min-height: var(--ui-toast-icon-bg-size);
       flex-direction: column;
     }
   }
 
   &__icon {
-    width: 60rpx;
-    height: 60rpx;
+    width: var(--ui-toast-icon-size);
+    height: var(--ui-toast-icon-size);
     display: flex;
     margin-bottom: var(--ui-spacing-sm);
     justify-content: center;
-    .image {
-      width: 100%;
-      height: 100%;
-    }
+  }
 
-    .loading {
-      width: 100%;
-      height: 100%;
-      animation: rotate 1s linear infinite;
-      border-color: var(--ui-color-text-inverse) var(--ui-color-mask-light) var(--ui-color-mask-light);
-      border-style: solid;
-      border-width: var(--ui-spacing-xs);
-      border-radius: 50%;
-      animation-duration: 1200ms;
-      animation-timing-function: linear;
+  &__image {
+    width: 100%;
+    height: 100%;
+  }
 
-      @keyframes rotate {
-        0% {
-          transform: rotate(0deg);
-        }
+  &__loading {
+    width: 100%;
+    height: 100%;
+    animation: rotate 1.2s linear infinite;
+    border-color: var(--ui-toast-loading-color) var(--ui-toast-loading-track) var(--ui-toast-loading-track);
+    border-style: solid;
+    border-width: var(--ui-spacing-xs);
+    border-radius: 50%;
 
-        100% {
-          transform: rotate(1turn);
-        }
+    @keyframes rotate {
+      0% {
+        transform: rotate(0deg);
+      }
+
+      100% {
+        transform: rotate(1turn);
       }
     }
   }
 
   &__text {
-    color: var(--ui-color-text-inverse);
+    color: var(--ui-toast-color);
     max-width: 100%;
     word-wrap: break-word;
     text-align: center;

@@ -68,8 +68,8 @@ describe("ui-toast 轻提示组件", () => {
       await waitForTransition()
 
       expect(wrapper.find(".ui-toast__icon").exists()).toBe(true)
-      // 组件使用 <view class="loading" /> 来显示 loading 状态
-      expect(wrapper.find(".loading").exists()).toBe(true)
+      // loading 状态用 <view class="ui-toast__loading" /> 渲染
+      expect(wrapper.find(".ui-toast__loading").exists()).toBe(true)
     })
 
     it("type 为 success 时应显示成功图标", async () => {
@@ -132,7 +132,7 @@ describe("ui-toast 轻提示组件", () => {
       })
 
       // 只检查 props，不需要等待过渡动画
-      expect(wrapper.props("iconSize")).toBe("100rpx")
+      expect((wrapper.props() as Record<string, unknown>).iconSize).toBe("100rpx")
     })
   })
 
@@ -143,7 +143,7 @@ describe("ui-toast 轻提示组件", () => {
       })
 
       // 只检查 props，不需要等待过渡动画
-      expect(wrapper.props("position")).toBe("middle")
+      expect((wrapper.props() as Record<string, unknown>).position).toBe("middle")
     })
 
     it("position 为 top 时应在顶部显示", async () => {
@@ -176,7 +176,7 @@ describe("ui-toast 轻提示组件", () => {
       })
 
       // 只检查 props，不需要等待过渡动画
-      expect(wrapper.props("offset")).toBe(200)
+      expect((wrapper.props() as Record<string, unknown>).offset).toBe(200)
     })
   })
 
@@ -256,11 +256,9 @@ describe("ui-toast 轻提示组件", () => {
       expect(hasClosed).toBeFalsy()
     })
 
-    it("loading 类型在显式设置 duration=0 时不自动关闭", async () => {
-      // 注意：组件实现中 loading 类型的不自动关闭逻辑依赖于 props.duration 是否存在
-      // 但由于 duration 有默认值 2000，所以需要显式设置 duration=0 来阻止自动关闭
+    it("loading 类型默认不自动关闭（即使 duration 有默认值）", async () => {
       const wrapper = mount(UiToast, {
-        props: { show: true, type: "loading", duration: 0 },
+        props: { show: true, type: "loading" },
       })
 
       await waitForTransition()
@@ -268,7 +266,7 @@ describe("ui-toast 轻提示组件", () => {
       vi.advanceTimersByTime(5000)
       await nextTick()
 
-      // 不应有关闭事件（没有 [false] 事件）
+      // loading 默认不应有关闭事件
       const events = wrapper.emitted("update:show") || []
       const hasClosed = events.some((e) => e[0] === false)
       expect(hasClosed).toBeFalsy()
@@ -314,13 +312,13 @@ describe("ui-toast 轻提示组件", () => {
       })
 
       await wrapper.setProps({ show: true, content: "提示" })
-      await waitForTransition()
+      await waitForTransition(400)
 
       expect(wrapper.emitted("open")).toBeTruthy()
       expect(wrapper.emitted("opened")).toBeTruthy()
 
       await wrapper.setProps({ show: false })
-      await waitForTransition()
+      await waitForTransition(400)
 
       expect(wrapper.emitted("close")).toBeTruthy()
       expect(wrapper.emitted("closed")).toBeTruthy()
@@ -334,7 +332,7 @@ describe("ui-toast 轻提示组件", () => {
       })
 
       // 只检查 props，不需要等待过渡动画
-      expect(wrapper.props("width")).toBe("300rpx")
+      expect((wrapper.props() as Record<string, unknown>).width).toBe("300rpx")
     })
 
     it("应支持自定义背景颜色", async () => {
@@ -343,7 +341,7 @@ describe("ui-toast 轻提示组件", () => {
       })
 
       // 只检查 props，不需要等待过渡动画
-      expect(wrapper.props("background")).toBe("rgba(0, 0, 0, 0.9)")
+      expect((wrapper.props() as Record<string, unknown>).background).toBe("rgba(0, 0, 0, 0.9)")
     })
   })
 

@@ -2,8 +2,8 @@ import type TimelineItem from "./ui-timeline-item.vue"
 import type { PropType, CSSProperties, ExtractPropTypes } from "vue"
 import { buildDefaultProps } from "../utils/props"
 
-/** 时间轴节点状态类型 */
 export type TimelineItemType = "primary" | "success" | "warning" | "danger" | "info"
+export type TimelineItemPosition = "left" | "right"
 
 const defaultProps = buildDefaultProps("timelineItem", {
   time: undefined,
@@ -27,20 +27,20 @@ export const timelineItemProps = {
   title: defaultProps("title", { type: String }),
   /** 描述 */
   description: defaultProps("description", { type: String }),
-  /** 自定义图标 */
+  /** 图标 */
   icon: defaultProps("icon", { type: String }),
   /** 图标颜色 */
   iconColor: defaultProps("iconColor", { type: String }),
   /** 节点颜色 */
   dotColor: defaultProps("dotColor", { type: String }),
-  /** 节点尺寸 */
+  /** 节点尺寸（覆盖父级） */
   dotSize: defaultProps("dotSize", { type: [Number, String] }),
-  /** 节点状态类型 */
+  /** 节点状态类型（自动着色） */
   type: defaultProps("type", { type: String as PropType<TimelineItemType> }),
-  /** 是否空心节点 */
+  /** 空心节点 */
   hollow: defaultProps("hollow", { type: Boolean }),
-  /** 在 alternate 模式下指定轴的位置：left（轴在左侧）/ right（轴在右侧） */
-  position: defaultProps("position", { type: String as PropType<"left" | "right"> }),
+  /** alternate 模式下手动指定轴所在位置 */
+  position: defaultProps("position", { type: String as PropType<TimelineItemPosition> }),
   /** 自定义类名 */
   customClass: defaultProps("customClass", { type: String }),
   /** 自定义样式 */
@@ -48,8 +48,7 @@ export const timelineItemProps = {
 }
 
 export const timelineItemEmits = {
-  /** 点击时触发 */
-  click: (index: number) => true,
+  click: (_index: number) => true,
 }
 
 export type TimelineItemEmits = typeof timelineItemEmits

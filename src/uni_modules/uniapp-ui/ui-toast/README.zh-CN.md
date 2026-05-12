@@ -1,119 +1,144 @@
-# UiToast 组件
+# Toast 轻提示
 
-## 介绍
+轻量级消息提示组件。支持声明式（v-model:show）、命令式（ref）、全局 hook（useToast）三种调用方式。
 
-轻量级消息提示组件，支持声明式调用（Props + v-model:show）和命令式调用（ref.show()）两种方式。
+## 调用方式
 
-## 代码演示
-
-### 声明式调用（v-model:show）
+### 一、声明式 v-model:show
 
 ```vue
 <template>
   <ui-toast v-model:show="visible" type="success" content="操作成功" />
-  <button @click="visible = true">显示 Toast</button>
+  <ui-button @click="visible = true">显示</ui-button>
 </template>
 
 <script setup>
 import { ref } from "vue"
 const visible = ref(false)
-// toast 自动关闭后 visible 会同步变为 false
 </script>
 ```
 
-### 命令式调用（ref.show()）
+### 二、命令式 ref
 
 ```vue
 <template>
   <ui-toast ref="toastRef" />
-  <button @click="showToast">显示 Toast</button>
+  <ui-button @click="toastRef?.show('操作成功')">显示</ui-button>
 </template>
 
 <script setup>
 import { ref } from "vue"
 const toastRef = ref()
-
-function showToast() {
-  // 方式一：传入字符串
-  toastRef.value.show("操作成功")
-
-  // 方式二：传入配置对象
-  toastRef.value.show({
-    type: "success",
-    content: "操作成功",
-    duration: 3000,
-  })
-}
 </script>
 ```
 
-### Loading 效果
+### 三、全局 useToast hook
 
-```vue
-<template>
-  <ui-toast ref="toastRef" />
-  <button @click="showLoading">显示 Loading</button>
-</template>
+根组件挂载一次 `<ui-toast />` 并 `provideToast(ref)`，业务代码内 `useToast()` 获取控制器。
 
-<script setup>
-import { ref } from "vue"
-const toastRef = ref()
-
-async function showLoading() {
-  // loading 类型默认不自动关闭
-  toastRef.value.show({ type: "loading", content: "加载中..." })
-
-  // 模拟异步操作
-  await someAsyncOperation()
-
-  // 手动关闭
-  toastRef.value.hide()
-}
-</script>
+```ts
+import { useToast } from "@/uni_modules/uniapp-ui"
+const toast = useToast()
+toast.success("提交成功")
+toast.fail("提交失败")
+toast.loading("加载中...")
+toast.hide()
 ```
 
-## Props
+## Loading 用法
 
-| 参数         | 说明                                         | 类型                                                     | 默认值               |
-| ------------ | -------------------------------------------- | -------------------------------------------------------- | -------------------- |
-| v-model:show | 是否显示 toast                               | boolean                                                  | false                |
-| type         | 显示类型                                     | `loading` \| `await` \| `success` \| `fail` \| `default` | `default`            |
-| content      | 显示内容                                     | string                                                   | -                    |
-| icon         | 自定义图标（支持图标名称或图片 URL）         | string                                                   | -                    |
-| iconSize     | 图标大小                                     | string \| number                                         | `80rpx`              |
-| iconPrefix   | 图标前缀                                     | string                                                   | `ui-icon`            |
-| mask         | 是否显示透明蒙层，防止触摸穿透               | boolean                                                  | false                |
-| position     | 显示位置                                     | `top` \| `middle` \| `bottom`                            | `middle`             |
-| offset       | 位置偏移（仅 position 为 top/bottom 时生效） | string \| number                                         | `150`                |
-| width        | 显示宽度                                     | string \| number                                         | -                    |
-| duration     | 显示持续时间（毫秒），设为 0 则不自动关闭    | string \| number                                         | `2000`               |
-| background   | 背景色                                       | string                                                   | `rgba(0, 0, 0, 0.7)` |
-| customClass  | 自定义类名                                   | string                                                   | -                    |
-| customStyle  | 自定义样式                                   | string \| CSSProperties                                  | -                    |
+`loading` 类型**默认不自动关闭**，需手动 `hide()` 或显式传 `duration`。
 
-## Events
+```ts
+toast.loading("加载中...")
+await fetchData()
+toast.hide()
+```
 
-| 事件名      | 说明                     | 回调参数        |
-| ----------- | ------------------------ | --------------- |
-| update:show | 显示状态变化时触发       | (show: boolean) |
-| open        | toast 打开时触发         | -               |
-| opened      | toast 打开动画结束时触发 | -               |
-| close       | toast 关闭时触发         | -               |
-| closed      | toast 关闭动画结束时触发 | -               |
+## API
 
-## Methods
+### Props
 
-通过 ref 获取组件实例后可调用以下方法：
+| 参数         | 说明                                             | 类型                                                       | 默认值      |
+| ------------ | ------------------------------------------------ | ---------------------------------------------------------- | ----------- |
+| v-model:show | 显示状态                                         | `boolean`                                                  | `false`     |
+| type         | 显示类型                                         | `"default" \| "loading" \| "await" \| "success" \| "fail"` | `"default"` |
+| content      | 显示内容                                         | `string`                                                   | -           |
+| icon         | 自定义图标（图标名或图片 URL）                   | `string`                                                   | -           |
+| iconSize     | 图标尺寸                                         | `number \| string`                                         | -           |
+| iconPrefix   | 图标前缀                                         | `string`                                                   | `"ui-icon"` |
+| mask         | 显示透明蒙层防穿透                               | `boolean`                                                  | `false`     |
+| position     | 显示位置                                         | `"top" \| "middle" \| "bottom"`                            | `"middle"`  |
+| offset       | 位置偏移（top/bottom 时生效）                    | `number \| string`                                         | -           |
+| width        | 容器宽度                                         | `number \| string`                                         | -           |
+| background   | 背景色                                           | `string`                                                   | -           |
+| duration     | 自动关闭时长（毫秒）；`0` 不关；loading 默认不关 | `number`                                                   | `2000`      |
+| lazyRender   | 仅显示时挂载节点                                 | `boolean`                                                  | `true`      |
+| customClass  | 自定义类名                                       | `string`                                                   | -           |
+| customStyle  | 自定义样式                                       | `string \| CSSProperties`                                  | -           |
 
-| 方法名 | 说明                                               | 参数                               |
-| ------ | -------------------------------------------------- | ---------------------------------- |
-| show   | 显示 toast，可传入字符串（作为 content）或配置对象 | (options?: string \| ToastOptions) |
-| hide   | 隐藏 toast                                         | -                                  |
-| open   | 打开 toast（不接受参数，使用当前 props）           | -                                  |
-| close  | 关闭 toast                                         | -                                  |
+### Events
 
-## Slots
+| 事件名      | 说明         | 回调参数        |
+| ----------- | ------------ | --------------- |
+| update:show | 显示状态变化 | `show: boolean` |
+| open        | 打开         | -               |
+| opened      | 打开动画结束 | -               |
+| close       | 关闭         | -               |
+| closed      | 关闭动画结束 | -               |
+
+### 暴露方法
+
+| 方法    | 参数                                 | 说明                         |
+| ------- | ------------------------------------ | ---------------------------- |
+| show    | `(options?: string \| ToastOptions)` | 显示（字符串作 content）     |
+| hide    | -                                    | 关闭                         |
+| open    | -                                    | 打开（沿用 props）           |
+| close   | -                                    | 关闭                         |
+| success | `(options?)`                         | type=success                 |
+| fail    | `(options?)`                         | type=fail                    |
+| loading | `(options?)`                         | type=loading，默认不自动关闭 |
+| await   | `(options?)`                         | type=await                   |
+| text    | `(options?)`                         | type=default                 |
+
+### Slots
 
 | 名称    | 说明       |
 | ------- | ---------- |
 | default | 自定义内容 |
+
+### useToast 控制器
+
+| 方法    | 参数         | 说明       |
+| ------- | ------------ | ---------- |
+| show    | `(options)`  | 显示       |
+| hide    | -            | 关闭       |
+| success | `(options?)` | 成功提示   |
+| fail    | `(options?)` | 失败提示   |
+| loading | `(options?)` | 加载提示   |
+| await   | `(options?)` | 等待提示   |
+| text    | `(options?)` | 纯文本提示 |
+
+Instance 未挂载时调用自动入队列，挂载后顺序消费（请求拦截器场景常用）。
+
+### CSS Variables
+
+| 变量名                       | 默认值                                      | 说明             |
+| ---------------------------- | ------------------------------------------- | ---------------- |
+| `--ui-toast-bg`              | `rgba(0, 0, 0, 0.7)`                        | 主体背景         |
+| `--ui-toast-color`           | `var(--ui-color-text-inverse)`              | 文本颜色         |
+| `--ui-toast-radius`          | `var(--ui-radius-md)`                       | 圆角             |
+| `--ui-toast-padding`         | `var(--ui-spacing-md) var(--ui-spacing-lg)` | 内边距           |
+| `--ui-toast-max-width`       | `calc(100% - 160rpx)`                       | 最大宽度         |
+| `--ui-toast-icon-size`       | `60rpx`                                     | 图标尺寸         |
+| `--ui-toast-icon-bg-size`    | `240rpx`                                    | 图标态容器尺寸   |
+| `--ui-toast-icon-bg-padding` | `var(--ui-spacing-lg)`                      | 图标态容器内边距 |
+| `--ui-toast-loading-color`   | `var(--ui-color-text-inverse)`              | loading 转圈色   |
+| `--ui-toast-loading-track`   | `var(--ui-color-mask-light)`                | loading 轨道色   |
+
+## 注意事项
+
+- `loading` 类型默认不自动关闭，需手动 `hide()`
+- `mask=true` 时拦截屏幕点击；默认 `mask=false` 不拦截
+- 多次连续 `show()` 会重置定时器，内容立即切换
+- 全局 hook 使用前需在根组件 `provideToast(ref)`，根组件卸载时 `unprovideToast()`
